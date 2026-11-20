@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="5" time="0.209" timestamp="2026-11-20T12:23:50.091291" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.matrices.tests.test_normalforms" name="test_hermite_normal" time="0.002"><failure message="assert Matrix([\n[0],...0],\n[0],\n[0]]) == Matrix([\n[ 37... 0,  0,   1]])&#10;  Use -v to get more diff">sympy\matrices\tests\test_normalforms.py:66: in test_hermite_normal
+    assert hermite_normal_form(m.transpose()) == tr_hnf
+E   assert Matrix([\n[0],...0],\n[0],\n[0]]) == Matrix([\n[ 37... 0,  0,   1]])
+E     Use -v to get more diff</failure></testcase><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_hermite_normal" time="0.001"><failure message="assert DomainMatrix(...], (5, 1), ZZ) == DomainMatrix(...], (5, 3), ZZ)&#10;  Use -v to get more diff">sympy\polys\matrices\tests\test_normalforms.py:50: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+E   assert DomainMatrix(...], (5, 1), ZZ) == DomainMatrix(...], (5, 3), ZZ)
+E     Use -v to get more diff</failure></testcase><testcase classname="sympy.matrices.tests.test_normalforms" name="test_smith_normal" time="0.069" /><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_smith_normal" time="0.001" /><testcase classname="sympy.matrices.tests.test_normalforms" name="test_smith_normal_deprecated" time="0.024" /></testsuite></testsuites>

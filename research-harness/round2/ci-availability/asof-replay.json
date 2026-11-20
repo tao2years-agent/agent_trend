@@ -1,0 +1,98 @@
+{
+  "verified": {
+    "verified_uncompressed_bytes": 1247281152,
+    "crc32": 3299276972,
+    "remaining_incomplete_document_bytes": 144
+  },
+  "same_reconstructable_cohort": [
+    {
+      "method": "project",
+      "n": 2043,
+      "green": 459,
+      "rerun": 1786,
+      "missed_green": 22,
+      "avoided_red": 235,
+      "auc": 0.6805534924407474,
+      "ap": 0.4026696351594597
+    },
+    {
+      "method": "published_retrospective",
+      "n": 2043,
+      "green": 459,
+      "rerun": 1349,
+      "missed_green": 81,
+      "avoided_red": 613,
+      "auc": 0.7166387458462622,
+      "ap": 0.44492565187701316
+    },
+    {
+      "method": "prior_asof",
+      "n": 2043,
+      "green": 459,
+      "rerun": 1660,
+      "missed_green": 40,
+      "avoided_red": 343,
+      "auc": 0.6695275192007218,
+      "ap": 0.34192773599367166
+    }
+  ],
+  "job_histories_with_prefix_count_disagreement": 0,
+  "tail_job_conservatively_excluded": true,
+  "documents": 5431496,
+  "voting": 5431496,
+  "nonvoting": 0,
+  "distinct_jobs": 30371,
+  "histories_with_missing_or_extra_observations": 1,
+  "min_date": "2013-12-27T12:11:32+00:00",
+  "max_date": "2024-04-30T19:29:36+00:00",
+  "positive_control": {
+    "finite_full_current_roster": 7301,
+    "published_min_reproduced": 7301
+  },
+  "partition_counts": {
+    "validation": {
+      "prior_count_mismatch": 65574,
+      "prior_empty_or_unavailable": 514,
+      "observable_roster_with_asof_history": 3662
+    },
+    "test": {
+      "observable_roster_with_asof_history": 2043,
+      "prior_count_mismatch": 67994,
+      "prior_empty_or_unavailable": 701,
+      "incomplete_job_history": 2
+    }
+  },
+  "threshold": 0.23957738858037878,
+  "results": [
+    {
+      "cohort": "all_test",
+      "n": 70740,
+      "green": 20299,
+      "rerun": 59846,
+      "missed_green": 859,
+      "avoided_red": 10035,
+      "auc": 0.6524444829628931,
+      "ap": 0.384989981594011
+    },
+    {
+      "cohort": "asof_reconstructed_test",
+      "n": 2043,
+      "green": 459,
+      "rerun": 1660,
+      "missed_green": 40,
+      "avoided_red": 343,
+      "auc": 0.6695275192007218,
+      "ap": 0.34192773599367166
+    },
+    {
+      "cohort": "project_fallback_test",
+      "n": 68697,
+      "green": 19840,
+      "rerun": 58186,
+      "missed_green": 819,
+      "avoided_red": 9692,
+      "auc": 0.6580686499425248,
+      "ap": 0.4030300485358927
+    }
+  ]
+}

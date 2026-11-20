@@ -1,0 +1,97 @@
+﻿产品ID,产品,证据口径,日期,版本,日期精度,事件分类,具体变化,定位,来源及原文
+BUY01,Aider,direct,2025-08-07,v0.85.5,日,enhancement,GPT-5 编辑强制使用 diff 格式，并支持 reasoning_effort。,Aider v0.85.5,aider E04-5
+BUY01,Aider,direct,2025-08-09,v0.86.0,日,enhancement,缩短 /undo 显示的提交消息，并扩大 GPT-5 模型支持。,Aider v0.86.0,E04-5
+BUY02,OpenAI Codex CLI,direct,2026-11-18,0.170.0,日,fix,改善云端对话重连时保留恢复中的轮次，修复子线程丢失既有沙箱限制。,Improved automatic reconnection,codex170
+BUY02,OpenAI Codex CLI,direct,2026-11-20,0.171.0,日,fix,修复旧轮次完成事件误取消新审批，并按策略版本隔离自动审查缓存。,0.171.0,E05-4
+BUY03,Cline,direct,2026-10-26,Desktop v0.0.49,日,enhancement,桌面会话头部增加 Changes 按钮，显示改动行数和差异入口。,Desktop v0.0.49,E07-4
+BUY03,Cline,direct,2026-11-04,desktop-nightly-20261104233655,日,preview,桌面 nightly 将 UX 验证委派给子代理，并保留委派工具审批策略；未推断稳定版已包含。,delegate UX verification,E07-4
+BUY04,OpenCode,direct,2026-11-13,v2.3.0,日,default,后台子代理成为默认，父会话可继续，子代理空闲后汇报。,Background Subagents by Default,E08-4
+BUY04,OpenCode,direct,2026-11-18,v2.3.1,日,enhancement,超过前台超时的 shell 命令转后台继续并报告结果。,Timed-Out Shell Commands Keep Running,E08-4
+BUY05,Qoder,direct,2025-10-22,,日,introduction,Quest 增加 Remote Delegation，将任务交给远程云环境处理。,Remote Delegation,qoder
+BUY05,Qoder,direct,2026-10-15,,日,retirement,Qoder IDE 旧 Quest 视窗于北京时间 23:59 退场，Editor 窗口仍保留；厂商另有新版入口与迁移安排。,"October 15, 2026",CN01
+BUY06,腾讯 CodeBuddy Code,direct,,v2.95.0,版本,enhancement,队员结束计划后审批弹窗出现在 lead 终端，可通过、继续规划或退出，并增加关停握手。,v2.95.0,CN06
+BUY06,腾讯 CodeBuddy Code,direct,,v2.140.0,版本,fix,修复主 Agent 回合已结束但成员仍运行时停止无效的问题，取消单会话不会波及其他会话成员。,v2.140.0,CN07
+BUY07,华为云码道 CodeArts 代码智能体,direct,2026-02-26,,日,preview,发布华为云码道代码智能体公测版，集成 IDE、自主开发、规范驱动与代码库索引。,2026-02-26,huawei-preview
+BUY07,华为云码道 CodeArts 代码智能体,direct,2026-04-25,,日,preview,公测更新列入自动快照与回退的检查点功能。,2026年04月25日,huawei
+BUY07,华为云码道 CodeArts 代码智能体,direct,2026-11-17,,日,introduction,商用栏列入可集成企业规范的 Review Agent 与提供批量修复的 Fix Agent。,2026年11月17日,huawei
+BUY08,TRAE,direct,2026-03-31,SOLO 桌面 v0.1.0,日,introduction,发布 SOLO 桌面及网页，支持通用 Work 与开发 Code 两种工作模式。,v0.1.0,CN17
+BUY08,TRAE,direct,2026-06-09,TraeWork v0.1.18,日,enhancement,SOLO 升级为 TraeWork，支持企业版账号登录。,v0.1.18,CN17
+BUY08,TRAE,direct,2026-06-18,v0.1.19~0.1.20,日,preview,逐步灰度自动执行 Agent 删除工具，所删文件可在系统回收站找回。,v0.1.19,CN17
+BUY09,Google Antigravity,direct,2025-11-20,,日,introduction,Google 发布文章介绍 Antigravity 的编辑器与管理代理入口，代理可用工件呈现工作。日期为文章披露日。,"NOV. 20, 2025",antigravity
+BUY09,Google Antigravity,direct,2026-05-19,2.0,日,enhancement,独立桌面应用编排多个代理，I/O 同期公布 CLI 等开发入口。,Antigravity 2.0,M07-3
+BUY10,Factory Droid,direct,2026-04-20,CLI 0.105.0 / Desktop 0.61.0,日,default,Missions worker 发起的权限请求改为自动拒绝。,Missions worker permission requests are now auto-denied,M01-3
+BUY10,Factory Droid,direct,2026-08-29,CLI 0.208.0 / Desktop 0.165.0,日,fix,修复中断、暂停或恢复后里程碑验证被跳过的情况。,"August 29, 2026",M01-3
+BUY11,Cognition Devin,direct,2026-05-08,"May 8, 2026",日,增强,单个 PR 可开关自动 Devin Review，同时保留组织设置。,"May 8, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-09-09,"September 9, 2026",日,界面增强·提前证据,Automations 页面的 preflight-check 卡片和脚本编辑器已经改版。,"September 9, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-09-23,"September 23, 2026",日,增强,自动评审可按账号、SCM 组织、仓、前缀或成员入选，再组合分支、标签、文件等条件；排除规则优先。,"September 23, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-09-30,"September 30, 2026",日,功能公告·首次日期未定,这天文档详细发布触发后、启动 Devin 前的脚本，可校验或改写输入、跳过任务；脚本在隔离环境中、可设超时，结果进执行明细。同日已提到 Mark done/Stop session 的不同入口。,"September 30, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-10-30,"October 30, 2026",日,默认改变,未配置 PAT 策略的企业，成员申请 PAT 默认需要管理员审批。,"October 30, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-11-02,"November 2, 2026",日,增强,自动化介绍增加 Preflight 检查说明，网络策略编辑会应用到该自动化已运行的会话。,"November 2, 2026",devin-release devin-access
+BUY11,Cognition Devin,direct,2026-11-12,"November 12, 2026",日,增强,是否自动修复自己 PR 上的 Devin Review findings 变成独立设置，可设组织默认及个人覆盖；各 MCP 工具可分别设允许、需批准、阻止。,"November 12, 2026",devin-release
+BUY11,Cognition Devin,direct,2026-11-16,"November 16, 2026",日,界面语义·发布,Mark done 替换 Archive，只把会话移到个人 Done；它仍运行，其他订阅者仍可见。,"November 16, 2026",devin-release
+BUY12,GitLab Duo Agent Platform,direct,2026-07-16,GitLab 19.2,日,GA,Custom Flows 与 GitLab CLI 的相关代理能力一般可用，强调组织内受控运行。,Custom Flows,M04-3
+BUY12,GitLab Duo Agent Platform,direct,2026-11-19,GitLab 19.6,日,preview,定时 automations 为 beta，用独立服务账号并提供运行记录。,service account,M04-4
+BUY13,GitHub Copilot cloud agent,direct,2026-06-02,,日,introduction,为 Copilot cloud agent 提供定时与自动任务入口，受当时可选仓库范围限制。,schedule,W08
+BUY13,GitHub Copilot cloud agent,direct,2026-10-28,,日,GA,连贯的云端开发体验及 cloud sandbox GA，支持从不同入口接续任务。,generally available,W21
+BUY14,Claude Code Scheduled tasks,direct,2026-04-14,Routines,日,introduction,以 Routines 名称推出云端运行的例行任务能力；当前文档改名，改名日期未定位。,"April 14, 2026",F04-2
+BUY14,Claude Code Scheduled tasks,direct,2026-10-26,v2.1.311,日,fix,修复 Anthropic 托管环境中 owner 退出后重新加入组织时 routine 持续锁定的问题。,staying locked after their owner,claude-release
+BUY15,goose,direct,2026-11-10,v1.59.0,日,enhancement,goose-agent GDK 加入停止、审批与工具 hook 的操作扩展点。,v1.59.0,E03-4
+BUY15,goose,direct,2026-11-17,v1.60.0,日,enhancement,oi-kit 增加 steering 操作，加入可执行命令及 SlashCommandOperation。,Steering operation,E03-4
+BUY16,Sourcegraph Batch Changes,direct,2026-05-29,7.4.0-rc.0,日,修复·预发布,批处理缓存键不再使用每个任务的独有环境变量。,7.4.0-rc.0,src-cli-1
+BUY16,Sourcegraph Batch Changes,direct,2026-07-30,7.6.0,日,修复·正式发布,对 changeset hooks 和 executor 的文件目标路径进行验证。,7.6.0,src-cli-1
+BUY16,Sourcegraph Batch Changes,direct,2026-09-17,8.0.0,日,修复·正式发布,维护者列明批执行的工作区隔离修复，包括消除传往步骤的 executor 环境泄漏以及处理仓库归档里 Git 元数据。,8.0.0,src-cli-1
+BUY16,Sourcegraph Batch Changes,direct,2026-11-02,Sourcegraph Cloud,日,enhancement,后台批执行期间可继续原对话并单独调查失败。与 src-cli 为不同发行面。,batch,W12
+BUY16,Sourcegraph Batch Changes,direct,2026-11-09,Sourcegraph Cloud,日,enhancement,在对话中确认 merge，并将会话及其工作交接给其他工程师。,merge,W11
+BUY16,Sourcegraph Batch Changes,direct,2026-11-11,8.2.0,日,移除内部命令,删掉 src batch exec 及其 CLI 文件；8.0.0 在 usage 明示仅供内部使用。另核当前公开 preview/apply 入口仍各自存在。,8.2.0,src-cli-1 pr-1381 src-cli-8.0.0 src-preview src-apply
+BUY17,Moderne Platform,direct,2025-09-30,DevCenter,日,enhancement,新 DevCenter 允许按 recipe 配置工作视图并追踪代码现代化进度。,"September 30, 2025",moderne
+BUY17,Moderne Platform,direct,2026-05-19,Changelog,日,introduction,发布按 changeset 汇总跨仓变更的 Changelog，展示阻塞和待处理项。,changeset,A17
+BUY18,AWS Transform custom,direct,2025-12-01,,日,GA,AWS Transform custom 一般可用，支持用预建与自定义方案执行可重复迁移。,"Dec 1, 2025",P15
+BUY18,AWS Transform custom,direct,2026-03-31,,日,GA,其自动代码库分析功能一般可用，输出架构和技术债报告及现代化建议。,2026-03-31,aws
+BUY19,CodeRabbit,direct,2025-09-16,CLI,日,introduction,推出 CodeRabbit CLI，将审查反馈带入本地开发和编码代理的迭代过程。,"September 16, 2025",coderabbit
+BUY19,CodeRabbit,direct,2026-03-11,Pre-Merge Checks,日,introduction,提出合并前的内置和自定义检查，可选择 warning 或 error。,"March 11, 2026",M05-3
+BUY20,PR-Agent,context,2026-06-21,v0.37.0,日,项目自身配置·不可归入开源能力,发布摘要有「Qodo 自审后可批准」一项。对应 PR 只改本仓 .pr_agent.toml，新增注释说明由独立托管的 Qodo 免费开源项目机器人消费；其中 review_agent 小节属于该托管服务。,v0.37.0,pr-agent-2 pr-project-config
+BUY20,PR-Agent,direct,2026-07-05,v0.39.0,日,窗口首次发布,新增把 review、describe、improve 结果发布为 GitHub Checks 的途径，也引入集中组织设置。,v0.39.0,pr-agent-2
+BUY20,PR-Agent,direct,2026-08-08,v0.42.0,日,增强,报告可以列出未进入审查范围的文件；GitLab 的 review 可选发成能解决的讨论。,v0.42.0,pr-agent-1
+BUY20,PR-Agent,direct,2026-09-05,v0.45.0,日,增强,重新审查保留已有 findings；大 diff 可选择分块并定义归并规则。,v0.45.0,pr-agent-1
+BUY20,PR-Agent,direct,2026-10-02,v0.47.0,日,修复·默认改变,GitHub Action 对工具已记录但吞掉的失败默认转为失败。主机可设置 fail_on_tool_errors=false 保留旧行为；PR 评论不能改该开关。,v0.47.0,pr-agent-1 pr-3712 pr-agent-v0.46.0 pr-agent-v0.47.0
+BUY20,PR-Agent,direct,2026-11-07,v0.50.0,日,移除无效设置,从分发设置中移除 approve_pr_on_self_review 与 fold_suggestions_on_self_review。官方说明这两项从未改变 /improve 行为。,v0.50.0,pr-agent-1 pr-unused
+BUY21,阿里云云效 Codeup AI 评审,context,2025-10,,月,month,月度表记载 Codeup 合并请求流程新增 AI 代码评审。原文仅有月份。,代码评审流程支持 AI 智能评审,ali
+BUY21,阿里云云效 Codeup AI 评审,context,2025-10-14,,日,community-context,阿里云云原生社区账号文章称推出按 commit 评审。该页明确使用社区供稿条款；日期作为发布披露，不代替云效正式版本日志。,2025-10-14,ali-commit ali-profile
+BUY21,阿里云云效 Codeup AI 评审,context,2025-11-05,,日,campaign-context,云效 DevOps 署名的智能评审体验官招募开始，限活动登记与反馈，不作为引入功能的日期。,2025年11月5日,ali-campaign
+BUY21,阿里云云效 Codeup AI 评审,context,2026-03,,月,month,月度表记载可用组织指定代码库统一配置评审规则。原文仅有月份。,智能评审支持设置全局代码评审规则,ali
+BUY21,阿里云云效 Codeup AI 评审,context,2026-08-01,,日,policy,云效 AI 助手和站点架构调整生效，公告区分以往代码评审免费能力与新计费规则；为可用性/商业政策变化。,2026,A21A
+BUY21,阿里云云效 Codeup AI 评审,context,2026-09,,月,month,月度表记载新增采纳/误报反馈、评论中唤起评审和管理员选择模型。原文仅有月份。,代码行内评论增加采纳,ali
+BUY22,SonarQube Server,direct,,2025.5,版本,enhancement,部分升级引入的问题可放入 sandbox，暂不影响质量门禁。,sandbox,A22
+BUY22,SonarQube Server,direct,,2025.6,版本,enhancement,新增质量门禁失败和由失败转为通过的 Slack 即时通知。,Slack integration,A22
+BUY23,Graphite Merge Queue,index-only,2023-05-30,标题 5/31/2023,日,enhancement,付费 beta 的队列新增 fast-forward merge 选项。按正文署名日期记录，标题晚一天；源站当前 404，仅保留检索索引内厂商正文。,paid beta,graphite-index1
+BUY23,Graphite Merge Queue,index-only,2024-04-09,标题 4/10/2024,日,enhancement,企业版队列开放给 bot 和非 Graphite 用户。按正文署名日期记录，标题晚一天，仅索引内厂商正文可读。,Bots and non-Graphite users,graphite-index2
+BUY24,Mergify,direct,2025-11-12,,日,enhancement,后续包含某 PR 的批次通过全部检查和条件时，可选择跳过中间结果并提前合入。,skip_intermediate,mergify
+BUY24,Mergify,direct,2026-11-12,,日,enhancement,允许在检查/批准尚未就绪时登记排队意向，更新提交会取消该请求。,queue,A24
+BUY25,Argo Rollouts,direct,2026-08-27,v1.10.0,日,修复·正式发布,中止灰度且处于缩容等待期时，若 HPA 等更改 spec.replicas，新的 ReplicaSet 的 desired-replicas 注解可过期。控制器同步注解、保持实际规模，使后续 reconcile 能继续处理路由和服务。,v1.10.0,argo-rollouts-1 argo-abort
+BUY25,Argo Rollouts,direct,2026-10-12,v1.8.5,日,修复·回补,同一 dashboard 默认值回补 1.8 维护支线。,v1.8.5,argo-rollouts-1
+BUY25,Argo Rollouts,direct,2026-10-12,v1.9.2,日,修复·回补,同一 dashboard 默认值回补 1.9 维护支线。,v1.9.2,argo-rollouts-1
+BUY25,Argo Rollouts,direct,2026-10-12,v1.10.1,日,修复·默认改变,dashboard 的 CLI 增加 address，默认监听回环地址。自定义 Service 暴露需显式指定监听地址；同时官方部署清单也在 PR 中更新。,v1.10.1,argo-rollouts-1 pr-5098 argo-v1.10.0 argo-v1.10.1
+BUY26,LaunchDarkly Guarded Rollouts,direct,2025-05-14,,日,enhancement,增加开跑前验证 flag、metric 及自定义持续时间的能力。,Guarded,A26A
+BUY26,LaunchDarkly Guarded Rollouts,direct,2025-07-24,,日,introduction,Guarded Rollouts 扩展至 AI Configs。,"July 24, 2025",ld
+BUY27,Atlantis,direct,2026-06-10,v0.44.0,日,窗口首次发布,提供 sticky policy approvals。启用后按 policy_item_regex 提取策略输出条目并比较哈希；重新 plan 若无新增条目，允许延续原审批。,v0.44.0,atlantis-1 atlantis-policy
+BUY27,Atlantis,direct,2026-06-26,v0.44.1,日,修复·默认改变,读取全局 apply 锁失败时不再按允许命令标记继续。新路径标记错误、更新失败状态、发 PR 评论并返回。,v0.44.1,atlantis-1 pr-6533 atlantis-v0.44.0 atlantis-v0.44.1
+BUY27,Atlantis,direct,2026-06-28,v0.45.0,日,首次公开·alpha,发布漂移检测、状态、修复和历史 API；检测和有实际更改的修复分别启用。,v0.45.0,atlantis-1
+BUY27,Atlantis,direct,2026-06-30,v0.46.0,日,增强与修复,apply 加强对过时 head/base 的校验；清理 plan 时保留 on_apply 锁。,v0.46.0,atlantis-1
+BUY27,Atlantis,direct,2026-09-22,v0.48.0,日,增强·正式发布,加载待 apply 的 plan 后做哈希，先持久化 plan 结果再报告成功，使用校验过的 managed-plan 快照。,v0.48.0,atlantis-1
+BUY28,Spacelift,context,,Self-hosted v5.1.1,版本,version-context,版本化指南列出旧 initialization/task policies 向 approval policy 的迁移方式。仅确认该版本文档范围，无充分变化时点。,Migrating to Approval Policies,A28
+BUY28,Spacelift,direct,2026-05-26,,日,deprecation,控制台为 stack access 和 task policies 增加弃用提示。,deprecation banners,spacelift
+BUY28,Spacelift,direct,2026-09-01,,日,default,proposed/test runs 在 ready 两天后取消；持锁的 tracked、task、destroy runs 在 ready 七天后取消。,seven days in the ready state,spacelift
+BUY29,Renovate,direct,2026-07-29,44.0.0,日,enhancement,pep621 manager 在存在 pixi.lock 时同步更新；该 release 特别说明 major bump 标记失误。,pixi.lock,renovate44
+BUY29,Renovate,direct,2026-11-19,44.253.4,日,fix,修复 GitLab 对新推送提交重新启用 automerge 的行为。,re-enable automerge,D06-3
+BUY30,Snyk Open Source,direct,2025-07-24,,日,GA,Snyk Generated Pull Requests 报表 GA，汇总手动与自动修复 PR 的跨项目状态。,"July 24, 2025",snyk
+BUY30,Snyk Open Source,direct,2026-02-04,,日,preview,Breakability Analysis 以 Early Access 为升级 PR 提供兼容性风险信息。,Breakability,A30
+BUY31,incident.io Investigations,direct,2025-07-02,,日,introduction,厂商发布 AI SRE / Investigations，汇集事故上下文给出调查发现。,"July 2, 2025",P03
+BUY31,incident.io Investigations,direct,2026-01-15,,日,enhancement,聊天调查更注重人工已确认的发现，提供定位到具体 PR 的内容。,January,P04
+BUY32,Rootly AI SRE,direct,2026-06-04,,日,introduction,Slack 中的 Rootly Agent 可读取事故数据、频道讨论与通话记录，并回答追问。,"June 4, 2026",rootly
+BUY32,Rootly AI SRE,direct,2026-11-12,,日,introduction,Teams 加入调查、追问、值班呼叫及接班摘要入口。,Microsoft Teams,A32
+BUY33,Datadog Bits Investigation,direct,2025-06-10,Bits AI SRE,日,preview,Limited Availability 阶段使用遥测和服务上下文做初步告警调查。,Limited Availability,dd
+BUY33,Datadog Bits Investigation,direct,2025-12-02,Bits AI SRE,日,GA,Datadog 宣布该 SRE 调查代理一般可用。,Generally Available,A33
+BUY34,Sentry Seer,direct,2025-06-17,Seer,日,GA,Seer AI Debugger 一般可用，定位和修复应用问题。,"June 17, 2025",sentry
+BUY34,Sentry Seer,direct,2026-04-28,Seer Agent,日,preview,新 Seer Agent 问答/调试形态进入 open beta；与已有 debugger 的 GA 范围不同。,open beta,A34
+BUY35,CircleCI Chunk,direct,2025-11-06,,日,enhancement,Ad-Hoc Tasks 改为向分支推入改动并触发用户 CI，失败后会尝试修复，属该任务子类。,"Nov 06, 2025",circle
+BUY35,CircleCI Chunk,direct,2026-02-27,,日,enhancement,从 pipeline/job 页一键传递失败作业及上下文给 Chunk。,Feb,P02

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:https://github.com/openfga/openfga/releases</id>
+  <link type="text/html" rel="alternate" href="https://github.com/openfga/openfga/releases"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/openfga/openfga/releases.atom"/>
+  <title>Release notes from openfga</title>
+  <updated>2026-10-28T12:53:36Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.22.1</id>
+    <updated>2026-10-28T13:14:33Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.22.1"/>
+    <title>v1.22.1</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;fix(graph): stop selecting on closed producer channels in the fast paths by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/tryoasnafi/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/tryoasnafi&quot;&gt;@tryoasnafi&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5411398572&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3300&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3300/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3300&quot;&gt;#3300&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;fix(listobjects): surface condition evaluation errors from the unary pipeline by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/Siddhant-K-code/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/Siddhant-K-code&quot;&gt;@Siddhant-K-code&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5826122942&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3338&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3338/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3338&quot;&gt;#3338&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;chore: fix errcheck lint issues by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/saad-h1/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/saad-h1&quot;&gt;@saad-h1&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5903246148&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3349&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3349/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3349&quot;&gt;#3349&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;fix(logging): keep raw req/resp as JSON by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/adriantam/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/adriantam&quot;&gt;@adriantam&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5947180500&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3354&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3354/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3354&quot;&gt;#3354&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;chore: upgrade Go toolchain to 1.27.3 and golangci-lint to 2.15.0 by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/curfew-marathon/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/curfew-marathon&quot;&gt;@curfew-marathon&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6016009843&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3359&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3359/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3359&quot;&gt;#3359&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;release: update changelog for release &lt;code&gt;v1.22.1&lt;/code&gt; by &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/poovamraj/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/poovamraj&quot;&gt;@poovamraj&lt;/a&gt; in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6062796487&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3367&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3367/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3367&quot;&gt;#3367&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New Contributors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/tryoasnafi/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/tryoasnafi&quot;&gt;@tryoasnafi&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5411398572&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3300&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3300/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3300&quot;&gt;#3300&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.22.0...v1.22.1&quot;&gt;&lt;tt&gt;v1.22.0...v1.22.1&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.22.0</id>
+    <updated>2026-10-06T20:04:31Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.22.0"/>
+    <title>v1.22.0</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added read-replica (primary/secondary) support to the MySQL datastore backend, matching the existing PostgreSQL behaviour. Configure a secondary connection via &lt;code&gt;--datastore-secondary-uri&lt;/code&gt; (or &lt;code&gt;OPENFGA_DATASTORE_SECONDARY_URI&lt;/code&gt;); all reads except those requesting &lt;code&gt;HIGHER_CONSISTENCY&lt;/code&gt; are routed to the replica while all writes remain on the primary. &lt;code&gt;GetStore&lt;/code&gt;, &lt;code&gt;ListStores&lt;/code&gt;, &lt;code&gt;ReadAssertions&lt;/code&gt;, &lt;code&gt;ReadAuthorizationModel&lt;/code&gt;, &lt;code&gt;ReadAuthorizationModels&lt;/code&gt;, &lt;code&gt;FindLatestAuthorizationModel&lt;/code&gt;, and &lt;code&gt;ReadChanges&lt;/code&gt; always hit the replica when configured regardless of requested consistency — callers should be aware of read-after-write risk on a lagging replica. See &lt;code&gt;pkg/storage/mysql/mysql.go&lt;/code&gt;. &lt;strong&gt;Breaking:&lt;/strong&gt; &lt;code&gt;mysql.NewWithDB&lt;/code&gt; gained a required &lt;code&gt;secondaryDB *sql.DB&lt;/code&gt; parameter (pass &lt;code&gt;nil&lt;/code&gt; if no replica is configured); &lt;code&gt;sqlcommon.ReadAuthorizationModel&lt;/code&gt; and &lt;code&gt;sqlcommon.FindLatestAuthorizationModel&lt;/code&gt; were removed and moved to per-backend implementations. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3290&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3290/hovercard&quot;&gt;#3290&lt;/a&gt; Thanks &lt;a href=&quot;https://github.com/chiragsoni-eternal&quot;&gt;@chiragsoni-eternal&lt;/a&gt; for the contribution!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Changed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Various dependency updates. Minimum go version updated to &lt;code&gt;1.26.0&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3329&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3329/hovercard&quot;&gt;#3329&lt;/a&gt;, &lt;a href=&quot;https://github.com/openfga/openfga/pull/3328&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3328/hovercard&quot;&gt;#3328&lt;/a&gt;, &lt;a href=&quot;https://github.com/openfga/openfga/pull/3324&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3324/hovercard&quot;&gt;#3324&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ReadUserTuple&lt;/code&gt; now returns the tuple&#39;s timestamp for the Postgres, MySQL, and SQLite datastores; it previously returned a zero timestamp because the query did not select &lt;code&gt;inserted_at&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3194&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3194/hovercard&quot;&gt;#3194&lt;/a&gt; Thanks &lt;a href=&quot;https://github.com/nikolauspschuetz&quot;&gt;@nikolauspschuetz&lt;/a&gt; for the contribution!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Updated google.golang.org/grpc to v1.83.2 to resolve &lt;a href=&quot;https://pkg.go.dev/vuln/GO-2026-6443&quot; rel=&quot;nofollow&quot;&gt;GO-2026-6443&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3317&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3317/hovercard&quot;&gt;#3317&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New Contributors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/chiragsoni-eternal/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/chiragsoni-eternal&quot;&gt;@chiragsoni-eternal&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5374383209&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3290&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3290/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3290&quot;&gt;#3290&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/nikolauspschuetz/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/nikolauspschuetz&quot;&gt;@nikolauspschuetz&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4834823026&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3194&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3194/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3194&quot;&gt;#3194&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.21.0...v1.22.0&quot;&gt;&lt;tt&gt;v1.21.0...v1.22.0&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.21.0</id>
+    <updated>2026-09-28T20:43:40Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.21.0"/>
+    <title>v1.21.0</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added &quot;Dynamic Conditions&quot; as a new experimental feature. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3313&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3313/hovercard&quot;&gt;#3313&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.20.0...v1.21.0&quot;&gt;&lt;tt&gt;v1.20.0...v1.21.0&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.20.0</id>
+    <updated>2026-09-28T20:43:03Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.20.0"/>
+    <title>v1.20.0</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;WithServiceName&lt;/code&gt; server option to allow embedders to override the &lt;code&gt;serviceName&lt;/code&gt; field used for the &lt;code&gt;grpc_service&lt;/code&gt; label on OpenFGA&#39;s package-level Prometheus metrics and &lt;code&gt;telemetry.RPCInfo.Service&lt;/code&gt;. This enables multiple &lt;code&gt;Server&lt;/code&gt; instances in the same process to emit separate metric series. Note it does not rename the standard gRPC server metrics (e.g. &lt;code&gt;grpc_server_handled_total&lt;/code&gt;), whose labels are derived from the registered gRPC service. Use stable, low-cardinality names, as the value becomes a metric label. Defaults to &lt;code&gt;openfgav1.OpenFGAService_ServiceDesc.ServiceName&lt;/code&gt; when omitted (backward compatible). &lt;a href=&quot;https://github.com/openfga/openfga/pull/3265&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3265/hovercard&quot;&gt;#3265&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed a deadlock in ListUsers that caused a timeout with partial results when the number of union/intersection operands exceeded &lt;code&gt;OPENFGA_RESOLVE_NODE_BREADTH_LIMIT&lt;/code&gt; and the operands each resolved to more than one user. Thank you to &lt;a href=&quot;https://github.com/fabianluque&quot;&gt;@fabianluque&lt;/a&gt; for the discovery and detailed report! &lt;a href=&quot;https://github.com/openfga/openfga/pull/3284&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3284/hovercard&quot;&gt;#3284&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Upgraded go toolchain and images to use go1.26.8 to fix &lt;a href=&quot;https://pkg.go.dev/vuln/GO-2026-5026&quot; rel=&quot;nofollow&quot;&gt;CVE-2026-39821&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3287&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3287/hovercard&quot;&gt;#3287&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Rebuilt the embedded &lt;code&gt;grpc-health-probe&lt;/code&gt; (bumped to &lt;code&gt;v0.4.57&lt;/code&gt;, built with Go 1.26.8) to match the server toolchain and pick up &lt;code&gt;google.golang.org/grpc&lt;/code&gt; v1.83.2, which fixes &lt;a href=&quot;https://github.com/advisories/GHSA-vp52-pcj8-j9qc&quot;&gt;GHSA-vp52-pcj8-j9qc&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3289&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3289/hovercard&quot;&gt;#3289&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fixed &lt;a href=&quot;https://github.com/openfga/openfga/security/advisories/GHSA-h7w8-xr72-cv4r&quot;&gt;GHSA-h7w8-xr72-cv4r&lt;/a&gt;, where ListUsers could return a user that should have been excluded when a relation contains nested exclusion on a type-bound public wildcard. Thank you to &lt;a href=&quot;https://github.com/euriconicacio&quot;&gt;@euriconicacio&lt;/a&gt; for the discovery and responsible disclosure.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.19.0...v1.20.0&quot;&gt;&lt;tt&gt;v1.19.0...v1.20.0&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.19.0</id>
+    <updated>2026-09-08T21:12:49Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.19.0"/>
+    <title>v1.19.0</title>
+    <content type="html">&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Adds configurable pipeline optimization for weight-one difference subtract edges with high cardinality on wildcard leaves. For now, this configuration is internal only. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3267&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3267/hovercard&quot;&gt;#3267&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed validation-ordering defect where malformed &lt;code&gt;RelationReference&lt;/code&gt; (relation_or_wildcard oneof set but yielding neither wildcard nor non-empty relation) panicked &lt;code&gt;WriteAuthorizationModel&lt;/code&gt;. &lt;code&gt;NewAndValidate&lt;/code&gt; now runs all validation before graph construction. Also closed gap in &lt;code&gt;validateTypeRestrictions&lt;/code&gt; that silently accepted a positional variant, causing model-wide nil weighted graph and performance degradation.&lt;br&gt;
+&lt;strong&gt;Breaking:&lt;/strong&gt; authorization models with this defect that were already persisted will now fail to resolve on a cache miss with &lt;code&gt;ErrInvalidModel&lt;/code&gt;, rather than silently running in a degraded state. See &lt;code&gt;pkg/typesystem/typesystem.go&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3262&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3262/hovercard&quot;&gt;#3262&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Scope context-cancelation stripping to query execution only. No longer can deadlock on saturated connection pool. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3255&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3255/hovercard&quot;&gt;#3255&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Updated v2 resolution diagnostic logging in &lt;code&gt;Check&lt;/code&gt; and &lt;code&gt;ListUsers&lt;/code&gt; to gate on InfoLevel log level. Removed diagnostic logging from &lt;code&gt;Expand&lt;/code&gt; whose resolution will not change. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3254&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3254/hovercard&quot;&gt;#3254&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed &lt;a href=&quot;https://github.com/openfga/openfga/security/advisories/GHSA-5278-rrxc-mgf7&quot;&gt;GHSA-5278-rrxc-mgf7&lt;/a&gt;, where StreamedListObjects could return a result that should have been excluded during an error. Thank you to &lt;a href=&quot;https://github.com/yxshwanth&quot;&gt;@yxshwanth&lt;/a&gt; for the detailed report and fix.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Dependencies&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Bumped &lt;code&gt;grpc-ecosystem/grpc-health-probe&lt;/code&gt; from &lt;code&gt;v0.4.55&lt;/code&gt; to &lt;code&gt;v0.4.56&lt;/code&gt;, plus several grouped dependency updates. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3268&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3268/hovercard&quot;&gt;#3268&lt;/a&gt; and others, via &lt;a href=&quot;https://github.com/dependabot&quot;&gt;@dependabot&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog:&lt;/strong&gt; &lt;a href=&quot;https://github.com/openfga/openfga/compare/v1.18.3...v1.19.0&quot;&gt;v1.18.3...v1.19.0&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.18.3</id>
+    <updated>2026-08-05T18:47:58Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.18.3"/>
+    <title>v1.18.3</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;h2&gt;Fixed&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; intermittently returning &lt;code&gt;false&lt;/code&gt; when evaluating relations that cross two or more distinct recursive TTUs which share the same tupleset relation. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3244&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3244/hovercard&quot;&gt;#3244&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.18.2...v1.18.3&quot;&gt;&lt;tt&gt;v1.18.2...v1.18.3&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.18.2</id>
+    <updated>2026-08-05T18:30:38Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.18.2"/>
+    <title>v1.18.2</title>
+    <content type="html">&lt;h2&gt;What&#39;s Changed&lt;/h2&gt;
+&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Extended experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; diagnostic logging to cover the &lt;code&gt;wildcard_with_exclusion&lt;/code&gt; and &lt;code&gt;userset_with_exclusion&lt;/code&gt; shapes: the log now fires when v2 Check rejects one of these shapes and Check falls back to v1, and when v2 Check is skipped entirely because the weighted graph fails to build. These logs surface authorization models that may be affected by a future v1 deprecation, and no operator action is required. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3204&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3204/hovercard&quot;&gt;#3204&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Changed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Matched experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; cache metrics with original Check cache metrics: iterator cache metrics renamed to &lt;code&gt;tuples_cache_total_count&lt;/code&gt;, &lt;code&gt;tuples_cache_hit_count&lt;/code&gt;, &lt;code&gt;tuples_cache_discard_count&lt;/code&gt;, &lt;code&gt;tuples_cache_size&lt;/code&gt;; query cache metrics added as &lt;code&gt;check_cache_total_count&lt;/code&gt;, &lt;code&gt;check_cache_hit_count&lt;/code&gt;, &lt;code&gt;check_cache_invalid_hit_count&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3184&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3184/hovercard&quot;&gt;#3184&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; incorrectly returning &lt;code&gt;false&lt;/code&gt; for models with two or more independently-recursive relations where satisfying the outer recursive relation requires resolving through an unrelated, nested recursive relation (e.g. &lt;code&gt;descendant_principal: member or descendant_principal from child_group&lt;/code&gt; where &lt;code&gt;member&lt;/code&gt; transitively reaches a separately-recursive &lt;code&gt;admin: direct_admin or admin from parent_group&lt;/code&gt;). &lt;code&gt;FlattenNode&lt;/code&gt; now only excludes edges belonging to the specific recursive relation currently being unwound, instead of excluding every recursive edge in the graph. Thanks to &lt;a href=&quot;https://github.com/yxshwanth&quot;&gt;@yxshwanth&lt;/a&gt; for the contribution! &lt;a href=&quot;https://github.com/openfga/openfga/issues/3195&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/openfga/openfga/issues/3195/hovercard&quot;&gt;#3195&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Tuple condition validation now checks that a condition is bound to the specific type-restriction facet (concrete user, typed wildcard, or userset) that matches the tuple&#39;s user, not just the user type and condition name. Previously a relation such as &lt;code&gt;define viewer: [user, user:* with cond]&lt;/code&gt; would accept a tuple like &lt;code&gt;document:1#viewer@user:alice&lt;/code&gt; carrying &lt;code&gt;cond&lt;/code&gt;, even though &lt;code&gt;cond&lt;/code&gt; is only defined on the &lt;code&gt;user:*&lt;/code&gt; facet. Because this validation also runs when reading tuples during query resolution, such tuples are now consistently rejected across Check and ListObjects. See &lt;code&gt;internal/validation/validation.go&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3218&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3218/hovercard&quot;&gt;#3218&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Converted the FlattenNode function of the internal/modelgraph package from a recursive algorithm to an iterative one. This more robustly handles deep relationship nesting. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3224&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3224/hovercard&quot;&gt;#3224&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fixed experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; returning incorrect results for multi-branch recursion on the same relation; e.g., &lt;code&gt;member: [user] or member from parent or member from child&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3239&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3239/hovercard&quot;&gt;#3239&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Update toolchain Go version to 1.26.5 and rebuild the embedded &lt;code&gt;grpc-health-probe&lt;/code&gt; (bumped to &lt;code&gt;v0.4.53&lt;/code&gt;, built with Go 1.26.5) so released images no longer ship the Go standard library vulnerabilities documented in the &lt;a href=&quot;https://go.dev/doc/devel/release#go1.26.5&quot; rel=&quot;nofollow&quot;&gt;Go 1.26.5 release notes&lt;/a&gt;, including &lt;a title=&quot;CVE-2026-39822&quot; data-hovercard-type=&quot;advisory&quot; data-hovercard-url=&quot;/advisories/GHSA-xcgv-8mv7-v8c7/hovercard&quot; href=&quot;https://github.com/advisories/GHSA-xcgv-8mv7-v8c7&quot;&gt;CVE-2026-39822&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3219&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3219/hovercard&quot;&gt;#3219&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New Contributors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/yxshwanth/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/yxshwanth&quot;&gt;@yxshwanth&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4976937427&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3225&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3225/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3225&quot;&gt;#3225&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.18.1...v1.18.2&quot;&gt;&lt;tt&gt;v1.18.1...v1.18.2&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.18.1</id>
+    <updated>2026-06-29T18:59:46Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.18.1"/>
+    <title>v1.18.1</title>
+    <content type="html">&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added diagnostic logging in experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; when v2 Check resolution might produce a different result than v1 for the same query. These logs surface authorization models that may be affected by a future v1 deprecation, and no operator action is required. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3149&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3149/hovercard&quot;&gt;#3149&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Added diagnostic logging in &lt;code&gt;Expand&lt;/code&gt; and &lt;code&gt;ListUsers&lt;/code&gt; when v2 resolution might produce a different result than v1 for the same query. Note that v2 has not been created yet for these endpoints, these logs purely add visibility for a future v1 deprecation, and no operator action is required. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3182&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3182/hovercard&quot;&gt;#3182&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Changed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Extended experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; to &lt;code&gt;BatchCheck&lt;/code&gt;: when the flag is enabled, each item in the batch is evaluated using the weighted graph algorithm, with per-item fallback to the standard algorithm on non-terminal errors. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3154&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3154/hovercard&quot;&gt;#3154&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use &lt;code&gt;proto.MarshalOptions{Deterministic: true}&lt;/code&gt; when serializing authorization models to the &lt;code&gt;serialized_protobuf&lt;/code&gt; column, ensuring consistent stored bytes within a given OpenFGA version for models with map-keyed type definitions. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3171&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3171/hovercard&quot;&gt;#3171&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;Thank You &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/danielwegener/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/danielwegener&quot;&gt;@danielwegener&lt;/a&gt; for the contribution!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;in_cidr&lt;/code&gt; condition now treats IPv4-mapped IPv6 addresses as their IPv4 equivalents (RFC 4291 §2.5.5.2), so &lt;code&gt;::ffff:192.168.1.1&lt;/code&gt; matches an IPv4 CIDR such as &lt;code&gt;192.168.1.0/24&lt;/code&gt;. See &lt;code&gt;internal/condition/types/ipaddress.go&lt;/code&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3181&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3181/hovercard&quot;&gt;#3181&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;Thank you &lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/kanywst/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/kanywst&quot;&gt;@kanywst&lt;/a&gt; for the contribution!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New Contributors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/SoulPancake/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/SoulPancake&quot;&gt;@SoulPancake&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4701463101&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3178&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3178/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3178&quot;&gt;#3178&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/danielwegener/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/danielwegener&quot;&gt;@danielwegener&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4639274321&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3171&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3171/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3171&quot;&gt;#3171&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.18.0...v1.18.1&quot;&gt;&lt;tt&gt;v1.18.0...v1.18.1&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.18.0</id>
+    <updated>2026-06-18T19:11:49Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.18.0"/>
+    <title>v1.18.0</title>
+    <content type="html">&lt;h3&gt;🚨 Operational warning for MySQL users 🚨&lt;/h3&gt;
+&lt;p&gt;This release contains a migration for MySQL which acquires a shared lock on the tuple and changelog tables. This is a potentially-lengthy migration, during which you will not be able to perform &lt;code&gt;Write&lt;/code&gt; operations.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What you should do:&lt;/strong&gt; Do not execute auto-migrations on startup for production instances with large datasets. Please refer to &lt;a href=&quot;https://github.com/openfga/openfga/blob/main/assets/migrations/mysql/collation_migrations.md&quot;&gt;this migration guide&lt;/a&gt; before applying this migration.&lt;/p&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;code&gt;crypto/subtle.ConstantTimeCompare&lt;/code&gt; for preshared key authentication to close a timing side-channel where the prior map lookup could reveal information about valid key bytes. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3168&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3168/hovercard&quot;&gt;#3168&lt;/a&gt; Thanks to &lt;a href=&quot;https://github.com/geo-chen&quot;&gt;@geo-chen&lt;/a&gt; for reporting this.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed identifier comparison on the MySQL backend to be case-sensitive, matching Postgres and SQLite. Ships schema migrations 008, which require a maintenance window — see the &lt;a href=&quot;https://github.com/openfga/openfga/blob/main/assets/migrations/mysql/collation_migrations.md&quot;&gt;operator runbook&lt;/a&gt; before upgrading. Resolves &lt;a href=&quot;https://github.com/openfga/openfga/security/advisories/GHSA-cf98-j28v-49v6&quot;&gt;CVE-2026-55170&lt;/a&gt;. Resolves &lt;a href=&quot;https://github.com/openfga/openfga/security/advisories/GHSA-hcxc-wf8j-23hv&quot;&gt;CVE-2026-55689&lt;/a&gt;. Thank you &lt;a href=&quot;https://github.com/sahajamoth&quot;&gt;@sahajamoth&lt;/a&gt; for bringing this to our attention.&lt;/li&gt;
+&lt;li&gt;Enforce that &lt;code&gt;authn.oidc.issuer&lt;/code&gt; and &lt;code&gt;authn.oidc.audience&lt;/code&gt; are both set when &lt;code&gt;authn.method&lt;/code&gt; is &lt;code&gt;oidc&lt;/code&gt;. Previously, omitting &lt;code&gt;--authn-oidc-audience&lt;/code&gt; caused the JWT &lt;code&gt;aud&lt;/code&gt; claim to be silently skipped during token validation, allowing any validly-signed token from the trusted issuer to be accepted regardless of its intended audience. OpenFGA will now refuse to start if either value is missing. Thank you &lt;a href=&quot;https://github.com/0xVijay&quot;&gt;@0xVijay&lt;/a&gt; for bringing this to our attention.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.17.1...v1.18.0&quot;&gt;&lt;tt&gt;v1.17.1...v1.18.0&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/501372599/v1.17.1</id>
+    <updated>2026-06-08T15:19:46Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/openfga/openfga/releases/tag/v1.17.1"/>
+    <title>v1.17.1</title>
+    <content type="html">&lt;h3&gt;Changed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Update PR workflow benchmark comparison to be less flakey. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3153&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3153/hovercard&quot;&gt;#3153&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed experimental &lt;code&gt;weighted_graph_check&lt;/code&gt; falling back to the standard algorithm on errors that v1 would reject identically or that should not be retried. &lt;code&gt;ErrTransactionThrottled&lt;/code&gt;, &lt;code&gt;check.ErrValidation&lt;/code&gt;, &lt;code&gt;check.ErrInvalidUser&lt;/code&gt;, and &lt;code&gt;*tuple.InvalidTupleError&lt;/code&gt; (from contextual-tuple validation) are now returned directly instead of triggering a v1 retry. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3150&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3150/hovercard&quot;&gt;#3150&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fixed a race where an iterator cache entry flushed concurrently with a write could survive cache controller invalidation checks, causing stale tuples to be returned to subsequent requests. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3155&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3155/hovercard&quot;&gt;#3155&lt;/a&gt; Thanks to &lt;a href=&quot;https://github.com/0xmrma&quot;&gt;@0xmrma&lt;/a&gt; for reporting this bug.&lt;/li&gt;
+&lt;li&gt;Fixed &lt;code&gt;ReadChanges&lt;/code&gt; pagination erroring past the first page when an object type name contains &lt;code&gt;|&lt;/code&gt;, and tightened &lt;code&gt;Deserialize&lt;/code&gt; to reject tokens with an empty ULID segment rather than silently restarting pagination from the beginning. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3152&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3152/hovercard&quot;&gt;#3152&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Security&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Update toolchain Go version to 1.26.4 to address the Go standard library vulnerabilities documented in the &lt;a href=&quot;https://go.dev/doc/devel/release#go1.26.4&quot; rel=&quot;nofollow&quot;&gt;Go 1.26.4 release notes&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3159&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3159/hovercard&quot;&gt;#3159&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Update grpc-health-probe to &lt;code&gt;v0.4.52&lt;/code&gt;, rebuilt with Go 1.26.4, so released images no longer ship the Go standard library vulnerabilities fixed in the &lt;a href=&quot;https://go.dev/doc/devel/release#go1.26.4&quot; rel=&quot;nofollow&quot;&gt;Go 1.26.4 release notes&lt;/a&gt;. &lt;a href=&quot;https://github.com/openfga/openfga/pull/3164&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3164/hovercard&quot;&gt;#3164&lt;/a&gt; Thanks &lt;a href=&quot;https://github.com/Keralin&quot;&gt;@Keralin&lt;/a&gt;!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New Contributors&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;user-mention notranslate&quot; data-hovercard-type=&quot;user&quot; data-hovercard-url=&quot;/users/Keralin/hovercard&quot; data-octo-click=&quot;hovercard-link-click&quot; data-octo-dimensions=&quot;link_type:self&quot; href=&quot;https://github.com/Keralin&quot;&gt;@Keralin&lt;/a&gt; made their first contribution in &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4596007183&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/openfga/openfga/issues/3164&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/openfga/openfga/pull/3164/hovercard&quot; href=&quot;https://github.com/openfga/openfga/pull/3164&quot;&gt;#3164&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/openfga/openfga/compare/v1.17.0...v1.17.1&quot;&gt;&lt;tt&gt;v1.17.0...v1.17.1&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>openfga-bot</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/274086774?s=60&amp;v=4"/>
+  </entry>
+</feed>

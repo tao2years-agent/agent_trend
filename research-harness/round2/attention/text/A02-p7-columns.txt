@@ -1,0 +1,147 @@
+Tasks
+Each programming task was to add a small feature to each
+game:
+1. Tetris: Change the game so that hitting the space key dur-
+ing game play causes the current figure to fall immediately
+as far down as it can. This feature spares the player from
+having to hit the down arrow key many times in succes-
+sion. The figure’s fast fall does not need to be animated.
+The figure can simply disappear from its current position
+and reappear at the bottom of the grid.
+2. Pacman: In the existing game, if a power pellet is col-
+lected, the ghosts turn blue, slow down, and can be eaten
+for points. Change the game so that if a power pellet is
+collected, the ghosts instead freeze in place until the timer
+runs out.
+3. Space Invaders: In the existing implementation, when the
+player fires a shot, it either hits an enemy or reaches the
+top of the screen. Change the game so that whenever the
+player fires a shot that misses an enemy, a new enemy is
+created. The new enemy is placed in the lowest row of an
+existing enemy, filling in an empty position if possible. If
+all enemies positions are filled, no new enemy is created.
+We used separate games, with separate code bases, for the
+tasks to keep the subject from polluting one task with the
+changes from another. For example, if the subject changed
+the Tetris code to the point where it would no longer com-
+pile, this did not prevent the subject from making progress
+on the next two tasks. The subject would have to fix the bro-
+ken compilation after resuming the Tetris task. Using differ-
+ent code bases for all three tasks also ensured that there was
+no learning effect across tasks. Finally, the use of three un-
+familiar code bases served to overload the subject’s memory,
+maximizing the detrimental effect of interruption.
+Dependent Measures
+During the study, an error in the experiment tools prevented
+one subject from completing the tasks. In total, data from
+fourteen subjects was collected.
+Task completion
+Subjects completed tasks more frequently when one of the
+cues was available when resuming a task with a weak signif-
+icant difference (chi-square, p <0.1).
+Task Completion Rate
+Task 1
+Task 2
+Task 3
+Total
+DOI treeview
+3
+2
+2
+7
+content timeline
+1
+4
+2
+7
+notes-only
+1
+2
+1
+4
+Total
+5
+8
+5
+Table 3. When developers had any form of activity history available,
+they were about twice as likely to complete a task than otherwise.
+Breaking the data down by subject, 5 people did not com-
+plete any tasks, 2 completed all tasks, and 7 completed some
+tasks. Of the 7 people who completed some tasks, 5 of the
+incomplete tasks were in the notes-only condition, 2 were in
+CHI 2010: Multitasking
+9
+---
+the DOI treeview condition, and 2 where in the content time-
+line condition. (The low task completion rates in this study
+are consistent with a previous study using the Tetris task on
+the same code base [7, 6].)
+Error Rates
+To better understand why some subjects failed to complete
+the tasks in the allocated time, we categorize the type of error
+that lead to the failure:
+1. Problem solving: The subject had all the pieces, he or she
+were stuck on the problem part.
+2. Domain knowledge: The did not understand WinForms,
+event handler syntax, etc.
+3. Relocation: The subject had difficulty relocating relevant
+parts of the code.
+4. Programming: The subject had misunderstandings about
+the program or the changes he or she made.
+Note that we kept the 20-minute deadline ”soft” to avoid fail-
+ures due to arbitrary cut-offs. The subjects who did not suc-
+ceed in a task were not close, even after 25 - 30 minutes. The
+data in Table 4 categorizes the failures of the seven subjects
+completing at least one task.
+Problem Solving
+Relocation
+Errors
+Total
+DOI treeview
+1
+0
+1
+2
+content timeline
+2
+0
+0
+2
+notes-only
+1
+2
+2
+5
+Total
+4
+2
+3
+Table 4. When developers only had notes, they were more likely to
+make errors or to take longer to relocate necessary task context.
+As one example of a programming error, one subject was in-
+terrupted in the middle of hooking the space key event for
+the Tetris task. When the subject later resumed the task, he
+completed defining the space key event, but forgot to con-
+nect the event with the handler. The subject moved on to
+the next part of the task, making the tetris block fall down,
+and quickly implemented the functionality much faster than
+other subjects. However, when the subject tested the solu-
+tion, the missing association prevented the new feature from
+working. The subject spent the remaining 10 minutes fid-
+dling with the logic of the code, without realizing that the
+subject had simply forgotten to associate the handler with the
+space key event. This was the only task the subject failed.
+As an example of a relocation error, a subject was interrupted
+in the Space Invaders task in the notes-only condition. The
+subject located the code for resetting the bullet. Next, the
+subject needed to find out how to create a new invader – but
+was interrupted during the search. The subject took notes for
+the search, but did not jot down the code location for reset-
+ting the bullet. After resumption, the subject found how to
+create an invader,and now needed to return to the previously
+found code for resetting the bullet. Unfortunately without
+sufficient notes or cues to rely on, the subject took 5 minutes
+to relocate this code. The subject was frustrated that they
+knew what code they wanted, but could not find its location:
+April 10–15, 2010, Atlanta, GA, USA
+9

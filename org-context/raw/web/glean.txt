@@ -1,0 +1,269 @@
+检索参数 {"search_query":[{"q":"site:docs.glean.com permissions indexing stale permissions identity source search results"}],"response_length":"medium"}
+Access verification (https://docs.glean.com/administration/search/access-verification)
+citeturn33search0 [wordlim: 200] Crawled: today; If you can access the document, search by title or URL and click Add ID next to the correct result. ... If the document URL or ID returns no results, possible causes include: ... To resolve this, confirm that the document is accessible in the source application, then check your connector's crawl schedule on the Connector refresh rates page. ... If the connector appears healthy but the document is still stale, contact Glean Support to request a targeted recrawl. ... Documents behind access controls can also take longer when Glean needs to resolve or apply permission data for the document. Some connectors attach permissions during the regular content crawl, while others depend on separate group or identity updates.
+  3. If you can access the document, search by title or URL and click Add ID next to the correct result. If you can't access it, ask a teammate with access to find the document ID.
+  4. Click Check document.
+
+## Troubleshoot missing or stale documents​
+
+### Document not found in lookup​
+
+If the document URL or ID returns no results, possible causes include:
+
+  * The document was recently created or approved in the source application and the next crawl cycle has not run yet.
+  * The connector's permissions prevent Glean from accessing the document.
+  * The URL or ID does not match the format Glean expects for that connector.
+
+To resolve this, confirm that the document is accessible in the source application, then check your connector's crawl schedule on the Connector refresh rates page. If the document should have been crawled already, go to Admin console → Platform → Connectors, select the connector, and review its Status and Last crawled timestamp.
+
+### Stale "Last crawled" or "Last indexed" timestamps​
+--------------------------------------------------------------------------------
+Troubleshooting (https://docs.glean.com/connectors/custom/troubleshooting)
+citeturn33search1 [wordlim: 200] Crawled: yesterday; In the examples below, copy your full backend URL from app.glean.com/admin/about-glean under Server instance (QE), and replace https://tenant_id-be.glean.com with it. ... If you want to confirm whether your indexing job was successful, you can use this endpoint to verify if your documents have been uploaded and indexed. ...       https://tenant_id-be.glean.com/api/index/v1/checkdocumentaccess \ ... Indexing  | Users become searchable and their permissions are applied to documents.  | Check `identity.users.counts.uploaded` vs the document-level `counts.indexed` for user-type objects. ... If documents have been uploaded but are not appearing in search results, you can trigger a full document reprocessing for the connector. ... This is also useful after permission changes that should make previously hidden documents visible. ...   * Description of the issue including error message
+After fixing one error, re-upload to check for additional issues in other documents or properties.
+
+## Trigger document reprocessing​
+
+If documents have been uploaded but are not appearing in search results, you can trigger a full document reprocessing for the connector. This re-indexes all previously uploaded documents without requiring a new upload.
+    
+    `
+    
+    curl -i -X POST \
+    
+      'https://tenant_id-be.glean.com/api/index/v1/processalldocuments' \
+    
+      -H 'Authorization: Bearer <YOUR_TOKEN_HERE>'
+    
+    `
+
+### When to use​
+
+Call this endpoint when uploaded documents show in the connector status endpoint but are not appearing in search results. This is also useful after permission changes that should make previously hidden documents visible.
+
+After triggering, allow time for processing to complete. Monitor progress by checking the `processingHistory` timestamps in the connector status endpoint. New documents become searchable when the `processingHistory` timestamp is after the `bulkUploadHistory` timestamp.
+
+note
+
+For issues with user or group permissions rather than document content, use `/processallmemberships` instead.
+
+## Next steps​
+
+If you need help debugging your issue, contact Glean Support and provide the following details:
+
+  * Description of the issue including error message
+  * Endpoint URL and request body schema
+  * Connector name
+  * Timestamp and timezone of when you encountered the error
+
+## See also​
+
+  * Verify if a document is visible in Glean — check document visibility and access from the Admin console
+  * Connector refresh rates — default crawl intervals by connector--------------------------------------------------------------------------------
+Manage connector settings and visibility (https://docs.glean.com/connectors/connectors-settings-visibility)
+citeturn33search2 [wordlim: 200] Published: last month; Crawled: today; Once a connector exists, the Admin console shows tabs you can use to monitor sync progress, update settings, control visibility, and access connector-specific options. ... Change rate (items/day)  | Creates, edits, permission and metadata changes, and deletes synced in the past 24 hours. ...   * Add to search results: all eligible users see content from this source (subject to source permissions). ... For example, a Dropbox connector might show counts for Folder, Document, Spreadsheet, Paper, and Video. ... Some connectors let you filter by content type — for example, crawling only specific file types or object categories. ...   * Gmail — manage data restrictions apply only to data crawling and indexing, not to data fetching (federated search). ... Visible to everyone — all users with source permissions see results. ... Create a test group and add members: individual users or identity provider groups (Azure AD or Google Groups). ... For detailed guidance, see Managing result visibility.
+Permission and metadata updates can inflate the change rate even when no new items are added. For more on connector data access modes, see Connector data access modes. To understand how these metrics signal problems, see Monitor connector health and alerts.
+
+### Signs of a problem​
+
+  * Items synced stops increasing for 24 or more hours during initial sync — verify connector permissions, API throttling, or configuration issues.
+  * Change rate is 0 for an extended period when you expect activity — check webhook or incremental crawl health.
+  * A connector remains in Indexing for multiple days with no progress — contact Glean Support.
+
+### Search results​
+
+The Overview tab includes a Search results section that controls whether the connector appears in Glean search:
+
+  * Add to search results: all eligible users see content from this source (subject to source permissions).
+  * Limit to test group: only members of the assigned test group see results. --------------------------------------------------------------------------------
+Azure Files overview (https://docs.glean.com/connectors/native/azure-files/overview)
+citeturn33search3 [wordlim: 200] Published: 3 weeks ago; Crawled: today; Hidden files and folders aren't returned in search results. ... File-system permissions refresh with file and directory fetches, not on the 2-hour share-permission schedule. ... A completed crawl doesn't mean that every document has finished indexing or that every permission change is already reflected in search. ... File-link mode uses a `file://` URL as the primary result link and also records the Universal Naming Convention (UNC) path. ... If the link doesn't open, work with your IT team and Glean Support to check the configured link format and source access.
+The parent Microsoft 365 connection supplies users and group memberships on its own schedule. Content discovery depends on the share-permission crawl and the parent Microsoft 365 membership crawl.
+
+A completed crawl doesn't mean that every document has finished indexing or that every permission change is already reflected in search. Don't rely on immediate updates or removals after source changes. Validate content and access after the relevant processing completes, and contact Glean Support if the result doesn't match your expectations. See Connector refresh rates for the default schedules.
+
+## Open search results​
+
+The connector supports file links and HTTPS links. File-link mode uses a `file://` URL as the primary result link and also records the Universal Naming Convention (UNC) path. HTTPS mode uses the storage account's HTTPS file endpoint. The standard configuration uses file-link mode.
+
+The link format doesn't grant Azure access or establish network connectivity for the user. Verify that the same source location opens from the user's device outside Glean. If the link doesn't open, work with your IT team and Glean Support to check the configured link format and source access.
+
+## See also​
+
+  * Azure Files permissions explains how application roles differ from user search permissions.
+  * Set up Azure Files lists the access and configuration to collect before setup.--------------------------------------------------------------------------------
+About connectors (https://docs.glean.com/connectors/about)
+citeturn33search4 [wordlim: 200] Crawled: today; They also fetch the permissions map from each source, ensuring search results strictly adhere to the access permissions set in the source application. ... That includes native application content and common file types (for example PDF, Word, PowerPoint, Excel, and Visio). ... At a high level, Glean retrieves content and permissions from the source, processes that data through crawling and indexing, and uses the indexed data for permission-aware search and related experiences. ... Hybrid access combines indexed data with one or more live calls—for example using the index for broad recall and the API for recent rows, long-tail objects, or attributes that are not stored in the index.
+
+# About connectors
+
+A Glean connector integrates Glean with a platform, service, or application where your content lives (such as Slack, Gmail, or Salesforce). Connectors are built for each source’s APIs and data model. They let Glean index content, mirror permissions from the source, and keep that data current in your isolated tenant. For a list of supported sources and specific setup guides, visit the Connectors hub.
+
+Glean connectors perform two primary functions:
+
+  * Data fetching: Connectors fetch data from connected applications and store the information in Glean's system. They also fetch the permissions map from each source, ensuring search results strictly adhere to the access permissions set in the source application.
+  * Content parsing: Connectors parse item content (for example, title, body, comments, media) and permissions (for example, who is allowed to view the item). This includes both native app content and all common file types (for example, pdf, doc, ppt, xls, vsd).
+
+## Types of connectors​
+They retrieve the permissions map from each source so Glean can mirror access controls: search results follow the permissions set in the connected application.
+
+### Parse content​
+
+Connectors parse item content (for example title, body, comments, and media) and permissions (who is allowed to view the item). That includes native application content and common file types (for example PDF, Word, PowerPoint, Excel, and Visio).
+
+### Keep data updated​
+
+Connectors capture changes as quickly as the source and connector allow, often through webhooks or incremental crawling. Glean works with technology partners to keep connectors aligned with API and product changes. For cadence and crawl behavior, see Crawling strategy and Crawling FAQ.
+
+## Data flow (simple)​
+
+At a high level, Glean retrieves content and permissions from the source, processes that data through crawling and indexing, and uses the indexed data for permission-aware search and related experiences.
+
+note
+
+Exact behavior varies by connector and source. For how retrieved data is used at query time, see Connector data access modes.
+
+## Connector data access modes​
+
+Glean can use connector data in more than one way — indexed (crawled ahead of time), live (fetched at query time), or hybrid (a mix of both). The mode used depends on the connector, the feature, and your configuration. For a full breakdown with examples, see How connectors power the Glean experience.
+
+### Indexed access​
+
+Indexed access means content and permissions were crawled earlier, stored in your Glean tenant, and read from that corpus at query time. Latency is typically low, and Glean applies the permission snapshot that was mirrored during crawling and incremental updates. This is the default pattern for most native connectors and most search results.
+
+### Live access​
+
+Live access means Glean (or a specific feature) calls the source system during the user request to fetch current records or fields.   * Permission enforcement: Glean connectors fetch each source's permissions map, so search results only show a user what they're already allowed to see in the source application.
+  * Data security: Connectors route all fetched data to your isolated Glean tenant. Data is end-to-end encrypted in transit and only written to disk once it reaches your tenant. Within your tenant, indexed data is encrypted at rest and remains within your tenant boundaries.
+  * Real-time updates: Connectors capture changes to your data as quickly as possible, either via webhooks or incremental crawling. The Glean team continuously works with technology partners to keep connectors updated with feature enhancements and API changes.
+  * Flexible configuration: Each connector supports a range of configuration options — including content inclusion and exclusion filters, authentication modes, and crawl scope settings — so you can tailor what Glean indexes to your organization's needs.
+  * Relevance ranking: Connectors collect activity signals — such as views, edits, and shares — that Glean uses to rank search results by relevance, surfacing the most useful content for each user.--------------------------------------------------------------------------------
+Troubleshooting (https://docs.glean.com/connectors/native/azure-files/troubleshooting)
+citeturn33search5 [wordlim: 200] Crawled: last month; Setup validation covers resource discovery, not file-content access or the final search permissions. ...   * A crawl reports progress or completion without the expected search results ... | Review crawl and indexing status. ... Compare Azure share permissions and New Technology File System (NTFS) rules with the identity information available to Glean. ... Permission processing: A source permission change hasn't been reflected in the indexed item.
+File eligibility: The extension is excluded or the file exceeds the effective size limit.  | Review Content selection and limits. These files are skipped, not indexed as metadata-only results.
+Hidden attribute: The source file or folder is marked hidden.  | Confirm that the hidden attribute is intentional. Hidden items aren't returned in search.
+Incomplete processing: Content or permission processing hasn't produced a searchable item yet.  | Review crawl and indexing status. A completed crawl isn't proof that all permission processing has finished. Contact Glean Support if the item remains missing.
+
+### One user can't find a file that another user can find​
+
+Symptoms:
+
+  * Search visibility differs between users
+  * A user can open the source file but can't find it in Glean
+
+Compare Azure share permissions and New Technology File System (NTFS) rules with the identity information available to Glean.
+
+Cause  | Fix
+--- | ---
+Source permissions: Share-level and file-system rules don't both provide the expected access.  | Review the user's applicable share permissions and the file's NTFS rules. Don't broaden application or end-user roles solely to make search results appear.
+Identity mapping: Required user, group, membership, or security identifier information isn't available through the parent connection.  | Check the associated Microsoft 365 identity crawl and ask Glean Support to review the affected mapping.
+Advanced access rules: The share or file uses access rules outside the connector's supported handling.  | Review Access-control limitations with Glean before relying on conditional or object-specific rules.
+Permission processing: A source permission change hasn't been reflected in the indexed item.  | Recheck after the relevant crawl and permission processing. Contact Glean Support if the discrepancy remains, rather than assuming an immediate refresh.
+
+Still not resolved? Provide Glean Support with the connector instance name, affected share and path, crawl time or identifier, the observed error, and the expected allowed or denied access. If a user can see content they shouldn't, report the access mismatch before expanding use of the connection.
+
+Last updated on Oct 13, 2026--------------------------------------------------------------------------------
+Looker troubleshooting (https://docs.glean.com/connectors/native/looker/troubleshooting)
+citeturn33search6 [wordlim: 200] Published: 3 weeks ago; Crawled: 3 weeks ago; This page covers common issues with Looker indexing, semantic routing, OAuth, permissions, and live Assistant queries. ... If your connector uses a custom proxy URL template with the Looker hostname in its path, contact Glean Support to check the template. ... Permission mismatch: The user does not satisfy both the Looker role permission and content-level access requirements. ... | Confirm that ModelSet-aware identity crawling is enabled, review the identity crawl status, and resolve any identity crawl errors before relying on semantic permissions. ... Separate authorization decisions: Indexed discovery does not grant live query access. ... ### A live answer is stale or does not match Search​ ... Live and indexed data differ: Assistant retrieves live results from Looker at request time, while Search uses indexed content. ...   * The prompt, expected source, and observed result
+  * The approximate time of the failure and any visible error message
+
+### A live answer is stale or does not match Search​
+
+Symptoms:
+
+  * Search and Assistant return different values or metadata.
+  * A recent Looker change appears in one surface but not the other.
+
+Cause  | Fix
+--- | ---
+Crawl is pending: Search and semantic results come from the most recent successful crawl.  | Wait for the relevant full crawl and indexing pipeline to complete.
+Live and indexed data differ: Assistant retrieves live results from Looker at request time, while Search uses indexed content.  | For a current value, use Assistant and open the linked Looker asset to verify the definition and result.
+Permission context differs: The user’s live Looker permissions differ from the permissions captured during the last crawl.  | Review the user’s current Looker roles, content access, ModelSet, and row restrictions.
+
+
+### The MCP tool list is missing a recently enabled tool​
+
+Symptoms:
+
+  * A Looker administrator enabled an MCP tool, but the user cannot invoke it.
+  * The tool is available in Looker but not in the Glean MCP tool list.
+--------------------------------------------------------------------------------
+Azure DevOps (https://docs.glean.com/connectors/native/azure-devops/home)
+citeturn33search7 [wordlim: 200] Crawled: 2 months ago; If that identity connector is missing or unhealthy, content is crawled but can't be permission-mapped, so results are empty. ...   * Content is missing, or a result reads "not accessible with your current permissions." ... Grant the missing permission and run a full crawl. ... Azure DevOps content is filtered at query time so users only see what they can access in the source. ... Azure DevOps permissions are projected onto those identities, so search results appear only for users who have access in Azure DevOps.
+## Permissions and security​
+
+Azure DevOps content is filtered at query time so users only see what they can access in the source.
+
+  * Azure DevOps project permissions. The service principal reads content only in the projects where it has been added with the Project Reader role. Content from any other project is never crawled.
+  * Microsoft 365 identity mapping. Glean uses your Microsoft 365 connector as the source of truth for the users and groups in your Microsoft 365 tenant. Azure DevOps permissions are projected onto those identities, so search results appear only for users who have access in Azure DevOps.
+
+If the required Microsoft 365 connector is missing or unhealthy, Azure DevOps results are generally empty even when crawls appear to succeed. Authentication uses a Microsoft Entra ID application (service principal) with a client secret, and all data is encrypted in transit and at rest following Glean's standard security and compliance practices.--------------------------------------------------------------------------------
+Power BI troubleshooting (https://docs.glean.com/connectors/native/powerbi/troubleshooting)
+citeturn33search8 [wordlim: 200] Crawled: yesterday; If the read-only admin API check fails, Glean cannot perform tenant-wide discovery or permission crawling. ... User consent is restricted: The tenant’s consent policy does not allow the user to approve the delegated permissions. ... Tools setup has not initialized: The setup page has not completed the indexing step or loaded the tools configuration. ... Identity mapping issue: The linked Microsoft 365 identity integration cannot resolve the relevant user or group. ... Indexing delay: A successful crawl and indexing pipeline has not completed after the content or permission change. ... Check the connector crawl status when you need updated Search results. ... | Search for the Power BI asset in Glean, open the matching result, and ask the question from that context. ... Stale tool list: The connection has not refreshed its runtime tools after the Fabric IQ configuration was saved. ... Different Power BI access: Live queries run with each user’s delegated Power BI identity.
+
+## Search and indexing​
+
+### Users cannot find expected Power BI content​
+
+Symptoms:
+
+  * A supported workspace, report, semantic model, or dashboard does not appear in Search.
+  * Other Power BI content from the same tenant appears as expected.
+
+Cause  | Fix
+--- | ---
+Unsupported content: The missing item is not a supported workspace, report, semantic model, or dashboard.  | Confirm that the item belongs to a supported Power BI Service or Microsoft Fabric workspace.
+Missing workspace access: The connector service principal cannot access the workspace.  | Grant the connector service principal or its security group the Contributor role in the workspace.
+Identity mapping issue: The linked Microsoft 365 identity integration cannot resolve the relevant user or group.  | Confirm that the user’s Microsoft 365 identity and group membership appear in the linked identity integration.
+Indexing delay: A successful crawl and indexing pipeline has not completed after the content or permission change.  --------------------------------------------------------------------------------
+Connector permissions (https://docs.glean.com/connectors/native/sharepoint/security/permissions)
+citeturn33search9 [wordlim: 200] Crawled: today; Purpose For tenant-wide indexing, Glean uses `Sites.FullControl.All` to read permission-change information through the Microsoft Graph `/delta` permission headers. ... Additionally, understanding user identities helps Glean enhance the metadata of indexed content, improving search result relevance. ... Purpose The `Files.Read.All` permission is crucial for Glean to access and index files from SharePoint and OneDrive. ... This means that only users with the appropriate permissions in the source application will see the content in search results. ... Specifically, when permissions for a site or file are associated with a Group email/ID, Glean uses the List group members endpoint of the Graph API to determine the user IDs within that group. ... Glean enforces the same access controls as SharePoint and OneDrive: a document appears in a user's search results only if that user can access it in the source.
+
+This permission is also used to create webhook subscriptions that play a pivotal role in enabling Glean to immediately reflect changes; such as the creation, modification, or deletion of documents and site content.
+
+Common Concerns Concerns about this permission often focus on the potential for Glean to access sensitive or restricted company documents.
+
+It is important to understand that Glean respects the existing permissions and access controls for each document it indexes. This means that only users with the appropriate permissions in the source application will see the content in search results.
+
+This careful mapping of permissions ensures that even the most sensitive documents are only visible to authorized employees. Glean's ability to map a piece of content to the users who are permitted to access it is tied to the `User.Read.All` permission (detailed above).
+
+Additionally, Glean offers options to restrict crawling to specific SharePoint sites and user drives by specifying URLs or usernames associated with the drives. It is also possible to exclude specific individual content from search results.
+
+For details on how to apply these restrictions, refer to:
+
+  * Supported Crawling Restrictions for SharePoint
+
+--------------------------------------------------------------------------------
+FAQs (https://docs.glean.com/connectors/native/salesforce/faq)
+citeturn33search10 [wordlim: 200] Crawled: last month; Under typical configurations, content changes propagate on the order of minutes after they are saved in Salesforce, subject to incremental crawl and indexing times. Permission changes propagate after share/identity crawls complete (for example, on an hourly schedule) and are indexed. ... Access revocations are enforced once updated share and identity information is crawled and re‑indexed; until then, users may still see records they previously had access to. ... Glean Assistant and Glean Agents leverage Salesforce data through the connector for retrieval, and through Salesforce Tools (e.g., Search Salesforce with SOQL, Update Salesforce Opportunity) for live reads and writes. ... When you enable Salesforce Enterprise Territory Management (Territory2) to share records such as Accounts, Opportunities, Contacts, or Cases, Glean includes those territory‑based assignments in record‑level permissions.
+
+# FAQs
+
+Below are representative FAQs:
+
+### Can we connect multiple Salesforce orgs to the same Glean tenant?
+
+Yes. Each Salesforce org (production or sandbox) is configured as a separate Salesforce connector in Glean. You can assign different names (e.g., `Salesforce – EMEA`, `Salesforce – Sandbox`) and independently control object scope and crawl behavior.
+
+### Does Glean enforce Salesforce field‑level security (FLS)?
+
+Not today. If a field is indexed and a user has access to the record via Salesforce sharing, that field’s content may appear in Glean, even if Salesforce FLS would normally hide it from that user. You should exclude/red‑list sensitive fields or objects from indexing when FLS is used for compliance controls.
+
+### How quickly do Salesforce changes appear in Glean?
+
+Under typical configurations, content changes propagate on the order of minutes after they are saved in Salesforce, subject to incremental crawl and indexing times. Permission changes propagate after share/identity crawls complete (for example, on an hourly schedule) and are indexed.
+--------------------------------------------------------------------------------
+Azure DevOps (https://docs.glean.com/connectors/native/azure-devops/)
+citeturn33search11 [wordlim: 200] Published: 3 weeks ago; Crawled: 2 weeks ago; It does not resolve users and groups on its own — that identity data comes from your Microsoft 365 connector. ... Repositories and source code  | Indexed  | Source files, READMEs, and folders in each project's Git repositories. Repository indexing is on by default. ... If that identity connector is missing or unhealthy, content is crawled but can't be permission-mapped, so results are empty. ...   * Content is missing, or a result reads "not accessible with your current permissions." ... Grant the missing permission and run a full crawl. ... Azure DevOps permissions are projected onto those identities, so search results appear only for users who have access in Azure DevOps.
+Source files, commits, and pull requests are indexed by default. Use the inclusion and exclusion rules in the Manage data tab to control which repositories are crawled. See Limit what gets indexed.
+  * Pipelines, releases, test plans, and artifacts are not crawled.
+  * No webhooks. Freshness follows Glean's scheduled crawls rather than real-time events.
+  * One organization per identity connector. A single Azure DevOps instance can't be connected to the same Microsoft 365 (O365) connector more than once.
+
+## Permissions and security​
+
+Azure DevOps content is filtered at query time so users only see what they can access in the source.
+
+  * Azure DevOps project permissions. The service principal reads content only in the projects where it has been added with the Project Reader role. Content from any other project is never crawled.
+  * Microsoft 365 identity mapping. Glean uses your Microsoft 365 connector as the source of truth for the users and groups in your Microsoft 365 tenant. Azure DevOps permissions are projected onto those identities, so search results appear only for users who have access in Azure DevOps.
+
+If the required Microsoft 365 connector is missing or unhealthy, Azure DevOps results are generally empty even when crawls appear to succeed. Authentication uses a Microsoft Entra ID application (service principal) with a client secret, and all data is encrypted in transit and at rest following Glean's standard security and compliance practices.

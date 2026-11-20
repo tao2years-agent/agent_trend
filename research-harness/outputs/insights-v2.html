@@ -1,0 +1,162 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>从 Code Agent 到组织级工作控制面</title><style>
+:root{color-scheme:light;--ink:#183331;--mid:#48645e;--dark:#103e38;--rule:#cad7cf;--bg:#f7f8f3;--link:#076954}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:16px}body{margin:0;font:16px/1.8 "Microsoft YaHei","DengXian",sans-serif;color:var(--ink);background:var(--bg);overflow-wrap:anywhere}header{background:var(--dark);color:#fff;padding:38px max(5vw,20px) 33px}header>div{max-width:1160px;margin:auto}.label{font-weight:600;letter-spacing:.1em;color:#c6e3c2;font-size:13px}h1{margin:14px 0 8px;font-size:clamp(28px,4vw,49px);line-height:1.25;letter-spacing:-.04em}header p{margin:0;color:#e1ede5;font-size:17px}main{display:grid;grid-template-columns:218px minmax(0,1fr);gap:46px;max-width:1270px;margin:auto;padding:38px max(4vw,18px) 72px}nav{position:sticky;top:16px;max-height:92vh;overflow:auto;border-left:2px solid var(--rule);padding:0 12px;height:fit-content;font-size:13px}nav a{display:block;color:var(--mid);line-height:1.55;text-decoration:none;padding:4px 1px}nav a:hover,nav a:focus{text-decoration:underline}article{min-width:0}.chapter{margin:0 0 52px;border-top:1px solid var(--rule);padding-top:14px}.chapter:first-child{border-top:0;padding-top:0}h2{font-size:clamp(23px,3vw,32px);line-height:1.4;letter-spacing:-.035em;margin:0 0 15px}h3{font-size:19px;line-height:1.5;margin:24px 0 9px}.chapter h2:not(:first-of-type){font-size:23px;margin-top:26px}.kicker{display:block;color:var(--link);font-size:12px;font-weight:700;letter-spacing:.12em}.kicker:empty{display:none}p{margin:0 0 15px}a{color:var(--link);text-underline-offset:3px}a[data-attachment]:after{content:" ↓";font-size:.75em}.tablewrap{overflow-x:auto;margin:12px 0 20px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--rule);vertical-align:top;text-align:left;padding:10px;min-width:108px}th{background:#e1ece2}dl{display:grid;grid-template-columns:105px 1fr;gap:6px 12px;margin:10px 0}dt{font-weight:bold;color:var(--mid)}dd{margin:0}code{font-size:.91em}pre{overflow-x:auto}label,output{font-size:13px;color:var(--mid);display:block}input{width:100%;font:inherit;padding:6px 10px;background:white;border:1px solid #88a598}details{border-bottom:1px solid var(--rule);padding:9px 0}summary{cursor:pointer;font-weight:bold}footer{max-width:1160px;margin:0 auto 22px;padding:0 20px;color:var(--mid);font-size:13px}.brief main{max-width:1080px}.brief article{max-width:740px}.brief .chapter p:last-child{border-left:3px solid #4c8c71;padding-left:14px}.brief footer{max-width:1010px}ul,ol{padding-left:1.5em}@media(max-width:760px){main{display:block;padding:22px 16px 35px}nav{position:static;max-height:175px;margin-bottom:25px;display:flex;flex-wrap:wrap;gap:2px 12px}header{padding:26px 16px}header p{font-size:15px}.chapter{margin-bottom:32px}td,th{min-width:155px}dl{grid-template-columns:84px 1fr}}
+@page{size:A4;margin:17mm 18mm 16mm}@media print{html{scroll-behavior:auto}body{background:white;font-family:"Microsoft YaHei",sans-serif;line-height:1.65;font-size:11pt;color:#17322e}main,.brief main{display:block;max-width:none;padding:0}header,nav,footer{display:none}.brief article{max-width:none}.chapter{break-before:page;margin:0;border-top:0;padding:0}.chapter:first-child{break-before:auto}.brief{font-size:10.5pt;line-height:1.52}.brief .chapter:before{display:block;content:"从 Code Agent 到组织级研发自动化　　·　　2026.11.20　　·　　" attr(data-page);color:#31725f;font-size:8.8pt;font-weight:bold;letter-spacing:.07em;padding-bottom:3mm;border-bottom:1pt solid #77a78e;margin-bottom:5mm}.brief .chapter h2{font-size:22pt;line-height:1.25;margin-bottom:4mm}.brief .chapter p{margin-bottom:3mm}.brief .chapter p:last-child{background:#edf4ee;padding:3mm;border-left:3px solid #558e71}.brief .tablewrap{margin:2.5mm 0 3.5mm;overflow:visible}.brief table{font-size:9pt;line-height:1.35}.brief td,.brief th{padding:1.7mm 2mm;min-width:0}.brief ul{margin:2mm 0;padding-left:5mm}.brief li{margin-bottom:1.2mm}a{color:#267159;text-decoration:none}p{orphans:2;widows:2}}
+</style></head><body class="brief"><header><div><div class="label">研发效能研究　/　产品决策稿 · 重制版　　2026.11.20</div><h1>从 Code Agent 到组织级工作控制面</h1><p>一项主攻、三项停手，以及 90 天内可以被证伪的产品计划</p></div></header><main><nav aria-label="章节目录"><a href="#s1">战略结论：停止复制 Code Agent，转做“组织级工作控制面”</a><a href="#s2">产品楔子：Migration Control Plane，不绑定某个 Agent</a><a href="#s3">可上线的 Auto Harness：提议、验收、发布三权分离</a><a href="#s4">90 天立项：用一次真实迁移决定继续、收缩或停止</a></nav><article><section class="chapter" id="s1" data-page="1 / 4"><span class="kicker"></span><h2>战略结论：停止复制 Code Agent，转做“组织级工作控制面”</h2>
+<p><strong>建议保留现有 Code Agent 作为可替换执行器，停止新增通用聊天入口、单仓 PR 生成器和基于跑分的简单路由。下一阶段只押一个楔子：跨仓迁移控制面。</strong> 它接管的不是一次代码生成，而是一场有截止日、有依赖、有多位 owner、必须逐仓验收的工程行动。</p>
+<p>35 个研发自动化产品的对照说明，单仓 issue→PR、代码审查、依赖更新、合并队列和事故调查都已有密集供给。Sourcegraph、Moderne、AWS Transform 已进入批量迁移；DX、Jellyfish、LinearB 已进入组织效能；LangSmith、Langfuse、Braintrust 等已覆盖评估与反馈。继续做一个“也能写代码”的产品，很难形成组织级壁垒。<a href="https://sourcegraph.com/docs/batch_changes">Sourcegraph Batch Changes</a> · <a href="https://docs.moderne.io/">Moderne</a> · <a href="https://docs.aws.amazon.com/transform/">AWS Transform</a></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>投资决定</th>
+<th>具体处理</th>
+<th>判断依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>停止</strong></td>
+<td>新通用 Coding Agent 壳、历史跑分路由、以 PR 数证明提效</td>
+<td>5 个同模型历史系统在 500 题上的并集为 358，最佳单体为 265；按仓库历史成绩路由，20 次固定切分有 19 次输给单一强基线。</td>
+</tr>
+<tr>
+<td><strong>复用</strong></td>
+<td>现有 Code Agent、规则迁移工具、CI、代码托管和工作流引擎</td>
+<td>这些组件已能完成执行、重试、审批或采集。平台应把它们接入统一任务与证据协议。</td>
+</tr>
+<tr>
+<td><strong>主攻</strong></td>
+<td>跨仓行动的任务图、例外队列、独立验收、版本化发布与全量对账</td>
+<td>这部分跨越多个执行器、仓库和 owner，现有产品分别覆盖局部，还缺少可替换执行器的闭环控制面。</td>
+</tr>
+<tr>
+<td><strong>暂缓</strong></td>
+<td>默认自动跳过 CI、用统一 AI 参与率做组织排名</td>
+<td>OpenStack 与 GitHub Actions 的同类跳过策略成本比相差约 6 倍；同一 DevLake 面板在两种数据库实现上可给出 40% 与 120%。</td>
+</tr>
+</tbody>
+</table></div>
+<p>这个选择有一个明确的反证条件：如果一项真实迁移的剩余工作主要卡在业务兼容决策或团队排期，平台再强也不会提前交付，应停止扩建执行层。</p>
+</section><section class="chapter" id="s2" data-page="2 / 4"><span class="kicker"></span><h2>产品楔子：Migration Control Plane，不绑定某个 Agent</h2>
+<p><strong>首个用户是负责 API、框架或安全版本退役的平台负责人。首个成功标准是“在截止日前，所有合格消费者都有可核验终态”。</strong> 产品输入是一张完整消费者清单、依赖关系、owner、截止日和验收规则；输出是已验收、阻塞、转人工、放弃、仍未决五类终态，以及每项的证据和责任人。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>产品层</th>
+<th>MVP 必须交付什么</th>
+<th>不应自己重造什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工作图</td>
+<td>仓库、依赖、批次、owner、权限、截止日；变更范围后可重新对账</td>
+<td>issue tracker、代码托管、通用编排引擎</td>
+</tr>
+<tr>
+<td>执行器适配</td>
+<td>同一任务可交给现有 recipe、Codex、Devin 或其他 Agent；保存实际版本与输入</td>
+<td>新模型、编辑器、Agent 内核</td>
+</tr>
+<tr>
+<td>独立验收</td>
+<td>每仓使用 owner 认可的测试与业务判据；守护窗后才进入完成</td>
+<td>让生成 Agent 给自己的结果打分</td>
+</tr>
+<tr>
+<td>例外操作</td>
+<td>按共同根因聚类；明确下一项必须由谁决定；支持换人和独立重试</td>
+<td>对所有失败无限重跑、给所有 owner 发提醒</td>
+</tr>
+<tr>
+<td>证据账本</td>
+<td>尝试、人工分钟、外部写入、批准对象、最终状态可重放</td>
+<td>只展示生成代码量或席位活跃度</td>
+</tr>
+</tbody>
+</table></div>
+<p>采购或自研评审使用同一场景：给系统 12 个仓，两仓依赖前序包，一仓无权限，一仓测试失败；首轮开 PR 后更换 owner，再移除一仓。要求现场回答还剩什么、旧 PR 怎么处理、哪些动作已发生、谁能批准、用什么证据关闭。一次成功改完某个仓不计分。</p>
+<p>选择迁移作为楔子的原因很现实：任务全集可枚举，机械基线足够强，难例会自然暴露组织协作问题，最终又能从运行系统验证。Airbnb 的 3,500 个测试文件迁移在四小时达到约 75%，四天达到 97%，最后约 3% 仍需人工一周收尾。产品价值集中在这条长尾，而不是前 75% 的代码生成。<a href="https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/">Airbnb 工程记录</a></p>
+</section><section class="chapter" id="s3" data-page="3 / 4"><span class="kicker"></span><h2>可上线的 Auto Harness：提议、验收、发布三权分离</h2>
+<p><strong>Auto harness 可以自动提出下一版，不能同时决定自己合格并把它推到生产。</strong> 推荐架构包含两个闭环。工作闭环负责完成迁移；学习闭环从失败中提出新的提示、工具或策略。两个闭环通过不可变的任务版本和独立留出集连接。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>决策点</th>
+<th>自动系统负责</th>
+<th>人只在这里介入</th>
+<th>上线前必须制造的故障</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>任务接收</td>
+<td>枚举消费者、解析依赖、提出批次</td>
+<td>确认范围、业务例外和风险等级</td>
+<td>中途新增/删除仓库、owner 更换</td>
+</tr>
+<tr>
+<td>候选执行</td>
+<td>选择执行器、运行工具、收集证据</td>
+<td>对无法自动裁决的兼容决策拍板</td>
+<td>权限丢失、部分成功、重复回调</td>
+</tr>
+<tr>
+<td>独立验收</td>
+<td>运行未暴露给提议者的判据，报告正负变化</td>
+<td>owner 对业务终点负责</td>
+<td>测试全绿但业务判据失败</td>
+</tr>
+<tr>
+<td>版本晋级</td>
+<td>比较旧版与候选，保留回退路径</td>
+<td>不参与提议的一方批准扩大范围</td>
+<td>批准后内容变化、旧写覆盖新写</td>
+</tr>
+<tr>
+<td>生产恢复</td>
+<td>按操作键去重，核对消费者实际版本</td>
+<td>严重副作用与补偿归属</td>
+<td>写成功后丢回执、缓存未回滚</td>
+</tr>
+</tbody>
+</table></div>
+<p>三项实证直接约束设计。第一，MLflow 3.18.0 中 production 从 v2 回到 v1 后，预热进程仍可默认读到 v2，版本号固定时模型配置也能原位变化。批准对象必须包含模板、模型、参数和发布代数，回滚要验到消费者。第二，Temporal 与 LangGraph 在“外部写入成功、调用者丢回执”时都会重试写入，业务目标必须接受操作唯一键。第三，ExplainBench 的历史补丁中，“单项复现测试通过”和“SWE-bench 整题解决”出现 210 个方向冲突的组合，交接卡要分别声明局部证据和整件状态。<a href="https://mlflow.org/docs/latest/genai/prompt-registry/">MLflow Prompt Registry</a> · <a href="https://docs.temporal.io/encyclopedia/retry-policies">Temporal 重试</a> · <a href="https://arxiv.org/abs/2607.26451">ExplainBench</a></p>
+<p>人工介入的产品指标应是“这次打断是否改变了下一步决定”。24 小时未见终态或正式个人评审的 37,882 个公开 PR 中，16,502 个后来没有出现正式个人决定便合并或关闭。等待时间只能生成候选队列，不能直接决定通知谁。</p>
+</section><section class="chapter" id="s4" data-page="4 / 4"><span class="kicker"></span><h2>90 天立项：用一次真实迁移决定继续、收缩或停止</h2>
+<p><strong>成立一个小型跨职能小队，只做一项真实迁移。平台负责人拥有任务全集，服务 owner 拥有验收，评估负责人拥有留出集，执行器团队只提供适配。</strong> 90 天后只决定是否扩大控制面，不承诺通用自治平台。</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>必须完成的产物</th>
+<th>评审问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–30 天：冻结事实</td>
+<td>全部消费者、依赖簇、owner、现有规则基线、验收与守护窗；历史任务只用于发现失败模式</td>
+<td>任务全集是否可信，主要瓶颈是否真在工程执行？</td>
+</tr>
+<tr>
+<td>31–60 天：影子运行</td>
+<td>recipe＋人工基线与 Agent 流程同题对照；记录全部角色主动分钟、等待、失败聚类、未完成和外部写入</td>
+<td>新系统减少的是劳动，还是把负担转给服务 owner？</td>
+</tr>
+<tr>
+<td>61–90 天：受控放量</td>
+<td>只扩大已在另一仓/另一周留出集通过的策略；演练断线、换人、审批后变化和回滚</td>
+<td>严重回归能否阻止晋级，回滚是否真的到达消费者？</td>
+</tr>
+</tbody>
+</table></div>
+<p>建议在启动前签字的决策门槛如下。这些是立项门槛，不是公开研究得出的行业平均值。</p>
+<ul>
+<li>全部合格任务必须进入五类终态，禁止静默消失；按任务等权和按依赖簇等权同时报告。</li>
+<li>守护窗后的验收率至少不低于现有流程，所有角色主动劳动分钟应出现预先约定的实质下降；等待时间单列，不能折算成人力节约。</li>
+<li>任一严重外部写入或不可回滚问题立即暂停放量；零事故只表示本轮未观察到，不能证明可靠性。</li>
+<li>候选 harness 必须在未见任务上、相同预算下击败旧版；开发集上涨、留出不变时只保留失败分类，不晋级。</li>
+<li>现金收益只计算实际减少的加班、外包或预算；释放工时和新增交付分别报告，避免重复计益。</li>
+</ul>
+<p><strong>90 天后的三个答案应该非常清楚。</strong> 若难例能够跨仓复用、人工分钟下降且验收不退化，继续建设迁移控制面；若收益只来自某个执行器，把能力留在执行器适配层；若主要阻塞是业务排期和兼容决策，停止平台扩建，把证据账本交给现有项目管理流程。</p></section></article></main><footer>研究范围、比较口径及已验证的环境见正文。原始网页链接需联网。</footer>
+<script>const files={};document.addEventListener('click',e=>{const a=e.target.closest('a[data-attachment]');if(!a)return;e.preventDefault();const f=files[a.dataset.attachment],arr=Uint8Array.from(atob(f.b),c=>c.charCodeAt(0)),url=URL.createObjectURL(new Blob([arr]));const d=document.createElement('a');d.href=url;d.download=f.n;d.click();setTimeout(()=>URL.revokeObjectURL(url),3000)});const search=document.getElementById('search');if(search){const list=[...document.querySelectorAll('.record')];const filter=()=>{let n=0;for(const d of list){d.hidden=!d.textContent.toLowerCase().includes(search.value.trim().toLowerCase());if(!d.hidden)n++}document.getElementById('matches').textContent=n+' 项'};search.addEventListener('input',filter);filter()}</script></body></html>

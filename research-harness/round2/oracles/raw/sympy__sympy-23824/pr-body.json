@@ -1,0 +1,8 @@
+{
+  "pr_url": "https://github.com/sympy/sympy/pull/23824",
+  "source_page_sha256": "78a2bd5c1d751b90942ebfdd1ff36095a01e29f586f8dd2468acf06e8322d001",
+  "pr_body_text": "Simple fix to the order of insertion of leading uncontracted matrices.\nReferences to other Issues or PRs\nFixes\n#23823\nBrief description of what is fixed or changed\nGamma matrices preceding the first contracted gamma matrix are now added in the correct order.\nThere was no test case for correct ordering in the case of more than one initial uncontracted gamma matrix, so this commit also adds a test case for two leading uncontracted gamma matrices and another for the case of two trailing gamma matrices for good measure.\nRelease Notes\nphysics.hep\nFixed a bug in gamma_matrices.kahane_simplify() when there is more than one uncontracted gamma matrix before the first contracted gamma matrix.",
+  "issue_references_in_closing_phrases": [
+    23823
+  ]
+}

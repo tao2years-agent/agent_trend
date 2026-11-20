@@ -1,0 +1,655 @@
+{
+  "source": "GH/descriptions/api.github.com/api.github.com.2026-03-10.json",
+  "source_sha256": "b1abdc8087137cde98404c27b498cd786b2bb3fa67045fcbd858f7ce20a3ef52",
+  "api_version": "2026-03-10",
+  "openapi": "3.0.3",
+  "description_version": "1.1.4",
+  "selected": {
+    "checks/create": {
+      "path": "/repos/{owner}/{repo}/check-runs",
+      "method": "post",
+      "request_summary": {
+        "required": [
+          "name",
+          "head_sha"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "head_sha": {
+            "type": "string"
+          },
+          "details_url": {
+            "type": "string"
+          },
+          "external_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "in_progress",
+              "completed",
+              "waiting",
+              "requested",
+              "pending"
+            ],
+            "default": "queued"
+          },
+          "started_at": {
+            "type": "string"
+          },
+          "conclusion": {
+            "type": "string",
+            "enum": [
+              "action_required",
+              "cancelled",
+              "failure",
+              "neutral",
+              "success",
+              "skipped",
+              "stale",
+              "timed_out"
+            ]
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "output": {
+            "type": "object"
+          },
+          "actions": {
+            "type": "array"
+          }
+        }
+      },
+      "has_alternative_or_combined_constraints": true,
+      "successes": {
+        "201": {
+          "$ref": "#/components/schemas/check-run"
+        }
+      }
+    },
+    "repos/create-deployment": {
+      "path": "/repos/{owner}/{repo}/deployments",
+      "method": "post",
+      "request_summary": {
+        "required": [
+          "ref"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "task": {
+            "type": "string",
+            "default": "deploy"
+          },
+          "auto_merge": {
+            "type": "boolean",
+            "default": true
+          },
+          "required_contexts": {
+            "type": "array"
+          },
+          "payload": {},
+          "environment": {
+            "type": "string",
+            "default": "production"
+          },
+          "description": {
+            "type": "string",
+            "default": ""
+          },
+          "transient_environment": {
+            "type": "boolean",
+            "default": false
+          },
+          "production_environment": {
+            "type": "boolean"
+          }
+        }
+      },
+      "has_alternative_or_combined_constraints": false,
+      "successes": {
+        "201": {
+          "$ref": "#/components/schemas/deployment"
+        },
+        "202": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "repos/create-deployment-status": {
+      "path": "/repos/{owner}/{repo}/deployments/{deployment_id}/statuses",
+      "method": "post",
+      "request_summary": {
+        "required": [
+          "state"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "error",
+              "failure",
+              "inactive",
+              "in_progress",
+              "queued",
+              "pending",
+              "success"
+            ]
+          },
+          "target_url": {
+            "type": "string",
+            "default": ""
+          },
+          "log_url": {
+            "type": "string",
+            "default": ""
+          },
+          "description": {
+            "type": "string",
+            "default": ""
+          },
+          "environment": {
+            "type": "string"
+          },
+          "environment_url": {
+            "type": "string",
+            "default": ""
+          },
+          "auto_inactive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "has_alternative_or_combined_constraints": false,
+      "successes": {
+        "201": {
+          "$ref": "#/components/schemas/deployment-status"
+        }
+      }
+    },
+    "actions/get-reviews-for-run": {
+      "path": "/repos/{owner}/{repo}/actions/runs/{run_id}/approvals",
+      "method": "get",
+      "request_summary": {
+        "required": [],
+        "properties": {}
+      },
+      "has_alternative_or_combined_constraints": false,
+      "successes": {
+        "200": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/environment-approvals"
+          }
+        }
+      }
+    },
+    "actions/review-pending-deployments-for-run": {
+      "path": "/repos/{owner}/{repo}/actions/runs/{run_id}/pending_deployments",
+      "method": "post",
+      "request_summary": {
+        "required": [
+          "environment_ids",
+          "state",
+          "comment"
+        ],
+        "properties": {
+          "environment_ids": {
+            "type": "array"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "has_alternative_or_combined_constraints": false,
+      "successes": {
+        "200": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/deployment"
+          }
+        }
+      }
+    },
+    "actions/get-workflow-run": {
+      "path": "/repos/{owner}/{repo}/actions/runs/{run_id}",
+      "method": "get",
+      "request_summary": {
+        "required": [],
+        "properties": {}
+      },
+      "has_alternative_or_combined_constraints": false,
+      "successes": {
+        "200": {
+          "$ref": "#/components/schemas/workflow-run"
+        }
+      }
+    }
+  },
+  "response_components": {
+    "environment-approvals": {
+      "required": [
+        "environments",
+        "state",
+        "user",
+        "comment"
+      ],
+      "properties": {
+        "environments": {
+          "type": "array"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "rejected",
+            "pending"
+          ]
+        },
+        "user": {
+          "$ref": "#/components/schemas/simple-user"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "deployment": {
+      "required": [
+        "id",
+        "node_id",
+        "sha",
+        "ref",
+        "task",
+        "environment",
+        "creator",
+        "payload",
+        "description",
+        "statuses_url",
+        "repository_url",
+        "url",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "node_id": {
+          "type": "string"
+        },
+        "sha": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "task": {
+          "type": "string"
+        },
+        "payload": {},
+        "original_environment": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "creator": {
+          "$ref": "#/components/schemas/nullable-simple-user"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "statuses_url": {
+          "type": "string"
+        },
+        "repository_url": {
+          "type": "string"
+        },
+        "transient_environment": {
+          "type": "boolean"
+        },
+        "production_environment": {
+          "type": "boolean"
+        },
+        "performed_via_github_app": {
+          "$ref": "#/components/schemas/nullable-integration"
+        }
+      }
+    },
+    "deployment-status": {
+      "required": [
+        "id",
+        "node_id",
+        "state",
+        "creator",
+        "description",
+        "deployment_url",
+        "target_url",
+        "repository_url",
+        "url",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "node_id": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "error",
+            "failure",
+            "inactive",
+            "pending",
+            "success",
+            "queued",
+            "in_progress"
+          ]
+        },
+        "creator": {
+          "$ref": "#/components/schemas/nullable-simple-user"
+        },
+        "description": {
+          "type": "string",
+          "default": ""
+        },
+        "environment": {
+          "type": "string",
+          "default": ""
+        },
+        "target_url": {
+          "type": "string",
+          "default": ""
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "deployment_url": {
+          "type": "string"
+        },
+        "repository_url": {
+          "type": "string"
+        },
+        "environment_url": {
+          "type": "string",
+          "default": ""
+        },
+        "log_url": {
+          "type": "string",
+          "default": ""
+        },
+        "performed_via_github_app": {
+          "$ref": "#/components/schemas/nullable-integration"
+        }
+      }
+    },
+    "check-run": {
+      "required": [
+        "id",
+        "node_id",
+        "head_sha",
+        "name",
+        "url",
+        "html_url",
+        "details_url",
+        "status",
+        "conclusion",
+        "started_at",
+        "completed_at",
+        "external_id",
+        "check_suite",
+        "output",
+        "app",
+        "pull_requests"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "head_sha": {
+          "type": "string"
+        },
+        "node_id": {
+          "type": "string"
+        },
+        "external_id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "html_url": {
+          "type": "string"
+        },
+        "details_url": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "in_progress",
+            "completed",
+            "waiting",
+            "requested",
+            "pending"
+          ]
+        },
+        "conclusion": {
+          "type": "string",
+          "enum": [
+            "success",
+            "failure",
+            "neutral",
+            "cancelled",
+            "skipped",
+            "timed_out",
+            "action_required"
+          ]
+        },
+        "started_at": {
+          "type": "string"
+        },
+        "completed_at": {
+          "type": "string"
+        },
+        "output": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        },
+        "check_suite": {
+          "type": "object"
+        },
+        "app": {
+          "$ref": "#/components/schemas/nullable-integration"
+        },
+        "pull_requests": {
+          "type": "array"
+        },
+        "deployment": {
+          "$ref": "#/components/schemas/deployment-simple"
+        }
+      }
+    },
+    "workflow-run": {
+      "required": [
+        "id",
+        "node_id",
+        "head_branch",
+        "run_number",
+        "display_title",
+        "event",
+        "status",
+        "conclusion",
+        "head_sha",
+        "path",
+        "workflow_id",
+        "url",
+        "html_url",
+        "created_at",
+        "updated_at",
+        "head_commit",
+        "head_repository",
+        "repository",
+        "jobs_url",
+        "logs_url",
+        "check_suite_url",
+        "cancel_url",
+        "rerun_url",
+        "artifacts_url",
+        "workflow_url",
+        "pull_requests"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "node_id": {
+          "type": "string"
+        },
+        "check_suite_id": {
+          "type": "integer"
+        },
+        "check_suite_node_id": {
+          "type": "string"
+        },
+        "head_branch": {
+          "type": "string"
+        },
+        "head_sha": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "run_number": {
+          "type": "integer"
+        },
+        "run_attempt": {
+          "type": "integer"
+        },
+        "referenced_workflows": {
+          "type": "array"
+        },
+        "event": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "conclusion": {
+          "type": "string"
+        },
+        "workflow_id": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "string"
+        },
+        "html_url": {
+          "type": "string"
+        },
+        "pull_requests": {
+          "type": "array"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "actor": {
+          "$ref": "#/components/schemas/simple-user"
+        },
+        "triggering_actor": {
+          "$ref": "#/components/schemas/simple-user"
+        },
+        "run_started_at": {
+          "type": "string"
+        },
+        "jobs_url": {
+          "type": "string"
+        },
+        "logs_url": {
+          "type": "string"
+        },
+        "check_suite_url": {
+          "type": "string"
+        },
+        "artifacts_url": {
+          "type": "string"
+        },
+        "cancel_url": {
+          "type": "string"
+        },
+        "rerun_url": {
+          "type": "string"
+        },
+        "previous_attempt_url": {
+          "type": "string"
+        },
+        "workflow_url": {
+          "type": "string"
+        },
+        "head_commit": {
+          "$ref": "#/components/schemas/nullable-simple-commit"
+        },
+        "repository": {
+          "$ref": "#/components/schemas/minimal-repository"
+        },
+        "head_repository": {
+          "$ref": "#/components/schemas/minimal-repository"
+        },
+        "head_repository_id": {
+          "type": "integer"
+        },
+        "display_title": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

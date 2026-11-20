@@ -1,0 +1,33 @@
+{
+  "case": "11-unrestricted",
+  "mode": "lookup",
+  "pins": {
+    "starlette": "0.36.3",
+    "httpx": "0.26.0"
+  },
+  "config": {
+    "enabledManagers": [
+      "pip_requirements"
+    ],
+    "dependencyDashboard": true,
+    "packageRules": [
+      {
+        "matchDatasources": [
+          "pypi"
+        ],
+        "registryUrls": [
+          "http://127.0.0.1:<PORT>/pypi/"
+        ]
+      }
+    ]
+  },
+  "returncode": 0,
+  "requests": [
+    "/pypi/starlette/json",
+    "/pypi/httpx/json"
+  ],
+  "canary_before_explicit_test": false,
+  "git_head_unchanged": true,
+  "git_worktree_status": "",
+  "remotes": ""
+}

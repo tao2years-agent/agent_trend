@@ -1,0 +1,194 @@
+ (https://docs.datadoghq.com/bits_ai/bits_investigation/investigate_issues/ ; rewritten summary of https://docs.datadoghq.com/bits_ai/bits_investigation/investigate_issues.md)
+citeturn108view0 [wordlim: 200] Crawled: today; Content type: text/markdown; Source: open({"ref_id":"https://docs.datadoghq.com/bits_ai/bits_investigation/investigate_issues/","lineno":null}); Redirected to URL: https://docs.datadoghq.com/bits_ai/bits_investigation/investigate_issues.md; Total lines: 191
+L0: ---
+L1: title: Investigate Issues
+L2: description: >-
+L3:   Use Bits Investigation to automatically investigate monitor alerts and provide
+L4:   root cause analysis for faster incident resolution.
+L5: breadcrumbs: Docs > Bits AI > Bits Investigation > Investigate Issues
+L6: ---
+L7: 
+L8: > For the complete documentation index, see [llms.txt](https://docs.datadoghq.com/llms.txt).
+L9: # Investigate Issues
+L10: 
+L11: {% callout %}
+L12: # Important note for users on the following Datadog sites: app.ddog-gov.com, us2.ddog-gov.com
+L13: 
+L14: {% alert level="danger" %}
+L15: This product is not supported for your selected [Datadog site](https://docs.datadoghq.com/getting_started/site.md). ({% placeholder "user-datadog-site-name" /%}).
+L16: {% /alert %}
+L17: 
+L18: {% /callout %}
+L19: ## Start a Bits investigation{% #start-a-bits-investigation %}
+L20: 
+L21: You can launch a Bits investigation from several entry points in the Datadog UI:
+L22: 
+L23: - Monitor alerts, which you can trigger in two ways:
+L24:   - **Manual**: Start from an individual monitor alert
+L25:   - **Automatic**: Configure monitors to automatically launch a Bits investigation whenever they enter an alert state
+L26: - Synthetic test details page
+L27: - Real User Monitoring
+L28: - Error Tracking
+L29: - General prompt
+L30: You can also use Bits Investigation from AI assistants, applications, and the command line. For more information, see the [MCP, API, CLI](https://docs.datadoghq.com/bits_ai/bits_investigation/mcp_api_cli.md) page.
+L31: ### Monitor alerts{% #manual-monitor-alerts %}
+L32: 
+L33: You can invoke Bits on an individual monitor alert or warn event from several entry points:
+L34: 
+L35: #### Option 1: Bits Investigation Monitors list{% #monitor-list %}
+L36: 
+L37: 1. Go to [Bits Investigation > Monitors > Supported](https://app.datadoghq.com/bits-ai/monitors/supported).
+L38: 1. Click Investigate Recent Alerts and select an alert.
+L39: #### Option 2: Monitor status page{% #option-2-monitor-status-page %}
+L40: 
+L41: Navigate to the monitor status page of a Bits Investigation-supported monitor and click Investigate with Bits Investigation in the top-right corner.
+L42: 
+L43: #### Option 3: Monitor event side panel{% #option-3-monitor-event-side-panel %}
+L44: 
+L45: In the monitor event side panel of a Bits Investigation-supported monitor, click Investigate with Bits Investigation.
+L46: #### Option 4: Slack{% #option-4-slack %}
+L47: 
+L48: To use the Slack integration, [connect your Slack workspace to Bits Investigation](https://docs.datadoghq.com/bits_ai/bits_investigation/configure.md#slack).
+L49: 
+L50: In Slack, reply to a monitor notification with `@Datadog Investigate this alert`.
+L51: #### Option 5: Microsoft Teams{% #option-5-microsoft-teams %}
+L52: 
+L53: To receive investigation findings in Microsoft Teams, [send monitor notifications to a Microsoft Teams channel](https://docs.datadoghq.com/bits_ai/bits_investigation/configure.md#microsoft-teams-preview).
+L54: ### Synthetic tests{% #synthetic-tests %}
+L55: 
+L56: When a Synthetic Browser or API test monitor triggers, you can launch a Bits investigation to identify the root cause. Bits analyzes Synthetic test results and history alongside traces, logs, and metrics. It surfaces a likely root cause and identifies whether the failure reflects a real regression or a misconfiguration.
+L57: #### From the Synthetic test details page{% #from-the-synthetic-test-details-page %}
+L58: 
+L59: 1. On the [Synthetic Tests](https://app.datadoghq.com/synthetics/tests) page, open the Synthetic test you want to investigate and go to the Timeline section.
+L60: 1. Select the Alert Triggered event for the failing test run.
+L61: 1. Click Investigate with Bits.
+L62: 
+L63: The investigation opens in a new page, and you can also view it from the test details page after it runs.
+L64: #### From a Synthetic monitor{% #from-a-synthetic-monitor %}
+L65: 
+L66: Synthetic monitors support the same monitor-based entry points as other supported monitor types. See Monitor alerts for the available options, or toggle Auto-Investigate on a Synthetic monitor to start investigations automatically. For details, see Enable automatic investigations.
+L67: ### Real User Monitoring{% #real-user-monitoring %}
+L68: 
+L69: You can launch a Bits investigation from several places in Real User Monitoring (RUM):
+L70: - Recommendation cards on the RUM **Optimization** page and in Operations Monitoring. For details, see [Optimize Performance with Bits AI](https://docs.datadoghq.com/real_user_monitoring/bits_ai/optimize_performance.md).
+L71: - The **Anomaly · Investigate** button on a RUM vital chart. For details, see [Investigate Regressions and Alerts with Bits AI](https://docs.datadoghq.com/real_user_monitoring/bits_ai/investigate_regressions.md).
+L72: - RUM monitors, which support the same monitor-based entry points as other supported monitor types, including automatic investigations. For details, see [Investigate Regressions and Alerts with Bits](https://docs.datadoghq.com/real_user_monitoring/bits_ai/investigate_regressions.md).
+L73: ### Error Tracking{% #error-tracking %}
+L74: 
+L75: {% callout %}
+L76: # Important note for users on the following Datadog sites: app.datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, app.datadoghq.eu, ap1.datadoghq.com, ap2.datadoghq.com, uk1.datadoghq.com
+L77: 
+L78: {% callout %}
+L79: ##### Preview
+L80: 
+L81: Bits Investigation in Error Tracking is in Preview.
+L82: {% /callout %}
+L83: 
+L84: {% /callout %}
+L85: You can launch a Bits investigation from an Error Tracking issue. To start an investigation, click Investigate this issue on the Review tab of the issue panel. Bits analyzes the error, its stack trace, and related telemetry. If you set up [Source Code Integration](https://docs.datadoghq.com/source_code.md#tag-your-apm-telemetry-with-git-information), Bits also analyzes your source code. It then summarizes the root cause and impact in the issue panel.
+L86: For details, see [Investigate Errors with Bits AI](https://docs.datadoghq.com/error_tracking/bits_investigation.md).
+L87: ### General prompt{% #general-prompt %}
+L88: 
+L89: Click on [New Investigation](https://app.datadoghq.com/bits-ai/investigations/new) and describe the issue you want to troubleshoot. Include as much relevant context as possible:
+L90: 
+L91: - Observed symptoms (e.g., errors, latency) including any links to Datadog telemetry that indicate this
+L92: - Relevant tags such as service, application, or environment that isolate the issue
+L93: - A time window (default is past 4 hours)
+L94: The more specific your prompt, the more accurate and useful the investigation will be.
+L95: 
+L96: Good examples:
+L97: 
+L98: - Investigate requests to search-service in prod. Some requests are returning empty results when they should not. The issue began around 10:00 UTC.
+L99: - Investigate what's causing these errors: [https://app.datadoghq.com/logs?query=service%3Asearch-service%20status%3Aerror](https://app.datadoghq.com/logs?query=service%3Asearch-service%20status%3Aerror) They started appearing about 5 minutes ago.
+L100: Bad example:
+L101: 
+L102: - App is slow. What's wrong?
+L103: 
+L104: You can also trigger an investigation from Slack. Mention Datadog in a message: `@Datadog Investigate high CPU in ai-gateway in prod over the last 30 minutes`. If invoked within a Slack thread, Bits Investigation automatically uses the entire thread as investigation context.
+L105: ### Enable automatic investigations{% #enable-automatic-investigations %}
+L106: 
+L107: In addition to manual investigations, you can configure Bits to run automatically when a monitor transitions to the alert state:
+L108: #### From the Bits Investigation Monitors list{% #from-the-bits-investigation-monitors-list %}
+L109: 
+L110: 1. Go to [Bits Investigation > Monitors > Supported](https://app.datadoghq.com/bits-ai/monitors/supported).
+L111: 1. Toggle Auto-Investigate on for a single monitor, or bulk-edit multiple monitors by selecting multiple monitors, then clicking Auto-Investigate All.
+L112: #### For a single monitor{% #for-a-single-monitor %}
+L113: 
+L114: 1. Open the monitor's status page and click Edit.
+L115: 1. Scroll to Configure notifications & automations and toggle Investigate with Bits Investigation.
+L116: 
+L117: {% alert level="info" %}
+L118: - You can't enable automatic investigations on a monitor through the Datadog API or Terraform. To trigger an individual investigation programmatically, see [MCP, API, CLI](https://docs.datadoghq.com/bits_ai/bits_investigation/mcp_api_cli.md).
+L119: - An investigation initiates when a monitor transitions to the alert state.
+L120: - Transitions to the warn or no data state, [renotifications](https://docs.datadoghq.com/monitors/notify.md#renotify), and test notifications do not trigger automatic investigations.
+L121: {% /alert %}
+L122: ### Supported monitors{% #supported-monitors %}
+L123: 
+L124: Bits is able to run investigations on the following monitor types:
+L125: - Metric
+L126: - Anomaly
+L127: - Forecast
+L128: - Integration
+L129: - Outlier
+L130: - Logs
+L131: - APM (`APM Metrics` type only; `Trace Analytics` is not supported)
+L132: - Composites. For automatic investigations:
+L133:   - At least one child monitor must be a supported type.
+L134:   - Metric and log child monitors count only if the child monitor has a `service` tag, or its query filters or groups by `service`.
+L135: - SLOs
+L136: - Synthetics API and Browser tests
+L137: - RUM
+L138: ## How Bits investigates{% #how-bits-investigates %}
+L139: When Bits investigates an issue, it operates in a continuous loop of observation, reasoning, and action. It begins by forming hypotheses about the potential root cause, then uses its tools to query telemetry data to validate or invalidate those hypotheses. Each step builds on prior findings. As new evidence emerges, Bits updates its understanding, refines its reasoning, and chains together additional investigative steps—adapting and course-correcting until it converges on the most likely root cause.
+L140: At the end of an investigation, Bits either presents a clear, evidence-backed conclusion or marks the investigation as inconclusive when the available data is insufficient to support a defensible conclusion.
+L141: {% image
+L142:    source="https://docs.dd-static.net/images/bits_ai/bits_ai_sre_investigation_hypotheses.388a74db896dcfc962a133b702e62bfa.png?auto=format&fit=max&w=850 1x, https://docs.dd-static.net/images/bits_ai/bits_ai_sre_investigation_hypotheses.388a74db896dcfc962a133b702e62bfa.png?auto=format&fit=max&w=850&dpr=2 2x"
+L143:    alt="Flowchart showing the hypotheses Bits built and tested" /%}
+L144: When Bits reaches a conclusion, it suggests next steps, such as a code fix, a triage action, or an infrastructure action. For details, see [Bits Remediation](https://docs.datadoghq.com/bits_ai/bits_remediation.md).
+L145: ### Supported data sources{% #supported-data-sources %}
+L146: 
+L147: Bits uses the following data sources during investigations:
+L148: #### Datadog products{% #datadog-products %}
+L149: - Metrics
+L150: - APM traces
+L151: - Logs
+L152: - Dashboards
+L153: - Events
+L154: - [Change Tracking](https://docs.datadoghq.com/change_tracking.md)
+L155: - [Source code](https://docs.datadoghq.com/source_code.md#tag-your-apm-telemetry-with-git-information) (GitHub only)
+L156: - Watchdog
+L157: - Real User Monitoring
+L158: - Error Tracking
+L159: - Network Path
+L160: - Database Monitoring
+L161: - Continuous Profiler
+L162: Add service scoping: For monitors associated with a service, add a service tag to the monitor, or filter or group the monitor query by service. This helps Bits correlate data more accurately.
+L163: #### Third-party integrations{% #third-party-integrations %}
+L164: - Grafana
+L165: - Dynatrace
+L166: - Sentry
+L167: - Splunk
+L168: - ServiceNow
+L169: - Confluence
+L170: 
+L171: {% alert level="info" %}
+L172: Third-party integrations are in Preview for all customers.
+L173: {% /alert %}
+L174: 
+L175: For best practices on maximizing the effectiveness of investigations, see [Knowledge sources](https://docs.datadoghq.com/bits_ai/bits_investigation/knowledge_sources.md).
+L176: ### Investigation display modes{% #investigation-display-modes %}
+L177: 
+L178: There are two display modes: Investigation Steps and Hypothesis Tree.
+L179: 
+L180: While an investigation is in progress, Bits captures every step it takes—including how it evaluates evidence and makes decisions—in the Investigation Steps view. This provides a real-time, detailed record of the agent's reasoning process.
+L181: Once the investigation is complete, you can switch to the Hypothesis Tree view to explore a structured, tree-based visualization of the investigative path, making it easier to understand findings and conclusions at a glance.
+L182: ## Reports{% #reports %}
+L183: 
+L184: The Reports tab enables you to track the number of investigations run over time by monitor, user, service, and team. You can also track the mean time to conclusion to assess the impact of Bits Investigation on your on-call efficiency.
+L185: 
+L186: ## Further reading{% #further-reading %}
+L187: 
+L188: Additional helpful documentation, links, and articles:
+L189: 
+L190: - [Meet the new Bits Investigation: Deeper reasoning, twice as fast](https://www.datadoghq.com/blog/bits-ai-sre-deeper-reasoning)
+

@@ -1,0 +1,41 @@
+{
+  "app": "k6",
+  "version": "v2.4.0",
+  "artifact": "https://github.com/grafana/k6/releases/download/v2.4.0/k6-v2.4.0-windows-amd64.zip",
+  "checksums": "https://github.com/grafana/k6/releases/download/v2.4.0/k6-v2.4.0-checksums.txt",
+  "archive_sha256": "aaa90b3afc336faf90172c7addf45c4f41305f6f188e3d564f79466e80ac68e3",
+  "tested_at": "2026-11-20T03:20:11.020492+00:00",
+  "os": "Windows x86_64",
+  "runs": [
+    {
+      "mode": "pass",
+      "argv": [
+        "k6",
+        "run",
+        "--no-usage-report",
+        "probe.js"
+      ],
+      "input": {
+        "probe.js": "import { Rate } from 'k6/metrics';\nconst ok=new Rate('accepted');\nexport const options={vus:1,iterations:4,thresholds:{accepted:['rate>=0.75']}};\nexport default function(){ok.add(true);}\n"
+      },
+      "returncode": 0,
+      "stdout": "\n         /\\      Grafana   /‾‾/  \n    /\\  /  \\     |\\  __   /  /   \n   /  \\/    \\    | |/ /  /   ‾‾\\ \n  /          \\   |   (  |  (‾)  |\n / __________ \\  |_|\\_\\  \\_____/ \n\n\n     execution: local\n        script: probe.js\n        output: -\n\n     scenarios: (100.00%) 1 scenario, 1 max VUs, 10m30s max duration (incl. graceful stop):\n              * default: 4 iterations shared among 1 VUs (maxDuration: 10m0s, gracefulStop: 30s)\n\n\n\n  █ THRESHOLDS \n\n    accepted\n    ✓ 'rate>=0.75' rate=100.00%\n\n\n  █ TOTAL RESULTS \n\n    CUSTOM\n    accepted.............: 100.00% 4 out of 4\n\n    EXECUTION\n    iteration_duration...: avg=0s min=0s med=0s max=0s p(90)=0s p(95)=0s\n    iterations...........: 4       0/s\n\n    NETWORK\n    data_received........: 0 B     0 B/s\n    data_sent............: 0 B     0 B/s\n\n\n\n\nrunning (00m00.0s), 0/1 VUs, 4 complete and 0 interrupted iterations\ndefault ✓ [ 100% ] 1 VUs  00m00.0s/10m0s  4/4 shared iters\n",
+      "stderr": ""
+    },
+    {
+      "mode": "fail",
+      "argv": [
+        "k6",
+        "run",
+        "--no-usage-report",
+        "probe.js"
+      ],
+      "input": {
+        "probe.js": "import { Rate } from 'k6/metrics';\nconst ok=new Rate('accepted');\nexport const options={vus:1,iterations:4,thresholds:{accepted:['rate>=0.75']}};\nexport default function(){ok.add(__ITER===0);}\n"
+      },
+      "returncode": 99,
+      "stdout": "\n         /\\      Grafana   /‾‾/  \n    /\\  /  \\     |\\  __   /  /   \n   /  \\/    \\    | |/ /  /   ‾‾\\ \n  /          \\   |   (  |  (‾)  |\n / __________ \\  |_|\\_\\  \\_____/ \n\n\n     execution: local\n        script: probe.js\n        output: -\n\n     scenarios: (100.00%) 1 scenario, 1 max VUs, 10m30s max duration (incl. graceful stop):\n              * default: 4 iterations shared among 1 VUs (maxDuration: 10m0s, gracefulStop: 30s)\n\n\n\n  █ THRESHOLDS \n\n    accepted\n    ✗ 'rate>=0.75' rate=25.00%\n\n\n  █ TOTAL RESULTS \n\n    CUSTOM\n    accepted.............: 25.00% 1 out of 4\n\n    EXECUTION\n    iteration_duration...: avg=0s min=0s med=0s max=0s p(90)=0s p(95)=0s\n    iterations...........: 4      0/s\n\n    NETWORK\n    data_received........: 0 B    0 B/s\n    data_sent............: 0 B    0 B/s\n\n\n\n\nrunning (00m00.0s), 0/1 VUs, 4 complete and 0 interrupted iterations\ndefault ✓ [ 100% ] 1 VUs  00m00.0s/10m0s  4/4 shared iters\n",
+      "stderr": "time=\"2026-11-20T11:20:11+08:00\" level=error msg=\"thresholds on metrics 'accepted' have been crossed\"\n"
+    }
+  ]
+}

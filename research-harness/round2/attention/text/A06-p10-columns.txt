@@ -1,0 +1,110 @@
+IUI ’26, March 23–26, 2026, Paphos, Cyprus
+0
+100
+200
+300
+400
+Time
+Reactive
+Proactive
+=101.4s
+N=50
+=45.4s
+N=33
+Figure 6: Interpretation time comparison between proac-
+tively triggered chat sessions (𝜇= 45.4𝑠, 𝑁= 33) and reac-
+tively triggered ones (𝜇= 101.4𝑠, 𝑁= 50). Proactive sugges-
+tions demonstrate significantly faster interpretation times
+(𝑝= 0.0016, Wilcoxon signed-rank test), suggesting improved
+efficiency when AI assistance is tailored to the user’s work-
+flow context.
+to catch senseless errors when speed coding and did improve my code
+significantly.” Similarly, P5 mentioned how “[They] didn’t catch
+that loading the asset might throw an error as [they were] following
+an implementation guide from the library docs.” Participants also
+seemed to get an intuition for the AI’s strengths over time: “the AI
+is helpful for identifying repetitive code and extracting it to improve
+modularity. It also handles typing well.” [P13].
+5.3.2
+The Proactive AI Served Accelerative Purposes. Beyond ex-
+ploratory purposes, we observed that ProAIDE served accelerative
+purposes by alleviating the manual burden of context management
+and switching between different AI modalities, especially on De-
+clined AI Edit interventions. While developers generally rejected
+proactive suggestions after declining AI edits, some participants
+appreciated that the system automatically escalated to the AI chat
+with relevant context (e.g. when inline AI failed to produce the
+desired result), “offering proactive code editing while [they were]
+writing code so that [they wouldn’t] have to open a chat window or
+go somewhere else to fill in what’s missing” [P12].
+Interestingly, users spent significantly less time interpreting
+suggestions in proactively-triggered chat sessions (𝜇= 45.4𝑠, 𝑁=
+33) compared to reactively-triggered sessions (𝜇= 101.4𝑠, 𝑁= 50),
+as shown in Figure 6.
+We compared interpretation times (i.e., the time between the
+moment a suggested patch or snippet was presented in the chat
+until the user responded using either “Accept” or “Copy”) between
+proactive and reactive chat sessions using data from the same set
+of 18 participants. Given the paired nature of the data and the
+observed distributional skewness (see Figure 6), we employed the
+Wilcoxon signed-rank test as a non-parametric alternative to the
+paired 𝑡-test. To address the unequal group sizes (50 reactive vs.
+33 proactive sessions), we created balanced subsets by randomly
+sampling 33 observations from each condition. The test revealed
+a statistically significant difference (𝑊= 109.00, 𝑝= 0.0016) with
+---
+Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+a medium-to-large effect size (𝑟= 0.533). These findings suggest
+that proactively delivered suggestions, whether accepted as patches
+or adapted as snippets, were substantially easier and faster for
+developers to interpret than reactively requested ones.
+Examining the types of suggestions reveals differences in user
+engagement. In the reactive condition, users encountered relatively
+more exemplary code snippets (21/50; 42%) than in the proactive
+condition (5/33; 15%), where patches dominated. This discrepancy
+suggests that reactive use was more information-seeking, while
+proactive suggestions provided more actionable code. This distinc-
+tion likely contributed to the reduced interpretation time observed
+for proactive suggestions, as users were presented with ready-to-
+apply patches that generated diffs directly in the editor. In contrast,
+exemplary snippets were displayed only as in-chat code fragments,
+likely requiring more effort to interpret and adapt.
+Summary of RQ3. Developers engage with proactive AI for
+both exploratory and accelerative purposes, achieving high per-
+ceived productivity and workflow efficiency. In fact, we observe
+significantly lower interpretation times for proactive suggestions
+compared to reactive AI use.
+6
+Discussion
+6.1
+Design Implications for in-IDE Proactive AI
+Our study provides empirical evidence for how developers inter-
+act with proactive AI assistance in authentic professional work-
+flows, revealing timing-dependent patterns that inform the design
+of context-aware coding assistants. While prior work explored
+proactivity in controlled environments and limited contexts, our
+in-the-wild study reveals how real-world developers engage with
+and evaluate proactive interventions over time, spanning various
+programming languages and frameworks. We also revisit findings
+from earlier studies, contrasting them with our observations based
+on real-world behavior. Building on these insights, we offer design
+implications and recommendations grounded in the four design
+principles introduced in Section 3.
+DP1. Timely, proactive AI assistance. Our findings reveal that
+timing is a crucial aspect impacting developer engagement with
+proactive AI. Unlike static recommendation systems, LLM-based
+proactive assistants must dynamically align their understanding
+with developer mental models through contextual reasoning. Work-
+flow boundary interventions (e.g., after commits) were consistently
+well-received, due to natural blending into developer workflows.
+This reinforces prior findings from Pu et al. [52], now ecologi-
+cally validated in a production environment. On the other hand,
+mid-task interventions (e.g., after declined edits) were frequently
+dismissed or ignored. This pattern aligns with Iqbal and Bailey’s
+Index of Opportunity framework [27], which demonstrates that
+mental workload decreases at task boundaries, creating natural
+windows for interruption. Post-commit moments represent such
+boundaries: developers have externalized their working memory
+into the commit, freeing attentional resources for evaluating new
+information. Mid-task interventions, by contrast, compete for cog-
+nitive resources engaged in active implementation. This theoretical

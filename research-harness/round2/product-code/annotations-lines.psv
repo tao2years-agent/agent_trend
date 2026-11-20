@@ -1,0 +1,24 @@
+BUY01|AIDER:aider|277|289|--no-verify|创建提交时 hook、选定文件与全工作树分支
+BUY01|AIDER:aider|296|318|self.repo.git.commit(cmd)|Git 副作用、成功返回和错误处理
+BUY01|AIDER:tests|192|266|test_commit_with_custom_committer_name|维护者对指定 committer 配置的临时仓断言
+BUY12|GITLAB:duo_workflow_service/checkpointer/node|120|137|NodePhase.STARTED|真正节点开始，过滤嵌套调用
+BUY12|GITLAB:duo_workflow_service/checkpointer/node|148|168|NodePhase.ERRORED|中断与普通异常分流，终止时按运行 ID 出栈
+BUY12|GITLAB:tests/duo|103|133|test_handler_records_ended_not_errored_on_graph_interrupt|中断和异常的对照单测
+BUY12|GITLAB:tests/duo|256|320|Command(resume="yes")|维护者的真实 LangGraph 内存暂停与恢复图测试
+BUY12|GITLAB:integration|60|85|INPUT_REQUIRED|FakeExecutor 用例断言只有一条待输入通知
+BUY15|GOOSE:crates/goose/src/permission|73|131|apply_inspection_results_to_permissions|先应用权限检查器，未命中则等待审批
+BUY15|GOOSE:crates/goose/src/tool_inspection|170|247|InspectionAction::Deny|叠加其他检查器，拒绝可移除既有通过
+BUY15|GOOSE:crates/goose/tests|36|99|denial_dominates_regardless_of_inspection_result_order|维护者检查相反的判断顺序
+BUY25|ARGO:rollout/pause.go|138|156|currentStep.Pause.Duration == nil|手工动作要按策略与 pause 原因判断
+BUY25|ARGO:rollout/pause.go|168|209|CompletedCanaryPauseStep|手动恢复、蓝绿条件与等待时长
+BUY25|ARGO:rollout/pause_test|214|291|TestRequiresManualAction_CanaryPauseStep_TimedPause|无结论分析、无期限与定时灰度分支测试
+BUY29|REN:lib/workers/repository/process/limits.ts|13|42|return 0|按 UTC、来源分支过滤；区别宿主错误类型
+BUY29|REN:lib/workers/repository/process/limits.ts|44|73|getBranchPr|并发分支读取与局部忽略
+BUY29|REN:lib/workers/repository/process/limits.spec|29|55|returns zero if errored|普通异常得到零的上游测试
+BUY22|SONAR:server/sonar-server-common/src/main|56|85|setIgnoredConditionsOnSmallChangeset|社区求值器的 fallback 及小变更忽略
+BUY22|SONAR:server/sonar-server-common/src/main|127|136|return Level.OK|无 ERROR 的汇总出口
+BUY22|SONAR:server/sonar-server-common/src/test|125|145|Metric.Level.OK|空门禁与有 ERROR 条件的测试
+BUY34|SENTRY:src/sentry/seer/autofix/coding|49|82|run_not_found|宿主按组织取得 run，建立交接行
+BUY34|SENTRY:src/sentry/seer/autofix/coding|109|166|known_to_seer=False|本地状态、provider 分支与 PR 关联适用范围
+BUY34|SENTRY:tests/sentry|176|240|test_links_gitlab_pull_request|上游验证按启动时仓库信息回联 PR
+BUY17|MOD:rewrite-core|85|126|maxCycles|开源引擎中的迭代和结束条件；属于相邻基础实现

@@ -1,0 +1,210 @@
+Module 1: Migration assessment in the Moderne Platform | Moderne Docs (https://docs.moderne.io/hands-on-learning/spring-boot-migration/module-1-migration-assessment/)
+citeturn105view0 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"https://docs.moderne.io/hands-on-learning/spring-boot-migration/module-1-migration-assessment/","lineno":null}); Total lines: 207
+L0: 【0†Skip to main content】
+L1: 
+L2: AI Software Factory Summit - Feb. 22-24 in Miami. Moderne customers get a free pass (ask your account team). Everyone else: MODDOCS50 for half off - 【1†Register Now†dashboard.eventcombo.com】.
+L3: 
+L4: 【2†Platform】【3†CLI】【4†Agent tools】【5†Recipes】【6†DX】【7†Moddy】
+L5: 
+L6: Training
+L7: 
+L8: 【8†What's New】
+L9: 
+L10: Releases
+L11: 
+L12:   * Hands-on learning
+L13:   * 【9†Introduction to OpenRewrite】
+L14: 
+L15:   * 【10†Fundamentals of recipe development】
+L16: 
+L17:   * 【11†Advanced recipe development】
+L18: 
+L19:   * 【12†Preparing for a Spring Boot Migration】
+L20:     * 【13†Workshop overview】
+L21:     * 【14†Module 1: Migration assessment】
+L22:     * 【15†Module 2: Wave planning】
+L23:     * 【16†Module 3: Establish a baseline】
+L24:     * 【17†Module 4: Java 17 upgrade and Spring Boot 4 smoke test】
+L25:     * 【18†Module 5: Building the QueryDSL upgrade recipe】
+L26:     * 【19†Module 6: Finish migration in waves】
+L27:   * 【20†AI-assisted recipe authoring】
+L28: 
+L29:   * 【21†Live OpenRewrite training†www.moderne.ai】
+L30: 
+L31: Copy page
+L32: 
+L33: [Button: On this page]
+L34: # Module 1: Migration assessment in the Moderne Platform
+L35: 
+L36: In this module, you will run the Spring Boot 4 migration recipe in the Moderne Platform, then use code insight recipes to find the biggest risks and blockers. The idea is to see what breaks before investing time in fixes.
+L37: 
+L38: ## Exercise 1-1: Capture a DevCenter baseline【22†​】
+L39: 
+L40: ### Goals for this exercise【23†​】
+L41: 
+L42:   * Get an idea of the starting point for Java and Spring Boot versions
+L43: ### Steps【24†​】
+L44: 
+L45:   1. Navigate to 【25†app.moderne.io†app.moderne.io】 and sign in. Select Moderne - Training from the organization dropdown.
+L46:   2. Click DevCenter in the left nav. DevCenter is a dashboard that shows the upgrade status of your repositories at a glance — Java versions, Spring Boot versions, security issues, and more.
+L47:   3. Note the current status of Java and Spring Boot versions.
+L48:   4. Keep this page handy so you can compare after upgrading each group of repositories.
+L49: 【26†Image: DevCenter baseline showing Spring Boot, Java, and JUnit upgrade status across 11 repos】
+L50: 
+L51: DevCenter baseline
+L52: ## Exercise 1-2: Run the full migration recipe in the Moderne Platform【27†​】
+L53: 
+L54: ### Goals for this exercise【28†​】
+L55: 
+L56:   * Run the Spring Boot 4 migration recipe across an organization
+L57:   * Inspect failures and identify migration blockers
+L58: 
+L59: ### Steps【29†​】
+L60: #### Step 1: Open the Moderne Platform【30†​】
+L61: 
+L62:   1. If you haven't already, navigate to 【25†app.moderne.io†app.moderne.io】 and sign in.
+L63:   2. Confirm that Moderne - Training is selected in the organization dropdown.
+L64: 
+L65: 【31†Image: Organization dropdown with Moderne - Training selected】
+L66: 
+L67: 'Moderne - Training' org
+L68: #### Step 2: Create a migration recipe【32†​】
+L69: 
+L70:   1. Click Builder in the left navigation.
+L71: 
+L72: 【33†Image: Left sidebar with Builder navigation link highlighted】
+L73: 
+L74: Builder link
+L75: 
+L76:   2. Click + New recipe at the bottom of the "Manage my recipes" screen. If the builder already has a recipe open, click the recipe name in the upper left and select New.
+L77: 
+L78: 【34†Image: Recipe builder welcome modal with New recipe button highlighted】
+L79: 
+L80: Welcome modal
+L81: 
+L82: 【35†Image: Recipe name dropdown opening to show the New option】
+L83: New recipe menu
+L84: 
+L85:   3. Enter the name `Try Spring Boot 4 Upgrade` and save.
+L86: 
+L87: 【36†Image: New recipe modal with name set to Try Spring Boot 4】
+L88: 
+L89: New recipe modal
+L90: 
+L91:   4. Mouse over the root node in the recipe list and click the `+` button.
+L92: 
+L93: 【37†Image: Recipe builder showing the root node with an empty recipe list and search field】
+L94: 
+L95: Add recipes from the recipe list
+L96:   5. Search for `Migrate to Spring Boot 4.0` (【38†`io.moderne.java.spring.boot4.UpgradeSpringBoot_4_0`†codegenomeproject.org】) and select it.
+L97:   6. Click Add recipe.
+L98: 
+L99: 【39†Image: Add a recipe dialog with Migrate to Spring Boot 4.0 selected】
+L100: 
+L101: Add 'Migrate to Spring Boot 4.0' recipe
+L102: 
+L103:   7. Click the `+` next to the root node in the recipe list again and search for `Verify compilation` (【40†`io.moderne.compiled.verification.VerifyCompilation`†codegenomeproject.org】) this time. Click Add recipe to add it.
+L104: 【41†Image: Recipe list with Migrate to Spring Boot 4.0 and Verify compilation sub-recipes】
+L105: 
+L106: Custom recipe to run Spring Boot migration and then verify compilation
+L107: #### Step 3: Run the recipe and review the migration【42†​】
+L108:   1. Run the recipe against the organization by clicking the Dry Run button above the recipe list. A dry run executes the recipe across all repositories in the selected organization and shows you what changes it would make, without actually modifying any code.
+L109:   2. Open the change tree and click into a few files to review. Look for failures highlighted in the diffs by yellow squiggly lines.
+L110:   3. Take a few minutes to review the failures and note missing or incompatible classes and dependencies.
+L111: Common blockers include:
+L112: 
+L113:   * Incompatible build tool versions, plugins, or inconsistent configuration
+L114:   * Third-party dependencies that are incompatible, no longer exist, or have moved
+L115:   * Generated code that is tied to older Java or Spring APIs
+L116:   * Inter-repository dependencies that need to be built in a specific order
+L117: 
+L118: In this workshop, you will likely see:
+L119:   * Missing "Q" classes from QueryDSL code generation (for example, `QOrder`, `QInventory`)
+L120:   * Test compile errors from Spring Boot test API changes or older JUnit versions
+L121:   * Missing managed dependency versions caused by a Spring Boot starter being moved, replaced, or some particular functionality being deprecated or removed (for example, `spring-cloud-starter-zipkin` no longer managed by Spring Boot 4)
+L122: These are common migration speed bumps. The rest of the workshop is structured to handle them methodically.
+L123: 
+L124: 【43†Image: Recipe results showing compilation errors from QueryDSL generated classes】
+L125: 
+L126: One example of a compilation error is caused by the QueryDSL code generator.
+L127: 
+L128: A migration dry run plus the `Verify compilation` recipe (【40†`io.moderne.compiled.verification.VerifyCompilation`†codegenomeproject.org】) gives you a quick picture of what will break before you start the real work.
+L129: ## Exercise 1-3: Run code insight recipes【44†​】
+L130: 
+L131: ### Goals for this exercise【45†​】
+L132: 
+L133:   * Identify Java versions and build tooling in use
+L134:   * Discover current Spring Boot versions across your repositories
+L135:   * Find `javax.*` usage hotspots and code generators
+L136: 
+L137: ### Steps【46†​】
+L138: #### Step 1: Understand your Java adoption【47†​】
+L139:   1. Click Marketplace in the left navigation to browse available recipes. Search for and select `Plan a Java version migration` (【48†`org.openrewrite.java.migrate.search.PlanJavaMigration`†codegenomeproject.org】).
+L140:   2. Make sure Moderne - Training is still selected and click Dry run to run the recipe against the org.
+L141:   3. After the recipe run, click on the Data tables tab. Some recipes do not modify code — instead they analyze it and produce structured output called "data tables." Download and open the `Java version migration plan` data table as a CSV or Excel file.
+L142: 【49†Image: Data tables tab with Java version migration plan available for download】
+L143: 
+L144: Download the 'Java version migration plan' data table
+L145: 
+L146: You won't see any diff results when running this recipe. It only generates data tables that you can access from the Data tables tab.
+L147: 
+L148: This helps you confirm the baseline Java versions and build tooling in use so you know what you are starting from. For this example, you're using Java 8 and Maven across the board.
+L149: #### Step 2: Inspect Spring Boot versions【50†​】
+L150:   1. From the Marketplace, search for and select `Dependency insight for Gradle and Maven` (【51†`org.openrewrite.java.dependencies.DependencyInsight`†codegenomeproject.org】).
+L151:   2. Configure the options:
+L152:      * Group pattern: `org.springframework.boot`
+L153:      * Artifact pattern: `*`
+L154:      * Scope: `runtime`
+L155:   3. Click Dry run and wait for the recipe run to complete. Now open the `Dependencies in use` data table and download the CSV.
+L156:   4. On the Visualizations tab, run the `Dependency usage visualization`. Visualizations offer interactive views of the data produced by the recipe run.
+L157: 【52†Image: Dependency usage visualization with Run visualization button】
+L158: 
+L159: 'Dependency usage' visualization
+L160: 
+L161: The data table and visualization give you a distribution view of current Spring Boot versions, which is useful to help you cluster repos into upgrade groups.
+L162: #### Step 3: Find `javax.*` usage【53†​】
+L163: 
+L164: While you can run libraries compiled with an older version of Java in newer versions of the JVM, the Java runtime has deprecated specific APIs and ultimately removed or refactored those as it has evolved. Perhaps the most prominent example of this is the many `javax.*` APIs that were moved out of the JVM and into the Jakarta namespace. When you see high `javax.*` usage, expect more work to move to `jakarta.*` during the Spring Boot 4 upgrade.
+L165:   1. From the Marketplace, search for and select `Find types` (【54†`org.openrewrite.java.search.FindTypes`†codegenomeproject.org】).
+L166:   2. Configure the option:
+L167:      * Fully qualified type name: `javax..*`
+L168:   3. Click Dry run.
+L169:   4. Open the `Type uses` data table and note the top usage hotspots.
+L170: 
+L171: You can see that some of these projects use the validation and persistence APIs. This is something to keep an eye on to make sure that migration recipes upgrade to the new packages.
+L172: #### Step 4: Locate code generators (QueryDSL)【55†​】
+L173: 
+L174: Code generators like QueryDSL are often the hardest blockers because they can emit code that is tightly coupled to older Java and Spring APIs.
+L175:   1. From the Marketplace, search for and select `Find Maven plugins` (【56†`org.openrewrite.maven.search.FindPlugin`†codegenomeproject.org】).
+L176:   2. Configure the options:
+L177:      * Group ID: `com.mysema.maven`
+L178:      * Artifact ID: `apt-maven-plugin`
+L179:   3. Click Dry run.
+L180:   4. Open the `SearchResults` data table and note which repos use QueryDSL.
+L181: 
+L182: You should see four services that are using QueryDSL as part of their persistence layer.
+L183: Other useful code insight recipes you may want to explore later: `FindInternalJavaxApis` (【57†`org.openrewrite.java.migrate.search.FindInternalJavaxApis`†codegenomeproject.org】), `FindDeprecatedUses` (【58†`org.openrewrite.java.search.FindDeprecatedUses`†codegenomeproject.org】), and `RelocatedDependencyCheck` (【59†`org.openrewrite.java.dependencies.RelocatedDependencyCheck`†codegenomeproject.org】).
+L184: ## Takeaways【60†​】
+L185: 
+L186:   * A full migration dry run surfaces real blockers before you start making changes.
+L187:   * Code insight recipes help you quantify Java, Spring Boot, and `javax.*` usage hotspots.
+L188:   * DevCenter gives you a baseline view to compare against after each wave.
+L189: 
+L190: 【61†Edit this page†github.com】Give feedback (support@moderne.io)
+L191: 
+L192: Last updated on Nov 2, 2026
+L193: 
+L194: 【13†← Workshop overview】【15†Module 2: Wave planning →】
+L195:   * 【22†Exercise 1-1: Capture a DevCenter baseline】
+L196:     * 【23†Goals for this exercise】
+L197:     * 【24†Steps】
+L198:   * 【27†Exercise 1-2: Run the full migration recipe in the Moderne Platform】
+L199:     * 【28†Goals for this exercise】
+L200:     * 【29†Steps】
+L201:   * 【44†Exercise 1-3: Run code insight recipes】
+L202:     * 【45†Goals for this exercise】
+L203:     * 【46†Steps】
+L204:   * 【60†Takeaways】
+L205: 
+L206: © Moderne, 2026【62†Terms†www.moderne.io】【63†Privacy†www.moderne.io】Contact us (support@moderne.io)【64†Licensing】
+

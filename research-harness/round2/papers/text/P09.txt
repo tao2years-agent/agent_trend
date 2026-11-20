@@ -1,0 +1,924 @@
+                                               Programming by Chat: A Large-Scale Behavioral Analysis of
+                                                      11,579 Real-World AI-Assisted IDE Sessions
+                                                            Ningzhi Tang∗                                           Chaoran Chen∗                                         Zihan Fang
+                                                      University of Notre Dame                                 University of Notre Dame                                Vanderbilt University
+                                                       Notre Dame, IN, USA                                      Notre Dame, IN, USA                                     Nashville, TN, USA
+                                                           ntang@nd.edu                                            cchen25@nd.edu                                   zihan.fang@vanderbilt.edu
+
+                                                                 Gelei Xu                                             Maria Dhakal                                           Yiyu Shi
+                                                     University of Notre Dame                                  University of Notre Dame                              University of Notre Dame
+                                                      Notre Dame, IN, USA                                       Notre Dame, IN, USA                                   Notre Dame, IN, USA
+arXiv:2604.00436v2 [cs.SE] 23 Aug 2026
+
+
+
+
+                                                          gxu4@nd.edu                                             mdhakal@nd.edu                                          yshi4@nd.edu
+
+                                                          Collin McMillan                                                Yu Huang                                        Toby Jia-Jun Li
+                                                     University of Notre Dame                                    Vanderbilt University                               University of Notre Dame
+                                                      Notre Dame, IN, USA                                         Nashville, TN, USA                                  Notre Dame, IN, USA
+                                                           cmc@nd.edu                                          yu.huang@vanderbilt.edu                                   toby.j.li@nd.edu
+
+                                         Abstract                                                                                Keywords
+                                         IDE-integrated AI coding assistants, which operate conversationally                     Conversational Programming, AI Coding Assistants, Behavioral
+                                         within developers’ working codebases with access to project context                     Log Analysis, Empirical Software Engineering
+                                         and multi-file editing, are rapidly reshaping software development.                     ACM Reference Format:
+                                         However, empirical investigation of this shift remains limited: exist-                  Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu
+                                         ing studies largely rely on small-scale, controlled settings or analyze                 Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li. 2026. Programming by
+                                         general-purpose chatbots rather than codebase-aware IDE work-                           Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted
+                                         flows. We present, to the best of our knowledge, the first large-scale                  IDE Sessions. In Proceedings of the 41st IEEE/ACM International Conference
+                                         study of real-world conversational programming in IDE-native                            on Automated Software Engineering (ASE ’26), October 12–16, 2026, Munich,
+                                         settings, analyzing 74,998 developer messages from 11,579 chat ses-                     Germany. ACM, New York, NY, USA, 13 pages. https://doi.org/10.1145/
+                                         sions across 1,300 repositories and 899 developers using Cursor and                     3832783.3834377
+                                         GitHub Copilot. These chats were committed to public repositories
+                                         as part of routine development, capturing in-the-wild behavior. Our                     1     Introduction
+                                         findings reveal three shifts in how programming work is organized:                      IDE-integrated AI assistants such as GitHub Copilot (Chat)1 and
+                                         conversational programming operates as progressive specification,                       Cursor2 have evolved beyond autocomplete into multi-turn con-
+                                         with developers iteratively refining outputs rather than specifying                     versational systems. Unlike general-purpose chat interfaces (e.g.,
+                                         complete tasks upfront; developers redistribute cognitive work to                       ChatGPT in the browser), these assistants operate directly within
+                                         AI, delegating diagnosis, comprehension, and validation rather than                     the developer’s working codebase, with access to project context,
+                                         engaging with code and outputs directly; and developers actively                        coordinated multi-file editing, terminal execution, and runtime in-
+                                         manage the collaboration, externalizing plans into persistent arti-                     spection. This emerging practice, which we refer to as AI-assisted
+                                         facts, and negotiating AI autonomy through context injection and                        conversational programming in IDE-native settings, represents a shift
+                                         behavioral constraints. These results provide foundational empiri-                      in how developers work: rather than writing code directly, develop-
+                                         cal insights into AI-assisted development and offer implications for                    ers increasingly express intent and iteratively steer AI-generated
+                                         the design of future programming environments.                                          outputs through dialogue. In a more extreme form, this delegation
+                                                                                                                                 can resemble “vibe coding” [12, 46], where substantial implemen-
+                                         CCS Concepts                                                                            tation is offloaded to AI with limited inspection; existing reports
+                                         • Software and its engineering → Software creation and man-                             indicate that some codebases are now 95% AI-generated3 .
+                                         agement; • Human-centered computing → Empirical studies                                    This shift indicates that IDE-native conversational programming
+                                         in HCI.                                                                                 is rapidly becoming a prominent mode of software development.
+                                                                                                                                 Yet, despite widespread adoption, empirical understanding of how
+                                         ∗ Both authors contributed equally to this research.
+                                                                                                                                 developers actually converse with these assistants in real-world en-
+                                                                                                                                 vironments remains limited. Characterizing these interactions is es-
+                                                                                                                                 sential both for understanding modern development workflows and
+                                         This work is licensed under a Creative Commons Attribution 4.0 International License.
+                                                                                                                                 1 https://github.com/features/copilot
+                                         ASE ’26, Munich, Germany
+                                                                                                                                 2 https://cursor.com/
+                                         © 2026 Copyright held by the owner/author(s).
+                                                                                                                                 3 https://techcrunch.com/2025/03/06/a-quarter-of-startups-in-ycs-current-cohort-
+                                         ACM ISBN 979-8-4007-2882-2/2026/10
+                                         https://doi.org/10.1145/3832783.3834377                                                 have-codebases-that-are-almost-entirely-ai-generated/
+ASE ’26, October 12–16, 2026, Munich, Germany   Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+for designing more effective next-generation assistants. Currently,
+the empirical evidence is constrained in two complementary ways.
+   First, existing studies lack either scale or ecological validity.
+Video-based studies analyze publicly shared YouTube recordings
+in which developers code while narrating their process to an audi-
+ence [12, 46], but this performative setting may systematically alter
+behavior through audience effects [2], and the largest prompt-level
+analysis of this kind covers only 254 prompts [12]. Controlled user
+studies assign developers researcher-defined tasks on unfamiliar
+codebases [10, 19, 29], a setting that differs markedly from every-
+day development, where goals are self-directed, context accumu-
+lates over time, and interaction is embedded in ongoing work [51].
+As a result, the range of observable goals and interaction styles
+remains constrained. Finally, interview- and practitioner-based
+accounts [44, 49] are also subject to recall and self-presentation
+bias [20, 32]. Together, these studies provide valuable early insight,                 Figure 1: Illustrative conversational programming session
+but they cannot capture how developers interact with AI coding                         annotated with behavioral intent labels. The interaction ex-
+assistants across the diverse self-directed tasks, codebases, and user                 emplifies the Failure-Driven Debugging archetype.
+populations of everyday software development.
+   Second, large-scale studies of developer-LLM interactions have
+                                                                                            We then use an LLM-based classifier to label all 74,998 mes-
+primarily focused on browser-based chat rather than IDE-integrated
+                                                                                            sages, validated against a human-annotated reference set of
+environments. For example, DevGPT [61] curated developer-shared
+                                                                                            400 messages (macro-averaged F1 = 0.802).
+ChatGPT conversation links from GitHub, enabling subsequent
+                                                                                          • RQ2: What recurring behavioral archetypes and intent dynamics
+studies of usage patterns [35], code quality [50], and refactoring
+                                                                                            characterize conversational programming sessions? We repre-
+practices [3]. More recently, CodeChat [67] assembled developer-
+                                                                                            sent each session as an ordered sequence of intent labels and
+LLM conversations from WildChat [65] and analyzed conversation-
+                                                                                            apply hierarchy-aware edit-distance-based [33] sequence clus-
+level topics and code defects. These datasets have enabled important
+                                                                                            tering [28] to 4,864 sessions with at least four messages, iden-
+large-scale analyses, but they do not capture interaction in IDE-
+                                                                                            tifying six recurring behavioral archetypes. We then analyze
+native settings where assistants operate with repository context,
+                                                                                            intent dynamics through within-session transition patterns,
+tool access, and direct editing capabilities within an ongoing devel-
+                                                                                            session-boundary transitions, and session evolution from open-
+opment workflow rather than as isolated query-answer exchanges.
+                                                                                            ing turns to later messages.
+   To address these limitations, we present, to the best of our knowl-
+edge, the first large-scale empirical study of AI-assisted conversa-                      We highlight the following key results.
+tional programming in IDE-native settings. Our dataset comprises                        (1) Conversational programming operates as progressive
+74,998 developer messages from 11,579 chat sessions across 1,300                            specification rather than upfront task description. Devel-
+repositories and 899 developers using Cursor and GitHub Copilot.                            opers steer the AI toward desired outputs through successive
+These sessions were neither required nor observed by researchers.                           instructions (Finding 1); opening turns frame the task before
+Developers committed their chat histories to public repositories as                         sessions shift toward responding to AI outputs and emerging
+part of their workflow, capturing self-directed development activity                        failures (Finding 11); and iterative modification and debugging
+in the wild. The dataset reflects substantial diversity: tasks range                        tend to persist across consecutive turns (Finding 9).
+from web development to AI/ML engineering, messages are writ-                           (2) Developers redistribute cognitive work to AI. They report
+ten in over 20 different natural languages, and repositories span a                         symptoms and machine outputs rather than diagnosing bugs
+wide range of scales and maturity levels. This large-scale behav-                           (Finding 2), inquire about system behavior rather than reading
+ioral evidence enables us to characterize how developers structure                          code (Finding 3), and delegate validation to AI through both
+tasks, delegate work to AI assistants, and recover from failures                            static code review and runtime inspection requests (Finding 4).
+in IDE-native conversational programming. Figure 1 illustrates a                        (3) Developers actively manage the collaboration rather
+representative chat session.                                                                than treating AI as a passive tool. They request persistent
+   Using this dataset, we characterize conversational program-                              planning documents to externalize intent (Finding 5), negoti-
+ming at two complementary levels, developer message intents and                             ate AI autonomy through context injection and explicit action
+session-level structure, investigating the following research ques-                         constraints (Finding 6), and start new chat sessions to refresh
+tions (RQs):                                                                                context while preserving task continuity (Finding 10).
+                                                                                        (4) Conversational programming exhibits structured inter-
+                                                                                            action modes at the session level. Most sessions are short
+   • RQ1: What behavioral intents do developers express in their                            and task-focused, but a long-tailed minority of sessions sus-
+     messages to AI coding assistants? We develop a multi-label                             tains extended iterative refinement (Finding 7). Six recurring
+     behavioral intent taxonomy through iterative abductive cod-                            archetypes emerge from clustering, ranging from failure-driven
+     ing [56], comprising 7 main categories and 20 subcategories.                           debugging to extended co-development (Finding 8).
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                       ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+2 Background and Related Work                                                           project-level specifications rather than dynamic multi-turn interac-
+                                                                                        tion. The closest line of work to ours examines developer-LLM con-
+2.1 Empirical Studies of AI Programming in IDE
+                                                                                        versations directly, but primarily in general-purpose chatbots rather
+AI coding assistants have evolved from autocomplete tools into                          than IDE-native settings. DevGPT [61] and CodeChat [67] curate de-
+conversational and increasingly agentic systems. Early systems                          veloper conversations from browser-based interfaces, i.e., ChatGPT
+(e.g., the initial release of GitHub Copilot in 2021) supported only                    and WildChat [65], enabling follow-up analyses [3, 16, 23, 35, 50].
+inline code completion, offering localized assistance within a single                   Crucially, none of these datasets capture interaction in IDE-native
+file or completion context, without invoking external tools, execut-                    settings, where assistants operate directly with repository context
+ing code, or coordinating edits across files. Empirical studies from                    and tool access as part of an ongoing development workflow. This
+this period [7, 36, 43, 53–55] reflect these limitations, examining                     distinction is reflected in our findings: we replicate the predomi-
+interactions that were largely single-turn and narrowly scoped, in                      nantly short, task-delegation-oriented conversations observed in
+which the assistant primarily served as a reactive suggestion engine                    browser-based studies [23, 35], while behaviors such as runtime
+for short code spans within the developer’s active cursor context.                      inspection and persistent planning documents surface only in IDE-
+Sustained multi-turn delegation and iterative steering, which are                       native interactions (e.g., Findings 4–6).
+central to more capable assistants, therefore remained largely be-                         Our analytical approach draws on methodological precedents
+yond the scope of this earlier body of work.                                            from large-scale studies of general-purpose LLM usage. Studies of
+    This began to change with the rise of conversational interaction                    ChatGPT, Claude, and Microsoft Copilot employ LLM-based classi-
+in IDEs. Tools such as Cursor and later versions of GitHub Copilot                      fiers to categorize conversations by topic, task, and usage context
+moved beyond inline completion to support chat-based interaction                        at scale [5, 8, 13, 22]. These studies provide broad accounts of LLM
+within the IDE and across broader project contexts. By February                         use, but typically at the level of conversation topics or occupa-
+2025, this shift had become culturally visible: Karpathy coined the                     tional tasks. Closer to our session-level focus, Mysore et al. [42]
+term “vibe coding” to describe accepting AI-generated code without                      classify follow-up utterances in LLM-assisted writing and identify
+reading diffs and pasting errors without diagnosis4 .                                   prototypical collaboration behaviors that account for much of the
+    This emerging practice has attracted growing empirical attention                    variation across multi-turn sessions. Related work operationalizes
+through several forms of evidence. Video- and observation-based                         interaction dynamics such as autonomy and user oversight in agen-
+studies analyze publicly shared sessions, including YouTube and                         tic systems5 . These studies establish the feasibility of large-scale
+Twitch livestreams, to characterize prompting, delegation, and de-                      behavioral log analysis for characterizing human-LLM interaction.
+bugging behavior [12, 46]. For example, Chou et al. [12] analyze                        Our work applies and extends this approach to IDE-native conver-
+livestreams and opinion videos, showing that vibe coding ranges                         sational programming, a setting whose affordances and workflows
+from near-total delegation to more inspection-heavy collaboration.                      remain underrepresented in prior analyses.
+A smaller body of work draws on interviews, online discourse,
+and practitioner accounts to identify recurring themes such as co-                      3     Methodology
+creation, flow, trust, and concerns about quality assurance [18, 44].
+Controlled and field studies have examined increasingly agentic                         We conducted a mixed-methods study of AI coding assistant chats
+workflows. For example, Chen et al. [10] compare GitHub Copilot                         from public GitHub repositories. For RQ1, we analyzed message-
+with the CLI-based agent OpenHands and find that higher automa-                         level intents using a taxonomy and LLM-based classification (Sec-
+tion can reduce user effort while raising transparency concerns.                        tion 3.2). For RQ2, we analyzed session-level archetypes and intent
+Kumar et al. [29] further show that incremental collaboration often                     dynamics (Section 3.3).
+outperforms one-shot delegation. Together, these studies provide
+important early insights, but they remain largely small-scale, ob-                      3.1     Data Collection and Preparation
+served, retrospective, or task-bounded, leaving in-the-wild IDE-                        We collected AI coding assistant chat histories from publicly avail-
+native conversational programming undercharacterized.                                   able GitHub repositories via SpecStory6 , a developer tool that
+                                                                                        automatically exports chat histories as timestamped Markdown
+                                                                                        files stored in each project repository. SpecStory supports multiple
+2.2     Large-Scale Studies of Coding with LLMs
+                                                                                        AI coding tools, including IDE-integrated assistants (i.e., Cursor,
+Existing empirical data for AI-assisted coding span benchmarks that                     GitHub Copilot) and CLI-based agents (e.g., Claude Code).
+evaluate model capabilities under standardized conditions [11, 15,                          To retrieve these exported histories at scale, we queried the
+17, 26, 64, 66], artifact-level datasets that capture development out-                  GitHub Code Search API7 over .specstory/history/. Because the
+comes (e.g., pull request acceptance) [34], and field measurements                      API caps results at 1,000 per query, we partitioned searches by date
+of AI tool usage at scale [14, 48]. While valuable, these resources                     prefix (e.g., files starting with 2025-06-15), leveraging SpecStory’s
+measure task performance or downstream products rather than                             date-prefixed filename convention. All data were collected on March
+the interaction process itself. A separate line of work examines                        4, 2026, capturing sessions from September 2024 to March 2026,
+developer-provided context artifacts for coding agents, such as Cur-                    spanning SpecStory’s availability and the early adoption of chat-
+sor rules and CLAUDE.md files [25, 40], but these capture persistent                    based AI coding assistants in software development.
+
+                                                                                        5 https://anthropic.com/research/measuring-agent-autonomy
+                                                                                        6 https://specstory.com/
+4 https://x.com/karpathy/status/1886192184808149383                                     7 https://docs.github.com/en/rest/search/search
+ASE ’26, October 12–16, 2026, Munich, Germany   Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+   For each discovered file, we retrieved its raw Markdown via the                     coding [56]. Prior schemes such as CUPS [41] were designed for
+Git Blobs API and parsed it into structured records. Specifically,                     code-completion interactions and do not transfer well to multi-turn
+we identified conversational turns using the role-prefixed mark-                       conversational dynamics, so we built the taxonomy from scratch.
+ers introduced by SpecStory (e.g., “User,” “Assistant,” and “Agent”)                   Drawing on Speech Act Theory [6, 47], we labeled each message
+and treated the content associated with each marker as a single                        by its illocutionary act, i.e., the intentional action performed (e.g.,
+turn-level message for analysis. We provide the full parser imple-                     requesting, asserting, or directing), rather than by surface form
+mentation and format specifications in the replication package. We                     or topic. We used a multi-label scheme because many developers’
+manually inspected a random sample of 100 parsed sessions and                          turns in AI coding assistant chats contain multiple communicative
+found turn identification and role assignment to be accurate in all                    acts. For example, “@config.yaml — set up the database connection”
+cases. We then retained only user messages for subsequent analysis,                    both provides context and requests implementation.
+as they capture developer intents.                                                        Three researchers with expertise in SE, AI, and HCI conducted
+                                                                                       the coding. In Round 1, we randomly sampled 300 messages with full
+   Data Cleaning and Exclusion. Each file is uniquely identified                       conversational context and coded them through group discussion,
+by its content hash (SHA), which we used as the deduplication                          resolving disagreements by consensus to establish an initial code-
+key across search results. This removed 3,512 duplicates. Manual                       book. In Rounds 2–4, we used the same LLM-based classification
+inspection traced them mainly to developers duplicating chat histo-                    pipeline later employed for full-dataset annotation (Section 3.2.2),
+ries within a single repository as snapshot backups (one developer                     but with the then-current version of the codebook, to generate pro-
+alone accounted for 58% of duplicates; 2,474 → 444 sessions after                      visional labels for all messages. Under each main category, we also
+deduplication); and less to cross-repository copying via cloning,                      included a temporary Others subcategory for messages that did
+templating, or forking. Our initial collection included 1,705 sessions                 not fit existing definitions. These provisional labels were used to
+exported from CLI-based agents (primarily Claude Code). We ex-                         support diagnostic sampling for codebook refinement. Specifically,
+cluded these for two reasons: (1) their logs interleave user messages                  from each subcategory, including Others, we randomly sampled
+with tool outputs and system callbacks, obscuring user behavior;                       40 messages for human review with conversational context. When
+(2) they represent a different interaction paradigm in which users                     boundary cases in a subcategory remained unresolved after initial
+issue high-level tasks and agents autonomously plan and execute                        discussion, we reviewed an additional 20 messages from that subcat-
+multi-step actions, rather than engaging in turn-by-turn conversa-                     egory. We used these reviews to assess whether category definitions
+tional collaboration [10]. We therefore focused on IDE-integrated                      were sufficiently precise, whether boundary cases were handled
+sessions and left CLI-agent behavior to future work.                                   consistently, and whether messages assigned to Others exhibited
+   After removing duplicates and excluding CLI-agent sessions, the                     coherent recurring patterns warranting new subcategories. Across
+dataset contained 76,231 user messages over 11,655 sessions. After                     all rounds, coding decisions were grounded in the iterative inter-
+the classification stage described in Section 3.2.2, we excluded 1,233                 play between empirical data patterns and our emerging theoretical
+messages that do not have any classifiable behavioral intent, along                    framework, following abductive coding practice [56].
+with sessions with no remaining classifiable messages, yielding the                       We assessed structural saturation by tracking the number of
+final analytic dataset of 74,998 user messages across 11,579 ses-                      subcategories added or substantively revised after each round, fol-
+sions, from 1,300 unique repositories, involving 899 developers,                       lowing previous saturation criteria [24, 38]. The counts decreased
+identified by unique Git commit authors of chat history files.                         monotonically across the four rounds (9, 5, 1, 0), with no new sub-
+                                                                                       categories in the final round, indicating that the codebook had
+   Dataset Characteristics. The repositories in our dataset skewed to-
+                                                                                       stabilized. The final taxonomy comprises 7 main categories and
+ward personal and early-stage projects rather than established open-
+                                                                                       20 subcategories (Table 1). The full codebook, including defini-
+source software, with 67.3% having a single contributor, consistent
+                                                                                       tions, key signals, examples, and boundary notes, is provided in
+with the overall distribution of public GitHub repositories [27].
+                                                                                       our replication package.
+The primary languages were TypeScript (25.8%), Python (22.0%),
+JavaScript (13.1%), and HTML (9.4%), with a long tail of additional                    3.2.2 LLM-Based Classification. We classified all 76,231 user mes-
+languages (e.g., Shell, Java, Rust, C++), each under 2.1%. Most (90.8%)                sages with GPT-5 mini8 via the OpenAI Batch API, with the finalized
+were created in 2025 or later, with a median of 15 commits over                        behavioral intent codebook provided as the system prompt. We
+4 active days, although a long tail includes larger projects with                      chose GPT-5 mini for its balance of classification capability and
+thousands of commits and repositories dating back to 2013.                             cost at our scale, following a comparable large-scale classification
+   Automated language identification [37] indicated highly multilin-                   study [8]. We adopted an LLM-based classification approach be-
+gual user messages: English comprised 59.7%, followed by Chinese                       cause behavioral intent labeling is multi-label, context-dependent,
+(18.5%) and Japanese (8.3%), with the remainder across a long tail of                  and semantically nuanced. Prior work [58] suggests that LLMs
+other languages. As many prompts intermix natural language with                        can achieve strong performance on text classification tasks when
+code and technical tokens, these proportions should be treated as                      guided by structured instruction and schema constraints. Each clas-
+contextual indicators rather than precise linguistic annotations.                      sification request included the current message together with one
+                                                                                       turn of prior conversational context: the immediately preceding
+3.2     Behavioral Intent Characterization                                             user message and the AI’s most recent response. Context mes-
+                                                                                       sages were truncated to 1,000 characters using a head-tail strategy
+3.2.1 Iterative Codebook Development. We developed the behav-
+ioral intent taxonomy through four rounds of iterative abductive                       8 https://developers.openai.com/api/docs/models/gpt-5-mini
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                   ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+Table 1: Behavioral Intent Taxonomy with distribution statistics. % Msg denotes the percentage of messages assigned to each
+category or subcategory, calculated over the final analytic dataset of 74,998 messages. Due to multi-labeling, percentages sum
+to more than 100% across categories, and subcategory percentages do not add up to their parent category total. % Multi denotes
+the percentage of messages carrying at least one additional label, computed within the same level.
+
+  Category / Subcategory                    Definition                                                                                        % Msg     % Multi
+  1. Code Authoring                         Requests to produce, modify, or adjust code.                                                       34.53       35.71
+     1.1 New Implementation                   Build something that does not yet exist as functional code.                                       5.86       35.32
+     1.2 Iterative Modification               Adjust, constrain or refine existing or in-progress code.                                        24.84       43.06
+     1.3 Alignment Correction                 Redirect the AI when its output runs but misses the user’s actual intent.                         7.21       83.63
+  2. Failure Reporting                      Report something broken, erroring, or behaving unexpectedly.                                       24.00       27.80
+     2.1 Log Paste                            Paste machine-generated error logs or stack traces.                                               8.84       39.74
+     2.2 Symptom Description                  Describe a malfunction in natural language.                                                      14.77       50.76
+     2.3 Error Persistence                    Signal that a previous fix attempt has failed.                                                    3.76       57.43
+  3. Inqiry                                 Seek information, understanding, or advice without requesting code.                                19.17       26.31
+     3.1 Planning & Consultation              Plan next steps or seek advice on architectural choices.                                          7.81       37.48
+     3.2 Project Comprehension                Understand the current state of the project or existing code.                                     8.19       29.38
+     3.3 General Knowledge Query              Ask a project-agnostic technical or domain question.                                              3.56       11.35
+  4. Context Specification                  Provide information or instructions to shape AI understanding or action rules.                     14.08       65.42
+     4.1 Information Injection                Supply raw factual information for the AI to internalize.                                         8.46       61.86
+     4.2 Behavior Specification               Negotiate AI autonomy, operating boundaries, or persona.                                          6.14       77.88
+  5. Validation                             Ask the AI to evaluate or inspect code or execution output.                                          3.99      56.14
+     5.1 Code Review                          Inspect code for correctness, quality, or security without running it.                             2.74      51.14
+     5.2 Runtime Inspection                   Validate behavior by examining runtime output or test results.                                     1.26      67.69
+  6. Delegation                             Instruct the AI to perform development-workflow actions beyond authoring code.                     16.48       45.94
+     6.1 Documentation                        Produce written artifacts such as docs, logs, or planning files.                                  6.85       55.93
+     6.2 Toolchain Operation                  Take action in the development environment via commands or tools.                                10.50       49.99
+  7. Workflow Control                       Manage session pace, direction, or state without new technical content.                            11.47       24.36
+     7.1 Confirmation                        Signal that the AI’s output was correct or a step succeeded (e.g., “works”).                       2.65       21.75
+     7.2 Continuation                        Instruct the AI to proceed without introducing new requirements (e.g., “continue”).                5.54       16.67
+     7.3 Deferred Debugging                  Terse fix command relying entirely on session context (e.g., “fix it”).                            0.74       13.64
+     7.4 Deferred Implementation             Terse implementation command relying entirely on session context (e.g., “edit it”).                0.78       23.00
+     7.5 Sentiment Expression                Express an emotional or social state (e.g., greetings, frustration, gratitude).                    2.05       77.72
+
+
+(60% prefix, 40% suffix), and the current message was truncated to                      discussion to produce an adjudicated gold-standard reference set.
+10,000 characters. This context design captures the most immediate                      We then evaluated the LLM classifier against this reference set using
+conversational context for intent disambiguation while keeping                          the same per-category binary scheme, obtaining a macro-averaged
+prompts at a consistent and tractable length, consistent with prior                     F1 of 0.802 (precision = 0.774, recall = 0.851). The per-category
+work on LLM-based classification of conversational data [8, 42].                        results are reported in the replication package.
+We enforced structured output via a JSON Schema, requiring the                             After classification, 1,233 messages (1.62%) were assigned only
+model to return a set of intent labels along with a brief textual                       to the residual Others category. Manual inspection confirmed that
+justification for each. We enabled the model’s built-in reasoning                       this category captures inputs without recoverable communicative
+mode (i.e., chain-of-thought [59]), which produces intermediate rea-                    intent, e.g., accidental keystrokes, parser artifacts such as ---. We
+soning steps before emitting the final JSON labels. This particularly                   excluded these messages from all subsequent analyses and removed
+helps disambiguate multi-intent and borderline cases.                                   sessions with no classifiable messages, yielding the final analytic
+   To validate classifier accuracy, we drew a stratified random sam-                    dataset described earlier.
+ple of 400 messages (20 per subcategory) covering all 20 subcate-
+gories; because messages carry multiple labels, a single message                        3.2.3 Inductive Qualitative Coding. To characterize behavioral pat-
+may appear in more than one subcategory sample. Two researchers                         terns, we conducted an inductive qualitative analysis following
+independently annotated all 400 messages using the finalized code-                      established thematic coding practices [31]. For each of the 20 sub-
+book and full session context. Inter-rater reliability was assessed                     categories, we randomly sampled 80 messages. Because this analysis
+per subcategory by treating each label as a binary present/absent                       was interpretive in purpose, focusing on identifying recurring be-
+decision and computing Cohen’s 𝜅 separately for each of the 20 sub-                     havioral patterns rather than fixed categorical labels, we prioritized
+categories, then macro-averaging; this yielded 𝜅 = 0.669, indicating                    consensus-based thematic synthesis [39]. To ensure rigor, two re-
+substantial agreement [30]. Disagreements were resolved through                         searchers independently reviewed each sampled message with full
+                                                                                        session context and conducted open coding to identify recurring
+ASE ’26, October 12–16, 2026, Munich, Germany         Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+behavioral patterns without predefined themes; they then discussed                           we normalized the raw edit distance by the longer sequence length:
+and reconciled their interpretations to produce consolidated the-                                                                        𝑑 raw (𝑠, 𝑠 ′ )
+matic summaries. This sample size provided sufficient coverage for                                                      𝑑 (𝑠, 𝑠 ′ ) =
+                                                                                                                                        max(|𝑠 |, |𝑠 ′ |)
+recurring themes to stabilize during analysis, consistent with prior
+discussions of thematic saturation in qualitative research [21]. The                         where 𝑑 raw (𝑠, 𝑠 ′ ) is the raw weighted edit distance computed by
+resulting thematic summaries and illustrative quotes are reported                            dynamic programming. Since 𝑤 cross = 𝑤 indel = 1.0, 𝑑 raw (𝑠, 𝑠 ′ ) ≤
+alongside each finding in Section 4.1.                                                       max(|𝑠 |, |𝑠 ′ |), so 𝑑 (𝑠, 𝑠 ′ ) ∈ [0, 1].
+                                                                                                K-Medoids Clustering. We computed the full pairwise distance
+3.3     Session Archetypes and Dynamics Analysis                                             matrix over all 4,864 sessions and applied K-Medoids (PAM) [28]
+3.3.1 Session Clustering. To complement the message-level analy-                             with k-medoids++ initialization [4], operating directly on the pre-
+sis in Section 3.2, we examined whether AI-assisted conversational                           computed distance matrix and yielding actual sessions as cluster
+programming exhibits recurring session-level archetypes. Rather                              representatives (medoids). We evaluated 𝑘 ∈ {2, . . . , 20} using the
+than clustering raw message text, we represented each session as a                           silhouette score [45], which compares within-cluster similarity
+sequence of intent labels, thereby focusing on behavioral structure                          against neighboring clusters. The score peaked at 𝑘 = 6 (silhou-
+rather than surface linguistic variation. We restricted clustering                           ette = 0.0703), which we adopted as the final model. Absolute
+to sessions with at least four user messages (𝑛 = 4,864), because                            silhouette values were low across all tested 𝑘 (0.0367–0.0703), indi-
+shorter sessions contain too few within-session transitions to sup-                          cating weakly separated clusters. This likely reflects the nature of
+port meaningful sequence comparison using edit distance.                                     edit-distance sequence clustering, where sessions may share over-
+  Session Representation. Each session 𝑠 is represented as an or-                            lapping subsequences without forming sharply separated groups.
+dered sequence of label sets:                                                                We therefore interpret the six clusters conservatively as prototyp-
+                                                                                             ical archetypes, i.e., descriptive anchors of dominant behavioral
+                         𝑠 = (ℓ1, ℓ2, . . . , ℓ𝑇 ),   ℓ𝑡 ⊆ C                                 patterns, rather than mutually exclusive natural classes. To charac-
+                                                                                             terize each archetype, two researchers independently examined the
+where 𝑇 is the number of user messages and C is the set of 20
+                                                                                             medoid sequence and a random sample of 30 sessions per cluster,
+subcategories in Table 1. Each ℓ𝑡 is a non-empty set of intent labels
+                                                                                             then consolidated observations into a cluster label and narrative
+(|ℓ𝑡 | ≥ 1), naturally accommodating our multi-label scheme.
+                                                                                             description. We additionally created an interactive visualization
+    Hierarchy-Aware Edit Distance. We measure the dissimilarity                              tool displaying the t-SNE projection [57] with per-session label
+𝑑 (𝑠, 𝑠 ′ ) between two sessions 𝑠 = (ℓ1, . . . , ℓ𝑛 ) and 𝑠 ′ = (ℓ1′, . . . , ℓ𝑚′ )         sequences and cluster assignments9 .
+using a weighted Levenshtein edit distance [33], defined as the
+minimum total cost of transforming one sequence into the other                               3.3.2 Intent Dynamics Analysis. To complement clustering, we
+via insertions, deletions, and substitutions, with operation costs:                          conducted three auxiliary analyses of behavioral intent dynamics.
+                                                                                                For within-session transition analysis, we computed lift-weighted
+      • Insertion or deletion of an element ℓ𝑡 : cost 𝑤 indel = 1.0                          Markov transition probabilities between consecutive intent labels
+      • Substitution of ℓ with ℓ ′ : cost sub(ℓ, ℓ ′ )                                       within sessions. Lift is defined as lift(𝑖 → 𝑗) = 𝑃 ( 𝑗 | 𝑖)/𝑃 ( 𝑗), where
+  The substitution cost between two label sets is defined as the                             𝑖 and 𝑗 are intent labels; this normalizes raw transition counts by
+mean pairwise label cost:                                                                    the marginal frequency of the target label, with lift > 1 indicating
+                                                                                             reinforced transitions and lift < 1 indicating suppressed ones. For
+                      0                               if ℓ = ℓ ′
+                      
+                      
+                     ′
+                      
+                                                                                            multi-label messages, each consecutive pair was distributed over
+         sub(ℓ, ℓ ) =       1 ∑︁ ∑︁
+                                              𝑐 (𝑎, 𝑏) otherwise                             the Cartesian product of label sets with weight 1/(|ℓ𝑡 | × |ℓ𝑡 +1 |). To
+                       |ℓ ||ℓ ′ | 𝑎∈ℓ 𝑏 ∈ℓ ′
+                      
+                      
+                                                                                            characterize short-range continuity, we also measured lengths of
+where the label-level cost for subcategory labels 𝑎, 𝑏 ∈ C is:                               consecutive repetitions of the same subcategory within a session.
+                                                                                                For session-boundary transition analysis, we paired the last mes-
+                 
+                 
+                  0            if 𝑎 = 𝑏                                                     sage of one session with the first message of the chronologically
+                 
+                 
+       𝑐 (𝑎, 𝑏) = 𝑤 same = 0.5 if main(𝑎) = main(𝑏), 𝑎 ≠ 𝑏                                   next session in the same repository and computed boundary lift,
+                 
+                 𝑤 cross = 1.0 if main(𝑎) ≠ main(𝑏)
+                                                                                            defined as liftboundary (𝑖 → 𝑗) = 𝑃 (first 𝑗 | last𝑖 )/𝑃 (first 𝑗 ), using
+                                                                                            the same multi-label weighting scheme as above. Comparing this
+where main(·) maps a subcategory to its parent main category.                                quantity with within-session lift reveals whether session-boundary
+   This three-tier cost structure encodes the taxonomy hierarchy:                            transitions differ from ordinary turn-to-turn transitions.
+substitutions within a main category (e.g., Symptom Description                                 For session evolution analysis, we compared opening messages
+→ Log Paste) are penalized less than substitutions across cate-                              with later turns in terms of intent-category proportions. We also
+gories (e.g., Iterative Modification → Toolchain Operation),                                 examined how intent-category proportions shift across normalized
+following established practice in sequence analysis that substitu-                           message positions by mapping each session to a 100-position uni-
+tion costs should decline as elements become more semantically                               form grid via linear interpolation and fitting linear regressions to
+similar [1, 52]. When |ℓ | = |ℓ ′ | = 1, sub(ℓ, ℓ ′ ) reduces to 𝑐 (𝑎, 𝑏),                   assess monotonic trends. Because opening turns strongly shaped
+recovering the standard single-label case.                                                   these trajectories, we estimated an opening-excluded version that
+   To prevent sessions of different lengths from being dominated
+by the cumulative cost of indel (insertion and deletion) operations,                         9 Available at https://conversational-programming-clusters.netlify.app/
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                                                                             ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+      Cell (row, col) = % of row-labeled messages that also carry the column label
+                                                                                                                                                   Authoring (27.82% vs. 36.34%) and higher Delegation (21.78% vs.
+1.1         4.03                  1.21          3.12   1.36          10.30 6.78                  4.43   6.35
+                                                                                                                                                   15.28%) in Python.
+1.2                 12.50 2.25    7.70   1.06   1.39                 4.86   4.02   1.35          2.87   5.48
+                                                                                                                                                       Finding 1. Conversational programming operates through
+1.3         43.02                 10.77 2.86    2.16   2.49          9.74   7.41                 1.53   1.74                                5.66
+                                                                                                                                                   progressive refinement rather than upfront specification:
+2.1         6.33                  24.58 5.16                         1.13
+                                                                                                                                                   iterative modification and correction dominate over new im-
+2.2         12.95 5.26 14.72             5.28   1.41   2.76          3.35   1.46   1.60                 2.16                                1.88
+                                                                                                                                                   plementation requests. Although Code Authoring was the
+2.3         7.02    5.49 12.12 20.74            1.56   1.84          2.48                               2.41                                4.89
+                                                                                                                                                   most prevalent (34.53%), New Implementation was rare (5.86%),
+3.1 2.34    4.41    2.00          2.66                 4.01          7.36   5.75   1.66          8.32   2.20
+                                                                                                                                                   compared to Iterative Modification (24.84%) and Alignment
+3.2         2.87    2.20          4.98          3.83                 2.82   2.70   2.30          4.61   2.65                                1.11   Correction (7.21%), the latter co-occurring with Iterative Mod-
+3.3         1.31                  1.72          1.42                 1.05   1.46                                                                   ification in 43.02% of cases. Rather than issuing complete task
+4.1 7.14 14.27 8.31        1.18   5.85   1.10   6.80   2.73                 6.13   1.67          5.55   5.87           1.64                        descriptions upfront, developers predominantly revised and refined
+4.2 6.47 16.26 8.71        1.24   3.52          7.32   3.60          8.45          2.06          11.83 16.04           4.47                 2.30   partially realized outputs, relying on accumulated context to keep
+5.1 1.07 12.25 2.09               8.60   1.26   4.72   6.85          5.15   4.62                 4.33   5.69                                       correction turns minimal (e.g., “sans tiret”, “Nope, still gray.” ).
+5.2 1.17    6.25           3.50   8.79   2.33   1.69   1.59          1.80   2.86   1.06          3.39 46.19                                            This iterative pattern arose from two sources: realigning the
+6.1 3.79 10.41 1.61                             9.47   5.51          6.85 10.60 1.73                    12.82
+                                                                                                                                                   assistant when its output diverged from intent (e.g., “Why aren’t you
+6.2 3.54 12.95 1.19               3.03          1.64   2.07          4.72   9.38   1.49   5.54   8.37                                       1.08
+                                                                                                                                                   following @user-preferences.mdc right now?”), and accommodating
+7.1         3.12                  1.91          1.16                 2.52   1.96                 1.31   3.07           1.71                 4.28
+                                                                                                                                                   evolving requirements as goals shifted (e.g., “Can we convert back
+7.2         1.59                                                     2.50   4.96                 1.03   1.52                                1.35
+                                                                                                                                                   to cmdliner?”) or surrounding system changed (e.g., “I added a
+7.3         2.33           2.33   2.15                                                                  1.08                                3.59
+                                                                                                                                                   course_name field on the backend; update the frontend accordingly”).
+                                                                                                                                                       Finding 2. Developers delegated error diagnosis to AI by
+7.4 2.56 10.90                                                                                          2.39           1.02                 2.73
+                                                                                                                                                   reporting symptoms and machine outputs rather than articu-
+7.5         8.93 19.93 3.97 13.55 8.99          3.39   4.43   1.24   2.87   6.91   1.24          3.32   5.54    5.54   3.65   1.30   1.04
+
+      1.1   1.2     1.3    2.1    2.2    2.3    3.1    3.2    3.3    4.1    4.2    5.1    5.2    6.1    6.2     7.1    7.2    7.3    7.4    7.5
+                                                                                                                                                   lating code-level causes. Failure Reporting appeared in 24.00%
+                                                                                                                                                   of all messages, making it the second most common category, with
+Figure 2: Co-occurrence patterns among behavioral intent                                                                                           Symptom Description (14.77%) more prevalent than Log Paste
+subcategories. Cell values show the percentage of messages                                                                                         (8.84%). When problems arose, developers commonly supplied raw
+carrying the row label that also carry the column label; values                                                                                    machine outputs (compiler errors, runtime traces, terminal prints,
+below 1% are hidden. Diagonal cells are masked. Subcategory                                                                                        etc.), described observable mismatches between expected and ac-
+indices correspond to Table 1.                                                                                                                     tual behavior (e.g., “table doesn’t update until I refresh”), or issued
+                                                                                                                                                   terse follow-ups (e.g., “still stuck”) that depended almost entirely
+                                                                                                                                                   on prior context. Troubleshooting thus reflected a redistribution of
+removed the first user message; unless otherwise noted, results re-                                                                                diagnostic work: the assistant took on causal interpretation while
+fer to this specification. We applied the same procedure to message                                                                                developers acted primarily as reporters of failure evidence.
+length (in characters) and labels per message.                                                                                                         Finding 3. When seeking to understand existing systems,
+                                                                                                                                                   developers queried AI about behavior, outputs, and feature
+                                                                                                                                                   logic, with less emphasis on code semantics. Project Com-
+4       Results
+                                                                                                                                                   prehension accounted for 8.19% of all messages. Prompts were
+We report results in two parts. We first characterize the behavioral                                                                               commonly posed at the level of behavior or interpretation (e.g.,
+intent landscape at the message level (RQ1), and then examine                                                                                      “How does the system determine the icon’s latitude and longitude?”,
+session-level archetypes and dynamics (RQ2).                                                                                                       “I don’t understand the results—does this test now invalidate the hy-
+                                                                                                                                                   pothesis?”), or used to verify developers’ own interpretation of
+4.1          RQ1. The Behavioral Intent Landscape                                                                                                  the system (e.g., “If I set progress<=0.05 here, would that imply
+Table 1 shows the overall distribution of behavioral intents. Code                                                                                 that . . . ?”). Code-centric queries about what specific code does or
+Authoring was the most prevalent category (34.53%), followed                                                                                       how it is structured were comparatively rare (e.g., “what is calling
+by Failure Reporting (24.00%), Inqiry (19.17%), Delegation                                                                                         combinedUrlActions?”).
+(16.48%), Context Specification (14.08%), and Workflow Con-                                                                                            Finding 4. Developers used AI to evaluate code through
+trol (11.47%), whereas Validation was comparatively rare (3.99%).                                                                                  both static review and dynamic runtime inspection. Valida-
+Multi-intent prompting was common: 29.87% of messages carried                                                                                      tion appeared in 3.99% of all messages, with Code Review (2.74%)
+more than one label (mean = 1.33), though cases with three or                                                                                      and Runtime Inspection (1.26%) as its two components. Code
+more were rare (2.45%). As shown in Figure 2, co-occurring labels                                                                                  review requests ranged from focused inspection to broader cor-
+were structurally patterned rather than arbitrary. Multi-labeling                                                                                  rectness checks (e.g., “Is the current implementation correct in this
+rates were highest for Alignment Correction (83.63%), Behavior                                                                                     form?”, “Make sure the modal is rendered properly on mobile”), and
+Specification (77.88%), and lowest for brief conversational con-                                                                                   frequently co-occurred with Iterative Modification (12.25%) and
+trol signals such as Confirmation (21.75%) and Continuation                                                                                        Symptom Description (8.60%), indicating that review was em-
+(16.67%). Intent distributions were broadly consistent across the                                                                                  bedded in broader cycles of refinement and debugging. Runtime
+two largest language subsets, TypeScript/JavaScript/HTML (n =                                                                                      Inspection extended this evaluative role to execution results (e.g.,
+40,472 messages) and Python (n = 13,537): all category differences                                                                                 “Please run that command in a terminal so you can check the results”),
+fell within 8.5 percentage points, the largest being lower Code                                                                                    with nearly half of such messages (46.19%) also carrying Toolchain
+ASE ’26, October 12–16, 2026, Munich, Germany                                Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+                                 1.0
+        Cumulative probability
+                                                                              99th: 57
+                                 0.8                 90th: 15
+                                             75th: 7
+                                 0.6
+                                           50th: 3
+                                 0.4
+                                                                                    n = 11,579
+                                 0.2                                                mean = 6.48
+                                                                                    max = 156
+                                 0.0
+                                       0       20               40      60           80           100
+                                                                # messages
+
+
+Figure 3: Cumulative distribution of user messages per ses-
+sion (𝑛 = 11,579). Dotted lines mark selected percentiles.
+
+
+Operation, suggesting that developers relied on the assistant not
+only to run code but also to evaluate its runtime behavior.
+    Finding 5. Developers used AI-generated documentation to                                                        Figure 4: Session archetype structure visualized as a t-SNE
+externalize plans, explanations, and progress into persistent                                                       projection [57] of 4,864 sessions. Stars denote medoids.
+artifacts for both future AI use and human understanding.
+Documentation appeared in 6.85% of messages, commonly taking
+the form of Markdown-based planning, requirements, and progress                                                              Planning & Comprehension 17.06           11.54       49.81      17.00        4.71      15.51        7.94
+
+files (e.g., TODO.md, PROGRESS.md). Developers created such arti-
+                                                                                                                              Failure-Driven Debugging 24.88          52.81       11.74      11.19        3.36       9.07        9.12
+facts primarily for future AI use: to guide implementation (e.g., “read
+architecture.md for context then fully implement”), to validate                                                            Focused Iterative Refinement 60.74         16.94       11.70      13.67        3.11      12.51        7.04
+
+code against written constraints (e.g., “check whether the implemen-
+                                                                                                                         Continuation-Driven Delegation 14.34          9.89       14.40      19.72        4.10      21.76       43.77
+tation is consistent with the requirements and design documents”),
+or to carry work across sessions (e.g., “create a prompt for the next                                                Extended Iterative Co-Development 37.28          27.62       18.38      12.19        3.74      12.09        9.91
+chat to carry out all the next steps”). They also produced human-
+facing artifacts such as module summaries, deployment audits, and                                                         Toolchain-Oriented Operations 17.23          9.50       14.22      20.68        5.76      55.35        9.41
+
+architecture diagrams. Across both uses, documentation served                                                                                              ing      tin
+                                                                                                                                                                        g
+                                                                                                                                                                               uir
+                                                                                                                                                                                   y         ion         ion         ion        ro
+                                                                                                                                                                                                                                   l
+                                                                                                                                                        or       or                       at          at          at         nt
+as persistent external memory, stabilizing context and decisions                                                                                   uth        ep           Inq       ific       a lid         leg         Co
+                                                                                                                                                             R                     c                        e           w
+                                                                                                                                                eA       re                     pe             V          D          lo
+                                                                                                                                             Co
+                                                                                                                                               d      ilu                    tS                                  rkf
+across turns and sessions.                                                                                                                         Fa                 nt
+                                                                                                                                                                          ex                                 Wo
+                                                                                                                                                                  Co
+    Finding 6. Developers actively managed AI autonomy by
+shaping its context and constraining or delegating its be-
+havior. Information Injection accounted for 8.46% of all mes-                                                       Figure 5: Behavioral intent composition of each session
+sages, providing context developers believed the assistant should                                                   archetype (% of messages per main category).
+incorporate, including relevant resources (e.g., “see the attached
+openapi.yaml”), environment facts (e.g., “I’ve restarted this instance
+of VS Code since our last interaction so the env variable activated”),                                              6.48; max = 156; Figure 3). Most sessions were short (≤3 messages;
+and project-state updates (e.g., “I added two new states, step_dirty                                                𝑛 = 6,715) and concentrated in one-shot task-completion intents,
+and code_dirty, to index.d.ts”). Developers also explicitly set                                                     such as New Implementation (12.78% vs. 4.71%), Documenta-
+AI behavioral boundaries through Behavior Specification (6.14%),                                                    tion (9.75% vs. 6.37%), and Deferred Debugging (1.98% vs. 0.54%).
+including hard constraints (e.g., “only analyze; do not modify the                                                  Longer sessions (≥4 messages; 𝑛 = 4,864) instead showed higher
+code”), conditions for human intervention (e.g., “if you encounter an                                               proportions of reactive and iterative intents, including Alignment
+error, stop and ask me”), and, in some cases, open-ended delegation                                                 Correction (7.85% vs. 3.41%), Error Persistence (4.21% vs. 1.06%),
+(e.g., “you decide”), which traded direct oversight for reduced effort.                                             and Confirmation (2.95% vs. 0.86%). We therefore restricted clus-
+                                                                                                                    tering to these longer sessions to ensure sufficient sequential signal
+4.2     RQ2. Session Archetypes and Dynamics                                                                        for meaningful comparison (Section 3.3.1).
+                                                                                                                       Finding 8. Clustering over longer sessions revealed six re-
+We first characterize session-length distributions and recurring
+                                                                                                                    curring session archetypes, each organized around a distinct
+archetypes, then examine how behavioral intents evolve within
+                                                                                                                    behavioral mode. Figures 4 and 5 show the t-SNE projection [57]
+and across sessions. Unless otherwise noted, group comparisons
+                                                                                                                    and main-category distributions. Five archetypes consisted of short
+use Welch’s 𝑡-test [60], and all reported contrasts and regression
+                                                                                                                    sessions (median: 6–8 messages), each organized around a single
+coefficients were statistically significant (𝑝 < 0.001).
+                                                                                                                    dominant category, whereas Extended Iterative Co-Development
+4.2.1 Session Archetypes. Finding 7. Although most sessions                                                         stood apart with substantially longer sessions (median: 27) and the
+were short and task-focused, a long tail of extended sessions                                                       most balanced intent profile. We characterize each archetype below
+centered on iterative refinement and debugging. The distribu-                                                       as descriptive prototypes of recurring interaction patterns rather
+tion of messages per session was right-skewed (median = 3; mean =                                                   than sharply separated clusters.
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                                                  ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+                                                                                                      Cell (row, col) = lift of transition from row to column subcategory
+   Planning & Comprehension. (𝑛 = 767, 15.77%). Sessions were
+                                                                                         1.1 2.63    1.24   1.26                 0.37                                                                         1.33   1.21
+dominated by Inqiry (49.81%), nearly evenly split between Plan-
+                                                                                         1.2         1.88   1.57
+ning & Consultation (20.99%) and Project Comprehension
+                                                                                         1.3         1.26   2.21                                                                                                                   1.80
+(20.37%). Developers used the assistant as a thinking partner, asking
+                                                                                         2.1                       4.40   1.24   1.44                                                    0.28
+how existing systems worked and exploring architectural options.
+The category distribution was stable across session positions, indi-                     2.2                       1.32   1.80   2.87
+
+
+cating that planning and comprehension functioned as a sustained                         2.3                       1.23   1.70   5.19                                                    0.32          1.36                        1.86
+
+
+interaction mode rather than a preliminary phase before coding.                          3.1                                     0.34   2.63          1.42                               1.34          1.38
+
+
+                                                                                         3.2                                            1.57   2.74   1.45                 1.23
+   Failure-Driven Debugging. (𝑛 = 968, 19.90%). Sessions were domi-
+                                                                                         3.3                                     0.31   1.64   1.40   8.18   1.20                                             0.39          0.20
+nated by Failure Reporting (52.81%), with Symptom Description
+                                                                                         4.1                                                                 2.41   1.20
+(29.74%) and Log Paste (25.00%) as the primary subcategories. This
+                                                                                         4.2                                                                        3.09                 1.36   1.24   1.32   1.78
+archetype showed the clearest temporal progression among the
+                                                                                         5.1                                            1.21   1.28                        4.64                                      0.36
+six: sessions typically began with an Iterative Modification that
+                                                                                         5.2                              1.22                                                    5.67          1.88
+triggered unexpected behavior, after which Code Authoring de-
+                                                                                         6.1                       0.31   0.37   0.17                               1.35                 5.22   1.28
+clined from 32.31% to 20.03% while Failure Reporting rose from
+43.77% to 59.86%, indicating that an initial modification attempt                        6.2                                                                        1.24          2.25          2.69          1.34
+
+
+
+gave way to sustained error-resolution cycles.                                           7.1                                                                                                           6.08   1.63          1.38
+
+
+                                                                                         7.2                                                          0.33          1.33          1.30                 1.80   5.09          1.35   1.32
+
+   Focused Iterative Refinement. (𝑛 = 1,158, 23.81%). The largest
+                                                                                         7.3                       1.50          1.51                               0.32                        1.24          1.83 17.36 3.15      1.35
+archetype, with Code Authoring accounting for 60.74% of mes-
+                                                                                         7.4 1.34                                                     0.25                                      1.39          1.91   2.98   6.48   1.48
+sages, was driven primarily by Iterative Modification (48.98%).
+                                                                                         7.5                1.30                                                    1.26          1.41                                             8.90
+Unlike Failure-Driven Debugging, Failure Reporting appeared in                                 1.1   1.2    1.3    2.1    2.2    2.3    3.1    3.2    3.3    4.1    4.2    5.1    5.2    6.1    6.2    7.1    7.2    7.3    7.4    7.5
+only 16.94% of messages, and the Code Authoring distribution
+remained stable across session positions (59.80% to 63.14%).                            Figure 6: Transition patterns between behavioral intent sub-
+   Continuation-Driven Delegation. (𝑛 = 460, 9.46%). Workflow                           categories within sessions, measured as Markov lift. Diagonal
+Control was the dominant category (43.77%), with Continuation                           entries represent self-loop lift. Numerical values are shown
+alone accounting for 31.00% of messages, the highest share of any                       for notably reinforced (lift ≥ 1.2) or suppressed (lift ≤ 0.4)
+subcategory across all archetypes. Sessions typically began with                        transitions; all other cells display color only. Subcategory
+a substantive directive, often combining Toolchain Operation                            indices correspond to Table 1.
+(13.32%) and Behavior Specification (11.69%), followed by a long
+sequence of continuation signals (e.g., “continue”, “go on”), suggest-
+                                                                                        micro-cycles centered on debugging and runtime validation.
+ing that developers established the task and constraints upfront,
+                                                                                        All 20 subcategories exhibited self-loop lift (min = 1.80, max = 17.36;
+then allowed the assistant to proceed with minimal intervention.
+                                                                                        Figure 6). Measured as consecutive turns with the same intent, It-
+This highly delegative pattern resembles the “vibe coding” practice.
+                                                                                        erative Modification showed the strongest continuity (mean
+   Extended Iterative Co-Development. (𝑛 = 896, 18.42%). Distin-                        run length = 1.57; 29.96% multi-turn runs; longest run = 27 turns),
+guished primarily by session length (median: 27 messages; IQR: 20–                      followed by Log Paste (1.43; 25.01%; 13 turns). Beyond self-loops,
+40, compared with 6–8 in all other archetypes), this archetype also                     several cross-category transitions formed recurrent micro-cycles:
+exhibited the most balanced intent profile, with no main category                       a debugging loop linked Symptom Description → Error Persis-
+exceeding 37.3% and no strong temporal trends, suggesting that                          tence (lift = 2.87) and back (lift = 1.70); a validation loop connected
+these long sessions sustained a mixed-mode collaborative process                        Toolchain Operation and Runtime Inspection bidirectionally
+across a full development cycle. Qualitative inspection revealed                        (lift = 2.25 and 1.88); and Iterative Modification frequently transi-
+recurring patterns, e.g., developers interleaved implementation,                        tioned to Alignment Correction (lift = 1.57), reflecting corrective
+debugging, and validation within a single session, often across                         redirection when the assistant’s output diverged from intent.
+multiple work contexts.                                                                     Finding 10. Session boundaries preserved task-level intent
+                                                                                        continuity while resetting conversational states, suggesting
+   Toolchain-Oriented Operations. (𝑛 = 615, 12.64%). Sessions were
+                                                                                        that developers used session breaks to refresh accumulated
+centered on Delegation (55.35%), driven by Toolchain Opera-
+                                                                                        context rather than to switch tasks. Across session boundaries,
+tion (38.55%) and Documentation (20.50%), with Context Spec-
+                                                                                        self-loop lifts remained above 1 in all subcategories (min = 1.19,
+ification elevated (20.68%) to supply environment details (e.g.,
+                                                                                        max = 20.77), indicating preserved task-level intents. However,
+port numbers, file paths). Developers instruct the assistant to per-
+                                                                                        context-dependent subcategories exhibited substantial declines:
+form environment and project operations, e.g., starting servers,
+                                                                                        Confirmation dropped from a within-session lift of 6.08 to nearly
+managing Git branches, installing dependencies, and generating
+                                                                                        zero, and Error Persistence declined from 5.19 to 1.19.
+documentation, rather than to produce or debug application code.
+                                                                                            Finding 11. Sessions are not structurally uniform: devel-
+4.2.2 Intent Dynamics. Finding 9. Within-session transitions                            opers begin by establishing task scopes and constraints, then
+were strongly self-reinforcing, producing sustained runs of                             progressively shift toward responding to intermediate AI out-
+iterative modification and failure reporting, and recurrent                             puts and emerging failures. Opening messages served a distinct
+ASE ’26, October 12–16, 2026, Munich, Germany   Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+framing function. They were roughly twice as long as later turns                       context truncation, minimum session length for clustering, and
+(1,003 vs. 499 characters) and disproportionately featured setup-                      edit-distance parameterization, are theoretically motivated [1, 52]
+oriented acts, including New Implementation (15.89% vs. 4.03%),                        but non-unique; alternative specifications may yield different dis-
+Information Injection (11.82% vs. 7.84%), and Behavior Specifi-                        tributions or archetypes. We therefore interpret the clusters as
+cation (7.46% vs. 5.90%). In contrast, intents that depend on prior                    descriptive archetypes rather than sharply bounded classes.
+conversational context, such as Alignment Correction (0.73% vs.
+8.40%) and Continuation (1.73% vs. 6.24%), were nearly absent.                         6 Discussion
+   Beyond the opening turn, sessions became increasingly reac-
+tive to AI outputs. Inqiry and Context Specification declined                          6.1 Conversational Programming as Progressive
+monotonically across session position (𝑅 2 = 0.70 and 0.90), while                         Specification
+Failure Reporting and Delegation increased (𝑅 2 = 0.66 and 0.61).                      Classical requirements engineering treats specification as a precon-
+Message length also grew substantially (slope = 198.4, 𝑅 2 = 0.91),                    dition for implementation. Conversational programming disrupts
+whereas labels per message remained nearly flat (𝑅 2 = 0.02). No-                      this sequencing: Alignment Correction and Symptom Descrip-
+tably, Continuation, nearly absent at session onset, peaked in                         tion not only fix broken code but also introduce previously unar-
+the early post-opening phase before declining steadily (𝑅 2 = 0.91),                   ticulated constraints, distributing requirements articulation across
+suggesting that developers first established the task, then briefly                    the dialogue rather than concentrating it upfront (Finding 1, 11).
+sustained momentum before shifting to reactive engagement.                                 This underspecified communication is consistent with the bi-
+                                                                                       modal distribution of message length: 33.77% of messages were 50
+                                                                                       characters or shorter, while 9.02% exceeded 1,000 characters. At
+5    Threats to Validity
+                                                                                       one extreme, terse cues such as “Nope, still gray.” carried mean-
+External validity. Our dataset reflects developers who use SpecStory                   ing only through context; at the other, developers embedded raw
+and commit chat histories to public GitHub repositories, introduc-                     logs (Log Paste, median: 718 characters) or lengthy context blocks
+ing selection bias that may underrepresent private and enterprise-                     (Information Injection, median: 162 characters), leaving the assis-
+level projects. Rather than approximating the full developer popu-                     tant to determine what was relevant. This pattern likely differs from
+lation, this dataset more directly reflects early adopters and heavy                   browser-based chatbot interactions [61, 67]: whereas both accumu-
+users of conversational programming workflows. The dataset is                          late conversational history, IDE-native assistants additionally have
+further scoped to IDE-integrated assistants and may not generalize                     direct access to the full codebase, runtime outputs, and development
+to other forms of AI-assisted programming (e.g., CLI-based agents).                    environment, and are expected to actively gather relevant context
+At the same time, the naturalistic and unsolicited nature of the data                  through file reads, codebase search, and command execution rather
+avoids the observation bias common in lab or task-assigned settings.                   than relying on what the developer has made explicit.
+Notably, survivorship bias, i.e., developers preferentially sharing                        One response to this challenge is to externalize plans into persis-
+successful sessions, is partially mitigated by SpecStory’s design: his-                tent documents, a practice formalized as spec-driven development:
+tories are auto-exported in batches with little manual curation, and                   tools such as GitHub Spec Kit10 and Amazon Kiro11 treat light-
+our data contains substantial unresolved-failure signals that strong                   weight documents (e.g., design.md, tasks.md) as the source of
+survivorship filtering would underrepresent. As model capabilities                     truth guiding AI agents through implementation. Our data suggest
+and user habits evolve rapidly, our results should be interpreted                      developers are already doing this organically: Documentation
+as a snapshot of early-stage conversational programming practice                       appeared in 6.85% of messages, with developers creating planning
+rather than stable long-term distributions.                                            documents to record intent and progress across turns and sessions
+   Data completeness and construct validity. Our analysis is limited to                (Finding 5). However, because these documents are themselves gen-
+text-based developer behavior preserved in SpecStory exports. Non-                     erated from underspecified prompts, they introduce a potential
+textual attachments (e.g., images or binary files), inline code refer-                 compounded validation problem: developers must assess not only
+ences, and UI-level actions (e.g., regeneration, cancellation, code                    whether the code is correct, but whether the document captures
+accept/reject) are not consistently recorded. Consequently, non-                       their intent and whether the assistant’s actions are consistent with
+text user behaviors expressed through the interface, particularly                      it, a three-way alignment problem that warrants further investiga-
+Information Injection, are not represented. More broadly, our                          tion.
+taxonomy captures developers’ expressed behavioral intents, not                            These findings carry direct implications for benchmark design.
+their downstream code quality, correctness, or productivity effects.                   Dominant benchmarks such as SWE-bench [26] and HumanEval [9]
+   Internal validity. Several stages of the analysis involve method-                   assume a complete, self-contained task description, an assump-
+ological choices that may influence the results. Codebook develop-                     tion systematically violated in IDE-native use where specifications
+ment and qualitative interpretation involve subjective judgment of                     emerge over multiple turns from underspecified signals. A model
+researchers, which we mitigated through multi-researcher coding,                       optimized under this assumption may perform well on benchmarks
+iterative refinement, and consensus discussion. The LLM classifier                     while failing at tolerating ambiguity, tracking evolving intent, and
+was validated on a stratified sample covering all 20 subcategories.
+While some classification errors may remain and could affect down-
+stream frequency estimates, our main findings rely on aggregate
+distributions and recurring patterns unlikely to be driven by isolated                 10 https://github.github.com/spec-kit/
+
+misclassifications. Other design choices, including sampling sizes,                    11 https://aws.amazon.com/documentation-overview/kiro/
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                     ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+proactively surfacing missing constraints. The emergence of Cursor-                     stops to open-ended handoffs (Finding 6). The Continuation-Driven
+Bench12 , which explicitly emphasizes underspecified tasks, suggests                    Delegation archetype represents the strongest form of the latter.
+that tool builders are beginning to recognize this gap.                                 As agentic systems take on longer task horizons, this coordination
+                                                                                        burden is likely to increase.
+6.2     Distributed Cognition in Debugging,
+        Comprehension, and Validation                                                   6.4     Future Work
+Conversational programming appears to redistribute cognitive la-                        Several directions remain beyond the scope of this study. First, our
+bor from developer to assistant: tasks such as fault diagnosis, code                    analysis captures what developers do but not whether those interac-
+comprehension, and output validation are increasingly offloaded to                      tions achieved their goals; addressing this would require retrospec-
+AI, while developers retain the roles of symptom reporter, intent                       tive accounts of which requests and responses developers regarded
+clarifier, and final evaluator. This redistribution is most visible in                  as failures and why. Second, we exclude CLI-based agent sessions
+debugging. Although Failure Reporting was the second most                               (e.g., Claude Code), which operate with greater autonomy and less
+prevalent category, developers rarely articulated code-level causes                     turn-by-turn human direction; comparing conversational and more
+(Finding 2). Instead, they often relied on terse signals such as “still                 agentic workflows could clarify how increasing AI autonomy af-
+not working”, leaving diagnosis almost entirely to the assistant.                       fects developer-AI interaction. Third, conversational programming
+These minimal messages function as low-cost probes: if the as-                          may demand skills underemphasized in traditional programming
+sistant recovers, the developer avoids the effort of diagnosis; if                      education [62, 63], including requirement articulation, AI output
+not, additional detail can be provided incrementally. This norm                         evaluation, and context management, warranting curricular inves-
+differs markedly from bug reporting to human collaborators, where                       tigation. Finally, breakdowns by organization, domain, and time
+detailed context signals both competence and respect for others’                        period are limited by our predominantly single-contributor, hobby-
+time. Sentiment data reinforced this interpretation: negative af-                       skewed sample and the tools’ recent emergence. Extending such
+fect co-occurred most frequently with Alignment Correction                              comparisons using our public taxonomy is a promising direction.
+(24.20%), Symptom Description (15.58%), and Error Persistence
+(11.01%), suggesting that emotional expressions serve less as social                    7     Conclusion
+commentary than as compressed signals of unresolved failure.
+   As AI generates code faster than developers can inspect it, com-                     We presented the first large-scale empirical study of AI-assisted
+prehension and validation are also displaced onto the assistant.                        conversational programming in IDE-native environments, charac-
+Rather than reading implementations directly, developers queried                        terizing developers’ behavioral intents and recurring session-level
+the assistant about system behavior and feature logic to reconstruct                    patterns from real-world developer-AI conversations. We hope this
+how the code worked from the outside in (Finding 3). Validation                         empirical foundation informs future AI coding assistants that better
+followed the same pattern: developers delegated both static code re-                    support iterative, context-dependent developer-AI collaboration.
+view and runtime inspection to the assistant (Finding 4). This shift
+reduces the immediate burden of engaging with large volumes of                          Data Availability Statement
+generated code, but raises a deeper concern: when diagnosis, com-                       The replication package, including the codebook, classification
+prehension, and validation are all delegated to the same system, the                    prompts, and all analysis code, is available on GitHub13 and archived
+assistant may become the only judge of both what the code does and                      at DOI 10.5281/zenodo.19248043 . Raw chat-session data are excluded
+whether it is correct, with no independent check on its own errors.                     due to copyright and privacy considerations, as most source reposi-
+                                                                                        tories do not carry explicit licenses permitting redistribution. How-
+6.3     Managing an Opaque Collaborator                                                 ever, the data can be fully recollected via the provided scraping
+Conversational programming introduces a new coordination prob-                          pipeline14 . Researchers interested in obtaining direct access may
+lem: although the state of the collaboration is nominally preserved                     contact the first author.
+in the chat history, it is difficult for developers to access in practice.
+In agentic IDE sessions, file reads, terminal commands, code edits,                     Acknowledgments
+and long textual responses accumulate in a single stream, making
+                                                                                        This research was supported in part by a Google Cloud Research
+it hard to monitor what the assistant knows and what it has done.
+                                                                                        Credit Award, a Google Research Scholar Award, a gift from Adobe,
+    This opacity creates two related problems. First, developers may
+                                                                                        an Edison Innovation Fellowship from the Notre Dame IDEA Center,
+struggle to validate what the assistant has already done. To compen-
+                                                                                        and NSF grants CCF-2211428, CCF-2315887, CCF-2100035, CCF-
+sate, they issued explicit status checks (e.g., “is your task finished?”)
+                                                                                        2211429, CCF-2442682, and DGE-2622415. Any opinions, findings,
+and asked the assistant to externalize its own actions (e.g., “Write
+                                                                                        or recommendations expressed here are those of the authors and
+down the changes in PROGRESS.md for me to track”) (Finding 5). In
+                                                                                        do not necessarily reflect the views of the sponsors. The authors
+effect, developers relied on assistant self-report because the inter-
+                                                                                        thank Yuqi Wang from CREVIK for introducing us to SpecStory,
+action history had become too long and dense to inspect directly.
+                                                                                        without which this study would not have been possible.
+    Second, developers may not reliably steer what the assistant
+should do next. To manage this, they injected missing context
+and imposed behavioral constraints, ranging from explicit hard
+                                                                                        13 https://github.com/ND-SaNDwichLAB/empirical-conversational-programming
+12 https://cursor.com/blog/cursorbench                                                  14 https://github.com/TTangNingzhi/vibe-coding-scraper
+ASE ’26, October 12–16, 2026, Munich, Germany       Ningzhi Tang, Chaoran Chen, Zihan Fang, Gelei Xu, Maria Dhakal, Yiyu Shi, Collin McMillan, Yu Huang, and Toby Jia-Jun Li
+
+
+References                                                                                 [23] Huizi Hao, Kazi Amit Hasan, Hong Qin, Marcos Macedo, Yuan Tian, Steven HH
+ [1] Andrew Abbott and Angela Tsay. 2000. Sequence analysis and optimal matching                Ding, and Ahmed E Hassan. 2024. An empirical study on developers’ shared
+     methods in sociology: Review and prospect. Sociological methods & research 29, 1           conversations with ChatGPT in GitHub pull requests and issues. Empirical
+     (2000), 3–33. doi:10.1177/0049124100029001001                                              Software Engineering 29, 6 (2024), 150. doi:10.1007/s10664-024-10540-x
+ [2] Abdulaziz Alaboudi and Thomas D LaToza. 2019. An exploratory study of live-           [24] Nargiz Humbatova, Gunel Jahangirova, Gabriele Bavota, Vincenzo Riccio, An-
+     streamed programming. In 2019 IEEE Symposium on Visual Languages and Human-                drea Stocco, and Paolo Tonella. 2020. Taxonomy of real faults in deep learning
+     Centric Computing (VL/HCC). IEEE, 5–13. doi:10.1109/VLHCC.2019.8818832                     systems. In Proceedings of the ACM/IEEE 42nd international conference on software
+ [3] Eman Abdullah AlOmar, Anushkrishna Venkatakrishnan, Mohamed Wiem                           engineering. 1110–1121. doi:10.1145/3377811.3380395
+     Mkaouer, Christian Newman, and Ali Ouni. 2024. How to refactor this code? an          [25] Shaokang Jiang and Daye Nam. 2026. Beyond the prompt: An empirical study
+     exploratory study on developer-chatgpt refactoring conversations. In Proceedings           of cursor rules. In Proceedings of the 23rd International Conference on Mining
+     of the 21st International Conference on Mining Software Repositories. 202–206.             Software Repositories. 397–409. doi:10.1145/3793302.3793367
+     doi:10.1145/3643991.3645081                                                           [26] Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir
+ [4] David Arthur, Sergei Vassilvitskii, et al. 2007. k-means++: The advantages of              Press, and Karthik Narasimhan. 2024. Swe-bench: Can language models resolve
+     careful seeding. In Soda, Vol. 7. 1027–1035.                                               real-world github issues?. In International Conference on Learning Representations,
+ [5] Malika Aubakirova, Alex Atallah, Chris Clark, Justin Summerville, and Anjney               Vol. 2024. 54107–54157.
+     Midha. 2026. State of AI: An Empirical 100 Trillion Token Study with OpenRouter.      [27] Eirini Kalliamvakou, Georgios Gousios, Kelly Blincoe, Leif Singer, Daniel M
+     arXiv preprint arXiv:2601.10088 (2026). doi:10.48550/arXiv.2601.10088                      German, and Daniela Damian. 2014. The promises and perils of mining github. In
+ [6] John Langshaw Austin. 1975. How to do things with words. Harvard university                Proceedings of the 11th working conference on mining software repositories. 92–101.
+     press.                                                                                     doi:10.1145/2597073.2597074
+ [7] Shraddha Barke, Michael B James, and Nadia Polikarpova. 2023. Grounded copilot:       [28] Leonard Kaufman and Peter J Rousseeuw. 1990. Finding groups in data: an
+     How programmers interact with code-generating models. Proceedings of the ACM               introduction to cluster analysis. John Wiley & Sons. doi:10.1002/9780470316801
+     on Programming Languages 7, OOPSLA1 (2023), 85–111. doi:10.1145/3586030               [29] Aayush Kumar, Yasharth Bajpai, Sumit Gulwani, Gustavo Soares, and Emerson
+ [8] Aaron Chatterji, Thomas Cunningham, David J Deming, Zoe Hitzig, Christopher                Murphy-Hill. 2025. Why AI Agents Still Need You: Findings from Developer-
+     Ong, Carl Yan Shan, and Kevin Wadman. 2025. How people use chatgpt. Technical              Agent Collaborations in the Wild. In 2025 40th IEEE/ACM International Conference
+     Report. National Bureau of Economic Research. doi:10.3386/w34255                           on Automated Software Engineering (ASE). IEEE, 432–444. doi:10.1109/ASE63991.
+ [9] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde                           2025.00043
+     De Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph,          [30] J Richard Landis and Gary G Koch. 1977. The measurement of observer agreement
+     Greg Brockman, et al. 2021. Evaluating large language models trained on code.              for categorical data. biometrics (1977), 159–174. doi:10.2307/2529310
+     arXiv preprint arXiv:2107.03374 (2021). doi:10.48550/arXiv.2107.03374                 [31] Jonathan Lazar, Jinjuan Heidi Feng, and Harry Hochheiser. 2017. Research methods
+[10] Valerie Chen, Ameet Talwalkar, Robert Brennan, and Graham Neubig. 2026. Code               in human-computer interaction. Morgan Kaufmann.
+     with me or for me? how increasing ai automation transforms developer workflows.       [32] Timothy C Lethbridge, Susan Elliott Sim, and Janice Singer. 2005. Studying
+     In Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems.           Software Engineers: Data Collection Techniques for Software Field Studies: Leth-
+     1–19. doi:10.1145/3772318.3790850                                                          bridge, Sim and Singer. Empirical software engineering 10, 3 (2005), 311–341.
+[11] Wayne Chi, Valerie Chen, Ryan Shar, Aditya Mittal, Jenny Liang, Wei-Lin Chiang,            doi:10.1007/s10664-005-1290-x
+     Anastasios Angelopoulos, Ion Stoica, Graham Neubig, Ameet Talwalkar, et al.           [33] Vladimir I Levenshtein et al. 1966. Binary codes capable of correcting deletions,
+     2026. EditBench: Evaluating LLM Abilities to Perform Real-World Instructed                 insertions, and reversals. In Soviet physics doklady, Vol. 10. Soviet Union, 707–710.
+     Code Edits. In International Conference on Learning Representations, Vol. 2026.       [34] Hao Li, Haoxiang Zhang, and Ahmed E Hassan. 2025. The rise of ai teammates
+     94809–94835.                                                                               in software engineering (se) 3.0: How autonomous coding agents are reshaping
+[12] Yi-Hung Chou, Boyuan Jiang, Yi Wen Chen, Mingyue Weng, Victoria Jackson,                   software engineering. arXiv preprint arXiv:2507.15003 (2025). doi:10.48550/arXiv.
+     Thomas Zimmermann, and James A Jones. 2026. Building software by rolling                   2507.15003
+     the dice: A qualitative study of vibe coding. Proceedings of the ACM on Software      [35] Ruiyin Li, Peng Liang, Yifei Wang, Yangxiao Cai, Weisong Sun, and Zengyang
+     Engineering 3, FSE (2026), 1712–1734. doi:10.1145/3797105                                  Li. 2025. Unveiling the role of chatgpt in software development: Insights from
+[13] Beatriz Costa-Gomes, Sophia Chen, Connie Hsueh, Deborah Morgan, Philipp                    developer-chatgpt interactions on github. ACM Transactions on Software Engi-
+     Schoenegger, Yash Shah, Sam Way, Yuki Zhu, Timothé Adeline, Michael Bhaskar,               neering and Methodology (2025). doi:10.1145/3798163
+     et al. 2025. It’s About Time: The Temporal and Modal Dynamics of Copilot Usage.       [36] Jenny T Liang, Chenyang Yang, and Brad A Myers. 2024. A large-scale survey
+     arXiv preprint arXiv:2512.11879 (2025). doi:10.48550/arXiv.2512.11879                      on the usability of ai programming assistants: Successes and challenges. In
+[14] Kevin Zheyuan Cui, Mert Demirer, Sonia Jaffe, Leon Musolff, Sida Peng, and                 Proceedings of the 46th IEEE/ACM international conference on software engineering.
+     Tobias Salz. 2026. The effects of generative AI on high-skilled work: Evidence             1–13. doi:10.1145/3597503.3608128
+     from three field experiments with software developers. Management Science             [37] Marco Lui and Timothy Baldwin. 2012. langid. py: An off-the-shelf language
+     (2026). doi:10.1287/mnsc.2025.00535                                                        identification tool. In Proceedings of the ACL 2012 system demonstrations. 25–30.
+[15] Xiang Deng, Jeff Da, Edwin Pan, Yannis Yiming He, Charles Ide, Kanak Garg,            [38] Yunbo Lyu, Zhou Yang, Jieke Shi, Jianming Chang, Yue Liu, and David Lo. 2025.
+     Niklas Lauffer, Andrew Park, Nitin Pasari, Chetan Rane, et al. 2025. Swe-bench             "My productivity is boosted, but. . . " Demystifying Users’ Perception on AI Coding
+     pro: Can ai agents solve long-horizon software engineering tasks? arXiv preprint           Assistants. In 2025 40th IEEE/ACM International Conference on Automated Software
+     arXiv:2509.16941 (2025). doi:10.48550/arXiv.2509.16941                                     Engineering (ASE). IEEE, 191–203. doi:10.1109/ASE63991.2025.00024
+[16] Zihan Fang, Jiliang Li, Anda Liang, Gina R Bai, and Yu Huang. 2025. A compara-        [39] Nora McDonald, Sarita Schoenebeck, and Andrea Forte. 2019. Reliability and
+     tive study on chatgpt and checklist as support tools for unit testing education.           inter-rater reliability in qualitative research: Norms and guidelines for CSCW and
+     In Proceedings of the 33rd ACM International Conference on the Foundations of              HCI practice. Proceedings of the ACM on human-computer interaction 3, CSCW
+     Software Engineering. 871–882. doi:10.1145/3696630.3727244                                 (2019), 1–23. doi:10.1145/3359174
+[17] Zihan Fang, Yifan Zhang, Yueke Zhang, Kevin Leach, and Yu Huang. 2025. DPO-           [40] Seyedmoein Mohsenimofidi, Matthias Galster, Christoph Treude, and Sebastian
+     F+: Aligning Code Repair Feedback with Developers’ Preferences. arXiv preprint             Baltes. 2026. Context engineering for AI agents in open-source software. In
+     arXiv:2511.01043 (2025). doi:10.48550/arXiv.2511.01043                                     Proceedings of the 23rd International Conference on Mining Software Repositories.
+[18] Ahmed Fawzy, Amjed Tahir, and Kelly Blincoe. 2026. Vibe coding in practice:                194–198. doi:10.1145/3793302.3793350
+     Motivations, challenges, and a future outlook–a grey literature review. In Pro-       [41] Hussein Mozannar, Gagan Bansal, Adam Fourney, and Eric Horvitz. 2024. Reading
+     ceedings of the IEEE/ACM 48th International Conference on Software Engineering:            between the lines: Modeling user behavior and costs in AI-assisted programming.
+     Software Engineering in Practice. 212–223. doi:10.1145/3786583.3786866                     In Proceedings of the 2024 CHI conference on human factors in computing systems.
+[19] Francis Geng, Anshul Shah, Haolin Li, Nawab Mulla, Steve Swanson, Gerald                   1–16. doi:10.1145/3613904.3641936
+     Soosai Raj, Daniel Zingaro, and Leo Porter. 2026. Exploring student-AI interac-       [42] Sheshera Mysore, Debarati Das, Hancheng Cao, and Bahareh Sarrafzadeh. 2025.
+     tions in vibe coding. In Proceedings of the 28th Australasian computing education          Prototypical human-AI collaboration behaviors from LLM-Assisted writing in
+     conference. 45–54. doi:10.1145/3786228.3786236                                             the wild. In Proceedings of the 2025 Conference on Empirical Methods in Natural
+[20] Erving Goffman et al. 1978. The presentation of self in everyday life. Vol. 21.            Language Processing. 16830–16857. doi:10.18653/V1/2025.EMNLP-MAIN.852
+     Harmondsworth London.                                                                 [43] Daye Nam, Andrew Macvean, Vincent Hellendoorn, Bogdan Vasilescu, and Brad
+[21] Greg Guest, Arwen Bunce, and Laura Johnson. 2006. How many interviews are                  Myers. 2024. Using an llm to help with code understanding. In Proceedings
+     enough? An experiment with data saturation and variability. Field methods 18, 1            of the IEEE/ACM 46th International Conference on Software Engineering. 1–13.
+     (2006), 59–82. doi:10.1177/1525822X05279903                                                doi:10.1145/3597503.3639187
+[22] Kunal Handa, Alex Tamkin, Miles McCain, Saffron Huang, Esin Durmus, Sarah             [44] Veronica Pimenova, Sarah Fakhoury, Christian Bird, Margaret-Anne Storey, and
+     Heck, Jared Mueller, Jerry Hong, Stuart Ritchie, Tim Belonax, et al. 2025. Which           Madeline Endres. 2025. Good vibrations? A qualitative study of co-creation,
+     economic tasks are performed with ai? evidence from millions of claude conver-             communication, flow, and trust in vibe coding. arXiv preprint arXiv:2509.12491
+     sations. arXiv preprint arXiv:2503.04761 (2025). doi:10.48550/arXiv.2503.04761             (2025). doi:10.48550/arXiv.2509.12491
+Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions                                ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+[45] Peter J Rousseeuw. 1987. Silhouettes: a graphical aid to the interpretation and            [57] Laurens Van der Maaten and Geoffrey Hinton. 2008. Visualizing data using t-SNE.
+     validation of cluster analysis. Journal of computational and applied mathematics                Journal of machine learning research 9, 11 (2008).
+     20 (1987), 53–65. doi:10.1016/0377-0427(87)90125-7                                         [58] Zhiqiang Wang, Yiran Pang, and Yanbin Lin. 2023. Large language models are
+[46] Advait Sarkar and Ian Drosos. 2025. Vibe coding: programming through conver-                    zero-shot text classifiers. arXiv preprint arXiv:2312.01044 (2023). doi:10.48550/
+     sation with artificial intelligence. In Proceedings of the 36th Annual Conference of            arXiv.2312.01044
+     the Psychology of Programming Interest Group (PPIG 2025).                                  [59] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi,
+[47] John R Searle. 1969. Speech acts: An essay in the philosophy of language. Cambridge             Quoc V Le, Denny Zhou, et al. 2022. Chain-of-thought prompting elicits reasoning
+     university press. doi:10.1017/CBO9781139173438                                                  in large language models. Advances in neural information processing systems 35
+[48] Agnia Sergeyuk, Eric Huang, Dariia Karaeva, Anastasiia Serova, Yaroslav Golubev,                (2022), 24824–24837. doi:10.52202/068431-1800
+     and Iftekhar Ahmed. 2026. Evolving with AI: A Longitudinal Analysis of Devel-              [60] Bernard L Welch. 1947. The generalization of ‘STUDENT’S’problem when several
+     oper Logs. arXiv preprint arXiv:2601.10258 (2026). doi:10.48550/arXiv.2601.10258                different population varlances are involved. Biometrika 34, 1-2 (1947), 28–35.
+[49] Judy Hanwen Shen and Alex Tamkin. 2026. How AI impacts skill formation.                         doi:10.1093/biomet/34.1-2.28
+     arXiv preprint arXiv:2601.20245 (2026). doi:10.48550/arXiv.2601.20245                      [61] Tao Xiao, Christoph Treude, Hideaki Hata, and Kenichi Matsumoto. 2024. Devgpt:
+[50] Mohammed Latif Siddiq, Lindsay Roney, Jiahao Zhang, and Joanna Cecilia                          Studying developer-chatgpt conversations. In Proceedings of the 21st international
+     Da Silva Santos. 2024. Quality assessment of chatgpt generated code and their                   conference on mining software repositories. 227–230. doi:10.1145/3643991.3648400
+     use by developers. In Proceedings of the 21st international conference on mining           [62] Yinuo Yang, Ashley Ge Zhang, Steve Oney, and April Yi Wang. 2025. SPARK:
+     software repositories. 152–156. doi:10.1145/3643991.3645071                                     Real-Time Monitoring of Multi-Faceted Programming Exercises. In 2025 IEEE
+[51] Dag IK Sjoberg, Bente Anda, Erik Arisholm, Tore Dyba, Magne Jorgensen, Amela                    Symposium on Visual Languages and Human-Centric Computing (VL/HCC). IEEE,
+     Karahasanovic, Espen Frimann Koren, and Marek Vokác. 2002. Conducting realis-                   81–92. doi:10.1109/VL-HCC65237.2025.00018
+     tic experiments in software engineering. In Proceedings international symposium            [63] Yinuo Yang, Zheng Zhang, Ningzhi Tang, Xu Wang, Alex Ambrose, Nathaniel
+     on empirical software engineering. IEEE, 17–26. doi:10.1109/ISESE.2002.1166921                  Myers, Patrick Clauss, and Toby Jia-Jun Li. 2026. Lessons from real-world de-
+[52] Matthias Studer and Gilbert Ritschard. 2016. What matters in differences between                ployment of a cognition-preserving writing tool: Students actively engage with
+     life trajectories: A comparative review of sequence dissimilarity measures. Journal             critical thinking and planning affordances. arXiv preprint arXiv:2603.15777 (2026).
+     of the Royal Statistical Society Series A: Statistics in Society 179, 2 (2016), 481–511.        doi:10.48550/arXiv.2603.15777
+     doi:10.1111/rssa.12125                                                                     [64] Songwen Zhao, Danqing Wang, Kexun Zhang, Jiaxuan Luo, Zhuo Li, and Lei Li.
+[53] Ningzhi Tang, Meng Chen, Zheng Ning, Aakash Bansal, Yu Huang, Collin McMil-                     2025. Is vibe coding safe? Benchmarking vulnerability of agent-generated code
+     lan, and Toby Jia-Jun Li. 2024. Developer behaviors in validating and repair-                   in real-world tasks. arXiv preprint arXiv:2512.03262 (2025). doi:10.48550/arXiv.
+     ing llm-generated code using ide and eye tracking. In 2024 IEEE Symposium                       2512.03262
+     on Visual Languages and Human-Centric Computing (VL/HCC). IEEE, 40–46.                     [65] Wenting Zhao, Xiang Ren, Jack Hessel, Claire Cardie, Yejin Choi, and Yuntian
+     doi:10.1109/VL/HCC60511.2024.00015                                                              Deng. 2024. Wildchat: 1m chatgpt interaction logs in the wild. In International
+[54] Ningzhi Tang, David Meininger, Gelei Xu, Yiyu Shi, Yu Huang, Collin McMil-                      Conference on Learning Representations, Vol. 2024. 34590–34605.
+     lan, and Toby Jia-Jun Li. 2025. NaturalEdit: Code Modification through Direct              [66] Ming Zhong, Xiang Zhou, Ting-Yun Chang, Qingze Wang, Nan Xu, Xiance Si,
+     Interaction with Adaptive Natural Language Representation. arXiv preprint                       Dan Garrette, Shyam Upadhyay, Jeremiah Liu, Jiawei Han, et al. 2025. Vibe
+     arXiv:2510.04494 (2025). doi:10.48550/arXiv.2510.04494                                          Checker: Aligning Code Evaluation with Human Preference. arXiv preprint
+[55] Ningzhi Tang, Emory Smith, Yu Huang, Collin McMillan, and Toby Jia-Jun Li. 2025.                arXiv:2510.07315 (2025). doi:10.48550/arXiv.2510.07315
+     Exploring Direct Instruction and Summary-Mediated Prompting in LLM-Assisted                [67] Suzhen Zhong, Ying Zou, and Bram Adams. 2025. Developer-llm conversations:
+     Code Modification. In 2025 IEEE Symposium on Visual Languages and Human-                        An empirical study of interactions and generated code quality. arXiv preprint
+     Centric Computing (VL/HCC). IEEE, 68–80. doi:10.1109/VL-HCC65237.2025.00017                     arXiv:2509.10402 (2025). doi:10.48550/arXiv.2509.10402
+[56] Stefan Timmermans and Iddo Tavory. 2012. Theory construction in qualitative
+     research: From grounded theory to abductive analysis. Sociological theory 30, 3            Received 2026-03-26; accepted 2026-06-18
+     (2012), 167–186. doi:10.1177/0735275112457914
+

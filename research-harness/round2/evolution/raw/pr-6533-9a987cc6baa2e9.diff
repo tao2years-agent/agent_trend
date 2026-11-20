@@ -1,0 +1,88 @@
+diff --git a/server/events/apply_command_runner.go b/server/events/apply_command_runner.go
+index adafc0db4c..41a00fee01 100644
+--- a/server/events/apply_command_runner.go
++++ b/server/events/apply_command_runner.go
+@@ -76,11 +76,16 @@ func (a *ApplyCommandRunner) Run(ctx *command.Context, cmd *CommentCommand) {
+ 	pull := ctx.Pull
+ 
+ 	locked, err := a.IsLocked()
+-	// CheckApplyLock falls back to AllowedCommand flag if fetching the lock
+-	// raises an error
+-	// We will log failure as warning
+ 	if err != nil {
+-		ctx.Log.Warn("checking global apply lock: %s", err)
++		ctx.Log.Err("checking global apply lock: %s", err)
++		ctx.CommandHasErrors = true
++		if statusErr := a.commitStatusUpdater.UpdateCombined(ctx.Log, baseRepo, pull, models.FailedCommitStatus, cmd.CommandName()); statusErr != nil {
++			ctx.Log.Warn("unable to update commit status: %s", statusErr)
++		}
++		if err := a.vcsClient.CreateComment(ctx.Log, baseRepo, pull.Num, applyLockCheckFailedComment, command.Apply.String()); err != nil {
++			ctx.Log.Err("unable to comment on pull request: %s", err)
++		}
++		return
+ 	}
+ 
+ 	if locked {
+@@ -227,3 +232,6 @@ var applyAllDisabledComment = "**Error:** Running `atlantis apply` without flags
+ 
+ // applyDisabledComment is posted when apply commands are disabled globally and an apply command is issued.
+ var applyDisabledComment = "**Error:** Running `atlantis apply` is disabled."
++
++// applyLockCheckFailedComment is posted when the global apply lock check fails (e.g. database unreachable).
++var applyLockCheckFailedComment = "**Error:** Failed to check global apply lock. Running `atlantis apply` is not allowed until the lock backend is reachable."
+diff --git a/server/events/apply_command_runner_test.go b/server/events/apply_command_runner_test.go
+index e8f7ed8307..1439e46cd2 100644
+--- a/server/events/apply_command_runner_test.go
++++ b/server/events/apply_command_runner_test.go
+@@ -30,6 +30,8 @@ func TestApplyCommandRunner_IsLocked(t *testing.T) {
+ 		ApplyLocked    bool
+ 		ApplyLockError error
+ 		ExpComment     string
++		ExpFailStatus  bool
++		ExpHasErrors   bool
+ 	}{
+ 		{
+ 			Description:    "When global apply lock is present IsDisabled returns true",
+@@ -44,10 +46,12 @@ func TestApplyCommandRunner_IsLocked(t *testing.T) {
+ 			ExpComment:     "Ran Apply for 0 projects:",
+ 		},
+ 		{
+-			Description:    "If ApplyLockChecker returns an error IsDisabled returns false",
++			Description:    "If ApplyLockChecker returns an error apply is rejected",
+ 			ApplyLockError: errors.New("error"),
+ 			ApplyLocked:    false,
+-			ExpComment:     "Ran Apply for 0 projects:",
++			ExpComment:     "**Error:** Failed to check global apply lock. Running `atlantis apply` is not allowed until the lock backend is reachable.",
++			ExpFailStatus:  true,
++			ExpHasErrors:   true,
+ 		},
+ 	}
+ 
+@@ -77,9 +81,27 @@ func TestApplyCommandRunner_IsLocked(t *testing.T) {
+ 			}
+ 
+ 			applyCommandRunner.Run(ctx, &events.CommentCommand{Name: command.Apply})
++			Equals(t, c.ExpHasErrors, ctx.CommandHasErrors)
+ 
+ 			vcsClient.VerifyWasCalledOnce().CreateComment(
+ 				Any[logging.SimpleLogging](), Eq(testdata.GithubRepo), Eq(modelPull.Num), Eq(c.ExpComment), Eq("apply"))
++			if c.ExpFailStatus {
++				commitUpdater.VerifyWasCalledOnce().UpdateCombined(
++					Any[logging.SimpleLogging](),
++					Eq(testdata.GithubRepo),
++					Eq(modelPull),
++					Eq(models.FailedCommitStatus),
++					Eq(command.Apply),
++				)
++			} else {
++				commitUpdater.VerifyWasCalled(Never()).UpdateCombined(
++					Any[logging.SimpleLogging](),
++					Any[models.Repo](),
++					Any[models.PullRequest](),
++					Any[models.CommitStatus](),
++					Eq(command.Apply),
++				)
++			}
+ 		})
+ 	}
+ }

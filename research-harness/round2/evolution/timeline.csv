@@ -1,0 +1,29 @@
+﻿product,date,entry,change_type,fact,procurement_inference,evidence_ids,url
+Devin,2026-05-08,"May 8, 2026",增强,单个 PR 可开关自动 Devin Review，同时保留组织设置。,操作者可以只暂停嘈杂 PR 的自动评审。,devin-release,https://docs.devin.ai/release-notes/2026
+Sourcegraph src-cli,2026-05-29,7.4.0-rc.0,修复·预发布,批处理缓存键不再使用每个任务的独有环境变量。,候选版展示对重复执行命中率的修订；实际命中率未测，也未从这条 RC 断言 GA 日期。,src-cli-1,https://github.com/sourcegraph/src-cli/releases/tag/7.4.0-rc.0
+Atlantis,2026-06-10,v0.44.0,窗口首次发布,提供 sticky policy approvals。启用后按 policy_item_regex 提取策略输出条目并比较哈希；重新 plan 若无新增条目，允许延续原审批。,默认重新 plan 会丢弃审批。选择保持审批时须验证新增条目能被正则识别。,atlantis-1 atlantis-policy,https://github.com/runatlantis/atlantis/releases/tag/v0.44.0
+PR-Agent,2026-06-21,v0.37.0,项目自身配置·不可归入开源能力,发布摘要有「Qodo 自审后可批准」一项。对应 PR 只改本仓 .pr_agent.toml，新增注释说明由独立托管的 Qodo 免费开源项目机器人消费；其中 review_agent 小节属于该托管服务。,代码仓里的配置与开源交付能力要分开归属；这条不能计作安装开源 PR-Agent 后可自动通过自审。,pr-agent-2 pr-project-config,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.37.0
+Atlantis,2026-06-26,v0.44.1,修复·默认改变,读取全局 apply 锁失败时不再按允许命令标记继续。新路径标记错误、更新失败状态、发 PR 评论并返回。,验收锁服务失联时，外部变更不能继续。,atlantis-1 pr-6533 atlantis-v0.44.0 atlantis-v0.44.1,https://github.com/runatlantis/atlantis/releases/tag/v0.44.1
+Atlantis,2026-06-28,v0.45.0,首次公开·alpha,发布漂移检测、状态、修复和历史 API；检测和有实际更改的修复分别启用。,采购时分别清点检测权、写入权与仓库允许列表，不把 alpha 计为稳定生产默认。,atlantis-1,https://github.com/runatlantis/atlantis/releases/tag/v0.45.0
+Atlantis,2026-06-30,v0.46.0,增强与修复,apply 加强对过时 head/base 的校验；清理 plan 时保留 on_apply 锁。,获批后分支被推进是值得单测的不同失效条件。,atlantis-1,https://github.com/runatlantis/atlantis/releases/tag/v0.46.0
+PR-Agent,2026-07-05,v0.39.0,窗口首次发布,新增把 review、describe、improve 结果发布为 GitHub Checks 的途径，也引入集中组织设置。,此时可把结果交给 SCM；该出口单独不能证明工具出错会阻止合并。,pr-agent-2,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.39.0
+Sourcegraph src-cli,2026-07-30,7.6.0,修复·正式发布,对 changeset hooks 和 executor 的文件目标路径进行验证。,批迁移模板可写入的位置受到版本相关的校验。,src-cli-1,https://github.com/sourcegraph/src-cli/releases/tag/7.6.0
+PR-Agent,2026-08-08,v0.42.0,增强,报告可以列出未进入审查范围的文件；GitLab 的 review 可选发成能解决的讨论。,人工可以检查覆盖缺口、区分仍待解决的结论。,pr-agent-1,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.42.0
+Argo Rollouts,2026-08-27,v1.10.0,修复·正式发布,中止灰度且处于缩容等待期时，若 HPA 等更改 spec.replicas，新的 ReplicaSet 的 desired-replicas 注解可过期。控制器同步注解、保持实际规模，使后续 reconcile 能继续处理路由和服务。,中止已触发与流量已收回是两个可独立观测的事实。,argo-rollouts-1 argo-abort,https://github.com/argoproj/argo-rollouts/releases/tag/v1.10.0
+PR-Agent,2026-09-05,v0.45.0,增强,重新审查保留已有 findings；大 diff 可选择分块并定义归并规则。,规则既影响重跑后的历史，也影响审阅者如何判断该项是否处理。,pr-agent-1,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.45.0
+Devin,2026-09-09,"September 9, 2026",界面增强·提前证据,Automations 页面的 preflight-check 卡片和脚本编辑器已经改版。,控件存在至少有这一天的公开证据；可用租户、功能范围和首次开放日仍不明。,devin-release,https://docs.devin.ai/release-notes/2026
+Sourcegraph src-cli,2026-09-17,8.0.0,修复·正式发布,维护者列明批执行的工作区隔离修复，包括消除传往步骤的 executor 环境泄漏以及处理仓库归档里 Git 元数据。,在跨仓迁移前应使用受修正的执行器验证权限隔离；此处核对发布记录，未运行隔离测试。,src-cli-1,https://github.com/sourcegraph/src-cli/releases/tag/8.0.0
+Atlantis,2026-09-22,v0.48.0,增强·正式发布,加载待 apply 的 plan 后做哈希，先持久化 plan 结果再报告成功，使用校验过的 managed-plan 快照。,应记录实际执行的计划身份，给审计者对齐审批与执行对象。,atlantis-1,https://github.com/runatlantis/atlantis/releases/tag/v0.48.0
+Devin,2026-09-23,"September 23, 2026",增强,自动评审可按账号、SCM 组织、仓、前缀或成员入选，再组合分支、标签、文件等条件；排除规则优先。,单项开关扩展为一套组织触发规则，需检查误匹配与排除。,devin-release,https://docs.devin.ai/release-notes/2026
+Devin,2026-09-30,"September 30, 2026",功能公告·首次日期未定,这天文档详细发布触发后、启动 Devin 前的脚本，可校验或改写输入、跳过任务；脚本在隔离环境中、可设超时，结果进执行明细。同日已提到 Mark done/Stop session 的不同入口。,9 月 9 日的界面记录早于本次功能公告，不能把本日定为全体租户首发。11 月 16 日的列表变化也不能被误解为此前从无相似按钮。,devin-release,https://docs.devin.ai/release-notes/2026
+PR-Agent,2026-10-02,v0.47.0,修复·默认改变,GitHub Action 对工具已记录但吞掉的失败默认转为失败。主机可设置 fail_on_tool_errors=false 保留旧行为；PR 评论不能改该开关。,只有将该 Action 配为所需检查时，这个失败才变成合并门禁。,pr-agent-1 pr-3712 pr-agent-v0.46.0 pr-agent-v0.47.0,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.47.0
+Argo Rollouts,2026-10-12,v1.10.1,修复·默认改变,dashboard 的 CLI 增加 address，默认监听回环地址。自定义 Service 暴露需显式指定监听地址；同时官方部署清单也在 PR 中更新。,升级后应验证值班人员使用的入口及网络边界。,argo-rollouts-1 pr-5098 argo-v1.10.0 argo-v1.10.1,https://github.com/argoproj/argo-rollouts/releases/tag/v1.10.1
+Argo Rollouts,2026-10-12,v1.8.5,修复·回补,同一 dashboard 默认值回补 1.8 维护支线。,维护分支上的补丁也会改变运维接管入口。,argo-rollouts-1,https://github.com/argoproj/argo-rollouts/releases/tag/v1.8.5
+Argo Rollouts,2026-10-12,v1.9.2,修复·回补,同一 dashboard 默认值回补 1.9 维护支线。,三个版本代表同一变化的三个交付渠道。,argo-rollouts-1,https://github.com/argoproj/argo-rollouts/releases/tag/v1.9.2
+Jules,2026-10-29,Jules Turndown,退场公告,公告给出 11 月 11 日为继续完成会话的截止日期，之后转只读；同时提供导出配置、定时任务、会话、计划、日志与补丁的方法。,按供应商时间线，11 月 20 日选型时已处只读阶段；12 月 31 日是计划中的关闭日。未用账号验证状态切换。,jules-release jules-plan,https://jules.google/docs/changelog/#jules-turndown
+Devin,2026-10-30,"October 30, 2026",默认改变,未配置 PAT 策略的企业，成员申请 PAT 默认需要管理员审批。,已有自定义企业策略是单独队列，不能用该更新推断其过去或现在的审批行为。,devin-release,https://docs.devin.ai/release-notes/2026
+Devin,2026-11-02,"November 2, 2026",增强,自动化介绍增加 Preflight 检查说明，网络策略编辑会应用到该自动化已运行的会话。,这是运行中策略生效的声明；不能据此给 Preflight 本身标首次上线日期。,devin-release devin-access,https://docs.devin.ai/release-notes/2026
+PR-Agent,2026-11-07,v0.50.0,移除无效设置,从分发设置中移除 approve_pr_on_self_review 与 fold_suggestions_on_self_review。官方说明这两项从未改变 /improve 行为。,历史配置文件里出现字段不能证明当时能由代理批准自己的修改。,pr-agent-1 pr-unused,https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.50.0
+Sourcegraph src-cli,2026-11-11,8.2.0,移除内部命令,删掉 src batch exec 及其 CLI 文件；8.0.0 在 usage 明示仅供内部使用。另核当前公开 preview/apply 入口仍各自存在。,不要将执行器内部路径移除记为 Sourcegraph Batch Changes 退场。,src-cli-1 pr-1381 src-cli-8.0.0 src-preview src-apply,https://github.com/sourcegraph/src-cli/releases/tag/8.2.0
+Devin,2026-11-12,"November 12, 2026",增强,是否自动修复自己 PR 上的 Devin Review findings 变成独立设置，可设组织默认及个人覆盖；各 MCP 工具可分别设允许、需批准、阻止。,自动评审、自动改动与工具权限应是不同验收项。,devin-release,https://docs.devin.ai/release-notes/2026
+Devin,2026-11-16,"November 16, 2026",界面语义·发布,Mark done 替换 Archive，只把会话移到个人 Done；它仍运行，其他订阅者仍可见。,移出个人列表的事件无法给外部写操作提供停止回执。,devin-release,https://docs.devin.ai/release-notes/2026

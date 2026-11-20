@@ -1,0 +1,17 @@
+﻿group,react-dom_pair,rtl,direct_dom,mode,install,probe_result,failure_stage,diagnostic,runtime_dom,warnings,evidence
+matrix,17.0.2,12.1.5,10.4.0,strict,installed,pass,,,8.20.1,,results/r17.0.2-rtl12.1.5-dom10.4.0-strict.json
+matrix,17.0.2,13.4.0,10.4.0,strict,peer_rejected,not_run,,"peer react@""^18.0.0"" from @testing-library/react@13.4.0",,,results/r17.0.2-rtl13.4.0-dom10.4.0-strict.json
+matrix,17.0.2,16.1.0,10.4.0,strict,peer_rejected,not_run,,"peer react@""^18.0.0 || ^19.0.0"" from @testing-library/react@16.1.0",,,results/r17.0.2-rtl16.1.0-dom10.4.0-strict.json
+matrix,18.2.0,12.1.5,10.4.0,strict,peer_rejected,not_run,,"peer react@""<18.0.0"" from @testing-library/react@12.1.5",,,results/r18.2.0-rtl12.1.5-dom10.4.0-strict.json
+matrix,18.2.0,13.4.0,10.4.0,strict,installed,pass,,,8.20.1,,results/r18.2.0-rtl13.4.0-dom10.4.0-strict.json
+matrix,18.2.0,16.1.0,10.4.0,strict,installed,pass,,,10.4.0,,results/r18.2.0-rtl16.1.0-dom10.4.0-strict.json
+matrix,19.0.0,12.1.5,10.4.0,strict,peer_rejected,not_run,,"peer react@""<18.0.0"" from @testing-library/react@12.1.5",,,results/r19.0.0-rtl12.1.5-dom10.4.0-strict.json
+matrix,19.0.0,13.4.0,10.4.0,strict,peer_rejected,not_run,,"peer react@""^18.0.0"" from @testing-library/react@13.4.0",,,results/r19.0.0-rtl13.4.0-dom10.4.0-strict.json
+matrix,19.0.0,16.1.0,10.4.0,strict,installed,pass,,,10.4.0,,results/r19.0.0-rtl16.1.0-dom10.4.0-strict.json
+negative,19.0.0,16.1.0,9.3.4,strict,peer_rejected,not_run,,"peer @testing-library/dom@""^10.0.0"" from @testing-library/react@16.1.0",,,results/control-r19.0.0-rtl16.1.0-dom9.3.4-strict.json
+matrix,17.0.2,13.4.0,10.4.0,legacy,installed,fail,import,Cannot find module 'react-dom/client',8.20.1,,results/r17.0.2-rtl13.4.0-dom10.4.0-legacy.json
+matrix,17.0.2,16.1.0,10.4.0,legacy,installed,fail,import,Cannot find module 'react-dom/client',10.4.0,,results/r17.0.2-rtl16.1.0-dom10.4.0-legacy.json
+matrix,18.2.0,12.1.5,10.4.0,legacy,installed,pass,,,8.20.1,"Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot || Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",results/r18.2.0-rtl12.1.5-dom10.4.0-legacy.json
+matrix,19.0.0,12.1.5,10.4.0,legacy,installed,fail,render,_reactDom.default.render is not a function,8.20.1,`ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.,results/r19.0.0-rtl12.1.5-dom10.4.0-legacy.json
+matrix,19.0.0,13.4.0,10.4.0,legacy,installed,pass,,,8.20.1,`ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.,results/r19.0.0-rtl13.4.0-dom10.4.0-legacy.json
+negative,19.0.0,16.1.0,9.3.4,legacy,installed,pass,,,9.3.4,,results/control-r19.0.0-rtl16.1.0-dom9.3.4-legacy.json

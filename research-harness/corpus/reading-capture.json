@@ -1,0 +1,395 @@
+[
+  {
+    "id": "P01",
+    "kind": "ICSE 2026 Research",
+    "key": "Beyond Final Code: A Process-Oriented Error Analysis of Software Development Agents in Real-World GitHub Scenarios",
+    "title": "Beyond Final Code: A Process-Oriented Error Analysis of Software Development Agents in Real-World GitHub Scenarios",
+    "date": "2026-04-12",
+    "doi": "https://doi.org/10.1145/3744916.3773140",
+    "abstract": "AI-driven software development has rapidly advanced with the emergence of software development agents that leverage large language models (LLMs) to tackle complex, repository-level software engineering tasks. These agents go beyond just generation of final code; they engage in multi-step reasoning, utilize various tools for code modification and debugging, and interact with execution environments to diagnose and iteratively resolve issues. However, most existing evaluations focus primarily on static analyses of final code outputs, yielding limited insights into the agents’ dynamic problem-solving processes. To fill this gap, we conduct an in-depth empirical study on 3,977 solving-phase trajectories and 3,931 testing-phase logs from 8 top-ranked agents evaluated on 500 GitHub issues in the SWE-Bench benchmark. Our exploratory analysis shows that Python execution errors during the issue resolution phase correlate with lower resolution rates and increased reasoning overheads. We have identified the most prevalent errors—such as ModuleNotFoundError and TypeError—and highlighted particularly challenging errors like OSError and database-related issues (e.g., IntegrityError) that demand significantly more debugging effort. Furthermore, we have discovered 3 bugs in the SWE-Bench platform that affect benchmark fairness and accuracy; these issues have been reported to and confirmed by the maintainers. To promote transparency and foster future research, we publicly share our datasets and analysis scripts.",
+    "record": "raw/2026-11-20/P01-oa.json",
+    "authors": [
+      "Zhi Chen",
+      "Wei Ma",
+      "Lingxiao Jiang"
+    ],
+    "institutions": [
+      "Singapore Management University"
+    ],
+    "pages": 13,
+    "first_page": "Beyond Final Code: A Process-Oriented Error Analysis of\nSoftware Development Agents in Real-World GitHub Scenarios\nZhi Chen\nThe Centre for Research on Intelligent\nSoftware Engineering (RISE),\nSingapore Management University\nSingapore\nzhi.chen.2023@smu.edu.sg\nWei Ma∗\nThe Centre for Research on Intelligent\nSoftware Engineering (RISE),\nSingapore Manag",
+    "pdf": "raw/2026-11-20/P01-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2503.12374"
+  },
+  {
+    "id": "P02",
+    "kind": "ICSE 2025 Research",
+    "key": "SpecRover: Code Intent Extraction via LLMs",
+    "title": "SpecRover: Code Intent Extraction via LLMs",
+    "date": "2025-04-26",
+    "doi": "https://doi.org/10.1109/icse55347.2025.00080",
+    "abstract": "Autonomous program improvement typically involves automatically producing bug fixes and feature additions. Such program improvement can be accomplished by a combination of large language model (LLM) and program analysis capabilities, in the form of an LLM agent. Since program repair or program improvement typically requires a specification of intended behavior - specification inference can be useful for producing high quality program patches. In this work, we examine efficient and low-cost workflows for iterative specification inference within an LLM agent. Given a GitHub issue to be resolved in a software project, our goal is to conduct iterative code search accompanied by specification inference - thereby inferring intent from both the project structure and behavior. The intent thus captured is examined by a reviewer agent with the goal of vetting the patches as well as providing a measure of confidence in the vetted patches. Our approach SpecRover is built on the open-source LLM agent AutoCodeRover. In an evaluation on the full SWE-Bench consisting of 2294 GitHub issues, it shows more than 50% improvement in efficacy over AutoCodeRover. Compared to the open-source agents available, our work shows modest cost ($0.65 per issue) in resolving an average GitHub issue in SWE-Bench lite. The production of explanation by SpecRover allows for a better “signal” to be given to the developer, on when the suggested patches can be accepted with confidence. SpecRover also seeks to demonstrate the continued importance of specification inference in automated program repair, even as program repair technologies enter the LLM era.",
+    "record": "raw/2026-11-20/P02-oa.json",
+    "authors": [
+      "Haifeng Ruan",
+      "Yuntong Zhang",
+      "Abhik Roychoudhury"
+    ],
+    "institutions": [
+      "National University of Singapore"
+    ],
+    "pages": 12,
+    "first_page": "SpecRover: Code Intent Extraction via LLMs\nHaifeng Ruan*\nYuntong Zhang*\nAbhik Roychoudhury\nNational University of Singapore\n{hruan,yuntong,abhik}@comp.nus.edu.sg\nAbstract—Autonomous program improvement typically in-\nvolves automatically producing bug fixes and feature additions.\nSuch program improvement can be accomplished by a combi-\nnation of lar",
+    "pdf": "raw/2026-11-20/P02-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2408.02232"
+  },
+  {
+    "id": "P03",
+    "kind": "ASE 2025 Research",
+    "key": "Rechecking Recheck Requests in Continuous Integration: An Empirical Study of OpenStack",
+    "title": "Rechecking Recheck Requests in Continuous Integration: An Empirical Study of OpenStack",
+    "date": "2025-11-16",
+    "doi": "https://doi.org/10.1109/ase63991.2025.00121",
+    "record": "raw/2026-11-20/P03-crossref.json",
+    "abstract": "",
+    "authors": [
+      "Yelizaveta Brus",
+      "Rungroj Maipradit",
+      "Earl T. Barr",
+      "Shane McIntosh"
+    ]
+  },
+  {
+    "id": "P04",
+    "kind": "ASE 2025 Research",
+    "key": "FlakyGuard: Automatically Fixing Flaky Tests at Industry Scale",
+    "title": "FlakyGuard: Automatically Fixing Flaky Tests at Industry Scale",
+    "date": "2025-11-16",
+    "doi": "https://doi.org/10.1109/ase63991.2025.00179",
+    "abstract": "Flaky tests that non-deterministically pass or fail waste developer time and slow release cycles. While large language models (LLMs) show promise for automatically repairing flaky tests, existing approaches like FlakyDoctor fail in industrial settings due to the context problem: providing either too little context (missing critical production code) or too much context (overwhelming the LLM with irrelevant information). We present FlakyGuard, which addresses this problem by treating code as a graph structure and using selective graph exploration to find only the most relevant context. Evaluation on real-world flaky tests from industrial repositories shows that FlakyGuard repairs 47.6% of reproducible flaky tests with 51.8% of the fixes accepted by developers. Besides it outperforms state-of-the-art approaches by at least 22% in repair success rate. Developer surveys confirm that 100% find FlakyGuard’s root cause explanations useful.",
+    "record": "raw/2026-11-20/P04-oa.json",
+    "authors": [
+      "Chengpeng Li",
+      "Farnaz Behrang",
+      "August Shi",
+      "Peng Liu"
+    ],
+    "institutions": [
+      "The University of Texas at Austin"
+    ]
+  },
+  {
+    "id": "P05",
+    "kind": "FSE 2026 Research",
+    "key": "Reducing Cost of LLM Agents with Trajectory Reduction",
+    "title": "Reducing Cost of LLM Agents with Trajectory Reduction",
+    "date": "2026-06-30",
+    "doi": "https://doi.org/10.1145/3797084",
+    "abstract": "Multi-turn agent systems based on Large Language Models (LLMs) have become increasingly popular for software engineering tasks. While LLM agents demonstrate promising effectiveness, the high computational cost of input tokens due to ever-growing trajectories remains a significant efficiency concern. Efficiency has been largely overlooked in existing studies and agent products, and this paper addresses this gap by introducing an inference-time trajectory reduction approach that reduces computational costs. By analyzing existing agent trajectories, we demonstrate that useless, redundant, and expired information is widespread across trajectories. Such waste can be identified and reduced without compromising the agent's performance. We propose a simple yet effective trajectory reduction approach, AgentDiet, which automatically removes such waste during agent execution. We implement AgentDiet on a top-performing coding agent, and our evaluation on two LLMs and two benchmarks shows that AgentDiet can reduce input tokens by 39.9%-59.7% and the total computational cost by 21.1%-35.9%, while maintaining the same agent performance. These results indicate that inference-time trajectory reduction is a promising direction for agent systems.",
+    "record": "raw/2026-11-20/P05-oa.json",
+    "authors": [
+      "Yuan-an Xiao",
+      "Pengfei Gao",
+      "Chao Peng",
+      "Yingfei Xiong"
+    ],
+    "institutions": [
+      "ByteDance (China)",
+      "Peking University"
+    ]
+  },
+  {
+    "id": "P06",
+    "kind": "FSE 2026 Research",
+    "key": "A Grounded Theory of Debugging in Professional Software Engineering Practice",
+    "title": "A Grounded Theory of Debugging in Professional Software Engineering Practice",
+    "date": "2026-06-30",
+    "doi": "https://doi.org/10.1145/3797077",
+    "abstract": "Debugging is a central yet complex activity in software engineering. Prior studies have documented debugging strategies and tool usage, but little theory explains how experienced developers reason about bugs in large, real-world codebases. We conducted a qualitative study using a grounded theory approach. We observed seven professional developers and five professional live-coding streamers working on 17 debugging tasks in their own codebases, capturing diverse contexts of debugging. We theorize debugging as a structured, iterative diagnostic process in which programmers update a mental model of the system to guide information gathering. Developers gather information by alternating between navigation and execution strategies, employing forward and backward tracing modes of reasoning and adapting these approaches according to codebase context, complexity, and familiarity. Developers also gather external resources to complement code-based evidence, with their experience enabling them to systematically construct a mental model. We contribute a grounded theory of professional debugging that surfaces the human-centered dimensions of the practice, with implications for tool design and software engineering education.",
+    "record": "raw/2026-11-20/P06-oa.json",
+    "authors": [
+      "Haolin Li",
+      "Michael J. Coblenz"
+    ],
+    "institutions": [
+      "University of California San Diego"
+    ],
+    "pages": 22,
+    "first_page": "A Grounded Theory of Debugging in Professional Software\nEngineering Practice\nHAOLIN LI, University of California at San Diego, USA\nMICHAEL COBLENZ, University of California at San Diego, USA\nDebugging is a central yet complex activity in software engineering. Prior studies have documented debugging\nstrategies and tool usage, but little theory expla",
+    "pdf": "raw/2026-11-20/P06-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2602.11435"
+  },
+  {
+    "id": "P07",
+    "kind": "ISSTA 2026 Research",
+    "key": "Unpacking AI Agent Participation in Issue-Centered Collaboration in Open-Source Software Development",
+    "title": "Unpacking AI Agent Participation in Issue-Centered Collaboration in Open-Source Software Development",
+    "date": "2026-10-01",
+    "doi": "https://doi.org/10.1145/3832206",
+    "abstract": "The increasing participation of AI agents in open-source software development raises questions about their role in collaborative processes. This paper investigates how AI agent participation relates to the structure and outcomes of issue-centered collaboration in open-source software projects. We adopt a process-level perspective by modeling issue handling as sequences of events and extending dynamic issue-pr entropy to distinguish between agent-related and non-agent-related contributions. Using large-scale issue event data from 83 GitHub repositories, we construct a project–month panel dataset and analyze associations between collaboration complexity and development outcomes. Our results show that agent-related collaboration complexity is more strongly associated with development output than human-only collaboration complexity, and is associated with fewer newly introduced defects. In contrast, its relationship with issue resolution efficiency is highly context-dependent. These findings highlight the importance of considering collaboration structure when evaluating the impact of AI agents in open-source software development.",
+    "record": "raw/2026-11-20/P07-oa.json",
+    "authors": [
+      "Kaiwen Zhi",
+      "Guisheng Fan",
+      "Wentao Chen"
+    ],
+    "institutions": [
+      "East China University of Science and Technology"
+    ]
+  },
+  {
+    "id": "P08",
+    "kind": "ISSTA 2026 Research",
+    "key": "A Dataset of Reproducible Flaky-Test Failures",
+    "title": "A Dataset of Reproducible Flaky-Test Failures",
+    "date": "2026-10-01",
+    "doi": "https://doi.org/10.1145/3832216",
+    "abstract": "Flaky tests pass and fail non-deterministically when run on the same version of code. Previous research proposed techniques to detect, debug, and repair different categories of flaky tests. However, reproducing the flaky-test failures remains a major challenge due to their inherent non-determinism. Reliably reproducing flaky-test failures is essential for helping both developers and automatic techniques to debug and repair flaky tests. Many datasets related to flaky tests exist to help researchers study them, but these datasets are often composed of disjoint information, where each dataset provides some unique information over the others, such as flaky tests of many different categories, failure logs of flaky tests, or flaky tests reported by developers vs. flaky tests found by automated tools. Furthermore, several of them are missing the key aspect of providing a means to reliably reproduce the flaky-test failures. In this work, we aim to create a dataset of flaky tests, where each test’s failure is reproducible and there is a comprehensive set of information for the flaky test. Compared to prior flaky-test datasets, our dataset is the first to provide (1) an environment to compile the code for running the flaky tests, (2) scripts to run the tests to reproduce the flaky-test failures, (3) scripts to automatically apply flaky-test fixes and check that the test is no longer flaky, and (4) execution logs of the flaky test both passing and failing. We present ReproFlake, a dataset of 1115 flaky tests, spread across four different flaky-test categories. We also publish the guideline we developed to construct our dataset so others can contribute to this dataset by collecting the same information. We also study the categories of flaky tests in ReproFlake, the location and size of flaky-test fixes, and the code coverage of flaky tests before and after they are fixed. Our study highlights promising future flaky-test research directions, which our dataset helps enable.",
+    "record": "raw/2026-11-20/P08-oa.json",
+    "authors": [
+      "S. Rafi",
+      "Mahbub-Ul-Hoque Sumon",
+      "Md Erfan",
+      "Maruf Morshed Khan",
+      "August Shi",
+      "Wing Lam"
+    ],
+    "institutions": [
+      "George Mason University",
+      "The University of Texas at Austin",
+      "University of Alabama"
+    ],
+    "pages": 20,
+    "first_page": "A Dataset of Reproducible Flaky-Test Failures\nSUZZANA RAFI∗, George Mason University, USA\nMAHBUB-UL-HOQUE SUMON∗, Bangladesh Election Commission, Bangladesh\nMD ERFAN, University of Alabama, USA\nMARUF MORSHED KHAN, Ministry of Finance, Bangladesh\nAUGUST SHI, The University of Texas at Austin, USA\nWING LAM, George Mason University, USA\nFlaky tests pa",
+    "pdf": "raw/2026-11-20/P08-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2605.21677"
+  },
+  {
+    "id": "P09",
+    "kind": "ASE 2026 Research",
+    "key": "Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions",
+    "error": "curl 28 curl: (28) Connection timed out after 5008 milliseconds\r\n"
+  },
+  {
+    "id": "P10",
+    "kind": "ASE 2026 Research",
+    "key": "Generation of Web Apps with Agentic IDEs: An Empirical Assessment",
+    "title": "Generation of Web Apps with Agentic IDEs: An Empirical Assessment",
+    "date": "2026-10-07",
+    "doi": "https://doi.org/10.1145/3832783.3837506",
+    "abstract": "Agentic IDEs are among the most significant innovations in software engineering, aiming to accelerate application development through LLM-based agents that can assist developers during development. However, their evaluation in end-to-end development tasks involving the generation of complete applications remains limited. To fill this gap, we propose a rigorous comparative analysis of three popular agentic IDEs (Copilot, Cursor, and Windsurf) in the generation of five full-stack Web applications from scratch. Results show high maturity in the generation of established patterns, such as CRUD operations and authentication features. In contrast, the generation of less common distributed architectures, such as a task queue architecture, produces significantly more errors. Overall, results show that Agentic IDEs cannot replace developers but shift their role toward building software by orchestrating LLM-based agents through natural-language instructions and iterative refinement. Yet, each agentic IDE shows its peculiarities, although differences are narrow.",
+    "record": "raw/2026-11-20/P10-oa.json",
+    "authors": [
+      "Manuel Marceca",
+      "Maria Teresa Rossi",
+      "Leonardo Mariani"
+    ],
+    "institutions": [
+      "Gran Sasso Science Institute",
+      "University of Milano-Bicocca"
+    ],
+    "pages": 12,
+    "first_page": "Generation of Web Apps with Agentic IDEs: An Empirical \nAssessment \nManuel Marceca \nUniversity of Milano-Bicocca \nMilano, Italy \nm.marceca@campus.unimib.it \nMaria Teresa Rossi \nGran Sasso Science Institute \nL’Aquila, Italy \nmariateresa.rossi@gssi.it \nLeonardo Mariani \nUniversity of Milano-Bicocca \nMilano, Italy \nleonardo.mariani@unimib.it \nAbstract",
+    "pdf": "raw/2026-11-20/P10-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2608.20903"
+  },
+  {
+    "id": "P11",
+    "kind": "ICSE 2025 SEIP",
+    "key": "Automated Code Review In Practice",
+    "title": "Automated Code Review in Practice",
+    "date": "2025-04-27",
+    "doi": "https://doi.org/10.1109/icse-seip66354.2025.00043",
+    "abstract": "Context: Code review is a widespread practice among practitioners to improve software quality and transfer knowledge. It is often perceived as time-consuming due to the need for manual effort and potential delays in the development process. Several AI-assisted code review tools (Qodo, GitHub Copilot, Coderabbit, etc.) provide automated code reviews using large language models (LLMs). The overall effects of such tools in the industry setting are yet to be examined. Objective: This study examines the impact of LLM-based automated code review tools in an industry setting. Method: The study was conducted within an industrial software development environment that adopted an AI-assisted code review tool (based on open-source Qodo PR Agent). 238 practitioners across ten projects had access to the tool. We focused our analysis on three projects, which included$\\mathbf{4, 3 3 5}$pull requests, 1,568 of which underwent automated reviews. Our data collection comprised three sources: (1) a quantitative analysis of pull request data, including comment labels indicating whether developers acted on the automated comments, (2) surveys sent to developers regarding their experience with the reviews on individual pull requests, and (3) a broader survey of 22 practitioners capturing their general opinions on automated code reviews. Results:$73.8\\%$of automated code review comments were labeled as resolved. However, the overall average pull request closure duration increased from five hours 52 minutes to eight hours 20 minutes, with varying trends observed across different projects. According to survey responses, most practitioners observed a minor improvement in code quality as a result of automated code reviews. Conclusion: The LLM-based automated code review tool proved useful in software development, enhancing bug detection, increasing awareness of code quality, and promoting best practices. However, it also led to longer pull request closure times and introduced drawbacks such as faulty reviews, unnecessary corrections, and irrelevant comments. Based on these findings, we discussed how practitioners can more effectively utilize automated code review technologies.",
+    "record": "raw/2026-11-20/P11-oa.json",
+    "authors": [
+      "Umut Cihan",
+      "Vahid Haratian",
+      "Arda İçöz",
+      "Mert Kaan Gül",
+      "Ömercan Devran",
+      "Emircan Furkan Bayendur",
+      "Baykal Mehmet Uçar",
+      "Eray Tüzün"
+    ],
+    "institutions": [
+      "Bilkent University"
+    ]
+  },
+  {
+    "id": "P12",
+    "kind": "ICSE 2013 research",
+    "key": "Expectations, outcomes, and challenges of modern code review",
+    "title": "Expectations, outcomes, and challenges of modern code review",
+    "date": "2013-05-01",
+    "doi": "https://doi.org/10.1109/icse.2013.6606617",
+    "abstract": "Code review is a common software engineering practice employed both in open source and industrial contexts. Review today is less formal and more “lightweight” than the code inspections performed and studied in the 70s and 80s. We empirically explore the motivations, challenges, and outcomes of tool-based code reviews. We observed, interviewed, and surveyed developers and managers and manually classified hundreds of review comments across diverse teams at Microsoft. Our study reveals that while finding defects remains the main motivation for review, reviews are less about defects than expected and instead provide additional benefits such as knowledge transfer, increased team awareness, and creation of alternative solutions to problems. Moreover, we find that code and change understanding is the key aspect of code reviewing and that developers employ a wide range of mechanisms to meet their understanding needs, most of which are not met by current tools. We provide recommendations for practitioners and researchers.",
+    "record": "raw/2026-11-20/P12-oa.json",
+    "authors": [
+      "Alberto Bacchelli",
+      "Christian Bird"
+    ],
+    "institutions": [
+      "Microsoft (United States)",
+      "Università della Svizzera italiana"
+    ]
+  },
+  {
+    "id": "P13",
+    "kind": "ICLR 2024",
+    "key": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+    "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+    "date": "2023-10-10",
+    "doi": "https://doi.org/10.48550/arxiv.2310.06770",
+    "abstract": "Language models have outpaced our ability to evaluate them effectively, but for their future development it is essential to study the frontier of their capabilities. We find real-world software engineering to be a rich, sustainable, and challenging testbed for evaluating the next generation of language models. To this end, we introduce SWE-bench, an evaluation framework consisting of $2,294$ software engineering problems drawn from real GitHub issues and corresponding pull requests across $12$ popular Python repositories. Given a codebase along with a description of an issue to be resolved, a language model is tasked with editing the codebase to address the issue. Resolving issues in SWE-bench frequently requires understanding and coordinating changes across multiple functions, classes, and even files simultaneously, calling for models to interact with execution environments, process extremely long contexts and perform complex reasoning that goes far beyond traditional code generation tasks. Our evaluations show that both state-of-the-art proprietary models and our fine-tuned model SWE-Llama can resolve only the simplest issues. The best-performing model, Claude 2, is able to solve a mere $1.96$% of the issues. Advances on SWE-bench represent steps towards LMs that are more practical, intelligent, and autonomous.",
+    "record": "raw/2026-11-20/P13-oa.json",
+    "authors": [
+      "Jimenez, Carlos E.",
+      "Yang, John",
+      "Alexander Wettig",
+      "Shunyu Yao",
+      "Kexin Pei",
+      "Ofir Press",
+      "Karthik Narasimhan"
+    ],
+    "institutions": [
+      "Princeton University",
+      "University of Chicago"
+    ]
+  },
+  {
+    "id": "P14",
+    "kind": "NeurIPS 2024",
+    "key": "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering",
+    "error": "curl 28 curl: (28) Connection timed out after 5008 milliseconds\r\n"
+  },
+  {
+    "id": "P15",
+    "kind": "ASE 2026 Research",
+    "key": "From Vibe to Spec: An Empirical Study to Demystify Specifications in Code Generation",
+    "title": "From Vibe to Spec: An Empirical Study to Demystify Specifications in Code Generation",
+    "date": "2026-10-07",
+    "doi": "https://doi.org/10.1145/3832783.3837515",
+    "abstract": "Recent advances in large language models (LLMs) for code generation have given rise to vibe coding, a programming practice in which developers interact with LLMs through unstructured natural language and primarily validate implementations by inspecting overall execution outputs. However, the inherent ambiguity and inconsistency of natural language present substantial challenges for generating complex and large-scale software systems. To mitigate these limitations, an emerging AI programming paradigm—specification-driven development—advocates providing LLMs with precise and consistent specifications to guide code generation. Despite its promise, fundamental questions regarding the appropriate forms of specifications and the granularity at which they should be supplied to LLMs remain largely unexplored.",
+    "record": "raw/2026-11-20/P15-oa.json",
+    "authors": [
+      "Ruirui He",
+      "Hanqing Lu",
+      "Lezhi Ma",
+      "Kai Ye",
+      "Qiong Wu",
+      "Shangqing Liu",
+      "Lei Bu",
+      "Xuandong Li"
+    ],
+    "institutions": [
+      "Nanjing University",
+      "State Key Laboratory of New Technology of Computer Software"
+    ]
+  },
+  {
+    "id": "P16",
+    "kind": "FSE 2026 Research",
+    "key": "Agentic Verification of Software Systems",
+    "title": "Agentic Verification of Software Systems",
+    "date": "2026-06-30",
+    "doi": "https://doi.org/10.1145/3808164",
+    "abstract": "Automatically generated code is gaining traction recently, owing to the prevalence of Large Language Models (LLMs). Further, the AlphaProof initiative has demonstrated the possibility of using AI for general mathematical reasoning. Reasoning about computer programs (software) can be accomplished via general mathematical reasoning; however, it tends to be more structured and richer in contexts. This forms an attractive proposition, since then AI agents can be used to reason about voluminous code that gets generated by AI. In this work, we present a first LLM agent, AutoRocq, for conducting program verification. Unlike past works, which rely on extensive training of LLMs on proof examples, our agent learns on-the-fly and improves the proof via an iterative refinement loop. The iterative improvement of the proof is achieved by the proof agent communicating with the Rocq (formerly Coq) theorem prover to get additional context and feedback. The final result of the iteration is a proof derivation checked by the Rocq theorem prover. In this way, our proof construction involves autonomous collaboration between the proof agent and the theorem prover. This autonomy facilitates the search for proofs and decision-making in deciding on the structure of the proof tree. Experimental evaluation on SV-COMP benchmarks and on Linux kernel modules shows promising efficacy in achieving automated program verification. As automation in code generation becomes more widespread, we posit that our proof agent can be potentially integrated with AI coding agents to achieve a generate and validate loop, thus moving closer to the vision of trusted automatic programming.",
+    "record": "raw/2026-11-20/P16-oa.json",
+    "authors": [
+      "Haoxin Tu",
+      "Huan Zhao",
+      "Yahui Song",
+      "Mehtab Zafar",
+      "Ruijie Meng",
+      "Abhik Roychoudhury"
+    ],
+    "institutions": [
+      "National University of Singapore"
+    ],
+    "pages": 24,
+    "first_page": "Agentic Verification of Software Systems\nHAOXIN TU, National University of Singapore, Singapore\nHUAN ZHAO, National University of Singapore, Singapore\nYAHUI SONG, National University of Singapore, Singapore\nMEHTAB ZAFAR, National University of Singapore, Singapore\nRUIJIE MENG, National University of Singapore, Singapore\nABHIK ROYCHOUDHURY, National",
+    "pdf": "raw/2026-11-20/P16-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2511.17330"
+  },
+  {
+    "id": "P17",
+    "kind": "ICSE 2024 Research",
+    "key": "A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges",
+    "title": "A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges",
+    "date": "2024-2-6",
+    "doi": "https://doi.org/10.1145/3597503.3608128",
+    "record": "raw/2026-11-20/P17-crossref.json",
+    "abstract": "",
+    "authors": [
+      "Jenny T. Liang",
+      "Chenyang Yang",
+      "Brad A. Myers"
+    ]
+  },
+  {
+    "id": "P18",
+    "kind": "FSE 2026 Research",
+    "key": "LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery",
+    "title": "LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery",
+    "date": "2026-6-30",
+    "doi": "https://doi.org/10.1145/3808191",
+    "record": "raw/2026-11-20/P18-crossref.json",
+    "abstract": "Issue-to-commit link recovery in software repositories is fundamental to software traceability and project management, yet it remains a challenging task. Prior studies show that only about 42.2% of issues on GitHub are correctly linked to their commits, highlighting the need for more effective solutions. Existing work has explored a range of ML/DL approaches, and more recently, large language models (LLMs) have been applied to this problem. However, these methods face two major limitations. First, LLMs are restricted by limited context windows and cannot simultaneously process all available data sources, such as long commit histories, extensive issue discussions, and large code repositories. Second, most approaches operate on individual issue-commit pairs, where a model independently scores the relevance of a single commit to an issue. This pairwise formulation fails to account for the complex associativity of software fixes, where an issue is often resolved by an aggregate chain of commits rather than a single atomic change. By ignoring these temporal and parental dependencies, existing methods often fail to incorporate the complete resolution logic and might misidentify intermediate commits as final fixes. Furthermore, this strategy is computationally inefficient in large repositories, as it requires exhaustively evaluating an enormous number of candidate pairs. To address these challenges, we present LinkAnchor, the first autonomous LLM-based agent designed specifically for issue-to-commit link recovery. LinkAnchor introduces a lazy-access architecture that allows the underlying LLM to dynamically retrieve only the most relevant contextual data, such as commits, issue comments, and code files, without exceeding token limits. Instead of isolated scoring, LinkAnchor treats link recovery as a dynamic search process, navigating the commit graph to identify the final resolving commit and effectively aggregating the entire chain of contributing changes. LinkAnchor is first to formalize ILR as dynamic heuristic search over commit chains (vs. prior pairwise scoring), enabling aggregate reasoning that recovers distributed fixes (46% of cases). Our evaluations show that LinkAnchor outperforms state-of-the-art baselines by 41–714% in Hit@1 across six large-scale open-source projects, while costing only about 0.01 US dollars per issue. Finally, LinkAnchor is designed and tested for both GitHub and Jira, and its modular architecture makes it straightforward to extend to other platforms.",
+    "authors": [
+      "Arshia Akhavan",
+      "Alireza Hoseinpour",
+      "Abbas Heydarnoori",
+      "Hamid Bagheri",
+      "Mehdi Keshani"
+    ]
+  },
+  {
+    "id": "P19",
+    "kind": "ICSE 2023 Research",
+    "key": "Code Review of Build System Specifications: Prevalence, Purposes, Patterns, and Perceptions",
+    "title": "Code Review of Build System Specifications: Prevalence, Purposes, Patterns, and Perceptions",
+    "date": "2023-05-01",
+    "doi": "https://doi.org/10.1109/icse48619.2023.00108",
+    "abstract": "Build systems automate the integration of source code into executables. Maintaining build systems is known to be challenging. Lax build maintenance can lead to costly build breakages or unexpected software behaviour. Code review is a broadly adopted practice to improve software quality. Yet, little is known about how code review is applied to build specifications. In this paper, we present the first empirical study of how code review is practiced in the context of build specifications. Through quantitative analysis of 502,931 change sets from the Qt and Eclipse communities, we observe that changes to build specifications are at least two times less frequently discussed during code review when compared to production and test code changes. A qualitative analysis of 500 change sets reveals that (i) comments on changes to build specifications are more likely to point out defects than rates reported in the literature for production and test code, and (ii) evolvability and dependency-related issues are the most frequently raised patterns of issues. Follow-up interviews with nine developers with 1–40 years of experience point out social and technical factors that hinder rigorous review of build specifications, such as a prevailing lack of understanding of and interest in build systems among developers, and the lack of dedicated tooling to support the code review of build specifications.",
+    "record": "raw/2026-11-20/P19-oa.json",
+    "authors": [
+      "Mahtab Nejati",
+      "Mahmoud Alfadel",
+      "Shane McIntosh"
+    ],
+    "institutions": [
+      "University of Waterloo"
+    ],
+    "pages": 12,
+    "first_page": "Code Review of Build System Specifications:\nPrevalence, Purposes, Patterns, and Perceptions\nMahtab Nejati, Mahmoud Alfadel, Shane McIntosh\nSoftware REBELs\nUniversity of Waterloo, Canada\n{mahtab.nejati,malfadel,shane.mcintosh}@uwaterloo.ca\nAbstract—Build systems automate the integration of source\ncode into executables. Maintaining build systems is k",
+    "pdf": "raw/2026-11-20/P19-body.pdf",
+    "pdf_url": "https://rebels.cs.uwaterloo.ca/papers/icse2023_nejati.pdf"
+  },
+  {
+    "id": "P20",
+    "kind": "ICSE 2026 Research",
+    "key": "Unified Software Engineering agent as AI Software Engineer",
+    "title": "Unified Software Engineering Agent as AI Software Engineer",
+    "date": "2026-04-12",
+    "doi": "https://doi.org/10.1145/3744916.3773202",
+    "abstract": "The growth of Large Language Model (LLM) technology has raised expectations for automated coding. However, software engineering is more than coding and is concerned with activities including maintenance and evolution of a project. In this context, the concept of LLM agents has gained traction, which utilize LLMs as reasoning engines to invoke external tools autonomously. But is an LLM agent the same as an AI software engineer? In this paper, we seek to understand this question by developing a Unified Software Engineering agent or USEagent. Unlike existing work which builds specialized agents for specific software tasks such as testing, debugging, and repair, our goal is to build a unified agent which can orchestrate and handle multiple capabilities. This gives the agent the promise of handling complex scenarios in software development such as fixing an incomplete patch, adding new features, or taking over code written by others. We envision USEagent as the first draft of a future AI Software Engineer which can be a team member in future software development teams involving both AI and humans. To evaluate the efficacy of USEagent, we build a Unified Software Engineering bench (USEbench) comprising of myriad tasks such as coding, testing, and patching. USEbench is a judicious mixture of tasks from existing benchmarks such as SWE-bench, SWT-bench, and REPOCOD. In an evaluation on USEbench consisting of 1,271 repository-level software engineering tasks, USEagent shows improved efficacy compared to existing general agents such as OpenHands CodeActAgent. For specific tasks such as issue resolution in SWE-bench, USEagent demonstrates efficacy comparable to agents such as AutoCodeRover (which are focused on software maintenance), while maintaining applicability to a broader range of software engineering tasks. There exist gaps in the capabilities of USEagent for certain coding tasks, which provides hints on further developing the AI Software Engineer of the future.",
+    "record": "raw/2026-11-20/P20-oa.json",
+    "authors": [
+      "Leonhard Applis",
+      "Yuntong Zhang",
+      "Shanchao Liang",
+      "Nan Jiang",
+      "Lin Tan",
+      "Abhik Roychoudhury"
+    ],
+    "institutions": [
+      "National University of Singapore",
+      "Purdue University West Lafayette"
+    ],
+    "pages": 12,
+    "first_page": "Unified Software Engineering Agent as AI Software Engineer\nLeonhard Applis∗\nl.applis@nus.edu.sg\nNational University of Singapore\nSingapore\nYuntong Zhang∗†\nyuntong@comp.nus.edu.sg\nNational University of Singapore\nSingapore\nShanchao Liang\nliang422@purdue.edu\nPurdue University\nWest Lafayette, Indiana, USA\nNan Jiang\njiang719@purdue.edu\nPurdue Universit",
+    "pdf": "raw/2026-11-20/P20-body.pdf",
+    "pdf_url": "https://arxiv.org/pdf/2506.14683"
+  }
+]

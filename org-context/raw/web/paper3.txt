@@ -1,0 +1,328 @@
+检索参数 {"search_query":[{"q":"site:arxiv.org software engineering agents repository context realistic issue benchmarks SWE-bench Live SWE PolyBench multi repository cross repositories benchmark SWE-QA Pro"}],"response_length":"medium"}
+SWE Context Bench: A Benchmark for Context Learning in Coding (https://arxiv.org/abs/2602.08316)
+citeturn4academia0 [wordlim: 200] Published: 9 months ago; Large language models are increasingly used as programming agents for repository level software engineering tasks. While recent benchmarks evaluate correctness in realistic codebases, they largely treat tasks as independent and do not assess whether agents can reuse experience across related problems. ... We introduce SWE-ContextBench, a benchmark designed to explicitly evaluate experience reuse in programming agents.
+Title: SWE Context Bench: A Benchmark for Context Learning in Coding
+Authors: Jared Zhu, Minhao Hu, Junde Wu
+Date: Mon Feb  9 06:44:45 2026
+
+Large language models are increasingly used as programming agents for repository level software engineering tasks. While recent benchmarks evaluate correctness in realistic codebases, they largely treat tasks as independent and do not assess whether agents can reuse experience across related problems. As a result, the ability of agents to accumulate, retrieve, and apply prior experience, as well as the efficiency gains from such reuse, remains difficult to measure. We introduce SWE-ContextBench, a benchmark designed to explicitly evaluate experience reuse in programming agents. Built on SWE-Bench Lite, SWE-ContextBench augments 300 base tasks with 99 related tasks derived from real dependency and reference relationships among GitHub issues and pull requests, forming task sequences with shared context. The benchmark evaluates agents along three complementary dimensions: prediction accuracy, time efficiency, and cost efficiency. Using SWE-ContextBench, we study multiple experience reuse settings, including oracle guided and autonomous retrieval, as well as full execution trajectories and compact summaries. Our results show that correctly selected summarized experience improves resolution accuracy and substantially reduces runtime and token cost, particularly on harder tasks. In contrast, unfiltered or incorrectly selected experience provides limited or negative benefits. These findings highlight the importance of experience representation and retrieval quality, and position SWE-ContextBench as a principled benchmark for studying experience reuse in programming agents.--------------------------------------------------------------------------------
+SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks? (https://arxiv.org/abs/2509.16941)
+citeturn4academia1 [wordlim: 200] Published: 1.2 years ago; We introduce SWE-Bench Pro, a substantially more challenging benchmark that builds upon the best practices of SWE-BENCH [25], but is explicitly designed to capture realistic, complex, enterprise-level problems beyond the scope of SWE-BENCH. ... All tasks are human-verified and augmented with sufficient context to ensure resolvability. ... Overall, SWE-BENCH PRO provides a contamination-resistant testbed that more faithfully captures the complexity and diversity of real-world software development, advancing the pursuit of truly autonomous software engineering agents at a professional level.
+Title: SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?
+Authors: Xiang Deng, Jeff Da, Edwin Pan, Yannis Yiming He, Charles Ide, Kanak Garg, Niklas Lauffer, Andrew Park, Nitin Pasari, Chetan Rane, Karmini Sampath, Maya Krishnan, Srivatsa Kundurthy, Sean Hendryx, Zifan Wang, Chen Bo Calvin Zhang, Noah Jacobson, Bing Liu, Brad Kenstler
+Date: Sun Sep 21 06:28:17 2025
+
+We introduce SWE-Bench Pro, a substantially more challenging benchmark that builds upon the best practices of SWE-BENCH [25], but is explicitly designed to capture realistic, complex, enterprise-level problems beyond the scope of SWE-BENCH. SWE-BENCH PRO contains 1,865 problems sourced from a diverse set of 41 actively maintained repositories spanning business applications, B2B services, and developer tools. The benchmark is partitioned into a public set with open access to problems sourced from 11 repositories, a held-out set of 12 repositories and a commercial set of 18 proprietary repositories where we have formal partnership agreements with early-stage startups. Problems in the held-out and the commercial set are not publicly accessible, but we release results on the commercial set. Our benchmark features long-horizon tasks that may require hours to days for a professional software engineer to complete, often involving patches across multiple files and substantial code modifications. All tasks are human-verified and augmented with sufficient context to ensure resolvability. In our evaluation of widely used coding models, under a unified scaffold, we observe that their performance on SWE-Bench PRO remains below 25% (Pass@1), with GPT-5 achieving the highest score to date at 23.3%. To better understand these limitations, we cluster the failure modes observed in the collected agent trajectories for a clearer characterization of the error patterns exhibited by current models. Overall, SWE-BENCH PRO provides a contamination-resistant testbed that more faithfully captures the complexity and diversity of real-world software development, advancing the pursuit of truly autonomous software engineering agents at a professional level.--------------------------------------------------------------------------------
+SWE-PolyBench: A multi-language benchmark for repository level evaluation of coding agents (https://arxiv.org/abs/2504.08703)
+citeturn4academia2 [wordlim: 200] Published: 1.6 years ago; Title: SWE-PolyBench: A multi-language benchmark for repository level evaluation of coding agents ... SWE-PolyBench aims to drive progress in developing more versatile and robust AI coding assistants for real-world software engineering.
+Title: SWE-PolyBench: A multi-language benchmark for repository level evaluation of coding agents
+Authors: Muhammad Shihab Rashid, Christian Bock, Yuan Zhuang, Alexander Buccholz, Tim Esler, Simon Valentin, Luca Franceschi, Martin Wistuba, Prabhu Teja Sivaprasad, Woo Jung Kim, Anoop Deoras, Giovanni Zappella, Laurent Callot
+Date: Fri Apr 11 17:08:02 2025
+
+Coding agents powered by large language models have shown impressive capabilities in software engineering tasks, but evaluating their performance across diverse programming languages and real-world scenarios remains challenging. We introduce SWE-PolyBench, a new multi-language benchmark for repository-level, execution-based evaluation of coding agents. SWE-PolyBench contains 2110 instances from 21 repositories and includes tasks in Java (165), JavaScript (1017), TypeScript (729) and Python (199), covering bug fixes, feature additions, and code refactoring. We provide a task and repository-stratified subsample (SWE-PolyBench500) and release an evaluation harness allowing for fully automated evaluation. To enable a more comprehensive comparison of coding agents, this work also presents a novel set of metrics rooted in syntax tree analysis. We evaluate leading open source coding agents on SWE-PolyBench, revealing their strengths and limitations across languages, task types, and complexity classes. Our experiments show that current agents exhibit uneven performances across languages and struggle with complex problems while showing higher performance on simpler tasks. SWE-PolyBench aims to drive progress in developing more versatile and robust AI coding assistants for real-world software engineering. Our datasets and code are available at: https://github.com/amazon-science/SWE-PolyBench--------------------------------------------------------------------------------
+SWE-Bench Pro Verified: A Reliable Benchmark for Software Engineering Agents (https://arxiv.org/abs/2609.08149)
+citeturn4academia3 [wordlim: 200] Published: 2 months ago; Title: SWE-Bench Pro Verified: A Reliable Benchmark for Software Engineering Agents ... SWE-Bench Pro has emerged as a standard benchmark for evaluating software engineering agents on challenging repository-level tasks.
+Title: SWE-Bench Pro Verified: A Reliable Benchmark for Software Engineering Agents
+Authors: Pujun Zheng, Zixin Shang, Shufan Jiang, Wenhui Tian, Dongsheng Zhu, Zerun Ma, Dingbo Yuan, Qi Zhang
+Date: Tue Sep  8 02:29:58 2026
+
+SWE-Bench Pro has emerged as a standard benchmark for evaluating software engineering agents on challenging repository-level tasks. However, our analysis work show that its evaluation is undermined by two sources of unreliability: \textbf{reward hacking}, enabled by leakage of gold solutions or hidden evaluation information, and \textbf{task quality issues}, including misleading problem statements and improperly scoped tests. These issues can inflate benchmark performance and obscure agents' true coding ability. We present \textbf{SWE-Bench Pro Verified}, a verified version of SWE-Bench Pro that addresses both problems. Our approach combines \textbf{anti-hacking} safeguards that eliminate major leakage channels without disrupting normal agent functionality, with \textbf{task refinement} that minimally corrects inconsistencies within flawed instances. Evaluations on SWE-Bench Pro Verified reveal that some models perform substantially worse than previously reported, suggesting that existing results on SWE-Bench Pro may overestimate real software engineering capability. SWE-Bench Pro Verified offers a more trustworthy benchmark for assessing software engineering agents.--------------------------------------------------------------------------------
+ANDROIDWORLD: A Dynamic Benchmarking (https://arxiv.org/pdf/2405.14573)
+citeturn4search4 [wordlim: 200] Published: 2.2 years ago; this field will be driven by realistic and reproducible benchmarks. ... guage in unlimited ways, thus enabling testing on a much larger and more realistic ... on mobile, suggesting future research is needed to achieve universal, cross-domain ... agent’s performance, highlighting the importance of testing agents under diverse ... and code repositories [16, 1, 2, 63, 66].
+ANDROIDWORLD: A Dynamic Benchmarking
+Environment for Autonomous Agents
+Christopher Rawles∗1, Sarah Clinckemaillie†2, Yifan Chang†2, Jonathan Waltz2, Gabrielle Lau2,
+Marybeth Fair2, Alice Li1, William Bishop1, Wei Li1, Folawiyo Campbell-Ajala1, Daniel Toyama1,
+Robert Berry1, Divya Tyamagundlu2, Timothy Lillicrap1, and Oriana Riva1
+1Google DeepMind
+2Google
+Abstract
+Autonomous agents that execute human tasks by controlling computers can en-
+hance human productivity and application accessibility. However, progress in
+this field will be driven by realistic and reproducible benchmarks. We present
+ANDROIDWORLD, a fully functional Android environment that provides reward
+signals for 116 programmatic tasks across 20 real-world Android apps. Unlike ex-
+isting interactive environments, which provide a static test set, ANDROIDWORLD
+dynamically constructs tasks that are parameterized and expressed in natural lan-
+guage in unlimited ways, thus enabling testing on a much larger and more realistic
+suite of tasks. Reward signals are derived from the computer’s system state, mak-
+ing them durable across task variations and extensible across different apps.
+To demonstrate ANDROIDWORLD’s benefits and mode of operation, we introduce
+a new computer control agent, M3A. M3A can complete 30.6% of ANDROID-
+WORLD’s tasks, leaving ample room for future work. Furthermore, we adapt a
+popular desktop web agent to work on Android, which we find to be less effective
+on mobile, suggesting future research is needed to achieve universal, cross-domain
+agents. Finally, we conduct a robustness analysis by testing M3A against a range
+of task variations on a representative subset of tasks, demonstrating that variations
+in task parameters can significantly alter a task’s complexity and, consequently, an
+agent’s performance, highlighting the importance of testing agents under diverse
+conditions. ANDROIDWORLD and the experiments in this paper are available at
+https://github.com/google-research/android_world.
+arXiv:2405.14573v2  [cs.AI]  10 Jun 2024
+1
+Introduction
+Autonomous agents that interpret human natural language instructions and operate computing
+devices can provide enormous value by automating repetitive tasks, augmenting human intel-
+ligence, and accomplishing complex workflows.
+The enthusiasm for building such agents is
+evident by the growing number of computer control agent systems [45, 10, 78, 27, 25, 19]
+and code repositories [16, 1, 2, 63, 66].
+Yet, most existing approaches evaluate agents with
+proxy metrics, by comparing an agent’s trajectory to a previously collected human demonstra-
+tion [32, 5, 10, 45, 70, 76, 37, 74, 68]. This kind of measurement is not representative of real-world
+performance [45, 78] because it does not reflect that there are usually multiple correct paths to solve
+a task, environments may behave non-deterministically (e.g., the environment freezes), and agents
+*Lead contributor. Contact: crawles@google.com
+†Equal contribution.
+Preprint. Under review.--------------------------------------------------------------------------------
+OSWORLD: Benchmarking Multimodal Agents for (https://arxiv.org/pdf/2404.07972)
+citeturn4search5 [wordlim: 200] Published: 2.2 years ago; (Multimodal Support), support for and inclusion of cross-app tasks (Cross-App), capability to start ... AGENTBENCH [32] ... Multi-isolated ... sic software usage skills but have not been ex- ... the-art LLM and VLM agent baselines on OSWORLD benchmark, as well as their performance.
+Table 4: Comparison of different environments for benchmarking digital agents. The columns
+indicate: the number of task instances and templates (if applicable) where the task instantiated from
+templates through configurations (# Instances (# Templates)), whether they provide a controllable
+executable environment (Control. Exec. Env.), the ease of adding new tasks involving arbitrary
+applications in open domains (Environment Scalability), support for multimodal agent evaluation
+(Multimodal Support), support for and inclusion of cross-app tasks (Cross-App), capability to start
+tasks from an intermediate initial state (Intermediate Init. State), and the number of execution-based
+evaluation functions (# Exec.-based Eval. Func.).
+# Instances
+(# Templates)
+Control.
+Exec. Env.?
+Environment
+Scalability?
+Multimodal
+Support?
+Cross-
+App?
+Intermediate
+Init. State?
+# Exec.-based
+Eval. Func.
+GAIA [36]
+466
+✗
+-
+✗
+✗
+✗
+0
+MIND2WEB [9]
+2350
+✗
+-
+✓
+✗
+✓
+0
+WEBLINX [33]
+2337
+✗
+-
+✓
+✗
+✓
+0
+PIXELHELP [27]
+187
+✗
+-
+✓
+✗
+✗
+0
+METAGUI [47]
+1125
+✗
+-
+✓
+✗
+✗
+0
+AITW [40]
+30k
+✗
+-
+✓
+✗
+✓
+0
+OMNIACT [21]
+9802
+✗
+-
+✓
+✗
+✓
+0
+AGENTBENCH [32]
+1091
+Multi-isolated
+✗
+✗
+✗
+✗
+7
+INTERCODE [57]
+1350 (3)
+Code
+✗
+✗
+✗
+✗
+3
+MINIWOB++ [30]
+125
+Web
+✗
+✓
+✗
+✗
+125
+WEBSHOP [58]
+12k (1)
+Web
+✗
+✓
+✗
+✗
+1
+WEBARENA [66]
+812 (241)
+Web
+✗
+✓
+✗
+✗
+5
+VWEBARENA [22]
+910 (314)
+Web
+✗
+✓
+✗
+✗
+6
+WORKARENA [10]
+23k (29)
+Web
+✗
+✓
+✗
+✓
+7
+WIKIHOW [61]
+150 (16)
+Mobile
+✗
+✓
+✗
+✗
+16
+ASSISTGUI [13]
+100
+✗
+✗
+✓
+✗
+✓
+2
+OSWORLD
+369
+Computer
+✓
+✓
+✓
+✓
+134
+We conduct human evaluations on each example
+in our dataset, with annotators being computer
+science major college students who possess ba-
+sic software usage skills but have not been ex-
+posed to the samples or software before. We
+recorded the time required to complete each ex-
+ample and whether their completion of the ex-
+ample was correct. For comparison, we also
+sampled 100 examples from WebArena [66] un-
+der the same evaluation setup.
+Ours
+WebA  |  | median: 111.94s  | 
+--- | --- | --- | ---
+ |  | rena median: 35.38s  | ✓ ✓ ✓ ✓ ✓  | 0 ✗ ✓ 0 ✗ ✓ 0 ✗ ✗ 0 ✗ ✗ 0 ✗ ✓ 0  |  |  | 
+--- | --- | --- | --- | ---
+✓  | ✗ ✓ 0  |  |  | 
+✗
+✗
+✓
+✓
+✓
+✓
+✓
+✓
+✓  | ✗ ✗ 7
+✗ ✗ 3
+✗ ✗ 125
+✗ ✗ 1
+✗ ✗ 5
+✗ ✗ 6
+✗ ✓ 7
+✗ ✗ 16
+✗ ✓ 2  |  |  | 
+✓  | ✓ ✓ 134  |  |  | 
+900
+Ours
+800 WebA
+700
+(s)
+600 Time
+500 Operation
+400
+Human
+300
+200
+100
+0  | 90
+median: 111.94s
+rena median: 35.38s
+80
+70
+(%)
+Accuracy
+60
+50
+40
+30
+WebArena Ours  |  |  | 
+ |  | WebAren  | a Ours  | 
+Figure 4: Human operation time and
+OSWORLD and WebArena.
+.36%, significantly lower than the 88
+light the complexity and challenge of  |  | accu
+% o
+task  | racy o
+bserve
+s in ou  | n
+d
+rAs illustrated, tasks from our dataset generally
+required more time to complete, with a median
+completion time of 111.94 seconds (compared
+to 35.38 seconds in WebArena), and a significant
+number of examples distributed at 900 seconds
+or even more. In terms of accuracy, the human
+performance on our tasks was approximately 72.36%, significantly lower than the 88% observed
+on the pure web task dataset. These findings highlight the complexity and challenge of tasks in our
+dataset, which demand more time and effort. The lower accuracy rate further indicates that our tasks
+require a higher level of understanding and proficiency, underscoring the need for advanced models
+and techniques to tackle them effectively.
+4
+Benchmarking LLM and VLM Agent Baselines
+In this section, we present the implementation details and experimental settings for several state-of-
+the-art LLM and VLM agent baselines on OSWORLD benchmark, as well as their performance.
+4.1
+LLM and VLM Agent Baselines
+We adopt state-of-the-art LLM and VLM from open-source representatives such as Mixtral [19],
+CogAgent [17] and Llama-3 [35], and closed-source ones from GPT, Gemini, Claude and Qwen
+families on OSWORLD, to serve as the foundation of agent. We also explore methods such as the
+Set-of-Marks aided approach [56, 11], which has been demonstrated to improve spatial capabilities for
+visual reasoning. Our prior experiments following VisualWebArena [22] adopt few-shot prompting,
+9

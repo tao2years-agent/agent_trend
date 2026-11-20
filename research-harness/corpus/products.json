@@ -1,0 +1,2381 @@
+[
+  {
+    "id": "E01",
+    "name": "OpenHands Software Agent SDK",
+    "category": "软件工程 Agent SDK",
+    "platform": "Python SDK，本地会话确认策略；另提供 TypeScript、REST 界面，以下测试定位 Python。",
+    "sources": [
+      {
+        "entity": "E01",
+        "url": "https://github.com/OpenHands/software-agent-sdk/blob/fb565cfeac21468a5101dd41497b65315c66ac3b/README.md",
+        "path": "lanes/execution/raw/openhands/fb565cfeac21468a5101dd41497b65315c66ac3b/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-20",
+        "sha256": "95094c9745c7cc58136d4eaa1688fb6038aafefec2be05344293f6df7e55dbf8"
+      },
+      {
+        "entity": "E01",
+        "url": "https://github.com/OpenHands/software-agent-sdk/blob/fb565cfeac21468a5101dd41497b65315c66ac3b/openhands-sdk/openhands/sdk/security/confirmation_policy.py",
+        "path": "lanes/execution/raw/openhands/fb565cfeac21468a5101dd41497b65315c66ac3b/openhands-sdk/openhands/sdk/security/confirmation_policy.py",
+        "detail": "ConfirmationPolicyBase、ConfirmRisky；L43–61 核对阈值与 UNKNOWN。",
+        "date": "2026-11-20",
+        "sha256": "6ecac839fa3740e5cdc8aae6515cd0cf4ef4177c5b27bb99a7d593af844c765f"
+      },
+      {
+        "entity": "E01",
+        "url": "https://github.com/OpenHands/software-agent-sdk/blob/fb565cfeac21468a5101dd41497b65315c66ac3b/tests/sdk/conversation/local/test_confirmation_mode.py",
+        "path": "lanes/execution/raw/openhands/fb565cfeac21468a5101dd41497b65315c66ac3b/tests/sdk/conversation/local/test_confirmation_mode.py",
+        "detail": "L454–506、L656–700，模拟确认、拒绝及启用条件。",
+        "date": "2026-11-20",
+        "sha256": "cb5a712caab39ef129bce4b5c3c9806ca33675e85189dc19ea7f2e2bcdc76cdd"
+      },
+      {
+        "entity": "E01",
+        "url": "https://github.com/OpenHands/software-agent-sdk/releases/tag/v1.63.0",
+        "path": "lanes/execution/raw/openhands/4a1f72b4b472c11b/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v1.63.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-19",
+        "sha256": "4a1f72b4b472c11b4541195485b1d95a2b643dfe4d39271846a46ef1e14a6062"
+      },
+      {
+        "entity": "E01",
+        "url": "https://arxiv.org/abs/2511.03690",
+        "path": "lanes/execution/raw/openhands/9227d5496109b868/report.html",
+        "detail": "论文摘要与版本历史：v1 为 2025-11-05，核对的是 2026-04-22 v2。",
+        "date": "2026-04-22",
+        "sha256": "9227d5496109b8686d57054f4f60709727f91dc339f02ea04133b6c1dade5d20"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "代码代理即将执行工具，同一会话里混有例行编辑、需要确认的动作，以及无法判级的动作。",
+    "mechanism": "ConfirmRisky 把动作风险与阈值比较，等于阈值也触发。该策略的阈值默认 HIGH，未知风险由独立的 confirm_unknown 开关处理，默认询问。上游测试分别构造有、无分析器的会话，核对待执行事件与拒绝事件配对。",
+    "human": "在待确认动作上继续或拒绝。拒绝会留下带原调用标识和理由的 UserRejectObservation，后续模型可读取理由。要核对实际会话策略与分析器，不能从策略类的默认值推导所有会话都启用审批。",
+    "org": "平台可以把风险标签、阈值、人工决定和实际工具响应分开记录，以复盘哪些直接放行动作后来引发返工。",
+    "limits": "风险分析器输出决定阈值的输入，策略类本身不校准误报漏报。上游测试使用模拟工具；本研究未运行 SDK 服务。",
+    "change": "v1.63.0 的发布记录（2026-11-19 更新）列出恢复后标记来源与结果、等待模型时保存状态变化，以及恢复时移除已禁用插件的能力。它为检查恢复后的有效授权提供了具体版本锚点。",
+    "insight": "“审批过”应能回答谁拒绝了哪一次工具调用、拒绝原因如何回到模型、重启后还能否追溯，而不只是一个布尔字段。",
+    "experiment": "构造低、高、未知三类无害文件操作，分别在开启/关闭分析器和重启前后运行。核对真实执行次数、拒绝事件与原调用 ID，并记录人工介入次数。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E02",
+    "name": "SWE-agent",
+    "category": "面向仓库 issue 的自治修复与多次尝试",
+    "platform": "Python CLI、SWE-ReX 执行环境；区分 RetryAgent 与 DefaultAgent。",
+    "sources": [
+      {
+        "entity": "E02",
+        "url": "https://github.com/SWE-agent/SWE-agent/blob/3ea751c087f32b16e039a2233dd6eefecef325d5/README.md",
+        "path": "lanes/execution/raw/sweagent/3ea751c087f32b16e039a2233dd6eefecef325d5/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-07-16",
+        "sha256": "dcd880557720efbab0f5c0e68f2bc742309efecfce83244c9e670ec1f1adf76f"
+      },
+      {
+        "entity": "E02",
+        "url": "https://github.com/SWE-agent/SWE-agent/blob/3ea751c087f32b16e039a2233dd6eefecef325d5/sweagent/agent/agents.py",
+        "path": "lanes/execution/raw/sweagent/3ea751c087f32b16e039a2233dd6eefecef325d5/sweagent/agent/agents.py",
+        "detail": "RetryAgent.run L390–437，每次候选与最终选取的轨迹。",
+        "date": "2026-07-16",
+        "sha256": "d6cdf7ac66a6509ceba08e3541b856f0734acf79f9a485ed8a6e2c72f0d211a8"
+      },
+      {
+        "entity": "E02",
+        "url": "https://github.com/SWE-agent/SWE-agent/blob/3ea751c087f32b16e039a2233dd6eefecef325d5/sweagent/agent/reviewer.py",
+        "path": "lanes/execution/raw/sweagent/3ea751c087f32b16e039a2233dd6eefecef325d5/sweagent/agent/reviewer.py",
+        "detail": "ScoreRetryLoop L590–654，接受数和剩余预算控制。",
+        "date": "2026-07-16",
+        "sha256": "881580a98eef5942d9e3be759fa6a7901c162b9fe1279d9beb334e969688ad10"
+      },
+      {
+        "entity": "E02",
+        "url": "https://github.com/SWE-agent/SWE-agent/releases/tag/v1.0.0",
+        "path": "lanes/execution/raw/sweagent/ba4b199549514a62/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v1.0.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2025-02-13",
+        "sha256": "ba4b199549514a622bd90098b21d54bf4c26e9e5d0bdc31c6ca014a51b81676b"
+      },
+      {
+        "entity": "E02",
+        "url": "https://arxiv.org/abs/2405.15793",
+        "path": "lanes/execution/raw/sweagent/7c98d2fca05b7a49/report.html",
+        "detail": "论文摘要、ACI 方法和版本历史：v1 为 2024-05-06，当前为 2024-11-11 v3，未重跑论文实验。",
+        "date": "2024-11-11",
+        "sha256": "7c98d2fca05b7a4978df79f781d7c10108a8eaf362fc816790eae3b48154c805"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "给定仓库和 issue，一次尝试产出候选补丁后，需要决定是否值得再花一轮推理成本，以及最终保留哪个结果。",
+    "mechanism": "RetryAgent 在一次尝试完成后提交 trajectory、模型统计与候选结果，保存本次轨迹；按配置继续或最终选取结果。ScoreRetryLoop 汇总尝试与评审成本，检查次数、接受数和开启新尝试所需的剩余预算。v1.0 起可调整多次尝试的配置、模型或参数。",
+    "human": "人预设预算、评分门槛和挑选方式，事后可用轨迹检查器抽查候选；源码中的 reviewer 分数是自动选择信号，不能代表仓库维护者已验收。",
+    "org": "适合估计“同一工单多试一次”的边际收益，用失败轨迹定位工具或上下文缺口。可将尝试编号和失败成本记到同一工单。",
+    "limits": "研究样本围绕有明确问题陈述和代码环境的修复。选中候选不等于通过隐藏测试、上线成功或提升团队净产出。本次未重跑论文基准。",
+    "change": "v1.0.0 发布记录（2025-02-13）列出可配置重试、多种配置择优、SWE-ReX 并行执行及命令行轨迹检查器，作为历史引入证据。",
+    "insight": "调度预算可以发挥比新增一个模型更直接的作用，但需要独立验收器识别“多花钱挑出同一个错误”。",
+    "experiment": "对同一组有保留测试的历史 issue 随机分配单次尝试、等预算多次尝试；记录 best-of-N 与最终被选候选之间的差距，计入评审推理成本及人工挑选分钟数。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E03",
+    "name": "goose",
+    "category": "定时运行的 recipe 与可中止会话",
+    "platform": "开源 Rust 调度器、CLI/桌面；取 scheduler/full.rs 的调度路径。",
+    "sources": [
+      {
+        "entity": "E03",
+        "url": "https://github.com/aaif-goose/goose/blob/42055e73fda21edd8f3056a5eef682d08589aef0/README.md",
+        "path": "lanes/execution/raw/goose/42055e73fda21edd8f3056a5eef682d08589aef0/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-20",
+        "sha256": "a6b9891ec9a3a9d96882c46bb0d7c68d3b5bcf636f997d7c632a4697b587b202"
+      },
+      {
+        "entity": "E03",
+        "url": "https://github.com/aaif-goose/goose/blob/42055e73fda21edd8f3056a5eef682d08589aef0/crates/goose/src/scheduler/full.rs",
+        "path": "lanes/execution/raw/goose/42055e73fda21edd8f3056a5eef682d08589aef0/crates/goose/src/scheduler/full.rs",
+        "detail": "schedule_recipe、execute_job L845–913、pause_schedule、kill_running_job。",
+        "date": "2026-11-20",
+        "sha256": "04ecdccbaa034921e00c2ddc4a4d4f1d2e77a2cb1eae61287812bacd211ee5f8"
+      },
+      {
+        "entity": "E03",
+        "url": "https://github.com/aaif-goose/goose/blob/42055e73fda21edd8f3056a5eef682d08589aef0/crates/goose/src/agents/state_machine/tool_approval.rs",
+        "path": "lanes/execution/raw/goose/42055e73fda21edd8f3056a5eef682d08589aef0/crates/goose/src/agents/state_machine/tool_approval.rs",
+        "detail": "GooseToolApproval.check L31–99，按请求 ID 处理检查器决策。",
+        "date": "2026-11-20",
+        "sha256": "439ffcf9e7d6d4d7b727a6d3457a327fa644c742d1d915ae6b9d6486387836c9"
+      },
+      {
+        "entity": "E03",
+        "url": "https://github.com/aaif-goose/goose/releases/tag/v1.59.0",
+        "path": "lanes/execution/raw/goose/075e6125adcdbc9f/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v1.59.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-10",
+        "sha256": "075e6125adcdbc9f282bfb1323ec5aa3c66c2a42087f706868c944c856207991"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "维护者将重复性任务编为 recipe，例如周期性检查仓库文档漂移，要求定时执行并能暂停单个计划。",
+    "mechanism": "调度器保存计划与已经校验的 recipe 字节，保留原目录解析相对引用，运行时结合参数和模型设置创建 Scheduled 会话，源码在该路径显式设置 GooseMode::Auto。调度器有 run_now、pause_schedule、kill_running_job 以及按计划查看会话的入口。",
+    "human": "操作者可暂停后续调度或终止当前运行，两种动作分别对应将来与现在。普通工具审查层按请求 ID 收集 deny、allow、ask，不能由交互会话存在 ask 推导定时模式也会等待人。",
+    "org": "团队能独立管理任务所有者、recipe 版本和会话记录；部署需要额外定义定时身份及扩展集合，尤其 recipe 没有显式声明扩展时。",
+    "limits": "运行时会根据当前配置解析模型和扩展。冻结 recipe 文本并不冻结依赖、模型和凭证；跨实例的一次性执行保证、平台审批表现均未实测。",
+    "change": "v1.59.0 的 2026-11-10 发布记录列入 goose-agent GDK 的停止、审批及工具 hook operations。该记录说明扩展点演进，不是定时 recipe 首次上线日期。",
+    "insight": "发布一份 recipe 时还应发布可比较的执行清单，否则相同文本在两个团队中可能调用不同扩展。",
+    "experiment": "在隔离目录将只读日报安排两次，一次固定扩展、一次沿用环境配置；在运行中暂停计划并单独终止任务，核对会话状态、调用记录及是否产生第二份输出。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E04",
+    "name": "Aider",
+    "category": "本地改动、确定性检查和人工返修",
+    "platform": "Git 仓库内 CLI；以下默认值为 Coder 构造器值，用户配置可覆盖。",
+    "sources": [
+      {
+        "entity": "E04",
+        "url": "https://github.com/Aider-AI/aider/blob/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/README.md",
+        "path": "lanes/execution/raw/aider/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-05-22",
+        "sha256": "e40e05367ceacf7138a2605484bf7d1cb5a262d2dba03f52a5327c023b3cd0dc"
+      },
+      {
+        "entity": "E04",
+        "url": "https://github.com/Aider-AI/aider/blob/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/aider/coders/base_coder.py",
+        "path": "lanes/execution/raw/aider/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/aider/coders/base_coder.py",
+        "detail": "run_one L924–944；编辑后 lint、自动测试与询问 L1599–1623。",
+        "date": "2026-05-22",
+        "sha256": "04a7b38c4f1d2b1684ac958f40bcd81a28b00139eae88afed59d2c970bef1ee1"
+      },
+      {
+        "entity": "E04",
+        "url": "https://github.com/Aider-AI/aider/blob/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/aider/commands.py",
+        "path": "lanes/execution/raw/aider/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/aider/commands.py",
+        "detail": "raw_cmd_undo L560–634，历史及脏文件检查。",
+        "date": "2026-05-22",
+        "sha256": "4457e9da5ac3d89003648d68f596aa9857a7e76e36dcff8ebd10f4b59ccd77e7"
+      },
+      {
+        "entity": "E04",
+        "url": "https://github.com/Aider-AI/aider/blob/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/HISTORY.md",
+        "path": "lanes/execution/raw/aider/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/HISTORY.md",
+        "detail": "v0.86.0 的 /undo 展示变更及旧版撤销修复。",
+        "date": "2026-05-22",
+        "sha256": "d190836f7ef818ef5f224c5c605ce748205fce95dfea19f45d44e4e8d93799b3"
+      },
+      {
+        "entity": "E04",
+        "url": "https://github.com/Aider-AI/aider/releases/tag/v0.86.0",
+        "path": "lanes/execution/raw/aider/6499d57b5b8b2983/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 Aider v0.86.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2025-08-09",
+        "sha256": "6499d57b5b8b29839c3fc2a7a362d2ea0a5689fa0ec638cf0b6f86c7b3c6c86e"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "开发者让代理修改若干文件，期望编辑后自动触发语法检查或项目测试，快速决定是否返修或撤销一次更改。",
+    "mechanism": "Coder 对实际编辑的文件运行自动 lint；auto_test 开关打开时执行已配置的测试命令。失败分别通过 confirm_ask 请求是否修复；同意才将错误作为下一轮输入。run_one 限制同一请求的反思轮数，类默认上限为 3。自动 lint 与自动测试在该构造器上的默认值分别为开和关。",
+    "human": "开发者决定是否将错误送回模型，并可查看 Git 改动。/undo 在多父提交、相关文件有未提交改动等情形会停止，避免直接覆盖人的后续工作。",
+    "org": "适合做低复杂度基线，证明额外平台开销是否换来了超过明确测试命令与有限返修的收益。",
+    "limits": "项目测试可能遗漏关键行为，运行本地命令需要合适环境。Git 撤销作用于受管代码，不能补偿外部工单或服务操作。本次未运行 Aider。",
+    "change": "v0.86.0 的 2025-08-09 发布说明与 HISTORY 均记录缩短 /undo 中提交消息的显示，同时支持 GPT-5 等模型。此项是可读性改进，不代表该版首次拥有撤销能力。",
+    "insight": "有些错误可由廉价的编译器或测试给出直接反馈，无须再请一个模型扮演评审。组织产品可先把这条基线做扎实。",
+    "experiment": "在已有 lint 和单测的仓库比较只编辑、编辑加 lint、再加测试三个条件。锁定模型配置，拆分检查发现的问题、误报、同意返修率和下一次人工修改。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E05",
+    "name": "OpenAI Codex CLI",
+    "category": "可编程的执行审批与自动评审",
+    "platform": "开源 Rust harness；此处核对 core 源码和上游测试，厂商实践是独立证据等级。",
+    "sources": [
+      {
+        "entity": "E05",
+        "url": "https://github.com/openai/codex/blob/a0a30c40e8dbcc44af52e2df64dcce64368d4422/README.md",
+        "path": "lanes/execution/raw/codex/a0a30c40e8dbcc44af52e2df64dcce64368d4422/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-20",
+        "sha256": "ba4e1f69ff48386e72a9c5e1edaf76aad64a475c2d51af79ccba6d1128261ba7"
+      },
+      {
+        "entity": "E05",
+        "url": "https://github.com/openai/codex/blob/a0a30c40e8dbcc44af52e2df64dcce64368d4422/codex-rs/core/src/tools/approvals.rs",
+        "path": "lanes/execution/raw/codex/a0a30c40e8dbcc44af52e2df64dcce64368d4422/codex-rs/core/src/tools/approvals.rs",
+        "detail": "request_approval_with_user_prompt L576–625；record_resolution 的决策来源。",
+        "date": "2026-11-20",
+        "sha256": "da9e8c49bebfa5c0c42a3d20792d2da3520ab01ef53781893cec85dc19b2b508"
+      },
+      {
+        "entity": "E05",
+        "url": "https://github.com/openai/codex/blob/a0a30c40e8dbcc44af52e2df64dcce64368d4422/codex-rs/core/tests/suite/auto_review.rs",
+        "path": "lanes/execution/raw/codex/a0a30c40e8dbcc44af52e2df64dcce64368d4422/codex-rs/core/tests/suite/auto_review.rs",
+        "detail": "required_model、approval_review_contributor 等自动评审测试案例；未执行。",
+        "date": "2026-11-20",
+        "sha256": "f66064d296ffc30df88df504a5c062cd8b0a84eceacf1e591597c1aa95f8ebab"
+      },
+      {
+        "entity": "E05",
+        "url": "https://github.com/openai/codex/releases/tag/rust-v0.171.0",
+        "path": "lanes/execution/raw/codex/b167d4a867ff015a/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 0.171.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-20",
+        "sha256": "b167d4a867ff015a41dc8b87f8238922b2cf7a7e85c936ea58f77e92a72abc6e"
+      },
+      {
+        "entity": "E05",
+        "url": "https://developers.openai.com/cookbook/examples/agents_sdk/agent_improvement_loop",
+        "path": "lanes/execution/raw/codex/961b5ae1b640edb0/report.html",
+        "detail": "官方示例把轨迹、人的反馈、模型反馈、回归评测和 harness 变更建议串联。",
+        "date": "2026-05-12",
+        "sha256": "961b5ae1b640edb0ef8e43ead12e04c867bc3fa33cfea628742ebd353827e178"
+      },
+      {
+        "entity": "E05",
+        "url": "https://openai.com/index/harness-engineering/",
+        "path": "lanes/execution/raw/codex/openai-harness-20260211/web-excerpt.json",
+        "detail": "官方单团队实践，来自 web 工具的页面摘录，非全文快照；只支持具体流程。",
+        "date": "2026-02-11",
+        "sha256": "2a301fec5b07346977311c6e5fc294ba2a9e3d0f27c3f41d80690f524d456db7"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "代理申请一次需授权的操作。系统面对 hook、用户、自动评审器和强制人工节点，必须知道谁有权作决定以及决定属于哪一轮。",
+    "mechanism": "请求以工具调用及上下文构造审批载荷。拒绝类 hook 可直接否决；允许类 hook 仅在无需强制人工审批时直接生效。其余请求按配置路由到评审者；记录决策来源，自动评审与用户、hook 分别标记。迟到事件与当前轮审批的关联是已出现过的实际维护问题。",
+    "human": "强制人工检查点在允许 hook 或自动评审配置下仍保留人工决定。组织需要把哪些动作必须有人签字写入自己的策略，并验证策略确实进入当前运行。",
+    "org": "内部工程实践报告描述人负责优先级与验收标准，并将 agent 暴露的缺口回写仓库；OpenAI Cookbook 演示从真实轨迹、人的反馈和评测迭代 harness。两者是可参考的流程实例。",
+    "limits": "Rust 开源控制面、OpenAI 内部单团队经验和 Cookbook 示例是三种不同材料；均不能证明任意组织的生产改进比例。本次未调用 Codex 模型或评审服务。",
+    "change": "0.171.0 的官方记录（2026-11-20 更新）明确修复较早轮次的完成事件误取消新轮审批，并列出将自动评审缓存按策略版本隔离的改动。",
+    "insight": "同一条“允许”需要绑定调用、轮次、策略版本与决策来源，才能支持租户策略变更、迟到消息以及事后责任复核。",
+    "experiment": "为只写临时文件的操作构造常规、强制人工、迟到完成和策略变更四组会话；验证每个动作匹配正确责任人、无复用旧批准，测量人工等待与返工。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E06",
+    "name": "Gemini CLI",
+    "category": "按层次评估工具调用授权的 CLI",
+    "platform": "TypeScript CLI 核心及 policy-engine.md；区分交互与 nonInteractive 模式。",
+    "sources": [
+      {
+        "entity": "E06",
+        "url": "https://github.com/google-gemini/gemini-cli/blob/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/README.md",
+        "path": "lanes/execution/raw/gemini/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-19",
+        "sha256": "1dcb655995df3a664a7052a0c25d73565d698bc95d8d8965ecad95ef7d2a4568"
+      },
+      {
+        "entity": "E06",
+        "url": "https://github.com/google-gemini/gemini-cli/blob/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/packages/core/src/policy/policy-engine.ts",
+        "path": "lanes/execution/raw/gemini/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/packages/core/src/policy/policy-engine.ts",
+        "detail": "PolicyEngine.check L771 之后匹配规则与附加检查，L1118–1119 非交互降级。",
+        "date": "2026-11-19",
+        "sha256": "495806651e260875971af8079e8225c2dd96fd1254a61ca6c6a39837d162f8ef"
+      },
+      {
+        "entity": "E06",
+        "url": "https://github.com/google-gemini/gemini-cli/blob/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/docs/reference/policy-engine.md",
+        "path": "lanes/execution/raw/gemini/d4cb1713fd7fc30f1c03f9ca7cbfed341c97dffd/docs/reference/policy-engine.md",
+        "detail": "Priority system and tiers；Admin tier 数字在同页前后不一致。",
+        "date": "2026-11-19",
+        "sha256": "147bb923c0612db51e02f34b89aac4583efb291616903f80699fe07e226eae81"
+      },
+      {
+        "entity": "E06",
+        "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.70.0",
+        "path": "lanes/execution/raw/gemini/d4c0a4a9d41dc9b2/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 Release v0.70.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-19",
+        "sha256": "d4c0a4a9d41dc9b2d493ee11a54661ebd8f75db871a3194304bfbe34ebd98d3c"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "平台希望在开发者自定义规则之上施加企业规则，同一条命令既能在终端交互执行，也会被无人值守任务调用。",
+    "mechanism": "规则按优先级评估，在工具身份及参数匹配后给出允许、拒绝或询问；检查器还可改变结果。引擎能分解复合 shell 命令并聚合子判断，最终 nonInteractive 模式将 ASK_USER 转成 DENY。管理员可部署系统级策略，文档也列出工作区和用户来源。",
+    "human": "交互模式下操作人可处理询问；无人值守时这个分支直接拒绝，另行排队交给谁取决于外围平台。",
+    "org": "组织可版本化规则，针对 CLI 与后台作业分别设计单元测试，并把“等人”“已拒绝”作为不同运营状态。",
+    "limits": "文档的 Admin tier 表格与后部示例对具体编号有出入，故只采用已交叉核对的优先级和执行语义；未执行平台权限设置。",
+    "change": "v0.70.0 的 2026-11-19 更新记录将 policy argsPattern 的实现替换为线性时间的 re2js。该项是匹配实现调整，不是规则引擎的首次引入。",
+    "insight": "审批策略要区分判断本身和运行环境是否有人响应。没有响应端点时，“询问”很可能成为任务失败原因。",
+    "experiment": "用同一无害调用及同一规则文件在终端、无交互 worker 中各跑一次，再添加高优先级拒绝规则；分别记录最终状态、规则 ID、等待时长和人工重开所需操作。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E07",
+    "name": "Cline",
+    "category": "会话与工作树的检查点及恢复",
+    "platform": "公开工作流文档面向 Cline 用户；实现定位到 SDK core 的 checkpoint-restore 路径。",
+    "sources": [
+      {
+        "entity": "E07",
+        "url": "https://github.com/cline/cline/blob/20b042723a14412f6c1e84230b008708534d6e8c/README.md",
+        "path": "lanes/execution/raw/cline/20b042723a14412f6c1e84230b008708534d6e8c/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-19",
+        "sha256": "6640ce1ef463f641e05b9b6b3361fa20da3cbb4fe5d613950bf2623218c89b6e"
+      },
+      {
+        "entity": "E07",
+        "url": "https://github.com/cline/cline/blob/20b042723a14412f6c1e84230b008708534d6e8c/sdk/packages/core/src/session/checkpoint-restore.ts",
+        "path": "lanes/execution/raw/cline/20b042723a14412f6c1e84230b008708534d6e8c/sdk/packages/core/src/session/checkpoint-restore.ts",
+        "detail": "checkpointCapturedUntracked L337–355；applyCheckpointToWorktree L376–416 校验基线。",
+        "date": "2026-11-19",
+        "sha256": "a1aa2fa03033b464380c068924056c647325ed6753134bd57a56348a5a9dfe03"
+      },
+      {
+        "entity": "E07",
+        "url": "https://github.com/cline/cline/blob/20b042723a14412f6c1e84230b008708534d6e8c/docs/core-workflows/checkpoints.mdx",
+        "path": "lanes/execution/raw/cline/20b042723a14412f6c1e84230b008708534d6e8c/docs/core-workflows/checkpoints.mdx",
+        "detail": "Compare、Restore Files、Restore Task Only 及两者同时恢复的 UI 说明。",
+        "date": "2026-11-19",
+        "sha256": "a7da9a10d10456f40460a1f7d038b4fe2e223a7448bf5e45e8f791807c6cb4f6"
+      },
+      {
+        "entity": "E07",
+        "url": "https://github.com/cline/cline/releases/tag/sdk%2Fsdk%2Fv0.2.0",
+        "path": "lanes/execution/raw/cline/207d7b4188f10b16/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 SDK v0.2.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-10-26",
+        "sha256": "207d7b4188f10b168da2dd05d60302ebb0fa8b5342d1681c28ebfc53042eeddb"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "代理连续改动文件后，开发者希望比较差异，按风险选择恢复文件、撤回对话步骤或同时恢复两者。",
+    "mechanism": "文档提供三种恢复范围。SDK core 读取检查点历史并判断 stash/commit 形式；只在带第三父提交的快照上认为未跟踪文件已被捕获。恢复前校验当前 HEAD 与快照基线，分支前进、变基或切换后会拦截可能覆盖新提交的操作。",
+    "human": "人选择具体检查点和恢复范围，发现分支已经前进时可只恢复对话或自行处理版本差异。",
+    "org": "共享环境的回退凭据应包含分支、基线提交及快照格式。恢复成功率必须按恢复对象计，代码、对话和外部系统分别对账。",
+    "limits": "用户文档描述 shadow Git 的工作流，SDK 路径对较旧 stash 与未跟踪文件有显式兼容限制。两者可能对应不同界面或演进阶段，本研究未用桌面端重演。",
+    "change": "SDK v0.2.0 的发布记录（2026-10-26）描述：启动一个已有在途 run 的会话会重连原运行，修复旧运行仍执行而调用方已丢失连接的问题。这是会话重连修复，与恢复代码文件的语义不同。",
+    "insight": "恢复能力需要区分“回到某个对话”“回到某个文件版本”和“重新连接正在运行的后台任务”，三者对用户承诺不同。",
+    "experiment": "在临时 Git 仓库中分别创建未跟踪文件和后续人工提交，测试三种恢复动作；检查对话、已跟踪文件、未跟踪文件与分支头，记录被主动拦截的情况。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E08",
+    "name": "OpenCode",
+    "category": "后台子代理与父会话汇报",
+    "platform": "OpenCode 2.x 的 TypeScript 会话与后台任务实现。",
+    "sources": [
+      {
+        "entity": "E08",
+        "url": "https://github.com/anomalyco/opencode/blob/c98608c513c80558741bb7d56eb8ce14d4e58aa8/README.md",
+        "path": "lanes/execution/raw/opencode/c98608c513c80558741bb7d56eb8ce14d4e58aa8/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-20",
+        "sha256": "df8e642cd42bf26246dc9aaac2d5ef60a26cbb500aa631667da294112a1c6fc6"
+      },
+      {
+        "entity": "E08",
+        "url": "https://github.com/anomalyco/opencode/blob/c98608c513c80558741bb7d56eb8ce14d4e58aa8/packages/core/src/session/subagent-completion.ts",
+        "path": "lanes/execution/raw/opencode/c98608c513c80558741bb7d56eb8ce14d4e58aa8/packages/core/src/session/subagent-completion.ts",
+        "detail": "formatBody 与 deliver L39–81：正文状态、父会话、通知 ID、未完成任务。",
+        "date": "2026-11-20",
+        "sha256": "f3e143258ac8c2f3c0b467822dcbcc2ebb23bb80a05eb46cbff0271254c07a5e"
+      },
+      {
+        "entity": "E08",
+        "url": "https://github.com/anomalyco/opencode/blob/c98608c513c80558741bb7d56eb8ce14d4e58aa8/packages/core/src/session/subagent-job.ts",
+        "path": "lanes/execution/raw/opencode/c98608c513c80558741bb7d56eb8ce14d4e58aa8/packages/core/src/session/subagent-job.ts",
+        "detail": "服务终止与显式取消的差异，见 run 的 onInterrupt 路径。",
+        "date": "2026-11-20",
+        "sha256": "2539726bb4a47fd97e6eeef556a61a5a02d5d61af0b66a583481efb98cd2eb37"
+      },
+      {
+        "entity": "E08",
+        "url": "https://github.com/anomalyco/opencode/releases/tag/v2.3.0",
+        "path": "lanes/execution/raw/opencode/c7a3bc06b2d7b44e/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v2.3.0；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-13",
+        "sha256": "c7a3bc06b2d7b44e4cf2869435d0663ce80f526bcf28755b04389d10a0af9a67"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "父任务委托多个子任务后继续工作，希望收到真正可区分的完成、失败、取消及仍有后台工作的回报。",
+    "mechanism": "SubagentCompletion.deliver 检查持久化作业状态，向父会话写入含 childSessionID 的合成消息；若子代理本轮已完成但仍有后台 shell、脚本等，正文状态显示仍有工作。记录中有通知 ID 时复用它并调用 completeBackground。执行作业只在显式取消时中断子执行。",
+    "human": "人可在父会话读取带子任务身份和剩余工作的回报，适合抽查异常或调整分工；汇报消息本身不批准子代理修改。",
+    "org": "可将作业执行、消息投递、工作项验收画成三条状态线，用同一任务标识关联，以处理服务重启、迟到结果和子任务仍在运行的情形。",
+    "limits": "旧记录可能没有剩余工作快照；源码选择重放记载的完成状态。单文件无法证明跨进程“一次且仅一次”投递，本次未实测作业。",
+    "change": "v2.3.0 的 2026-11-13 发布记录明确将后台子代理设为默认，父会话可继续运行，子代理空闲后汇报；这里是默认行为变化。",
+    "insight": "组织管理界面若把“子代理已发总结”当作“整个工作包完成”，可能漏掉尚未结束的构建或脚本。",
+    "experiment": "让子任务产生一项延迟完成的无害后台工作，并在回报前后分别重启父会话；核对父会话汇报、实际作业终态、重复通知数和错误结束次数。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E09",
+    "name": "Claude Agent SDK for Python",
+    "category": "将工具审批和 hook 接入宿主应用",
+    "platform": "公开 Python SDK 与其 CLI 控制协议适配层；Claude Code CLI 核心不在该源码证据中。",
+    "sources": [
+      {
+        "entity": "E09",
+        "url": "https://github.com/anthropics/claude-agent-sdk-python/blob/69846cdf82aef59add3b14a26b4f16d1ccee26ba/README.md",
+        "path": "lanes/execution/raw/claude/69846cdf82aef59add3b14a26b4f16d1ccee26ba/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-19",
+        "sha256": "bcfd3fc77289f9cb17db7842a21ff2f0d93004a1b510b4666d4680150579a0a4"
+      },
+      {
+        "entity": "E09",
+        "url": "https://github.com/anthropics/claude-agent-sdk-python/blob/69846cdf82aef59add3b14a26b4f16d1ccee26ba/src/claude_agent_sdk/_internal/query.py",
+        "path": "lanes/execution/raw/claude/69846cdf82aef59add3b14a26b4f16d1ccee26ba/src/claude_agent_sdk/_internal/query.py",
+        "detail": "L640–736，can_use_tool、上下文和响应；L1099–1106，输入管道保护。",
+        "date": "2026-11-19",
+        "sha256": "97704b09bcee252fcf15de1c2c481fee9dfacf0697d47524ee97e38956bfbf57"
+      },
+      {
+        "entity": "E09",
+        "url": "https://github.com/anthropics/claude-agent-sdk-python/blob/69846cdf82aef59add3b14a26b4f16d1ccee26ba/src/claude_agent_sdk/types.py",
+        "path": "lanes/execution/raw/claude/69846cdf82aef59add3b14a26b4f16d1ccee26ba/src/claude_agent_sdk/types.py",
+        "detail": "DeferredToolUse、HookMatcher.on_failure 及权限返回类型。",
+        "date": "2026-11-19",
+        "sha256": "dab3138aec01d85723b51864bab77c973755fa2c9af652bcd238c426bc747a9c"
+      },
+      {
+        "entity": "E09",
+        "url": "https://github.com/anthropics/claude-agent-sdk-python/blob/69846cdf82aef59add3b14a26b4f16d1ccee26ba/CHANGELOG.md",
+        "path": "lanes/execution/raw/claude/69846cdf82aef59add3b14a26b4f16d1ccee26ba/CHANGELOG.md",
+        "detail": "0.2.177 加入 on_failure；0.1.74 明确 can_use_tool 只在 ask 触发。",
+        "date": "2026-11-19",
+        "sha256": "3dfa0e2c00d435ca5d1d552ebd71be6eccb2a2da43309cf7f19b83a9ebd3627d"
+      },
+      {
+        "entity": "E09",
+        "url": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.2.177",
+        "path": "lanes/execution/raw/claude/382dd658b1756c74/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v0.2.177；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-03",
+        "sha256": "382dd658b1756c748da4437beda27b64d3f2d96af1db34a053df2ea2d9e9d9e6"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "企业工单服务希望把代理的待确认操作送入自己的审查界面，并在宿主回调出错时选择明确的失败处理方式。",
+    "mechanism": "Python Query 处理来自 CLI 的 can_use_tool 控制请求，附带上下文调用宿主回调，再发送对应 control_response。独立读循环处理取消及超时；有 hooks、SDK MCP servers 或权限回调时会保留控制输入流。公开类型支持工具执行前 defer，把待处理动作返回宿主。",
+    "human": "can_use_tool 只对进入 ask 路径的权限判断触发；如果希望在每次工具尝试上执行规则，应区分权限回调与 PreToolUse hook。宿主负责把决定绑定到正确的人和请求。",
+    "org": "平台可统一接入审批 UI 和工单，但需要自己维护值班、取消、超时和记录；可对关键 hook 设置故障阻断并检查 CLI 兼容性。",
+    "limits": "SDK 包装层与 CHANGELOG 证明公开协议和行为约定，不能通过该仓库审计闭源 CLI 的每条执行路径。本次未连接模型。",
+    "change": "v0.2.177 的 2026-11-03 发布记录为 HookMatcher 加入 on_failure。默认 continue，显式 block 能在回调报错、返回空结果或不合法结果时阻断；旧 CLI 不支持时连接会报错。",
+    "insight": "接入审批界面并不等于覆盖所有动作。平台需要同时验证触发覆盖和审批服务自身不可用时采用的处理方式。",
+    "experiment": "让模拟宿主返回允许、拒绝、延迟、回调异常四类结果，交叉检查默认与显式 block；记录 CLI、SDK 和工单各自保留的请求 ID 与终态。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E10",
+    "name": "LangGraph",
+    "category": "可中断、有检查点的工作流运行时",
+    "platform": "Python OSS 图运行时；静态源码观察与本机已安装版本的实测分别记录。",
+    "sources": [
+      {
+        "entity": "E10",
+        "url": "https://github.com/langchain-ai/langgraph/blob/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/README.md",
+        "path": "lanes/execution/raw/langgraph/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-11-20",
+        "sha256": "3a13e257af1216962d53d72414a7f44ac1fc5cea34d994bdff60ea2a3b045933"
+      },
+      {
+        "entity": "E10",
+        "url": "https://github.com/langchain-ai/langgraph/blob/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/libs/langgraph/langgraph/types.py",
+        "path": "lanes/execution/raw/langgraph/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/libs/langgraph/langgraph/types.py",
+        "detail": "interrupt L913–1053，节点重放、检查点、响应验证与中断顺序。",
+        "date": "2026-11-20",
+        "sha256": "3a76d057207066e77f2e7684b0e3822466578516f4d01b931590299fc8a53f3b"
+      },
+      {
+        "entity": "E10",
+        "url": "https://github.com/langchain-ai/langgraph/blob/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/libs/langgraph/langgraph/pregel/_loop.py",
+        "path": "lanes/execution/raw/langgraph/58a6e1cc5b7dfc3619fc6e7e7573b040d554649b/libs/langgraph/langgraph/pregel/_loop.py",
+        "detail": "PregelLoop 对待处理写入、恢复的配置与 interrupt 的调度。",
+        "date": "2026-11-20",
+        "sha256": "8676f3f94587ee39a67a848b56ddf6387187fa580e3d6f0fdfed3f140ea61ad4"
+      },
+      {
+        "entity": "E10",
+        "url": "https://github.com/langchain-ai/langgraph/releases/tag/1.2.24",
+        "path": "lanes/execution/raw/langgraph/b7ba725b3b6b853d/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 langgraph==1.2.24；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-11-20",
+        "sha256": "b7ba725b3b6b853def44e69724f99e71153be70c74b968ffad086ea2a534020c"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "长工作流在生成建议后暂停等审批，用户数小时后提供决定；开发者需要知道恢复时哪些逻辑会再执行。",
+    "mechanism": "interrupt 抛出可恢复中断。启用 checkpointer 后，调用方以 Command(resume=...) 传回值；节点会从头执行，按节点内 interrupt 调用顺序匹配已有的恢复值。类型化响应可校验，裸 JSON schema 与类型适配器有不同验证语义。",
+    "human": "人能在中断处查看载荷并提交同意、拒绝或补充信息。调用方必须把人的身份、请求有效期和业务授权接入系统。",
+    "org": "适用于跨班次审查、长任务和职责分工。若中断前已经写外部系统，需用业务幂等键或事务边界保护重复写入。",
+    "limits": "本机已安装的 LangGraph 0.2.71 和单独安装、与固定源码同版的 1.2.24 各跑四次离线实验。两版均用同进程 MemorySaver：approve 或 deny 均能恢复；放在中断前的计数由 1 变 2，放到前一已结束节点则保持 1。源码固定在 1.2.24 对应提交。未测跨进程持久存储和外部事务。",
+    "change": "1.2.24 的发布记录（2026-11-20 更新）修复 DeltaChannel 遇到 None checkpoint 等边界；此次修复不能用作 interrupt 首次上线时间。",
+    "insight": "审批落点是副作用设计问题。即使“等人再继续”的界面完全正确，恢复前缀仍可能重复发送通知、创建工单。",
+    "experiment": "已执行双版本、同进程、双决策、双节点布置的八次对照并保留脚本和输出；下一步用持久化存储、进程重启及幂等外部写入模拟执行，比较重复副作用与丢失恢复数。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "E11",
+    "name": "mini-SWE-agent",
+    "category": "极简可计量的执行基线",
+    "platform": "Python 默认 agent 与独立环境适配器；与 SWE-agent 同团队、不同仓库及执行设计。",
+    "sources": [
+      {
+        "entity": "E11",
+        "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/README.md",
+        "path": "lanes/execution/raw/mini/04d809ceab9df28f9adaed044884180159172930/README.md",
+        "detail": "仓库 README 定位产品用途、平台和入口。",
+        "date": "2026-09-03",
+        "sha256": "9982d90b7566f2f3fa5e9811b475d5e8e2a84e2df80cf3f1e4be6e820b129835"
+      },
+      {
+        "entity": "E11",
+        "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py",
+        "path": "lanes/execution/raw/mini/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/agents/default.py",
+        "detail": "run/query/execute_actions L88–157，异常费用、终止、观察与保存。",
+        "date": "2026-09-03",
+        "sha256": "e8ef8aa365942d739c2ec5cb0879f60f377d2dc2de8ec670aaedf3bafb45a4c2"
+      },
+      {
+        "entity": "E11",
+        "url": "https://github.com/SWE-agent/mini-swe-agent/blob/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/environments/local.py",
+        "path": "lanes/execution/raw/mini/04d809ceab9df28f9adaed044884180159172930/src/minisweagent/environments/local.py",
+        "detail": "LocalEnvironment.execute 以及 _run 超时后结束进程组的实现。",
+        "date": "2026-09-03",
+        "sha256": "01dd33ae6be897458611911cc0eee1389092ea9fc6788c7eb24773e7c6342b1c"
+      },
+      {
+        "entity": "E11",
+        "url": "https://github.com/SWE-agent/mini-swe-agent/releases/tag/v2.4.6",
+        "path": "lanes/execution/raw/mini/817fcf2059cd1f5d/releases.atom",
+        "detail": "官方 GitHub Releases Atom 内的条目 v2.4.6；date 为该条目 updated 的 UTC 日期。",
+        "date": "2026-07-23",
+        "sha256": "817fcf2059cd1f5df927426930c852703482cc1e7934b83a84665d277adc9118"
+      }
+    ],
+    "evidence": "静态源码、独立的版本记录；仅 E10 有本地运行时实验。",
+    "scenario": "为了判断复杂编排究竟产生多少增益，需要一个可以复核每次调用、限制成本和保留轨迹的简单基线。",
+    "mechanism": "默认 agent 每一步查询模型，将返回动作交给 env.execute，再格式化观察结果。查询前检查累计调用、成本和经过时间；格式解析失败也要计入已发生费用，连续格式错误达到限制时退出。每轮 finally 调用 save，是否落盘由输出路径决定。",
+    "human": "实验者预设资源限制并检查轨迹；在这条默认运行路径中逐步查询看不到独立的人审节点。交互体验不能从这个类泛化到所有前端。",
+    "org": "可作为企业自动化 A/B 的对照组，把成功率增益与重试、上下文、工具预算分开，比仅对比模型总价有效。",
+    "limits": "成本上限在发出下一次请求前检查，单次调用可能使累计值超过限额。真实费用也依赖模型适配器在返回中提供成本。本次未跑仓库 benchmark。",
+    "change": "v2.4.6 的 2026-07-23 记录显式修复“已计费但结果解析失败”未计入 cost_limit 的问题。",
+    "insight": "若失败尝试从成本账本消失，自动重试表面上成功率提高，实际经济性会被高估。",
+    "experiment": "使用固定响应的模型替身制造连续解析错误、正常退出和一次超预算请求，对照供应商模拟账单、轨迹、退出原因与最终超支幅度。",
+    "lane": "执行框架",
+    "source_review": true
+  },
+  {
+    "id": "D01",
+    "name": "GitHub Actions Runner",
+    "category": "作业执行与宿主控制",
+    "scenario": "自托管 runner 接到仓库 workflow 作业；平台团队要在各仓库步骤外统一校验执行条件或收尾。",
+    "mechanism": "Worker 先准备动作，读取宿主的 ACTIONS_RUNNER_HOOK_JOB_STARTED，将同步脚本纳入 pre-job；另读取 JOB_COMPLETED 注册 always() 的 post-job。ADR 约定脚本非零退出使作业失败。",
+    "human": "runner 管理员配置宿主脚本和退出码；开发者可从作业结果查到失败，再决定修改工作负载还是调整宿主策略。",
+    "org": "在共用 runner 池集中实施环境检查、留存审计信息；前置脚本本身的耗时和故障会影响整池。",
+    "limits": "入口在自托管 runner；动作准备早于 pre-job hook。宿主失联、强制终止时能否完整收尾未实测，不能把注册 post-hook 当作交付凭据。",
+    "change": "2026-10-26 UTC，v2.338.2 的变更记录包含 Docker 29.8.0 和 Buildx 0.37.0 更新。这里记录运行环境演进，hook 的既有设计另由 ADR 与源码证明。",
+    "insight": "治理可以下沉到维护者可控制的 runner，使大量仓库复用一份规则；要单独测量宿主检查故障引起的全局阻塞。",
+    "experiment": "在隔离池令 pre-hook 对带错标签的作业返回非零；提交同一任务到有/无 hook 的池，核对本体是否执行、失败分类、正常结束与人为终止时的清理记录。",
+    "sources": [
+      {
+        "entity": "D01",
+        "url": "https://github.com/actions/runner/blob/7e211dc69c347b78fc398e630e74facb11a13235/src/Runner.Worker/JobExtension.cs",
+        "path": "lanes/delivery/raw/runner/394a839d2eca-JobExtension.cs",
+        "detail": "JobExtension.cs L297–315、572–586：准备动作、加入启动钩子、注册完成钩子",
+        "date": "2026-11-19",
+        "sha256": "394a839d2eca6cf5cb1b37cc5430e171e18c46a11b92ac25b0414ee2a0478564"
+      },
+      {
+        "entity": "D01",
+        "url": "https://github.com/actions/runner/blob/7e211dc69c347b78fc398e630e74facb11a13235/docs/adrs/1751-runner-job-hooks.md",
+        "path": "lanes/delivery/raw/runner/bde72ee444dc-1751-runner-job-hooks.md",
+        "detail": "ADR 1751 L60–76：同步、退出码和管理员责任",
+        "date": "2026-11-19",
+        "sha256": "bde72ee444dc98d27812e6808d7982fba1f6ed9f35b89e69e7654c30c0755e6e"
+      },
+      {
+        "entity": "D01",
+        "url": "https://github.com/actions/runner/releases/tag/v2.338.2",
+        "path": "lanes/delivery/raw/runner/b5f68acc6324-v2.338.2.html",
+        "detail": "发布页 变更列表 中的 Docker / Buildx 更新",
+        "date": "2026-10-26",
+        "sha256": "b5f68acc63245fccb84b7f2c777ee5b00f1e3c3348debd85974e56e86cb93c9c"
+      }
+    ],
+    "source_commit": "7e211dc69c347b78fc398e630e74facb11a13235",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D02",
+    "name": "Buildkite Agent",
+    "category": "分布式执行与远程中止",
+    "scenario": "自托管 worker 已经运行构建；控制端收到取消或超时，此时需把中央意图落实到具体作业进程。",
+    "mechanism": "JobRunner 在进程启动后轮询 job state，带抖动；服务返回 canceling/canceled 或 timing_out/timed_out 时分别调用 Cancel 并传递原因。401 也触发因凭据无效而取消；短暂的普通请求失败等待下一轮。",
+    "human": "操作人员可以从控制端请求取消，runner 管理员配置检查间隔和信号。用户点击中止后，执行端仍需收到状态并处理信号。",
+    "org": "平台团队可对不同队列统一记账，区分人工中止、凭据失效、运行超时，从而定位基础设施滞后。",
+    "limits": "Agent 源码可见；托管控制端的内部调度未核对。文档与源码不提供用户点击到外部副作用停止的端到端时限。",
+    "change": "2026-11-19 UTC，v4.12.0 将产物上传路径纳入 signed jobs 的签名与校验，并提示先更新验签 agent，再用新版本签署 pipeline。",
+    "insight": "作业取消应产生可测的控制延迟；签名协议升级也需要兼容性发布顺序。",
+    "experiment": "记录取消请求、runner 观测、子进程退出三个时间戳；比较不同轮询间隔、短时离线及有无外部异步子任务时的尾延迟和残留作业数。",
+    "sources": [
+      {
+        "entity": "D02",
+        "url": "https://github.com/buildkite/agent/blob/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/agent/job_runner.go",
+        "path": "lanes/delivery/raw/buildkite/8169ce30dc1c-job_runner.go",
+        "detail": "agent/job_runner.go L1032–1105：轮询、抖动、401、cancel 和 timeout 分支",
+        "date": "2026-11-19",
+        "sha256": "8169ce30dc1ce27a3eb2b37b20ff16de26a89e3db0df8220a8ac05cb266c9a14"
+      },
+      {
+        "entity": "D02",
+        "url": "https://github.com/buildkite/agent/blob/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/README.md",
+        "path": "lanes/delivery/raw/buildkite/e0451dd23140-README.md",
+        "detail": "README L19–48：agent 子命令、build queue 与安装入口",
+        "date": "2026-11-19",
+        "sha256": "e0451dd2314047d8db033316ba5fbb853f05c0f636e0792f5b59efbd63032941"
+      },
+      {
+        "entity": "D02",
+        "url": "https://github.com/buildkite/agent/releases/tag/v4.12.0",
+        "path": "lanes/delivery/raw/buildkite/80c6be842a18-v4.12.0.html",
+        "detail": "v4.12.0 Security 条目以及升级验签 agent 顺序",
+        "date": "2026-11-19",
+        "sha256": "80c6be842a18ae02ededf794bea30dfb6ddae26126b9c1fd5e6ee744a28e2ea2"
+      }
+    ],
+    "source_commit": "895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D03",
+    "name": "Tekton Pipelines",
+    "category": "Kubernetes 流水线与中止语义",
+    "scenario": "测试或部署 PipelineRun 在并行执行中被叫停，还需要决定是否让在途任务收尾、保留清理或取证步骤。",
+    "mechanism": "控制器从 PipelineRun 状态协调 TaskRun。CancelledRunFinally 中止正在运行的任务并继续 finally；StoppedRunFinally 允许在途任务及其重试走完，阻止新的普通任务，再调度 finally。普通 Cancelled 不调度待运行的 finally。",
+    "human": "具备相应权限的调用方选择中止语义；创建时设 Pending 可将启动推迟到条件满足，不等于自带审批身份验证。",
+    "org": "分别编码紧急刹车、温和排空和清理证明，跨团队可对齐同一运行对象及父子任务归属。",
+    "limits": "需要 Kubernetes 与 Pipeline 控制器；finally 仍受总时限等条件约束。服务端 RBAC、集群故障和副作用回滚未实测。",
+    "change": "2026-10-29 UTC，v1.18.0 通过 webhook 使控制器设置的 pipeline、pipelineTask、pipelineRun 标签一经写入不可被更新者改写。",
+    "insight": "为组织提供一个取消按钮之前，需要明确它对在途动作与证据留存的承诺。",
+    "experiment": "让任务 A 处于写产物阶段、B 等待依赖、finally 归档；分别发三种取消请求，比较运行任务、重试、子任务归属和归档结果。",
+    "sources": [
+      {
+        "entity": "D03",
+        "url": "https://github.com/tektoncd/pipeline/blob/94305b77d30f12e1b8e39e51b2f559fd35c55e13/pkg/reconciler/pipelinerun/pipelinerun.go",
+        "path": "lanes/delivery/raw/tekton/69bd72212fa5-pipelinerun.go",
+        "detail": "pipelinerun.go L349–355、867–875：finally 超时与温和中止分支",
+        "date": "2026-11-18",
+        "sha256": "69bd72212fa56da2303ed35a069f920e3d662a8bfe90eb526d0a33a9cecf58e5"
+      },
+      {
+        "entity": "D03",
+        "url": "https://github.com/tektoncd/pipeline/blob/94305b77d30f12e1b8e39e51b2f559fd35c55e13/docs/pipelineruns.md",
+        "path": "lanes/delivery/raw/tekton/f899e8136dff-pipelineruns.md",
+        "detail": "pipelineruns.md L1695–1756：三类取消/停止和 Pending 时机",
+        "date": "2026-11-18",
+        "sha256": "f899e8136dff838837ecbc9c11655abe51b7defee8e9843d3d4f8e7a8bbd02a8"
+      },
+      {
+        "entity": "D03",
+        "url": "https://github.com/tektoncd/pipeline/releases/tag/v1.18.0",
+        "path": "lanes/delivery/raw/tekton/cf9ac6eacd93-v1.18.0.html",
+        "detail": "v1.18.0 controller-managed labels immutable via webhook，#10687",
+        "date": "2026-10-29",
+        "sha256": "cf9ac6eacd9306628175488ed36a4eb8fa4f16fb1794d4b3b686021e2c08b690"
+      }
+    ],
+    "source_commit": "94305b77d30f12e1b8e39e51b2f559fd35c55e13",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D04",
+    "name": "Argo CD",
+    "category": "GitOps 期望状态协调",
+    "scenario": "集群对象与 Git 期望配置发生偏离，团队需区分检测差异、修正漂移，以及是否删除额外对象。",
+    "mechanism": "controller 将目标与 live 对象配对，对额外且属于本应用的对象设置 RequiresPruning；资源忽略规则、所有权和比较错误会影响 Synced、OutOfSync 或 Unknown。automated、prune、allowEmpty、selfHeal 分别控制动作。",
+    "human": "应用维护者选择是否开启自动同步、清理、空目标和自愈；自动同步开启时直接 rollback 有限制，紧急干预需要预先定义流程。",
+    "org": "把版本库作为变更入口、把现场差异作为运行证据，平台团队可单独放宽自愈或收紧删除。",
+    "limits": "多源应用关闭 selfHeal 仍不能保证现场修改永久保留；同步状态描述配置差异，不能证明服务正确或业务指标正常。",
+    "change": "2026-11-18 UTC，v3.6.2 修正 Unknown 同步状态之后仍复用差异缓存的问题，并在 manifest-generate-paths 无变化时保留服务端差异缓存。",
+    "insight": "期望状态、测不到状态、实测业务结果应分字段保存，否则会以缓存状态误报完成。",
+    "experiment": "测试命名空间制造现场漂移、额外对象及无法读取对象；分别开启 selfHeal/prune，观察状态与动作，再与业务健康检查对照。",
+    "sources": [
+      {
+        "entity": "D04",
+        "url": "https://github.com/argoproj/argo-cd/blob/47fd59165c522e5c16101223f9d8a86b927eb5f2/controller/state.go",
+        "path": "lanes/delivery/raw/argocd/4011c8a8a8d2-state.go",
+        "detail": "controller/state.go L992–1029、1058–1089：比较错误、所有权、清理标志、状态判断",
+        "date": "2026-11-19",
+        "sha256": "4011c8a8a8d25a034480cc4e56fab2984301e98e0c8262936ce59f2bc72f38e1"
+      },
+      {
+        "entity": "D04",
+        "url": "https://github.com/argoproj/argo-cd/blob/47fd59165c522e5c16101223f9d8a86b927eb5f2/docs/user-guide/auto_sync.md",
+        "path": "lanes/delivery/raw/argocd/31acd86aa5e7-auto_sync.md",
+        "detail": "auto_sync.md 的 Automatic Pruning、Self-Healing、Automated Sync Semantics 以及 L209–215 限制",
+        "date": "2026-11-19",
+        "sha256": "31acd86aa5e70eba98b5e12842e46860ac8c5005f259bf926bb6da160f572e7f"
+      },
+      {
+        "entity": "D04",
+        "url": "https://github.com/argoproj/argo-cd/releases/tag/v3.6.2",
+        "path": "lanes/delivery/raw/argocd/242295cb7172-v3.6.2.html",
+        "detail": "v3.6.2 controller diff cache 的 #30893 / #30899",
+        "date": "2026-11-18",
+        "sha256": "242295cb7172dbd3cd7928dac3b8e315c924e4f2a64edb06c8005b0fb34697d4"
+      }
+    ],
+    "source_commit": "47fd59165c522e5c16101223f9d8a86b927eb5f2",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D05",
+    "name": "Argo Rollouts",
+    "category": "金丝雀分析与例外升级",
+    "scenario": "金丝雀达到特定步骤后，应根据一段指标窗口判断能否放量、是否中止，或转人工处理。",
+    "mechanism": "AnalysisRun 记录各指标的测量和计数。控制器在判断连续成功前先检查失败、无结论和错误限额；配置 dryRun 的指标仍产生测量数据但不左右最终判定。分析可得到 Successful、Failed 或 Inconclusive 等状态。",
+    "human": "在 rollout 的分析语境中，维护者可在无结论时检查测量，再决定继续或中止；可先以 dry-run 收集新指标的行为。",
+    "org": "业务服务团队制定指标和阈值，平台复用分析流程；可拆开统计“明确退化”与“证据不足”两类等待。",
+    "limits": "结果强依赖采样窗口、流量、数据源和条件表达式。未运行集群或测量真实告警误报。不同终止方式有独立语义。",
+    "change": "2026-11-05 UTC，v1.11.0-rc1 的 Web metric provider 对空响应或非 JSON 响应也计算成功/失败表达式，改变以往直接 Successful 的行为；这是候选版本。",
+    "insight": "需要把空样本和解释不清的结果带给人；把两者折叠为成功会向更多用户扩展不确定变更。",
+    "experiment": "在隔离金丝雀中注入正常指标、阈值边界、空正文、持续无数据；记录 AnalysisRun 原始测量、最终相位和人工处置，对比 RC 与旧版。",
+    "sources": [
+      {
+        "entity": "D05",
+        "url": "https://github.com/argoproj/argo-rollouts/blob/458eab520fdbf360d1b34b6f6bc0f05e52ae6258/analysis/analysis.go",
+        "path": "lanes/delivery/raw/rollouts/b9a2bcb5213c-analysis.go",
+        "detail": "analysis/analysis.go L104–136、398–439、620–722：测量归集、失败优先和计数阈值",
+        "date": "2026-11-18",
+        "sha256": "b9a2bcb5213c685726daa0bb07c384c3bb8de3c23c96534ad20b216e623a08a5"
+      },
+      {
+        "entity": "D05",
+        "url": "https://github.com/argoproj/argo-rollouts/blob/458eab520fdbf360d1b34b6f6bc0f05e52ae6258/docs/features/analysis.md",
+        "path": "lanes/delivery/raw/rollouts/d398b6f01fad-analysis.md",
+        "detail": "analysis.md Failure Limits and ConsecutiveSuccessLimit、Dry-Run、Inconclusive Runs",
+        "date": "2026-11-18",
+        "sha256": "d398b6f01fad43818def795fa11b83b3b4a8807a52dd391d6b2ce1006749eb5d"
+      },
+      {
+        "entity": "D05",
+        "url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.11.0-rc1",
+        "path": "lanes/delivery/raw/rollouts/6976af9657c3-v1.11.0-rc1.html",
+        "detail": "v1.11.0-rc1 Breaking Changes 中 Web metric provider 成功/失败表达式",
+        "date": "2026-11-05",
+        "sha256": "6976af9657c38c470f3c1ea1fd93891f8cb3bb5cdac7a6262314d9f33343877c"
+      }
+    ],
+    "source_commit": "458eab520fdbf360d1b34b6f6bc0f05e52ae6258",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D06",
+    "name": "Renovate",
+    "category": "依赖维护及条件合并",
+    "scenario": "自动依赖更新已经产生分支，高频的小更新若逐个等待审批会积压，团队需选择可放行的更新类型。",
+    "mechanism": "tryBranchAutomerge 要求启用 automerge 且类型为 branch，检查 automergeSchedule、分支是否已有 PR，再读取分支状态。green 才尝试 mergeAndPush；红色、非就绪、队列或分支保护产生各自结果。PR 类型走另一条路径。",
+    "human": "维护者设置 packageRules、必检项、保护分支和 merge queue；组织 preset 可继承，仓库可以覆盖规则。",
+    "org": "精细缩小无需逐项人工审查的范围，同时用队列分歧或保护规则失败解释等待。应按更新类别跟踪返工。",
+    "limits": "ignoreTests 与平台检查配置会影响什么能被认作绿色。高频主分支提交也会缩小合并机会；自动成功不等于依赖升级无兼容问题。",
+    "change": "2026-11-19 UTC，44.253.4 在 GitLab 平台修复重新为已推送 commit 启用 automerge 的行为，显示平台侧合并状态要随新提交更新。",
+    "insight": "可自动批准的单位应是具有明确影响面和可复查检查集的变更类别；不要笼统授权全部低行数改动。",
+    "experiment": "同一仓库以 patch/minor/major 与检查齐全/缺失分层，先用 dry-run 分类，检查主分支再更新时的重新评估情况。",
+    "sources": [
+      {
+        "entity": "D06",
+        "url": "https://github.com/renovatebot/renovate/blob/c69fdddaa26c7742b7edbae5d61ab7269141642a/lib/workers/repository/update/branch/automerge.ts",
+        "path": "lanes/delivery/raw/renovate/908500fb11cc-automerge.ts",
+        "detail": "automerge.ts L21–111：类型、时段、已有 PR、状态、dry-run、保护分支与错误处理",
+        "date": "2026-11-19",
+        "sha256": "908500fb11cc7877f0d25c292f2ff53f650d52fa968db5564033fb4e06ce6e3a"
+      },
+      {
+        "entity": "D06",
+        "url": "https://github.com/renovatebot/renovate/blob/c69fdddaa26c7742b7edbae5d61ab7269141642a/docs/usage/key-concepts/automerge.md",
+        "path": "lanes/delivery/raw/renovate/0ae7af06669b-automerge.md",
+        "detail": "automerge.md Automerge / Merge Queues / Overriding global automerge",
+        "date": "2026-11-19",
+        "sha256": "0ae7af06669bba4a8dfaf769620596d1370c0bf12bf349f120ee279f236d8003"
+      },
+      {
+        "entity": "D06",
+        "url": "https://github.com/renovatebot/renovate/releases/tag/44.253.4",
+        "path": "lanes/delivery/raw/renovate/2a008cb3fb54-44.253.4.html",
+        "detail": "44.253.4 的 platform/gitlab 修复 #47980",
+        "date": "2026-11-19",
+        "sha256": "2a008cb3fb547ec20b3dd7ad2e8b40e336aa86e2cd717cf6088c995124bcd69f"
+      }
+    ],
+    "source_commit": "c69fdddaa26c7742b7edbae5d61ab7269141642a",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D07",
+    "name": "PR-Agent",
+    "category": "模型评审与覆盖度反馈",
+    "scenario": "PR 大于单次上下文，部分分片可能未成功。评审者需要知道模型看过什么，哪些反馈值得再次核查。",
+    "mechanism": "PRReviewer 合并各片推断前过滤低置信发现，以免挤占结果上限；发布判断考虑 finding 状态变化、状态阻塞或部分分片失败。部署端保留特定配置键的控制权。",
+    "human": "负责人复核 PR 反馈与未覆盖部分；v0.50.0 明确 auto-approval 路径仍禁用，配置项归宿主所有。社区项目的行为不外推至厂商商业产品。",
+    "org": "评审队列可按未覆盖或失败部分分派复核，避免把空评论计成完整检查。可收集每条建议的采纳与误报。",
+    "limits": "本地调用固定 SHA 的配置判定函数，自动批准与重试次数均返回宿主专有，仓库可调整 skills.enabled 与 max_skills_tokens。未运行模型或连接 PR 平台；分片之间跨文件依赖、过滤阈值和供应商超时均可能影响覆盖与准确率。",
+    "change": "2026-11-07 UTC，v0.50.0 收紧仓库可改写的重试和调用次数配置，同时把 enable_auto_approval 改为宿主专有；该版本发布说明区分“增加配置约束”与“已启用自动批准”。",
+    "insight": "把模型覆盖情况作为交付证据的一部分交给人，独立维护“评审者是谁”和“谁有批准权”。",
+    "experiment": "固定有跨文件关联的 PR，让一片超时并重复运行；比对覆盖提示、模型发现、人工标注，以及失败片重跑后仍未发现的缺陷。",
+    "sources": [
+      {
+        "entity": "D07",
+        "url": "https://github.com/The-PR-Agent/pr-agent/blob/b5bdfed1286513700b12b5ea5bbe6c8fa15734e6/pr_agent/commands/pr_reviewer.py",
+        "path": "lanes/delivery/raw/pragent/ea6819c762b8-pr_reviewer.py",
+        "detail": "pr_reviewer.py L920–939、1809–1834：公布状态、分片结果过滤及合并",
+        "date": "2026-11-19",
+        "sha256": "ea6819c762b885227631841d907f101f0b40280545fd50b6940cc92d511c1a71"
+      },
+      {
+        "entity": "D07",
+        "url": "https://github.com/The-PR-Agent/pr-agent/blob/b5bdfed1286513700b12b5ea5bbe6c8fa15734e6/pr_agent/config_security.py",
+        "path": "lanes/delivery/raw/pragent/61b4e7a25297-config_security.py",
+        "detail": "config_security.py L42–155：宿主专有键及判定",
+        "date": "2026-11-19",
+        "sha256": "61b4e7a25297c7f9452c7e5c37a4f07d7234ad5dd3b8710821e477df69b8990a"
+      },
+      {
+        "entity": "D07",
+        "url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.50.0",
+        "path": "lanes/delivery/raw/pragent/efa30f4b8efe-v0.50.0.html",
+        "detail": "v0.50.0 Breaking changes：Host-only settings、Auto-approval、#4700",
+        "date": "2026-11-07",
+        "sha256": "efa30f4b8efe470713079017546d57b90f9734e7eeddd69c6a9a2434a7a98412"
+      }
+    ],
+    "source_commit": "b5bdfed1286513700b12b5ea5bbe6c8fa15734e6",
+    "evidence": "源码与版本说明复核；配置范围函数四个输入已验证",
+    "runtime_record": "lanes/delivery/experiment/pragent-config-scope.json",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D08",
+    "name": "Atlantis",
+    "category": "基础设施变更的计划与应用",
+    "scenario": "团队在 PR 里查看 Terraform/OpenTofu 计划，再由有权者执行 apply；并发和计划版本变化会影响当初审阅的内容。",
+    "mechanism": "执行端先检查项目 apply 要求与依赖，然后获取项目/目录工作锁，加载已保存计划。在托管 plan/apply 路径中检查计划，并紧邻具体 apply 步骤再次验证。v0.49.0 为新生成的计划记录哈希。",
+    "human": "有权者检查计划后触发 apply；审批规则检查与已保存计划摘要验证是两个条件。发布说明明确 approval 自身没有与某一条 plan 记录绑定。",
+    "org": "将 PR、项目、workspace、计划摘要、审批和实际应用结果联系起来，区分“谁授权”与“授权时/应用时是什么产物”。",
+    "limits": "使用定制步骤的工作流是否采用 Atlantis 托管计划需要逐项确认；默认保证仅适用于对应路径，旧版本留下的计划也不能一概视为已有哈希。",
+    "change": "2026-10-25 UTC，v0.49.0 拒绝应用生成后被改动的已记录计划，要求重新 plan；审批条件在 GitHub/Gitea 以每个评审者最新 review 为准。",
+    "insight": "高影响操作可借鉴 plan→review→apply，但应显式检查人实际看到的版本以及即将应用的摘要；重新规划也应重新评估审阅需求。",
+    "experiment": "沙盒使用无外部资源的 IaC，分别保留和刷新计划、制造并行 PR；核对被应用产物、锁持有者、最近 review 和重计划日志。",
+    "sources": [
+      {
+        "entity": "D08",
+        "url": "https://github.com/runatlantis/atlantis/blob/2714f4a6dfcd75c798eec34b6dbe653a99c34a89/server/events/project_command_runner.go",
+        "path": "lanes/delivery/raw/atlantis/0dc47b035092-project_command_runner.go",
+        "detail": "project_command_runner.go L943–1008、1207–1256、1296–1302：要求、锁、计划加载和再次验证",
+        "date": "2026-11-18",
+        "sha256": "0dc47b035092c2f20a66489884f945b30158af86880e0bff611435cb3be6ae3b"
+      },
+      {
+        "entity": "D08",
+        "url": "https://github.com/runatlantis/atlantis/blob/2714f4a6dfcd75c798eec34b6dbe653a99c34a89/README.md",
+        "path": "lanes/delivery/raw/atlantis/6d5b05623ff9-README.md",
+        "detail": "README 的项目说明及官方用户文档入口",
+        "date": "2026-11-18",
+        "sha256": "6d5b05623ff9439d1aed9757c81b02323a4f840595d023292ce9f6cc1406adf6"
+      },
+      {
+        "entity": "D08",
+        "url": "https://github.com/runatlantis/atlantis/releases/tag/v0.49.0",
+        "path": "lanes/delivery/raw/atlantis/b1ca25cc1e29-v0.49.0.html",
+        "detail": "v0.49.0 Upgrade checklist 及 Apply/Approvals 关于计划摘要和最新 review",
+        "date": "2026-10-25",
+        "sha256": "b1ca25cc1e29fff4ccdc1824fb55d8f45c6b0c7488184d7fee606ee115713ffa"
+      }
+    ],
+    "source_commit": "2714f4a6dfcd75c798eec34b6dbe653a99c34a89",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D09",
+    "name": "Conftest",
+    "category": "配置策略验证",
+    "scenario": "待合并的配置、IaC 或所有者清单发生变化，团队希望在调用外部系统前运行可重复的规则。",
+    "mechanism": "TestRunner 按格式解析输入，加载 Rego 策略、数据、能力集与命名空间；通常按文件检查，也可合并后跨文件检查，返回结构化结果。已运行 v0.71.0 CLI，以自编生产 owner 规则得到预期退出码。",
+    "human": "领域负责人维护规则、例外和何时阻断，CI 管理者决定将退出码接成必检。团队可以把结构化的命中原因交给变更作者。",
+    "org": "让可机械验证的要求共享同一套策略；对要求 owner 的演示，生产环境有 owner / 缺失 / 开发环境缺失分别返回 0 / 1 / 0。",
+    "limits": "已实测的只是 Windows 本地 CLI 的三组 JSON，不代表 CI 分支保护、真实所有权、线上漂移或团队生产率已经验证。",
+    "change": "2026-09-30 UTC，v0.71.0 新增 CODEOWNER 文件解析器，并修复多文件时 TAP 输出产生多份计划的问题。本文的最小实验使用 JSON，未实测这个新解析器。",
+    "insight": "优先把重复评审意见中语义稳定的一部分转成有版本的规则；统计规则覆盖的真实事件与误阻断。",
+    "experiment": "在历史配置变更做留出回放，比较现有人工审查与策略输出；重点复核例外、缺少上下文的通过样本、误阻断率及修复耗时。",
+    "sources": [
+      {
+        "entity": "D09",
+        "url": "https://github.com/open-policy-agent/conftest/blob/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/runner/test.go",
+        "path": "lanes/delivery/raw/conftest/fa210c42c7c2-test.go",
+        "detail": "runner/test.go L45–122：格式解析、规则加载、命名空间、独立与组合检查",
+        "date": "2026-11-19",
+        "sha256": "fa210c42c7c22570c4320110919cb3f576455f5cbcfba4dba595c9eaf80ab261"
+      },
+      {
+        "entity": "D09",
+        "url": "https://github.com/open-policy-agent/conftest/blob/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/docs/index.md",
+        "path": "lanes/delivery/raw/conftest/478e7caadb8c-index.md",
+        "detail": "docs/index.md 的 deny、JSON 输出、query 与上下文",
+        "date": "2026-11-19",
+        "sha256": "478e7caadb8c39d75dcce879a42efbb3cc92f469ad59ab3e21def8b979527f2a"
+      },
+      {
+        "entity": "D09",
+        "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.71.0",
+        "path": "lanes/delivery/raw/conftest/d55a96676dfb-v0.71.0.html",
+        "detail": "v0.71.0 New Features #1404、Bug Fixes #1435",
+        "date": "2026-09-30",
+        "sha256": "d55a96676dfbf10147fdfcf395da78d474bd4df5d023a5d1061a7796777c8ab5"
+      }
+    ],
+    "source_commit": "31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4",
+    "evidence": "源码与版本说明复核；本地 CLI 三个输入已验证",
+    "runtime_record": "lanes/delivery/experiment/conftest-v0.71.0.json",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D10",
+    "name": "Temporal（Python SDK）",
+    "category": "跨等待与重启的工作流",
+    "scenario": "一个研发任务可能先执行外部 Activity，再等维护者决定；等待跨越 worker 重启或新版本上线。",
+    "mechanism": "SDK 在激活时读取 replay 标记及历史逻辑标记，分组处理 signal、update 等事件；示例通过 workflow.wait_condition 等待 signal 改变状态，也可设超时。Replayer 能用已有 history 检查新 workflow 实现。",
+    "human": "业务实现决定谁可发 signal、何时超时、如何重试外部操作；编排层可保存决定并继续，而非一直占用一个模型请求。",
+    "org": "用持久工作流表达等待、取消、重试和升级，历史回放可成为平台变更的一项兼容性检查。",
+    "limits": "基于 Python SDK 的证据不能直接外推所有语言。重复外部副作用是否受控，取决于 Activity 和下游的幂等设计；未运行 Temporal 服务或测试历史。",
+    "change": "2026-11-14 UTC，1.36.1 对未记录逻辑标记 2 的工作流默认关闭 single-batch 激活，以维持旧 signal/条件等待/取消的行为；已记录标记 2 的 history 继续使用该语义。",
+    "insight": "工作流版本升级必须尊重在途实例的事件历史。评估 harness 时应把跨版本恢复与外部副作用区分开。",
+    "experiment": "录制“发出请求→等待 signal→取消”不同先后次序的 histories，在两个 SDK 版本上回放；另对重复 Activity 注入幂等键，分别记录兼容性与外部写入次数。",
+    "sources": [
+      {
+        "entity": "D10",
+        "url": "https://github.com/temporalio/sdk-python/blob/333910697b8f7080660a30e14745b68265f55f42/temporalio/worker/_workflow_instance.py",
+        "path": "lanes/delivery/raw/temporal/7330de10f96f-_workflow_instance.py",
+        "detail": "temporalio/worker/_workflow_instance.py L480–545、4264–4271：replay、逻辑标记与激活分组",
+        "date": "2026-11-19",
+        "sha256": "7330de10f96f8fee0a43b9e42e5e10a5d907ed7fdc86f28df465acdbdcd32465"
+      },
+      {
+        "entity": "D10",
+        "url": "https://github.com/temporalio/sdk-python/blob/333910697b8f7080660a30e14745b68265f55f42/README.md",
+        "path": "lanes/delivery/raw/temporal/98a2c89ea55d-README.md",
+        "detail": "README 的 Workflow Replay、wait_condition、signal 超时示例",
+        "date": "2026-11-19",
+        "sha256": "98a2c89ea55d203dc50d94c3062f9b4bb128ac98cbf6903f83aa092e8f15cb93"
+      },
+      {
+        "entity": "D10",
+        "url": "https://github.com/temporalio/sdk-python/releases/tag/1.36.1",
+        "path": "lanes/delivery/raw/temporal/fd30f046623d-1.36.1.html",
+        "detail": "1.36.1 Notable Changes 对 flag 2 的兼容规则",
+        "date": "2026-11-14",
+        "sha256": "fd30f046623d4010e0630e6ecab0b3e37f2fb7a7bba2f211fe65c01a037fe657"
+      }
+    ],
+    "source_commit": "333910697b8f7080660a30e14745b68265f55f42",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "D11",
+    "name": "Jenkins Pipeline Input Step",
+    "category": "人在回路中的授权与拒绝",
+    "scenario": "生产发布抵达 Jenkins Pipeline 的 input 步骤时，需要指定值班组或人员确认，或由有权人员中止。",
+    "mechanism": "InputStepExecution 在 POST 端点做 preSubmissionCheck，检查是否已经处理、是否可提交；未指定 submitter 用 Job.BUILD 权限，指定时按用户/组匹配并保留管理员特例。submitterParameter 可记录提交者，abort 向流水线传播中断。",
+    "human": "配置者设定可提交人员或组；经授权的账号确认、填写参数或拒绝。管理员特例需进入组织自己的职责分离检查。",
+    "org": "平台用同一输入步骤表达例外升级；能统计等待时长、决策者与处理结果，为减少无价值等待提供样本。",
+    "limits": "该插件不自动判断审批者当时看到哪个 commit 或产物，也不能仅凭一次确认断言双人分权成立；构建参数另需绑定具体交付内容。",
+    "change": "2026-07-02 UTC，560.v56198a_642157 为 Pipeline Graph View 复用 input 对话框增加资源文件，使另一界面复用交互。此项属于呈现与集成变更。",
+    "insight": "审批事件至少应能关联可执行产物与决策者。等待点可以复用 Jenkins，证据绑定仍须在上层实现。",
+    "experiment": "用普通构建者、指定组成员和管理员分别提交或拒绝同一输入，记录结果、提交者字段及重复提交响应；更新构建版本后检查旧批准能否被复用。",
+    "sources": [
+      {
+        "entity": "D11",
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/blob/0c9db265274122f4ff54056c7d5977f266ef75db/src/main/java/org/jenkinsci/plugins/workflow/support/steps/input/InputStepExecution.java",
+        "path": "lanes/delivery/raw/jenkins/c2863f36c0b2-InputStepExecution.java",
+        "detail": "InputStepExecution.java L284–311、336–346、372–396：批准/拒绝、处理状态、人员与组",
+        "date": "2026-11-09",
+        "sha256": "c2863f36c0b22f1943423889582f68ef2da429035084c6b3e8fe14f7fba28b5b"
+      },
+      {
+        "entity": "D11",
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/blob/0c9db265274122f4ff54056c7d5977f266ef75db/README.md",
+        "path": "lanes/delivery/raw/jenkins/8c9b7338ca6d-README.md",
+        "detail": "README L23–39：submitter 与 submitterParameter",
+        "date": "2026-11-09",
+        "sha256": "8c9b7338ca6d6436cc8b80069a784379177e2606bc0353cc3805cf2c9c02f8a4"
+      },
+      {
+        "entity": "D11",
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/560.v56198a_642157",
+        "path": "lanes/delivery/raw/jenkins/b89a96a9b16d-560.v56198a_642157.html",
+        "detail": "560.v56198a_642157 的 Pipeline Graph View 对话框 #258",
+        "date": "2026-07-02",
+        "sha256": "b89a96a9b16d84d638c5034876047eff33099fbe101166eb1bb15725f1c8bddd"
+      }
+    ],
+    "source_commit": "0c9db265274122f4ff54056c7d5977f266ef75db",
+    "evidence": "源码与版本说明复核；未做产品运行实验",
+    "lane": "工程交付",
+    "source_review": true
+  },
+  {
+    "id": "O01",
+    "name": "Backstage Software Catalog",
+    "category": "开发者门户与服务所有权",
+    "scenario": "跨仓库变更或运行失败需要找受影响组件和维护组。目录后端持续摄取实体描述，前端展示实体及其关系。",
+    "mechanism": "处理器解析 Component 的 owner、dependsOn、dependencyOf 等字段，生成双向关系；来源实体先处理再拼接，处理中的实体与读者看到的最终实体有时间差。",
+    "human": "团队维护服务描述和 owner，平台维护实体处理器。将目录用来查候选负责人，审批身份仍由执行系统验证。",
+    "org": "把工作对象从仓库文件提升为服务、团队和依赖，对跨团队任务可先路由再派工。",
+    "limits": "静态声明会过时，目录出现 owner 不证明该人员当班或有生产权限。未部署。",
+    "change": "2026-11-17 v1.57.0 将若干前端插件 API 稳定为 1.0；此为门户扩展接口稳定化，不能据此为早已存在的目录关系定首发日期。",
+    "insight": "建立可查询且允许纠错的责任关系，比把所有仓库知识复制到 agent 上下文更适合分配跨团队例外。",
+    "experiment": "抽 30 个真实服务，让目录推荐负责人，与轮值表及历史处理人交叉核验；记录无 owner、过期和多归属冲突。",
+    "sources": [
+      {
+        "entity": "O01",
+        "url": "https://github.com/backstage/backstage/blob/184acad411be8cfbac126c3a2885cb4740109176/docs/features/software-catalog/life-of-an-entity.md",
+        "path": "lanes/organization/raw/backstage/184acad411be8cfbac126c3a2885cb4740109176/docs/features/software-catalog/life-of-an-entity.md",
+        "detail": "来源进入目录、processing 与 stitching 的异步边界，生命期与 orphan 说明。",
+        "date": "2026-11-19",
+        "sha256": "0ce248b2e9e31130a38607f032c8b5f89a6bcabe4c8dc2b3824d65b0aa6128af"
+      },
+      {
+        "entity": "O01",
+        "url": "https://github.com/backstage/backstage/blob/184acad411be8cfbac126c3a2885cb4740109176/plugins/catalog-backend/src/processors/BuiltinKindsEntityProcessor.ts",
+        "path": "lanes/organization/raw/backstage/184acad411be8cfbac126c3a2885cb4740109176/plugins/catalog-backend/src/processors/BuiltinKindsEntityProcessor.ts",
+        "detail": "BuiltinKindsEntityProcessor.ts 第 114–198 行，实体引用归一化、正反关系与 Component 字段发射。",
+        "date": "2026-11-19",
+        "sha256": "063aea5ccab3976fda9566248c59301a7809150414224e2be2568524f8336866"
+      },
+      {
+        "entity": "O01",
+        "url": "https://github.com/backstage/backstage/releases/tag/v1.57.0",
+        "path": "lanes/organization/raw/backstage/release-v1.57.0.html",
+        "detail": "2026-11-17 v1.57.0 将若干前端插件 API 稳定为 1.0；此为门户扩展接口稳定化，不能据此为早已存在的目录关系定首发日期。",
+        "date": "2026-11-17",
+        "sha256": "a422fb5289f3c13e2b40c083842b402b5047dc344e03d4adf7db5b1cbe7b6968"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O02",
+    "name": "Apache DevLake",
+    "category": "研发数据湖与 DORA 度量",
+    "scenario": "组织同时用多个 AI 工具，希望知道哪一段交付时间变化，及不同工具指标能否比较。",
+    "mechanism": "Go 计算器取项目映射内已合并 PR，用首提交、首个非作者评论、合并与成功生产部署分段计算。部署先按 SHA 直连，再从前后成功部署的 commit diff 回查；无映射时部署阶段为空。",
+    "human": "数据负责人定义项目/生产环境映射并复核遗漏。平台负责人解释等待时间，试点团队决定是否调整评审容量。",
+    "org": "PostgreSQL 多 AI 看板直接承认不同来源返回的行数与操作不同；Kiro 不提供建议采纳事件，接受率留空。",
+    "limits": "合并样本排除被放弃的补丁；未映射生产数据会漏阶段。面板不能从活跃量推断真实因果提效。未部署。",
+    "change": "2026-11-02 v1.0.3-beta19 为 PostgreSQL 增补 Cursor/Multi-AI 面板并将 Claude Code 纳入多 AI 对比，修复无上次成功部署时重复计算；属于 beta。",
+    "insight": "组织应先给每个工具的事件分母和缺失值签字，再让领导看工具对比。空值替成零会误导采购。",
+    "experiment": "给同一组 PR 逐个核对首评、上线 SHA、弃用原因和漏链，报告覆盖率及按失败/弃用分层的周期。",
+    "sources": [
+      {
+        "entity": "O02",
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/tasks/change_lead_time_calculator.go",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/tasks/change_lead_time_calculator.go",
+        "detail": "change_lead_time_calculator.go 第 82–85、118–165、250–334 行，PR 纳入、时间段、成功生产部署映射与缺失。",
+        "date": "2026-11-19",
+        "sha256": "6af8a3d283a5b709d46911e06811cb0a8b9c3c50658677b1857e107b61665b96"
+      },
+      {
+        "entity": "O02",
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/grafana/dashboards/postgresql/multi-ai-comparison.json",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/grafana/dashboards/postgresql/multi-ai-comparison.json",
+        "detail": "多 AI 看板的 Claude Code: Tool Actions、Returned Lines & Acceptance Availability 与 Acceptance Rate Availability 面板。",
+        "date": "2026-11-19",
+        "sha256": "287bd5205011abc2592c7bbb7844271d60a5b38d47410627e9ba86edb61e6ac4"
+      },
+      {
+        "entity": "O02",
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/e2e/calculate_change_lead_time_test.go",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/e2e/calculate_change_lead_time_test.go",
+        "detail": "calculate_change_lead_time_test.go 的项目映射和端到端 fixture，作为官方测试规范阅读，未执行。",
+        "date": "2026-11-19",
+        "sha256": "5dfe43cc38108c6e4a9807d41387fe28a3f9faf43c9d48014a1d47121d27bb43"
+      },
+      {
+        "entity": "O02",
+        "url": "https://github.com/apache/devlake/releases/tag/v1.0.3-beta19",
+        "path": "lanes/organization/raw/devlake/release-v1.0.3-beta19.html",
+        "detail": "2026-11-02 v1.0.3-beta19 为 PostgreSQL 增补 Cursor/Multi-AI 面板并将 Claude Code 纳入多 AI 对比，修复无上次成功部署时重复计算；属于 beta。",
+        "date": "2026-11-02",
+        "sha256": "d07adff988057bac661078cf0cccb452c38b0fa8d8c54781f987e9379254a4ff"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O03",
+    "name": "OpenTelemetry Collector",
+    "category": "跨系统遥测管道",
+    "scenario": "多个 runner、评测器和部署平台输出不同信号，需要让事件到达观察后台并判断证据是否缺失。",
+    "mechanism": "服务按配置建 receiver、processor、exporter 与 connector 的有向图，拒绝成环并从下游先启动。发送队列可选持久化；队列满或存储异常导致入队失败时，数据无法进入导出重试。",
+    "human": "平台团队选择队列容量、溢出处理和留存，观测系统独立告知采集失败，业务负责人定义缺证时能否继续。",
+    "org": "统一传输可降低接入成本；任务标识、审批语义、可靠台账仍需在业务层定义。",
+    "limits": "入队失败计数与导出重试是不同故障。持久化队列不会保存 Auth 扩展设置的上下文。未部署。",
+    "change": "2026-11-06 v0.165.0 启动时检查 batch processor 与 exporterhelper 重复 batching；发布说明写明检查不穿越 connector 或隐藏实现的 exporter wrapper。",
+    "insight": "当信号没送达时，应把本次任务标为证据不全，避免在无记录状态下自动晋级。",
+    "experiment": "用合成任务让接收端保持可用但让导出端断开，逐渐塞满队列；对账发出数、入队失败数、后端可见数，比较溢出策略。",
+    "sources": [
+      {
+        "entity": "O03",
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/blob/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/exporter/exporterhelper/README.md",
+        "path": "lanes/organization/raw/otel/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/exporter/exporterhelper/README.md",
+        "detail": "exporterhelper/README.md 第 12–37、95–106 行，入队失败、重试、持久化的条件。",
+        "date": "2026-11-19",
+        "sha256": "59dd201bfc0f040c5572828a59727910f4137a498af065cd980c71106d9046c7"
+      },
+      {
+        "entity": "O03",
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/blob/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/service/internal/graph/graph.go",
+        "path": "lanes/organization/raw/otel/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/service/internal/graph/graph.go",
+        "detail": "service/internal/graph/graph.go 第 78–133、300–332、438–505 行，构图、双批次告警和组件启停次序。",
+        "date": "2026-11-19",
+        "sha256": "b4076c9ac5af7d41654155b005a24e047f21bf5dd17d89045055df4f384b61b3"
+      },
+      {
+        "entity": "O03",
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.165.0",
+        "path": "lanes/organization/raw/otel/release-v0.165.0.html",
+        "detail": "2026-11-06 v0.165.0 启动时检查 batch processor 与 exporterhelper 重复 batching；发布说明写明检查不穿越 connector 或隐藏实现的 exporter wrapper。",
+        "date": "2026-11-06",
+        "sha256": "065966deb594b55f9cf451ed8c002d5980f16ee9d14996b64cace231c9fed178"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O04",
+    "name": "Langfuse Annotation Queues",
+    "category": "轨迹抽检与人工标注",
+    "scenario": "大量线上 trace/observation 难以逐项阅读，把选中的条目交给项目标注者形成可追查的判断。",
+    "mechanism": "队列可分配给用户；完成接口校验项目权限，仅更新项目内 PENDING 项，记录完成时间和 annotatorUserId，之后写审计事件。",
+    "human": "标注人检查选中条目并评分；主管维护入队标准、分歧仲裁和复核比例。完成标记可作为反馈输入。",
+    "org": "给人一个有限、可统计的队列，能量化积压、复核时延和意见分歧，而非要求人阅读全量 agent 日志。",
+    "limits": "该完成接口没有验证交付物是否可发布；审计写入在更新之后。部署版本、权限与抽样偏差均影响实际效果，未部署。",
+    "change": "2026-11-19 v4.83.0 支持在单条标注视图中跳转条目并对队列排序，同版增加单 key 开支限额。",
+    "insight": "例外处理要保留是谁对哪条运行记录给了什么判断；关闭队列不能代替修复或上线授权。",
+    "experiment": "盲抽成功与失败各 20 条，由两人独立标注，对比一致率、每条耗时和处理后回归用例转化率。",
+    "sources": [
+      {
+        "entity": "O04",
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/fern/apis/server/definition/annotation-queues.yml",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/fern/apis/server/definition/annotation-queues.yml",
+        "detail": "annotation-queues.yml，项目对外队列、条目和分配接口契约。",
+        "date": "2026-11-19",
+        "sha256": "741a47cd4940699cbbe82ebca221d2aa27bbb2560010e6664898150b433b21cf"
+      },
+      {
+        "entity": "O04",
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueItemsRouter.ts",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueItemsRouter.ts",
+        "detail": "annotationQueueItemsRouter.ts 第 423–475 行，PENDING 条件、权限、完成者和后续审计。",
+        "date": "2026-11-19",
+        "sha256": "198fc1cb47bb590a20a4db124ed07414366dfad185f0be059678660f403a5c7a"
+      },
+      {
+        "entity": "O04",
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueAssignmentsRouter.ts",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueAssignmentsRouter.ts",
+        "detail": "annotationQueueAssignmentsRouter.ts 第 69 行起，批量创建分配、跳过重复和成员查询。",
+        "date": "2026-11-19",
+        "sha256": "634fb2fc4391d768895b052205bb868c54b466e094caa32d397c4ca5617704f1"
+      },
+      {
+        "entity": "O04",
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.83.0",
+        "path": "lanes/organization/raw/langfuse/release-v4.83.0.html",
+        "detail": "2026-11-19 v4.83.0 支持在单条标注视图中跳转条目并对队列排序，同版增加单 key 开支限额。",
+        "date": "2026-11-19",
+        "sha256": "41eb42821c3372c0a612cc9775adfb6539711cfba39be3933b59065f668ccf95"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O05",
+    "name": "Arize Phoenix Experiments",
+    "category": "版本化实验与轨迹评测",
+    "scenario": "修改 agent 的工具选择或策略后，要检查相同输入上输出和中间动作是否发生退化。",
+    "mechanism": "Python 客户端把实验绑定到数据集版本，按样本×重复次数展开任务；可在 run 完成后基于 trace spans 评估调用了哪一个工具。dry_run 可取小样本。",
+    "human": "领域专家写预期动作、检查评价用 rubric 和样本覆盖，研发人员比较实验后决定是否晋级。",
+    "org": "组织能把线上失败改写成带预期动作的固定样本，多版本在相同基线上回放。",
+    "limits": "官方演示是模拟工具选择；trace 中观察到工具调用不证明结果正确。没有运行 Phoenix 服务。",
+    "change": "2026-11-20 arize-phoenix v21.3.0 新增通过 CLI 赋予数据集标签，并调整 trace 查询性能；属于数据维护和查询增强。",
+    "insight": "把实际路径与可接受路径都记录下来。只判断最终答案会漏掉越过人工检查的调用。",
+    "experiment": "对同一数据集固定三个版本，每种情况重复五次，分别统计最终结果和关键调用序列；人工仲裁替代路径。",
+    "sources": [
+      {
+        "entity": "O05",
+        "url": "https://github.com/Arize-ai/phoenix/blob/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/examples/experiments/experiment_trace_evaluator.py",
+        "path": "lanes/organization/raw/phoenix/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/examples/experiments/experiment_trace_evaluator.py",
+        "detail": "官方 experiment_trace_evaluator.py 描述使用 OpenTelemetry spans 与预期工具比对的完整示例。",
+        "date": "2026-11-20",
+        "sha256": "b7ee1d3114400026eb492ab29df4fb01b37d98830f6064eaa89b231e6d7c807d"
+      },
+      {
+        "entity": "O05",
+        "url": "https://github.com/Arize-ai/phoenix/blob/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/src/phoenix/client/resources/experiments/__init__.py",
+        "path": "lanes/organization/raw/phoenix/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/src/phoenix/client/resources/experiments/__init__.py",
+        "detail": "客户端 experiments/__init__.py 第 781–882、916–1005 行，版本、dry run、重复项、实际与预期运行数。",
+        "date": "2026-11-20",
+        "sha256": "f5d4325428ac1fe1cf9c71678125db7fdbcb57fe37f72fda47f7c1f11b090730"
+      },
+      {
+        "entity": "O05",
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.3.0",
+        "path": "lanes/organization/raw/phoenix/release-arize-phoenix-v21.3.0.html",
+        "detail": "2026-11-20 arize-phoenix v21.3.0 新增通过 CLI 赋予数据集标签，并调整 trace 查询性能；属于数据维护和查询增强。",
+        "date": "2026-11-20",
+        "sha256": "350810b3fc86241c8b47c30254b41bcf1750e21ba435b40be19fcfdc6da3bb84"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O06",
+    "name": "Promptfoo",
+    "category": "自动断言与评测汇总",
+    "scenario": "模型、提示或 harness 更新时，需要让批量样本的测试结果形成流水线可读的门槛。",
+    "mechanism": "断言可产生通过状态、得分和命名指标，按权重聚合；零权重指标可用于观测。数值型测试总阈值覆盖普通单条断言状态，非有限数值另走错误分支。",
+    "human": "业务方明确哪些错误不得由总分抵消，评测负责人维护权重、阈值和裁决样本，检查边缘行为。",
+    "org": "给跨模型回归设置一致的分数口径，也允许先观测再转为硬阻断。",
+    "limits": "总分达标可能掩盖局部缺陷；模型判分还受样本和模型版本影响。未运行此工具。",
+    "change": "2026-11-18 0.126.0 限制 derivedMetrics 字符串公式的语法与长度，部分表达式会在跑用例前失败。",
+    "insight": "用外置独立门禁处理不可补偿的硬约束，让软评分显示质量与成本权衡。",
+    "experiment": "固定 3 项断言，故意让高权重项通过、关键低权重项失败，比较总阈值和单项硬门的产出差异。",
+    "sources": [
+      {
+        "entity": "O06",
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/site/docs/configuration/expected-outputs/index.md",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/site/docs/configuration/expected-outputs/index.md",
+        "detail": "expected-outputs/index.md 的断言、聚合和阈值配置语义。",
+        "date": "2026-11-20",
+        "sha256": "d3458d41360ce3bbc9d18cc0ed8cf1aed232ee512ae6c40f9dcbd1d27a453485"
+      },
+      {
+        "entity": "O06",
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/assertions/assertionsResult.ts",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/assertions/assertionsResult.ts",
+        "detail": "assertionsResult.ts 第 250–329、407–444 行，权重、零权重指标与数值型阈值及错误处理。",
+        "date": "2026-11-20",
+        "sha256": "46cf989e30760d86f14e092c835f4dc942a0544cf97a5560bd4067efecfb3953"
+      },
+      {
+        "entity": "O06",
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/evaluator/derivedMetricFormula.ts",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/evaluator/derivedMetricFormula.ts",
+        "detail": "derivedMetricFormula.ts 的词法/语法解析和表达式约束。",
+        "date": "2026-11-20",
+        "sha256": "4c717c53f317b2bd0d6321116f9610c4a5d114a007a8ad6175cd7de10ea5a2e0"
+      },
+      {
+        "entity": "O06",
+        "url": "https://github.com/promptfoo/promptfoo/releases/tag/0.126.0",
+        "path": "lanes/organization/raw/promptfoo/release-0.126.0.html",
+        "detail": "2026-11-18 0.126.0 限制 derivedMetrics 字符串公式的语法与长度，部分表达式会在跑用例前失败。",
+        "date": "2026-11-18",
+        "sha256": "95e8b870e226442ebc6982f36c5fd306f2b79097af64048c139277dd3f5bc7fe"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O07",
+    "name": "OpenFeature flagd",
+    "category": "按稳定主体灰度启用能力",
+    "scenario": "只希望一部分仓库或团队使用新版审批策略，且同一实验对象重复请求应分到同一组。",
+    "mechanism": "fractional evaluator 对显式分桶输入编码，缺省使用 flagKey 和 targetingKey，对确定性 CBOR 求 Murmur3 哈希并映射到加权区间。缺省分桶键为空会报错。",
+    "human": "产品和服务负责人选择分桶单位、比例及退出条件。调用端必须定义求值异常时的安全默认值。",
+    "org": "同一仓库或团队可成为稳定的暴露单元，让分阶段发布和对照组更易复现。",
+    "limits": "工具仅执行分配规则；分组键选择、跨团队干扰和发布效果判断归试验设计负责。未部署。",
+    "change": "2026-11-17 flagd v0.19.0 将端口参数限定为有效数字 uint16，属于破坏性配置校验变更，非分桶功能首发。",
+    "insight": "把开关作用对象从个人请求改成团队或仓库，匹配协作流程真正的影响范围。",
+    "experiment": "固定 100 个仓库 ID 运行两轮，比较相同配置的分组一致性；改变 key 和比例测迁移人数，并测试缺键错误路径。",
+    "sources": [
+      {
+        "entity": "O07",
+        "url": "https://github.com/open-feature/flagd/blob/11037220611eab982261d2348b13147b4450b562/docs/reference/custom-operations/fractional-operation.md",
+        "path": "lanes/organization/raw/flagd/11037220611eab982261d2348b13147b4450b562/docs/reference/custom-operations/fractional-operation.md",
+        "detail": "官方 fractional-operation 参考说明的参数、权重和分桶对象。",
+        "date": "2026-11-17",
+        "sha256": "2e4156d393dabc8a148fbc65e2181f425148ab9db3f5538ee0cdb1303d2db5ef"
+      },
+      {
+        "entity": "O07",
+        "url": "https://github.com/open-feature/flagd/blob/11037220611eab982261d2348b13147b4450b562/core/pkg/evaluator/fractional.go",
+        "path": "lanes/organization/raw/flagd/11037220611eab982261d2348b13147b4450b562/core/pkg/evaluator/fractional.go",
+        "detail": "fractional.go 第 51–63、138–181、230–280 行，编码、缺键错误与哈希分桶逻辑。",
+        "date": "2026-11-17",
+        "sha256": "ebb4c77108251ad933a3fd3a7398b3c26326c00418e9d0ea67bb042c0a013ae6"
+      },
+      {
+        "entity": "O07",
+        "url": "https://github.com/open-feature/flagd/releases/tag/flagd%2Fv0.19.0",
+        "path": "lanes/organization/raw/flagd/release-flagd-v0.19.0.html",
+        "detail": "2026-11-17 flagd v0.19.0 将端口参数限定为有效数字 uint16，属于破坏性配置校验变更，非分桶功能首发。",
+        "date": "2026-11-17",
+        "sha256": "145e1bd9f456853d51d54b16008977c053834373c4edcb6e429711d0aa789f04"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O08",
+    "name": "OpenFGA",
+    "category": "面向业务对象的授权",
+    "scenario": "规划器想对某项目或工单执行动作，执行器需要在动作发生时查主体是否具备特定关系。",
+    "mechanism": "服务端 Check 把模型、用户—关系—对象 tuple、请求上下文、contextual tuples 及一致性选项交给授权解析器；实现有可选缓存/读取限制和对部分非终止错误的后备 checker。",
+    "human": "资源负责人维护授权模型与关系，业务执行器必须把每个受保护动作接到授权查询并处理错误。",
+    "org": "可为多个执行器共用一套项目和服务关系，适合将 agent 的委托权限同资源归属连接。",
+    "limits": "权限允许只表明主体可以做动作，不证明这次变更已得到具体业务批准。缓存与撤销延迟要单测。未部署。",
+    "change": "2026-09-20 v1.21.0 把 Dynamic Conditions 作为实验特性发布。Atom 显示 09-28 更新，个别发布页确认发布时间为 09-20。",
+    "insight": "将有权操作与此次运行获准操作分别记录，并给审批约束绑定运行标识及有效期。",
+    "experiment": "用同一任务在撤销前后、不同一致性选项和重试后各发 Check，记录结果和时间；同时验证业务端确实拒绝失败结果。",
+    "sources": [
+      {
+        "entity": "O08",
+        "url": "https://github.com/openfga/openfga/blob/798149843737e264e64b8660baadb946528c02f0/docs/check/README.md",
+        "path": "lanes/organization/raw/openfga/798149843737e264e64b8660baadb946528c02f0/docs/check/README.md",
+        "detail": "官方 Check 设计文档说明如何处理关系与查询。",
+        "date": "2026-11-16",
+        "sha256": "dd047fcea1121adb3878b6a107cfeee1f239c95f9e2205f0d66625f273412594"
+      },
+      {
+        "entity": "O08",
+        "url": "https://github.com/openfga/openfga/blob/798149843737e264e64b8660baadb946528c02f0/pkg/server/commands/check.go",
+        "path": "lanes/organization/raw/openfga/798149843737e264e64b8660baadb946528c02f0/pkg/server/commands/check.go",
+        "detail": "pkg/server/commands/check.go 第 182–219、259–266、324–340 行，请求传递、解析与回退的边界。",
+        "date": "2026-11-16",
+        "sha256": "4c021e12769acaa714bdd26ec40fa79e8f4a48001a1b0e1bcf511bd557af6cf0"
+      },
+      {
+        "entity": "O08",
+        "url": "https://github.com/openfga/openfga/releases/tag/v1.21.0",
+        "path": "lanes/organization/raw/openfga/release-v1.21.0.html",
+        "detail": "2026-09-20 v1.21.0 把 Dynamic Conditions 作为实验特性发布。Atom 显示 09-28 更新，个别发布页确认发布时间为 09-20。",
+        "date": "2026-09-20",
+        "sha256": "616fd6570373d840427a25ca20db4905fb80c0f0649dbbcc2147d04380ff8721"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O09",
+    "name": "Prometheus Alertmanager",
+    "category": "例外路由与告警抑制",
+    "scenario": "一个上游故障令几十次自动执行同时失败，值班人员需要看到能行动的一条根因告警。",
+    "mechanism": "标签按路由树递归匹配，子路由的 continue 决定是否继续匹配兄弟节点。抑制规则要求源/目标规则匹配且指定标签相等，并处理同时匹配源目标的自抑制情况。",
+    "human": "值班人员配置接收者、分组、静默和抑制范围，复核关键告警被静默的时长及原因。",
+    "org": "把批量失败汇总到负责该服务的队伍，减少重复打断，同时保留根因与下游告警关系。",
+    "limits": "发送少不等于事故少。范围过宽、标签错误会降低可见性；工具本身不回滚部署。未部署。",
+    "change": "2026-09-17 v0.34.1 修复部分抑制场景下告警被错误解除静默的问题，涉及 #5542、#5449、#5559。",
+    "insight": "把值班中断数与未送达关键事件同时记账，单纯追求压低告警总数可能掩盖失败。",
+    "experiment": "模拟同租户根因、三个派生失败和另一个租户同时失败，检查后者仍通知；恢复根因后验证持续失败能再次通知。",
+    "sources": [
+      {
+        "entity": "O09",
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/docs/alertmanager.md",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/docs/alertmanager.md",
+        "detail": "docs/alertmanager.md，去重、分组、路由、静默和抑制。",
+        "date": "2026-11-19",
+        "sha256": "bbb5c5f75b1380ffa80f69f26f04b6b6909aa081407f2484524f88148fd85976"
+      },
+      {
+        "entity": "O09",
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/inhibit/inhibit.go",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/inhibit/inhibit.go",
+        "detail": "inhibit.go 第 190–233、295 行后，匹配条件、equal 标签和双侧匹配。",
+        "date": "2026-11-19",
+        "sha256": "86232c2c53984f48c5a708f9faa634bed689e509b9c1b26b9a7ef73e31edf017"
+      },
+      {
+        "entity": "O09",
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/dispatch/route.go",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/dispatch/route.go",
+        "detail": "dispatch/route.go 第 148–177 行，路由递归、continue 与父级回退。",
+        "date": "2026-11-19",
+        "sha256": "7225d9d2b86dd62c8451bb87e7ec1782f8dee72d3301078f362fd63c95e4262b"
+      },
+      {
+        "entity": "O09",
+        "url": "https://github.com/prometheus/alertmanager/releases/tag/v0.34.1",
+        "path": "lanes/organization/raw/alertmanager/release-v0.34.1.html",
+        "detail": "2026-09-17 v0.34.1 修复部分抑制场景下告警被错误解除静默的问题，涉及 #5542、#5449、#5559。",
+        "date": "2026-09-17",
+        "sha256": "720a7462c83c9d25edc54cd2452dfa308deaf1c98a0be168f94ba2881dea430f"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O10",
+    "name": "Grafana k6",
+    "category": "性能门槛与有条件中止",
+    "scenario": "在自动交付链中验证性能/SLO 门槛，失败时发出可以被流水线消费的退出码。",
+    "mechanism": "Go 阈值引擎对指标聚合值应用比较运算；没有聚合样本时该轮会跳过并返回通过。abortOnFail 和延迟参数控制何时提前中止。",
+    "human": "服务 owner 设定业务指标、足够样本量和中止条件。异常先核对测试流量是否到达目标，再对服务作判断。",
+    "org": "为多团队提供可重用的性能验收程序，机器可以自动阻断失败的候选版本。",
+    "limits": "本机仅验证 Windows CLI 合成 Rate，无网络请求；没有测真实服务延迟、生产负载或端到端交付。",
+    "change": "2026-11-12 v2.4.0 新增实验性运行层级 tracing；browser_data_received 改用编码传输大小，官方要求复核既有阈值。",
+    "insight": "每个质量门要同时检查可测性与结果，尤其要把样本不足和指标达标分开。",
+    "experiment": "已实测 v2.4.0 同一阈值 rate>=0.75、同为四次迭代，4/4 成功时退出 0，1/4 成功时退出 99。原始命令、输入与输出见本地 runtime/k6.json。",
+    "sources": [
+      {
+        "entity": "O10",
+        "url": "https://github.com/grafana/k6/blob/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/examples/thresholds.js",
+        "path": "lanes/organization/raw/k6/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/examples/thresholds.js",
+        "detail": "官方 examples/thresholds.js 的阈值写法。",
+        "date": "2026-11-18",
+        "sha256": "ac24344825a3b9870dedb01fb145c6e4b849828e7b928df3926413ce084fbd09"
+      },
+      {
+        "entity": "O10",
+        "url": "https://github.com/grafana/k6/blob/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/metrics/thresholds.go",
+        "path": "lanes/organization/raw/k6/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/metrics/thresholds.go",
+        "detail": "metrics/thresholds.go 第 40–82、145–168、170–214 行，缺样本路径、比较和延迟中止。",
+        "date": "2026-11-18",
+        "sha256": "3a0cba44dbc7acb950c1fbe05f1f0eee8a2ccb1c4381903880b5a89ae0741047"
+      },
+      {
+        "entity": "O10",
+        "url": "https://github.com/grafana/k6/releases/tag/v2.4.0",
+        "path": "lanes/organization/raw/k6/release-v2.4.0.html",
+        "detail": "2026-11-12 v2.4.0 新增实验性运行层级 tracing；browser_data_received 改用编码传输大小，官方要求复核既有阈值。",
+        "date": "2026-11-12",
+        "sha256": "7d3c7cdbe6de1daac6e2f76dd98b41abfec2b3b7f70c4f790712ed35659a7e47"
+      },
+      {
+        "entity": "O10",
+        "url": "https://github.com/grafana/k6/releases/download/v2.4.0/k6-v2.4.0-windows-amd64.zip",
+        "path": "lanes/organization/runtime/k6.json",
+        "detail": "本地 Windows 实验记录，含 CLI 输入、标准输出、标准错误、退出码以及官方压缩包 SHA-256。",
+        "date": "2026-11-20",
+        "sha256": "7dbe0ff4b013a57650ad49d6e3aaa0b809542d7d6c57c8255a8390cbffc47534"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "O11",
+    "name": "OpenCost",
+    "category": "Kubernetes 工作负载成本分摊",
+    "scenario": "自动运行产生大量测试与后台任务，需要按命名空间/标签归集资源成本，识别空闲容量和无法归属的用量。",
+    "mechanism": "Allocation 按 CPU、GPU、RAM、存储与网络等成本算总额，AggregateBy 依据属性、过滤器和 idle/shared 分摊选项重组；无有效归属值可被标成 __unallocated__。",
+    "human": "FinOps 与平台负责人约定共享成本、空闲成本如何分摊，并决定哪些失败或闲置任务需要降配或暂停。",
+    "org": "将执行平台消耗映射到业务团队，再与工作单号、模型账单和最终采纳结果外部拼接。",
+    "limits": "Kubernetes 分摊不能自动得到 SaaS 模型 token 账单、人的审阅时间或交付价值。缺失标签会改写团队分母。未部署。",
+    "change": "2026-10-13 pricing/public v1.0.9 标签为价格模块增加 GBP、EUR、JPY。此为定价子模块变化；主服务版本另计。",
+    "insight": "每次尝试成本和每次被验收交付成本必须分别报告，未归集成本单列，避免让失败重试变成无主开销。",
+    "experiment": "同一工作流重复运行五次，只验收其中一次。比对共享成本分摊前后的每次尝试成本、每次验收成本和未归集成本。",
+    "sources": [
+      {
+        "entity": "O11",
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/README.md",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/README.md",
+        "detail": "README.md 描述 Kubernetes 成本分配、可观测和 OpenCost 规范。",
+        "date": "2026-11-19",
+        "sha256": "1508dc786c4d64aafbd1044b7d1b6b6e1838858928f77c7adf5bf9aa514de542"
+      },
+      {
+        "entity": "O11",
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/core/pkg/opencost/allocation.go",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/core/pkg/opencost/allocation.go",
+        "detail": "core/pkg/opencost/allocation.go 第 925–995、1531–1563、1623、1790、1945 行，成本组件、分摊和未分配项。",
+        "date": "2026-11-19",
+        "sha256": "97269272c9df1c376ad8caa335bc99db8554de21beae30147602461f3b56d9d6"
+      },
+      {
+        "entity": "O11",
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/pkg/costmodel/allocation.go",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/pkg/costmodel/allocation.go",
+        "detail": "pkg/costmodel/allocation.go，计算资源分配随时间窗聚合的入口。",
+        "date": "2026-11-19",
+        "sha256": "2a7ec0cfa7ec0a53e027f1eb55864250ba46412ec57f7a6b5e4a6b7ea4602d99"
+      },
+      {
+        "entity": "O11",
+        "url": "https://github.com/opencost/opencost/releases/tag/modules%2Fpricing%2Fpublic%2Fv1.0.9",
+        "path": "lanes/organization/raw/opencost/release-modules-pricing-public-v1.0.9.html",
+        "detail": "2026-10-13 pricing/public v1.0.9 标签为价格模块增加 GBP、EUR、JPY。此为定价子模块变化；主服务版本另计。",
+        "date": "2026-10-13",
+        "sha256": "4926ae9acc130323b5989cbe5b29e41f8c0f6e0ea8d008c5414f1fd883ae9833"
+      }
+    ],
+    "lane": "组织平台",
+    "source_review": true
+  },
+  {
+    "id": "F01",
+    "name": "OpenAI Symphony",
+    "category": "开源工单驱动编排规范及参考实现",
+    "platform": "语言无关 SPEC 与 Elixir 参考实现；仓库样例展示团队工作流。",
+    "sources": [
+      {
+        "entity": "F01",
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/SPEC.md",
+        "path": "lanes/frontier/raw/symphony/c6638056502ecd2e/SPEC.md",
+        "detail": "SPEC 核对调度边界、并发、重复尝试与独立工作目录。",
+        "date": "2026-09-15",
+        "sha256": "c6638056502ecd2e60eb04e1f1a627a4964506fcdf4d39873e78aa5834de85d5"
+      },
+      {
+        "entity": "F01",
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/lib/symphony_elixir/orchestrator.ex",
+        "path": "lanes/frontier/raw/symphony/ffa6fd2ca66f775b/orchestrator.ex",
+        "detail": "maybe_dispatch、reconcile_issue_state、handle_info retry token。",
+        "date": "2026-09-15",
+        "sha256": "ffa6fd2ca66f775b93ca561adb60a61a416f8fb604ff247128d3638169fdab22"
+      },
+      {
+        "entity": "F01",
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/WORKFLOW.md",
+        "path": "lanes/frontier/raw/symphony/7c465f8a44c6698d/WORKFLOW.md",
+        "detail": "样例的 Human Review、Merging 与 Rework 约定。",
+        "date": "2026-09-15",
+        "sha256": "7c465f8a44c6698db804dc7c6665cc1c2b7cadc1efed7d26c48629fcf530869d"
+      },
+      {
+        "entity": "F01",
+        "url": "https://github.com/openai/symphony/releases/tag/v0.0.3",
+        "path": "lanes/frontier/raw/symphony/85b0986012457a2c/releases.atom",
+        "detail": "v0.0.3 的认证与发行更新；Atom 条目 updated UTC 日期。",
+        "date": "2026-09-15",
+        "sha256": "85b0986012457a2c72a76e614b95e17c43eecf71b28bd0d330165dd38b3855ce"
+      },
+      {
+        "entity": "F01",
+        "url": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "path": "lanes/frontier/raw/symphony/report-20260427/web-excerpt.json",
+        "detail": "厂商内部实践与公开规范的网页摘录；非完整页面。",
+        "date": "2026-04-27",
+        "sha256": "01809488d6304f2d03f14df61b38f79d383fcafe2c7d5be2f232ed64350ec1ff"
+      }
+    ],
+    "scenario": "问题管理系统持续出现可以并行处理的维护任务。工程师希望移动工单状态就能派工，也能在事项被取消或返工时收回或恢复执行。",
+    "mechanism": "orchestrator 在每次派发前先与 tracker 对账，区分 running、blocked、terminal，按可用并发槽派发；重试带 token，陈旧定时器不会接管新尝试。规范把正常结束后的继续检查与失败指数退避分开。每事项有独立工作目录，仓库内 WORKFLOW.md 保存提示与运行配置。",
+    "human": "样例在 PR 附着并验证后移入 Human Review；人同意后进入 Merging，要求修改则回 Rework。发起新运行、修改 tracker 和产品责任验收是不同动作；人可通过 tracker 状态收回正在处理的工作。",
+    "org": "工单成为团队可见的排队、认领和交接单位，运行日志与 PR 通过 issue ID 关联。人主要处理需求不明确、指标冲突和最终接受，而不是每次在聊天中重新分派。",
+    "limits": "SPEC 允许不同信任和沙箱策略；独立工作目录并非进程级隔离。人审状态属于样例约定，组织必须决定哪些仓库保护能强制执行。静态阅读，无真实 tracker 租户实验。",
+    "change": "2026-04-27 官方经验报告公开这套工单驱动规范；v0.0.3 的 2026-09-15 发布记录列出凭证别名清理及 GitLab API 认证变更。不能据此将单团队产出外推为普遍收益。",
+    "insight": "把任务分配的状态机交给调度器，把任务内部可变步骤留给代理，用明确的交付状态界定机器和人的责任。",
+    "experiment": "比较同类维护单的手工启动与 tracker 调度；主动制造重复轮询、工单转终态和旧重试到达，观察重复 PR 数、遗留 worker 数、等待验收分钟数和真正关闭的工单数。",
+    "lane": "自动化前沿",
+    "source_review": true
+  },
+  {
+    "id": "F02",
+    "name": "GitHub Agentic Workflows（gh-aw）",
+    "category": "开源自然语言工作流编译与受限写入",
+    "platform": "GitHub Actions、github.com；公开编译及 handler 实现。",
+    "sources": [
+      {
+        "entity": "F02",
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/process_safe_outputs.cjs",
+        "path": "lanes/frontier/raw/ghaw/05a1b17671d7b2c2/process_safe_outputs.cjs",
+        "detail": "process_safe_outputs 调用独立 manager 并避免将 handler stdout/stderr 打包。",
+        "date": "2026-11-19",
+        "sha256": "05a1b17671d7b2c2f3abca755b68eaab551fcb69cd41298f18cf811b25f7f670"
+      },
+      {
+        "entity": "F02",
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/docs/adr/68724-infer-read-permissions-for-staged-safe-output-handlers.md",
+        "path": "lanes/frontier/raw/ghaw/a9289183a6eb3b41/68724-infer-read-permissions-for-staged-safe-output-handlers.md",
+        "detail": "2026-10-14 Proposed ADR，对照 staged 权限和私有仓库过滤器。",
+        "date": "2026-11-19",
+        "sha256": "a9289183a6eb3b4115b98e40df522cad95222871151a6a6842d1422f9bfac842"
+      },
+      {
+        "entity": "F02",
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/.changeset/patch-skip-write-permissions-staged-safe-outputs.md",
+        "path": "lanes/frontier/raw/ghaw/e0bdd71d1c678b10/patch-skip-write-permissions-staged-safe-outputs.md",
+        "detail": "早期 changeset 对 staged 不配置写权限的预期。",
+        "date": "2026-11-19",
+        "sha256": "e0bdd71d1c678b1016c0ec3a476724fbc5176aceca47c90c07f39fe7122fdeb7"
+      },
+      {
+        "entity": "F02",
+        "url": "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/",
+        "path": "lanes/frontier/raw/ghaw/5880fcffa12f6e79/page.html",
+        "detail": "2026-10-28 正式 GA，默认权限、运行器和预算预测。",
+        "date": "2026-10-28",
+        "sha256": "5880fcffa12f6e7976c6f630e19a06a5662405688b34b096a96d790aef239f32"
+      },
+      {
+        "entity": "F02",
+        "url": "https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/",
+        "path": "lanes/frontier/raw/ghaw/e8c7c38a862ffaa0/page.html",
+        "detail": "2026-02-13 技术预览说明，追溯只读及 safe outputs。",
+        "date": "2026-02-13",
+        "sha256": "e8c7c38a862ffaa0c8d3f3c3eccaba4c90b261221bdeedea9e6b3d1cd2e9e15c"
+      },
+      {
+        "entity": "F02",
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/safe_output_handler_manager.cjs",
+        "path": "lanes/frontier/raw/ghaw/965a3aa3dfdfeba6/safe_output_handler_manager.cjs",
+        "detail": "safe_output_handler_manager 的 effectiveAuthorization、授权规则选择、batchDigest、stagedFor 与按类型 dispatch。",
+        "date": "2026-11-19",
+        "sha256": "965a3aa3dfdfeba639da7a4cf9507100d9386371f7f484c5982a4c1d08793902"
+      }
+    ],
+    "scenario": "仓库维护者要自动分类 issue、更新文档或分析 CI，但希望预审自动化能写哪些仓库对象，并沿用已经部署的 Actions 运行器与权限制度。",
+    "mechanism": "仓库中的 Markdown 描述任务，CLI 生成标准 Actions YAML。默认只读代理提出结构化 safe outputs，独立处理层根据受信配置和操作类型路由到 handler。源码按类型取授权配置、校验目标、识别 staged 状态与批次摘要。handler 的实际写权限可以与代理读取上下文的权限分离。",
+    "human": "工作流作者或维护者先审可用输出和目标；staged 允许预览。并非每种写入都天然需要真人确认，合并或部署仍要接入仓库规则或业务审批。",
+    "org": "可沿用 runner group 与组织级策略，把同一机器人能够提议的动作做成多个团队可复用的有限目录。应将提议数、拒绝数、真正写入数拆开计量。",
+    "limits": "历史 changeset 主张 staged 空权限；2026-10-14 的后续 ADR 指出有些 handler 预览前仍须读取私有对象，否则 403，建议分配最小只读。ADR 状态为 Proposed，不能仅凭提案断定所有编译版本的权限矩阵。未运行 GitHub 租户工作流。",
+    "change": "官方 2026-02-13 技术预览已有只读默认与 safe outputs；2026-10-28 GA 说明增加自托管 ARC/Docker-in-Docker 支持和预算预测等。以前已经具备的机制不能算作 GA 首发。",
+    "insight": "最小权限不总等于零权限。应将读取验证、预览、实际提交分别建模，使审批端能看到将写入的准确对象。",
+    "experiment": "选私有测试仓的标签变更，比较只读 staged、授权写入及不满足过滤条件三种运行。核对实际 GitHub 权限、预览是否与最终动作一致、以及触发前后资源变化。",
+    "lane": "自动化前沿",
+    "source_review": true
+  },
+  {
+    "id": "F03",
+    "name": "Tessl",
+    "category": "商业托管的技能注册、版本与行为评测",
+    "platform": "Tessl Registry、CLI、托管评测；本次核对公开文档与发布页，未读取后端源码。",
+    "sources": [
+      {
+        "entity": "F03",
+        "url": "https://docs.tessl.io/improving-your-skills/evaluate-skill-quality-using-scenarios",
+        "path": "lanes/frontier/raw/tessl/d4f59b4b0ed976c7/page.html",
+        "detail": "Prove a skill works using evaluation；baseline、variant、plugin 根路径和场景。",
+        "date": "",
+        "sha256": "d4f59b4b0ed976c766d2b2ba7827c0581414e27d5a74fda184544bb679e5b9ae"
+      },
+      {
+        "entity": "F03",
+        "url": "https://docs.tessl.io/changelog-web",
+        "path": "lanes/frontier/raw/tessl/97b16a8986accb80/page.html",
+        "detail": "2026-10-30 周更中 Skill activation for more agents；区分加载与完成。",
+        "date": "",
+        "sha256": "97b16a8986accb8023a88b97d829c63834d6250cf821c30e1f82c56f35277a3d"
+      },
+      {
+        "entity": "F03",
+        "url": "https://tessl.io/blog/introducing-task-evals-measure-whether-your-skills-actually-work",
+        "path": "lanes/frontier/raw/tessl/70663727a3deff21/page.html",
+        "detail": "2026-02-17 Task Evals 发布说明及当时 repo evals 的阶段。",
+        "date": "2026-02-17",
+        "sha256": "70663727a3deff21e278ce5ece4ba59e48e2289e9ce0b92307de37c29fa1d737"
+      }
+    ],
+    "scenario": "多个团队共享技能文件。维护者需要知道哪个版本确实能改变代理的输出，以及更换模型后规则是否仍生效。",
+    "mechanism": "以 plugin root 关联 skill 和 evals，用相同任务分别运行无 skill、有 skill 两种条件，按场景标准评分；也能声明其他 variants。文档区分内容 review 与实际任务 eval，并支持用已有仓库历史工作构造测试。Web changelog 进一步记录跨代理的技能激活观测。",
+    "human": "作者编写或审查验收标准、选择历史任务及对照模型，并检查低分案例、无激活案例；查看原始轨迹比接受一个汇总倍率更能解释失败。",
+    "org": "团队可将共享规范作为可版本化依赖管理，并把“没读规范”和“读了仍失败”分开治理。跨团队迁移前需要用接收方的仓库样本再评估。",
+    "limits": "厂商文档给出评测流程，未获得托管后台源码，也未复跑其注册表上的分数。历史任务泄漏、评分器偏好和同一场景随机性都可能影响差值。",
+    "change": "2026-02-17 公告发布 task evals，并把 repo evals 记为当时 beta；2026-10-30 周更记录 Codex、Cursor、Tessl 的评测也能报告实际加载的技能，此前只记录 Claude Code。两项证据适用时间不同。",
+    "insight": "技能被安装、被读取、行为改变、最终交付改善是四个不同问题。只看下载量或单次通过率，会隐藏错误的优化目标。",
+    "experiment": "选取未进入技能编写材料的历史维护项，固定模型版本、多次重复两种配置，分别记录加载、行为达标、独立测试通过和总成本，再换仓库检查可迁移性。",
+    "lane": "自动化前沿",
+    "source_review": false
+  },
+  {
+    "id": "F04",
+    "name": "Claude Code Scheduled tasks（原 Routines）",
+    "category": "商业托管的事件与定时任务",
+    "platform": "Claude Code 云会话，也可按组织路由到自托管环境。源码核对范围止于公开文档；本例与 E09 SDK 是不同产品层。",
+    "sources": [
+      {
+        "entity": "F04",
+        "url": "https://code.claude.com/docs/en/routines.md",
+        "path": "lanes/frontier/raw/routines/9377bc3e62c3bed0/page.md",
+        "detail": "现行 Scheduled tasks 文档，核对旧名、触发、个人归属、权限与暂停。",
+        "date": "",
+        "sha256": "9377bc3e62c3bed0f909f35a4dedffee77fb9250f8d02f0650333901aa97c0e3"
+      },
+      {
+        "entity": "F04",
+        "url": "https://claude.com/resources/articles/introducing-routines-in-claude-code",
+        "path": "lanes/frontier/raw/routines/9c2422bf3dc711f9/page.html",
+        "detail": "2026-04-14 产品发布页，核对历史命名和发行时间。",
+        "date": "2026-04-14",
+        "sha256": "9c2422bf3dc711f9bf36b5b1dcb5f8cccf4570f7e5630c28576db971846395a9"
+      }
+    ],
+    "scenario": "在成员电脑关机后，仍需按日程处理积压工单，或在上游 SDK 的 PR 合并后提交下游语言版本的对应修改。",
+    "mechanism": "将提示、环境、仓库、连接器与触发器保存到任务；日程、GitHub 事件或 API 请求启动会话。保存过的提示是任务指令，触发本身不代表当次高影响动作获得人授权。当前文档说明在 Anthropic 云新建会话时优先使用 auto mode；连续阻止达到阈值后可暂停等待人。",
+    "human": "创建者选择触发条件、最小连接器与执行身份；组织管理员能关停能力。文档明确任务属于个人账号，经其 GitHub、Slack 等连接器做的事体现该账号身份，故需业务侧管理离职和交接。",
+    "org": "将原来靠人盯仓库事件的维护变成可重复执行的服务。对组织产品，任务归属、谁承担配额、能否接管及凭据轮换，比可选多少 cron 表达式更关键。",
+    "limits": "适用权限取决于托管方式、连接器和分支保护。个人拥有的任务不等于团队共享服务账号；公开文档不能证明某组织内的实际策略。未登录或触发任务。",
+    "change": "2026-04-14 以 Routines 名称发布。现行官方文档改称 Scheduled tasks，并解释旧名称为何仍留在 URL 和部分界面；无一手证据确定改名首日。",
+    "insight": "组织级自动化中，“系统能定时运行”与“人员变化后仍有明确责任人”需要分别选型和验收。",
+    "experiment": "在两个授权测试账号的非生产项目里分别创建同一只读任务，记录事件来源、产物作者和配额账单归属，再停用管理员开关或撤销一个连接器，验证队列和故障提示。",
+    "lane": "自动化前沿",
+    "source_review": false
+  },
+  {
+    "id": "F05",
+    "name": "OpenSandbox",
+    "category": "开源代理沙箱生命周期平台",
+    "platform": "原 alibaba/OpenSandbox 地址现指向 opensandbox-group/OpenSandbox；本例核对 Fast Sandbox 自动休眠及 Linux/容器相关部署文档。",
+    "sources": [
+      {
+        "entity": "F05",
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/README.md",
+        "path": "lanes/frontier/raw/sandbox/39535d8f0c100407/README.md",
+        "detail": "OpenSandbox 仓库用途、平台及后端。",
+        "date": "2026-11-19",
+        "sha256": "39535d8f0c100407c2a7bbd3c9e47a058e5ac1aaf1751d6a6dab59c5a51ac48e"
+      },
+      {
+        "entity": "F05",
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/server/opensandbox_server/integrations/idle_pause/decision.py",
+        "path": "lanes/frontier/raw/sandbox/4a9d6938393164f6/decision.py",
+        "detail": "evaluate_idle 所有条件分支与未知状态的 tombstone 意义。",
+        "date": "2026-11-19",
+        "sha256": "4a9d6938393164f6641b767438f74ebc3918c6054f1791592d8cf0e5c343c905"
+      },
+      {
+        "entity": "F05",
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/docs/guides/auto-pause-wake.md",
+        "path": "lanes/frontier/raw/sandbox/75d07beab3dfd353/auto-pause-wake.md",
+        "detail": "v1.2.0+、Fast Sandbox、网关流量和 Redis 前置条件、唤醒超时。",
+        "date": "2026-11-19",
+        "sha256": "75d07beab3dfd35381702feb3e3c238c4b306370c88030d1557dad3ab240c53b"
+      },
+      {
+        "entity": "F05",
+        "url": "https://github.com/opensandbox-group/OpenSandbox/releases/tag/release-1.3.0-rc.2",
+        "path": "lanes/frontier/raw/sandbox/4adc4ff2609bd9ba/releases.atom",
+        "detail": "1.3.0-rc.2 发布记录，续期与删除竞争及正常退出的状态问题。",
+        "date": "2026-11-19",
+        "sha256": "4adc4ff2609bd9ba72bf3e68ed61cc350eb6c895afe050fb201b7225c9a4da7a"
+      }
+    ],
+    "scenario": "大量代理在工具调用、人工审批或外部依赖期间闲置。平台希望释放容量，同时避免把短暂缺失的活动遥测解释成工作已结束。",
+    "mechanism": "根据 ingress 流量在 Redis 记录活动时间，sweeper 逐项检查是否到达空闲门槛，再执行暂停。源码明确，活动记录缺失时先返回 UNKNOWN 并申请写 tombstone；后续观测越过门槛才可判 idle。下一次请求可唤醒环境，其等待预算耗尽会返回 503 和 Retry-After，恢复仍可能继续。",
+    "human": "平台管理员启用 server 与 ingress 侧开关，工作负载还要选择声明 idlePolicy；业务侧决定出现超时是等待恢复、重试还是升级给人。",
+    "org": "组织可把等待人审的计算成本与恢复延迟分别量化。通过网关的流量和实际任务进展需分别观测，否则后台纯计算任务可能完全不适用这种策略。",
+    "limits": "文档仅覆盖全栈 v1.2.0+ 的 Fast Sandbox 后端和经过 ingress 的工作负载，默认关闭。本次运行固定源码中的纯判断函数，未部署 Redis、网关、Docker、Kubernetes 或云集群。",
+    "change": "1.3.0-rc.2 的 2026-11-19 发布记录修复 Docker 续期与过期删除竞争、Kubernetes 过期删除旧对象的竞争，也修复已正常退出的 BatchSandbox 状态；该版本是候选版，不能写为稳定版全面可用。",
+    "insight": "超时、空闲、已被删除和恢复中是不同状态。元数据过期时保留“不确定”，往往比静默终止工作更符合研发任务的代价结构。",
+    "experiment": "已用固定提交的 evaluate_idle 运行六个本地用例，近期活动、过期活动、无记录、新旧 tombstone、近期活动覆盖旧 tombstone 均符合预期。下一步在专用集群注入遥测延迟，比较误休眠率、恢复 p95、计算费用及重试风暴。",
+    "lane": "自动化前沿",
+    "source_review": true
+  },
+  {
+    "id": "M01",
+    "name": "Factory Droid / Missions",
+    "category": "多 worker 工程任务编排",
+    "scenario": "迁移或跨模块改造超出单次会话；需要先把目标分成 feature 与 milestone，并指定何时检查。",
+    "mechanism": "团队与 orchestrator 明确范围、依赖、技能和里程碑；每个 milestone 末安排 validation workers。文档给出的资源估算按每个里程碑在首轮通过时执行两次验证计算；发现问题后可生成新的修复任务。CLI 的 Mission Control 展示进度。",
+    "human": "先批准计划；执行过程中可暂停 orchestrator、解释阻塞、改方向。验证频率由里程碑划分决定，QA 验证可在设置中关闭。",
+    "org": "团队可以把一键启动服务、对应用输入、持久日志等作为仓库准备工作，帮助其他人复用验收方式。产品文档没有承诺增加 worker 就能缩短总工期。",
+    "limits": "公开技术文档和版本记录已核对；未接入产品，未检查托管调度实现。验证者与实现者共享错误假设时仍可能一起放过问题。",
+    "change": "2026-08-29，CLI v0.208.0 / Desktop v0.165.0 修复 Mission 被中断、暂停或恢复后里程碑验证仍应执行的行为。",
+    "insight": "最能区分编排质量的问题是恢复后还欠哪些检查。审批内容应能说明验收标准何时执行，以及更改标准需谁重新确认。",
+    "experiment": "喂入同一小迁移，在验证前暂停并恢复；比较任务状态、验证记录、追加修复和最终可重放证据，独立验收者另测隐藏用例。",
+    "sources": [
+      {
+        "entity": "M01",
+        "url": "https://docs.factory.com/missions/planning.md",
+        "path": "lanes/managed/raw/M01/c7104501e177-plan.md",
+        "detail": "Planning & Validation：Validation、Development scripting for QA、成本估算",
+        "date": "",
+        "sha256": "c7104501e177785b0bf0331755949705fa0aeb070a01cf4dbb0deb3944cdea47"
+      },
+      {
+        "entity": "M01",
+        "url": "https://docs.factory.com/missions/running-cli.md",
+        "path": "lanes/managed/raw/M01/0950e865198d-run.md",
+        "detail": "Running in the CLI：Intervening and redirecting，计划批准后的监控与暂停",
+        "date": "",
+        "sha256": "0950e865198d877f39553fe8ca820e6c68d4340bf8a39afa520f1afef3d16fae"
+      },
+      {
+        "entity": "M01",
+        "url": "https://docs.factory.com/changelog/release-notes.md",
+        "path": "lanes/managed/raw/M01/ddfd27ffa817-log.md",
+        "detail": "CLI v0.208.0 / Desktop v0.165.0 的 Mission milestone validation 修复",
+        "date": "2026-08-29",
+        "sha256": "ddfd27ffa817da1d72be9f173fec1e62f791c9ecd040cbd87d084ab0ff6d8cba"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M02",
+    "name": "Cognition Devin / Devin Bots",
+    "category": "持续目标、子会话与人工决策队列",
+    "scenario": "团队想持续维护某个产品目标，例如减少一类回归；任务顺序需要根据上一轮结果持续决定。",
+    "mechanism": "Bot 保存自己的会话、记忆、工具与权限，为子任务启动 Devin sessions，跟踪结果并决定下一个动作。Needs you 汇集 PR、权限请求与待决策项；Bot 的访问资源与能向 Bot 发消息的人分开配置。",
+    "human": "新 Bot 默认私有；分享 Bot 也分享请求其使用既有授权资源的能力。管理员可查看/撤销 grant；若只需传播做法，应分享 template。Mark done 清理个人侧栏的语义与停止工作不同。",
+    "org": "团队能为长期结果指定负责人，用一个异常队列处理分散会话的决定；持久授权使“谁能调用 Bot”和“Bot 能访问什么”都成为组织治理对象。",
+    "limits": "2026-11-17 上线，属于早期产品。内部案例是厂商自述，未取得独立对照、真实组织采纳数据、托管引擎源码或授权环境运行证据。",
+    "change": "2026-11-17，Cognition 发布 Devin Bots，将持续目标委托给可以并行发起多个 Devin 会话的 Bot；11-16 的 Cloud 更新还区分个人 Mark done 与关闭会话。",
+    "insight": "收件箱应计量每项决定的到达、等待、打断次数与结局；仅记录 Bot 完成的子任务数可能掩盖等待人处理的关键瓶颈。",
+    "experiment": "在无生产连接的试用组织给 Bot 一项带停止条件的持续维护任务，对比共享模板与共享 Bot；核对新任务、权限请求、撤权后访问及人工决策时长。",
+    "sources": [
+      {
+        "entity": "M02",
+        "url": "https://docs.devin.ai/work-with-devin/bots.md",
+        "path": "lanes/managed/raw/M02/9823c2514a10-bot.md",
+        "detail": "What needs you、权限请求与 Bot 默认行为",
+        "date": "",
+        "sha256": "9823c2514a104864ea68d62383a1e453625dd5c65cb5def02f771836570d20a0"
+      },
+      {
+        "entity": "M02",
+        "url": "https://docs.devin.ai/work-with-devin/bots/access-and-security.md",
+        "path": "lanes/managed/raw/M02/8afd7d4069f9-access.md",
+        "detail": "Who can use、What it can access、Resources 和 revoke；模板与共享 Bot 的差别",
+        "date": "",
+        "sha256": "8afd7d4069f9f69489eb29446c647dc1a3b752defeca103bc671a70965069491"
+      },
+      {
+        "entity": "M02",
+        "url": "https://devin.ai/blog/introducing-devin-bots",
+        "path": "lanes/managed/raw/M02/817040293119-launch.html",
+        "detail": "Introducing Devin Bots：持续目标、多 Devin 会话、内部自述案例",
+        "date": "2026-11-17",
+        "sha256": "8170402931191c1b42729a56327bc46972ab6d65ccfa6afeb67d865069a67fb0"
+      },
+      {
+        "entity": "M02",
+        "url": "https://docs.devin.ai/release-notes/2026.md",
+        "path": "lanes/managed/raw/M02/1ad66dfe2675-log.md",
+        "detail": "November 16：Subscribers and Mark done，个人完成与后台会话状态的区别",
+        "date": "2026-11-16",
+        "sha256": "1ad66dfe2675d850a018256a9d3f9cd0d8e5d7aca88bd4e9a598c8393f10356b"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M03",
+    "name": "Google Jules（已只读）",
+    "category": "异步工程任务的历史参照",
+    "scenario": "历史上将 GitHub 仓库例行维护设为定期任务，或启动单个异步任务，侧重用计划、活动记录和 PR 监督工作。",
+    "mechanism": "历史任务先克隆仓库、初始化虚拟机并安装依赖，再给出步骤和假设；人可以反馈后批准。历史计划文档还明确离开页面后计时器可能自动批准。曾支持定时启动任务、产生 PR；退场时可导出提示、计划、活动、补丁和配置。",
+    "human": "计划反馈与手动批准曾提供干预窗口，但离开后的自动批准不满足必须显式同意的控制要求。当前优先回收配置与任务证据，已有代码分支和 PR 留在 GitHub。",
+    "org": "这是选择平台时必须考虑的数据可携带性案例。团队的长期资产包括判定依据、排程与历史，不仅是最终的代码。",
+    "limits": "截至 2026-11-20，官方时间表已进入只读阶段，不能列为可启动新任务的在售选项。退场公告提及 Antigravity 并给出辅助导出方式，未承诺将原会话状态无损导入新平台。未登录服务确认租户状态。",
+    "change": "2026-10-29 发布退场公告，列明 11-11 后转为只读、计划于 12-31 结束；另一处文档对编辑排程仍写需删除重建，而 2026-01-26 的更新已允许编辑、暂停与恢复。",
+    "insight": "用时间有界的历史证据解释产品演进；合同或试点应明确停服时可导出哪些交付证据，迁移后能恢复哪些语义。",
+    "experiment": "利用用户自愿提供的脱敏导出样本查验计划、记录、补丁、定时任务是否可索引及关联；新方案独立验证只读和迁移流程。",
+    "sources": [
+      {
+        "entity": "M03",
+        "url": "https://jules.google/docs/changelog/",
+        "path": "lanes/managed/raw/M03/e9e029192f03-log.html",
+        "detail": "Jules Turndown，以及 Update Scheduled Tasks 的时间线",
+        "date": "2026-10-29",
+        "sha256": "e9e029192f0374e9507b0fb0e10f840449f74ad9356b2eac4c071765e703b390"
+      },
+      {
+        "entity": "M03",
+        "url": "https://jules.google/docs/scheduled-tasks/",
+        "path": "lanes/managed/raw/M03/b69a91392d86-schedule.html",
+        "detail": "Scheduled Tasks 文档 Creating / Managing；与 2026-01-26 发布记录并列复核",
+        "date": "",
+        "sha256": "b69a91392d86bc1bda466a7abbc941a2c06e23bfb188e66a32a5628d1cfd5c93"
+      },
+      {
+        "entity": "M03",
+        "url": "https://jules.google/docs/review-plan/",
+        "path": "lanes/managed/raw/M03/cd1ebdf4ae39-plan.html",
+        "detail": "Reviewing the plan：虚拟机设置、审批以及离开后计时自动批准",
+        "date": "",
+        "sha256": "cd1ebdf4ae397aa3e16be7e909a67c515c94e9498fd80e2f2380a53b0d785333"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "已公告进入只读；计划停服",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M04",
+    "name": "GitLab Duo Agent Platform",
+    "category": "事件和定时触发的组织研发流程",
+    "scenario": "团队要将 issue、CI 与 merge request 连起来：浏览器事件或计划发起任务，后台执行，再将阻塞或需要决定的会话集中给人。",
+    "mechanism": "Foundational flows 与团队自定义 flows 分开。GitLab UI 中 Developer Flow 由 runner 运行并创建/更新 MR；CLI 在本机执行；IDE 的 Software Development Flow 拟计划并暂存改动。Sessions 的 Needs a decision 汇集待回应会话。19.6 的定时自动化使用有限服务账号并记录运行历史。",
+    "human": "顶级 group 与项目控制启用条件，具权用户配置服务账号、触发器和流；负责人在合适界面审阅 MR 或确认操作。由 Web Chat 发起独立后台流时，不能沿用 Chat 工具审批的语义。",
+    "org": "直接利用团队原有 issue、runner、CI 和 MR 对象传递任务标识，结合每个自动化的运行量、成功率、失败原因和会话详情判断是否需要人工接管。",
+    "limits": "Custom Flows GA 与 19.6 scheduled automations beta 的成熟度不同。定时执行仅适用于启用的 AI Catalog 自定义 flow 或 Developer Flow，其他 foundational flows、外部 agents、用配置文件定义的 flows 不适用。有公开 GitLab 组件，本案例证据为文档与发行记录，未复核其服务端实现或部署。",
+    "change": "2026-07-16，19.2 将 Custom Flows 发布为 GA；2026-11-19，19.6 的 scheduled automations 进入 beta，并在 Automations 界面整合定时/事件触发、运行历史和会话详情。",
+    "insight": "同一个品牌内部可以同时存在交互式与无人值守的运行合同。平台应将执行位置、运行主体和审核策略附着在一次 run 上。",
+    "experiment": "在试验项目触发同一修复意图的 Web、CLI 和 IDE 路径，再用有资格的 flow 配置定时执行；核对运行身份、审批归属、会话 ID 和重复触发。",
+    "sources": [
+      {
+        "entity": "M04",
+        "url": "https://docs.gitlab.com/user/duo_agent_platform/flows/foundational_flows/",
+        "path": "lanes/managed/raw/M04/7016977f820c-flow.html",
+        "detail": "Choose a flow for coding tasks 对比 UI、Chat、CLI、IDE 的执行与审批",
+        "date": "",
+        "sha256": "7016977f820c9cc3bcc7040a15d1e288dc3438f875a405861ad3abbee7292a0e"
+      },
+      {
+        "entity": "M04",
+        "url": "https://docs.gitlab.com/user/duo_agent_platform/sessions/",
+        "path": "lanes/managed/raw/M04/f4d1cf0be24d-sessions.html",
+        "detail": "Needs a decision 和 Cancel a running session",
+        "date": "",
+        "sha256": "f4d1cf0be24d511e8602066bb0c79b727cee0f2997d9adf41039a3c1165ac4ef"
+      },
+      {
+        "entity": "M04",
+        "url": "https://about.gitlab.com/press/releases/2026-07-16-gitlab-19-2-brings-governed-agentic-automation/",
+        "path": "lanes/managed/raw/M04/e39520fcd960-log.html",
+        "detail": "GitLab 19.2：Custom Flows 与 CLI 一般可用",
+        "date": "2026-07-16",
+        "sha256": "e39520fcd960b124600663c71d3238daca7ed4814bf17e36e7e08a0aeabab5e4"
+      },
+      {
+        "entity": "M04",
+        "url": "https://about.gitlab.com/blog/gitlab-scheduled-automations/",
+        "path": "lanes/managed/raw/M04/ea7d44f02877-new.html",
+        "detail": "GitLab 19.6：scheduled automations 为 beta、运行记录、独立 service account",
+        "date": "2026-11-19",
+        "sha256": "ea7d44f0287772f4ce16707ce8ee1cf2969da9bae2313d2903a3698fde3d411f"
+      },
+      {
+        "entity": "M04",
+        "url": "https://docs.gitlab.com/user/duo_agent_platform/automations/",
+        "path": "lanes/managed/raw/M04/35fba77af685-automations.html",
+        "detail": "Scheduled automation prerequisites：获准账号角色、启用条件和不支持的 flow",
+        "date": "",
+        "sha256": "35fba77af6854148bd9f261bba605de90b03a954e323c5f52a634618e2657ae3"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M05",
+    "name": "CodeRabbit",
+    "category": "PR 评审及合并前规则验证",
+    "scenario": "组织希望在 PR 上一致执行评审规范，部分如变更是否越出工作项范围难以用纯规则表达。",
+    "mechanism": "内置与自然语言自定义检查支持不同配置方式。V2 可通过 pre_merge_checks 表达部分内置检查；V3 无此 YAML 节点，禁用若干内置检查，仓库可在 .coderabbit/pre-merge-checks/ 设置自定义定义。适用版本可向 GitHub 发布 Check Run。",
+    "human": "管理员选择策略和告警/错误等级。要成为合并必检，需要在 GitHub branch protection 或 ruleset 中自行将真实检查标识设为 required；修改规则 ID 或目录作用域会影响检查身份。",
+    "org": "可以从 warning 阶段收集争议和例外，再决定是否把具体检查升级为必检；需要指定归属，避免自然语言策略扩张后无人维护。",
+    "limits": "商业评审服务内部推理和误报率未实测。配置 V2 与 V3 的语义有别；路径不匹配可标 skipped，未载入定义时可能不报告检查。仅有“发布 Check Run”不能证明违反规则时一定挡住 merge。",
+    "change": "2026-03-11 公布内置与自然语言自定义 pre-merge checks、warning/error 和配置方式。当前文档另列 V3 迁移语义，发布日期不作为 V3 推出的证据。",
+    "insight": "要分别测量建议是否合理、平台是否收到状态、分支规则是否强制。三处中任一处缺失，都可能出现“看见红灯仍能合并”。",
+    "experiment": "准备匹配、不匹配路径、跳过评审三类 PR；把一条可客观核对的检查从 warning 升为 required，比较报告、规则 ID、是否可合并和所有者处置。",
+    "sources": [
+      {
+        "entity": "M05",
+        "url": "https://docs.coderabbit.ai/pr-reviews/pre-merge-checks",
+        "path": "lanes/managed/raw/M05/a7b31f4e4336-checks.html",
+        "detail": "V2 与 V3 差别、Require a check before merge、真实检查身份和 skipped",
+        "date": "",
+        "sha256": "a7b31f4e43365816d96d972b4835928043d6312b639bc3d91e672d8212d56522"
+      },
+      {
+        "entity": "M05",
+        "url": "https://docs.coderabbit.ai/pr-reviews/custom-checks",
+        "path": "lanes/managed/raw/M05/6b07d8148b3f-custom.html",
+        "detail": "How Custom Checks Work、重跑与已失败检查、链接仓库上下文",
+        "date": "",
+        "sha256": "6b07d8148b3f02e7bd4ae621671340bc2538a21c0962493f97756cc8831a412a"
+      },
+      {
+        "entity": "M05",
+        "url": "https://www.coderabbit.ai/blog/pre-merge-checks-built-in-and-custom-pr-enforced",
+        "path": "lanes/managed/raw/M05/afbf6ba2f98d-log.html",
+        "detail": "发布说明 Pre-merge checks 的检查类型、运行时机与 warning/error",
+        "date": "2026-03-11",
+        "sha256": "afbf6ba2f98de5dd295e6de37b54884a744c40be66f8b95f0a6e2a98db581070"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M06",
+    "name": "Graphite Merge Queue",
+    "category": "栈式 PR 与批量合并",
+    "scenario": "多个团队同时推送有依赖的 PR；单个分支检查已绿，仍要确认最终组合能通过 CI 并依正确顺序合并。",
+    "mechanism": "以 stack 为队列单位；支持同一 stack 内快进并行测试、多个 stack 的推测性并行 CI、以及成批测试。批失败时可缩小子集定位问题 stack 并剔除；前序失败时随后推测的组合需要重跑。",
+    "human": "管理员配置 GitHub 条件和队列优化、并行度与批策略，团队查看排队和失败状态；平台停摆时需由负责人选择暂停、等待恢复或启动受控替代流程。",
+    "org": "适合把 PR 生成吞吐与整合能力分开观测。可按仓库计量排队时间、重跑成本、合并失败率与批失败后定位成本。",
+    "limits": "官网仍展示产品与试用入口，Cursor 于 2025-12-19 宣布收购协议并表示产品独立运营。没有检查托管队列源码或租户功能。易抖动 CI 会放大下游重跑；单次故障不能推断普遍可用性。",
+    "change": "2025-12-19 Cursor 公告确认整合关系，未将未来集成计划当作已实现功能。另据官方状态页，2026-10-30 一次 PR 无法合并事件持续 15 小时 20 分钟并已恢复；这是事故记录。",
+    "insight": "组织级收益取决于下游队列与测试稳定性；多 agent 生成更多 PR 时，应事先衡量推测 CI 增量成本和外部平台故障的等待损失。",
+    "experiment": "用历史有依赖的 PR 到达序列仿真串行、并行与批处理；在隔离环境复现普通测试失败，统计 CI 重跑、队列尾延迟，再演练供应商不可用时的待办回收。",
+    "sources": [
+      {
+        "entity": "M06",
+        "url": "https://graphite.com/",
+        "path": "lanes/managed/raw/M06/42b8a45ab893-home.html",
+        "detail": "产品官网的 GitHub 接入、试用和 Merge queue 入口",
+        "date": "",
+        "sha256": "42b8a45ab893c8d65ac584266ebc9d59fb5d8d521e8f7ea38805b0f91d477a30"
+      },
+      {
+        "entity": "M06",
+        "url": "https://graphite.com/docs/merge-queue-optimizations.md",
+        "path": "lanes/managed/raw/M06/38c58b70d54e-queue.md",
+        "detail": "Parallel CI、batch merge failures、flaky tests 的代价",
+        "date": "",
+        "sha256": "38c58b70d54e0869c2bad0424f1f64eb7744f8cfe6c2ffaf231c61ca03bfcd4f"
+      },
+      {
+        "entity": "M06",
+        "url": "https://graphite.com/docs/set-up-merge-queue.md",
+        "path": "lanes/managed/raw/M06/d8e492d39210-setup.md",
+        "detail": "Set Up The Graphite Merge Queue 的仓库配置与接入",
+        "date": "",
+        "sha256": "d8e492d392103ceced5cf308a7238d8549ad168fb618ce3a435452da38199977"
+      },
+      {
+        "entity": "M06",
+        "url": "https://status.graphite.com/history/1",
+        "path": "lanes/managed/raw/M06/cf9072b271f4-status.html",
+        "detail": "Notice history，Oct 30 PRs are unable to be merged，持续时间与已恢复",
+        "date": "2026-10-30",
+        "sha256": "cf9072b271f44f6a0887b3acb53cf12f038432b4a16a61865e97494e245b4399"
+      },
+      {
+        "entity": "M06",
+        "url": "https://cursor.com/blog/graphite",
+        "path": "lanes/managed/raw/M06/f54a2bd014b0-log.html",
+        "detail": "Cursor 公司公告 Graphite is joining Cursor，协议和保留独立产品声明",
+        "date": "2025-12-19",
+        "sha256": "f54a2bd014b06332ba664dbc8d2eaca2f46ebf37cd7620ecdfc9e354a7826a9d"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "M07",
+    "name": "Google Antigravity",
+    "category": "并行开发任务与里程碑产物审阅",
+    "scenario": "多项开发工作并行，负责人需要在关键检查点查看计划、diff 或浏览器录屏，并针对具体产物反馈。",
+    "mechanism": "Google I/O 公布的 2.0 桌面应用整合多 agent、动态子 agent 和后台定时任务；当前 Artifacts 文档列出计划、diff、架构图与录屏，在 App 与 CLI 提供不同的查阅入口，可在计划上内联评论。",
+    "human": "在需要先计划的任务选择适当的 review policy；Always Ask 会停下来等待批准。按当前文档，显式 /plan 默认仍等待批准，即使设置 Always Proceed，除非提示明确要求计划后继续。",
+    "org": "通过共享验收产物给负责人减少逐工具调用盯守的需要；针对 UI 任务可将录屏与测试断言、变更版本一起留档。这里的跨团队共享流程是研究建议。",
+    "limits": "官方仍提供产品文档。未核对专有 harness 源码或运行实测，录屏不能覆盖未执行的 UI 路径。Jules 公告举例使用其 CLI 辅助导出，但没有证明两个产品的调度、批准或记忆可直接兼容。",
+    "change": "2026-05-19，Google I/O 宣布 Antigravity 2.0 独立桌面应用及 CLI，列出并行 agents 和定时任务；2026-10 的 Jules 公告将 Antigravity 列为开发方向去处之一。",
+    "insight": "用少数可检查产物管理并发工作，同时保留上游需求和下游验收；在迁移场景中尤其要复核显式批准、默认继续与等待超时的差异。",
+    "experiment": "测试同一含页面交互的任务，通过 App 与 CLI 各自产出计划、diff、录屏；按默认与显式 /plan 做对照，记录停止点及验收者能否复核对应 commit。",
+    "sources": [
+      {
+        "entity": "M07",
+        "url": "https://antigravity.google/docs/artifact-review",
+        "path": "lanes/managed/raw/M07/724c49bcbf16-review.html",
+        "detail": "Artifact review policy：Always Ask、Always Proceed、显式 /plan 及继续条件",
+        "date": "",
+        "sha256": "724c49bcbf16d448603459a876915e043cc6a78f30a0bdc475feda58749e4c6a"
+      },
+      {
+        "entity": "M07",
+        "url": "https://antigravity.google/docs/artifacts",
+        "path": "lanes/managed/raw/M07/37585ed838d5-artifacts.html",
+        "detail": "Reviewing artifacts across surfaces：计划、代码差异、浏览器录屏与 CLI 提醒",
+        "date": "",
+        "sha256": "37585ed838d518cf04bb712750478a99776dbfc8103aebb4bfbf131ed0067fee"
+      },
+      {
+        "entity": "M07",
+        "url": "https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/",
+        "path": "lanes/managed/raw/M07/ad6f8cabff92-log.html",
+        "detail": "Google I/O 2026：Antigravity 2.0 / CLI、dynamic subagents、scheduled tasks",
+        "date": "2026-05-19",
+        "sha256": "ad6f8cabff92c152ccae47b499d77f9b769f2f454f23dccc713fe69fefc87dbd"
+      }
+    ],
+    "evidence": "官方产品/版本文档交叉复核；未登录实测，未据此确认服务端实现",
+    "status": "有现行官方产品文档；租户可用性未实测",
+    "lane": "商业工作流",
+    "source_review": false
+  },
+  {
+    "id": "B01",
+    "name": "DX AI Measurement Framework",
+    "category": "组织研发效能与 AI 投资度量",
+    "scenario": "在续购、扩大发放或停止 AI 工具时，负责人需要同时衡量使用、影响、成本，并找出交付瓶颈。",
+    "mechanism": "框架将每名开发者每周自报节省时间等直接信号，与 PR 吞吐、感知交付速度、开发体验等纵向数据联合使用。Q3 报告按 AI 代码占比分组，并报告复杂度加权的每人每周 PR 吞吐。",
+    "human": "研发负责人维持团队口径、注明哪些是估计，并向开发者说明用途；开发者提供工具难以捕捉的返工和理解成本。",
+    "org": "在 2026 Q3 自报 500 多家公司样本中，AI 代码占比 20%–40% 档首次评审中位等待 40 分钟，80% 以上档为 82 分钟。分组比较提示可检查评审产能。",
+    "limits": "厂商样本和分组是观察性材料，不能推出 AI 造成等待增加。Q2 落地页分别使用 teams 和 organizations 称呼样本；未得到原始行数据或各档样本量。商业后台未实测。",
+    "change": "Q3 报告覆盖 2026 年 7–9 月的评审对照，吞吐曲线覆盖 2025 年 10 月至 2026 年 9 月。这是研究观测窗口，框架首发日未核实。",
+    "insight": "扩大许可前先回答额外产出是否真的到达用户；把审阅等待、交付质量、人时与成本列入同一试点决策。",
+    "experiment": "按团队分阶段启用，预设交付结果和人工返工指标，记录所有符合资格团队及无响应调查者。若净验收无改善且人工服务时间上升，暂停扩容复盘。",
+    "sources": [
+      {
+        "entity": "B01",
+        "url": "https://getdx.com/uploads/ai-measurement-framework.pdf",
+        "path": "lanes/market/raw/B01/01-20261120.pdf",
+        "detail": "官方框架 PDF 第 2–5 页，用量、影响、成本，直接和间接口径，以及个人绩效使用边界。",
+        "date": "",
+        "sha256": "386816abf9972bf615f274ba0984aad95fa390d2a4344baaf533cc9e5e886106"
+      },
+      {
+        "entity": "B01",
+        "url": "https://getdx.com/report/state-of-ai-impact-in-engineering-q2-report/",
+        "path": "lanes/market/raw/B01/02-20261120.html",
+        "detail": "Q2 季报摘要，500+ teams 与 500+ organizations 两种描述，样本口径须保留不确定性。",
+        "date": "",
+        "sha256": "46701f605f9245bd5bdfa04d864cf15a7c932029ad012b8c8a929cfc69d8eeb7"
+      },
+      {
+        "entity": "B01",
+        "url": "https://getdx.com/report/state-of-ai-impact-in-engineering-q3-report/",
+        "path": "lanes/market/raw/B01/03-20261120.html",
+        "detail": "2026 Q3 研究，首评等待比较的分组、500+ companies、7–9 月窗口及四季加权吞吐趋势。",
+        "date": "",
+        "sha256": "7df2b783e3db6d37ee4821f4262afc3c2cb82b87bd6f45fc00aac6a48f49d96d"
+      }
+    ],
+    "lane": "效能度量",
+    "source_review": false
+  },
+  {
+    "id": "B02",
+    "name": "LinearB AI Analytics",
+    "category": "AI 辅助归因与评审队列度量",
+    "scenario": "组织既有作者使用 AI 辅助，也有机器人直接开 PR；管理者要区分交付变慢发生在等待接单还是实际评审。",
+    "mechanism": "LinearB 可先按开发者当天 AI 活跃和阈值标记当天提交，显式 AI Git 元数据可直接标记，再按 PR 中已标记提交占比给 PR 分类。pickup 始于非草稿 PR 开启，止于首个非作者动作；无评论的批准或合并可作为终点。",
+    "human": "主管配置分类阈值，抽查有元数据的结果和模糊归因，评审团队处理等待阶段异常。阈值只控制标签，对开发工作流不执行阻断。",
+    "org": "能分开计量编码、接单、评审、部署，并将自动创建 PR 与人员辅写场景分别观察；无评论批准/合并时 review time 记为 0。",
+    "limits": "开发者日级活跃会被映射到当天其他提交，工作强度、项目难度与归因相关；厂商报告公开摘要缺乏逐行数据。商业后台及分类器未实测。",
+    "change": "分类阈值帮助页元数据记录 2026-03-16 发布、10-04 修订；2026 基准报告列出 AI 与手动 PR 的不同采纳率。修订日期不能当作阈值功能首发。",
+    "insight": "看到 review time 下降应同时查看 pickup、无评论样本和弃用率，其下降可能只来自排队位置或统计定义变化。",
+    "experiment": "对 50 个 PR 手工标出纯人工、辅写、全自动、弃用。调整阈值看标签稳定性，再按相似任务比较首评等待、合并率和有效交付率。",
+    "sources": [
+      {
+        "entity": "B02",
+        "url": "https://linearb.helpdocs.io/article/wyb2trfd6o-configuring-ai-classification-thresholds",
+        "path": "lanes/market/raw/B02/01-20261120.html",
+        "detail": "分类阈值帮助页，逐提交与 PR 分层、显式元数据优先和阈值只影响标签。该日期为页面修订日。",
+        "date": "2026-10-04",
+        "sha256": "98c98745a99c804fc83099decb4858611d4689b95722795cf69ee5ffcea0a2e3"
+      },
+      {
+        "entity": "B02",
+        "url": "https://linearb.helpdocs.io/article/0vif1ihmgc-how-is-cycle-time-calculated",
+        "path": "lanes/market/raw/B02/02-20261120.html",
+        "detail": "Cycle Time Calculation，四阶段起止、作者评论以及零 review time 的分支；日期为元数据修订日。",
+        "date": "2026-03-16",
+        "sha256": "75161e77ec260643ab6e5c80c854f05c64d73ad7846d120a126650b686eca4d8"
+      },
+      {
+        "entity": "B02",
+        "url": "https://linearb.io/resources/software-engineering-benchmarks-report",
+        "path": "lanes/market/raw/B02/03-20261120.html",
+        "detail": "2026 年基准报告公开摘要给出 AI PR 与手工 PR 的接单等待、合并接受率等厂商观测。",
+        "date": "",
+        "sha256": "f8cb1b3b35c1a55f6ea97b00a43b403a5e34188a5347d98b69c79c5edfdb5ae4"
+      }
+    ],
+    "lane": "效能度量",
+    "source_review": false
+  },
+  {
+    "id": "B03",
+    "name": "GitHub Copilot usage metrics",
+    "category": "第一方助手使用遥测与采用阶段",
+    "scenario": "企业管理员按组织检查 Copilot 分配、使用深度和席位覆盖，并希望把仪表板与导出对齐。",
+    "mechanism": "仪表板/API 共用部分字段。补全接受率分子为接受动作数，分母为生成动作数；日记录统计当日活跃，adoption phase 使用滚动 28 天群体，累加每日人数会重复计算。",
+    "human": "管理员选择组织与时窗，核对 IDE 遥测开关、数据延迟和席位信息；团队另行核验发布后的价值。",
+    "org": "前后端数据来自工具生产者，接入成本低；适合回答某团队用到什么能力、哪些人群还需要支持。",
+    "limits": "IDE 遥测关闭会令细分活动缺失，但服务端仍可能把用户计入活跃人口。采纳事件不是发布、客户验收或缺陷回归。未查询私有租户。",
+    "change": "2026-02-27 使用度量正式 GA；07-22 新增面向企业管理员/组织所有者的 impact dashboard，把 28 天采用阶段分类做成视图。两次事件口径不同。",
+    "insight": "用量作为覆盖率与干预入口，再按工单连接交付结果；不能把每个被接受的建议视作被采纳的工作项。",
+    "experiment": "固定一日和同一组织，把日活、滚动覆盖、生成、接受四列分别对账。抽样关联上线工单及回滚，给无法映射事件单独分母。",
+    "sources": [
+      {
+        "entity": "B03",
+        "url": "https://docs.github.com/en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics",
+        "path": "lanes/market/raw/B03/01-20261120.html",
+        "detail": "指标口径对账文档的日期/人口范围、缺失 IDE 遥测、28 天与每日人数及补全采纳公式。",
+        "date": "",
+        "sha256": "f8222433df31e03ab5a653a5ec87590aa65c87c9be22253de8605e10d9fa8308"
+      },
+      {
+        "entity": "B03",
+        "url": "https://github.blog/changelog/2026-02-27-copilot-metrics-is-now-generally-available/",
+        "path": "lanes/market/raw/B03/02-20261120.html",
+        "detail": "官方变更记录，使用仪表板与相关 API 正式 GA 的范围。",
+        "date": "2026-02-27",
+        "sha256": "86ece1ecff6fb88fcefe03bbeb087eabb2d2920acac9482d3712f207f27e7ead"
+      },
+      {
+        "entity": "B03",
+        "url": "https://github.blog/changelog/2026-07-22-new-copilot-usage-metrics-impact-dashboard/",
+        "path": "lanes/market/raw/B03/03-20261120.html",
+        "detail": "官方变更记录，impact dashboard 与基于滚动 28 天使用的 adoption phase。",
+        "date": "2026-07-22",
+        "sha256": "5e1c206d2a04a0572519971b750d9beef2092438d76eec1c80d10126aa87ac10"
+      }
+    ],
+    "lane": "效能度量",
+    "source_review": false
+  },
+  {
+    "id": "B04",
+    "name": "Harness AI Engineering Insights / AI DLC Agent",
+    "category": "终端会话到提交的归因与成本",
+    "scenario": "组织同时采购多种 AI 助手，希望把本地会话、耗费和合入情况连到团队交付与工单。",
+    "mechanism": "工作站常驻代理关联终端工具遥测与 Git 活动。AI committed code 用已归因 AI 提交行数除以全部提交行；另有已提交 AI 行/生成 AI 行。PR 含一个归因提交即可归入 agent，工单可通过关联 PR 归因，工单去重。",
+    "human": "管理员部署代理、配置团队和允许采集的字段；PR 与工单归因结果需由团队按实际任务抽查。",
+    "org": "可把成本、session、提交、PR 和完成工单放在同一处，按工作类型和时间查看所用样本数及分位数。",
+    "limits": "官方说明的采用率分母是已导入且安装代理的开发者。采集矩阵显示部分助手无能力覆盖，不能将未覆盖数据填零。探索性生成、共享提交、拆分任务都可能扭曲不同采纳分母。未登录实测。",
+    "change": "归档时 Insights 页面标 Beta，内页显示 2026-11-12 修订；终端代理安装页 11-02 修订。均为文档更新，未核实首次可用日期。",
+    "insight": "生成行、提交行、含 AI 的 PR、最终工单的分母各异。以成本/验收任务作投资决策前要验证首次归因和跨工具冲突。",
+    "experiment": "取重写提交、一个工单多 PR、多人协作、纯探索任务各五例，对账归因和去重。剔除无法观测的工具，给其单独报告覆盖缺口。",
+    "sources": [
+      {
+        "entity": "B04",
+        "url": "https://developer.harness.io/docs/software-engineering-insights/harness-sei/insights/ai-engineering/",
+        "path": "lanes/market/raw/B04/01-20261120.html",
+        "detail": "AI Engineering Insights [Beta] 的 Adoption / Impact、PR 归因和 Work Items Delivered 定义，日期为文档修订。",
+        "date": "2026-11-12",
+        "sha256": "cb4a65818bab99f9817e7236c7ddba5a5809bd3645ff7cbf870f80442d4a792d"
+      },
+      {
+        "entity": "B04",
+        "url": "https://developer.harness.io/ai-dlc-insights/use-ai-dlc-insights/setup/agent",
+        "path": "lanes/market/raw/B04/02-20261120.html",
+        "detail": "AI DLC Agent [Beta] 入口页，展示产品阶段与安装/数据安全子页。",
+        "date": "2026-11-02",
+        "sha256": "ff5cdef33c49ae6898e5b4af883b9c54aa23787f60b7236bc42e88b34f1a746e"
+      },
+      {
+        "entity": "B04",
+        "url": "https://developer.harness.io/ai-dlc-insights/use-ai-dlc-insights/setup/agent/index",
+        "path": "lanes/market/raw/B04/03-20261120.html",
+        "detail": "终端代理技术说明，支持工具矩阵、采集数据、Git 钩子与默认不采集 prompt/response；日期为文档修订。",
+        "date": "2026-11-02",
+        "sha256": "b3d63894f41679d40fd3ce5bcb63c1cc6eec04a70b90f8bc6718e2444256a73a"
+      }
+    ],
+    "lane": "效能度量",
+    "source_review": false
+  },
+  {
+    "id": "B05",
+    "name": "阿里云云效 Insight（效能洞察）",
+    "category": "国内研发交付流与跨项目度量",
+    "scenario": "组织想知道需求进开发、测试与上线的等待位置，以及自动生成大量变更后是否改善交付响应。",
+    "mechanism": "Insight 汇集 Projex、Codeup 等系统。需求交付分布每个点表示一个已上线需求，按交付日与耗时展示；累积流图反映不同状态在制品与交付速率。代码报表仅统计已开启洞察报表的代码库。",
+    "human": "团队维护工作项状态、项目与库范围，并在复盘中调整批次、测试或上线节奏，负责人核对遗漏的仓库。",
+    "org": "本地研发体系已有项目、迭代、代码到流水线的总账，便于新增自动化实验前先建立历史对照，也可为跨团队共享约定统一事件定义。",
+    "limits": "已上线需求排除了中途撤销和尚未结束的工作项，关闭采集的仓库不会出现在代码报表。所审材料没有证明 AI 提交归因能力。未登录租户或读取闭源实现。",
+    "change": "效能洞察概览页面 2025-04-27 更新，度量方法 2025-06-04 更新，代码库报表范围说明 2026-06-02 更新。以上都是文档日期。",
+    "insight": "国内落地无需先更换研发平台。用既有需求、代码进入、测试和上线时间轴承接 agent 事件，先解决漏链再比较产出。",
+    "experiment": "选同一项目的同类需求，按月同时列入已交付、未完成、撤销三组。先校对默认报表覆盖，再按试点/参照团队比较在制品、需求龄期和发布节奏。",
+    "sources": [
+      {
+        "entity": "B05",
+        "url": "https://help.aliyun.com/zh/yunxiao/user-guide/what-is-performance-insights",
+        "path": "lanes/market/raw/B05/01-20261120.html",
+        "detail": "产品概览，覆盖 Projex、Codeup 等，项目、代码与流水线报表和高级版范围；页面最后更新日。",
+        "date": "2025-04-27",
+        "sha256": "d6ccf6b429d9b3703d2fb253cb396b9f1a87ca54db07866db148964805e4a08c"
+      },
+      {
+        "entity": "B05",
+        "url": "https://help.aliyun.com/zh/yunxiao/use-cases/how-do-we-measure-r-d-effectiveness",
+        "path": "lanes/market/raw/B05/02-20261120.html",
+        "detail": "研发效能度量方法，已交付需求分布、在制品累积流图、批次与等待示例；页面最后更新日。",
+        "date": "2025-06-04",
+        "sha256": "89f4beaff258fa0178806e0abb5ea61925ff92bd43f5873b04a81025bf838312"
+      },
+      {
+        "entity": "B05",
+        "url": "https://help.aliyun.com/zh/yunxiao/user-guide/how-do-i-view-code-base-commits",
+        "path": "lanes/market/raw/B05/03-20261120.html",
+        "detail": "如何查看代码库提交情况，开启洞察报表的代码库范围及个人/仓库视图；页面最后更新日。",
+        "date": "2026-06-02",
+        "sha256": "20f75bcfc0138eaebefa19ea46d4dd29697100fbaeae78de7de9a6efbf6221c1"
+      }
+    ],
+    "lane": "效能度量",
+    "source_review": false
+  }
+]

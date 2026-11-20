@@ -1,0 +1,102 @@
+{
+  "url": "https://zenodo.org/records/20442228/files/ai-complacency-study.zip?download=1",
+  "md5": "51ed9a445c45e1f96d294a882288a57d",
+  "bytes": 437566326,
+  "columns": [
+    {
+      "path": "ai-complacency-study/CSV_files/matched_pairs.csv",
+      "sha256": "eb2e48a566960cb07cd6d0c41efb9d0f871141c199d948884906b94c8c985f7a",
+      "rows": 184,
+      "columns": [
+        "treat_repo",
+        "ctrl_repo"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/human_prs_enriched.csv",
+      "sha256": "722c5254f7b9a500b6b265af689fd16d9bb7f1712f65479878b7ac3ad0d6365e",
+      "rows": 22792,
+      "columns": [
+        "author",
+        "repo",
+        "period",
+        "additions",
+        "deletions",
+        "changed_files",
+        "commits",
+        "body_length"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/rq2_files.csv",
+      "sha256": "b300438e5afbe067b8fb371ef6d6ff8f40f896602d7559a160007341ccba8028",
+      "rows": 22792,
+      "columns": [
+        "author",
+        "repo",
+        "period",
+        "test_ratio",
+        "co_change",
+        "has_prod"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/rq3_reviews_proper.csv",
+      "sha256": "fcd6e9a0ecb7b6bf1db633d3410e0fb4eed578f1c494473e013989cb017584a9",
+      "rows": 47468,
+      "columns": [
+        "reviewer",
+        "repo",
+        "pr_period",
+        "submitted_at",
+        "pr_created_at",
+        "review_state",
+        "inline_comments"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/control_prs_enriched.csv",
+      "sha256": "f58d59cbc661812797734c8bca265c6626be9b4365fc0feeafece6c95d768371",
+      "rows": 6656,
+      "columns": [
+        "author",
+        "repo",
+        "period",
+        "additions",
+        "deletions",
+        "changed_files",
+        "commits",
+        "body_length"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/control_rq2_files.csv",
+      "sha256": "5f4bc813612fa80d3624ad8f704ae36f6764f4fe344c5a056644f23fe74b389b",
+      "rows": 6656,
+      "columns": [
+        "author",
+        "repo",
+        "period",
+        "test_ratio",
+        "co_change",
+        "has_prod"
+      ]
+    },
+    {
+      "path": "ai-complacency-study/CSV_files/control_rq3_reviews.csv",
+      "sha256": "982425c64c6a5b652ca01fa77de2422350c7e6ea774742d60ec8a879e9d29c4e",
+      "rows": 7503,
+      "columns": [
+        "reviewer",
+        "repo",
+        "pr_period",
+        "submitted_at",
+        "pr_created_at",
+        "review_state",
+        "inline_comments"
+      ]
+    }
+  ],
+  "scipy": "1.13.1",
+  "pandas": "2.2.2"
+}

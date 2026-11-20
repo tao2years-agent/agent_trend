@@ -1,0 +1,401 @@
+[
+  {
+    "id": "O01",
+    "name": "Backstage Software Catalog",
+    "category": "开发者门户与服务所有权",
+    "scenario": "跨仓库变更或运行失败需要找受影响组件和维护组。目录后端持续摄取实体描述，前端展示实体及其关系。",
+    "mechanism": "处理器解析 Component 的 owner、dependsOn、dependencyOf 等字段，生成双向关系；来源实体先处理再拼接，处理中的实体与读者看到的最终实体有时间差。",
+    "human": "团队维护服务描述和 owner，平台维护实体处理器。将目录用来查候选负责人，审批身份仍由执行系统验证。",
+    "org": "把工作对象从仓库文件提升为服务、团队和依赖，对跨团队任务可先路由再派工。",
+    "limits": "静态声明会过时，目录出现 owner 不证明该人员当班或有生产权限。未部署。",
+    "change": "2026-11-17 v1.57.0 将若干前端插件 API 稳定为 1.0；此为门户扩展接口稳定化，不能据此为早已存在的目录关系定首发日期。",
+    "insight": "建立可查询且允许纠错的责任关系，比把所有仓库知识复制到 agent 上下文更适合分配跨团队例外。",
+    "experiment": "抽 30 个真实服务，让目录推荐负责人，与轮值表及历史处理人交叉核验；记录无 owner、过期和多归属冲突。",
+    "sources": [
+      {
+        "url": "https://github.com/backstage/backstage/blob/184acad411be8cfbac126c3a2885cb4740109176/docs/features/software-catalog/life-of-an-entity.md",
+        "path": "lanes/organization/raw/backstage/184acad411be8cfbac126c3a2885cb4740109176/docs/features/software-catalog/life-of-an-entity.md",
+        "date": "2026-11-19",
+        "detail": "来源进入目录、processing 与 stitching 的异步边界，生命期与 orphan 说明。"
+      },
+      {
+        "url": "https://github.com/backstage/backstage/blob/184acad411be8cfbac126c3a2885cb4740109176/plugins/catalog-backend/src/processors/BuiltinKindsEntityProcessor.ts",
+        "path": "lanes/organization/raw/backstage/184acad411be8cfbac126c3a2885cb4740109176/plugins/catalog-backend/src/processors/BuiltinKindsEntityProcessor.ts",
+        "date": "2026-11-19",
+        "detail": "BuiltinKindsEntityProcessor.ts 第 114–198 行，实体引用归一化、正反关系与 Component 字段发射。"
+      },
+      {
+        "url": "https://github.com/backstage/backstage/releases/tag/v1.57.0",
+        "path": "lanes/organization/raw/backstage/release-v1.57.0.html",
+        "date": "2026-11-17",
+        "detail": "2026-11-17 v1.57.0 将若干前端插件 API 稳定为 1.0；此为门户扩展接口稳定化，不能据此为早已存在的目录关系定首发日期。"
+      }
+    ]
+  },
+  {
+    "id": "O02",
+    "name": "Apache DevLake",
+    "category": "研发数据湖与 DORA 度量",
+    "scenario": "组织同时用多个 AI 工具，希望知道哪一段交付时间变化，及不同工具指标能否比较。",
+    "mechanism": "Go 计算器取项目映射内已合并 PR，用首提交、首个非作者评论、合并与成功生产部署分段计算。部署先按 SHA 直连，再从前后成功部署的 commit diff 回查；无映射时部署阶段为空。",
+    "human": "数据负责人定义项目/生产环境映射并复核遗漏。平台负责人解释等待时间，试点团队决定是否调整评审容量。",
+    "org": "PostgreSQL 多 AI 看板直接承认不同来源返回的行数与操作不同；Kiro 不提供建议采纳事件，接受率留空。",
+    "limits": "合并样本排除被放弃的补丁；未映射生产数据会漏阶段。面板不能从活跃量推断真实因果提效。未部署。",
+    "change": "2026-11-02 v1.0.3-beta19 为 PostgreSQL 增补 Cursor/Multi-AI 面板并将 Claude Code 纳入多 AI 对比，修复无上次成功部署时重复计算；属于 beta。",
+    "insight": "组织应先给每个工具的事件分母和缺失值签字，再让领导看工具对比。空值替成零会误导采购。",
+    "experiment": "给同一组 PR 逐个核对首评、上线 SHA、弃用原因和漏链，报告覆盖率及按失败/弃用分层的周期。",
+    "sources": [
+      {
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/tasks/change_lead_time_calculator.go",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/tasks/change_lead_time_calculator.go",
+        "date": "2026-11-19",
+        "detail": "change_lead_time_calculator.go 第 82–85、118–165、250–334 行，PR 纳入、时间段、成功生产部署映射与缺失。"
+      },
+      {
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/grafana/dashboards/postgresql/multi-ai-comparison.json",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/grafana/dashboards/postgresql/multi-ai-comparison.json",
+        "date": "2026-11-19",
+        "detail": "多 AI 看板的 Claude Code: Tool Actions、Returned Lines & Acceptance Availability 与 Acceptance Rate Availability 面板。"
+      },
+      {
+        "url": "https://github.com/apache/devlake/blob/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/e2e/calculate_change_lead_time_test.go",
+        "path": "lanes/organization/raw/devlake/652d7da9323fd4447d3c2d3705f482ff5a9f54d8/backend/plugins/dora/e2e/calculate_change_lead_time_test.go",
+        "date": "2026-11-19",
+        "detail": "calculate_change_lead_time_test.go 的项目映射和端到端 fixture，作为官方测试规范阅读，未执行。"
+      },
+      {
+        "url": "https://github.com/apache/devlake/releases/tag/v1.0.3-beta19",
+        "path": "lanes/organization/raw/devlake/release-v1.0.3-beta19.html",
+        "date": "2026-11-02",
+        "detail": "2026-11-02 v1.0.3-beta19 为 PostgreSQL 增补 Cursor/Multi-AI 面板并将 Claude Code 纳入多 AI 对比，修复无上次成功部署时重复计算；属于 beta。"
+      }
+    ]
+  },
+  {
+    "id": "O03",
+    "name": "OpenTelemetry Collector",
+    "category": "跨系统遥测管道",
+    "scenario": "多个 runner、评测器和部署平台输出不同信号，需要让事件到达观察后台并判断证据是否缺失。",
+    "mechanism": "服务按配置建 receiver、processor、exporter 与 connector 的有向图，拒绝成环并从下游先启动。发送队列可选持久化；队列满或存储异常导致入队失败时，数据无法进入导出重试。",
+    "human": "平台团队选择队列容量、溢出处理和留存，观测系统独立告知采集失败，业务负责人定义缺证时能否继续。",
+    "org": "统一传输可降低接入成本；任务标识、审批语义、可靠台账仍需在业务层定义。",
+    "limits": "入队失败计数与导出重试是不同故障。持久化队列不会保存 Auth 扩展设置的上下文。未部署。",
+    "change": "2026-11-06 v0.165.0 启动时检查 batch processor 与 exporterhelper 重复 batching；发布说明写明检查不穿越 connector 或隐藏实现的 exporter wrapper。",
+    "insight": "当信号没送达时，应把本次任务标为证据不全，避免在无记录状态下自动晋级。",
+    "experiment": "用合成任务让接收端保持可用但让导出端断开，逐渐塞满队列；对账发出数、入队失败数、后端可见数，比较溢出策略。",
+    "sources": [
+      {
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/blob/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/exporter/exporterhelper/README.md",
+        "path": "lanes/organization/raw/otel/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/exporter/exporterhelper/README.md",
+        "date": "2026-11-19",
+        "detail": "exporterhelper/README.md 第 12–37、95–106 行，入队失败、重试、持久化的条件。"
+      },
+      {
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/blob/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/service/internal/graph/graph.go",
+        "path": "lanes/organization/raw/otel/0c7a74cd0a4ab1c70834c91b67942eaaa9065825/service/internal/graph/graph.go",
+        "date": "2026-11-19",
+        "detail": "service/internal/graph/graph.go 第 78–133、300–332、438–505 行，构图、双批次告警和组件启停次序。"
+      },
+      {
+        "url": "https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.165.0",
+        "path": "lanes/organization/raw/otel/release-v0.165.0.html",
+        "date": "2026-11-06",
+        "detail": "2026-11-06 v0.165.0 启动时检查 batch processor 与 exporterhelper 重复 batching；发布说明写明检查不穿越 connector 或隐藏实现的 exporter wrapper。"
+      }
+    ]
+  },
+  {
+    "id": "O04",
+    "name": "Langfuse Annotation Queues",
+    "category": "轨迹抽检与人工标注",
+    "scenario": "大量线上 trace/observation 难以逐项阅读，把选中的条目交给项目标注者形成可追查的判断。",
+    "mechanism": "队列可分配给用户；完成接口校验项目权限，仅更新项目内 PENDING 项，记录完成时间和 annotatorUserId，之后写审计事件。",
+    "human": "标注人检查选中条目并评分；主管维护入队标准、分歧仲裁和复核比例。完成标记可作为反馈输入。",
+    "org": "给人一个有限、可统计的队列，能量化积压、复核时延和意见分歧，而非要求人阅读全量 agent 日志。",
+    "limits": "该完成接口没有验证交付物是否可发布；审计写入在更新之后。部署版本、权限与抽样偏差均影响实际效果，未部署。",
+    "change": "2026-11-19 v4.83.0 支持在单条标注视图中跳转条目并对队列排序，同版增加单 key 开支限额。",
+    "insight": "例外处理要保留是谁对哪条运行记录给了什么判断；关闭队列不能代替修复或上线授权。",
+    "experiment": "盲抽成功与失败各 20 条，由两人独立标注，对比一致率、每条耗时和处理后回归用例转化率。",
+    "sources": [
+      {
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/fern/apis/server/definition/annotation-queues.yml",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/fern/apis/server/definition/annotation-queues.yml",
+        "date": "2026-11-19",
+        "detail": "annotation-queues.yml，项目对外队列、条目和分配接口契约。"
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueItemsRouter.ts",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueItemsRouter.ts",
+        "date": "2026-11-19",
+        "detail": "annotationQueueItemsRouter.ts 第 423–475 行，PENDING 条件、权限、完成者和后续审计。"
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/blob/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueAssignmentsRouter.ts",
+        "path": "lanes/organization/raw/langfuse/41c0fe3e485aaf3f6c6f107042ca09fff5242268/web/src/features/annotation-queues/server/annotationQueueAssignmentsRouter.ts",
+        "date": "2026-11-19",
+        "detail": "annotationQueueAssignmentsRouter.ts 第 69 行起，批量创建分配、跳过重复和成员查询。"
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.83.0",
+        "path": "lanes/organization/raw/langfuse/release-v4.83.0.html",
+        "date": "2026-11-19",
+        "detail": "2026-11-19 v4.83.0 支持在单条标注视图中跳转条目并对队列排序，同版增加单 key 开支限额。"
+      }
+    ]
+  },
+  {
+    "id": "O05",
+    "name": "Arize Phoenix Experiments",
+    "category": "版本化实验与轨迹评测",
+    "scenario": "修改 agent 的工具选择或策略后，要检查相同输入上输出和中间动作是否发生退化。",
+    "mechanism": "Python 客户端把实验绑定到数据集版本，按样本×重复次数展开任务；可在 run 完成后基于 trace spans 评估调用了哪一个工具。dry_run 可取小样本。",
+    "human": "领域专家写预期动作、检查评价用 rubric 和样本覆盖，研发人员比较实验后决定是否晋级。",
+    "org": "组织能把线上失败改写成带预期动作的固定样本，多版本在相同基线上回放。",
+    "limits": "官方演示是模拟工具选择；trace 中观察到工具调用不证明结果正确。没有运行 Phoenix 服务。",
+    "change": "2026-11-20 arize-phoenix v21.3.0 新增通过 CLI 赋予数据集标签，并调整 trace 查询性能；属于数据维护和查询增强。",
+    "insight": "把实际路径与可接受路径都记录下来。只判断最终答案会漏掉越过人工检查的调用。",
+    "experiment": "对同一数据集固定三个版本，每种情况重复五次，分别统计最终结果和关键调用序列；人工仲裁替代路径。",
+    "sources": [
+      {
+        "url": "https://github.com/Arize-ai/phoenix/blob/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/examples/experiments/experiment_trace_evaluator.py",
+        "path": "lanes/organization/raw/phoenix/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/examples/experiments/experiment_trace_evaluator.py",
+        "date": "2026-11-20",
+        "detail": "官方 experiment_trace_evaluator.py 描述使用 OpenTelemetry spans 与预期工具比对的完整示例。"
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/blob/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/src/phoenix/client/resources/experiments/__init__.py",
+        "path": "lanes/organization/raw/phoenix/33d17e2455307384a0a29bed33be56de266d216e/packages/phoenix-client/src/phoenix/client/resources/experiments/__init__.py",
+        "date": "2026-11-20",
+        "detail": "客户端 experiments/__init__.py 第 781–882、916–1005 行，版本、dry run、重复项、实际与预期运行数。"
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.3.0",
+        "path": "lanes/organization/raw/phoenix/release-arize-phoenix-v21.3.0.html",
+        "date": "2026-11-20",
+        "detail": "2026-11-20 arize-phoenix v21.3.0 新增通过 CLI 赋予数据集标签，并调整 trace 查询性能；属于数据维护和查询增强。"
+      }
+    ]
+  },
+  {
+    "id": "O06",
+    "name": "Promptfoo",
+    "category": "自动断言与评测汇总",
+    "scenario": "模型、提示或 harness 更新时，需要让批量样本的测试结果形成流水线可读的门槛。",
+    "mechanism": "断言可产生通过状态、得分和命名指标，按权重聚合；零权重指标可用于观测。数值型测试总阈值覆盖普通单条断言状态，非有限数值另走错误分支。",
+    "human": "业务方明确哪些错误不得由总分抵消，评测负责人维护权重、阈值和裁决样本，检查边缘行为。",
+    "org": "给跨模型回归设置一致的分数口径，也允许先观测再转为硬阻断。",
+    "limits": "总分达标可能掩盖局部缺陷；模型判分还受样本和模型版本影响。未运行此工具。",
+    "change": "2026-11-18 0.126.0 限制 derivedMetrics 字符串公式的语法与长度，部分表达式会在跑用例前失败。",
+    "insight": "用外置独立门禁处理不可补偿的硬约束，让软评分显示质量与成本权衡。",
+    "experiment": "固定 3 项断言，故意让高权重项通过、关键低权重项失败，比较总阈值和单项硬门的产出差异。",
+    "sources": [
+      {
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/site/docs/configuration/expected-outputs/index.md",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/site/docs/configuration/expected-outputs/index.md",
+        "date": "2026-11-20",
+        "detail": "expected-outputs/index.md 的断言、聚合和阈值配置语义。"
+      },
+      {
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/assertions/assertionsResult.ts",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/assertions/assertionsResult.ts",
+        "date": "2026-11-20",
+        "detail": "assertionsResult.ts 第 250–329、407–444 行，权重、零权重指标与数值型阈值及错误处理。"
+      },
+      {
+        "url": "https://github.com/promptfoo/promptfoo/blob/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/evaluator/derivedMetricFormula.ts",
+        "path": "lanes/organization/raw/promptfoo/a0ab170dd9c2cfe419a482d073ae9cf0848a7114/src/evaluator/derivedMetricFormula.ts",
+        "date": "2026-11-20",
+        "detail": "derivedMetricFormula.ts 的词法/语法解析和表达式约束。"
+      },
+      {
+        "url": "https://github.com/promptfoo/promptfoo/releases/tag/0.126.0",
+        "path": "lanes/organization/raw/promptfoo/release-0.126.0.html",
+        "date": "2026-11-18",
+        "detail": "2026-11-18 0.126.0 限制 derivedMetrics 字符串公式的语法与长度，部分表达式会在跑用例前失败。"
+      }
+    ]
+  },
+  {
+    "id": "O07",
+    "name": "OpenFeature flagd",
+    "category": "按稳定主体灰度启用能力",
+    "scenario": "只希望一部分仓库或团队使用新版审批策略，且同一实验对象重复请求应分到同一组。",
+    "mechanism": "fractional evaluator 对显式分桶输入编码，缺省使用 flagKey 和 targetingKey，对确定性 CBOR 求 Murmur3 哈希并映射到加权区间。缺省分桶键为空会报错。",
+    "human": "产品和服务负责人选择分桶单位、比例及退出条件。调用端必须定义求值异常时的安全默认值。",
+    "org": "同一仓库或团队可成为稳定的暴露单元，让分阶段发布和对照组更易复现。",
+    "limits": "工具仅执行分配规则；分组键选择、跨团队干扰和发布效果判断归试验设计负责。未部署。",
+    "change": "2026-11-17 flagd v0.19.0 将端口参数限定为有效数字 uint16，属于破坏性配置校验变更，非分桶功能首发。",
+    "insight": "把开关作用对象从个人请求改成团队或仓库，匹配协作流程真正的影响范围。",
+    "experiment": "固定 100 个仓库 ID 运行两轮，比较相同配置的分组一致性；改变 key 和比例测迁移人数，并测试缺键错误路径。",
+    "sources": [
+      {
+        "url": "https://github.com/open-feature/flagd/blob/11037220611eab982261d2348b13147b4450b562/docs/reference/custom-operations/fractional-operation.md",
+        "path": "lanes/organization/raw/flagd/11037220611eab982261d2348b13147b4450b562/docs/reference/custom-operations/fractional-operation.md",
+        "date": "2026-11-17",
+        "detail": "官方 fractional-operation 参考说明的参数、权重和分桶对象。"
+      },
+      {
+        "url": "https://github.com/open-feature/flagd/blob/11037220611eab982261d2348b13147b4450b562/core/pkg/evaluator/fractional.go",
+        "path": "lanes/organization/raw/flagd/11037220611eab982261d2348b13147b4450b562/core/pkg/evaluator/fractional.go",
+        "date": "2026-11-17",
+        "detail": "fractional.go 第 51–63、138–181、230–280 行，编码、缺键错误与哈希分桶逻辑。"
+      },
+      {
+        "url": "https://github.com/open-feature/flagd/releases/tag/flagd%2Fv0.19.0",
+        "path": "lanes/organization/raw/flagd/release-flagd-v0.19.0.html",
+        "date": "2026-11-17",
+        "detail": "2026-11-17 flagd v0.19.0 将端口参数限定为有效数字 uint16，属于破坏性配置校验变更，非分桶功能首发。"
+      }
+    ]
+  },
+  {
+    "id": "O08",
+    "name": "OpenFGA",
+    "category": "面向业务对象的授权",
+    "scenario": "规划器想对某项目或工单执行动作，执行器需要在动作发生时查主体是否具备特定关系。",
+    "mechanism": "服务端 Check 把模型、用户—关系—对象 tuple、请求上下文、contextual tuples 及一致性选项交给授权解析器；实现有可选缓存/读取限制和对部分非终止错误的后备 checker。",
+    "human": "资源负责人维护授权模型与关系，业务执行器必须把每个受保护动作接到授权查询并处理错误。",
+    "org": "可为多个执行器共用一套项目和服务关系，适合将 agent 的委托权限同资源归属连接。",
+    "limits": "权限允许只表明主体可以做动作，不证明这次变更已得到具体业务批准。缓存与撤销延迟要单测。未部署。",
+    "change": "2026-09-20 v1.21.0 把 Dynamic Conditions 作为实验特性发布。Atom 显示 09-28 更新，个别发布页确认发布时间为 09-20。",
+    "insight": "将有权操作与此次运行获准操作分别记录，并给审批约束绑定运行标识及有效期。",
+    "experiment": "用同一任务在撤销前后、不同一致性选项和重试后各发 Check，记录结果和时间；同时验证业务端确实拒绝失败结果。",
+    "sources": [
+      {
+        "url": "https://github.com/openfga/openfga/blob/798149843737e264e64b8660baadb946528c02f0/docs/check/README.md",
+        "path": "lanes/organization/raw/openfga/798149843737e264e64b8660baadb946528c02f0/docs/check/README.md",
+        "date": "2026-11-16",
+        "detail": "官方 Check 设计文档说明如何处理关系与查询。"
+      },
+      {
+        "url": "https://github.com/openfga/openfga/blob/798149843737e264e64b8660baadb946528c02f0/pkg/server/commands/check.go",
+        "path": "lanes/organization/raw/openfga/798149843737e264e64b8660baadb946528c02f0/pkg/server/commands/check.go",
+        "date": "2026-11-16",
+        "detail": "pkg/server/commands/check.go 第 182–219、259–266、324–340 行，请求传递、解析与回退的边界。"
+      },
+      {
+        "url": "https://github.com/openfga/openfga/releases/tag/v1.21.0",
+        "path": "lanes/organization/raw/openfga/release-v1.21.0.html",
+        "date": "2026-09-20",
+        "detail": "2026-09-20 v1.21.0 把 Dynamic Conditions 作为实验特性发布。Atom 显示 09-28 更新，个别发布页确认发布时间为 09-20。"
+      }
+    ]
+  },
+  {
+    "id": "O09",
+    "name": "Prometheus Alertmanager",
+    "category": "例外路由与告警抑制",
+    "scenario": "一个上游故障令几十次自动执行同时失败，值班人员需要看到能行动的一条根因告警。",
+    "mechanism": "标签按路由树递归匹配，子路由的 continue 决定是否继续匹配兄弟节点。抑制规则要求源/目标规则匹配且指定标签相等，并处理同时匹配源目标的自抑制情况。",
+    "human": "值班人员配置接收者、分组、静默和抑制范围，复核关键告警被静默的时长及原因。",
+    "org": "把批量失败汇总到负责该服务的队伍，减少重复打断，同时保留根因与下游告警关系。",
+    "limits": "发送少不等于事故少。范围过宽、标签错误会降低可见性；工具本身不回滚部署。未部署。",
+    "change": "2026-09-17 v0.34.1 修复部分抑制场景下告警被错误解除静默的问题，涉及 #5542、#5449、#5559。",
+    "insight": "把值班中断数与未送达关键事件同时记账，单纯追求压低告警总数可能掩盖失败。",
+    "experiment": "模拟同租户根因、三个派生失败和另一个租户同时失败，检查后者仍通知；恢复根因后验证持续失败能再次通知。",
+    "sources": [
+      {
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/docs/alertmanager.md",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/docs/alertmanager.md",
+        "date": "2026-11-19",
+        "detail": "docs/alertmanager.md，去重、分组、路由、静默和抑制。"
+      },
+      {
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/inhibit/inhibit.go",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/inhibit/inhibit.go",
+        "date": "2026-11-19",
+        "detail": "inhibit.go 第 190–233、295 行后，匹配条件、equal 标签和双侧匹配。"
+      },
+      {
+        "url": "https://github.com/prometheus/alertmanager/blob/eb31108b02fcd9d8d277172f6f6e91856a3d0441/dispatch/route.go",
+        "path": "lanes/organization/raw/alertmanager/eb31108b02fcd9d8d277172f6f6e91856a3d0441/dispatch/route.go",
+        "date": "2026-11-19",
+        "detail": "dispatch/route.go 第 148–177 行，路由递归、continue 与父级回退。"
+      },
+      {
+        "url": "https://github.com/prometheus/alertmanager/releases/tag/v0.34.1",
+        "path": "lanes/organization/raw/alertmanager/release-v0.34.1.html",
+        "date": "2026-09-17",
+        "detail": "2026-09-17 v0.34.1 修复部分抑制场景下告警被错误解除静默的问题，涉及 #5542、#5449、#5559。"
+      }
+    ]
+  },
+  {
+    "id": "O10",
+    "name": "Grafana k6",
+    "category": "性能门槛与有条件中止",
+    "scenario": "在自动交付链中验证性能/SLO 门槛，失败时发出可以被流水线消费的退出码。",
+    "mechanism": "Go 阈值引擎对指标聚合值应用比较运算；没有聚合样本时该轮会跳过并返回通过。abortOnFail 和延迟参数控制何时提前中止。",
+    "human": "服务 owner 设定业务指标、足够样本量和中止条件。异常先核对测试流量是否到达目标，再对服务作判断。",
+    "org": "为多团队提供可重用的性能验收程序，机器可以自动阻断失败的候选版本。",
+    "limits": "本机仅验证 Windows CLI 合成 Rate，无网络请求；没有测真实服务延迟、生产负载或端到端交付。",
+    "change": "2026-11-12 v2.4.0 新增实验性运行层级 tracing；browser_data_received 改用编码传输大小，官方要求复核既有阈值。",
+    "insight": "每个质量门要同时检查可测性与结果，尤其要把样本不足和指标达标分开。",
+    "experiment": "已实测 v2.4.0 同一阈值 rate>=0.75、同为四次迭代，4/4 成功时退出 0，1/4 成功时退出 99。原始命令、输入与输出见本地 runtime/k6.json。",
+    "sources": [
+      {
+        "url": "https://github.com/grafana/k6/blob/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/examples/thresholds.js",
+        "path": "lanes/organization/raw/k6/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/examples/thresholds.js",
+        "date": "2026-11-18",
+        "detail": "官方 examples/thresholds.js 的阈值写法。"
+      },
+      {
+        "url": "https://github.com/grafana/k6/blob/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/metrics/thresholds.go",
+        "path": "lanes/organization/raw/k6/0110662a25cdb14690d7ba5454d6b6e718d8f9d5/metrics/thresholds.go",
+        "date": "2026-11-18",
+        "detail": "metrics/thresholds.go 第 40–82、145–168、170–214 行，缺样本路径、比较和延迟中止。"
+      },
+      {
+        "url": "https://github.com/grafana/k6/releases/tag/v2.4.0",
+        "path": "lanes/organization/raw/k6/release-v2.4.0.html",
+        "date": "2026-11-12",
+        "detail": "2026-11-12 v2.4.0 新增实验性运行层级 tracing；browser_data_received 改用编码传输大小，官方要求复核既有阈值。"
+      },
+      {
+        "url": "https://github.com/grafana/k6/releases/download/v2.4.0/k6-v2.4.0-windows-amd64.zip",
+        "path": "lanes/organization/runtime/k6.json",
+        "date": "2026-11-20",
+        "detail": "本地 Windows 实验记录，含 CLI 输入、标准输出、标准错误、退出码以及官方压缩包 SHA-256。"
+      }
+    ]
+  },
+  {
+    "id": "O11",
+    "name": "OpenCost",
+    "category": "Kubernetes 工作负载成本分摊",
+    "scenario": "自动运行产生大量测试与后台任务，需要按命名空间/标签归集资源成本，识别空闲容量和无法归属的用量。",
+    "mechanism": "Allocation 按 CPU、GPU、RAM、存储与网络等成本算总额，AggregateBy 依据属性、过滤器和 idle/shared 分摊选项重组；无有效归属值可被标成 __unallocated__。",
+    "human": "FinOps 与平台负责人约定共享成本、空闲成本如何分摊，并决定哪些失败或闲置任务需要降配或暂停。",
+    "org": "将执行平台消耗映射到业务团队，再与工作单号、模型账单和最终采纳结果外部拼接。",
+    "limits": "Kubernetes 分摊不能自动得到 SaaS 模型 token 账单、人的审阅时间或交付价值。缺失标签会改写团队分母。未部署。",
+    "change": "2026-10-13 pricing/public v1.0.9 标签为价格模块增加 GBP、EUR、JPY。此为定价子模块变化；主服务版本另计。",
+    "insight": "每次尝试成本和每次被验收交付成本必须分别报告，未归集成本单列，避免让失败重试变成无主开销。",
+    "experiment": "同一工作流重复运行五次，只验收其中一次。比对共享成本分摊前后的每次尝试成本、每次验收成本和未归集成本。",
+    "sources": [
+      {
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/README.md",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/README.md",
+        "date": "2026-11-19",
+        "detail": "README.md 描述 Kubernetes 成本分配、可观测和 OpenCost 规范。"
+      },
+      {
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/core/pkg/opencost/allocation.go",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/core/pkg/opencost/allocation.go",
+        "date": "2026-11-19",
+        "detail": "core/pkg/opencost/allocation.go 第 925–995、1531–1563、1623、1790、1945 行，成本组件、分摊和未分配项。"
+      },
+      {
+        "url": "https://github.com/opencost/opencost/blob/266407979a7fb3065322f0f089e287e7ad62f76b/pkg/costmodel/allocation.go",
+        "path": "lanes/organization/raw/opencost/266407979a7fb3065322f0f089e287e7ad62f76b/pkg/costmodel/allocation.go",
+        "date": "2026-11-19",
+        "detail": "pkg/costmodel/allocation.go，计算资源分配随时间窗聚合的入口。"
+      },
+      {
+        "url": "https://github.com/opencost/opencost/releases/tag/modules%2Fpricing%2Fpublic%2Fv1.0.9",
+        "path": "lanes/organization/raw/opencost/release-modules-pricing-public-v1.0.9.html",
+        "date": "2026-10-13",
+        "detail": "2026-10-13 pricing/public v1.0.9 标签为价格模块增加 GBP、EUR、JPY。此为定价子模块变化；主服务版本另计。"
+      }
+    ]
+  }
+]

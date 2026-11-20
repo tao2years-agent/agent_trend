@@ -1,0 +1,909 @@
+                                            “My productivity is boosted, but ...” Demystifying
+                                              Users’ Perception on AI Coding Assistants
+                                                                  Yunbo Lyu† , Zhou Yang‡∗ , Jieke Shi† , Jianming Chang§ , Yue Liu† , David Lo†
+                                                                      † Singapore Management University ‡ University of Alberta § Southeast University
+
+                                                     Email: {yunbolyu, jiekeshi, liuyue, davidlo}@smu.edu.sg, zy25@ualberta.ca, jianmingchang@seu.edu.cn
+
+                                            Abstract—This paper aims to explore fundamental questions                             Recent studies explore developers’ perceptions through in-
+                                         in the era when AI coding assistants like GitHub Copilot are                          terviews [7]–[9], surveys [5], [10], and user studies [1], [11],
+                                         widely adopted: what do developers truly value and criticize                          [12]. However, these studies face limitations, such as small or
+                                         in AI coding assistants, and what does this reveal about their
+                                         needs and expectations in real-world software development? Unlike                     restricted samples, high costs [13], predefined questions, or a
+                                         previous studies that conduct observational research in controlled                    narrow focus on only a few AI coding assistants [14].
+arXiv:2508.12285v1 [cs.SE] 17 Aug 2025
+
+
+
+
+                                         and simulated environments, we analyze extensive, first-hand                             Meanwhile, online resources such as app reviews have
+                                         user reviews of AI coding assistants, which capture developers’                       proven effective in bridging the gap between developers and
+                                         authentic perspectives and experiences drawn directly from their
+                                         actual day-to-day work contexts. We identify 1,085 AI coding
+                                                                                                                               users, as they often involve large user bases and extensive
+                                         assistants from the Visual Studio Code Marketplace. Although                          feedback [15]–[17]. Yet, few studies have mined reviews for
+                                         they only account for 1.64% of all extensions, we observe a surge                     AI coding assistants [18], [19], and those that do face three
+                                         in these assistants: over 90% of them are released within the past                    notable limitations: (1) They focus exclusively on GitHub
+                                         two years. We then manually analyze the user reviews sampled                          Copilot, overlooking the broader ecosystem of AI coding assis-
+                                         from 32 AI coding assistants that have sufficient installations and
+                                         reviews to construct a comprehensive taxonomy of user concerns
+                                                                                                                               tants and missing opportunities for cross-tool comparisons. (2)
+                                         and feedback about these assistants. We manually annotate each                        Existing taxonomy are built from sources like GitHub Issues
+                                         review’s attitude when mentioning certain aspects of coding                           and Stack Overflow, which highlight technical problems raised
+                                         assistants, yielding nuanced insights into user satisfaction and dis-                 by advanced users [20]. This limits insight into subjective ex-
+                                         satisfaction regarding specific features, concerns, and overall tool                  periences and positive feedback, failing to capture what users
+                                         performance. Built on top of the findings—including how users
+                                         demand not just intelligent suggestions but also context-aware,
+                                                                                                                               value—not just what they find problematic. (3) Novice or non-
+                                         customizable, and resource-efficient interactions—we propose five                     technical users, who may lack the skills or motivation to create
+                                         practical implications and suggestions to guide the enhancement                       GitHub issues, are more likely to leave reviews on the Visual
+                                         of AI coding assistants that satisfy user needs.                                      Studio Code Marketplace, where feedback is easier to submit.
+                                            Index Terms—AI Assistant, IDE, User Experience, Program-                           These overlooked voices are essential for understanding real-
+                                         ming, Human-Computer Interaction, Human Factors
+                                                                                                                               world perceptions of AI coding assistants [20], [21].
+                                                                                                                                  An unprecedented opportunity exists to address this research
+                                                                    I. I NTRODUCTION
+                                                                                                                               gap: thousands of AI coding assistants are available in the
+                                            AI coding assistants,1 such as GitHub Copilot, have revolu-                        Visual Studio Code (VS Code) marketplace, accompanied by
+                                         tionized software development practices [1]. These assistants                         extensive user feedback. These real-world reviews provide a
+                                         leverage Large Language Models (LLMs) to provide code                                 rich source of information from developers all over the world,
+                                         suggestions, ranging from token-level to block-level code com-                        offering insights into their needs and expectations. As the most
+                                         pletion, bug fixing, testing, and code explanation—covering                           widely used IDE globally—adopted by 74% of developers
+                                         nearly every aspect of software development [2]–[4]. Their                            according to Stack Overflow’s 2024 survey [22]—VS Code
+                                         ability to accelerate software development and reduce work-                           hosts a diverse range of AI coding assistants [23]. This rich
+                                         loads has led to widespread adoption [5], [6].                                        dataset enables comprehensive analysis of user perceptions
+                                            Although AI coding assistants have seen rapid growth and                           across multiple assistants, offering insights at scale and pro-
+                                         widespread adoption, recent studies indicate that developers                          viding robust validation and extension of prior findings.
+                                         may spend over 50% of their coding time verifying AI-                                    We first collect 1,085 AI coding assistants identified among
+                                         generated suggestions, which can increase cognitive load and                          66,053 extensions in the VS Code marketplace [24] through a
+                                         introduce additional validation effort [1]. This highlights the                       combination of manual and automatic labeling. We employ
+                                         importance of understanding software developers’ perceptions                          GPT-4o to assist in the labeling process and validate its
+                                         and needs. Such understanding enables assistant developers to                         performance on a statistically significant sample, achieving
+                                         better align their tools with actual user requirements and shape                      both precision and recall above 96%. Our analysis reveals that
+                                         the future of software development more effectively.                                  over 90% of AI extensions were released in 2023 and 2024,
+                                                                                                                               highlighting a recent surge in their adoption. Additionally, we
+                                           * Corresponding author.                                                             find that a small number of AI extensions dominate the market,
+                                           1 In this paper, the terms AI coding assistants, in-IDE AI coding assistants,
+                                         assistant, and AI extensions are used interchangeably, referring to AI-powered        with the top 10 installed extensions accounting for 86% of total
+                                         extensions in the IDE, such as GitHub Copilot.                                        installs. Moreover, we find that AI coding assistants receive
+
+
+
+                                                                                                                           1
+more engagement, as AI extensions receive significantly more            to statement-level), chat interfaces, and the emerging agent
+feedback and have higher average installs.                              mode, which can execute terminal commands [28].
+   The first goal of this paper is to construct a taxonomy                 Researchers have employed diverse methods to study de-
+of the aspects users discuss regarding AI coding assistants.            velopers’ perceptions of AI coding assistants, including inter-
+Such a taxonomy helps developers understand what users                  views, surveys, user studies, and mining online content [29].
+care about at a high level and which specific characteristics           Zhou et al. [19] mine 476 GitHub issues, 706 discussions, and
+of AI extensions they are particularly concerned with. It               142 Stack Overflow posts to build a taxonomy of problems
+also supports improvements in development, maintenance,                 developers encounter with GitHub Copilot. Zhang et al. [18]
+and testing by highlighting key focus areas. To ensure a                analyze similar sources to identify developer practices, chal-
+systematic taxonomy construction process, we follow best                lenges, and expectations.
+practices for app review analysis [25]. We begin by sampling               Survey and interview studies are common for capturing
+361 user comments—statistically representative of the 5,908             user experiences. GitHub’s industry report [30] surveys 500
+reviews collected from 32 AI extensions. We do not consider             developers on the impact of AI assistants. Liang et al. [5] and
+extensions with insufficient installations or reviews. During           Sergeyuk et al. [2] survey 410 and 481 developers respectively
+the coding process, we adopt a bottom-up merging approach               to examine usage patterns, avoidance reasons, and desired
+following prior work [26]. We first assign one or more labels           improvements. Wang et al. [10] combine interviews (15 profes-
+to each comment, then merge identical labels, group them                sionals) and a survey (599 developers) to assess expectations
+into subcategories, and finally organize them into top-level            around code completion. McNutt et al. [7] interview 15 data
+categories. Instead of open card sorting, we use a hybrid               scientists on AI assistant design for notebooks, while Ziegler et
+card sorting [27], as the top-level categories are informed by          al. [31] link Copilot usage metrics to self-reported productivity.
+established literature in the mature field of app review mining.
+In our pilot coding of 30 reviews, we initially generated 11               User studies provide insights into interactions. Vaithilingam
+fragmented top-level categories. The predefined structure helps         et al. [11] study 24 participants’ usage of GitHub Copilot.
+ensure conciseness, with pilot labels naturally aligning with the       Barke et al. [12] observe 20 developers and identify “acceler-
+chosen dimensions. The final taxonomy includes 8 top-level              ation” and “exploration” modes. Mozannar et al. [1] track 21
+categories (functionality, usability, dependability, supportabil-       participants and identify 12 Copilot-related activities. Shah et
+ity, system performance, general experience, comparison, and            al. [32] study student use of Copilot’s chat in large codebases
+pricing), 16 subcategories, and 62 distinct labels.                     and propose the “one-shot prompting” interaction pattern.
+   We analyze user feedback on AI coding assistants and                    Our study analyzes user reviews from the VS Code Mar-
+identify six key findings. Users value accurate suggestions             ketplace to construct a comprehensive taxonomy of topics
+but often criticize redundant, incomplete, or buggy outputs.            users discuss. Compared to the existing taxonomy by Zhou
+While many report productivity gains, novices are positive              et al. [19], which focuses largely on dependability issues, our
+than experienced developers. Context awareness is a major               taxonomy not only encompasses their identified concerns but
+issue: assistants understand code well but often fail to retain         also offers broader coverage. Specifically, we uncover user-
+or fetch relevant context. Usability also matters—complex               valued aspects and problems that their taxonomy overlooks.
+onboarding and disruptive interfaces frustrate users. Response          Notably, three of our top-level categories—general experience,
+time is generally acceptable, but resource consumption is               pricing, and comparison—capture user sentiments that are
+a common complaint. Finally, pricing and ethical concerns               absent from their framework. In addition, our findings verify
+affect adoption, with users favoring free tools and questioning         certain contradictions in the current literature and challenge
+monetization of open-source data.                                       some existing conclusions, as discussed in Section V.
+   The contributions of this paper are: (1) Identifying 1,085
+AI-related extensions from 66,053 VS Code extensions us-
+ing a hybrid labeling method. (2) Constructing a three-level            B. Mining App Reviews
+taxonomy from 361 user reviews, with 8 categories, 16 sub-
+categories, and 62 labels. (3) Performing sentiment analysis               App stores have become vital platforms for software dis-
+to uncover six key findings on user preferences and concerns,           tribution, shaping engineering practices by connecting de-
+leading to five practical implications. (4) Releasing all data,         velopers and users [17], [25]. While prior research has ex-
+annotation tools, and results in the replication package.               tensively analyzed app reviews through information extrac-
+                                                                        tion [33], classification [34], sentiment analysis [35], and
+                     II. R ELATED W ORK
+                                                                        clustering [15]. Classification and clustering are particularly
+A. Studies on User Perceptions of AI Coding Assistants                  relevant to our study. Classification assigns reviews to pre-
+   AI coding assistants are IDE extensions that leverage large          defined categories—such as user intentions [36] or functional
+language models (LLMs) to support a range of development                versus non-functional requirements [37]—while clustering un-
+tasks, including code completion, bug fixing, testing, and code         covers themes or shared app characteristics without predefined
+explanation [2]. These assistants primarily operate through             labels [15], [35]. Both manual [15] and automated [34] ap-
+three interaction modes: code completion (ranging from token-           proaches have been widely adopted.
+
+
+
+                                                                    2
+        III. C OLLECTING AI C ODING A SSISTANTS                           After aggregating results from the four collection methods
+                                                                       and removing duplicates, we identified a final set of 1,962
+A. VS Code AI Extension Collection                                     potential AI extensions. The individual contributions were as
+                                                                       follows: 75 from the official search, 345 from categories, 559
+   We begin by defining what constitutes an AI extension in            from tags, and 414 from descriptions. Searching only through
+the VS Code Extension Marketplace [24]. An extension is                the official search may not identify all AI extensions.
+considered an AI extension if it includes at least one AI com-            Hybrid Labeling. We first randomly sampled 322 exten-
+ponent that assists its functionality. For instance, the GitHub        sions from the pool of candidate AI coding assistants. The
+Copilot Extension [38] is considered an AI extension, as it            sample size is calculated using a sample-size calculator [41],
+leverages the AI model to provide intelligent code completions         based on a 95% confidence level and a 5% margin of error,
+or suggestions while developers code. In contrast, we do               a setting commonly adopted in previous work [42]–[44]. Two
+not classify Azure Machine Learning as an AI extension, as             authors independently label the sampled extensions as either
+it serves primarily as a tool for developing AI—supporting             confirmed AI extensions or not, based on predefined criteria.
+the building, training, and deployment of machine learning             Each extension’s description is reviewed, and documentation
+models—rather than incorporating AI into its functionality.            is consulted when necessary. The labeling achieves a Cohen’s
+   As shown in the top-left of Fig. 1, we follow a two-step            Kappa coefficient of 0.92 [45], indicating a high level of
+process to collect AI extensions from the VS Code Market-              agreement [46]. Discrepancies are resolved through discussion.
+place: (1) collecting AI extensions and (2) hybrid labeling.           In total, among the 322 sampled extensions, 195 are confirmed
+We collect all potential AI extensions during the first step,          as AI extensions, while 127 are not.
+and then we confirm the AI extensions in the second step.                 To scale the labeling process, we explore the capabilities
+   AI Extension Collection. We collect metadata for 66,053             of GPT-4o. We input the extension name and description into
+extensions available on the Microsoft VS Code Market-                  GPT-4o and ask it to determine whether the extension qualifies
+place [24] as of November 28, 2024. To identify AI-related             as an AI extension. We experiment with various prompting
+extensions, we examine several sources of information, includ-         strategies. On the manually labeled set, we find that a zero-
+ing metadata (tags and categories) and extension descriptions.         shot learning approach provides good performance, achieving
+For example, the GitHub Copilot Extension [38] includes                a precision of 96.37% and recall of 96.88%. Manual inspection
+tags such as “ai” and “openai,” and belongs to the AI cat-             of misclassifications shows that most errors stem from vague
+egory. Its description further states: “GitHub Copilot provides        or insufficient descriptions; none involve highly installed or
+autocomplete-style suggestions from an AI pair programmer              highly rated extensions. We put the prompt used in this study
+as you code,” which strongly suggests the presence of AI               in the replication package due to the limited space. Using the
+capabilities. In addition to these sources, the VS Code Mar-           final prompt and setting the temperature to 0 for deterministic
+ketplace provides an official search feature [39], which returns       output, we label the remaining potential extensions with GPT-
+extensions related to the keyword “AI.”                                4o. This results in 1,085 confirmed AI extensions—55.3% of
+   To ensure comprehensive coverage, we adopt a multi-                 the initial candidate set—representing 1.64% of all extensions
+faceted approach to collect potential AI extensions using the          on the VS Code Marketplace.
+following four methods: (1) Official Search. We use the official
+Marketplace search feature with the keyword “AI”, resulting            B. Dataset Overview
+in 1,623 candidate extensions. (2) Category-Based Selection.              Despite the small share of AI extensions (only 1.64% of
+Each extension in the Marketplace includes predefined cat-             all extensions), we notice that AI extensions receive more
+egories in its metadata. There are 20 categories in total.             attention, with an average of 124K installs, double that of non-
+Two authors review and select the categories ‘AI’, ‘Chat’,             AI extensions (57K). Additionally, AI extensions receive sig-
+and ‘Machine Learning’ as indicative of AI functionality.              nificantly more feedback, with an average of 7.48 ratings per
+This approach yields 740 additional candidate extensions. (3)          extension compared to 1.76 for non-AI extensions (p < 0.05,
+Tag-Based Selection. Tags offer finer-grained metadata about           Mann-Whitney U test [47]). Both AI and non-AI extensions
+extensions. We find a total of 49,733 unique tags across all           show similar inequality in installs and ratings, as indicated
+extensions. Focusing on the tags that appeared more than               by high Gini coefficients [48] (0.986 vs. 0.982 for installs;
+100 times, two authors select nine tags likely to indicate             0.931 vs. 0.873 for ratings). The Gini coefficient quantifies
+AI content: ai, gpt, chatgpt, openai, copilot, autocomplete,           statistical dispersion, with 0 indicating perfect equality and 1
+intellisense, deep learning, and machine learning. Extensions          representing maximal inequality. However, attention with AI
+containing any of these tags contribute 1,052 entries to our           extensions is even more concentrated: the top 10 most-installed
+candidate pool. (4) Descriptions Keyword Matching. We down-            AI extensions account for 86% of total installs, and the top
+load the descriptions of all extensions and apply keyword              30 most-rated receive 75% of all user ratings. This indicates
+matching using a list of 55 AI-related terms, adapted and              that a small number of AI extensions dominate the market.
+refined from prior work [23], [40] The full list is available             AI extensions have seen rapid growth in recent years, with
+in the replication package. Matching these keywords against            90.2% released between 2022 and 2024. Nearly half appeared
+extension descriptions results in 715 candidates.                      in 2023 (44.6%) and 2024 (45.6%), highlighting their recent
+
+
+
+                                                                   3
+                      (a) AI Extension Collection                              Dataset Collection                                                Category-Level
+                                 Label                          (b) Hybrid Labeling                      Functionality          Performance         Other
+                                                                                                                                                   Category
+                              Categories
+                              Keyword                                                                                                         Subcategory-Level
+                                                                                                           Context
+                               Search                                                                     Awareness
+                               Official            Potential AI                                                                                   Other
+                               Search            Coding Assistant                AI Coding Assistant     Task Support                          Subcategory
+
+                      (2) Select reviews
+                                                                               Manual Analysis          Output Quality
+                                                                                 (4) Taxonomy
+                                                                                                         Accurate          Buggy                       Label-Level
+                                                                                                                                        Resource
+                                                                                                        Suggestion       Suggestion
+                                                                                                                                       Consumption        Other
+     (1) Formulate the                     Initial Discussion      Labelling
+                                                                                                       Redundant          Helpful                         Label
+     analysis objective                          (3) Coding Process                                    Suggestion        Suggestion    Response Time
+
+
+Fig. 1: Our five-step process for analyzing reviews from the VS Code marketplace: (1) formulate analysis objective, (2) select
+reviews for analysis, (3) specify unit of analysis, (4) perform coding process, and (5) analyze dataset.
+
+
+surge. In contrast, non-AI extensions have followed a more                                 install count. In total, we analyze 32 AI extensions, balancing
+gradual distribution, with moderate growth in recent years                                 popularity (install count) and user engagement (number of
+(17.8% in 2023, 18.2% in 2024) and a significant portion                                   reviews) to support a comprehensive qualitative study.
+released in earlier years. This contrast underscores the sudden                               Select reviews for analysis. We analyze user feedback to
+rise of AI-powered extensions, whereas non-AI extensions                                   identify the topics users discuss regarding AI coding assistants.
+have evolved at a steadier pace over time.                                                 From a total of 5,908 reviews across 32 AI extensions, we
+                                                                                           exclude 649 reviews that contain fewer than 10 words, as such
+                          IV. S TUDY D ESIGN
+                                                                                           short reviews are unlikely to provide meaningful insights. This
+A. Research Questions                                                                      results in 5,259 reviews. Given the large volume, analyzing all
+   We aim to understand user perceptions of AI coding assis-                               5,259 reviews is impractical. Therefore, we randomly sample
+tants by address the following research questions:                                         361 reviews, ensuring a 95% confidence level with a 5%
+• RQ1. What do users discuss about AI coding assistants?
+                                                                                           margin of error. This approach is consistent with prior stud-
+• RQ2. What aspects of AI coding assistants do users care
+                                                                                           ies [42], [44]. Feedback in all languages is included to capture
+   about, appreciate, and dislike?                                                         diverse perspectives (as we discussed in Section V, users
+                                                                                           provide region- or country-specific comments), and translate
+   RQ1 seeks to identify and categorize the main topics users
+                                                                                           non-English reviews into English using Google Translate.
+discuss about AI coding assistants. RQ2 focuses on under-
+                                                                                              Specify unit of analysis. We use the individual review as the
+standing user preferences, including what aspects of AI coding
+                                                                                           unit of analysis. Each review serves as a standalone piece of
+assistants they care about, appreciate, or dislike. To build the
+                                                                                           feedback that conveys a complete user experience, allowing
+taxonomy and systematically understand user preferences, we
+                                                                                           for consistent manual interpretation and coding.
+                                       ˛
+follow the process suggested by Dabrowski         et al. [25] for
+analyzing app reviews in software engineering. The process
+                                                                                           C. Coding Process
+consists of the following steps, as illustrated in the lower-left
+of Fig.1: (1) formulate the analysis objective; (2) select reviews                            We structure the coding process in two stages: an initial
+for analysis; (3) specify the unit of analysis; (4) perform the                            discussion to establish coding principles, followed by iterative
+coding process; and (5) analyze the dataset.                                               coding to develop and refine the taxonomy.
+                                                                                              Initial discussion. Before initiating substantive coding, four
+B. Research Object                                                                         participants-three PhD candidates and one senior researcher
+   Formulate the analysis objective. To ensure the extraction                              with expertise in SE and AI-jointly reviewed a sample of
+of meaningful insights, we focus on a strategically selected                               30 user reviews drawn from the full set of 361. Through
+subset of AI extensions rather than the full set collected in                              discussion, we establish four guiding principles: (1) Multi-
+Section III. Specifically, we target two types of AI extensions                            label annotation: A single review often addresses multiple
+with broad user reach and engagement: (1) those with the                                   independent themes—for instance, praising an assistant’s help-
+highest number of installs, and (2) those with the highest                                 ful suggestions while criticizing its resource consumption.
+number of user reviews. For the first criterion, we select the                             Therefore, we allow multiple labels per review when separate
+30 most-installed AI extensions, which collectively account                                topics are discussed. (2) Three-level taxonomy: A two-level
+for 95.3% of total installs and 68.5% of all user reviews. For                             hierarchy (category–leaf node), as used in prior work [19],
+the second, we include all AI extensions with more than 100                                proves insufficient for capturing the content observed in our
+user reviews, as they demonstrate high user engagement. This                               pilot sample—too many leaf nodes fall under a single category,
+adds two additional extensions not included in the top 30 by                               resulting in overly broad themes. We therefore adopt a three-
+
+
+
+                                                                                       4
+level taxonomy (category–subcategory–leaf node) to better                structured across 16 subcategories and 8 top-level categories.
+represent topic granularity, in line with prior research [26].           Note: In the later content, “label” refers to the leaf nodes.
+   (3) Bottom-up merging process: We adopt a bottom-up
+method to construct the taxonomy similar to prior work [26].             D. Sentiment Analysis
+In each round, two annotators independently assign one or                   A single review may express multiple sentiments—for ex-
+more labels to each review. They then meet to reconcile any              ample, a user may praise helpful suggestions but criticize high
+disagreements and consolidate semantically similar labels into           memory consumption. Therefore, instead of assigning one
+unified expressions, which we refer to as leaf nodes. These leaf         sentiment per review, we analyze sentiment at the leaf node
+nodes are initially grouped directly under top-level categories,         level. Although leaf nodes are finalized through bottom-up
+forming a category–leaf node structure. A subcategory layer is           consolidation, sentiment is annotated when individual labels
+introduced only when a category contains a sufficiently diverse          are first applied. Each label is marked as like, dislike, or neutral
+set of leaf nodes—typically more than five—resulting in a                (including feature requests or emotionally neutral mentions).
+three-level structure (category–subcategory–leaf node).                  In the first six rounds, two annotators jointly labeled sentiment
+   (4) Hybrid card sorting: We adopt a hybrid card-sorting               during coding. In the final phase (17% of reviews), sentiment
+approach to provide an initial structure while retaining flexi-          was annotated independently. We report inter-rater agreement
+bility for refinement. Specifically, we predefine five top-level         only for this phase, as earlier rounds involved evolving labels
+categories—Functionality, Usability, Dependability, Support-             and collaborative decisions. Agreement for the final phase is
+ability, and Performance—based on established taxonomies                 K = 0.943, indicating high consistency [46].
+from the app review literature [37], [49]. This choice is
+motivated by two considerations. First, app review mining is a              V. C ATEGORIZE DISCUSSION OF CODING ASSISTANTS
+mature field, and its taxonomies are derived from large-scale
+datasets covering diverse software types, offering generalizable            In this section, we present the taxonomy derived from
+top-level categories. Second, when reviewing our pilot sample,           our analysis of user reviews of AI coding assistants in VS
+we found that most user comments naturally fit within these              Code marketplace. The taxonomy results are presented in
+predefined dimensions. Without such a structure, our initial             Table I. We categorize topics of user reviews into eight high-
+coding produced 11 top-level categories from just 30 reviews,            level categories: functionality, usability, dependability, system
+resulting in a fragmented and inconsistent taxonomy. All                 performance, supportability, general experience, pricing, and
+remaining subcategories and leaf nodes are derived through               comparison. In total, we identify 8 categories, 16 subcate-
+bottom-up consolidation, with annotators free to revise or               gories, and 62 labels. In the remainder of this subsection, we
+expand the taxonomy as needed throughout the coding process.             define each category along with its corresponding subcate-
+   Iterative coding. We conduct annotation in iterative batches          gories and labels. We report the frequencies leaf nodes using
+of 50 user reviews. In each round, two annotators indepen-               the multiplication symbol (×).
+dently label reviews based on principles set in the initial
+                                                                         A. Functionality
+discussion. After three rounds, we identify a gap in the taxon-
+omy: while technical and functional aspects are well covered,               The functionality category refers to user discussions about
+broader sentiments—such as perceptions of productivity or                the core features of the AI coding assistant, including five
+satisfaction—are underrepresented. To address this, we revisit           subcategories: Suggestion Content, Language, Library, Task
+earlier reviews to ensure no content related to users’ general           Support, Context Awareness, and Understandability, and De-
+impressions is overlooked, resulting in three new categories:            velopment Environment Integration. It has a total of 18 labels.
+general experience (e.g., productivity boost), pricing (e.g., free          1) Suggestion Content: This subcategory covers a set of
+to use), and comparison (e.g., evaluation against other tools).          users’ opinions on suggestions from the coding assistants. The
+By the end of Round 3, the taxonomy includes 8 categories,               most frequently discussed label is accuracy of suggestions
+16 subcategories, and 55 leaf nodes.                                     (43×), reflecting how suggestions match the user’s expec-
+   In Rounds 4 through 6, the taxonomy stabilizes. Only five             tations. The second most discussed label is helpfulness of
+additional leaf nodes emerge across the three rounds (1, 2, and          suggestion (32×), indicating whether the suggestion is useful
+2, respectively), and no new categories or subcategories are             and aligns with the user’s intent—even if not entirely accurate,
+introduced—indicating structural saturation [26]. At this stage,         it may still provide valuable hints. The third most mentioned
+we finalize the taxonomy and compile a formal annotation                 label is completeness and redundancy of suggestions (11×),
+guideline, including definitions and illustrative examples for           which concerns whether the output is sufficiently complete
+each category, subcategory, and leaf node.                               or contains unnecessary parts. This is followed by failure
+   The two annotators independently label the remaining 17%              on complex tasks (5×), referring to the assistant’s limitations
+of the dataset. Disagreements are resolved through discussion.           when handling more sophisticated programming problems.
+The inter-rater agreement for this final phase is K = 0.983,             Next is buggy suggestion (4×), which captures instances where
+indicating strong consistency between annotators [46]. Only              the AI produces incorrect or malfunctioning code. Finally,
+two additional labels are introduced in this phase. In total, we         other (3×) includes less common issues such as hallucinated
+annotated 361 user reviews, resulting in 62 unique leaf nodes,           content or severely outdated suggestion.
+
+
+
+                                                                     5
+TABLE I: Categorization of discussion of AI Coding Assistants. PL, DEI are abbreviations for Programming Language and
+Development Environment Integration. The table is sorted by the number of reviews in descending order. The last column
+represents users’ sentiment toward each category, subcategory, or label.
+          ID Category-Subcategory               Description                                                     No.   Rate          Sentiment
+               Functionality                    Core code-generation and assistance features.                   238 32.2%     64%               31%
+                 • Suggestion Content           Opinions on code suggestion content.                            101 13.7%     59%               37%
+                 • PL, Library, Task Support.   Support for languages, libraries, and SE tasks.                  73 9.9%      78%               17%
+           1     • Understanding ability        Ability to understand code and user intent.                      45 6.1%      62%               29%
+                 • Context Awareness            Ability to leverage code/project context.                        21 2.8%      38%               57%
+                 • DEI                          Integration with tools (terminal, debugger).                      7 1.0%     100%               0%
+
+               General Experience               Overall experience and emotional response.                136 18.4%          90%                10%
+                • Productivity                  Reported acceleration or slow down of coding speed, flow. 83 11.2%           90%                10%
+           2    • General Discussion            Open-ended reflections or pure praise and claims.          28 3.8%           89%                11%
+                • Helpfulness                   Usefulness of suggestions solving problems.                23 3.4%           92%                8%
+
+               Usability                        Interface design and ease of use.                             104 14.1%      53%                36%
+           3     • UI & Interactivity           Interface layout, chat panel, pop-up quality, cursor control. 60 8.1%        55%                30%
+                 • Controllability              Settings, model choice, interruption control.                  21 2.8%       76%                19%
+                 • Learnability                 On-boarding difficulty and docs clarity.                       16 2.2%       38%                50%
+                 • Predictability               Consistency of responses, avoids corruption.                    7 1.0%        0%                100%
+
+               Dependability                    Trustworthiness: reliability, security, ethics, uptime.         83 11.2%     19%                77%
+                 • Reliability                  Stability, crashes, install failures, fallbacks.                37 5.0%      13%                84%
+           4     • Legal & Ethical Concerns     License compliance, AI-ethics concerns.                         23 3.1%      22%                74%
+                 • Security & Privacy           Risk of code leaks, privacy-safeguard adequacy.                 12 1.6%      17%                83%
+                 • Availability                 Offline capability and regional limitations.                    10 1.4%      40%                50%
+
+               Pricing                          Monetary cost, free tiers, perceived value.                     55    7.4%   69%                29%
+           5     • Free to use                  Positive reactions to generous free tiers.                      32    4.3%   97%                0%
+                 • Value Perception             Overpricing claims versus fair-price praise.                    23    3.1%   68%                32%
+
+               Supportability                   Post-deployment support, compatibility, rollout.                48    6.5%   58%                33%
+                 • Compatibility                OS / IDE / web compatibility, conflicts.                        18    2.4%   47%                35%
+           6     • Serviceability               Vendor or community support responsiveness.                     15    2.0%   93%                7%
+                 • Feature Availability         Speed and openness of new-feature access.                       11    1.5%   46%                46%
+                 • Maintainability              Stability across updates, maintenance pace.                      4    0.5%   20%                80%
+
+               Comparison                       Comparisons with other AI tools.                                44    6.0%   71%                27%
+           7     • With Competition             General comparisons to rival products.                          21    2.9%   81%                19%
+                 • With Github Copilot          Contrasts in accuracy, speed, price vs Copilot.                 19    2.6%   74%                21%
+                 • With GPT                     Evaluations versus raw ChatGPT / GPT-4.                          4    0.5%    0%                100%
+
+               Performance                      Latency, throughput, resource footprint issues.                 31    4.2%   58%                42%
+                 • Response Time                Perceived waiting time between request and output.              17    2.3%   82%                18%
+           8     • Resource Consumption         CPU, memory, battery drain complaints.                           9    1.2%   22%                78%
+                 • Rate Limiting                Complaints about request caps                                    5    0.7%   40%                60%
+
+                                                                 Like              Request            Dislike
+
+
+
+   2) PL, Library, Task Support: This subcategory reflects                                4) Context Awareness: his subcategory reflects users’ ex-
+user discussions about the AI coding assistant’s ability to                            pectations regarding the assistant’s ability to accurately re-
+support specific programming languages (PL), libraries, and                            trieve and maintain contextual information. Project/Codebase
+tasks. The most discussed label is task support (36×), which                           context awareness (13×) captures expectations for understand-
+focuses on capabilities beyond basic code completion—such                              ing and navigating across project- or repository-level contexts.
+as test generation, code refactoring, and code summarization.                          Context memory capacity (7×) refers to the ability to retain
+We exclude general code generation since it is a standard                              and leverage past interactions.
+feature across all assistants analyzed. The second most dis-                              5) Development Environment Integration: Users mention it
+cussed label is PL support (28×), with users referencing 13                            which refers to the assistant’s ability to work seamlessly with
+languages. The third discussed label is library or framework                           parts of the development environment, including the terminal,
+support (9×).                                                                          version control systems, and debugging tools.
+   3) Understandability: his subcategory captures users’ con-
+cerns about the assistant’s ability to comprehend code, errors,                        B. Usability
+and human intent after retrieving the relevant context. Users                             This category includes reviews that discuss the user inter-
+frequently highlight the importance of contextual understand-                          face and ease of use of the AI coding assistant. It includes four
+ing (23×), code understanding (8×), human instruction under-                           subcategories: UI & interactivity, learnability, controllability,
+standing (6×), good explanation of the code (4×), and error or                         and predictability, with a total of 12 labels.
+syntax understanding (3×), referring to the assistant’s ability                           1) UI & Interactivity: This subcategory includes user feed-
+to identify issues in the code.                                                        back on interface design and interaction mechanisms. The
+
+
+
+                                                                                   6
+most discussed label is chat interface (23×), where users               it unusable after installation. Another issue mentioned is AI
+comment on chat-based interaction, which differs from tra-              service mistakenly blocking valid queries (2×).
+ditional code completion. For example, some users find in-                 2) Legal & Ethical concerns: AI ethics (19×) is the most
+line chat convenient. General design and user experience                discussed label, where users raise concerns about open-source
+(14×) captures feedback on intuitive, user-friendly interfaces          culture and AI ethics, such as being charged for models trained
+and seamless access to AI functionality. Suggestion interface           on their code. License compliance (4×) refers to concerns
+& interaction (13×) includes feedback on how suggestions                generated code may violate code licenses.
+are presented (e.g., with stars, syntax highlighting, or snooze            3) Security & Privacy: Users discuss privacy protection
+buttons) and how users interact with them (e.g., using shortcuts        (6×), such as the risk of data leakage, and permission over-
+or whether suggestions are proactive). Cursor interactions              reach (3×), where extensions request excessive permissions.
+(6×) refers to feedback on cursor control, such as assistants           One user also mentions concern about potential data being
+changing cursor position unexpectedly or correctly predicting           sent to external servers, raising security risks.
+where the cursor should move. Layout & navigation (4×) in-
+                                                                           4) Availability: Users express the need for consistent access
+cludes comments about layout features like split view, sidebar
+                                                                        to the assistant. Some users complain or request that the ex-
+management, and navigating to functions or class definitions.
+                                                                        tension should work locally (5×) without internet connection.
+   2) Learnability: This subcategory reflects user discussions          Another issue is region limitation (5×), where users report
+about whether the assistant is easy to learn and use. On-               that the extension is unavailable in their geographic area.
+boarding difficulty (6×) is the most discussed label, referring
+to challenges in getting started, including the learning curve
+and setup process. Ease of use (5×) reflects user impressions           D. Supportability
+that the assistant is intuitive and includes helpful features              This category includes user reviews concerning the assis-
+such as help bar. Documentation (5×) includes comments on               tant’s ability to operate across different operating systems
+unclear or insufficient documentation.                                  and IDEs (i.e., compatibility), as well as concerns related to
+   3) Controllability: This subcategory reflects user feedback          updates and maintenance (e.g., maintainability). It comprises
+on how much control they have over the behavior and config-             three subcategories: compatibility, feature availability, and
+uration of the AI coding assistant. The most discussed label            maintainability, with a total of nine labels.
+is Customization (12×), where users discuss support for pre-               1) Compatibility: IDE compatibility (17×) is the most
+configured and custom commands, configurability settings,               discussed label, where users request support for additional
+and the ability to manage code snippets. Model choice (4×)              IDEs, such as Atom. Operating system compatibility (2×)
+refers to the ability to select different models, including             includes comments about extending support to other platforms,
+local models or cloud-based ones like GPT-4o. Extension                 such as Linux. Some users also mention that the assistant
+dependency issue (4×) includes comments on extensions be-               should be compatible with the web version (2×) of the IDE.
+ing automatically installed due to dependencies, sometimes
+                                                                           2) Feature Availability: In this subcategory, users express
+without user consent.
+                                                                        appreciation for rapid feature improvements (11×) but also
+   4) Predictability: Some users report that the assistant may
+                                                                        frustration with the waiting list for new features (5×).
+mess up their existing code (6×), introducing unexpected
+changes. Others mention inconsistent language output, such                 3) Maintainability: Some users report concerns about the
+as responses switching between English and French.                      assistant’s lack of maintenance (1×), the frequency of updates
+                                                                        (2×), and instances where updates break functionality (2×).
+                                                                           Serviceability (15×) is also frequently mentioned, referring
+C. Dependability
+                                                                        to the development team’s responsiveness to customer or
+   This category includes user reviews that raise concerns              community support requests.
+about the dependability or trustworthiness of the assistant,
+covering aspects such as reliability, availability, and security.
+                                                                        E. System Performance
+It contains four subcategories: reliability, legal & ethical
+concerns, security & privacy, and availability.                            This category includes user reviews focused on the system
+   1) Reliability: This subcategory captures user feedback              performance of the AI coding assistant, such as response
+about the stability and consistent operation of the extension.          time, resource consumption, and rate limiting. It contains three
+The most discussed label is bug of the extension (11×),                 labels. Users frequently discuss response time (17×), express-
+where users report crashes, unresponsiveness, or specific bugs.         ing appreciation for fast performance while also complain-
+Fallback to weak model (6×) includes complaints that the                ing about occasional unresponsiveness. Resource consumption
+assistant downgrades to a weaker model or becomes less                  (9×) is another common concern, with users reporting that
+responsive over time, leading to a noticeable drop in answer            the assistant consumes excessive system resources, such as
+quality. Login issue (6×) refers to problems with logging               high CPU and memory usage. A few users also mention
+in or authentication failures. Installation issue (3×) includes         rate limiting (3×), referring to restrictions on the number of
+cases where users are unable to install the extension or find           requests or API calls the assistant can handle.
+
+
+
+                                                                    7
+          TABLE II: What Do Users Like and Dislike?                              helpfulness vary by experience level. Productivity has been
+           Top-15 Users’ Like                  Top-15 Users’ Dislike             a prominent topic since the introduction of GitHub Copi-
+    no.           Label             N. no.              Label          N.
+                                                                                 lot [50]. Prior studies report perceived productivity gains
+                                                                                 among users [10], [11], [51]–[53], though some lab-based
+    L1    Accuracy suggestion       39   D1    helpfulness suggestion   17
+    L2    Task support              24   D2    AI ethics                15       experiments find no statistically significant improvements [1],
+    L3    PL Support                20   D3    Bug of the extension     12       [11]. In our study, 90% of reviews labeled with productiv-
+    L4    Chat interface            16   D4    complet & redundant       8
+    L5    helpfulness suggestion    14   D5    Resource Consumption      7       ity express positive sentiment, describing how the assistant
+    L6    Response Time             14   D6    Project Context Support   6       streamlines workflows, reduces repetitive tasks, and improves
+    L7    Serviceability            14   D7    Suggestion UI             6
+    L8    Customization             12   D8    Chat interface            6
+                                                                                 efficiency—for example: “not having to type every single
+    L9    Code understanding        11   D9    PL Support                6       repetitive function out or imports” (R94, 5✰). This aligns
+    L10   IDE Compatibility          8   D10   Context-memory capacity 6         with the “acceleration mode” observed in prior work, where
+    L11   General design             7   D11   On-boarding Difficulty    6
+    L12   Project Context Support    7   D12   Mess up the code          5       developers use the assistant to implement known solutions
+    L13   Framework support          6   D13   Fallback to weak model    5       more quickly [12]. Co-occurrence analysis between labels
+    L14   Suggestion UI              6   D14   Frustration waiting list  5
+    L15   On-boarding Difficulty     5   D15   Login Issue               5       shows that productivity often appears alongside accurate sug-
+                                                                                 gestions (13×), code understanding (7×), PL support (6×),
+F. Others                                                                        and customization (6×). The first three are expected, as strong
+                                                                                 contextual understanding and language-specific support con-
+   1) General Experience: This category includes topics not
+                                                                                 tribute to faster development. Customization, on par with PL
+directly related to the functional features of the AI coding
+                                                                                 support, is somewhat unexpected. Upon review, we find that
+assistant, but rather to users’ overall experience. It contains
+                                                                                 users value the ability to tailor the assistant to their needs, en-
+one subcategory (productivity) and five labels.
+                                                                                 hancing productivity: “easily choose the languages you want
+   Productivity. As AI coding assistants are designed to en-
+                                                                                 to focus on this is so valuable” or “The ability to customize
+hance user productivity [11], productivity (83×) is the most
+                                                                                 [assistant]’s suggestions and responses helps developers align
+frequently discussed topic. Users often report that the assistant
+                                                                                 the tool with their coding style and preferences...accelerating
+helps boost their productivity (73×), while some mention that
+                                                                                 the coding process.” Indeed, customization is the 7th most liked
+it can slow down coding speed (8×). A few users also state
+                                                                                 label, with 12 mentions (see Table II).
+that it helps them find a solution to their problem (3×).
+   In addition, some users engage in more general discussion                        Helpfulness has also been debated in prior research. Some
+(28×), including reflections on mistake tolerance, concerns                      argue that AI assistants benefit experienced developers who
+about over-reliance on the assistant, or pure praise or com-                     understand how to use them effectively [54], while others
+plaints (25×). Users also comment on the helpfulness (25×)                       suggest they are especially helpful to novices [55]. Our
+of the assistant, noting that it supports developers at various                  findings support the latter: 14 out of 15 junior developers
+stages of experience.                                                            explicitly describe the assistant as helpful—e.g., “I am a
+   2) Pricing: This category includes user reviews related to                    beginner programmer and it is helping me a lot to build
+the pricing of the assistant. Two labels are discussed. Users                    a project” (R319, 5✰). In contrast, experienced developers
+often praise the assistant for being free to use (33×) and share                 express more skepticism; two out of five report limited value:
+opinions on its value perception (23×), with some considering                    “For anyone who really knows how to code, save yourself a
+it overpriced and others finding it worth the cost.                              lot of frustration” (R14, 1✰).
+   3) Comparison: This category includes user reviews that                       Finding 2. Users care most about suggestion content.
+compare the AI coding assistant with other AI tools . It                         Accurate suggestions are highly valued, but users often
+contains three labels. Users compare the assistant with general                  criticize redundant, incomplete, or buggy outputs and
+competitors (21×), as well as specifically with GitHub Copilot                   express mixed views on the helpfulness of suggestions. As
+(19×) and ChatGPT (4×).                                                          shown in Table I, suggestion content is the most frequently
+   VI. W HAT ASPECTS OF AI C ODING A SSISTANTS D O                               discussed topic, accounting for 14% of all labeled mentions.
+       U SERS C ARE A BOUT, L IKE , AND D ISLIKE ?                               Among these, 59% of reviews express positive sentiment,
+                                                                                 while 41% are negative. A key aspect users appreciate is
+   We summarize the insights from user reviews into six                          the accuracy of suggestions, which received 39 positive men-
+findings. We quote original user review texts to support our                     tions—making it the most liked label in our dataset (see
+findings. Each review is referenced using an identifier (e.g.,                   Table II). One user remarked: “80% less keyboard touching.
+(R1, 5✰) refers to the first review in our dataset, where                        Autocomplete is pure magic. Feels like it’s connected directly
+the user gave the AI extension a 5-star rating—the highest                       to your mind” (R164, 5✰). However, users also frequently
+possible score in the VS Code Marketplace, which reflects the                    highlight frustrations, particularly regarding the helpfulness
+user’s evaluation of the extension itself (not the quality of the                of suggestions (17 dislikes), redundant or incomplete outputs
+review), with 1 being the lowest and 5 the highest.                              (8 dislikes), and buggy suggestions (4 dislikes), including
+Finding 1. Users generally perceive that AI coding as-                           failures on complex tasks (4 dislikes). Notably, issues with
+sistants help boost productivity, though perceptions of                          redundancy and incompleteness have received little attention
+
+
+
+                                                                             8
+in prior studies, yet they represent the second most cited reason       traditional coding practices.” (R240, 4✰).
+for negative sentiment within suggestion-related feedback. For             Users also express frustration with suggestion interface and
+example, users report: “Constantly barfs words on the screen            interaction, which are the sixth and twelfth most disliked labels
+90+% is repetitive“” (R14, 1✰), and “it only predicts one               in our dataset. Complaints include unwanted suggestion place-
+character for me” (R34, 1✰).                                            ment—e.g., “Annoyed suggestions show up at the top”—and
+                                                                        broken interaction flows, particularly related to cursor focus:
+Finding 3. Users concern about context awareness. While
+                                                                        “Focus doesn’t work, making chat useless...frustrated, don’t
+AI assistants understand code well given context, they often
+                                                                        use this extension.” (R312, 1✰). This issue refers to the
+struggle to retrieve and retain it. Prior studies have high-
+                                                                        assistant’s “focus” feature, which attempts to shift user at-
+lighted the importance of context understanding in AI-assisted
+                                                                        tention to the chat window. However, users report that this
+coding [5], and noted that a lack of contextual understanding
+                                                                        can unpredictably hijack the cursor—causing input intended
+can deter users from adopting such tools [2]. In our study,
+                                                                        for the code editor to be redirected to the chat window.2
+however, we find that the core issue is not the assistant’s
+                                                                        Additionally, some users report severe usability breakdowns
+ability to understand context once it is available, but rather
+                                                                        where the assistant interferes with their code: “Messed so
+how effectively it fetches or maintains relevant context—i.e.,
+                                                                        much with my code” (R7, 3✰).
+context awareness. As shown in Table I, reviews mentioning
+contextual understanding—defined as the assistant’s ability to          Finding 5. Users are dissatisfied with resource consump-
+comprehend code and human instructions after the context                tion but generally satisfied with response time. Previous
+is retrieved—are mostly positive, with 73% explicitly high-             studies have noted that response time affects user experience,
+light strong contextual understanding. In contrast, feedback            with users preferring statement-level responses within two
+on context awareness—the assistant’s ability to retrieve and            seconds [10]. In our study, 14 out of 17 reviews express
+maintain relevant context—is more negative, with only 38% of            satisfaction with response time, likely due to the increasing
+related reviews are positive. Notably, two of the most disliked         use of online models, which typically offer faster responses.
+labels are related to context handling: project/codebase context        Among the 32 extensions we analyzed, only four exclusively
+support and context-memory capacity (see Table II). For                 support local models. In contrast, users frequently complain
+example, one user notes: “[assistant] still doesn’t see the class       about resource consumption. As shown in Table I, 78% of re-
+definitions in files that aren’t open” (R1, 1✰). Others are             lated reviews express dissatisfaction, making it the fourth most
+frustrated by limited memory, such as: “[assistant] forgets             disliked label. For example: “Uses too much resources—over
+context on next question and answers irrelevantly even for              50% CPU and more than 1 GB memory” (R125, 1✰). While
+simple questions” (R22, 1✰). We also observe that context-              such concerns are often associated with local models, we find
+memory capacity frequently co-occurs with complaints about              that performance complaints also arise with online models,
+unhelpful suggestions (4 times), indicating that limited context        particularly when working on large files or multi-project
+retention can directly degrade output quality. For instance,            setups. Among the eight reviews citing high resource usage,
+one user write: “What AI forgets between prompts within                 only half refer to local models; the rest involve online models.
+the same thread. My code looks like Frankenstein given the              One user notes: “the extension’s performance can sometimes
+amount of contradiction because it couldn’t recall what I just          slow down the editor, especially when working on larger files
+recommended previously.” (R79, 1✰).                                     or multi projects” (R306, 5✰).
+                                                                        Finding 6. Users weigh pricing and feature value when
+Finding 4. Usability matters to users—minor design issues
+                                                                        adopting AI coding assistants. Prior studies have paid limited
+can cause abandonment. Users expect AI assistants to
+                                                                        attention to pricing, as their data sources have primarily
+be easy to learn and use. While previous studies have
+                                                                        focused on functional performance [5], [19]. However, in our
+largely focused on functionality and dependability—such as
+                                                                        study, pricing and comparison emerged as a significant concern
+suggestion quality, privacy, and security concerns [2], [5],
+                                                                        and plays a clear role in users’ decisions to adopt or abandon
+[19]—usability issues have received relatively little attention.
+                                                                        AI coding assistants. Many users express a preference for
+In our study, however, we find that usability is the second most
+                                                                        free alternatives over paid assistants. For example: “It’s a
+discussed topic (after functionality), accounting for 12% of all
+                                                                        wonderful free alternative of paid AI code assistants” (R213,
+labels. One major usability concern is onboarding difficulty.
+                                                                        5✰). Users are particularly critical when an assistant lacks
+Although more features and stronger capabilities can enhance
+                                                                        competitive features yet costs more than alternatives like
+productivity, they also increase the learning curve. Among the
+                                                                        GitHub Copilot or ChatGPT. One user writes: “I also tried
+six complaints related to onboarding, four come from exten-
+                                                                        Github Copilot, and I have to say it’s a hundred levels better
+sions supporting local models, and all involve complex setup
+                                                                        than [assistant], and it’s cheaper to subscribe to.” (R99, 1✰).
+processes. For instance: “Setup process is bloated. I’ll wait
+                                                                        Some users explicitly abandon AI assistants due to pricing
+until they make the process more streamlined.” (R265, 1✰).
+                                                                        concerns: “Was cool to try out but too expensive now. You
+For cloud-based assistants, users report difficulty adapting
+                                                                        are using our code to make money. So, pass for now...but
+to AI-driven workflows: “While [assistant] aims to simplify
+                                                                        I think you should have a free version (since it’s using
+coding, some users might find it challenging to adapt to the
+AI’s suggestions and functionality, especially if they’re used to         2 https://www.reddit.com/r/Codeium/comments/1es4pdo
+
+
+
+
+                                                                    9
+open source)” (R42, 1✰). This also reflects a broader ethical            our study. Users expect intuitive design, clear documentation,
+concern: users are dissatisfied with the practice of training            and easy onboarding (e.g., “intuitive design and user-friendly
+on open-source code and then charging for the service. This              interface” (R88)). For example, Tabnine clearly communicates
+issue—categorized under AI ethics label—is the second most               its language support levels and uses AI to provide context-
+disliked label in our study.                                             aware guidance. As discussed earlier, improving chat and
+Other Findings. We summarize additional insights from the                agent interactions is also crucial. Developers should also avoid
+remaining content in Tables I and II, and relate them to prior           intrusive features like ads during inference, which significantly
+work below. The least liked subcategories—predictability, re-            harm user experience (R99, 1✰). Finally, efficiency is another
+liability, and security & privacy—reflect high user dissatisfac-         important aspect valued by users. Assistants with low resource
+tion. Reliability and security/privacy concerns are consistent           consumption can be achieved through techniques such as
+with prior studies, where users reported operational issues and          model compression [66]–[68].
+fears of data leakage [5], [19], [56], [57]. In contrast, task           Implication 4: Developers must ensure dependability to
+support and PL support are the second and third most liked               build trust. Perceived dependability strongly influences satis-
+aspects. Users value the assistant’s help with code refactoring          faction [69]. Users are deterred by instability, bugs, fallback
+and test generation, aligning with Sergeyuk et al. [2], who              to weak models, and privacy concerns [70]. To build trust,
+identified these as top tasks developers would delegate to AI            assistants should be stable [71], reduce vulnerabilities [72],
+assistants. While PL support is generally praised, some users            ensure fairness [73], and remain transparent. Users also request
+mention a lack of support for niche languages. The chat inter-           source attribution, such as: “Display the source code link on
+face ranks fourth in user preference. Many users appreciate not          top of the code after accepting” (R63, 5✰), and “Let us know
+having to rely on external searches [58], though some criticize          where this is giving the answer from” (R144, 5✰). Choudhuri
+interface layout, history management, and dialog interaction.            et al. [74] also dicuss developers’ trust towards GenAI.
+                                                                         Implication 5: Continuous user engagement and market
+                      VII. D ISCUSSION
+                                                                         awareness are key. Active communication helps assistant
+A. Implication for Improving AI Coding Assistants                        developers gather feedback and improve user satisfaction. For
+Implication 1: Improving context awareness is essential                  example, one user highlight the value of direct engagement:
+for supporting many tasks. As discussed in Finding 3, users              “Join the Discord channel and get your questions answered,
+complain about poor context awareness, which leads to un-                feature requests responded to, and see all the cool stuff
+helpful suggestions. This limitation is especially problematic           the open source community is coming up with!” (R340,
+for tasks like project-level refactoring, which require broader          5✰). Studying competitors, similar to practices in mobile
+understanding of code dependencies (e.g., function changes,              app development [75], helps identify standard features and
+return types, internal logic). For example: “[assistant] needs to        differentiation opportunities. Users favor assistants that offer
+support code refactoring...changing function definitions, return         unique capabilities beyond what others provide. Another good
+types, and function contents to make sure everything compiles            example is Cursor, which actively communicates with and
+is a huge time sink” (R41, 4✰) Improving repository-level                hears from its users via various channels.
+context support—through codebase indexing or manual linking              B. How much do the extensions vary in terms of capabilities?
+of relevant files—can help. Some assistants already support
+                                                                            To better understand the diversity of AI coding assistants,
+this, and users respond positively (e.g., “Indexing your repo
+                                                                         we conduct a small-scale analysis by manually reviewing the
+code and adding context with @” (R355, 5✰)). They can also
+                                                                         descriptions and documentation of the 32 extensions analyzed
+enhance effectiveness by dynamic inference [59], applying
+                                                                         in our study. Based on their capabilities, we categorize them
+context compression techniques [60], or fine-tuning models
+                                                                         into three groups: (1) extensions limited to line-level code
+based on the user’s repository for more personalized sup-
+                                                                         completion (e.g., tab-to-complete); (2) extensions with chat-
+port [61], which can also improve the effectiveness of related
+                                                                         based functionalities, such as bug fixing or documentation
+tasks like program repair [62], [63].
+                                                                         generation; and (3) extensions supporting other tasks.
+Implication 2: Chat and agent interfaces need more                          Among the extensions, 5 offer only line-level completion,
+research attention. While chat and agent-like capabilities               18 support both chat-based and line-level features, 5 offer chat
+are increasingly integrated into coding assistants [28], prior           capabilities alone, and 4 focus on other tasks such as documen-
+work on understanding how assistants can help programmers                tation generation, code review, or code snippet management.
+has focused mainly on traditional code completion [10], [11].            Further analysis shows that 63% of the reviews for chat-based
+Few studies examine the usability of chat [32], [58], and                extensions are positive, with users focused on functionality
+none systematically study agent interfaces. There is a need              (33.8%) and broader discussions (18.7% under “Other”). Line-
+to understand how users interact with these modes and to                 level tools display a near-even split between likes (51%) and
+design more effective interaction patterns. Existing work on             dislikes (49%), with user comments often centering on per-
+suggestion presentation [64], [65] can inform future research.           formance (12.8%) and comparisons with other tools (12.8%).
+Implication 3: Usability must be prioritized through intu-               Other extensions are the most positively received (77% like)
+itive design. Usability was the second most discussed topic in           and are heavily praised for usability (41.9%).
+
+
+
+                                                                    10
+C. Threats to Validity                                                                                R EFERENCES
+   Internal. Two annotators conduct all coding and sentiment             [1] H. Mozannar, G. Bansal, A. Fourney, and E. Horvitz, “Reading
+analysis. Although inter-rater agreement is high in the final                between the lines: Modeling user behavior and costs in ai-
+                                                                             assisted programming,” ser. CHI ’24. New York, NY, USA:
+round, their shared background may introduce confirmation                    Association for Computing Machinery, 2024. [Online]. Available:
+bias. Early collaborative rounds and evolving definitions risk               https://doi.org/10.1145/3613904.3641936
+“locking in” initial interpretations. To mitigate this, we delay         [2] A. Sergeyuk, Y. Golubev, T. Bryksin, and I. Ahmed, “Using ai-based
+                                                                             coding assistants in practice: State of affairs, perceptions, and ways
+discussion until after independent blind coding. While seeding               forward,” Information and Software Technology, vol. 178, 2025.
+five top-level categories may bias consolidation toward those            [3] J. Chen, X. Hu, Z. Li, C. Gao, X. Xia, and D. Lo, “Code search is all you
+dimensions, annotators retain full flexibility to revise or add              need? improving code suggestions with code search,” in Proceedings of
+                                                                             the IEEE/ACM 46th international conference on software engineering,
+categories and subcategories in every round.                                 2024, pp. 1–13.
+   External. Our study focuses on the VS Code Marketplace,               [4] B. Yang, H. Tian, J. Ren, H. Zhang, J. Klein, T. Bissyande, C. Le Goues,
+which may raise concerns about generalizability to other                     and S. Jin, “Morepair: Teaching llms to repair code via multi-objective
+                                                                             fine-tuning,” ACM Trans. Softw. Eng. Methodol., May 2025, just
+development environments. However, VS Code is currently the                  Accepted. [Online]. Available: https://doi.org/10.1145/3735129
+most widely used IDE, with over 74% of developers reporting              [5] J. T. Liang, C. Yang, and B. A. Myers, “A large-scale survey on
+it as their primary editor. Its widespread adoption and active               the usability of ai programming assistants: Successes and challenges,”
+                                                                             in Proceedings of the 46th IEEE/ACM International Conference on
+extension ecosystem make it a strong proxy for understanding                 Software Engineering, 2024, pp. 1–13.
+mainstream developer interactions with AI coding assistants.             [6] L.     Wilkinson,     “Github     copilot    drives   revenue     growth
+While some platform-specific differences may exist, future                   amid      subscriber   base     expansion,”     2024,   accessed:     Feb
+                                                                             28, 2025. [Online]. Available: https://www.ciodive.com/news/
+work could explore whether the observed patterns hold in other               github-copilot-subscriber-count-revenue-growth/706201/
+environments such as JetBrains IDEs or cloud-based tools.                [7] A. M. Mcnutt, C. Wang, R. A. Deline, and S. M. Drucker, “On the
+                                                                             design of ai-powered code assistants for notebooks,” in Proceedings of
+           VIII. C ONCLUSION AND F UTURE W ORK                               the 2023 CHI Conference on Human Factors in Computing Systems, ser.
+   In this study, we analyze 361 reviews of 32 popular as-                   CHI ’23. New York, NY, USA: Association for Computing Machinery,
+                                                                             2023. [Online]. Available: https://doi.org/10.1145/3544548.3580940
+sistants. Using a hybrid card-sorting approach, we develop               [8] C. Liu, X. Zhang, H. Zhang, Z. Wan, Z. Huang, and M. Yan, “An
+a three-level taxonomy with 8 categories, 16 subcategories,                  empirical study of code search in intelligent coding assistant: Percep-
+and 62 labels. Suggestion quality is paramount—accuracy is                   tions, expectations, and directions,” in Companion Proceedings of the
+                                                                             32nd ACM International Conference on the Foundations of Software
+praised, while redundancy, incompleteness draw criticism. A                  Engineering, 2024, pp. 283–293.
+major challenge is context awareness: assistants can interpret           [9] J. Prather, B. N. Reeves, P. Denny, B. A. Becker, J. Leinonen,
+code but often fail to retrieve or retain relevant context.                  A. Luxton-Reilly, G. Powell, J. Finnie-Ansley, and E. A. Santos, ““it’s
+                                                                             weird that it knows what i want”: Usability and interactions with copilot
+Usability also matters and high resource usage remains a                     for novice programmers,” ACM Trans. Comput.-Hum. Interact., vol. 31,
+concern. We also outline five implications to support the                    no. 1, Nov. 2023. [Online]. Available: https://doi.org/10.1145/3617367
+development of more effective AI coding assistants.                     [10] C. Wang, J. Hu, C. Gao, Y. Jin, T. Xie, H. Huang, Z. Lei, and
+                                                                             Y. Deng, “How practitioners expect code completion?” in Proceedings
+   Future research could automate the labeling process us-                   of the 31st ACM Joint European Software Engineering Conference
+ing the taxonomy from this study and sentiment assessment                    and Symposium on the Foundations of Software Engineering,
+to enable large-scale quantitative analysis. A key challenge                 ser. ESEC/FSE 2023. New York, NY, USA: Association for
+                                                                             Computing Machinery, 2023, p. 1294–1306. [Online]. Available:
+here is developing LLM-based methods that reliably detect                    https://doi.org/10.1145/3611643.3616280
+and classify emerging labels or categories while minimizing             [11] P. Vaithilingam, T. Zhang, and E. L. Glassman, “Expectation vs. experi-
+human-in-the-loop effort, including automating the hybrid                    ence: Evaluating the usability of code generation tools powered by large
+                                                                             language models,” in Chi conference on human factors in computing
+card-sorting process in iterative taxonomy refinement.                       systems extended abstracts, 2022, pp. 1–7.
+   In addition, expanding data sources beyond the VS Code               [12] S. Barke, M. B. James, and N. Polikarpova, “Grounded copilot:
+Marketplace to platforms like Reddit and X (formerly Twitter)                How programmers interact with code-generating models,” Proc. ACM
+                                                                             Program. Lang., vol. 7, no. OOPSLA1, Apr. 2023. [Online]. Available:
+could provide complementary perspectives and richer insights                 https://doi.org/10.1145/3586030
+into user perceptions. Another promising direction is to differ-        [13] M. C. Davis, E. Aghayi, T. D. Latoza, X. Wang, B. A. Myers, and
+entiate between types of AI coding assistants. For instance, fu-             J. Sunshine, “What’s (not) working in programmer user studies?” ACM
+                                                                             Transactions on Software Engineering and Methodology, vol. 32, no. 5,
+ture work could compare line-level code completion and chat-                 pp. 1–32, 2023.
+based assistants, and, through automated labeling, investigate          [14] A. Sergeyuk, I. Zakharov, E. Koshchenko, and M. Izadi, “Human-
+how users perceive these tools differently. Replication package              ai experience in integrated development environments: A systematic
+                                                                             literature review,” arXiv preprint arXiv:2503.06195, 2025.
+at https://figshare.com/s/47c5ce42fd7e1dee69fe.                         [15] D. Pagano and W. Maalej, “User feedback in the appstore: An empirical
+                    ACKNOWLEDGMENTS                                          study,” in 2013 21st IEEE International Requirements Engineering
+                                                                             Conference (RE), 2013, pp. 125–134.
+   This research is supported by the Ministry of Education,             [16] W. Martin, F. Sarro, Y. Jia, Y. Zhang, and M. Harman, “A survey of app
+Singapore under its Academic Research Fund Tier 3 (Award                     store analysis for software engineering,” IEEE transactions on software
+                                                                             engineering, vol. 43, no. 9, pp. 817–847, 2016.
+ID: MOET32020-0004). Any opinions, findings and conclu-                 [17] A. A. Al-Subaihin, F. Sarro, S. Black, L. Capra, and M. Harman, “App
+sions or recommendations expressed in this material are those                store effects on software engineering practices,” IEEE Transactions on
+of the author(s) and do not reflect the views of the Ministry                Software Engineering, vol. 47, no. 2, pp. 300–319, 2019.
+of Education, Singapore.
+
+
+
+                                                                   11
+[18] B. Zhang, P. Liang, X. Zhou, A. Ahmad, and M. Waseem, “Demystifying                      vol. 21, no. 3, pp. 311–331, Sep 2016. [Online]. Available:
+     practices, challenges and expected features of using github copilot,”                    https://doi.org/10.1007/s00766-016-0251-9
+     International Journal of Software Engineering and Knowledge Engi-                   [37] N. Jha and A. Mahmoud, “Mining non-functional requirements
+     neering, vol. 33, no. 11n12, pp. 1653–1672, 2023.                                        from app store reviews,” Empirical Software Engineering, vol. 24,
+[19] X. Zhou, P. Liang, B. Zhang, Z. Li, A. Ahmad, M. Shahin, and                             no. 6, pp. 3659–3695, Dec 2019. [Online]. Available: https:
+     M. Waseem, “Exploring the problems, their causes and solutions of ai                     //doi.org/10.1007/s10664-019-09716-7
+     pair programming: A study on github and stack overflow,” Journal of                 [38] GitHub, “GitHub Copilot,” https://marketplace.visualstudio.com/items?
+     Systems and Software, vol. 219, p. 112204, 2025.                                         itemName=GitHub.copilot, 2025, retrieved Feb 22, 2025.
+[20] J. Liao, G. Yang, D. Kavaler, V. Filkov, and P. Devanbu, “Status, identity,         [39] Visual Studio | Marketplace, “VS Code Marketplace: AI extensions
+     and language: A study of issue discussions in github,” PloS one, vol. 14,                search results,” https://marketplace.visualstudio.com/search?term=AI&
+     no. 6, p. e0215059, 2019.                                                                target=VSCode&category=All%20categories&sortBy=Installs, 2025, re-
+[21] D. Ford, J. Smith, P. J. Guo, and C. Parnin, “Paradise unplugged:                        trieved Feb 21, 2025.
+     Identifying barriers for female participation on stack overflow,” in                [40] X. Hou, Y. Zhao, Y. Liu, Z. Yang, K. Wang, L. Li, X. Luo, D. Lo,
+     Proceedings of the 2016 24th ACM SIGSOFT International symposium                         J. Grundy, and H. Wang, “Large language models for software engineer-
+     on foundations of software engineering, 2016, pp. 846–857.                               ing: A systematic literature review,” ACM Trans. Softw. Eng. Methodol.,
+[22] Stack Overflow, “Stack Overflow Developer Survey 2024,” Online, 2024,                    vol. 33, no. 8, Dec. 2024.
+     available: https://survey.stackoverflow.co/2024/.                                   [41] SurveyMonkey, “Sample size calculator,” 2025, accessed: Feb
+[23] Y. Liu, C. Tantithamthavorn, and L. Li, “ Protect Your Secrets: Un-                      28, 2025. [Online]. Available: https://www.surveymonkey.com/mp/
+     derstanding and Measuring Data Exposure in VSCode Extensions ,”                          sample-size-calculator/
+     in 2025 IEEE International Conference on Software Analysis, Evolution               [42] H. Hata, C. Treude, R. G. Kula, and T. Ishio, “9.6 million links in source
+     and Reengineering (SANER). Los Alamitos, CA, USA: IEEE Computer                          code comments: Purpose, evolution, and decay,” in 2019 IEEE/ACM 41st
+     Society, Mar. 2025, pp. 551–562.                                                         International Conference on Software Engineering (ICSE). IEEE, 2019,
+[24] Microsoft, “Visual Studio Marketplace,” 2025, accessed: February 21,                     pp. 1211–1221.
+     2025. [Online]. Available: https://marketplace.visualstudio.com                     [43] Y. Lyu, H. J. Kang, R. Widyasari, J. Lawall, and D. Lo, “Evaluating
+           ˛
+[25] J. Dabrowski,     E. Letier, A. Perini, and A. Susi, “Analysing app                      szz implementations: An empirical study on the linux kernel,” IEEE
+     reviews for software engineering: a systematic literature review,”                       Trans. Softw. Eng., vol. 50, no. 9, p. 2219–2239, Sep. 2024. [Online].
+     Empirical Softw. Engg., vol. 27, no. 2, Mar. 2022. [Online]. Available:                  Available: https://doi.org/10.1109/TSE.2024.3406718
+     https://doi.org/10.1007/s10664-021-10065-7                                          [44] J. Wang, L. Li, and A. Zeller, “Restoring execution environments of
+[26] N. Humbatova, G. Jahangirova, G. Bavota, V. Riccio, A. Stocco,                           jupyter notebooks,” in 2021 IEEE/ACM 43rd International Conference
+     and P. Tonella, “Taxonomy of real faults in deep learning systems,”                      on Software Engineering (ICSE). IEEE, 2021, pp. 1622–1633.
+     in Proceedings of the ACM/IEEE 42nd International Conference                        [45] M. L. McHugh, “Interrater reliability: the kappa statistic,” Biochemia
+     on Software Engineering, ser. ICSE ’20. New York, NY, USA:                               medica, vol. 22, no. 3, pp. 276–282, 2012.
+     Association for Computing Machinery, 2020, p. 1110–1121. [Online].                  [46] J. R. Landis and G. G. Koch, “The measurement of observer agreement
+     Available: https://doi.org/10.1145/3377811.3380395                                       for categorical data,” biometrics, pp. 159–174, 1977.
+[27] L. Y. Conrad and V. M. Tucker, “Making it tangible: hybrid card                     [47] P. E. McKnight and J. Najab, “Mann-whitney u test,” The Corsini
+     sorting within qualitative interviews,” Journal of Documentation,                        encyclopedia of psychology, pp. 1–1, 2010.
+     vol. 75, no. 2, pp. 397–416, Jan 2019. [Online]. Available:                         [48] “Variability and mutability, contribution to the study of statistical dis-
+     https://doi.org/10.1108/JD-06-2018-0091                                                  tributions and relations,” Studi Economico-Giuridici della R. Universita
+[28] GitHub, “Github copilot: The agent awakens,” 2025, accessed:                             de Cagliari, 1912.
+     February 16 2025. [Online]. Available: https://github.blog/news-insights/           [49] Z. Kurtanović and W. Maalej, “Mining user rationale from software
+     product-news/github-copilot-the-agent-awakens/                                           reviews,” in 2017 IEEE 25th international requirements engineering
+[29] Z. Yang, Z. Sun, T. Z. Yue, P. Devanbu, and D. Lo, “Robustness, security,                conference (RE). IEEE, 2017, pp. 61–70.
+     privacy, explainability, efficiency, and usability of large language models         [50] M. Chen, J. Tworek, H. Jun, Q. Yuan, H. P. D. O. Pinto, J. Kaplan,
+     for code,” arXiv preprint arXiv:2403.07506, 2024.                                        H. Edwards, Y. Burda, N. Joseph, G. Brockman et al., “Evaluating large
+[30] GitHub, “Survey Reveals AI’s Impact on the Developer                                     language models trained on code,” arXiv preprint arXiv:2107.03374,
+     Experience,”                     https://github.blog/news-insights/research/             2021.
+     survey-reveals-ais-impact-on-the-developer-experience/,               2024,         [51] S. Peng, E. Kalliamvakou, P. Cihon, and M. Demirer, “The impact of ai
+     accessed: May 25, 2025.                                                                  on developer productivity: Evidence from github copilot,” arXiv preprint
+[31] A. Ziegler, E. Kalliamvakou, X. A. Li, A. Rice, D. Rifkin, S. Simister,                  arXiv:2302.06590, 2023.
+     G. Sittampalam, and E. Aftandilian, “Productivity assessment of                     [52] B. Martinović and R. Rozić, “Perceived impact of ai-based tooling
+     neural code completion,” in Proceedings of the 6th ACM SIGPLAN                           on software development code quality,” SN Computer Science,
+     International Symposium on Machine Programming, ser. MAPS 2022.                          vol. 6, no. 1, p. 63, Jan 2025. [Online]. Available: https:
+     New York, NY, USA: Association for Computing Machinery, 2022, p.                         //doi.org/10.1007/s42979-024-03608-4
+     21–29. [Online]. Available: https://doi.org/10.1145/3520312.3534864                 [53] S. Imai, “Is github copilot a substitute for human pair-programming? an
+[32] A. Shah, A. Chernova, E. Tomson, L. Porter, W. G. Griswold, and A. G.                    empirical study,” in Proceedings of the ACM/IEEE 44th International
+     Soosai Raj, “Students’ use of github copilot for working with large                      Conference on Software Engineering: Companion Proceedings, ser.
+     code bases,” in Proceedings of the 56th ACM Technical Symposium on                       ICSE ’22. New York, NY, USA: Association for Computing
+     Computer Science Education V. 1, ser. SIGCSETS 2025. New York,                           Machinery, 2022, p. 319–321. [Online]. Available: https://doi.org/10.
+     NY, USA: Association for Computing Machinery, 2025, p. 1050–1056.                        1145/3510454.3522684
+     [Online]. Available: https://doi.org/10.1145/3641554.3701800                        [54] A. Moradi Dakhel, V. Majdinasab, A. Nikanjam, F. Khomh, M. C.
+[33] M. V. Phong, T. T. Nguyen, H. V. Pham, and T. T. Nguyen, “Mining                         Desmarais, and Z. M. J. Jiang, “Github copilot ai pair programmer:
+     user opinions in mobile app reviews: A keyword-based approach (t),” in                   Asset or liability?” Journal of Systems and Software, vol. 203, p. 111734,
+     2015 30th IEEE/ACM International Conference on Automated Software                        2023.
+     Engineering (ASE), 2015, pp. 749–759.                                               [55] J. Prather, B. N. Reeves, P. Denny, B. A. Becker, J. Leinonen,
+[34] N. Chen, J. Lin, S. C. H. Hoi, X. Xiao, and B. Zhang, “Ar-                               A. Luxton-Reilly, G. Powell, J. Finnie-Ansley, and E. A. Santos, ““it’s
+     miner: mining informative reviews for developers from mobile app                         weird that it knows what i want”: Usability and interactions with copilot
+     marketplace,” ser. ICSE 2014. New York, NY, USA: Association                             for novice programmers,” ACM Trans. Comput.-Hum. Interact., vol. 31,
+     for Computing Machinery, 2014, p. 767–778. [Online]. Available:                          no. 1, Nov. 2023. [Online]. Available: https://doi.org/10.1145/3617367
+     https://doi.org/10.1145/2568225.2568263                                             [56] Z. Yang, B. Xu, J. M. Zhang, H. J. Kang, J. Shi, J. He, and D. Lo,
+[35] E. Guzman and W. Maalej, “How do users like this feature? a fine                         “Stealthy backdoor attack for code models,” IEEE Transactions on
+     grained sentiment analysis of app reviews,” in 2014 IEEE 22nd Interna-                   Software Engineering, vol. 50, no. 4, pp. 721–741, 2024.
+     tional Requirements Engineering Conference (RE), 2014, pp. 153–162.                 [57] Z. Yang, Z. Zhao, C. Wang, J. Shi, D. Kim, D. Han, and D. Lo,
+[36] W. Maalej, Z. Kurtanović, H. Nabil, and C. Stanik, “On the                              “Unveiling memorization in code models,” ser. ICSE ’24. New York,
+     automatic classification of app reviews,” Requirements Engineering,                      NY, USA: Association for Computing Machinery, 2024. [Online].
+                                                                                              Available: https://doi.org/10.1145/3597503.3639074
+
+
+
+                                                                                    12
+[58] D. Nam, A. Macvean, V. Hellendoorn, B. Vasilescu, and B. Myers,                     models of code into 3 mb,” in Proceedings of the 37th IEEE/ACM
+     “Using an llm to help with code understanding,” in Proceedings of the               International Conference on Automated Software Engineering, ser. ASE
+     IEEE/ACM 46th International Conference on Software Engineering, ser.                ’22. New York, NY, USA: Association for Computing Machinery,
+     ICSE ’24. New York, NY, USA: ACM, 2024.                                             2023. [Online]. Available: https://doi.org/10.1145/3551349.3556964
+[59] Z. Sun, X. Du, F. Song, S. Wang, and L. Li, “When neural code                  [67] J. Shi, Z. Yang, H. J. Kang, B. Xu, J. He, and D. Lo, “Greening large
+     completion models size up the situation: Attaining cheaper and faster               language models of code,” in Proceedings of the 46th International
+     completion through dynamic model inference,” in Proceedings of the                  Conference on Software Engineering: Software Engineering in Society,
+     IEEE/ACM 46th International Conference on Software Engineering, ser.                2024, pp. 142–153.
+     ICSE ’24. Association for Computing Machinery, 2024.                           [68] J. Shi, Z. Yang, and D. Lo, “Efficient and green large language models
+[60] T. Ge, J. Hu, L. Wang, X. Wang, S.-Q. Chen, and F. Wei, “In-context                 for software engineering: Vision and the road ahead,” ACM Transactions
+     autoencoder for context compression in a large language model,” arXiv               on Software Engineering and Methodology, 2024.
+     preprint arXiv:2307.06945, 2023.                                               [69] V. Mittal, W. T. RossJr., and P. M. Baldasare, “The asymmetric impact of
+[61] G. Pinto, C. De Souza, J. B. Neto, A. Souza, T. Gotto, and                          negative and positive attribute-level performance on overall satisfaction
+     E. Monteiro, “Lessons from building stackspot ai: A contextualized                  and repurchase intentions,” Journal of Marketing, vol. 62, no. 1, pp.
+     ai coding assistant,” in Proceedings of the 46th International                      33–47, 1998.
+     Conference on Software Engineering: Software Engineering in                    [70] B. B. Holloway and S. E. Beatty, “Satisfiers and dissatisfiers in the
+     Practice, ser. ICSE-SEIP ’24. New York, NY, USA: Association                        online environment: A critical incident assessment,” Journal of Service
+     for Computing Machinery, 2024, p. 408–417. [Online]. Available:                     Research, vol. 10, no. 4, pp. 347–364, 2008.
+     https://doi.org/10.1145/3639477.3639751                                        [71] Z. Yang, J. Shi, J. He, and D. Lo, “Natural attack for pre-trained
+[62] W. Luo, J. W. Keung, B. Yang, J. Klein, T. F. Bissyande, H. Tian, and               models of code,” in Proceedings of the 44th International Conference
+     B. Le, “Unlocking llm repair capabilities in low-resource programming               on Software Engineering, ser. ICSE ’22. New York, NY, USA:
+     languages through cross-language translation and multi-agent refine-                Association for Computing Machinery, 2022, p. 1482–1493. [Online].
+     ment,” arXiv preprint arXiv:2503.22512, 2025.                                       Available: https://doi.org/10.1145/3510003.3510146
+[63] W. Luo, J. Keung, B. Yang, H. Ye, C. Le Goues, T. F. Bissyandé,                [72] Y. Lyu, T. Le-Cong, H. J. Kang, R. Widyasari, Z. Zhao, X.-B. D.
+     H. Tian, and X. B. D. Le, “When fine-tuning llms meets data privacy:                Le, M. Li, and D. Lo, “Chronos: Time-aware zero-shot identification
+     An empirical study of federated learning in llm-based program repair,”              of libraries from vulnerability reports,” in Proceedings of the 45th
+     ACM Trans. Softw. Eng. Methodol., May 2025, just Accepted. [Online].                International Conference on Software Engineering, ser. ICSE ’23. IEEE
+     Available: https://doi.org/10.1145/3733599                                          Press, 2023, p. 1033–1045.
+[64] H. Mozannar, G. Bansal, A. Fourney, and E. Horvitz, “When                      [73] Y. Lyu, Z. Yang, Y. Niu, J. Jiang, and D. Lo, “Do existing testing tools
+     to show a suggestion? integrating human feedback in ai-assisted                     really uncover gender bias in text-to-image models?” arXiv preprint
+     programming,” ser. AAAI’24/IAAI’24/EAAI’24. AAAI Press, 2024.                       arXiv:2501.15775, 2025.
+     [Online]. Available: https://doi.org/10.1609/aaai.v38i9.28878                  [74] R. Choudhuri, B. Trinkenreich, R. Pandita, E. Kalliamvakou, I. Stein-
+[65] Z. Sun, X. Du, F. Song, S. Wang, M. Ni, and L. Li, “Don’t complete                  macher, M. Gerosa, C. Sanchez, and A. Sarma, “What guides our
+     it! preventing unhelpful code completion for productive and sustainable             choices? modeling developers’ trust and behavioral intentions towards
+     neural code completion systems,” in 2023 IEEE/ACM 45th International                genai,” arXiv preprint arXiv:2409.04099, 2024.
+     Conference on Software Engineering: Companion Proceedings (ICSE-               [75] A. A. Al-Subaihin, F. Sarro, S. Black, L. Capra, and M. Harman, “App
+     Companion), 2023, pp. 324–325.                                                      store effects on software engineering practices,” IEEE Transactions on
+[66] J. Shi, Z. Yang, B. Xu, H. J. Kang, and D. Lo, “Compressing pre-trained             Software Engineering, vol. 47, no. 2, pp. 300–319, 2021.
+
+
+
+
+                                                                               13
+

@@ -1,0 +1,70 @@
+id|date|version|kind|subject|source|locator
+01|2025-08-07|v0.85.5|enhancement|GPT-5 编辑强制使用 diff 格式，并支持 reasoning_effort。|aider E04-5|Aider v0.85.5
+01|2025-08-09|v0.86.0|enhancement|缩短 /undo 显示的提交消息，并扩大 GPT-5 模型支持。|E04-5|Aider v0.86.0
+02|2026-11-18|0.170.0|fix|改善云端对话重连时保留恢复中的轮次，修复子线程丢失既有沙箱限制。|codex170|Improved automatic reconnection
+02|2026-11-20|0.171.0|fix|修复旧轮次完成事件误取消新审批，并按策略版本隔离自动审查缓存。|E05-4|0.171.0
+03|2026-10-26|Desktop v0.0.49|enhancement|桌面会话头部增加 Changes 按钮，显示改动行数和差异入口。|E07-4|Desktop v0.0.49
+03|2026-11-04|desktop-nightly-20261104233655|preview|桌面 nightly 将 UX 验证委派给子代理，并保留委派工具审批策略；未推断稳定版已包含。|E07-4|delegate UX verification
+04|2026-11-13|v2.3.0|default|后台子代理成为默认，父会话可继续，子代理空闲后汇报。|E08-4|Background Subagents by Default
+04|2026-11-18|v2.3.1|enhancement|超过前台超时的 shell 命令转后台继续并报告结果。|E08-4|Timed-Out Shell Commands Keep Running
+05|2025-10-22||introduction|Quest 增加 Remote Delegation，将任务交给远程云环境处理。|qoder|Remote Delegation
+05|2026-10-15||retirement|Qoder IDE 旧 Quest 视窗于北京时间 23:59 退场，Editor 窗口仍保留；厂商另有新版入口与迁移安排。|CN01|October 15, 2026
+06||v2.95.0|enhancement|队员结束计划后审批弹窗出现在 lead 终端，可通过、继续规划或退出，并增加关停握手。|CN06|v2.95.0
+06||v2.140.0|fix|修复主 Agent 回合已结束但成员仍运行时停止无效的问题，取消单会话不会波及其他会话成员。|CN07|v2.140.0
+07|2026-02-26||preview|发布华为云码道代码智能体公测版，集成 IDE、自主开发、规范驱动与代码库索引。|huawei-preview|2026-02-26
+07|2026-04-25||preview|公测更新列入自动快照与回退的检查点功能。|huawei|2026年04月25日
+07|2026-11-17||introduction|商用栏列入可集成企业规范的 Review Agent 与提供批量修复的 Fix Agent。|huawei|2026年11月17日
+08|2026-03-31|SOLO 桌面 v0.1.0|introduction|发布 SOLO 桌面及网页，支持通用 Work 与开发 Code 两种工作模式。|CN17|v0.1.0
+08|2026-06-09|TraeWork v0.1.18|enhancement|SOLO 升级为 TraeWork，支持企业版账号登录。|CN17|v0.1.18
+08|2026-06-18|v0.1.19~0.1.20|preview|逐步灰度自动执行 Agent 删除工具，所删文件可在系统回收站找回。|CN17|v0.1.19
+09|2025-11-20||introduction|Google 发布文章介绍 Antigravity 的编辑器与管理代理入口，代理可用工件呈现工作。日期为文章披露日。|antigravity|NOV. 20, 2025
+09|2026-05-19|2.0|enhancement|独立桌面应用编排多个代理，I/O 同期公布 CLI 等开发入口。|M07-3|Antigravity 2.0
+10|2026-04-20|CLI 0.105.0 / Desktop 0.61.0|default|Missions worker 发起的权限请求改为自动拒绝。|M01-3|Missions worker permission requests are now auto-denied
+10|2026-08-29|CLI 0.208.0 / Desktop 0.165.0|fix|修复中断、暂停或恢复后里程碑验证被跳过的情况。|M01-3|August 29, 2026
+12|2026-07-16|GitLab 19.2|GA|Custom Flows 与 GitLab CLI 的相关代理能力一般可用，强调组织内受控运行。|M04-3|Custom Flows
+12|2026-11-19|GitLab 19.6|preview|定时 automations 为 beta，用独立服务账号并提供运行记录。|M04-4|service account
+13|2026-06-02||introduction|为 Copilot cloud agent 提供定时与自动任务入口，受当时可选仓库范围限制。|W08|schedule
+13|2026-10-28||GA|连贯的云端开发体验及 cloud sandbox GA，支持从不同入口接续任务。|W21|generally available
+14|2026-04-14|Routines|introduction|以 Routines 名称推出云端运行的例行任务能力；当前文档改名，改名日期未定位。|F04-2|April 14, 2026
+14|2026-10-26|v2.1.311|fix|修复 Anthropic 托管环境中 owner 退出后重新加入组织时 routine 持续锁定的问题。|claude-release|staying locked after their owner
+15|2026-11-10|v1.59.0|enhancement|goose-agent GDK 加入停止、审批与工具 hook 的操作扩展点。|E03-4|v1.59.0
+15|2026-11-17|v1.60.0|enhancement|oi-kit 增加 steering 操作，加入可执行命令及 SlashCommandOperation。|E03-4|Steering operation
+16|2026-11-02|Sourcegraph Cloud|enhancement|后台批执行期间可继续原对话并单独调查失败。与 src-cli 为不同发行面。|W12|batch
+16|2026-11-09|Sourcegraph Cloud|enhancement|在对话中确认 merge，并将会话及其工作交接给其他工程师。|W11|merge
+17|2025-09-30|DevCenter|enhancement|新 DevCenter 允许按 recipe 配置工作视图并追踪代码现代化进度。|moderne|September 30, 2025
+17|2026-05-19|Changelog|introduction|发布按 changeset 汇总跨仓变更的 Changelog，展示阻塞和待处理项。|A17|changeset
+18|2025-12-01||GA|AWS Transform custom 一般可用，支持用预建与自定义方案执行可重复迁移。|P15|Dec 1, 2025
+18|2026-03-31||GA|其自动代码库分析功能一般可用，输出架构和技术债报告及现代化建议。|aws|2026-03-31
+19|2025-09-16|CLI|introduction|推出 CodeRabbit CLI，将审查反馈带入本地开发和编码代理的迭代过程。|coderabbit|September 16, 2025
+19|2026-03-11|Pre-Merge Checks|introduction|提出合并前的内置和自定义检查，可选择 warning 或 error。|M05-3|March 11, 2026
+21|2026-08-01||policy|云效 AI 助手和站点架构调整生效，公告区分以往代码评审免费能力与新计费规则；为可用性/商业政策变化。|A21A|2026
+21|2025-10||month|月度表记载 Codeup 合并请求流程新增 AI 代码评审。原文仅有月份。|ali|代码评审流程支持 AI 智能评审
+21|2026-03||month|月度表记载可用组织指定代码库统一配置评审规则。原文仅有月份。|ali|智能评审支持设置全局代码评审规则
+21|2026-09||month|月度表记载新增采纳/误报反馈、评论中唤起评审和管理员选择模型。原文仅有月份。|ali|代码行内评论增加采纳
+22||2025.5|enhancement|部分升级引入的问题可放入 sandbox，暂不影响质量门禁。|A22|sandbox
+22||2025.6|enhancement|新增质量门禁失败和由失败转为通过的 Slack 即时通知。|A22|Slack integration
+23|2023-05-30|标题 5/31/2023|enhancement|付费 beta 的队列新增 fast-forward merge 选项。按正文署名日期记录，标题晚一天；源站当前 404，仅保留检索索引内厂商正文。|graphite-index1|paid beta
+23|2024-04-09|标题 4/10/2024|enhancement|企业版队列开放给 bot 和非 Graphite 用户。按正文署名日期记录，标题晚一天，仅索引内厂商正文可读。|graphite-index2|Bots and non-Graphite users
+24|2025-11-12||enhancement|后续包含某 PR 的批次通过全部检查和条件时，可选择跳过中间结果并提前合入。|mergify|skip_intermediate
+24|2026-11-12||enhancement|允许在检查/批准尚未就绪时登记排队意向，更新提交会取消该请求。|A24|queue
+26|2025-05-14||enhancement|增加开跑前验证 flag、metric 及自定义持续时间的能力。|A26A|Guarded
+26|2025-07-24||introduction|Guarded Rollouts 扩展至 AI Configs。|ld|July 24, 2025
+28|2026-05-26||deprecation|控制台为 stack access 和 task policies 增加弃用提示。|spacelift|deprecation banners
+28|2026-09-01||default|proposed/test runs 在 ready 两天后取消；持锁的 tracked、task、destroy runs 在 ready 七天后取消。|spacelift|seven days in the ready state
+28||Self-hosted v5.1.1|version-context|版本化指南列出旧 initialization/task policies 向 approval policy 的迁移方式。仅确认该版本文档范围，无充分变化时点。|A28|Migrating to Approval Policies
+29|2026-07-29|44.0.0|enhancement|pep621 manager 在存在 pixi.lock 时同步更新；该 release 特别说明 major bump 标记失误。|renovate44|pixi.lock
+29|2026-11-19|44.253.4|fix|修复 GitLab 对新推送提交重新启用 automerge 的行为。|D06-3|re-enable automerge
+30|2025-07-24||GA|Snyk Generated Pull Requests 报表 GA，汇总手动与自动修复 PR 的跨项目状态。|snyk|July 24, 2025
+30|2026-02-04||preview|Breakability Analysis 以 Early Access 为升级 PR 提供兼容性风险信息。|A30|Breakability
+31|2025-07-02||introduction|厂商发布 AI SRE / Investigations，汇集事故上下文给出调查发现。|P03|July 2, 2025
+31|2026-01-15||enhancement|聊天调查更注重人工已确认的发现，提供定位到具体 PR 的内容。|P04|January
+32|2026-06-04||introduction|Slack 中的 Rootly Agent 可读取事故数据、频道讨论与通话记录，并回答追问。|rootly|June 4, 2026
+32|2026-11-12||introduction|Teams 加入调查、追问、值班呼叫及接班摘要入口。|A32|Microsoft Teams
+33|2025-06-10|Bits AI SRE|preview|Limited Availability 阶段使用遥测和服务上下文做初步告警调查。|dd|Limited Availability
+33|2025-12-02|Bits AI SRE|GA|Datadog 宣布该 SRE 调查代理一般可用。|A33|Generally Available
+34|2025-06-17|Seer|GA|Seer AI Debugger 一般可用，定位和修复应用问题。|sentry|June 17, 2025
+34|2026-04-28|Seer Agent|preview|新 Seer Agent 问答/调试形态进入 open beta；与已有 debugger 的 GA 范围不同。|A34|open beta
+35|2025-11-06||enhancement|Ad-Hoc Tasks 改为向分支推入改动并触发用户 CI，失败后会尝试修复，属该任务子类。|circle|Nov 06, 2025
+35|2026-02-27||enhancement|从 pipeline/job 页一键传递失败作业及上下文给 Chunk。|P02|Feb
+21|2025-11-05||campaign-context|云效 DevOps 署名的智能评审体验官招募开始，限活动登记与反馈，不作为引入功能的日期。|ali-campaign|2025年11月5日
+21|2025-10-14||community-context|阿里云云原生社区账号文章称推出按 commit 评审。该页明确使用社区供稿条款；日期作为发布披露，不代替云效正式版本日志。|ali-commit ali-profile|2025-10-14

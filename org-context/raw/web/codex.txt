@@ -1,0 +1,349 @@
+检索参数 {"search_query":[{"q":"site:developers.openai.com codex AGENTS.md discovery instructions"}],"response_length":"medium"}
+Codex Prompting Guide (https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide?%2Ctrk=article-ssr-frontend-pulse_little-text-block)
+citeturn6search0 [wordlim: 200] Published: 8 months ago; Crawled: 6 days ago;   * Each discovered file becomes its own user-role message that starts with # AGENTS.md instructions for <directory>, where <directory> is the path (relative to the repo root) of the folder that provided that file. ... If an AGENTS.override.md was used, its directory name still appears in the header (e.g., # AGENTS.md instructions for backend/api), so the context is obvious in the transcript. ... If you would prefer your codex agent to use terminal-wrapping tools (like a dedicated `list_dir(‘.’)` tool instead of `terminal(‘ls .’)`, this generally works well.
+## Mid-Rollout User Updates
+
+The Codex model family can surface mid-rollout user updates while it’s working. For codex versions prior to gpt-5.3-codex, these updates are system-generated rather than promptable, so we advise against adding instructions to the prompt about intermediate plans or messages to the user for those. For gpt-5.3-codex and after, these updates are more communicative and provide more critical information about what’s happening and why and work similarly to how intermediate messages work for other GPT-5 series models and can be prompted according to the Preambles & Personality section below.
+
+## Using agents.md
+
+Codex-cli automatically enumerates these files and injects them into the conversation; the model has been trained to closely adhere to these instructions.
+
+1. Files are pulled from ~/.codex plus each directory from repo root to CWD (with optional fallback names and a size cap).
+2. They’re merged in order, later directories overriding earlier ones.
+3. Each merged chunk shows up to the model as its own user-role message like so:
+    
+    `# AGENTS.md instructions for <directory>
+    <INSTRUCTIONS>
+    ...file contents...
+    </INSTRUCTIONS>`
+
+Additional details
+
+  * Each discovered file becomes its own user-role message that starts with # AGENTS.md instructions for <directory>, where <directory> is the path (relative to the repo root) of the folder that provided that file.
+  * Messages are injected near the top of the conversation history, before the user prompt, in root-to-leaf order: global instructions first, then repo root, then each deeper directory. If an AGENTS.override.md was used, its directory name still appears in the header (e.g., # AGENTS.md instructions for backend/api), so the context is obvious in the transcript.
+--------------------------------------------------------------------------------
+Codex Prompting Guide (https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn6search1 [wordlim: 200] Published: 8 months ago; Crawled: today;   * Each discovered file becomes its own user-role message that starts with # AGENTS.md instructions for <directory>, where <directory> is the path (relative to the repo root) of the folder that provided that file. ... If an AGENTS.override.md was used, its directory name still appears in the header (e.g., # AGENTS.md instructions for backend/api), so the context is obvious in the transcript. ... If you would prefer your codex agent to use terminal-wrapping tools (like a dedicated `list_dir(‘.’)` tool instead of `terminal(‘ls .’)`, this generally works well.
+
+## Mid-Rollout User Updates
+
+The Codex model family can surface mid-rollout user updates while it’s working. For codex versions prior to gpt-5.3-codex, these updates are system-generated rather than promptable, so we advise against adding instructions to the prompt about intermediate plans or messages to the user for those. For gpt-5.3-codex and after, these updates are more communicative and provide more critical information about what’s happening and why and work similarly to how intermediate messages work for other GPT-5 series models and can be prompted according to the Preambles & Personality section below.
+
+## Using agents.md
+
+Codex-cli automatically enumerates these files and injects them into the conversation; the model has been trained to closely adhere to these instructions.
+
+1. Files are pulled from ~/.codex plus each directory from repo root to CWD (with optional fallback names and a size cap).
+2. They’re merged in order, later directories overriding earlier ones.
+3. Each merged chunk shows up to the model as its own user-role message like so:
+    
+    `# AGENTS.md instructions for <directory>
+    <INSTRUCTIONS>
+    ...file contents...
+    </INSTRUCTIONS>`
+
+Additional details
+
+  * Each discovered file becomes its own user-role message that starts with # AGENTS.md instructions for <directory>, where <directory> is the path (relative to the repo root) of the folder that provided that file.
+  * Messages are injected near the top of the conversation history, before the user prompt, in root-to-leaf order: global instructions first, then repo root, then each deeper directory. If an AGENTS.override.md was used, its directory name still appears in the header (e.g., # AGENTS.md instructions for backend/api), so the context is obvious in the transcript.
+
+# Compaction
+
+Compaction unlocks significantly longer effective context windows, where user conversations can persist for many turns without hitting context window limits or long context performance degradation, and agents can perform very long trajectories that exceed a typical context window for long-running, complex tasks. --------------------------------------------------------------------------------
+Rethinking skills and prompts for GPT-6 Astra | OpenAI Developers (https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)
+citeturn6search2 [wordlim: 200] Published: 2 months ago; Crawled: 4 days ago; If you’ve been using agents like Codex for your projects over the last year, you’ve likely accumulated a lot of instructions as you worked to steer the models toward good outcomes. ... These instructions can take many forms: skills, `AGENTS.md`, and your task prompts are all shaping how the model gets work done. ... Because `AGENTS.md` applies whenever the model works in your repository, you should frequently revisit each instruction and ask yourself whether it’s still needed.
+
+Sep 11, 2026 Codex
+
+# Rethinking skills and prompts for GPT-6 Astra
+
+Revisit skill descriptions, AGENTS.md, and task prompts to avoid bloated context.
+
+Author: Eric Provencher
+
+Coding agents have come a long way, and best practices are changing fast. With more capable models, what used to require a lot of handholding and scaffolding no longer does.
+
+If you’ve been using agents like Codex for your projects over the last year, you’ve likely accumulated a lot of instructions as you worked to steer the models toward good outcomes. With each release, it’s been worth revisiting those assumptions, but with GPT-6 Astra, it’s more important than ever.
+
+These instructions can take many forms: skills, `AGENTS.md`, and your task prompts are all shaping how the model gets work done.
+
+## Better skills
+
+These instructions can be in the form of skills, which are essentially prompts stored as Markdown files that can also be packaged with resources and bundled scripts. Generally, they are most useful for guidance around a specific workflow, or when using certain apps.
+Guidance that helps Sol or Luna may overconstrain GPT-6 Astra, so consider which models will use the instructions you leave behind.
+
+## Up-to-date AGENTS.md
+
+Because `AGENTS.md` applies whenever the model works in your repository, you should frequently revisit each instruction and ask yourself whether it’s still needed.
+
+Requiring a stack of docs or a full repo map before every edit is excessive for a typo fix. GPT-6 Astra can work out what it needs to read without being pushed to review the whole project before every change.
+
+Read what the task needs
+
+Bad
+
+Before every edit, read architecture.md, database.md, and deployment.md.
+
+Good
+
+Use architecture.md for service boundaries, database.md for schema changes, and deployment.md when preparing a deployment.
+
+Prompting the model to read files before every edit is a great way to burn context and slow work down. Pointing to some docs can still be helpful, however, so long as it is contextual. Be sure to keep your docs updated too!
+
+Previous models needed encouragement to run tests and check their work. GPT-6 Astra does that on its own, so the same instructions can lead to unnecessary testing.
+
+GPT-6 Astra is thorough, but it can be more tentative about how far to take a task. Sometimes it needs a little push to keep going. You can use `AGENTS.md` to give it permission for a specific workflow you know is safe, such as a local test suite:
+
+> The local tests use disposable fixtures and have no production access. Run them, fix failures caused by the requested change, and rerun affected tests without asking for approval at each step.
+
+## Decision boundaries
+
+Pay careful attention to how you describe boundaries. If a previous model did things on your behalf without permission, you may have added strong language to make it ask first. That can be useful, but GPT-6 Astra, as our most aligned model, has much better judgment and will not perform tasks unless it knows it is safe – so you should treat it as such.
+
+If you stated boundaries previously because you wanted to prevent other models from going too far and you’re now switching to GPT-6 Astra, consider updating that language: Astra could take it too seriously and may stop work where you’d actually be happy for it to continue.
+--------------------------------------------------------------------------------
+Iterating Development Workflows with Codex (https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex)
+citeturn6search3 [wordlim: 200] Published: 3 months ago; Crawled: yesterday; The `AGENTS.md` file is optional but recognized by Codex. ... When present, Codex reads this file as persistent repository guidance before performing work. ... This helps prevent agent drift and creates a clear, human-gated development history that, when combined with version control, creates an easy-to-read audit trail for future use including debugging. ...     `Perform a read-only discovery pass of this repository. ...     - `AGENTS.md`: durable repository instructions and working agreements
+
+Aug 3, 2026
+
+# Iterating Development Workflows with Codex
+
+Tony Alaniz
+
+View on GitHub Download raw
+
+## Introduction
+
+While the vast capabilities Codex offers can be empowering, it can be difficult to know where to start integrating it into your workflows. This recipe shows a practical approach to incorporating Codex while making iterative improvements to continuously leverage its abilities more effectively.
+
+The `AGENTS.md` file is optional but recognized by Codex. The other files in this recipe are recommended workflow conventions, not files Codex requires. Adapt the structure to fit your project.
+
+Below is the completed structure based on the design of a simple to-do list application. Files in the `context/` directory are generated during each phase of development and contain phase-specific context records.
+
+Example Directory Structure
+    
+    `.
+    ├── .gitignore
+    ├── AGENTS.md
+    ├── GOALS.md
+    ├── PLANS.md
+    ├── PROMPTS.md
+    ├── README.md
+    └── harness
+        ├── build
+        │   ├── phase-00-repository-foundation.md
+        │   ├── phase-01-create-list.md
+        │   ├── phase-02-update-complete-delete.md
+        │   └── phase-03-demo-verification.md
+        ├── build-log.md
+        ├── code_review
+        │   └── .gitkeep
+        └── context
+            └── README.md
+    
+    4 directories, 13 files`
+
+## Create harness and build phase files
+
+### Agents and plans
+
+For new projects, the best place to start is by populating the `AGENTS.md` file. When present, Codex reads this file as persistent repository guidance before performing work. It is an optional convention for work that benefits from durable execution. In general, agents files should contain items like:
+
+  * The goal of the repository and a high-level summary
+  * Coding conventions
+  * Testing standards
+  * Relevant context files
+### Build phase files
+
+Once the files the harness will use for context have been generated, the next step is to break down the stages of each build into individual files to identify:
+
+  * The purpose of each step
+  * Any files needed for additional context
+  * Acceptance criteria
+  * Boundaries
+
+For discoverability, it is recommended to keep these files in a manually created `harness/build/` folder in the root project directory, typically in the format `<phase-number>-<phase-title>.md`. The corresponding file, along with the prompt and goal from the harness context files can then be provided to Codex at the beginning of each phase. This helps prevent agent drift and creates a clear, human-gated development history that, when combined with version control, creates an easy-to-read audit trail for future use including debugging.
+
+Generate Build Phase Files
+    
+    `Perform a read-only discovery pass of this repository.
+    
+    Read the applicable repository instructions and planning sources, including:
+    
+    - `AGENTS.md`
+## Context files
+
+In addition to development framework files, capture the session-specific decisions made during each phase that materially affect the project.
+
+Adding a prompt like the one below to `AGENTS.md` instructs Codex to capture relevant context for later reuse. Store phase context as `harness/context/phase-<NN>-<phase-slug>-context.md`.
+
+Capture Build Phase Context using `AGENTS.md`
+    
+    `## Phase context requirements
+    
+    For each approved implementation phase, maintain one phase-specific context file:
+    
+    `harness/context/phase-<NN>-<phase-slug>-context.md`
+    
+    Create the context file only when the phase begins and after any required
+    approval. Read the applicable repository instructions, goal, prompt, build
+    file, prior context, and build-log evidence before recording
+    new context.
+    
+    ### Materiality test
+    
+    Record information only when omitting it could reasonably:
+    
+    - Change the approved scope or implementation approach
+    - Cause a future phase to repeat discovery or make a different decision
+    present, report the exact path and ask whether to update it or choose another
+    name. Do not overwrite an existing skill without explicit approval.
+    
+    ## Read-only discovery
+    
+    Before creating the skill:
+    
+    1. Read the applicable repository `AGENTS.md` files.
+    2. Inspect existing harness examples and conventions in the current repository.
+    3. Read `PLANS.md`, `GOALS.md`, and `PROMPTS.md` when present.
+    4. Inspect existing `harness/` files without modifying them.
+    5. Identify concrete requests that should and should not trigger the skill.
+    6. Determine which behavior belongs in `SKILL.md`, reference files, scripts,
+       and tests.
+    7. Read the `$skill-creator` instructions and required references completely.
+    
+    Do not infer that one repository’s harness structure is mandatory for every
+    project.
+    
+    ## Before writing
+    
+    Present:
+    
+    - The proposed skill path
+    - The triggering description
+    - The files and resources to be created
+    - The behavioral scope
+    
+    ## Artifact ownership
+    
+    Teach the skill to distinguish these possible artifacts:
+    
+    - `AGENTS.md`: durable repository instructions and working agreements
+    - `PLANS.md`: roadmap and planned phase sequence
+    - `GOALS.md`: outcomes, success conditions, scope, and non-goals
+    - `PROMPTS.md`: reusable workflow entry points
+    - `harness/build/<phase>.md`: approved scope and plan for one phase
+    - `harness/context/<phase>.md`: material discoveries, decisions, constraints,
+      and unresolved questions for one phase
+    - `harness/build-log.md`: observed progress and verification evidence
+    - `harness/code_review/`: detailed review findings when required
+    
+    These are optional conventions, not files Codex requires automatically. The
+    skill must extend existing repository conventions instead of creating every
+    artifact by default.
+    
+    ## Planning-only boundary
+    
+    When the user requests only planning or harness artifacts:
+    
+    - Create only the explicitly approved files.
+    
+    Do not modify any repository, harness, or skill files during the initial
+    postmortem.
+    
+    ## Read-only discovery
+    
+    Read the applicable sources, including:
+    
+    - Global and repository `AGENTS.md` files
+    - `PLANS.md`, `GOALS.md`, and `PROMPTS.md`, when present
+    - `harness/build-log.md`
+    - Applicable files under `harness/build/`
+    - Applicable files under `harness/context/`
+    - Code-review and postmortem artifacts
+    - Relevant implementation diffs
+    - Test and verification results
+    - Current Git branch and working-tree state
+    - User corrections, approval decisions, and accepted limitations
+    - The installed `harness-author` skill
+    - Other skills invoked during the workflow
+    - Their scripts, references, metadata, and tests
+    - Existing skills that could already own an identified procedure
+    
+    Use current files and observed evidence as the source of truth. Do not treat
+    plans, intended behavior, prior conversations, or unverified reports as proof
+--------------------------------------------------------------------------------
+Custom Code Review rules for Codex | OpenAI Developers (https://developers.openai.com/blog/custom-code-review-rules-for-codex)
+citeturn6search4 [wordlim: 200] Published: 4 months ago; Crawled: today; Codex Code Review can now use custom repository rules in `AGENTS.md` to catch those issues and point authors to the guidance behind a finding. If you already use `AGENTS.md` to guide coding tasks, the same file can help guide reviews, too. ... An experienced reviewer may remember why that field needs to stay; a new contributor or an agent working in the service for the first time probably won’t. ... Codex could find and cite local guidance that a default review might miss, but broad instructions could easily create noise.
+
+Jul 20, 2026 Codex
+
+# Custom Code Review rules for Codex
+
+Provide more detailed rules for Codex to spot issues and better adhere your conventions during code review.
+
+Author: Hari Srikanth
+
+Image: Custom Code Review rules for Codex
+
+When doing code reviews with Codex, some comments keep coming back. It could be about preserving an older API contract, keeping customer data out of logs, or avoiding a rename that would break another service. These checks are important, but they are easy to miss when the context lives with a handful of reviewers.
+
+Codex Code Review can now use custom repository rules in `AGENTS.md` to catch those issues and point authors to the guidance behind a finding. If you already use `AGENTS.md` to guide coding tasks, the same file can help guide reviews, too. This is especially useful when contributors or coding agents are working in an unfamiliar part of a repository and may not know its history yet. In this post, we’ll show where repository rules fit and how to write them well, including what we learned while testing them.
+--------------------------------------------------------------------------------
+Modernizing your Codebase with Codex (https://developers.openai.com/cookbook/examples/codex/code_modernization?_bhlid=0ff1e97d56d04ae51782518f501aa988303a5ca6)
+citeturn6search5 [wordlim: 200] Published: last year; Crawled: today; We’re taking inspiration from the Using PLANS.md for multi-hour problem solving cookbook to create an AGENTS.md and PLANS.md file that will be placed in a .agent folder. ... If you want Codex to tighten AGENTS or PLANS for your specific repo, you can run:
+
+## Phase 0 - Set up AGENTS and PLANS
+
+Goal: Give Codex a lightweight contract for how planning works in this repo, without overwhelming people with process.
+
+We’re taking inspiration from the Using PLANS.md for multi-hour problem solving cookbook to create an AGENTS.md and PLANS.md file that will be placed in a .agent folder.
+
+  * AGENTS.md: If you haven’t created an AGENTS.md for your repository yet, I suggest using the /init command. Once generated, reference the add a section in your AGENTS.md to instruct the agent to reference the PLANS.md.
+  * PLANS.md: Use the example provided in the cookbook as a starting point
+
+These explain what an ExecPlan is, when to create or update one, where it lives, and what sections every plan must have.
+
+### Where Codex CLI helps
+
+If you want Codex to tighten AGENTS or PLANS for your specific repo, you can run:
+    
+    `Please read the directory structure and refine .agent/AGENTS.md and .agent/PLANS.md so they are a clear, opinionated standard for how we plan COBOL modernization work here. --------------------------------------------------------------------------------
+Using PLANS.md for multi-hour problem solving (https://developers.openai.com/cookbook/articles/codex_exec_plans?trk=article-ssr-frontend-pulse_little-text-block%5C)
+citeturn6search6 [wordlim: 200] Published: 1.1 years ago; Crawled: today; Codex and the `gpt-5.2-codex` model (recommended) can be used to implement complex tasks that take significant time to research, design, and implement. ... We enable Codex to use these documents by first updating `AGENTS.md` to describe when to use `PLANS.md`, and then of course, to add the `PLANS.md` file to our repository. ...     When writing complex features or significant refactors, use an ExecPlan (as described in .agent/PLANS.md) from design to implementation. ... The prompting in this document was carefully chosen to provide significant amounts of feedback to users and to guide the model to implement precisely what a plan specifies.
+
+## `AGENTS.md`
+
+`AGENTS.md` is a simple format for guiding coding agents such as Codex. We describe a term that users can use as a shorthand and a simple rule for when to use planning documents. Here, we call it an “ExecPlan”. Note that this is an arbitrary term, Codex has not been trained on it. This shorthand can then be used when prompting Codex to direct it to a particular definition of a plan.
+
+Here’s an `AGENTS.md` section instructing an agent about when to use a plan:
+    
+    `# ExecPlans
+    
+    When writing complex features or significant refactors, use an ExecPlan (as described in .agent/PLANS.md) from design to implementation.`
+
+## `PLANS.md`
+
+Below is the entire document. The prompting in this document was carefully chosen to provide significant amounts of feedback to users and to guide the model to implement precisely what a plan specifies. Users may find that they benefit from customizing the file to meet their needs, or to add or remove required sections.
+    
+    `# Codex Execution Plans (ExecPlans):
+    
+    This document describes the requirements for an execution plan ("ExecPlan"), a design document that a coding agent can follow to deliver a working feature or system change. Treat the reader as a complete beginner to this repository: they have only the current working tree and the single ExecPlan file you provide. There is no memory of prior plans and no external context.
+--------------------------------------------------------------------------------
+Using skills to accelerate OSS maintenance | OpenAI Developers (https://developers.openai.com/blog/skills-agents-sdk?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn6search7 [wordlim: 200] Published: 8 months ago; Crawled: today; The Codex customization docs describe why this works well: skills are a good fit for repeatable workflows because they can carry richer instructions, scripts, and references without bloating the agent’s context up front. ... The AGENTS.md guide describes these files as repository-level instructions that travel with the codebase and apply before the agent starts work. ... The Codex skills docs and customization docs describe the same behavior from the Codex side: Codex starts with each skill’s metadata for discovery, loads `SKILL.md` only when it chooses the skill, and reads references or runs scripts only when needed. ... Trigger when wrapping up a moderate-or-larger change (runtime code, tests, build config, docs with behavior impact) and you need the PR-ready summary block with change summary plus PR draft text.
+--------------------------------------------------------------------------------
+Docs MCP | OpenAI Developers (https://developers.openai.com/learn/docs-mcp?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn6search8 [wordlim: 200] Crawled: 3 days ago; To have Codex reliably use the MCP server, add this snippet to your `AGENTS.md`: ...   * If you don’t have the snippet in the AGENTS.md file, you need to explicitly tell your agent to consult the Docs MCP server for the answer. ... It tells the agent to use Docs MCP tools first for OpenAI questions, then fall back to official OpenAI domains.
+--------------------------------------------------------------------------------
+Using GPT-6 | OpenAI API (https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra&trk=article-ssr-frontend-pulse_little-text-block)
+citeturn6search9 [wordlim: 200] Crawled: today; It can be more sensitive to instructions contained in skills and other files, such as `AGENTS.md`. ... Use this prompt to find silent and conflicting guidance when your application loads many skills and instruction files such as `AGENTS.md`.
+--------------------------------------------------------------------------------
+OpenAI for Developers in 2025 (https://developers.openai.com/blog/openai-for-developers-2025)
+citeturn6search10 [wordlim: 200] Published: 10 months ago; Crawled: today; At the same time, support for AGENTS.md and MCP made Codex easier to adapt to your repo, extend with third-party tools and context, and even orchestrate Codex via the Agents SDK (by running the CLI as an MCP server). ... Beyond the CLI, Codex expanded support for longer sessions and iterative problem solving across the web + cloud and the IDE extension, tightening the loop between conversational reasoning and concrete code changes.
+--------------------------------------------------------------------------------
+Blog | OpenAI Developers (https://developers.openai.com/blog)
+citeturn6search11 [wordlim: 200] Crawled: today; Codex】 Sep 11 Rethinking skills and prompts for GPT-6 Astra Revisit skill descriptions, AGENTS.md, and task prompts to avoid bloated context. ... Codex Aug 28 Meet Rosalind Workbench: Empowering every scientist to be their own research team How guided tasks, scientific viewers, and sequencing analysis help researchers follow a question from data to evidence. ... General Mar 25 How Perplexity Brought Voice Search to Millions Using the Realtime API Lessons from how Perplexity Computer's voice agent was built with the Realtime API.
+

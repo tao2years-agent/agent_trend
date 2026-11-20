@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:https://github.com/cline/cline/releases</id>
+  <link type="text/html" rel="alternate" href="https://github.com/cline/cline/releases"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/cline/cline/releases.atom"/>
+  <title>Release notes from cline</title>
+  <updated>2026-11-04T21:08:20Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/desktop-nightly-20261104233655</id>
+    <updated>2026-11-04T21:08:20Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/desktop-nightly-20261104233655"/>
+    <title>desktop-nightly-20261104233655: feat(core): delegate UX verification to subagents (#15523)</title>
+    <content type="html">&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;feat(core): delegate UX verification to a subagent&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fix(agents): preserve delegated tool approval policies&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fix(core): preserve worker identity and proxied execution mode&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;fix(core): preserve child identity across Hub event projection&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>abeatrix</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/68532117?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/desktop-nightly-20261030214224</id>
+    <updated>2026-10-30T21:21:13Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/desktop-nightly-20261030214224"/>
+    <title>desktop-nightly-20261030214224</title>
+    <content type="html">&lt;p&gt;Render UX verification reports with existing Desktop artifact access …&lt;/p&gt;</content>
+    <author>
+      <name>abeatrix</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/68532117?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/v4.1.26</id>
+    <updated>2026-10-26T09:06:51Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/v4.1.26"/>
+    <title>v4.1.26</title>
+    <content type="html">&lt;h3&gt;Added&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Cloud tasks: Settings &amp;gt; API Configuration has a Local | Cloud toggle when cloud sessions are on. Cloud picks the Cline model new cloud tasks run on, saved separately from your local models. Clicking the model label in a cloud session&#39;s composer opens it there.&lt;/li&gt;
+&lt;li&gt;Starting or resuming a cloud sandbox shows a progress card with the repo, branch and steps (start sandbox, clone repository, start agent). It collapses once the agent starts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Changed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Cloud sessions hide the Plan/Act toggle and the auto-approve bar instead of showing them disabled.&lt;/li&gt;
+&lt;li&gt;With no model chosen, the Cline provider uses Claude Sonnet 5.5 again, which is back at the top of Cline&#39;s recommended list.&lt;/li&gt;
+&lt;li&gt;Model requests retry at most 3 times instead of 5.&lt;/li&gt;
+&lt;li&gt;Kimi K3 now gets &lt;code&gt;max&lt;/code&gt; reasoning for Extra High and Max, instead of an &lt;code&gt;xhigh&lt;/code&gt; setting it rejects.&lt;/li&gt;
+&lt;li&gt;Refreshed the model catalog. Adds the CommandCode, Reflection, Liquid Inference and Munito AI providers and drops CrofAI, iFlow and Llama. The Cline free list adds Reflection Beam, Nemotron 3.5 Lightning and Laguna S 2.1 and drops Mimo V2.6 Flash and Muse Spark 1.3 Contributor. ClinePass now defaults to Kimi K3.1 Pro and adds MiniMax M3.1 Flash and DeepSeek V4.1 Flash 1017. Default models change for most other providers, mostly to Kimi K3.1 Pro, MiniMax M3.1 Flash or DeepSeek V4.1 Flash 1017. If you use a provider without pinning a model, expect a different default.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Fixed&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;GPT-6 models (such as &lt;code&gt;gpt-6-sol&lt;/code&gt; and &lt;code&gt;gpt-6.1-sol&lt;/code&gt;) work on OpenAI and Azure OpenAI-compatible endpoints, and SAP AI Core no longer rejects requests with &quot;Unsupported parameter: &#39;max_tokens&#39;&quot;. Both now get &lt;code&gt;max_completion_tokens&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Gemini API keys (the &lt;code&gt;gemini&lt;/code&gt; provider) no longer send native Google Search. Free-tier keys failed every turn with a 429 quota error on Gemini 3+, and on Gemini 2.x every Cline tool was dropped.&lt;/li&gt;
+&lt;li&gt;Toggling Plan/Act while a task is starting no longer drops your first prompt, and the session no longer keeps running with the other mode&#39;s tools.&lt;/li&gt;
+&lt;li&gt;Disabled rules stay disabled.&lt;/li&gt;
+&lt;li&gt;Starting a command no longer moves keyboard focus into the terminal, so text you&#39;re typing in the chat no longer lands in the shell.&lt;/li&gt;
+&lt;li&gt;Cancelling a task or opening another one while Cline is asking a question no longer lets your next message get taken as the answer to the old question.&lt;/li&gt;
+&lt;li&gt;A turn whose connection drops after the model has streamed only reasoning is now retried instead of ending the task.&lt;/li&gt;
+&lt;li&gt;Auto-compaction no longer runs for models with an unknown context limit, and it no longer runs again every few tool calls after the first compaction.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ask_question&lt;/code&gt;: the model keeps going after you pick an option, and empty answers are rejected.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;run_commands&lt;/code&gt; with an empty command list now returns an error instead of a silent success. On PowerShell, the tool tells the model how quote escaping works and to confirm recursive deletes first.&lt;/li&gt;
+&lt;li&gt;Task header badges wrap instead of hiding the close button, the GitHub connection check no longer flashes a loading indicator, and the Local/Cloud toggle&#39;s padding is fixed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/cline/cline/compare/v4.1.25...v4.1.26&quot;&gt;&lt;tt&gt;v4.1.25...v4.1.26&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/ui/v0.2.0</id>
+    <updated>2026-10-26T03:33:55Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fui%2Fv0.2.0"/>
+    <title>sdk/ui/v0.2.0</title>
+    <content type="html">&lt;p&gt;@cline/ui@0.2.0&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/shared/v0.2.0</id>
+    <updated>2026-10-26T03:33:46Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fshared%2Fv0.2.0"/>
+    <title>sdk/shared/v0.2.0</title>
+    <content type="html">&lt;p&gt;@cline/shared@0.2.0&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/sdk/v0.2.0</id>
+    <updated>2026-10-26T03:34:08Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fsdk%2Fv0.2.0"/>
+    <title>SDK v0.2.0</title>
+    <content type="html">&lt;ul&gt;
+&lt;li&gt;Starting a session that already has a run in progress now reattaches to the live session instead of replacing its runtime. Before, the original run kept going but couldn&#39;t be reached, and its transcript writes landed on a stale snapshot. A start that includes a prompt while a run is in progress is rejected&lt;/li&gt;
+&lt;li&gt;The hub records every client that registered a capability for a session, including clients that join a task that&#39;s already running, and sends each request to the first one still connected. If none is left, the request fails quickly with a message the user can act on, instead of waiting forever&lt;/li&gt;
+&lt;li&gt;A turn whose connection drops after the model has streamed only reasoning is now retried, and the partial reasoning is discarded. Turns with text, media or tool calls are still never retried&lt;/li&gt;
+&lt;li&gt;Model requests retry at most 3 times after the first attempt (down from 5). Failed attempts are recorded in Langfuse traces, and cancelled requests are no longer reported as Langfuse errors&lt;/li&gt;
+&lt;li&gt;AI SDK updated to &lt;code&gt;ai&lt;/code&gt; 7.0.136 / &lt;code&gt;@ai-sdk/provider-utils&lt;/code&gt; 5.0.58. &lt;code&gt;max&lt;/code&gt; reasoning now reaches the provider: the gateway no longer turns it into &lt;code&gt;xhigh&lt;/code&gt;, and Kimi K3 gets &lt;code&gt;max&lt;/code&gt; for Extra High and Max. Empty Anthropic turns are still retried despite the new &lt;code&gt;anthropic.*&lt;/code&gt; custom stream parts&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;gemini&lt;/code&gt; provider no longer sends native Google Search. On Gemini 3+, free-tier keys failed every turn with a 429 quota error, and on Gemini 2.x it dropped every Cline tool. Vertex keeps native search&lt;/li&gt;
+&lt;li&gt;Auto-compaction no longer runs when the model&#39;s input limit is unknown. Manual and overflow-recovery compaction still work&lt;/li&gt;
+&lt;li&gt;After the first compaction, the size estimate now uses the messages as they are actually sent, with tool results truncated. Before, it overestimated about 7x and compaction ran again every few tool calls&lt;/li&gt;
+&lt;li&gt;Checkpoint diffs read file contents with a single &lt;code&gt;git cat-file --batch&lt;/code&gt; process instead of up to two &lt;code&gt;git show&lt;/code&gt; processes per file. Workspaces with many untracked files used to spawn thousands of git processes&lt;/li&gt;
+&lt;li&gt;SSH remotes work behind a ProxyJump alias. The connect budget goes from 10s to 30s, the per-command limit to 60s, and tunnel readiness to 40s. When ssh exits mid-upload, its real error is reported instead of &lt;code&gt;EPIPE&lt;/code&gt;, and a &lt;code&gt;LocalForward&lt;/code&gt; on the alias no longer collides with the tunnel&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ask_question&lt;/code&gt; answers are framed so the model keeps going after a bare choice. Empty answers are rejected, and an answer with only an attachment counts as answered&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;run_commands&lt;/code&gt; rejects an empty &lt;code&gt;commands&lt;/code&gt; list with a tool error, and its schema now advertises &lt;code&gt;minItems: 1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;On PowerShell, the &lt;code&gt;run_commands&lt;/code&gt; description explains backtick escaping, single-quoting literal paths, preferring cmdlets over &lt;code&gt;cmd /c&lt;/code&gt;, and confirming recursive deletes first&lt;/li&gt;
+&lt;li&gt;Plugin commands run in the active session runtime and the hub. Plugin watches start working again when discovery directories appear&lt;/li&gt;
+&lt;li&gt;Compiled binaries load embedded plugin and dashboard resources straight from the binary, and every declared SDK runtime export is packaged&lt;/li&gt;
+&lt;li&gt;A configured &lt;code&gt;CLINE_PLUGIN_RUNTIME_DIR&lt;/code&gt; is resolved to an absolute path&lt;/li&gt;
+&lt;li&gt;When OpenRouter has no match for a Cline recommended model, its capabilities are filled in from the Vercel catalog&lt;/li&gt;
+&lt;li&gt;Desktop cloud session orchestration moved into the hub. &lt;code&gt;session.list&lt;/code&gt; reports &lt;code&gt;activeCloudCommands&lt;/code&gt;, and the hub isn&#39;t replaced while cloud commands are still running&lt;/li&gt;
+&lt;li&gt;Core adds conversation summaries and cloud continuation support&lt;/li&gt;
+&lt;li&gt;Run stall telemetry: &lt;code&gt;agent.run-finished&lt;/code&gt; and &lt;code&gt;agent.run-failed&lt;/code&gt; carry stall signals from a new &lt;code&gt;RunHealthObserver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;@cline/ui&lt;/code&gt; now ships with the SDK packages on the shared version. It adds a &lt;code&gt;Kbd&lt;/code&gt; component and token chips for slash commands and file mentions in &lt;code&gt;AgentComposer&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Refreshed the model catalog (7,041 → 6,457 models). Adds the Liquid Inference, Munito AI and Munito AI (EU) providers and drops CrofAI, iFlow and Llama. The Cline free list adds Reflection Beam, Nemotron 3.5 Lightning and Laguna S 2.1 and drops Mimo V2.6 Flash and Muse Spark 1.3 Contributor. ClinePass adds Kimi K3.1 Pro (now its default), MiniMax M3.1 Flash and DeepSeek V4.1 Flash 1017, and drops Mimo V2.5 and V2.5 Pro. Default models change for 56 other providers, mostly to Kimi K3.1 Pro, MiniMax M3.1 Flash or DeepSeek V4.1 Flash 1017&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/cline/cline/compare/sdk/sdk/v0.0.95...sdk/sdk/v0.2.0&quot;&gt;&lt;tt&gt;sdk/sdk/v0.0.95...sdk/sdk/v0.2.0&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/llms/v0.2.0</id>
+    <updated>2026-10-26T03:33:48Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fllms%2Fv0.2.0"/>
+    <title>sdk/llms/v0.2.0</title>
+    <content type="html">&lt;p&gt;@cline/llms@0.2.0&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/core/v0.2.0</id>
+    <updated>2026-10-26T03:33:52Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fcore%2Fv0.2.0"/>
+    <title>sdk/core/v0.2.0</title>
+    <content type="html">&lt;p&gt;@cline/core@0.2.0&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/sdk/agents/v0.2.0</id>
+    <updated>2026-10-26T03:33:50Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/sdk%2Fagents%2Fv0.2.0"/>
+    <title>sdk/agents/v0.2.0</title>
+    <content type="html">&lt;p&gt;@cline/agents@0.2.0&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/824874689/desktop-v0.0.49</id>
+    <updated>2026-10-26T04:49:44Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/cline/cline/releases/tag/desktop-v0.0.49"/>
+    <title>Desktop v0.0.49</title>
+    <content type="html">&lt;ul&gt;
+&lt;li&gt;A new &lt;strong&gt;Changes&lt;/strong&gt; button in the session header shows the session&#39;s line counts and opens a pane listing the files changed in the last turn or across the whole session, with a diff of each. When a turn finishes, a summary under it lists the files it changed; click it to open the pane on that turn&lt;/li&gt;
+&lt;li&gt;A &lt;strong&gt;project files panel&lt;/strong&gt; (folder button in the session header) shows a file tree beside the conversation, with a read-only tabbed viewer, git status letters, and a marker on files the session changed. Files the agent edited get a File/Diff toggle. Works on local and SSH environments&lt;/li&gt;
+&lt;li&gt;An integrated &lt;strong&gt;terminal panel&lt;/strong&gt; opens at the bottom of the window (toggle with Ctrl+backtick)&lt;/li&gt;
+&lt;li&gt;Pull request status moved from the bar above the composer into a header button. Its menu shows the PR title, merge status and checks (failing checks first), and lets you open the PR on GitHub, create a PR, copy the branch name, or refresh&lt;/li&gt;
+&lt;li&gt;A new &lt;strong&gt;Local Models&lt;/strong&gt; settings page manages Ollama and LM Studio models: setup guidance, model details and storage, and a composer chip showing how much memory the loaded model uses&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Keybindings&lt;/strong&gt; are configurable in Settings (also reachable from the app and Help menus). Quit can require holding the shortcut, 1 second by default on macOS, so it&#39;s harder to quit by accident&lt;/li&gt;
+&lt;li&gt;Slash commands and &lt;code&gt;@file&lt;/code&gt; mentions show as chips in the composer and in sent messages&lt;/li&gt;
+&lt;li&gt;If the Hub fails to start, the app now shows a startup screen with Retry and Export diagnostics, instead of failing every action with &quot;desktop backend endpoint not ready&quot;&lt;/li&gt;
+&lt;li&gt;General settings shows the Hub&#39;s status and has a Restart Hub button&lt;/li&gt;
+&lt;li&gt;Opening a task that&#39;s already running in another Cline app now attaches to that run instead of starting a second one that couldn&#39;t be stopped. Requests that were waiting on an app that closed mid-task now fail with a clear message instead of hanging&lt;/li&gt;
+&lt;li&gt;Sessions with a very large transcript (over about 8 MB) can be resumed again. Before, the transcript was sent to the Hub twice, which went over its message size limit&lt;/li&gt;
+&lt;li&gt;Long lines in the file and diff viewers wrap, and rows always span the full width when scrolled&lt;/li&gt;
+&lt;li&gt;New Cloud chats start on your local Cline or ClinePass model. If Cloud doesn&#39;t offer that model, ClinePass subscribers get a ClinePass model and everyone else gets Claude Sonnet 5.5&lt;/li&gt;
+&lt;li&gt;A pasted Cline API key now replaces an old browser sign-in instead of being ignored. Provider settings fields stack properly in the narrow side panel&lt;/li&gt;
+&lt;li&gt;The Sessions/Projects sort choice in the sidebar is remembered across restarts&lt;/li&gt;
+&lt;li&gt;On Linux desktops without a tray (stock GNOME on Fedora or Debian), closing the window quits the app instead of leaving it running with no way to quit&lt;/li&gt;
+&lt;li&gt;Internal messages meant only for the model no longer show in the transcript, and live session titles no longer show the raw &lt;code&gt;user_input&lt;/code&gt; wrapper&lt;/li&gt;
+&lt;li&gt;Schedule status stays current and failed runs show the full error&lt;/li&gt;
+&lt;li&gt;Checking for changes no longer spawns thousands of git processes in workspaces with many untracked files&lt;/li&gt;
+&lt;li&gt;SSH environments behind a ProxyJump alias now connect&lt;/li&gt;
+&lt;li&gt;The update toast&#39;s Restart button sits under the message text&lt;/li&gt;
+&lt;li&gt;A turn whose connection drops after the model has streamed only reasoning is now retried instead of ending the run&lt;/li&gt;
+&lt;li&gt;Model requests retry at most 3 times instead of 5&lt;/li&gt;
+&lt;li&gt;Kimi K3 now gets &lt;code&gt;max&lt;/code&gt; reasoning for Extra High and Max, instead of an &lt;code&gt;xhigh&lt;/code&gt; setting it rejects&lt;/li&gt;
+&lt;li&gt;Gemini API keys (the &lt;code&gt;gemini&lt;/code&gt; provider) no longer send native Google Search. Free-tier keys failed every turn with a 429 quota error on Gemini 3+, and on Gemini 2.x every Cline tool was dropped&lt;/li&gt;
+&lt;li&gt;Auto-compaction no longer runs for models with an unknown context limit, and it no longer runs again every few tool calls after the first compaction&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ask_question&lt;/code&gt;: the model keeps going after you pick an option, empty answers are rejected, and an answer with only an attachment counts&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;run_commands&lt;/code&gt; with an empty command list now returns an error instead of a silent success. On PowerShell, the tool tells the model how quote escaping works and to confirm recursive deletes first&lt;/li&gt;
+&lt;li&gt;Refreshed the model catalog. Adds the Liquid Inference and Munito AI providers and drops CrofAI, iFlow and Llama. The Cline free list adds Reflection Beam, Nemotron 3.5 Lightning and Laguna S 2.1 and drops Mimo V2.6 Flash and Muse Spark 1.3 Contributor. ClinePass now defaults to Kimi K3.1 Pro and adds MiniMax M3.1 Flash and DeepSeek V4.1 Flash 1017. Default models change for 56 other providers, mostly to Kimi K3.1 Pro, MiniMax M3.1 Flash or DeepSeek V4.1 Flash 1017&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Full Changelog&lt;/strong&gt;: &lt;a class=&quot;commit-link&quot; href=&quot;https://github.com/cline/cline/compare/desktop-v0.0.48...desktop-v0.0.49&quot;&gt;&lt;tt&gt;desktop-v0.0.48...desktop-v0.0.49&lt;/tt&gt;&lt;/a&gt;&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+</feed>

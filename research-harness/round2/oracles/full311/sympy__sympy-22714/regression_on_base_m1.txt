@@ -1,0 +1,13 @@
+...........F.                                                            [100%]
+================================== FAILURES ===================================
+______________________________ test_issue_22684 _______________________________
+sympy\geometry\tests\test_point.py:459: in test_issue_22684
+    Point(1, 2)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+- generated xml file: F:\dongcha\research-harness\round2\oracles\full311\sympy__sympy-22714\regression_on_base_m1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/geometry/tests/test_point.py::test_issue_22684 - ValueError: Ima...
+1 failed, 12 passed, 1 warning in 1.12s

@@ -1,0 +1,401 @@
+检索参数 {"open":[{"ref_id":"https://arxiv.org/html/2608.00122v1"},{"ref_id":"https://arxiv.org/html/2507.09637v1"},{"ref_id":"https://arxiv.org/html/2507.09089v1"},{"ref_id":"https://arxiv.org/html/2605.05253v1"}],"response_length":"long"}
+Shared Organizational Memory for Enterprise Coding Agents: System Design and Deployment Snapshot (https://arxiv.org/html/2608.00122v1)
+citeturn10view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/html/2608.00122v1","lineno":null}); Total lines: 378
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: 【0†Why HTML?†info.arxiv.org】 Report Issue 【1†Back to Abstract】 【2†Download PDF】 Contents Reading mode Colour theme
+L13:   1. 【3†Abstract】
+L14:   2. 【4†1 Introduction】
+L15:   3. 【5†2 System Architecture】
+L16:     1. 【6†2.1 Contributor Client】
+L17:     2. 【7†2.2 Curation Pipeline】
+L18:     3. 【8†2.3 Consumer Client】
+L19:   4. 【9†3 Design Considerations】
+L20:   5. 【10†4 Deployment Snapshot】
+L21:   6. 【11†5 Conclusion】
+L22:   7. 【12†6 Limitations】
+L23:   8. 【13†7 Ethical Considerations】
+L24:     1. 【14†AI Use Statement.】
+L25:   9. 【15†References】
+L26:   10. 【16†A Captured Learning Schema】
+L27:   11. 【17†B Curated Memory Schema】
+L28:   12. 【18†C Curation Agent Contracts】
+L29:     1. 【19†Execution configuration.】
+L30:     2. 【20†Enrichment Agent.】
+L31:     3. 【21†Bucketing Agent.】
+L32:     4. 【22†Gating (Security Scan) Agent.】
+L33:     5. 【23†Collision Checker.】
+L34:   13. 【24†D Security and Privacy Gate】
+L35:     1. 【25†D.1 Offline Functional Sanity Check】
+L36:       1. 【26†Objective and scope.】
+L37:       2. 【27†Test suite.】
+L38:       3. 【28†Representative paired cases.】
+L39:       4. 【29†Expected-action semantics.】
+L40:       5. 【30†Repeated executions.】
+L41:       6. 【31†Practical outcome categories.】
+L42:       7. 【32†Results.】
+L43:       8. 【33†Consistency across runs.】
+L44:       9. 【34†Interpretation.】
+L45:   14. 【35†E Retrieval Interfaces】
+L46:   15. 【36†F Trust Score Computation】
+L47:     1. 【37†Resistance to a few early votes.】
+L48: 【38†License: arXiv.org perpetual non-exclusive license†info.arxiv.org】
+L49: 
+L50: arXiv:2608.00122v1 [cs.AI] 31 Jul 2026
+L51: # Shared Organizational Memory for Enterprise Coding Agents: System Design and Deployment Snapshot
+L52: 
+L53: Harsh Rao Dhanyamraju Affiliation: Data Scientist Affiliation: SAP SE    Leonidas Raghav Affiliation: Machine Learning Engineer Affiliation: SAP SE
+L54: 
+L55: July 2026
+L56: Preprint
+L57: ###### Abstract
+L58: Enterprise coding agents rely on tools and retrieval, yet enterprise knowledge often remains outside public training data and formal documentation: internal DSLs, proprietary platforms, local conventions, recent fixes, and tacit workflows. Existing knowledge interfaces expose stored resources but still depend on agents recognizing and explicitly recording lessons worth reusing, disconnecting capture from the coding workflow and leaving development experience repeatedly rediscovered.
+L59: We report an ongoing production deployment of a shared organizational memory system that makes capture a platform-level part of coding work: it collects task-adjacent experience with contributor approval, curates it into reusable question–answer memories, gates obvious security and privacy risks, and retrieves memories for future agents. This short paper describes the deployed lifecycle and an operational snapshot; effects on retrieval and coding tasks remain under evaluation.
+L60: ## 1 Introduction
+L61: Enterprise software relies on domain-specific languages (DSLs) and internal languages to encode business, operational, and platform knowledge. 【39†Mernik et al. (2005)】 and 【40†van Deursen et al. (2000)】 show how DSLs expose domain concepts, constraints, and idioms directly in the programming surface, while 【41†Hermans et al. (2009)】 demonstrates how they make organizational policies and workflows programmable and repeatable.
+L62: Examples and programming models include SAP ABAP (【42†SAP, 2026a】), the SAP Cloud Application Programming Model (CAP) (【43†SAP, 2026b】), Salesforce SOQL (【44†Salesforce, 2026】), Terraform/HCL (【45†HashiCorp, 2026】), Kusto Query Language (【46†Microsoft, 2026a】), Bazel Starlark (【47†Bazel, 2026】), Atlassian JQL (【48†Atlassian, 2026】), and Shopify Liquid (【49†Shopify, 2026】).
+L63: This creates a difficult setting for coding assistants: even public DSLs present version-specific behavior, edge cases, and organization-specific conventions that may be poorly documented. Internal DSLs, including proprietary configuration, policy, schema, build, and deployment languages, may be absent from public training data altogether. In these cases, the model has no reliable prior and must learn from the repository, surrounding tools, and outcomes of earlier development work.
+L64: Recent coding-agent research shows that performance depends heavily on access to the development environment. 【50†Jimenez et al. (2024)】 introduced issue-resolution tasks drawn from real repositories, while 【51†Yang et al. (2024)】 and 【52†Zhang et al. (2024)】 demonstrated the importance of agent-computer interfaces, repository navigation, program analysis, and context retrieval.
+L65: Practical harnesses such as Claude Code (【53†Anthropic, 2026c】), OpenAI Codex (【54†OpenAI, 2026a】), Google Antigravity (【55†Google, 2026a】), and Cursor (【56†Cursor, 2026】) reflect the same need for structured access to files, tools, tests, and developer feedback.
+L66: Tool and knowledge interfaces extend this context: the Model Context Protocol (【57†Model Context Protocol, 2025】) connects agents to external data through reference servers (【58†Model Context Protocol, 2026】), Playwright MCP (【59†Microsoft, 2026b】), and Context7 (【60†Upstash, 2026】), while Claude Code Skills (【61†Anthropic, 2026d】) and Anthropic Agent Skills (【62†Anthropic, 2025】) package reusable instructions and resources.
+L67: Yet access is not knowledge: these interfaces can expose files, APIs, and documentation without capturing organization-specific conventions, recent fixes, internal DSL semantics, or tacit workflows. Documentation may also be incomplete or stale, and private behavior may become clear only through debugging, tests, failures, and fixes.
+--------------------------------------------------------------------------------
+Code Review as Decision-Making - Building a Cognitive Model from the Questions Asked During Code Review (https://arxiv.org/html/2507.09637v1)
+citeturn10view1 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/html/2507.09637v1","lineno":null}); Total lines: 750
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: 【0†Why HTML?†info.arxiv.org】 Report Issue 【1†Back to Abstract】 【2†Download PDF】 Contents Reading mode Colour theme
+L13:   1. 【3†Abstract】
+L14:   2. 【4†1 Introduction】
+L15:     1. 【5†1.1 Research Questions】
+L16:       1. 【6†1.1.1 Supporting Research Questions】
+L17:   3. 【7†2 sectionMethod】
+L18:   4. 【8†3 secResults】
+L19:   5. 【9†4 secTheory】
+L20:     1. 【10†4.1 Contributions】
+L21:       1. 【11†5 secTheory】
+L22:       2. 【12†6 secResults】
+L23:       3. 【13†7 secDiscussion】
+L24:   6. 【14†8 Background and Related Work】
+L25:     1. 【15†8.1 Code Review in Practice】
+L26:     2. 【16†8.2 Social and Team Effects During Code Review】
+L27:     3. 【17†8.3 Gerrit Code Review】
+L28:       1. 【18†Changeset and Patchset】
+L29:       2. 【19†Voting】
+L30:       3. 【20†Commenting】
+L31:     4. 【21†8.4 The Recognition-Primed Decision Model】
+L32:   7. 【22†9 Methodology】
+L33:     1. 【23†9.1 Study Context】
+L34:       1. 【24†9.1.1 Code Review Process】
+L35:   8. 【25†10 secGerritCodeReview】
+L36:     1. 【26†10.1 Participants】
+L37:     2. 【27†10.2 Data Collection】
+L38:     3. 【28†10.3 Data Analysis】
+L39:       1. 【29†10.3.1 Data Transcription】
+L40:       2. 【30†10.3.2 Participant Feedback & Member-Checking】
+L41:       3. 【31†10.3.3 Initial Coding】
+L42:       4. 【32†10.3.4 Identifying Themes】
+L43:       5. 【33†10.3.5 Statistical Analysis】
+L44:     4. 【34†10.4 Ethical Considerations】
+L45:   9. 【35†11 matterReplicationPackage】
+L46:   10. 【36†12 Results】
+L47:   11. 【37†13 methodDataAnalysis】
+L48:   12. 【38†14 matterReplicationPackage】
+L49:     1. 【39†14.1 Orientational Themes】
+L50:       1. 【40†14.1.1 Theme: Selecting a Review Task】
+L51:       2. 【41†14.1.2 Theme: Understanding Context】
+L52:       3. 【42†14.1.3 Theme: Understanding Rationale】
+L53:     2. 【43†14.2 Analytical Themes】
+L54:       1. 【44†14.2.1 Theme: Assessing Change】
+L55:       2. 【45†14.2.2 Theme: Assessing Implementation】
+L56:       3. 【46†14.2.3 Theme: Selecting Next Action】
+L57:       4. 【47†14.2.4 Theme: Understanding Implementation】
+L58:     3. 【48†14.3 Transitions Between Themes】
+L59:   13. 【49†15 method:data_analysis】
+L60:     1. 【50†15.1 Distribution of Themes during Code Review】
+L61:   14. 【51†16 method:data_analysis】
+L62:   15. 【52†17 sectionResultsTransitions】
+L63:   16. 【53†18 Theory】
+L64:   17. 【54†19 secRPD】
+L65:     1. 【55†19.1 The Two Phases of Code Review】
+L66:       1. 【56†19.1.1 The Orientation Phase】
+L67:       2. 【57†19.1.2 The Analytical Phase】
+L68:     2. 【58†19.2 Introducing a Model of Code Review as Decision-Making】
+L69:   18. 【59†20 secRPD】
+L70:   19. 【60†21 Discussion】
+L71:   20. 【61†22 theoryCRDM】
+L72:   21. 【62†23 secFutureWork】
+L73:     1. 【63†23.1 Insights from Thematic Analysis】
+L74:     2. 【64†23.2 Classification of Questions During the Code Review】
+L75:     3. 【65†23.3 Comparison to Previous Models】
+L76:     4. 【66†23.4 Future Work】
+L77:       1. 【67†Adapting Knowledge from Decision-Making Research】
+L78:       2. 【68†Discover Potential Tool Improvements】
+L79:       3. 【69†Support Research on AI-supported Code Review】
+L80:   22. 【70†24 secIntroduction】
+L81:     1. 【71†Understanding Code Review Through a Wider Lens】
+L82:     2. 【72†Aligning Code Review Processes with Developer Needs】
+L83:     3. 【73†Inspiring Future Research on Cognitive Processes】
+L84:   23. 【74†25 Threats to Validity】
+L85:     1. 【75†25.1 External Reliability】
+L86:   24. 【76†26 sectionMethod】
+L87:   25. 【77†27 sectionMethodParticipants】
+L88:   26. 【78†28 sectionMethod】
+L89:   27. 【79†29 matterReplicationPackage】
+L90:     1. 【80†29.1 Internal Reliability】
+L91:   28. 【81†30 methodMemberChecking】
+L92:     1. 【82†30.1 External Validity】
+L93:     2. 【83†30.2 Internal Validity】
+L94:   29. 【84†31 Conclusions】
+L95:   30. 【85†32 sectionMethod】
+L96:   31. 【86†33 secTheory】
+L97:   32. 【87†34 theoryCRDM】
+L98:   33. 【88†35 Notes】
+L99:   34. 【89†References】
+L100: 【90†License: CC BY 4.0†info.arxiv.org】
+L101: 
+L102: arXiv:2507.09637v1 [cs.SE] 13 Jul 2025
+L103: # Code Review as Decision-Making - Building a Cognitive Model from the Questions Asked During Code Review
+L104: 
+L105: Lo Gullstrand Heander 【91†0000-0002-0695-4580†orcid.org】 Email: lo.heander@cs.lth.se Affiliation: Lund University, Lund, Sweden    Emma Söderberg 【92†0000-0001-7966-4560†orcid.org】 Email: emma.soderberg@cs.lth.se Affiliation: Lund University, Lund, Sweden    Christofer Rydenfält 【93†0000-0003-1495-8263†orcid.org】 Email: christofer.rydenfalt@design.lth.se Affiliation: Lund University, Lund, Sweden
+L106: ###### Abstract
+L107: 
+L108: Code review is a well-established and valued practice in the software engineering community contributing to both code quality and interpersonal benefits. However, there are challenges in both tools and processes that give rise to misalignments and frustrations. Recent research seeks to address this by automating code review entirely, but we believe that this risks losing the majority of the interpersonal benefits such as knowledge transfer and shared ownership.
+L109: We believe that by better understanding the cognitive processes involved in code review, it would be possible to improve tool support, with out without AI, and make code review both more efficient, more enjoyable, while increasing or maintaining all of its benefits. In this paper, we conduct an ethnographic think-aloud study involving 10 participants and 34 code reviews.
+L110: We build a cognitive model of code review bottom up through thematic, statistical, temporal, and sequential analysis of the transcribed material. Through the data, the similarities between the cognitive process in code review and decision-making processes, especially recognition-primed decision-making, become apparent.
+L111: The result is the Code Review as Decision-Making (CRDM) model that shows how the developers move through two phases during the code review; first an orientation phase to establish context and rationale and then an analytical phase to understand, assess, and plan the rest of the review. Throughout the process several decisions must be taken, on writing comments, finding more information, voting, running the code locally, verifying continuous integration results, etc.
+--------------------------------------------------------------------------------
+Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (https://arxiv.org/html/2507.09089v1)
+citeturn10view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/html/2507.09089v1","lineno":null}); Total lines: 782
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: 【0†Why HTML?†info.arxiv.org】 Report Issue 【1†Back to Abstract】 【2†Download PDF】 Contents Reading mode Colour theme
+L13:   1. 【3†Abstract】
+L14:   2. 【4†1 Introduction】
+L15:     1. 【5†1.1 Background】
+L16:   3. 【6†2 Methodology】
+L17:     1. 【7†2.1 Developers and Repositories】
+L18:     2. 【8†2.2 Experimental Design】
+L19:       1. 【9†2.2.1 AI Tools and Training】
+L20:       2. 【10†2.2.2 Data Collection】
+L21:     3. 【11†2.3 Effect Estimation】
+L22:     4. 【12†2.4 Supplementary Data Collection】
+L23:   4. 【13†3 Results】
+L24:     1. 【14†3.1 Forecasts】
+L25:     2. 【15†3.2 Activity Labels】
+L26:     3. 【16†3.3 Factor Analysis】
+L27:   5. 【17†4 Discussion】
+L28:     1. 【18†4.1 Key Caveats】
+L29:   6. 【19†5 Acknowledgments】
+L30:   7. 【20†References】
+L31:   8. 【21†A Author contributions】
+L32:   9. 【22†B Extended Discussion】
+L33:   10. 【23†C Factor Analysis】
+L34:     1. 【24†C.1 Factors driving slowdown】
+L35:       1. 【25†C.1.1 Over-optimism about AI usefulness (Direct productivity loss)】
+L36:       2. 【26†C.1.2 High developer familiarity with repositories (Raises developer performance)】
+L37:       3. 【27†C.1.3 Large and complex repositories (Limits AI performance)】
+L38:       4. 【28†C.1.4 Low AI reliability (Limits AI performance)】
+L39:       5. 【29†C.1.5 Implicit repository context (Limits AI performance, Raises developer performance)】
+L40:     2. 【30†C.2 Factors with an unclear effect on slowdown】
+L41:       1. 【31†C.2.1 Experimentally driven overuse of AI (Experimental artifact)】
+L42:       2. 【32†C.2.2 Unrepresentative task distribution (Experimental artifact)】
+L43:       3. 【33†C.2.3 AI increasing issue scope (Experimental artifact)】
+L44:       4. 【34†C.2.4 Bias from issue completion order (Experimental artifact)】
+L45:       5. 【35†C.2.5 Trading speed for ease (Direct productivity loss)】
+L46:       6. 【36†C.2.6 Low quality initial pull requests (Direct productivity loss)】
+L47:       7. 【37†C.2.7 Below-average use of AI tools (Limits AI performance)】
+L48:       8. 【38†C.2.8 AI generation latency (Limits AI performance)】
+L49:       9. 【39†C.2.9 Suboptimal elicitation (Limits AI performance)】
+L50:     3. 【40†C.3 Factors unlikely to contribute to slowdown】
+L51:       1. 【41†C.3.1 Unfamiliar development environment (Experimental artifact)】
+L52:       2. 【42†C.3.2 Cheating or under-use of AI (Experimental artifact)】
+L53:       3. 【43†C.3.3 Issue dropout (Experimental artifact)】
+L54:       4. 【44†C.3.4 Non-robust outcome measure (Experimental artifact)】
+L55:       5. 【45†C.3.5 Non-robust estimator (Experimental artifact)】
+L56:       6. 【46†C.3.6 Non-frontier model usage (Limits AI performance)】
+L57:   11. 【47†D Empirical Strategy】
+L58:     1. 【48†D.1 Regression】
+L59:     2. 【49†D.2 From log ratios to speedup】
+L60:     3. 【50†D.3 Heterogeneous treatment effects】
+L61:     4. 【51†D.4 Ratio estimator】
+L62:     5. 【52†D.5 Participant post-study estimator】
+L63:   12. 【53†E Other Analysis】
+L64:     1. 【54†E.1 Balance and proportions checks】
+L65:     2. 【55†E.2 Per-developer speedup and forecast calibration】
+L66:     3. 【56†E.3 Randomization】
+L67:     4. 【57†E.4 Fine-Grained Screen Recording Labels】
+L68:     5. 【58†E.5 Expert forecasts】
+L69:     6. 【59†E.6 Other treatment effects】
+L70:   13. 【60†F Open-Source Development and AI Tooling Primers】
+L71:     1. 【61†F.1 Open-Source Development】
+L72:     2. 【62†F.2 Primer on AI Tooling】
+L73:       1. 【63†F.2.1 Web Interfaces】
+L74:       2. 【64†F.2.2 Cursor】
+L75:     3. 【65†\thesubsubsubsection Chat and Agent Mode】
+L76:     4. 【66†\thesubsubsubsection AI Autocomplete】
+L77:   14. 【67†G Recruitment and Onboarding】
+L78:     1. 【68†G.1 Incentivization Scheme】
+L79:     2. 【69†G.2 Developer Instructions and Survey Data】
+L80:       1. 【70†G.2.1 Developer Instructions】
+L81:     3. 【71†G.3 Onboarding call and Cursor Training】
+L82:     4. 【72†G.4 Mid-experiment check-in calls】
+L83:     5. 【73†G.5 Exit Interview】
+L84:       1. 【74†G.5.1 Exit Survey】
+L85:     6. 【75†G.6 Participant Dropout】
+L86:     7. 【76†G.7 Developer and Repository Statistics】
+L87:     8. 【77†G.8 Screen Recordings】
+L88:     9. 【78†G.9 Instructions Given to Expert Forecasters】
+L89: 【79†License: CC BY 4.0†info.arxiv.org】
+L90: 
+L91: arXiv:2507.09089v1 [cs.AI] 12 Jul 2025
+L92: # Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity
+L93: 
+L94: Joel Becker^{*}    Nate Rush^{*}    Beth Barnes    David Rein Affiliation: Model Evaluation & Threat Research (METR)
+L95: ###### Abstract
+L96: Despite widespread adoption, the impact of AI tools on software development in the wild remains understudied. We conduct a randomized controlled trial (RCT) to understand how AI tools at the February–June 2025 frontier affect the productivity of experienced open-source developers. 16 developers with moderate AI experience complete 246 tasks in mature projects on which they have an average of 5 years of prior experience. Each task is randomly assigned to allow or disallow usage of early-2025 AI tools.
+L97: When AI tools are allowed, developers primarily use Cursor Pro, a popular code editor, and Claude 3.5/3.7 Sonnet. Before starting tasks, developers forecast that allowing AI will reduce completion time by 24%. After completing the study, developers estimate that allowing AI reduced completion time by 20%. Surprisingly, we find that allowing AI actually increases completion time by 19%—AI tooling slowed developers down.
+L98: This slowdown also contradicts predictions from experts in economics (39% shorter) and ML (38% shorter). To understand this result, we collect and evaluate evidence for 20 properties of our setting that a priori could contribute to the observed slowdown effect—for example, the size and quality standards of projects, or prior developer experience with AI tooling.
+L99: Although the influence of experimental artifacts cannot be entirely ruled out, the robustness of the slowdown effect across our analyses suggests it is unlikely to primarily be a function of our experimental design.
+--------------------------------------------------------------------------------
+EnterpriseRAG-Bench: A RAG Benchmarkfor Company Internal Knowledge (https://arxiv.org/html/2605.05253v1)
+citeturn10view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/html/2605.05253v1","lineno":null}); Total lines: 637
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: 【0†Why HTML?†info.arxiv.org】 Report Issue 【1†Back to Abstract】 【2†Download PDF】 Contents Reading mode Colour theme
+L13:   1. 【3†Abstract】
+L14:   2. 【4†1 Introduction】
+L15:   3. 【5†2 Dataset Overview】
+L16:   4. 【6†3 Dataset Analysis】
+L17:     1. 【7†3.1 A Visual Illustration】
+L18:     2. 【8†3.2 Quantitative Analysis】
+L19:   5. 【9†4 Data Generation Methodology】
+L20:     1. 【10†4.1 Building the Document Set】
+L21:       1. 【11†Scaffolding.】
+L22:       2. 【12†High-fidelity generation.】
+L23:       3. 【13†High-volume generation.】
+L24:     2. 【14†4.2 Adding Noise】
+L25:     3. 【15†4.3 Generating Questions】
+L26:     4. 【16†4.4 Quality Assurance】
+L27:       1. 【17†LLM-based conformance checks.】
+L28:       2. 【18†Multi-retriever pooling.】
+L29:       3. 【19†Ongoing human curation.】
+L30:   6. 【20†5 Evaluation Framework】
+L31:     1. 【21†5.1 Metrics】
+L32:       1. 【22†Correctness】
+L33:       2. 【23†Completeness】
+L34:       3. 【24†Document Recall】
+L35:       4. 【25†Invalid Extra Documents】
+L36:       5. 【26†Leaderboard.】
+L37:     2. 【27†5.2 Comparative Evaluation】
+L38:     3. 【28†5.3 Gold Set Correction】
+L39:   7. 【29†6 Experiments】
+L40:     1. 【30†6.1 Baseline Systems Performance】
+L41:     2. 【31†6.2 Scaling Behavior】
+L42:   8. 【32†7 Limitations】
+L43:     1. 【33†Generation fidelity.】
+L44:     2. 【34†Representation constraints.】
+L45:     3. 【35†Design tradeoffs.】
+L46:     4. 【36†Evaluation.】
+L47:   9. 【37†8 Conclusion and Future Work】
+L48:   10. 【38†References】
+L49:   11. 【39†A Repository and Code Guide】
+L50:     1. 【40†A.1 Dataset Artifacts】
+L51:     2. 【41†A.2 Evaluation Harness】
+L52:     3. 【42†A.3 Generation Pipeline】
+L53:   12. 【43†B Document and Noise Generation Details】
+L54:     1. 【44†B.1 Project-Level Scaffolding】
+L55:     2. 【45†B.2 High-Fidelity Generation】
+L56:     3. 【46†B.3 High-Volume Generation and Topic Scaffolding】
+L57:     4. 【47†B.4 Noise Generation Procedures】
+L58:       1. 【48†Random shuffle.】
+L59:       2. 【49†LLM-based shuffle.】
+L60:       3. 【50†Near-duplicates with conflicting facts.】
+L61:       4. 【51†Miscellaneous directories and files.】
+L62:   13. 【52†C Question Generation Flows】
+L63:     1. 【53†C.1 Single-Document Flows】
+L64:       1. 【54†Basic.】
+L65:       2. 【55†Semantic.】
+L66:       3. 【56†Intra-Document Reasoning.】
+L67:       4. 【57†Miscellaneous.】
+L68:     2. 【58†C.2 Multi-Document and Corpus-Exploration Flows】
+L69:       1. 【59†Project Related.】
+L70:       2. 【60†Constrained.】
+L71:       3. 【61†High Level.】
+L72:       4. 【62†Info Not Found.】
+L73:     3. 【63†C.3 Generation-Dependent Flows】
+L74:       1. 【64†Conflicting Info.】
+L75:       2. 【65†Completeness.】
+L76:   14. 【66†D Dataset Statistics】
+L77:     1. 【67†D.1 Corpus Composition】
+L78:     2. 【68†D.2 Source Type Coverage Across Question Types】
+L79:     3. 【69†D.3 Gold Document Set Size by Question Type】
+L80: 【70†License: arXiv.org perpetual non-exclusive license†info.arxiv.org】
+L81: 
+L82: arXiv:2605.05253v1 [cs.IR] 05 May 2026
+L83: # EnterpriseRAG-Bench: A RAG Benchmark
+L84: for Company Internal Knowledge
+L85: 
+L86: Yuhong Sun Email: yuhong@onyx.app    Joachim Rahmfeld Email: joachim@onyx.app    Chris Weaver Affiliation: Onyx    Roshan Desai Affiliation: Onyx    Wenxi Huang Affiliation: Onyx    Mark H. Butler Affiliation: UC Berkeley
+L87: ###### Abstract
+L88: Retrieval-Augmented Generation (RAG) has become the standard approach for grounding large language models in information that was not available during training. While existing datasets and benchmarks focus on web or other public sources, there is still no widely adopted dataset that realistically reflects the nature of company-internal knowledge. Meanwhile, startups, enterprises, and researchers are increasingly developing AI Agents designed to operate over exactly this kind of proprietary data.
+L89: To close this gap, we release a synthetic enterprise corpus, its generation framework, and a leaderboard.
+L90: We present EnterpriseRAG-Bench, a dataset consisting of approximately 500,000 documents spanning nine enterprise source types (Slack, Gmail, Linear, Google Drive, HubSpot, Fireflies, GitHub, Jira, and Confluence) and 500 questions across ten categories that test distinct retrieval and reasoning capabilities.
+L91: The corpus is generated with cross-document coherence—grounded in shared projects, people, and initiatives—and augmented with realistic noise such as misfiled documents, near-duplicates, and conflicting information. The question set ranges from simple single-document lookups to multi-document reasoning, constrained retrieval, conflict resolution, and recognizing when information is absent. The generation framework lets teams generate variants tailored to their own industry, scale, and source mix.
+L92: The dataset, code, evaluation harness, and leaderboard are available at https://github.com/onyx-dot-app/EnterpriseRAG-Bench.
+L93: ## 1 Introduction
+L94: 
+L95: Table 1: Enterprise source types and approximate document volumes.
+L96: #  | Source Type  | Approx. Volume  | Description
+L97: --- | --- | --- | ---
+L98: 1  | Slack  | 275,000  | Internal channels and team discussions
+L99: 2  | Gmail  | 120,000  | Email threads from management, sales, leadership, and ICs
+L100: 3  | Linear  | 35,000  | Project management tickets for engineering, product, and design
+L101: 4  | Google Drive  | 25,000  | Shared files and collaborative documents
+L102: 5  | HubSpot  | 15,000  | CRM records for sales pipeline and customer tracking
+L103: 6  | Fireflies  | 10,000  | Meeting transcripts for internal and external-facing meetings
+L104: 7  | GitHub  | 8,000  | Pull requests and review comments across code repositories
+L105: 8  | Jira  | 6,000  | Support tickets, both internal and customer-facing
+L106: 9  | Confluence  | 5,000  | Wikis, runbooks, and structured documentation
+L107: Table 2: Question categories, counts, and targeted capabilities.
+

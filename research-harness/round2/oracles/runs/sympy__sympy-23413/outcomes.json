@@ -1,0 +1,136 @@
+{
+  "instance_id": "sympy__sympy-23413",
+  "src_test_paths": [
+    "sympy/matrices/tests/test_normalforms.py",
+    "sympy/polys/matrices/tests/test_normalforms.py"
+  ],
+  "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23413-iv92et71\\sympy-10de1a18a0efac0b19b611e40c928250dda688bf\\sympy\\__init__.py",
+  "phases": {
+    "original": {
+      "selected": {
+        "test_hermite_normal": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed",
+            "passed"
+          ]
+        },
+        "test_smith_normal": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed",
+            "passed"
+          ]
+        },
+        "test_smith_normal_deprecated": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.5,
+      "xml": "original.xml",
+      "stdout": "original.txt"
+    },
+    "regression_on_base": {
+      "selected": {
+        "test_hermite_normal": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+          ],
+          "outcome": "failure",
+          "observations": [
+            "failure",
+            "failure"
+          ]
+        },
+        "test_smith_normal": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed",
+            "passed"
+          ]
+        },
+        "test_smith_normal_deprecated": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 1,
+      "seconds": 2.05,
+      "xml": "regression_on_base.xml",
+      "stdout": "regression_on_base.txt"
+    },
+    "regression_on_gold": {
+      "selected": {
+        "test_hermite_normal": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed",
+            "passed"
+          ]
+        },
+        "test_smith_normal": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+            "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed",
+            "passed"
+          ]
+        },
+        "test_smith_normal_deprecated": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.12,
+      "xml": "regression_on_gold.xml",
+      "stdout": "regression_on_gold.txt"
+    }
+  }
+}

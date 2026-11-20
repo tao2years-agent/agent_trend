@@ -1,0 +1,254 @@
+{
+  "python": "3.12.3",
+  "jsonschema": "4.23.0",
+  "drafts": [
+    "CloudEvents Draft-07",
+    "CDEvents Draft 2020-12"
+  ],
+  "schema_evaluations": 26,
+  "conforming_documents": 23,
+  "invalid_documents": 3,
+  "checks": [
+    {
+      "label": "A-base-native",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-base-envelope",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-base-with-evidence",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-base-envelope-with-evidence",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-guarded-native",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-guarded-envelope",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-guarded-with-evidence",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "A-guarded-envelope-with-evidence",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-base-native",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-base-envelope",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-base-with-evidence",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-base-envelope-with-evidence",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-guarded-native",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-guarded-envelope",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-guarded-with-evidence",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "B-guarded-envelope-with-evidence",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "same-envelope-replayed",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "negative-missing-source",
+      "schema": "CloudEvents",
+      "valid": false,
+      "errors": [
+        {
+          "path": [],
+          "error": "required"
+        }
+      ]
+    },
+    {
+      "label": "review-has-no-reviewer-decision-or-target",
+      "schema": "CDEvents changereviewed",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "schema-only-nonnormative-outcome",
+      "schema": "CDEvents taskrunfinished",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "same-chain-v1",
+      "schema": "CDEvents servicerolledback",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "same-chain-v2",
+      "schema": "CDEvents servicerolledback",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "negative-missing-environment",
+      "schema": "CDEvents servicerolledback",
+      "valid": false,
+      "errors": [
+        {
+          "path": [
+            "subject",
+            "content"
+          ],
+          "error": "required"
+        }
+      ]
+    },
+    {
+      "label": "negative-missing-artifact",
+      "schema": "CDEvents servicerolledback",
+      "valid": false,
+      "errors": [
+        {
+          "path": [
+            "subject",
+            "content"
+          ],
+          "error": "required"
+        }
+      ]
+    },
+    {
+      "label": "cross-envelope-mismatch-outer-alone",
+      "schema": "CloudEvents",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "label": "cross-envelope-mismatch-inner-alone",
+      "schema": "CDEvents changereviewed",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "origin": [
+    {
+      "group": "A",
+      "path": "round2/handoff/evidence/observations.json",
+      "sha256": "15e944d0658de36e94fc9717fa7a82a6b656ca03dfe2a6cccf8481c84676d6a8",
+      "mapped": [
+        [
+          "base",
+          {
+            "taskName": "publish",
+            "outcome": "success"
+          },
+          2,
+          [
+            "insert",
+            "insert"
+          ]
+        ],
+        [
+          "guarded",
+          {
+            "taskName": "publish",
+            "outcome": "success"
+          },
+          1,
+          [
+            "insert",
+            "reuse"
+          ]
+        ]
+      ]
+    },
+    {
+      "group": "B",
+      "path": "round2/handoff/evidence/repeat/observations.json",
+      "sha256": "d60d73c36d963314f752e1d72d89a3eb79d0e556a555610172b8212c31faaef7",
+      "mapped": [
+        [
+          "base",
+          {
+            "taskName": "publish",
+            "outcome": "success"
+          },
+          2,
+          [
+            "insert",
+            "insert"
+          ]
+        ],
+        [
+          "guarded",
+          {
+            "taskName": "publish",
+            "outcome": "success"
+          },
+          1,
+          [
+            "insert",
+            "reuse"
+          ]
+        ]
+      ]
+    }
+  ]
+}

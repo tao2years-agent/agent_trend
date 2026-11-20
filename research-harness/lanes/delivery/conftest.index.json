@@ -1,0 +1,108 @@
+{
+  "id": "conftest",
+  "repo": "open-policy-agent/conftest",
+  "sha": "31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4",
+  "date": "2026-11-19",
+  "sources": [
+    {
+      "url": "https://github.com/open-policy-agent/conftest/commits/master.atom",
+      "path": "lanes/delivery/raw/conftest/9e68210cdbff-commits.atom",
+      "date": "2026-11-19",
+      "sha256": "9e68210cdbff4873d3846405667ab52f248c05108bf7574ccc9fa55cfacc8ca0",
+      "retrieved": "2026-11-20T03:13:52.287989+00:00",
+      "resolved_url": "https://github.com/open-policy-agent/conftest/commits/master.atom",
+      "bytes": 29546
+    },
+    {
+      "url": "https://github.com/open-policy-agent/conftest/releases.atom",
+      "path": "lanes/delivery/raw/conftest/2d9d35609520-releases.atom",
+      "date": "",
+      "sha256": "2d9d35609520a72e0c9cd1e7507c3f5bbfb02be17d3151273441b1e1fbc46471",
+      "retrieved": "2026-11-20T03:13:54.418802+00:00",
+      "resolved_url": "https://github.com/open-policy-agent/conftest/releases.atom",
+      "bytes": 153813
+    },
+    {
+      "url": "https://raw.githubusercontent.com/open-policy-agent/conftest/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/runner/test.go",
+      "path": "lanes/delivery/raw/conftest/fa210c42c7c2-test.go",
+      "date": "2026-11-19",
+      "sha256": "fa210c42c7c22570c4320110919cb3f576455f5cbcfba4dba595c9eaf80ab261",
+      "retrieved": "2026-11-20T03:13:55.395401+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/open-policy-agent/conftest/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/runner/test.go",
+      "bytes": 7222,
+      "repo_path": "runner/test.go"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/open-policy-agent/conftest/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/docs/index.md",
+      "path": "lanes/delivery/raw/conftest/478e7caadb8c-index.md",
+      "date": "2026-11-19",
+      "sha256": "478e7caadb8c39d75dcce879a42efbb3cc92f469ad59ab3e21def8b979527f2a",
+      "retrieved": "2026-11-20T03:13:56.523385+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/open-policy-agent/conftest/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/docs/index.md",
+      "bytes": 12120,
+      "repo_path": "docs/index.md"
+    }
+  ],
+  "releases": [
+    {
+      "tag": "v0.71.1",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.71.1",
+      "updated": "2026-10-06T04:53:53Z",
+      "body": "Changelog \n OPA Changes \n \n   00e9bc6  : build(deps): bump github.com/open-policy-agent/opa from 1.21.0 to 1.21.1 ( #1439 ) ( @dependabot [bot]) \n \n Other Changes \n \n   8f7ac01  : build(deps): bump github.com/moby/buildkit from 0.33.0 to 0.33.1 ( #1440 ) ( @dependabot [bot])"
+    },
+    {
+      "tag": "v0.71.0",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.71.0",
+      "updated": "2026-09-30T01:41:59Z",
+      "body": "Changelog \n New Features \n \n   636cfe3  : feat: Add parser for CODEOWNER files ( #1404 ) ( @apnsngr ) \n \n Bug Fixes \n \n   96fc461  : fix(docs): unbreak Netlify build on the Noble image ( #1433 ) ( @boranx ) \n   8345c40  : fix: emit a single TAP plan across all files ( #1435 ) ( @behappymia ) \n \n OPA Changes \n \n   b254dd7  : build(deps): bump github.com/open-policy-agent/opa from 1.20.2 to 1.21.0 ( #1434 ) ( @dependabot [bot]) \n \n Other Changes \n \n   a766df6  : build(deps): bump alpine from 3.24.1 to 3.24.2 ( #1430 ) ( @dependabot [bot]) \n   b4bcb74  : build(deps): bump docker/build-push-action from 7.3.0 to 7.4.0 ( #1432 ) ( @dependabot [bot]) \n   6febea0  : build(deps): bump github.com/magiconair/properties ( #1431 ) ( @dependabot [bot]) \n   e0275ea  : chore: run goreleaser in parallel with docker builds ( #1427 ) ( @jalseth ) \n   722d53f  : ci: Add SPDX formatted SBOM to the release workflow ( #1428 ) ( @jalseth ) \n   f1484a6  : refactor(outputter): Standardize how totals are accumulated ( #1429 ) ( @jalseth )"
+    },
+    {
+      "tag": "v0.70.1",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.70.1",
+      "updated": "2026-09-19T17:20:20Z",
+      "body": "Changelog \n New Features \n \n   0b42cb5  : feat: Sign build artifacts ( #1424 ) ( @jalseth ) \n \n Bug Fixes \n \n   f01cab0  : fix: share inter-query cache across all queries in an Engine ( #1423 ) ( @jalseth ) \n \n Documentation Updates \n \n   634260c  : docs: clarify private OCI registry URLs ( #1395 ) ( @Battleplus )"
+    },
+    {
+      "tag": "v0.70.0",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.70.0",
+      "updated": "2026-09-12T19:00:56Z",
+      "body": "Changelog \n New Features \n \n   bbee10c  : feat(parser): add Groovy and Jenkinsfile support ( #1387 ) ( @salman-frs ) \n   314b873  : feat: add --github-hide-passed to skip passing files in GitHub output ( #1355 ) ( @somaz94 ) \n   c149d81  : feat: name stdin input in test output ( #1386 ) ( @rylena ) \n \n Bug Fixes \n \n   64da8a2  : fix(output): escape ':' and ',' in GitHub workflow command file names ( #1399 ) ( @VXNCXNX ) \n   fa119bc  : fix(sarif): percent-encode artifact paths ( #1419 ) ( @Hanabi9248 ) \n   944ef69  : fix: accept underscores in textproto message names ( #1421 ) ( @Hanabi9248 ) \n   82ba002  : fix: allow --update to clone into a pre-existing --policy directory ( #1383 ) ( @pujitha24 ) \n   49f36aa  : fix: apply ignore regex to explicit files ( #1413 ) ( @SetraTheXX ) \n   c30bc1a  : fix: make test policy updates repeatable ( #1379 ) ( @Eljees ) \n   de66600  : fix: preserve non-finite INI values as strings ( #1420 ) ( @Hanabi9248 ) \n   3a575a7  : fix: propagate plugin exit code to conftest process ( #1345 ) ( @arpitjain099 ) \n   2f28498  : fix: return CycloneDX parser errors ( #1335 ) ( @immanuwell ) \n \n OPA Changes \n \n   1b97ec7  : build(deps): bump github.com/open-policy-agent/opa from 1.19.0 to 1.20.2 ( #1418 ) ( @dependabot [bot]) \n \n Other Changes \n \n   b0d6b6a  : build(deps): bump actions/checkout from 7.0.0 to 7.0.1 ( #1389 ) ( @dependabot [bot]) \n   ba00b80  : build(deps): bump actions/setup-go from 6.3.0 to 7.0.0 ( #1375 ) ( @dependabot [bot]) \n   1860682  : build(deps): bump actions/setup-python from 6.1.0 to 7.0.0 ( #1376 ) ( @dependabot [bot]) \n   e2ee7c0  : build(deps): bump cachix/install-nix-action from 31.10.6 to 31.11.1 ( #1402 ) ( @dependabot [bot]) \n   5eb803b  : build(deps): bump docker/build-push-action from 7.2.0 to 7.3.0 ( #1381 ) ( @dependabot [bot]) \n   6b36133  : build(deps): bump docker/login-action from 4.4.0 to 4.6.0 ( #1390 ) ( @dependabot [bot]) \n   b476e49  : build(deps): bump github.com/CycloneDX/cyclonedx-go ( #1412 ) ( @dependabot [bot]) \n   6f3b7dc  : build(deps): bump github.com/hashicorp/go-getter from 1.8.6 to 1.8.8 ( #1401 ) ( @dependabot [bot]) \n   da2b32a  : build(deps): bump github.com/hashicorp/go-getter from 1.8.8 to 1.8.9 ( #1416 ) ( @dependabot [bot]) \n   74d8677  : build(deps): bump github.com/magiconair/properties ( #1378 ) ( @dependabot [bot]) \n   6a3fd60  : build(deps): bump github.com/moby/buildkit from 0.30.0 to 0.32.2 ( #1392 ) ( @dependabot [bot]) \n   6274003  : build(deps): bump github.com/moby/buildkit from 0.32.2 to 0.33.0 ( #1415 ) ( @dependabot [bot]) \n   85485c0  : build(deps): bump golang from 1.26.5-alpine to 1.26.6-alpine ( #1400 ) ( @dependabot [bot]) \n   c0ac6cd  : build(deps): bump golang from 1.26.6-alpine to 1.27.1-alpine ( #1417 ) ( @dependabot [bot]) \n   c93d486  : build(deps): bump js-yaml from 4.2.0 to 4.3.0 in /examples/ts ( #1377 ) ( @dependabot [bot]) \n   9c54228  : build(deps): bump js-yaml from 4.3.0 to 4.3.1 in /examples/ts ( #1391 ) ( @dependabot [bot]) \n   04eb67e  : chore: Update flake.lock ( #1407 ) ( @jalseth ) \n   87f727c  : chore: disable goconst in Go test files ( #1406 ) ( @jalseth ) \n   fc7d7d7  : refactor(parser): Add Remarshal() helper ( #1411 ) ( @jalseth )"
+    },
+    {
+      "tag": "v0.69.0",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.69.0",
+      "updated": "2026-08-03T10:29:26Z",
+      "body": "Changelog \n New Features \n \n   55d9a7b  : feat(verify): Add --var-values flag ( #1288 ) ( @jalseth ) \n   81f1ce4  : feat: support glob wildcards in --namespace ( #1343 ) ( @arpitjain099 ) \n \n Bug Fixes \n \n   cd348b8  : fix(ci): update setup-regal action to open-policy-agent org ( #1368 ) ( @boranx ) \n   0e38a95  : fix(verify): default  --show-builtin-errors  to false ( #1325 ) ( @dgeorgievski ) \n \n OPA Changes \n \n   c0aceef  : build(deps): bump github.com/open-policy-agent/opa from 1.15.2 to 1.17.1 ( #1346 ) ( @dependabot [bot]) \n   a41c3a9  : build(deps): bump github.com/open-policy-agent/opa from 1.17.1 to 1.18.2 ( #1363 ) ( @dependabot [bot]) \n   4130398  : build(deps): bump github.com/open-policy-agent/opa to v1.19.0 ( #1385 ) ( @johanfylling ) \n \n Other Changes \n \n   6b381ad  : Pre commit conftest docs integration ( #1263 ) ( @jrottenberg ) \n   107ec8e  : build(deps): bump actions/checkout from 6.0.1 to 6.0.3 ( #1352 ) ( @dependabot [bot]) \n   0b9a9be  : build(deps): bump actions/checkout from 6.0.3 to 7.0.0 ( #1358 ) ( @dependabot [bot]) \n   a2ddb01  : build(deps): bump alpine from 3.23.3 to 3.23.4 ( #1316 ) ( @dependabot [bot]) \n   cbe17f2  : build(deps): bump alpine from 3.23.4 to 3.24.0 ( #1351 ) ( @dependabot [bot]) \n   15ddb9d  : build(deps): bump alpine from 3.24.0 to 3.24.1 ( #1357 ) ( @dependabot [bot]) \n   313bf0a  : build(deps): bump cachix/install-nix-action from 31.10.1 to 31.10.6 ( #1329 ) ( @dependabot [bot]) \n   cab3aa1  : build(deps): bump cuelang.org/go from 0.16.0 to 0.16.1 ( #1310 ) ( @dependabot [bot]) \n   bee01de  : build(deps): bump cuelang.org/go from 0.16.1 to 0.17.0 ( #1362 ) ( @dependabot [bot]) \n   7797f79  : build(deps): bump cuelang.org/go from 0.17.0 to 0.17.1 ( #1373 ) ( @dependabot [bot]) \n   8cd5347  : build(deps): bump docker/build-push-action from 7.0.0 to 7.1.0 ( #1314 ) ( @dependabot [bot]) \n   92db984  : build(deps): bump docker/build-push-action from 7.1.0 to 7.2.0 ( #1337 ) ( @dependabot [bot]) \n   55eeab0  : build(deps): bump docker/login-action from 4.0.0 to 4.1.0 ( #1309 ) ( @dependabot [bot]) \n   8d864f0  : build(deps): bump docker/login-action from 4.1.0 to 4.2.0 ( #1339 ) ( @dependabot [bot]) \n   9f57449  : build(deps): bump docker/login-action from 4.2.0 to 4.4.0 ( #1370 ) ( @dependabot [bot]) \n   026dc0d  : build(deps): bump github.com/CycloneDX/cyclonedx-go ( #1333 ) ( @dependabot [bot]) \n   8293d77  : build(deps): bump github.com/moby/buildkit from 0.29.0 to 0.30.0 ( #1331 ) ( @dependabot [bot]) \n   2f126ef  : build(deps): bump golang from 1.26.1-alpine to 1.26.2-alpine ( #1312 ) ( @dependabot [bot]) \n   1f45387  : build(deps): bump golang from 1.26.2-alpine to 1.26.4-alpine ( #1344 ) ( @dependabot [bot]) \n   fb6fbdd  : build(deps): bump golang from 1.26.4-alpine to 1.26.5-alpine ( #1371 ) ( @dependabot [bot]) \n   30ed475  : build(deps): bump golangci/golangci-lint-action from 9.2.1 to 9.3.0 ( #1364 ) ( @dependabot [bot]) \n   d099ca1  : build(deps): bump goreleaser/goreleaser-action from 7.0.0 to 7.2.2 ( #1334 ) ( @dependabot [bot]) \n   eb7ca3e  : build(deps): bump goreleaser/goreleaser-action from 7.2.2 to 7.2.3 ( #1366 ) ( @dependabot [bot]) \n   d07ab51  : build(deps): bump js-yaml from 3.13.1 to 4.2.0 in /examples/ts ( #1353 ) ( @dependabot [bot]) \n   8314227  : build(deps): bump sethvargo/ratchet from 0.11.4 to 0.12.0 ( #1374 ) ( @dependabot [bot]) \n   9abd9c4  : ci: Use only-new-issues to prevent existing lint violations from blocking CI ( #1340 ) ( @boranx ) \n   169a2e4  : perf(engine): Move Input AST conversion to occur before rule loop ( #1348 ) ( @brittandeyoung )"
+    },
+    {
+      "tag": "v0.68.2",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.68.2",
+      "updated": "2026-04-15T05:52:15Z",
+      "body": "Changelog \n OPA Changes \n \n   36f23bf  : build(deps): bump github.com/open-policy-agent/opa from 1.15.1 to 1.15.2 ( #1311 ) ( @dependabot [bot]) \n \n Other Changes \n \n   479de13  : build(deps): bump github.com/hashicorp/go-getter from 1.8.5 to 1.8.6 ( #1307 ) ( @dependabot [bot])"
+    },
+    {
+      "tag": "v0.68.1",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.68.1",
+      "updated": "2026-04-15T05:12:21Z",
+      "body": "Changelog \n Bug Fixes \n \n   2631477  : fix(push): Use Rego v1 by default ( #1290 ) ( @jalseth )"
+    },
+    {
+      "tag": "v0.68.0",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.68.0",
+      "updated": "2026-04-02T01:58:41Z",
+      "body": "Changelog \n New Features \n \n   a604f55  : feat(parser): Add nginx parser ( #1289 ) ( @jalseth ) \n \n Bug Fixes \n \n   487a2e1  : fix: Skip extensionless files that are not recognized types ( #1302 ) ( @ricardbejarano ) \n \n OPA Changes \n \n   472e4e3  : build(deps): bump github.com/open-policy-agent/opa from 1.14.1 to 1.15.1 ( #1303 ) ( @dependabot [bot]) \n \n Other Changes \n \n   6d521ef  : build(deps): bump github.com/google/go-jsonnet from 0.21.0 to 0.22.0 ( #1299 ) ( @dependabot [bot]) \n   2d5f1c2  : build(deps): bump github.com/moby/buildkit from 0.28.0 to 0.29.0 ( #1306 ) ( @dependabot [bot])"
+    },
+    {
+      "tag": "v0.67.1",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.67.1",
+      "updated": "2026-03-23T23:46:51Z",
+      "body": "Changelog \n Bug Fixes \n \n   9cef5a2  : fix(releasing): Ensure GoReleaser creates a tar for linux_amd64 ( #1294 ) ( @jalseth ) \n \n Other Changes \n \n   8bc9477  : build(deps): bump actions/setup-go from 6.0.0 to 6.3.0 ( #1278 ) ( @dependabot [bot]) \n   7655171  : build(deps): bump docker/build-push-action from 6.19.2 to 7.0.0 ( #1284 ) ( @dependabot [bot]) \n   35ab0ca  : build(deps): bump docker/login-action from 3.6.0 to 4.0.0 ( #1283 ) ( @dependabot [bot]) \n   94e5286  : build(deps): bump goreleaser/goreleaser-action from 6.4.0 to 7.0.0 ( #1275 ) ( @dependabot [bot]) \n   45a3835  : ci: Update Nix devshell to use go-overlay ( #1287 ) ( @jalseth )"
+    },
+    {
+      "tag": "v0.67.0",
+      "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.67.0",
+      "updated": "2026-03-13T23:41:06Z",
+      "body": "Changelog \n Bug Fixes \n \n   69f41ed  : fix(plugin): Handle spaces in the plugin command path ( #1242 ) ( @jalseth ) \n \n OPA Changes \n \n   59cb419  : build(deps): bump github.com/open-policy-agent/opa from 1.12.1 to 1.13.1 ( #1262 ) ( @dependabot [bot]) \n   507345f  : build(deps): bump github.com/open-policy-agent/opa from 1.13.1 to 1.13.2 ( #1274 ) ( @dependabot [bot]) \n   69b7329  : build(deps): bump github.com/open-policy-agent/opa from 1.13.2 to 1.14.1 ( #1282 ) ( @dependabot [bot]) \n \n Other Changes \n \n   8ec8ba0  : build(deps): bump actions/checkout from 5.0.0 to 6.0.1 ( #1230 ) ( @dependabot [bot]) \n   fb1d20e  : build(deps): bump alpine from 3.23.2 to 3.23.3 ( #1264 ) ( @dependabot [bot]) \n   84ee4f1  : build(deps): bump bats-core/bats-action from 3.0.1 to 4.0.0 ( #1270 ) ( @dependabot [bot]) \n   06f26a6  : build(deps): bump cuelang.org/go from 0.15.1 to 0.15.3 ( #1244 ) ( @dependabot [bot]) \n   d01f783  : build(deps): bump cuelang.org/go from 0.15.3 to 0.15.4 ( #1259 ) ( @dependabot [bot]) \n   b7f9627  : build(deps): bump cuelang.org/go from 0.15.4 to 0.16.0 ( #1279 ) ( @dependabot [bot]) \n   3e4cf98  : build(deps): bump docker/build-push-action from 6.18.0 to 6.19.2 ( #1273 ) ( @dependabot [bot]) \n   b7060d3  : build(deps): bump github.com/CycloneDX/cyclonedx-go from 0.9.3 to 0.10.0 ( #1265 ) ( @dependabot [bot]) \n   e130513  : build(deps): bump github.com/hashicorp/go-getter from 1.8.3 to 1.8.4 ( #1245 ) ( @dependabot [bot]) \n   e5afd3f  : build(deps): bump github.com/hashicorp/go-getter from 1.8.4 to 1.8.5 ( #1285 ) ( @dependabot [bot]) \n   d6f5fb2  : build(deps): bump github.com/moby/buildkit from 0.26.3 to 0.27.1 ( #1260 ) ( @dependabot [bot]) \n   c1ba806  : build(deps): bump github.com/moby/buildkit from 0.27.1 to 0.28.0 ( #1280 ) ( @dependabot [bot]) \n   fc57996  : build(deps): bump github.com/spdx/tools-golang from 0.5.5 to 0.5.6 ( #1243 ) ( @dependabot [bot]) \n   95d756f  : build(deps): bump github.com/spdx/tools-golang from 0.5.6 to 0.5.7 ( #1251 ) ( @dependabot [bot]) \n   a59b8bd  : build(deps): bump golang from 1.25.5-alpine to 1.25.6-alpine ( #1256 ) ( @dependabot [bot]) \n   bde1457  : build(deps): bump golang from 1.25.6-alpine to 1.26.1-alpine ( #1281 ) ( @dependabot [bot]) \n   b2e58f0  : build(deps): bump golangci/golangci-lint-action from 8.0.0 to 9.2.0 ( #1231 ) ( @dependabot [bot]) \n   b1e9f30  : ci: Update Dependabot config ( #1267 ) ( @jalseth ) \n   bf63002  : ci: Update setup-go to use Go version from go.mod ( #1268 ) ( @jalseth )"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+Agentic Batch Changes - Sourcegraph docs (https://sourcegraph.com/docs/agentic-batch-changes)
+citeturn106view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://sourcegraph.com/docs/agentic-batch-changes","lineno":null}); Total lines: 71
+L0: Search docs...
+L1: 
+L2: Latest
+L3: 
+L4:   1. 【0†Docs】
+L5: 
+L6:   2. 【1†agentic-batch-changes】
+L7: # Agentic Batch Changes
+L8: 
+L9: Agentic Batch Changes turns a description of a change into changesets across your codebase. You tell the agent what should be different. It researches your repositories with 【2†Deep Search】, proposes a plan, previews the change on one repository, and rolls it out in stages you control. After it opens pull requests, it can keep watching them: when CI fails or a merge conflict appears, it can iterate to fix the problem and report back.
+L10: 
+L11: You can use it for:
+L12:   * Dependency upgrades and CVE remediation, including upgrades with breaking changes, transitive dependencies, and lockfiles.
+L13:   * Language and framework migrations, such as replacing deprecated APIs across every service.
+L14:   * Generating or refreshing repository documentation and `AGENTS.md` guidance for coding agents.
+L15:   * Splitting one large change in a monorepo into a separate pull request per team.
+L16: The agent also handles changes that need judgment in each repository, reading the surrounding code before it edits rather than applying one pattern everywhere.
+L17: 
+L18: Some terms used in this documentation:
+L19:   * A code host is the service that hosts your repositories and reviews, such as GitHub, GitLab, Bitbucket, or Azure DevOps.
+L20:   * A changeset is one proposed change on a code host: a pull request on GitHub, a merge request on GitLab. One agentic batch change can span several code hosts, so this documentation uses the neutral word.
+L21:   * The plan is what the agent proposes before it runs: the repositories in scope, what will change in each one, and the branch, title, and commit message for the resulting changesets.
+L22: ## 【3†Getting started】
+L23: ### 【4†Before you start】
+L24: 
+L25: Agentic Batch Changes should be on by default. If it isn't available, contact your Sourcegraph administrator; see 【5†Administration】 for access and setup requirements.
+L26: 
+L27: As a user, you need:
+L28:   * A 【6†Batch Changes credential】 for each code host where the agent should publish, added under Code hosts in your Batch Changes settings.
+L29:   * If you want the agent to react to CI failures, CI must report check results to your code host so Sourcegraph can detect them. Fetching CI logs also requires a token that can read them, stored under 【7†Secrets】 in the same settings area. See 【8†Security and secrets】.
+L30: ### 【9†Write the prompt】
+L31: 
+L32: Open Agentic Batch Changes from the navigation and describe the change: the outcome you want and where to look.
+L33: 
+L34: For example, for a Go codebase:
+L35: 
+L36: > Across the repositories in our acme-platform organization, replace calls to `ioutil.ReadFile` with `os.ReadFile` and remove imports that become unused. Run `gofmt` afterwards. Don't touch anything under `vendor/`. Publish drafts so I can see CI.
+L37: 
+L38: See 【10†Writing prompts】 for more examples.
+L39: ### 【11†Review the plan】
+L40: 
+L41: The agent researches your codebase and comes back with a plan: the repositories in scope, what will change in each one, the branch and title for the changesets, and which repository it wants to test on first (also called a canary). The agent might ask clarifying questions when the scope is ambiguous.
+L42: At any time, you can ask the agent to show you the plan or adjust it in plain language, including after publication. You can ask for corrective code changes to existing changesets; see 【12†During the conversation】 for how revisions affect completed work.
+L43: ### 【13†Watch the test run】
+L44: 
+L45: After you approve, the agent runs the change in one repository and shows you the diff. Review the proposed changes and assess the agent's suggested solution. If the diff has a problem, tell the agent. You can also highlight and comment on lines in the diff itself. The agent will then revise the plan and adjust the next changes as well.
+L46: ### 【14†Publish a draft】
+L47: 
+L48: Where your code host supports drafts, tell the agent to publish the test result as a draft changeset to get CI, code owner checks, and reviewer comments on one changeset before the rollout goes any wider. If the agent needs a secret to read CI logs, it might ask you to 【8†configure one】.
+L49: ### 【15†Expand the rollout】
+L50: 
+L51: If everything goes well, the agent might ask if it can continue. By default, the agent runs the next stage and pauses again when it's done. Each pause is a checkpoint where you can inspect a diff, skip a repository, or adjust a title. When you trust the change, "run everything else" fans out the remainder.
+L52: ### 【16†Let the agent finish】
+L53: 
+L54: When configured to handle CI failures, the agent fetches the logs, iterates to fix the problem, and updates the changeset. You can step away and ask "what happened while I was away?" when you return for a summary of everything that changed. When reviewers approve and CI is green, merge on the code host or use Merge in Sourcegraph's changeset view, where available. The agent cannot merge changesets from the conversation.
+L55: To let colleagues follow the work, use Share on the agent page. See 【17†Sharing and visibility】. To let a colleague take over the work, use Share > Hand over. See 【18†Handing over an agent】.
+L56: 
+L57: Next
+L58:     【10†Writing prompts】
+L59: ## On this page
+L60: 
+L61:   1. ### 【19†Agentic Batch Changes】
+L62: 
+L63:   2.     1. 【3†Getting started】
+L64:   3.   4.   5.   6.   7.   8.   9. * * *
+L65: 
+L66: 【20†Edit this page on GitHub†github.com】
+L67: 
+L68: Copy page as Markdown
+L69: 
+L70: 【21†View as Markdown】
+

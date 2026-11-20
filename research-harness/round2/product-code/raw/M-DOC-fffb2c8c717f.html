@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="author" content="Moderne">
+<link rel="icon" href="/brand/moderne-symbol.svg" type="image/svg+xml">
+
+<meta property="og:site_name" content="Moderne">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Overview of OpenRewrite and Moderne for automated code modernization">
+<meta property="og:description" content="What OpenRewrite does, how Lossless Semantic Trees and recipes work, and how the Moderne Platform runs the same recipes across thousands of repositories.">
+<meta property="og:url" content="https://moderne.ai/blog/overview-of-openrewrite-and-moderne">
+
+<meta property="og:image" content="https://moderne.ai/blog/overview-of-openrewrite-and-moderne/6684882fa5f61e33d27f995d-65d7cc95de30b9ebc86d48cb-30445f24.webp">
+<meta property="og:image:width" content="1573"><meta property="og:image:height" content="833">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@moderneinc">
+<meta name="twitter:creator" content="@moderneinc">
+<meta name="twitter:title" content="Overview of OpenRewrite and Moderne for automated code modernization">
+<meta name="twitter:description" content="What OpenRewrite does, how Lossless Semantic Trees and recipes work, and how the Moderne Platform runs the same recipes across thousands of repositories.">
+<meta name="twitter:image" content="https://moderne.ai/blog/overview-of-openrewrite-and-moderne/6684882fa5f61e33d27f995d-65d7cc95de30b9ebc86d48cb-30445f24.webp">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://moderne.ai/#organization",
+      "name": "Moderne",
+      "url": "https://moderne.ai",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://moderne.ai/brand/moderne-logo.svg"
+      },
+      "founders": [
+        { "@type": "Person", "name": "Jonathan Schneider" },
+        { "@type": "Person", "name": "Olga Kundzich" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Miami",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/moderneinc/",
+        "https://twitter.com/moderneinc",
+        "https://www.youtube.com/@Moderne-and-OpenRewrite",
+        "https://www.g2.com/products/moderne-moderne/reviews",
+        "https://www.gartner.com/reviews/market/ai-augmented-code-modernization-tools/vendor/moderne"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://moderne.ai/#website",
+      "url": "https://moderne.ai",
+      "name": "Moderne",
+      "publisher": { "@id": "https://moderne.ai/#organization" }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Overview of OpenRewrite and Moderne","description":"What OpenRewrite does, how Lossless Semantic Trees and recipes work, and how the Moderne Platform runs the same recipes across thousands of repositories.","image":"https://moderne.ai/blog/overview-of-openrewrite-and-moderne/6684882fa5f61e33d27f995d-65d7cc95de30b9ebc86d48cb-30445f24.webp","datePublished":"2026-01-31","author":[{"@id":"https://moderne.ai/#organization","@type":"Organization","name":"Moderne"}],"publisher":{"@type":"Organization","@id":"https://moderne.ai/#organization","name":"Moderne","logo":{"@type":"ImageObject","url":"https://moderne.ai/brand/moderne-logo.svg"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moderne.ai/blog/overview-of-openrewrite-and-moderne"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://moderne.ai"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://moderne.ai/blog"},{"@type":"ListItem","position":3,"name":"Overview of OpenRewrite and Moderne","item":"https://moderne.ai/blog/overview-of-openrewrite-and-moderne"}]}</script>
+
+<script>!function(){var e=location.hostname;if(!("moderne.ai"===e||"www.moderne.ai"===e)){var n=document.createElement("meta");n.name="robots",n.content="noindex,nofollow",document.head.appendChild(n)}}()</script>
+<link rel="alternate" type="application/rss+xml" title="Moderne Blog" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preload" href="https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2" as="font" type="font/woff2" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload='this.media="all"'>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+
+<script>!function(){var t=location.hostname;if("localhost"!==t&&"127.0.0.1"!==t&&"0.0.0.0"!==t&&"::1"!==t&&""!==t&&!/\.local$/.test(t)){window.dataLayer=window.dataLayer||[],window.gtag=window.gtag||function(){dataLayer.push(arguments)},gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",functionality_storage:"denied",personalization_storage:"denied",security_storage:"denied"}),window.OptanonWrapper=function(){};var e=document.createElement("script");e.src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js",e.type="text/javascript",e.charset="UTF-8",e.setAttribute("data-domain-script","0190cb61-822b-7b15-8cbc-563a8320e82a"),document.head.appendChild(e),function(t,e,a,n){t[n]=t[n]||[],t[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});var o=e.getElementsByTagName(a)[0],d=e.createElement(a);d.async=!0,d.src="https://www.googletagmanager.com/gtm.js?id=GTM-5P4GJBQ",o.parentNode.insertBefore(d,o)}(window,document,"script","dataLayer")}}()</script>
+<script type="module" src="/assets/SiteBaseline.astro_astro_type_script_index_0_lang.wU0dhIUr.js"></script>
+  <title>Overview of OpenRewrite and Moderne for automated code modernization</title>
+  <meta name="description" content="What OpenRewrite does, how Lossless Semantic Trees and recipes work, and how the Moderne Platform runs the same recipes across thousands of repositories.">
+  <link rel="canonical" href="https://moderne.ai/blog/overview-of-openrewrite-and-moderne">
+  <meta property="og:type" content="article">
+  
+  
+<link rel="stylesheet" href="/assets/SiteBaseline.Cn_V3pa0.css">
+<link rel="stylesheet" href="/assets/_slug_.DVPYlVOX.css">
+<link rel="stylesheet" href="/assets/lh-gradients.D81a9bJ_.css">
+<link rel="stylesheet" href="/assets/VideoPlayer.CwfTf4_0.css">
+<link rel="stylesheet" href="/assets/blog.C4fZF0UP.css">
+<link rel="stylesheet" href="/assets/post.mn_S5L5e.css"></head>
+<body>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gr)" opacity="0.4"></rect></svg>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5P4GJBQ" height="0" width="0" style="visibility:hidden;display:none"></iframe></noscript>
+<aside class="site-announce" role="region" aria-label="Announcement" data-announce-id="asf-summit-early-bird">
+  <div class="wrap site-announce-inner">
+    <p class="site-announce-text"><span class="site-announce-hl">AI Software Factory Summit</span> | Feb 22-24, 2027</p>
+    <a class="site-announce-cta" href="/ai-software-factory/">Early Bird pricing <span aria-hidden="true">→</span></a>
+  </div>
+  <button class="site-announce-close" type="button" aria-label="Dismiss announcement">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
+</aside>
+<header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label="Moderne home">
+      <img class="logo logo-full" src="/brand/moderne-logo-light-r.png" alt="Moderne" width="165" height="24" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      <img class="logo logo-mark" src="/brand/moderne-icon-light.svg" alt="" aria-hidden="true" width="30" height="30">
+    </a>
+    <nav id="site-nav">
+      <div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-0" data-key="site.nav.0.label">Solutions</button>
+  <div class="nav-menu" id="nav-panel-0"><div class="nav-col">
+      
+      <a href="/solutions/reduce-cost-to-operate">
+          <span class="nav-lbl" data-lbl="Reduce cost to operate software estate">Reduce cost to operate software estate</span>
+          
+        </a><a href="/solutions/accelerate-cloud-modernization">
+          <span class="nav-lbl" data-lbl="Accelerate cloud modernization">Accelerate cloud modernization</span>
+          
+        </a><a href="/solutions/improve-security-posture">
+          <span class="nav-lbl" data-lbl="Improve security and risk posture">Improve security and risk posture</span>
+          
+        </a><a href="/solutions/increase-ai-development-efficiency">
+          <span class="nav-lbl" data-lbl="Increase AI development efficiency">Increase AI development efficiency</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-1" data-key="site.nav.1.label">Product</button>
+  <div class="nav-menu" id="nav-panel-1"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.0.title">Editions</p>
+      <a href="/platform">
+          <span class="nav-lbl" data-lbl="Moderne Platform">Moderne Platform</span>
+          
+        </a><a href="/moderne-dx">
+          <span class="nav-lbl" data-lbl="Moderne DX">Moderne DX</span>
+          
+        </a><a href="/managed-service">
+          <span class="nav-lbl" data-lbl="Managed Service">Managed Service</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.1.title">Features</p>
+      <a href="/moderne-agent-tools/code-search">
+          <span class="nav-lbl" data-lbl="Code Search">Code Search</span>
+          
+        </a><a href="/moderne-agent-tools/prethink">
+          <span class="nav-lbl" data-lbl="Prethink">Prethink</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="container" data-titles>
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-2" data-key="site.nav.2.label">Resources</button>
+  <div class="nav-menu" id="nav-panel-2"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.0.title">Technology foundations</p>
+      <a href="/platform/lst">
+          <span class="nav-lbl" data-lbl="Lossless Semantic Tree">Lossless Semantic Tree</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.1.title">Learning</p>
+      <a href="https://docs.moderne.io" target="_blank" rel="noopener">
+          <span class="nav-lbl" data-lbl="Documentation">Documentation</span>
+          <svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a><a href="/content-library#on-demand-webinars">
+          <span class="nav-lbl" data-lbl="On-demand webinars">On-demand webinars</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.2.title">Community</p>
+      <a href="/openrewrite">
+          <span class="nav-lbl" data-lbl="OpenRewrite">OpenRewrite</span>
+          
+        </a><a href="/events">
+          <span class="nav-lbl" data-lbl="Events">Events</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a><a href="/platform/code-genome">
+          <span class="nav-lbl" data-lbl="Code Genome Project">Code Genome Project</span>
+          
+        </a><a href="/ai-software-factory">
+          <span class="nav-lbl" data-lbl="AI Software Factory Summit">AI Software Factory Summit</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.3.title">Media</p>
+      <a href="/blog">
+          <span class="nav-lbl" data-lbl="Blog">Blog</span>
+          
+        </a><a href="/newsroom">
+          <span class="nav-lbl" data-lbl="Newsroom">Newsroom</span>
+          
+        </a><a href="/press-kit">
+          <span class="nav-lbl" data-lbl="Press kit">Press kit</span>
+          
+        </a><a href="/content-library#videos">
+          <span class="nav-lbl" data-lbl="Videos and podcasts">Videos and podcasts</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.4.title">Case studies</p>
+      <a href="/case-study">
+          <span class="nav-lbl" data-lbl="All case studies">All case studies</span>
+          
+        </a><a href="/case-study/soundhound-ai-automates-vulnerability-remediation-and-secure-code-transformation-with-moderne">
+          <span class="nav-lbl" data-lbl="Vulnerability remediation">Vulnerability remediation</span>
+          
+        </a><a href="/case-study/global-retailer-accelerates-spring-boot-migrations-at-massive-scale">
+          <span class="nav-lbl" data-lbl="Spring Boot at scale">Spring Boot at scale</span>
+          
+        </a><a href="/case-study/tackling-technical-debt-at-big-bank-scale">
+          <span class="nav-lbl" data-lbl="Technical debt">Technical debt</span>
+          
+        </a><a href="/case-study/choice-hotels-automates-secure-code-modernization-at-scale">
+          <span class="nav-lbl" data-lbl="Secure modernization">Secure modernization</span>
+          
+        </a>
+    </div></div>
+</div><a href="/partners" data-key="site.nav.3.label">Partners</a>
+      <span class="nav-foot"><a class="nav-cta" href="/pricing" data-key="site.navCta.label">Pricing</a></span>
+    </nav>
+    <button class="site-search-btn" type="button" aria-label="Search the site" data-search-open>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="20" height="20">
+        <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<script>!function(){var e="moderne.announce.dismissed",t=document.querySelector(".site-announce"),n=document.getElementById("site-header");n&&n.classList.add("nav-js");var r=t&&t.getAttribute("data-announce-id");try{r&&localStorage.getItem(e)===r&&(t.hidden=!0)}catch(e){}var o=t&&t.querySelector(".site-announce-close");if(o&&o.addEventListener("click",function(){t.hidden=!0;try{r&&localStorage.setItem(e,r)}catch(e){}}),n){var s=function(){var e=n.offsetHeight,r=document.documentElement.style;r.setProperty("--chrome-h",(t?t.offsetHeight:0)+e+"px"),r.setProperty("--header-h",e+"px")};if(document.styleSheets.length?s():requestAnimationFrame(s),"ResizeObserver"in window){var a=new ResizeObserver(s);a.observe(n),t&&a.observe(t)}}}()</script>
+  
+<script type="module" src="/assets/BlogPost.astro_astro_type_script_index_0_lang.BBo4jsKw.js"></script>
+  <main>
+  <article class="post">
+    <div class="post-grid">
+      <aside class="post-toc" aria-label="On this page">
+        <p class="toc-h">Contents</p>
+        <nav class="toc-nav">
+          <ol class="toc-list">
+            <li class="toc-item lvl2"><a href="#openrewrite-started-at-netflix-as-a-way-to-automate-the-code-changes-nobody-had-time-for">OpenRewrite started at Netflix as a way to automate the code changes nobody had time for.</a></li>
+            <li class="toc-item lvl3"><a href="#what-is-openrewrite">What is OpenRewrite?</a></li>
+            <li class="toc-item lvl2"><a href="#openrewrite-works-on-lossless-semantic-trees-and-applies-recipes-to-them">OpenRewrite works on Lossless Semantic Trees and applies recipes to them.</a></li>
+            <li class="toc-item lvl2"><a href="#moderne-runs-openrewrite-recipes-across-thousands-of-repositories-at-once">Moderne runs OpenRewrite recipes across thousands of repositories at once.</a></li>
+            <li class="toc-item lvl3"><a href="#can-ai-coding-agents-use-openrewrite-recipes">Can AI coding agents use OpenRewrite recipes?</a></li>
+            <li class="toc-item lvl2"><a href="#moderne-turns-code-impact-analysis-into-a-job-that-takes-minutes">Moderne turns code impact analysis into a job that takes minutes.</a></li>
+            <li class="toc-item lvl2"><a href="#the-moderne-cli-brings-multi-repo-refactoring-to-a-developers-machine">The Moderne CLI brings multi-repo refactoring to a developer’s machine.</a></li>
+            <li class="toc-item lvl2"><a href="#devcenter-shows-the-whole-organization-the-state-of-its-codebase">DevCenter shows the whole organization the state of its codebase.</a></li>
+            <li class="toc-item lvl3"><a href="#what-does-moderne-add-to-openrewrite">What does Moderne add to OpenRewrite?</a></li>
+            <li class="toc-item lvl2"><a href="#moderne-adds-scale-proprietary-recipes-and-agent-tools-to-openrewrite">Moderne adds scale, proprietary recipes, and agent tools to OpenRewrite.</a></li>
+            <li class="toc-item lvl3"><a href="#is-moderne-an-alternative-to-openrewrite">Is Moderne an alternative to OpenRewrite?</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="post-main">
+        <header class="post-head">
+          <a class="post-back" href="/blog">← Blog</a>
+          <div class="pcats"><span class="pcat">OpenRewrite</span><span class="pcat">Product</span><span class="pcat">Code Modernization</span></div>
+          <h1 class="post-title">Overview of OpenRewrite and Moderne</h1>
+          
+          <p class="post-byline">
+  <span class="by-author">Moderne</span>
+  
+  <span class="by-meta">January 31, 2026</span><span class="by-meta">12 min read</span>
+</p>
+        </header>
+
+        <div class="post-body">
+          <details class="toc-mobile">
+            <summary>Contents</summary>
+            <ol class="toc-list"><li class="toc-item lvl2"><a href="#openrewrite-started-at-netflix-as-a-way-to-automate-the-code-changes-nobody-had-time-for">OpenRewrite started at Netflix as a way to automate the code changes nobody had time for.</a></li><li class="toc-item lvl3"><a href="#what-is-openrewrite">What is OpenRewrite?</a></li><li class="toc-item lvl2"><a href="#openrewrite-works-on-lossless-semantic-trees-and-applies-recipes-to-them">OpenRewrite works on Lossless Semantic Trees and applies recipes to them.</a></li><li class="toc-item lvl2"><a href="#moderne-runs-openrewrite-recipes-across-thousands-of-repositories-at-once">Moderne runs OpenRewrite recipes across thousands of repositories at once.</a></li><li class="toc-item lvl3"><a href="#can-ai-coding-agents-use-openrewrite-recipes">Can AI coding agents use OpenRewrite recipes?</a></li><li class="toc-item lvl2"><a href="#moderne-turns-code-impact-analysis-into-a-job-that-takes-minutes">Moderne turns code impact analysis into a job that takes minutes.</a></li><li class="toc-item lvl2"><a href="#the-moderne-cli-brings-multi-repo-refactoring-to-a-developers-machine">The Moderne CLI brings multi-repo refactoring to a developer’s machine.</a></li><li class="toc-item lvl2"><a href="#devcenter-shows-the-whole-organization-the-state-of-its-codebase">DevCenter shows the whole organization the state of its codebase.</a></li><li class="toc-item lvl3"><a href="#what-does-moderne-add-to-openrewrite">What does Moderne add to OpenRewrite?</a></li><li class="toc-item lvl2"><a href="#moderne-adds-scale-proprietary-recipes-and-agent-tools-to-openrewrite">Moderne adds scale, proprietary recipes, and agent tools to OpenRewrite.</a></li><li class="toc-item lvl3"><a href="#is-moderne-an-alternative-to-openrewrite">Is Moderne an alternative to OpenRewrite?</a></li></ol>
+          </details>
+          <aside class="takeaways">
+  <p class="tk-h">Key takeaways</p>
+  <ul><li>OpenRewrite started at Netflix, where a central team needed to automate code changes without enforcing one coding style. It now handles everything from framework migrations to vulnerability patches.</li><li>The Lossless Semantic Tree (LST) captures type attribution, dependencies, and formatting, so recipes change code accurately and keep its original style.</li><li>Recipes compose simple transformations into larger ones, so developers automate changes without learning a new programming language.</li><li>OpenRewrite runs recipes one repository at a time and rebuilds the LST on every run. Moderne stores LSTs for every repository, so one run covers thousands, and adds proprietary recipes, DevCenter dashboards, and agent tools like Trigrep and Prethink.</li></ul>
+</aside>
+          <p>OpenRewrite is an open source framework for automated code refactoring. It migrates frameworks and patches vulnerabilities by running recipes, one repository at a time. Recipes are deterministic programs that search and change code.</p>
+<p>Moderne is the enterprise platform from the team that created OpenRewrite. It runs recipes across thousands of repositories at once, so a migration or security fix reaches the whole codebase in one run.</p>
+<h2 id="openrewrite-started-at-netflix-as-a-way-to-automate-the-code-changes-nobody-had-time-for">OpenRewrite started at Netflix as a way to automate the code changes nobody had time for.</h2>
+<p>Jonathan Schneider created OpenRewrite while working in engineering tools at Netflix. Netflix’s culture of freedom and responsibility led to code that didn’t conform to any single style. The same culture meant the central team couldn’t gate product engineers by breaking their builds over a pattern it didn’t like.</p>
+<p>Requests from the central team were too often met with: “I do not have time to deal with this, but if you do it for me, I’ll merge in the changes.” So eventually, Jonathan built a tool to automate key changes. Prior to OpenRewrite, Jonathan created the Gradle Lint plugin, a popular plugin that manipulates Groovy build files and upgrades dependencies. The plugin already rewrote the Groovy code behind build configuration, so source code was the next step.</p>
+<p>OpenRewrite reached Java when the central team wanted to retire an internal logging library that predated SLF4J and replace it with SLF4J. The internal library had been deprecated for six years. Nobody could be forced to migrate off it, so references to it were still all over the Netflix codebase. With OpenRewrite, the central team was able to remove them at scale.</p>
+<p>The internal logger took a <code>%s</code> format string with the exception first:</p>
+<div class="codeblock" data-lang="java"><span class="cb-lang">java</span><pre class="astro-code moderne-brand" tabindex="0"><code><span class="line"><span style="color:#0b6b3e;font-weight:700">class</span><span style="color:#0f6e86"> MyService</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#0f6e86">    Logger</span><span style="color:#2a231a"> logger </span><span style="color:#0b6b3e;font-weight:700">=</span><span style="color:#2a231a"> Logger</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">getLogger</span><span style="color:#6b6659">(</span><span style="color:#2a231a">MyService</span><span style="color:#6b6659">.</span><span style="color:#2a231a">class</span><span style="color:#6b6659">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#0f6e86">    void</span><span style="color:#8a5f14"> streamMovie</span><span style="color:#6b6659">(</span><span style="color:#0f6e86">Movie</span><span style="color:#4a4034"> movie</span><span style="color:#6b6659">)</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#0b6b3e;font-weight:700">        try</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#2a231a">            movie</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">start</span><span style="color:#6b6659">();</span></span>
+<span class="line"><span style="color:#6b6659">        }</span><span style="color:#0b6b3e;font-weight:700"> catch</span><span style="color:#6b6659"> (</span><span style="color:#0f6e86">StreamingException</span><span style="color:#4a4034"> e</span><span style="color:#6b6659">)</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#2a231a">            logger</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">error</span><span style="color:#6b6659">(</span><span style="color:#6b6659">"</span><span style="color:#6b5a16">streaming %s</span><span style="color:#6b6659">"</span><span style="color:#6b6659">,</span></span>
+<span class="line"><span style="color:#2a231a">                    e</span><span style="color:#6b6659">,</span></span>
+<span class="line"><span style="color:#2a231a">                    movie</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">getTitle</span><span style="color:#6b6659">()</span></span>
+<span class="line"><span style="color:#6b6659">            );</span></span>
+<span class="line"><span style="color:#6b6659">        }</span></span>
+<span class="line"><span style="color:#6b6659">    }</span></span>
+<span class="line"><span style="color:#6b6659">}</span></span></code></pre></div>
+<p>The recipe moved each call to SLF4J, with a <code>{}</code> placeholder and the exception last:</p>
+<div class="codeblock" data-lang="java"><span class="cb-lang">java</span><pre class="astro-code moderne-brand" tabindex="0"><code><span class="line"><span style="color:#0b6b3e;font-weight:700">class</span><span style="color:#0f6e86"> MyService</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#0f6e86">    Logger</span><span style="color:#2a231a"> logger </span><span style="color:#0b6b3e;font-weight:700">=</span><span style="color:#2a231a"> LoggerFactory</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">getLogger</span><span style="color:#6b6659">(</span><span style="color:#2a231a">MyService</span><span style="color:#6b6659">.</span><span style="color:#2a231a">class</span><span style="color:#6b6659">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#0f6e86">    void</span><span style="color:#8a5f14"> streamMovie</span><span style="color:#6b6659">(</span><span style="color:#0f6e86">Movie</span><span style="color:#4a4034"> movie</span><span style="color:#6b6659">)</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#0b6b3e;font-weight:700">        try</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#2a231a">            movie</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">start</span><span style="color:#6b6659">();</span></span>
+<span class="line"><span style="color:#6b6659">        }</span><span style="color:#0b6b3e;font-weight:700"> catch</span><span style="color:#6b6659"> (</span><span style="color:#0f6e86">StreamingException</span><span style="color:#4a4034"> e</span><span style="color:#6b6659">)</span><span style="color:#6b6659"> {</span></span>
+<span class="line"><span style="color:#2a231a">            logger</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">error</span><span style="color:#6b6659">(</span><span style="color:#6b6659">"</span><span style="color:#6b5a16">streaming {}</span><span style="color:#6b6659">"</span><span style="color:#6b6659">,</span></span>
+<span class="line"><span style="color:#2a231a">                    movie</span><span style="color:#6b6659">.</span><span style="color:#8a5f14">getTitle</span><span style="color:#6b6659">(),</span></span>
+<span class="line"><span style="color:#2a231a">                    e</span></span>
+<span class="line"><span style="color:#6b6659">            );</span></span>
+<span class="line"><span style="color:#6b6659">        }</span></span>
+<span class="line"><span style="color:#6b6659">    }</span></span>
+<span class="line"><span style="color:#6b6659">}</span></span></code></pre></div>
+<p>In the years since, OpenRewrite’s capabilities have expanded from simple API changes to complex framework migrations and CVE patching. Coverage has grown from Java to the rest of the enterprise stack: JVM languages, <a href="/blog/automated-javascript-refactoring-at-enterprise-scale">JavaScript and TypeScript</a>, <a href="/blog/moderne-csharp-dotnet-support">C#</a>, <a href="/blog/semantic-code-analysis-for-python">Python</a>, and the build and configuration files around them. Anyone can use OpenRewrite and contribute to it, and it runs from Maven and Gradle plugins or inside a CI pipeline.</p>
+<h3 id="what-is-openrewrite">What is OpenRewrite?</h3>
+<p>OpenRewrite is an open source engine that changes code with recipes. It parses code into a Lossless Semantic Tree (LST) that keeps type information and formatting, so a recipe changes only what it targets. Jonathan Schneider created it at Netflix, and it now runs framework migrations and vulnerability fixes from Maven and Gradle plugins.</p>
+<h2 id="openrewrite-works-on-lossless-semantic-trees-and-applies-recipes-to-them">OpenRewrite works on Lossless Semantic Trees and applies recipes to them.</h2>
+<p>A <a href="/blog/lossless-semantic-tree-the-complete-code-data-model-for-automated-code-refactoring-and-analysis">Lossless Semantic Tree (LST)</a> goes beyond an abstract syntax tree (AST). It’s type-attributed, so recipes can find and change code accurately with no false positives. It also preserves formatting, so changes match the style of the surrounding code.</p>
+<figure class="post-figure">
+  <iframe class="post-diagram" src="/embeds/code-to-lst-tree-light.html" title="A short Java method and the Lossless Semantic Tree OpenRewrite builds from it" loading="lazy" scrolling="no"></iframe>
+  <figcaption>Code as text transformed into the LST data structure</figcaption>
+</figure>
+<p>The smallest <a href="https://docs.openrewrite.org/concepts-and-explanations/recipes" rel="noopener" target="_blank">recipes</a> do one search or one transformation, such as “find method,” “change method,” “find transitive dependency,” “upgrade dependency,” or “exclude dependency.” Composite recipes group these building blocks to do larger jobs.</p>
+<p>When the building blocks aren’t enough, developers can customize and write their own recipes. They can then share that recipe with others so other people can run it against their code.</p>
+<p>There are <a href="https://codegenomeproject.org/recipes" rel="noopener" target="_blank">thousands of recipes</a> in the OpenRewrite catalog, both <a href="https://docs.openrewrite.org/licensing/openrewrite-licensing" rel="noopener" target="_blank">free and proprietary</a>. Many recipes are available for individual users and companies to openly consume and customize for their own code. Moderne <a href="https://codegenomeproject.org/recipes?license=proprietary" rel="noopener" target="_blank">creates and maintains a commercial set</a> covering security remediation, technology insights, major migrations, and AI-enabled recipes.</p>
+<p>OpenRewrite recipes were initially focused on code transformations. Users asked for a way to find issues before refactoring, so a search function was added. A search is a special kind of transformation: OpenRewrite adds <a href="https://docs.openrewrite.org/concepts-and-explanations/markers" rel="noopener" target="_blank">markers</a> to the LST elements that match. From there, the markers can be translated into text based on the developer’s wishes (usually as comments that contain TODOs, Jira issue numbers, etc.).</p>
+<p>To identify every method invocation in a whole package of Google’s Guava library, we can instruct the recipe to perform this search:</p>
+<p><img src="/blog/overview-of-openrewrite-and-moderne/find-methods-form.png" alt="The Find Methods recipe configured with the method pattern com.google.common.collect.* *(..)" sizes="(max-width: 1080px) 100vw, 740px" width="1648" height="1340" srcset="/assets/img/3d0aeac04226-9affb7-480.webp 480w, /assets/img/3d0aeac04226-9affb7-960.webp 960w, /assets/img/3d0aeac04226-9affb7-1600.webp 1600w, /assets/img/3d0aeac04226-9affb7-1648.webp 1648w"></p>
+<p>The results show the recipe isn’t matching method names. Type attribution confirms that each call comes from the <code>com.google.common.collect</code> package:</p>
+<p><img src="/blog/overview-of-openrewrite-and-moderne/find-methods-results.png" alt="Find Methods results showing Guava collect method calls matched by type" sizes="(max-width: 1080px) 100vw, 740px" width="2810" height="1446" srcset="/assets/img/b2ebdbe74de4-9affb7-480.webp 480w, /assets/img/b2ebdbe74de4-9affb7-960.webp 960w, /assets/img/b2ebdbe74de4-9affb7-1600.webp 1600w, /assets/img/b2ebdbe74de4-9affb7-2810.webp 2810w"></p>
+<p>This recipe in plain OpenRewrite YAML looks like:</p>
+<div class="codeblock" data-lang="yaml"><span class="cb-lang">yaml</span><pre class="astro-code moderne-brand" tabindex="0"><code><span class="line"><span style="color:#0f6e86">type</span><span style="color:#6b6659">:</span><span style="color:#6b5a16"> specs.openrewrite.org/v1beta/recipe</span></span>
+<span class="line"><span style="color:#0f6e86">name</span><span style="color:#6b6659">:</span><span style="color:#6b5a16"> com.yourorg.FindGuavaCollectUsages</span></span>
+<span class="line"><span style="color:#0f6e86">displayName</span><span style="color:#6b6659">:</span><span style="color:#6b5a16"> Find Guava collect method calls</span></span>
+<span class="line"><span style="color:#0f6e86">recipeList</span><span style="color:#6b6659">:</span></span>
+<span class="line"><span style="color:#6b6659">  -</span><span style="color:#0f6e86"> org.openrewrite.java.search.FindMethods</span><span style="color:#6b6659">:</span></span>
+<span class="line"><span style="color:#0f6e86">      methodPattern</span><span style="color:#6b6659">:</span><span style="color:#6b5a16"> com.google.common.collect.* *(..)</span></span></code></pre></div>
+<p>Give this a try by following the <a href="https://docs.openrewrite.org/running-recipes/getting-started" rel="noopener" target="_blank">OpenRewrite Quickstart Guide</a> or one of the tutorials, such as <a href="https://docs.openrewrite.org/running-recipes/popular-recipe-guides/automatically-fix-checkstyle-violations" rel="noopener" target="_blank">“Automatically fix Checkstyle violations”</a> or “<a href="https://codegenomeproject.org/recipes/org.openrewrite.java.migrate.UpgradeToJava21" rel="noopener" target="_blank">Migrate to Java 21</a>.”</p>
+<h2 id="moderne-runs-openrewrite-recipes-across-thousands-of-repositories-at-once">Moderne runs OpenRewrite recipes across thousands of repositories at once.</h2>
+<p>OpenRewrite on its own works one repository at a time, and Moderne removes that limit for organizations with large codebases. Teams use it to run a recipe across the whole codebase in a single run.</p>
+<p>The Moderne Platform is not built directly on top of OpenRewrite. It uses proprietary technology to apply OpenRewrite recipes at scale, and the biggest difference is how it handles LSTs.</p>
+<p>OpenRewrite is computationally expensive. It takes source code as text, produces LSTs for it using the compiler, applies the recipe, and then produces new source code as text. For each recipe run, the OpenRewrite build tools start from scratch.</p>
+<p>The Moderne Platform batch-builds and serializes LSTs and stores them on disk, so recipes and analysis run against your codebase without a rebuild. LSTs are built once and shared across teams for whatever work they are doing, which saves both time and infrastructure cost.</p>
+<p>See the difference here:</p>
+<p><a href="https://www.youtube.com/watch?v=Q-ej2lCJHRs" rel="noopener" target="_blank">▶ Watch on YouTube</a></p>
+<p>Central teams within companies, such as platform teams, are typically responsible for managing the Moderne Platform. They configure Moderne ingest for their organization’s codebase to produce LSTs at scale.</p>
+<p>Because the LSTs already exist, recipe results come back within minutes. Developers can search and transform code, then open pull requests across every affected repository and send them through the usual CI/CD review.</p>
+<p>Testing matters more at this scale. A recipe bug in one repository is a quick fix, but the same bug run across every repository in an organization means a pull request to reject in each of them. Moderne develops and tests recipes on open source repositories, and runs and compiles them to catch regressions. Teams building their own custom migrations do that work on the platform too. Moderne also runs a <a href="/try-moderne">free community tenant</a> where anyone can run recipes across popular open source projects.</p>
+<p>The same LSTs now serve coding agents, which otherwise read files one at a time to work out how a codebase fits together. <a href="/moderne-agent-tools/code-search">Trigrep</a> gives agents type-aware code search. <a href="/moderne-agent-tools/prethink">Prethink</a> gives them codebase context that recipes resolve ahead of time. Through Moderne, agents such as Claude Code, Cursor, and GitHub Copilot can use both and run recipes as ordinary tools. The platform already holds more than 30 billion lines of code as LSTs.</p>
+<h3 id="can-ai-coding-agents-use-openrewrite-recipes">Can AI coding agents use OpenRewrite recipes?</h3>
+<p>Yes. Moderne gives agents such as Claude Code, Cursor, and GitHub Copilot recipes as tools, so the agent plans the change and a deterministic recipe makes the edits. In a Java 25 migration benchmark test, an agent working alone used more than 65 million tokens over 45 minutes and finished about a quarter of the migration. An agent calling recipes used about 30,000 tokens, took 3 minutes, and completed it.</p>
+<h2 id="moderne-turns-code-impact-analysis-into-a-job-that-takes-minutes">Moderne turns code impact analysis into a job that takes minutes.</h2>
+<p>On the Moderne Platform, impact analysis runs across any number of repositories and millions or billions of lines of code in the time it takes a recipe to run. By hand, the same analysis takes weeks or months of several engineers’ time, and the code keeps moving while it happens, so the results are out of date before they’re finished. Many migration and modernization efforts stall at this stage.</p>
+<p>Because ingest keeps the LSTs up to date as the code changes, a new run reflects today’s code, and teams can act on the results immediately.</p>
+<p>Two features of the Moderne Platform do most of this work:</p>
+<ul>
+<li><strong>Data tables</strong> collect real-time data about dependencies, CVEs, licenses, version numbers, API usage, and other facts about your source code. You can learn more about data tables in our <a href="https://docs.moderne.io/user-documentation/moderne-platform/getting-started/data-tables/" rel="noopener" target="_blank">documentation</a>, our <a href="/blog/source-code-impact-analysis-with-data-tables">blog</a>, and our <a href="https://www.youtube.com/watch?v=B-yh153_Fng" rel="noopener" target="_blank">demo video</a>.</li>
+</ul>
+<figure>
+  <img src="/blog/overview-of-openrewrite-and-moderne/vulnerability-report-data-table.png" alt="Vulnerability report data table listing CVEs, affected artifacts, current and fixed versions, and severity for a repository" sizes="(max-width: 1080px) 100vw, 740px" width="782" height="337" srcset="/assets/img/1bb2f5c845b8-9affb7-480.webp 480w, /assets/img/1bb2f5c845b8-9affb7-782.webp 782w">
+  <figcaption>The vulnerability report data table from a dependency vulnerability recipe run, trimmed to six of its columns.</figcaption>
+</figure>
+<ul>
+<li><strong>Code visualizations</strong> turn recipe data into charts, such as where a dependency is used, which languages make up a codebase, or which OWASP categories show up most across an organization. Developers use them to plan the work, and leaders read them at a glance. The <a href="https://docs.moderne.io/user-documentation/moderne-platform/getting-started/visualizations/" rel="noopener" target="_blank">visualizations docs</a> list what’s available, and there’s a <a href="/blog/analyze-source-code-at-scale-with-code-visualizations-in-the-moderne-platform">blog post</a> and a <a href="https://www.youtube.com/watch?v=ez1i1g7z6MM" rel="noopener" target="_blank">demo video</a> too.</li>
+</ul>
+<figure>
+  <img src="/blog/overview-of-openrewrite-and-moderne/language-composition.webp" alt="Language composition visualization in the Moderne Platform for a run across 255 repositories" sizes="(max-width: 1080px) 100vw, 740px" width="2000" height="1114">
+  <figcaption>A code visualization from a language composition recipe run across 255 repositories, showing which languages make up the codebase.</figcaption>
+</figure>
+<h2 id="the-moderne-cli-brings-multi-repo-refactoring-to-a-developers-machine">The Moderne CLI brings multi-repo refactoring to a developer’s machine.</h2>
+<p>With the Moderne CLI (command line interface), a developer can examine and fix code across as many repositories as their machine has the computing power for.</p>
+<p>Many of the CLI commands are optimized for <a href="https://docs.moderne.io/user-documentation/moderne-cli/how-to-guides/parallelism/" rel="noopener" target="_blank">parallel execution</a> across multiple repos. For example, it can run recipes on pre-built LSTs simultaneously, so one recipe run can cover a whole business unit.</p>
+<p>The Moderne CLI is also used to batch-build LSTs for mass ingestion into the platform.</p>
+<p><img src="/blog/overview-of-openrewrite-and-moderne/moderne-cli-4.8.8.png" alt="Moderne CLI 4.8.8 in a terminal" sizes="(max-width: 1080px) 100vw, 740px" width="1424" height="1131" srcset="/assets/img/eed56ab5411f-9affb7-480.webp 480w, /assets/img/eed56ab5411f-9affb7-960.webp 960w, /assets/img/eed56ab5411f-9affb7-1424.webp 1424w"></p>
+<p>Used with the <a href="/platform">Moderne Platform</a>, the CLI lets multiple teams and business units operate on the same codebase together.</p>
+<p>Learn more about the Moderne CLI in our <a href="https://docs.moderne.io/user-documentation/moderne-cli/getting-started/cli-intro" rel="noopener" target="_blank">documentation</a> and <a href="/blog/moderne-cli-multi-repo-developer-experience-automated-code-refactoring">blog</a>.</p>
+<aside class="post-cta">
+<div class="post-cta-text">
+<p class="post-cta-eyebrow">Free hands-on course</p>
+<p class="post-cta-h">Reading about OpenRewrite is one thing. Running it is another.</p>
+<p class="post-cta-sub">Set up the Moderne CLI, run and compose recipes, analyze code with data tables and visualizations, and track progress in DevCenter.</p>
+<p class="post-cta-meta">No signup required · self-paced</p>
+</div>
+<a class="post-cta-btn" href="https://docs.moderne.io/hands-on-learning/introduction" rel="noopener" target="_blank">Start the course →</a>
+</aside>
+<h2 id="devcenter-shows-the-whole-organization-the-state-of-its-codebase">DevCenter shows the whole organization the state of its codebase.</h2>
+<p>Two features let developers, central teams, and business leaders track the codebase and move it forward together:</p>
+<ul>
+<li><strong>Moderne DevCenter</strong> is the platform’s dashboard for tracking change across an organization, from a single team up to the whole company. Upgrade cards show each repository’s migration status, and security cards show the most common vulnerabilities. From either card, you can run the fixing recipe and follow the pull requests it opens. The dashboards are defined as recipes themselves, so they’re version-controlled and reusable. Read the <a href="https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/" rel="noopener" target="_blank">DevCenter documentation</a> or the <a href="/blog/new-moderne-devcenter">relaunch post</a>.</li>
+</ul>
+<figure>
+  <img src="/blog/overview-of-openrewrite-and-moderne/devcenter-campaigns-owasp.png" alt="Moderne DevCenter with upgrade campaigns and OWASP top ten findings" sizes="(max-width: 1080px) 100vw, 740px" width="2360" height="2098" srcset="/assets/img/812ebdec88df-9affb7-480.webp 480w, /assets/img/812ebdec88df-9affb7-960.webp 960w, /assets/img/812ebdec88df-9affb7-1600.webp 1600w, /assets/img/812ebdec88df-9affb7-2360.webp 2360w">
+  <figcaption>DevCenter for an organization: upgrade campaigns tracking each repository against its target version, and OWASP top ten findings from security recipes.</figcaption>
+</figure>
+<ul>
+<li><strong>Activity View</strong> tracks recipe runs, commits, and visualizations produced over time, so engineering teams can see what is happening across the organization without asking around. To find out more about the Activity View, check out our <a href="https://docs.moderne.io/user-documentation/moderne-platform/getting-started/activity-view/" rel="noopener" target="_blank">documentation</a> and <a href="https://www.youtube.com/watch?v=0v3fMELfa-8" rel="noopener" target="_blank">demo video</a>.</li>
+</ul>
+<figure>
+  <img src="/blog/overview-of-openrewrite-and-moderne/activity-view.png" alt="Activity View in the Moderne Platform" sizes="(max-width: 1080px) 100vw, 740px" width="2674" height="467" srcset="/assets/img/2d9125966c9e-9affb7-480.webp 480w, /assets/img/2d9125966c9e-9affb7-960.webp 960w, /assets/img/2d9125966c9e-9affb7-1600.webp 1600w, /assets/img/2d9125966c9e-9affb7-2674.webp 2674w">
+  <figcaption>Activity View for an organization. Each purple entry is a recipe run, and the green entries branching under a run are the data tables and visualizations built from it.</figcaption>
+</figure>
+<p>Moderne is available three ways. The <a href="/platform">Moderne Platform</a> is the SaaS platform, used with the Moderne CLI, for mass code refactoring and analysis across an organization’s codebase. <a href="/moderne-dx">Moderne DX</a> delivers the same capabilities in a fully air-gapped environment, with an on-premises central service that integrates with local Moderne CLI instances. With the <a href="/managed-service">Managed Service</a>, Moderne’s team runs the migration and security remediation work on your behalf, with outcomes backed by SLAs.</p>
+<p>To get started with Moderne, you can <a href="/try-moderne">try the platform</a> on open source code.</p>
+<h3 id="what-does-moderne-add-to-openrewrite">What does Moderne add to OpenRewrite?</h3>
+<p>Scale. Moderne builds every repository’s LST ahead of time, so one recipe run covers thousands of repositories. On top of that come mass pull requests, DevCenter dashboards, proprietary remediation and migration recipes, and agent tools like Trigrep and Prethink.</p>
+<h2 id="moderne-adds-scale-proprietary-recipes-and-agent-tools-to-openrewrite">Moderne adds scale, proprietary recipes, and agent tools to OpenRewrite.</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Capability</th><th>Moderne</th><th>OpenRewrite</th></tr></thead><tbody><tr><td>Multi-repository runs</td><td>Yes, thousands of repositories at once</td><td>No, one repository at a time</td></tr><tr><td>Mass pull requests</td><td>Yes</td><td>No</td></tr><tr><td>Collaboration (Activity View, recipe marketplace, Recipe Builder)</td><td>Yes</td><td>No</td></tr><tr><td>DevCenter dashboards for upgrades and security</td><td>Yes</td><td>No</td></tr><tr><td>Security remediation recipes (SAST, SCA, OWASP top 10), Moderne proprietary license</td><td>Moderne customers</td><td>Not available</td></tr><tr><td>Technology insight recipes (SQL and API usage), Moderne proprietary license</td><td>Moderne customers</td><td>Not available</td></tr><tr><td>Major migration recipes (for example, Spring Boot 4), Moderne proprietary license</td><td>Moderne customers</td><td>Not available</td></tr><tr><td>AI-enabled recipes, Moderne proprietary license</td><td>Moderne customers</td><td>Not available</td></tr><tr><td>Open source recipes (Apache License 2.0)</td><td>Yes</td><td>Yes</td></tr><tr><td>Source-available recipes (Moderne Source Available License)</td><td>Yes</td><td>Yes</td></tr><tr><td>Agent tools</td><td>Trigrep, Prethink, and recipe runs from coding agents</td><td>Not included</td></tr><tr><td>Management reports</td><td>Yes</td><td>No</td></tr><tr><td>Audit logs</td><td>Yes</td><td>No</td></tr><tr><td>Recipe languages</td><td>Java, JavaScript, Python, Go, C#, and YAML</td><td>Java and YAML</td></tr><tr><td>Infrastructure cost</td><td>LSTs built once and reused; included in the platform</td><td>LSTs rebuilt on every recipe run</td></tr><tr><td>Time to remediate across an estate</td><td>Minutes across many repositories</td><td>Days to weeks, one repository at a time</td></tr><tr><td>Where it runs</td><td>SaaS platform, Moderne DX (air-gapped), or Managed Service</td><td>Your machine or CI</td></tr></tbody></table>
+<h3 id="is-moderne-an-alternative-to-openrewrite">Is Moderne an alternative to OpenRewrite?</h3>
+<p>No. Moderne extends OpenRewrite. The team that created OpenRewrite builds Moderne and still maintains the open source project, and any OpenRewrite recipe runs on it. Start with the plugin on one repository, and move to Moderne when the change has to reach thousands.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-grid post-foot">
+      <div class="post-signoff">
+        <div class="signoff-author">
+        <span class="signoff-avatar" aria-hidden="true"></span>
+        <span class="signoff-text">
+          <span class="signoff-eyebrow">Written by</span>
+          <span class="signoff-who">
+            <span class="signoff-name">Moderne</span>
+            
+          </span>
+        </span>
+        </div>
+        
+      </div>
+    </div>
+
+    <section class="related wrap">
+      <h2 class="vh">Related posts</h2>
+      <div class="related-grid">
+        <a class="pcard" href="/blog/github-copilot-modernization">
+<span class="thumb thumb--img"><img src="/blog/github-copilot-modernization/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/41a309697a67-9affb7-480.webp 480w, /assets/img/41a309697a67-9affb7-960.webp 960w, /assets/img/41a309697a67-9affb7-1600.webp 1600w, /assets/img/41a309697a67-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">GitHub Copilot and Moderne take code transformation from one repo to your whole estate</h3>
+          <p class="pmeta">November 10, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/moderne-code-search-launch">
+<span class="thumb thumb--img"><img src="/blog/moderne-code-search-launch/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/cb0bf9898d69-9affb7-480.webp 480w, /assets/img/cb0bf9898d69-9affb7-960.webp 960w, /assets/img/cb0bf9898d69-9affb7-1600.webp 1600w, /assets/img/cb0bf9898d69-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Code Search gives coding agents type-aware search across every repository.</h3>
+          <p class="pmeta">November 5, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/coding-agents-deterministic-context">
+<span class="thumb thumb--img"><img src="/blog/coding-agents-deterministic-context/hero.jpg" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/0d7bc25db189-9affb7-480.webp 480w, /assets/img/0d7bc25db189-9affb7-960.webp 960w, /assets/img/0d7bc25db189-9affb7-1600.webp 1600w, /assets/img/0d7bc25db189-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Coding agents get more out of every token when they start from deterministic context.</h3>
+          <p class="pmeta">October 30, 2026</p>
+        </a>
+      </div>
+    </section>
+  </article>
+  </main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <nav class="foot-grid" aria-label="Footer">
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.0.title">Product</p>
+        <a href="/platform">Moderne Platform</a><a href="/moderne-dx">Moderne DX</a><a href="/managed-service">Managed Service</a><a href="/moderne-agent-tools">Agent tools</a><a href="/pricing">Pricing</a><a href="/try-moderne">Try Moderne</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.1.title">Language support</p>
+        <a href="/solutions/java-upgrades-and-modernization">Java</a><a href="/solutions/spring-boot-migration-tool-enterprise-scale-upgrades">Spring Boot</a><a href="/solutions/csharp-dotnet-modernization">C# and .NET</a><a href="/solutions/python-change-and-transformation">Python</a><a href="/solutions/kotlin-modernization">Kotlin</a><a href="/solutions/javascript-typescript-modernization">JavaScript and TypeScript</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.2.title">Foundations</p>
+        <a href="/platform/lst">Lossless Semantic Tree</a><a href="/recipes">Recipes</a><a href="/openrewrite">OpenRewrite</a><a href="/platform/code-genome">Code Genome Project</a><a href="/backpatch-alliance">Backpatch Alliance</a><a href="https://docs.moderne.io" target="_blank" rel="noopener">Documentation<svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.3.title">Resources</p>
+        <a href="/blog">Blog</a><a href="/content-library">Resource Hub</a><a href="/case-study">Case studies</a><a href="/events">Events</a><a href="/openrewrite">Community</a><a href="/partners">Partners</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.4.title">Company</p>
+        <a href="/about">Meet Moderne</a><a href="/newsroom">Newsroom</a><a href="/press-kit">Press kit</a><a href="/careers">Careers</a><a href="/contact-us">Contact</a><a href="/ai-software-factory">AI Software Factory Summit</a>
+      </div>
+    </nav>
+    <div class="foot-bottom">
+      <a class="foot-logo" href="/" aria-label="Moderne home">
+        <img src="/brand/moderne-logo-light-r.png" alt="Moderne" width="151" height="22" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      </a>
+      <span class="foot-copy" data-key="site.footer.copyright">© Moderne, 2026</span>
+      <div class="foot-right">
+        <img class="foot-soc2" src="/brand/aicpa-soc.png" alt="AICPA SOC for Service Organizations" width="46" height="46" loading="lazy" decoding="async" srcset="/assets/img/59c0ae7ede1c-9affb7-138.webp">
+        <nav class="foot-legal">
+          <a href="/privacy-policy" data-key="site.footer.legal.0.label">Privacy</a><a href="/terms-of-service" data-key="site.footer.legal.1.label">Terms</a>
+          <button type="button" class="ot-settings" onclick="window.OneTrust&&OneTrust.ToggleInfoDisplay()">Cookie settings</button>
+        </nav>
+        <div class="foot-social">
+          <a href="https://twitter.com/moderneinc" target="_blank" rel="noopener" aria-label="Moderne on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/moderneinc/" target="_blank" rel="noopener" aria-label="Moderne on LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
+          </a>
+          <a href="https://www.youtube.com/@Moderne-and-OpenRewrite" target="_blank" rel="noopener" aria-label="Moderne on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer></body>
+</html>

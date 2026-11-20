@@ -1,0 +1,163 @@
+检索参数 {"search_query":[{"q":"site:conf.researchr.org TOSEM developer documentation information needs knowledge software developers code review 2024 2025"}],"response_length":"medium"}
+JAWs 2 - ASE 2026 (https://conf.researchr.org/home/ase-2026/jaws-2-2026)
+citeturn27search0 [wordlim: 200] Crawled: today; The authors of JAW’s papers will discuss their cutting-edge results submitted in September 2026, at the workshop in October 2026, and will be invited to submit an extended version of the paper to either ACM TOSEM Transactions on Software Engineering and Methodology or IEEE TSE Transactions on Software Engineering by October 2027, to get their paper reviewed within three months from the submission, and timpely published, when accepted. ... We solicit full papers with no more than eight pages, not including bibliography, in PDF format and conform, at time of submission, to the official “ACM Primary Article Template”, which can be obtained from the ACM Proceedings Template page. ...   * Software design, architecture, code development ...   * Documentation, knowledge management, software comprehension ... All papers will be reviewed with the ACM TOSEM and IEEE TSE single blind review process: The organizer (the ACM TOSEM and IEEE TSE Editors in Chief) will assign each paper to ACM TOSEM or IEEE TSE editors, who will review the paper, and will make a recommendation for both a workshop presentation and an invitation to submit an extended version to TOSEM / TSE.
+  * Software security analysis
+  * Software supply chain
+  * Engineering software for edge computing
+  * Quantum software engineering
+  * Review process
+  * Requirements engineering, specification, modeling
+  * Software design, architecture, code development
+  * Testing, verification, validation, assurance
+  * Debugging and code repair
+  * Documentation, knowledge management, software comprehension
+  * Software evolution (reverse engineering and maintenance)
+  * Self adaptive systems (autonomous vehicles and adaptive systems)
+  * Embedded and cyberphysical systems
+
+All papers will be reviewed with the ACM TOSEM and IEEE TSE single blind review process: The organizer (the ACM TOSEM and IEEE TSE Editors in Chief) will assign each paper to ACM TOSEM or IEEE TSE editors, who will review the paper, and will make a recommendation for both a workshop presentation and an invitation to submit an extended version to TOSEM / TSE. The program committee will decide on acceptance in a virtual committee meeting.
+
+The authors of the accepted papers will be invited to discuss their papers at the workshop, and will be invited to extend their papers for either ACM TOSEM or IEEE TSE. --------------------------------------------------------------------------------
+Code Review as Decision-Making - Building a Cognitive Model from the Questions Asked During Code Review (ESEIW 2026 - ESEM - Journal First Track) - ESEIW 2026 (https://conf.researchr.org/details/eseiw-2026/eseiw-2026-esem---journal-first-track/4/Code-Review-as-Decision-Making-Building-a-Cognitive-Model-from-the-Questions-Asked-)
+citeturn27search1 [wordlim: 200] Published: 11 months ago; Crawled: 3 weeks ago; Accepted: December 15, 2025 ... Software developers spend an estimated 10% - 20% of their time on code review. With the rapid adoption of generative agents, the amount of code that needs to be reviewed is increasing at a faster rate than ever. ... In our paper, “Code Review as Decision-Making - Building a Cognitive Model from the Questions Asked During Code Review”, we present an ethnographic study involving 10 participants and 34 code reviews. ... Throughout the process several decisions must be taken, on writing comments, finding more information, voting, running the code locally, verifying continuous integration results, and so on.
+
+ESEIW 2026 (series) / ESEM - Journal First Track /
+
+## Code Review as Decision-Making - Building a Cognitive Model from the Questions Asked During Code Review
+
+Who
+
+Lo Gullstrand Heander, Emma Söderberg, Christofer Rydenfält
+
+Track
+
+ESEIW 2026 ESEM - Journal First Track
+
+When
+
+Fri 9 Oct 2026 15:04 - 15:17 at Terra - Trust, Review and Evaluation of AI-Generated Code Chair(s): Matthias Galster
+
+Abstract
+
+DOI: https://doi.org/10.1007/s10664-025-10791-2
+Accepted: December 15, 2025
+Journal: Empirical Software Engineering, Volume 31, 2026
+
+Software developers spend an estimated 10% - 20% of their time on code review. With the rapid adoption of generative agents, the amount of code that needs to be reviewed is increasing at a faster rate than ever. Yet the tools for code review are still remarkably similar to the first tool, ICICLE, that was introduced over 30 years ago. There are significant misalignments between the tools used and the goals and actions of software developers, which reduces efficiency and adds frustration. The Code Review as Decision-Making (CRDM) cognitive model shows how the developers move through two phases during the code review; first an orientation phase to establish context and rationale and then an analytical phase to understand, assess, and plan the rest of the review. Throughout the process several decisions must be taken, on writing comments, finding more information, voting, running the code locally, verifying continuous integration results, and so on.
+
+Our work is novel and relevant for the ESEM research community because it provides a framework for understanding code review through a decision-making lens, rather than as a code comprehension activity. This can support development of better code review tools, with or without AI, that are inspired by tool advancements in decision-making support systems. It can also inform improvements to the code review process itself, by pointing to where and when developers would benefit from support and what kind of support would be helpful.
+
+Lo Gullstrand Heander Lund University Sweden
+
+Emma Söderberg Lund University Sweden
+--------------------------------------------------------------------------------
+Doc2OracLL: Investigating the Impact of Documentation on LLM-based Test Oracle Generation (FSE 2025 - Research Papers) - FSE 2025 (https://conf.researchr.org/details/fse-2025/fse-2025-research-papers/21/Doc2OracLL-Investigating-the-Impact-of-Documentation-on-LLM-based-Test-Oracle-Genera)
+citeturn27search2 [wordlim: 200] Published: 1.4 years ago; Crawled: 2 months ago; FSE 2025 (series) / Research Papers / ... Beyond assisting developers in understanding and maintaining code, documentation also plays a critical role in automating various software engineering tasks, such as test oracle generation (TOG). ... We start by fine-tune 10 large language models with three different prompt pairs designed to investigate the impact of Javadoc comments when using with other contextual information. ... Finally, we perform a thorough bug detection study using Defects4J to understand the role of Javadoc comments in real-world bug detection.
+
+FSE 2025 (series) / Research Papers /
+
+## Doc2OracLL: Investigating the Impact of Documentation on LLM-based Test Oracle Generation
+
+Who
+
+Soneya Binta Hossain, Raygan Taylor, Matthew B Dwyer
+
+Track
+
+FSE 2025 Research Papers
+
+When
+
+Mon 23 Jun 2025 11:00 - 11:20 at Cosmos Hall - Test Generation Chair(s): Michael Pradel
+
+Abstract
+
+Code documentation is a critical aspect of software development, serving as a bridge between human understanding and machine-readable code. Beyond assisting developers in understanding and maintaining code, documentation also plays a critical role in automating various software engineering tasks, such as test oracle generation (TOG). In Java, Javadoc comments provide structured, natural language documentation embedded directly in the source code, typically detailing functionality, usage, parameters, return values, and exceptions. While prior research has utilized Javadoc comments in test oracle generation (TOG), there has not been a thorough investigation into their impact when combined with other contextual information, nor into identifying the most relevant components for generating correct and strong test oracles, or understanding their role in detecting real bugs. --------------------------------------------------------------------------------
+Evaluating Software Documentation Quality (MSR 2023 - Technical Papers) - MSR 2023 (https://conf.researchr.org/details/msr-2023/msr-2023-technical-papers/2/Evaluating-Software-Documentation-Quality)
+citeturn27search3 [wordlim: 200] Published: 3.5 years ago; Crawled: last month; The documentation of software libraries is an essential resource for learning how to use the library. Bad documentation may demotivate a developer from using the library or may result in incorrect usage of the library. ... In this paper, we follow a systematic process to create an automatic documentation quality evaluation tool. ... Based on the received feedback, we implement a web service that can evaluate a given documentation page for Java, JavaScript, and Python libraries.We use this web service to conduct a survey with 26 developers where we evaluate the usefulness of our metrics as well as whether they reflect developers’ experiences when using this library. Our results show that participants rated most of our metrics highly, with Text Readability, and Code Readability (of examples) receiving the highest ratings.
+
+ICSE 2023 (series) / MSR 2023 (series) / Technical Papers /
+
+## Evaluating Software Documentation Quality
+
+Who
+
+Henry Tang, Sarah Nadi
+
+Track
+
+MSR 2023 Technical Papers
+
+When
+
+Mon 15 May 2023 11:50 - 12:02 at Meeting Room 109 - Documentation + Q&A I Chair(s): Ahmad Abdellatif
+
+Abstract
+
+The documentation of software libraries is an essential resource for learning how to use the library. Bad documentation may demotivate a developer from using the library or may result in incorrect usage of the library. Therefore, as developers select which libraries to use and learn, it would be beneficial to know the quality of the available documentation. In this paper, we follow a systematic process to create an automatic documentation quality evaluation tool. We identify several documentation quality aspects from the literature and design metrics that measure these aspects. We design a documentation quality overview visualization to visualize and present these metrics, and receive intermediate feedback through a focused interview study. Based on the received feedback, we implement a web service that can evaluate a given documentation page for Java, JavaScript, and Python libraries.We use this web service to conduct a survey with 26 developers where we evaluate the usefulness of our metrics as well as whether they reflect developers’ experiences when using this library. Our results show that participants rated most of our metrics highly, with Text Readability, and Code Readability (of examples) receiving the highest ratings. We also found several libraries where our evaluation reflected developers’ experiences using the library, indicating the accuracy of our metrics.
+
+Henry Tang University of Alberta Canada
+
+Sarah Nadi University of Alberta Canada--------------------------------------------------------------------------------
+2030 Software Engineering 2025 - 2030 Software Engineering - 2025 - 2030 Software Engineering 2025 (https://conf.researchr.org/home/2030-se-2025)
+citeturn27search4 [wordlim: 200] Crawled: last month; Recent advances on knowledge compilation and meta solvers amplify the scalability of satisfiability analysis, and largely increase the application of tools to many software engineering problems, test-case generation, reachability analysis, analysis of product lines and configurable software. ... All papers will be reviewed with the ACM TOSEM single blind review process: The organizers (the past and current ACM TOSEM Editors in Chief) will assign each paper to a committee member (an ACM TOSEM editor), who will select three reviewers, and will make a recommendation for both a workshop presentation and an invitation to submit an extended version to the ACM TOSEM 2030 Roadmap for Software Engineering special issue. ... We particularly welcome papers that discuss and extend the initial ideas that emerged in the SE2030 Software Engineering Roadmap workshop (https://conf.researchr.org/home/2030-se) and are summarized both in the SEN Software Engineering Notes Report (https://doi.org/10.1145/3696117.3696126) and in the ACM TOSEM Transactions on Software Engineering special Issue that will appear early in 2025.
+
+Topics of Interest
+
+We welcome papers that discuss challenges to software engineering research. A preliminary list of topics that we expect to complete with the contribution of the submitted papers include
+
+  * AI for software engineering
+  * Software engineering for AI
+  * Software engineering by and for humans
+  * Sustainable software engineering
+  * Satisfiability in software engineering
+  * Software quality with automated programming
+  * Software security analysis
+  * Software supply chain
+  * Engineering software for edge computing
+  * Quantum software engineering
+
+Review process
+
+All papers will be reviewed with the ACM TOSEM single blind review process: The organizers (the past and current ACM TOSEM Editors in Chief) will assign each paper to a committee member (an ACM TOSEM editor), who will select three reviewers, and will make a recommendation for both a workshop presentation and an invitation to submit an extended version to the ACM TOSEM 2030 Roadmap for Software Engineering special issue. The program committee will decide for acceptance in a virtual committee meeting.
+--------------------------------------------------------------------------------
+Improving the Quality of Software Issue Report Descriptions in Turkish: An Industrial Case Study at Softtech (EASE 2024 - Journal-first) - EASE 2024 (https://conf.researchr.org/details/ease-2024/ease-2024-journal-first/1/Improving-the-Quality-of-Software-Issue-Report-Descriptions-in-Turkish-An-Industrial)
+citeturn27search5 [wordlim: 200] Published: 2.4 years ago; Crawled: last month; EASE 2024 (series) / Journal-first / ... Issue reports are an important part of the software development process. They help developers identify and fix problems in their code. ... This can lead to valuable developer time being wasted on gathering the relevant information. ... In addition, we conduct a feasibility study to assess the potential of using large language models for issue report classification tasks as a direction for future research.
+--------------------------------------------------------------------------------
+An exploratory study of software artifacts on GitHub from the lens of documentation (EASE 2024 - Journal-first) - EASE 2024 (https://conf.researchr.org/details/ease-2024/ease-2024-journal-first/2/An-exploratory-study-of-software-artifacts-on-GitHub-from-the-lens-of-documentation)
+citeturn27search6 [wordlim: 200] Published: 2.4 years ago; Crawled: last month; Thu 20 Jun 2024 12:15 - 12:30 at Room Vietri - Mining Software Repositories Chair(s): Giuseppe Destefanis ... Context: The abundance of software artifacts in open-source repositories has been analyzed by researchers from many perspectives, to address challenges in downstream tasks such as bug localization, code clone detection and so on. ... Objective: We aim to explore the presence of information useful for documentation in different sources within the software projects. ... Method: We arrive at a list of documentation types and sources through card-sorting and a developer survey.
+--------------------------------------------------------------------------------
+2030 Software Engineering - 2030 Software Engineering (https://conf.researchr.org/home/2030-se)
+citeturn27search7 [wordlim: 200] Crawled: 2 weeks ago; We will invite the authors of selected papers to extend the workshop paper for the 2030 Roadmap for Software Engineering special issue of ACM TOSEM Transactions on Software Engineering (issue 33.8 of December 2024). ... Recent advances on knowledge compilation and meta solvers amplify the scalability of satisfiability analysis, and largely increase the application of tools to many software engineering problems, test-case generation, reachability analysis, analysis of product lines and configurable software. ... All papers will be reviewed with the ACM TOSEM single blind review process: The organizer (the ACM TOSEM Editor in Chief) will assign each paper to a committee member (an ACM TOSEM editor), who will select three reviewers for regular paper and two reviewers for position papers, and will make a recommendation for both a workshop presentation and an invitation to submit an extended version to the ACM TOSEM 2030 Roadmap for Software Engineering special issue. ... LaTeX users can use the following code at the start of the document:
+--------------------------------------------------------------------------------
+From Requirements to Code: Understanding Developer Practices in LLM-Assisted Software Engineering (Requirements Engineering 2025 - Research Papers) - Requirements Engineering 2025 (https://conf.researchr.org/details/RE-2025/RE-2025-Research-Papers/21/From-Requirements-to-Code-Understanding-Developer-Practices-in-LLM-Assisted-Software)
+citeturn27search8 [wordlim: 200] Crawled: 3 weeks ago; Requirements Engineering 2025 Research Papers ... The feasibility of this vision may be assessed by understanding how developers currently incorporate requirements when using LLMs for code generation - a topic that remains largely unexplored. We have interviewed 18 practitioners from 14 companies to understand how they (re)use information from requirements and other design artifacts to feed LLMs when generating code. ...  | 11:00 30m Paper  |  | From Requirements to Code: Understanding Developer Practices in LLM-Assisted Software Engineering Research Papers Jonathan Ullrich Fraunhofer IESE, Matthias Koch Fraunhofer IESE, Andreas Vogelsang paluno – The Ruhr Institute for Software Technology, University of Duisburg-Essen Pre-print
+--------------------------------------------------------------------------------
+Journal Ahead Workshop (JAWs) 2026 - JAWs 2026 - ICSE 2026 (https://conf.researchr.org/home/icse-2026/jaws-2026)
+citeturn27search9 [wordlim: 200] Crawled: today; The authors of JAW’s papers will present and discuss their cutting-edge results submitted in January 2026, at the workshop in April 2026, and will be invited to submit an extended version of the paper to either ACM TOSEM Transactions on Software Engineering and Methodology or IEEE TSE Transactions on Software Engineering by September 2026, to get their paper reviewed within three months from the submission, and timpely published, when accepted. ... We solicit both full papers with no more than eight pages not including bibliography and short papers with no more than four pages not including bibliography in PDF format and conform, at time of submission, to the official “ACM Primary Article Template”, which can be obtained from the ACM Proceedings Template page. ... To that end, the following LaTeX code can be placed at the start of the LaTeX document: ... The paper submitted by September 30th, 2026, will be reviewed within 90 days to offer the possibility of a timely publication of novel results. ...  | Toward Agentic Code Review: Reimagining the Process in the AI Era Journal Ahead Workshop (JAWs)Hüseyin Özgür Kamalı, Vahid Haratian, Erdem Tuna, Eray Tüzün
+--------------------------------------------------------------------------------
+Ritu Kapur - ICSE 2024 (https://conf.researchr.org/profile/icse-2024/ritukapur)
+citeturn27search10 [wordlim: 200] Crawled: 5 days ago; ICSE 2024 (series) / Ritu Kapur ... Broad Area of Research: Automated Software Engineering, Knowledge-based Engineering, Applied ML, and Empirical Software Engineering. ... OSS effort estimation using software features similarity and developer activity-based metrics. [review/rebuttal process in ACM TOSEM ] ... Using Paragraph Vectors to improve our existing code review assisting tool-CRUSO. [accepted in ISEC 2021 ]
+  5.
+--------------------------------------------------------------------------------
+ICSE 2025 - Software Engineering in Practice (SEIP) - ICSE 2025 (https://conf.researchr.org/track/icse-2025/icse-2025-software-engineering-in-practice)
+citeturn27search11 [wordlim: 200] Crawled: today; Abstract: Context: Code review is a widespread practice among practitioners to improve software quality and transfer knowledge. ... In this paper we introduce Amazon Q Developer Agent, a novel system for fully automated Java migrations. ... Our findings reveal that Code LLMs struggle with low frequency APIs: for e.g., GPT-4o achieves only $38.58$\% valid low frequency API invocations. We demonstrate that Documentation Augmented Generation (DAG) significantly improves performance for low frequency APIs (increase to $47.94$\% with DAG) but negatively impacts high frequency APIs when using sub-optimal retrievers (a $39.02$\% absolute drop). ... In this paper, we present the findings from a survey of 484 software developers at Microsoft, which aims to identify the key differences between how developers would like to allocate their time during an ideal workweek versus their actual workweek. ... We outline eight future research directions inspired by our gained insights, aiming to bridge the gap between academic findings and real-world applications.
+--------------------------------------------------------------------------------
+<visual_element id="e1"> (https://conf.researchr.org/getImage/cibse-2023/orig/CIBSE-Keynote-ozkaya.pdf)
+citeturn27search12 [wordlim: 200] Crawled: 6 months ago; Three side-by-side software engineering process illustrations with text beneath each. ... • Modeling tools to support design and conformance ... • Progress on our understanding of developer behavior ... • Automated code review
+--------------------------------------------------------------------------------
+2018 ICSE Most Influential Paper.key (https://conf.researchr.org/getImage/icse-2018/orig/ICSE2018MIP.pdf)
+citeturn27search13 [wordlim: 200] Crawled: last week; (2004). ... The window contains graphics, text, and exceptions tabs; a drawing canvas with a black circular shape and a green curved line; drawing controls for Pencil, Eraser, and Line; and RGB color sliders. ... *ACM TOSEM. ... First-page preview of the paper "Extracting and Answering Why and Why Not Questions about Java Program Output." ... The visible abstract explains that software developers translate questions about program behavior into questions about code, speculating about causes.
+--------------------------------------------------------------------------------
+Vote Item: Is ``coding error'' a too-difficult concept for research? (https://conf.researchr.org/getImage/chase-2022/orig/vote-item-errtoodifficult.pdf)
+citeturn27search14 [wordlim: 200] Published: 4.9 years ago; Crawled: 7 months ago; *Information, Idea, Arguments:* We have attempted research on programming error based on IDE-based programming process protocols, but gave up when we recognized we felt unable to pin down errors of omission. ... In *pseudoCHASE 2022: Pseudo-submission to 15th International Conference on Cooperative and Human Aspects of Software Engineering*, May 21-22, 2022, Pittsburgh, PA, USA. ... Yet from the point of view of root cause analysis, understanding error is valuable in order to learn to avoid the causes of defects rather than only removing the defects themselves by means of debugging, review, or automated program analysis. ... My group started research on error in 2004, gave it up again in 2007, and has not made a second attempt since. ... We envisioned we might eventually be able to build a recording and analysis tool that would help a developer to understand their personal typical-error patterns.¹ By pointing out to it the precise location of a defect, the tool would search for those stretches of the activity record that pertained to creating this defective piece of code.
+--------------------------------------------------------------------------------
+Monday, 12 October 2026 (https://conf.researchr.org/getImage/ase-2026/orig/program.pdf)
+citeturn27search15 [wordlim: 200] Crawled: last week; Monday, 12 October 2026 ... **Forum 6** — TRUST · 5 talks · 09:00–09:58 ... - **09:10** Software Project Management with LLM-Based Automation: Coordination, Validation, and Governance in Practice ... - **09:34** Closed-World Trustworthy Copilots for Legal and Regulatory Text ... **Forum 7** — Harness4GenUI · 2 talks · 09:00–10:00 ... - **09:00** Editors in Conversation: What Makes a Strong TSE and TOSEM Article?
+--------------------------------------------------------------------------------
+evaluator’s environment. That is to say, please make sure to provide enough associated instructions, code, and data such that any Software Engineering person with a reasonable knowledge of scripting, build tools, etc. could install, build, and run the code. If the artifact contains or requires the use of a special tool or any other non-trivial piece of software, the authors must provide a VirtualBox VM image or a Docker container image with a working environment containing the artifact and all the necessary tools. (https://conf.researchr.org/getImage/icse-2021/orig/Submission.and.Reviewing.Guidelines.pdf)
+citeturn27search16 [wordlim: 200] Crawled: last year; That is to say, please make sure to provide enough associated instructions, code, and data such that any Software Engineering person with a reasonable knowledge of scripting, build tools, etc. could install, build, and run the code. ... The artifact itself must only describe the technicalities of the artifacts and uses of the artifact that are not already described in the paper; nevertheless, the artifact and its documentation should be self-contained. The submission should contain (and/or link to) the following documents (in plain text or pdf format): ... This file should, in principle, cover aspects of hardware environment requirements (e.g., performance, storage or non-commodity peripherals) and software environments (e.g., Docker, VM, and operating system) but also, if relevant, a requirements.txt with explicit versioning information (e.g. for Python-only environments).
+--------------------------------------------------------------------------------
+engineering community the journal-first model. Working tightly with the Editor-in-Chief of IEEE-TSE Matthew Dwyer and the Editor-in-Chief of ACM-TOSEM David Rosenblum, we defined a process to select recently accepted journals that have not appeared at a conference before, to be presented at ICSE. This initiative gives the possibility for journal authors to present their work to the broader ICSE audience while enhancing the ICSE program with some pieces of work and topics that otherwise may be lacking. Although this initiative is still evolving, we believe it offers some interesting tradeoffs to regular conference papers and is likely to become a staple of the regular ICSE program. (https://conf.researchr.org/getImage/icse-2018/orig/icse2018-booklet-screen.pdf)
+citeturn27search17 [wordlim: 200] Published: 8.5 years ago; Crawled: 6 months ago; Working tightly with the Editor-in-Chief of IEEE-TSE Matthew Dwyer and the Editor-in-Chief of ACM-TOSEM David Rosenblum, we defined a process to select recently accepted journals that have not appeared at a conference before, to be presented at ICSE. ... Throughout the process we learnt a lot about the diversity of the community, the richness of the program, and the tradeoffs and judgment calls that need to be made with limited time and information.
+

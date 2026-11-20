@@ -1,0 +1,94 @@
+[
+  {
+    "family": "Flask",
+    "consumer": "2.2.5",
+    "dependency": "Werkzeug",
+    "provider": "2.2.3",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.2.5",
+    "dependency": "Werkzeug",
+    "provider": "2.3.8",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.2.5",
+    "dependency": "Werkzeug",
+    "provider": "3.0.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": [
+        "DeprecationWarning: The '__version__' attribute is deprecated and will be removed in Werkzeug 3.1. Use feature detection or 'importlib.metadata.version(\"werkzeug\")' instead."
+      ]
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+]

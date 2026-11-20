@@ -1,0 +1,213 @@
+{
+  "instance_id": "sympy__sympy-22456",
+  "src_test_paths": [
+    "sympy/codegen/tests/test_ast.py"
+  ],
+  "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22456-qojmsog4\\sympy-a3475b3f9ac662cd425157dd3bdb93ad7111c090\\sympy\\__init__.py",
+  "phases": {
+    "original": {
+      "selected": {
+        "test_String": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_String"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Assignment": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Assignment_printing": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Attribute": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Attribute"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_AugAssign": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_AugAssign"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_CodeBlock": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.61,
+      "xml": "original.xml",
+      "stdout": "original.txt"
+    },
+    "regression_on_base": {
+      "selected": {
+        "test_String": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_String"
+          ],
+          "outcome": "failure",
+          "observations": [
+            "failure"
+          ]
+        },
+        "test_Assignment": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Assignment_printing": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Attribute": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Attribute"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_AugAssign": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_AugAssign"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_CodeBlock": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 1,
+      "seconds": 2.22,
+      "xml": "regression_on_base.xml",
+      "stdout": "regression_on_base.txt"
+    },
+    "regression_on_gold": {
+      "selected": {
+        "test_String": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_String"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Assignment": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Assignment_printing": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Attribute": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_Attribute"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_AugAssign": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_AugAssign"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_CodeBlock": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.12,
+      "xml": "regression_on_gold.xml",
+      "stdout": "regression_on_gold.txt"
+    }
+  }
+}

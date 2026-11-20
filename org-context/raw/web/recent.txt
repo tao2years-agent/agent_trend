@@ -1,0 +1,355 @@
+检索参数 {"search_query":[{"q":"after:2026-08-17 before:2026-11-19 site:github.blog/changelog copilot memory repository instructions organization knowledge coding agent"}],"response_length":"medium"}
+Agentic memory for GitHub Copilot is in public preview - GitHub Changelog (https://github.blog/changelog/2026-01-15-agentic-memory-for-github-copilot-is-in-public-preview/)
+citeturn5search0 [wordlim: 200] Published: 10 months ago; Crawled: today; # Agentic memory for GitHub Copilot is in public preview ... As you work with Copilot coding agent, Copilot code review, or Copilot CLI, it builds a repository-specific understanding that improves the quality of its assistance over time. ... For more details on how exactly Copilot memory works, check out our engineering blog post on Copilot memory.
+
+January 15, 2026 • 1 minute read
+
+# Agentic memory for GitHub Copilot is in public preview
+
+Copilot memory is now available in public preview for all paid GitHub Copilot plans.
+
+Copilot memory enables Copilot to learn and retain useful details about your repositories. As you work with Copilot coding agent, Copilot code review, or Copilot CLI, it builds a repository-specific understanding that improves the quality of its assistance over time.
+
+### How it works
+
+Copilot automatically captures tightly scoped insights called “memories” as it works in your repositories. These memories are:
+
+  * Repository-specific and validated against the current codebase before use.
+  * Shared across Copilot features, so what coding agent learns can help code review.
+  * Automatically expired after 28 days to prevent stale information.
+
+For more details on how exactly Copilot memory works, check out our engineering blog post on Copilot memory.
+
+### Get started
+
+  * Individual users (Copilot Pro or Pro+): Enable Copilot memory in your personal Copilot settings.
+  * Organizations and enterprises: Enable through policy settings in your organization or enterprise settings.
+
+Repository owners can review and delete stored memories in Repository Settings > Copilot > Memory.
+
+To learn more about how to use this feature, check out our Copilot memory documentation.--------------------------------------------------------------------------------
+Copilot Memory now on by default for Pro and Pro+ users in public preview - GitHub Changelog (https://github.blog/changelog/2026-03-04-copilot-memory-now-on-by-default-for-pro-and-pro-users-in-public-preview/)
+citeturn5search1 [wordlim: 200] Published: 8 months ago; Crawled: today; Copilot Memory is now enabled by default for all GitHub Copilot Pro and Copilot Pro+ users. ... Copilot Memory enables Copilot agents to discover and store useful facts about a repository (e.g., coding conventions, architectural patterns, and critical cross-file dependencies) and reuse that knowledge in future interactions. ... Because memories are shared across agents, knowledge discovered by the coding agent can immediately benefit code review and vice versa.
+
+Improvement
+
+March 4, 2026 • 2 minute read
+
+# Copilot Memory now on by default for Pro and Pro+ users in public preview
+
+Copilot Memory is now enabled by default for all GitHub Copilot Pro and Copilot Pro+ users.
+
+Previously in public preview as an opt-in feature, Copilot Memory allows Copilot to build and retain a persistent, repository-level understanding of your codebase so you spend less time reexplaining context and more time shipping code.
+
+## What is Copilot Memory?
+
+Copilot Memory enables Copilot agents to discover and store useful facts about a repository (e.g., coding conventions, architectural patterns, and critical cross-file dependencies) and reuse that knowledge in future interactions. Memories are strictly scoped to a single repository and validated against the current codebase before being applied, so stale or inaccurate context is never used. To keep things fresh, memories automatically expire after 28 days.
+
+Once enabled, Copilot Memory works across:
+
+  * Copilot coding agent: Applies repository-specific context when implementing tasks and opening pull requests.
+  * Copilot code review: Uses learned patterns to give more accurate, targeted review feedback.
+  * Copilot CLI: Brings repository awareness directly to your terminal workflow.
+
+Because memories are shared across agents, knowledge discovered by the coding agent can immediately benefit code review and vice versa.
+
+## What’s changing
+
+Copilot Memory is now on by default for individual users on Copilot Pro and Copilot Pro+ plans. No action is required to start benefiting from it.
+
+If you prefer to opt out, you can disable Copilot Memory at any time in your personal Copilot settings under Features > Copilot Memory.
+
+Enterprise and organization admins retain full control over memory availability for their members via Copilot policies at the enterprise and organization levels.
+
+## Managing memories
+
+Repository owners can review and delete stored memories at any time under Repository Settings > Copilot > Memory.
+
+For more information, see About agentic memory for GitHub Copilot and Enabling and curating Copilot Memory.
+
+Join the Community discussion to share your feedback.--------------------------------------------------------------------------------
+Copilot coding agent supports organization custom instructions - GitHub Changelog (https://github.blog/changelog/2025-11-05-copilot-coding-agent-supports-organization-custom-instructions/)
+citeturn5search2 [wordlim: 200] Published: last year; Crawled: 2 weeks ago; Alongside organization custom instructions, coding agent continues to support `.github/copilot-instructions.md`, `.github/instructions/**.instructions.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` files.
+
+Improvement
+
+November 5, 2025 • 1 minute read
+
+# Copilot coding agent supports organization custom instructions
+
+Image: Copilot coding agent supports organization custom instructions
+
+Copilot coding agent, our asynchronous, autonomous background agent, now supports organization custom instructions.
+
+Custom instructions allow you to guide Copilot on how to understand your project as well as how to build, test, and validate its changes. Now, you can also set default instructions for all coding agent usage across your organization, ensuring a consistent experience across teams.
+
+Alongside organization custom instructions, coding agent continues to support `.github/copilot-instructions.md`, `.github/instructions/**.instructions.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` files.
+
+To learn more, visit our documentation about custom instructions and other best practices for Copilot coding agent.--------------------------------------------------------------------------------
+Copilot organization custom instructions are generally available - GitHub Changelog (https://github.blog/changelog/2026-04-02-copilot-organization-custom-instructions-are-generally-available/)
+citeturn5search3 [wordlim: 200] Published: 7 months ago; Crawled: yesterday; Organization custom instructions for GitHub Copilot, first introduced in April 2025, are now generally available. ... To learn more, see “Adding organization custom instructions for GitHub Copilot” in the documentation.
+
+Improvement
+
+April 2, 2026 • 1 minute read
+
+# Copilot organization custom instructions are generally available
+
+Image: Header image with a screenshot of the form for configuring organization custom instructions
+
+Organization custom instructions for GitHub Copilot, first introduced in April 2025, are now generally available.
+
+With organization custom instructions, Copilot Business and Copilot Enterprise organization administrators can set default instructions that guide Copilot’s behavior across all repositories in their organization.
+
+Organization custom instructions are applied across:
+
+  * Copilot Chat on github.com
+  * Copilot code review
+  * Copilot cloud agent
+
+To add custom instructions, navigate to your organization’s settings, select Copilot, then click Custom instructions.
+
+To learn more, see “Adding organization custom instructions for GitHub Copilot” in the documentation.--------------------------------------------------------------------------------
+Copilot Memory has more controls for deletion, scope, and the Copilot CLI - GitHub Changelog (https://github.blog/changelog/2026-05-26-copilot-memory-has-more-controls-for-deletion-scope-and-the-copilot-cli/)
+citeturn5search4 [wordlim: 200] Published: 5 months ago; Crawled: today; Copilot Memory now includes improved memory deletion, adds a repository-level off switch, and brings further memory controls into the Copilot CLI. ... For more information, see About GitHub Copilot Memory.
+
+Improvement
+
+May 26, 2026 • 1 minute read
+
+# Copilot Memory has more controls for deletion, scope, and the Copilot CLI
+
+Copilot Memory now includes improved memory deletion, adds a repository-level off switch, and brings further memory controls into the Copilot CLI. Copilot Memory is in public preview and available to all paid Copilot plans.
+
+## What’s changing
+
+  * Deletion guidance: When you ask Copilot to forget something, it now points you to the right place to remove the memory and down-votes the memory where voting is available.
+  * Repository-level off switch: Repository admins can now disable Copilot Memory for a repository from the existing Copilot feature controls in repository settings. Repository-level facts will no longer be stored or read. Preexisting facts are not deleted. User-level preferences are unaffected.
+  * `/memory` command in the Copilot CLI: Use `/memory on` to enable Copilot Memory, `/memory off` to disable it, and `/memory show` to check its current status. Your choice persists across sessions.
+  * Clearer scope at capture time: The `store_memory` permission prompt now explicitly states whether the entry will be a user-level preference (i.e., visible only to you, used in your sessions across repositories) or a repository-level fact (i.e., visible to all contributors on the repository).
+
+## Managing memories
+
+  * Your user-level preferences: Review or delete them in your personal Copilot Memory settings.
+  * Your repository’s facts: Repository owners can review, delete, or turn off Copilot Memory for the repository under Repository Settings > Copilot > Memory.
+
+Learn more about managing stored memories.
+
+## Share your feedback
+
+For more information, see About GitHub Copilot Memory.
+
+We’re continuing to evolve Copilot Memory and plan to bring it to more features in the future. To share feedback or join the discussion, visit the GitHub Community.--------------------------------------------------------------------------------
+Copilot memory early access for Pro and Pro+ - GitHub Changelog (https://github.blog/changelog/2025-12-19-copilot-memory-early-access-for-pro-and-pro/)
+citeturn5search5 [wordlim: 200] Published: 11 months ago; Crawled: today; Copilot memory is now available in public preview for GitHub Copilot Pro and Pro+ users, with support in Copilot coding agent and Copilot code review. ... Over time, Copilot builds a repository-specific memory by capturing key insights about your codebase and using them to improve how agents assist you.
+
+Release
+
+December 19, 2025 • 1 minute read
+
+# Copilot memory early access for Pro and Pro+
+
+Copilot memory is now available in public preview for GitHub Copilot Pro and Pro+ users, with support in Copilot coding agent and Copilot code review.
+
+## Copilot memory
+
+Copilot memory enables agents to learn from your codebase. Over time, Copilot builds a repository-specific memory by capturing key insights about your codebase and using them to improve how agents assist you. This shared context helps Copilot perform better across coding and code review workflows.
+
+### Get started today
+
+Copilot Pro and Pro+ users can enable Copilot memory by navigating to Settings > Copilot and turning on Copilot memory.
+
+### Share your feedback
+
+We’re continuing to evolve Copilot memory and plan to bring it to more plans in the future. To share feedback or join the discussion, visit the GitHub Community.--------------------------------------------------------------------------------
+GitHub intelligence puts your code, context, and history to work - GitHub Changelog (https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work/)
+citeturn5search6 [wordlim: 200] Published: 3 weeks ago; Crawled: today; Your preferences, repository conventions, skills, and custom instructions guide how changes should be made, while code in related repositories can show how the pieces fit together. ... GitHub Copilot Memory is now generally available on paid Copilot plans. ... Memories can be created in the Copilot app, Copilot CLI, VS Code, Copilot cloud agent, Copilot code review, Slack, Teams, and GitHub Mobile. ... Whether the task calls for an exact symbol, a regular expression in file contents or paths, or a natural-language description, Copilot can search across repositories in your organization to find relevant context.
+
+Release
+
+October 28, 2026 • 3 minute read
+
+# GitHub intelligence puts your code, context, and history to work
+
+Agents should understand more than your codebase—they should understand how your team works. Your preferences, repository conventions, skills, and custom instructions guide how changes should be made, while code in related repositories can show how the pieces fit together. Without that context, agents spend time rediscovering knowledge and can miss your team’s conventions.
+
+GitHub intelligence is the context and learning layer sourced from the graph of GitHub data. It makes this data useful to agents, helping them remember how you work, keep that guidance current, and find the code and development history relevant to the next task. The goal is for agents to build on what you and your team already know, rather than treating every session as a fresh start.
+
+That is the advantage of building where your team’s work already lives. A repository memory can capture why an edge case matters and which test covers it. GitHub intelligence allows agents to use that context, with controls over what they can access.
+
+Three capabilities bring this into your workflow:
+
+  * Memory carries knowledge between sessions
+  * Dreaming keeps the context current
+  * Code search reaches beyond your checkout.
+
+Availability and settings vary by capability.
+
+### Memory: Pick up where you left off
+
+GitHub Copilot Memory is now generally available on paid Copilot plans. Copilot can remember personal preferences and repository conventions across sessions and clients. Memories can be created in the Copilot app, Copilot CLI, VS Code, Copilot cloud agent, Copilot code review, Slack, Teams, and GitHub Mobile.
+
+You can tell Copilot, `Remember to start my pull request descriptions with a TL;DR`, and it can reuse that preference across Copilot experiences. Repository memories can capture the right test command or how your team expects Copilot to check its work, so you spend less time repeating guidance in each session. Copilot sessions autonomously generate and curate memories, learning from every interaction.
+
+Among the Copilot CLI sessions reviewed during the public preview where the agent used memory, 93% showed better adherence to developer preferences and 42% showed more efficient workflows attributed to the memories included in the session context.
+
+You can interact with memories in the Copilot app, Copilot CLI, and VS Code, or manage personal memories in your Copilot settings, where you can view or delete saved preferences.
+
+### Dreaming: Continuous context improvement
+
+Copilot dreaming, now in public preview, reflects on past work to improve future agentic sessions.
+
+Three dream types are currently available:
+
+  * Personal memory curation customizes Copilot to your personal preferences by updating memories based on your agent conversations.
+  * Repository customization manages repository-scoped memories and proposes updates and improvements to existing skills and custom instruction files.
+  * Code review customization turns recurring accepted code-review feedback into guidance for Copilot code review.
+
+Dreaming can add, update, and remove personal and repository memories. Changes to checked-in skills and instructions are proposed in pull requests for your team to review.
+
+Dreaming is opt-in.
+
+  * Individual subscribers: Enable personal curation in your Copilot settings and repository dreams in each repository’s settings. See personal and repository setup.
+  * Organizations and enterprises: Administrators enable dreaming through Copilot policies. Enterprise administrators can delegate that choice to organization administrators. Repository dreams cover the repositories allowed by Copilot Memory’s repository access settings. Users must also enable personal dreaming in their own Copilot settings.
+
+Dream runs consume AI credits. See the dreaming documentation for prerequisites, setup, and costs.
+
+### Code Search: Reach beyond your checkout
+
+Software projects rarely live in a single repository. GitHub code search helps Copilot find relevant code, configuration, schemas, and documentation across related projects and dependencies without needing a local clone. Copilot can search for exact text and symbols, match patterns with regular expressions, and narrow results by repository, path, or language. Semantic search can also find code by what it does, such as retrying a failed payment, even when you don’t know the file, function name, or repository it lives in.
+
+For example, you’re fixing failed payments, but retry behavior spans a payments service, a shared library, and background workers. Use `/research` to ask Copilot, `How do these components retry failed charges, and where could retries overlap?` Copilot can inspect implementations and callers across those repositories to help you understand how the system fits together before changing it.
+
+That unlocks workflows that would otherwise require you to assemble the context yourself:
+
+  * Plan a migration: Use `/research` to identify implementations and callers across repositories, plan the changes each service needs, and check which projects still use the old API.
+  * Investigate a bug: Trace related implementations across services and shared libraries, bring specific code references into the investigation, and use that context to propose a coordinated fix.
+  * Follow organizational standards: Find existing patterns across your organization and use them to guide changes in an unfamiliar codebase.
+
+Whether the task calls for an exact symbol, a regular expression in file contents or paths, or a natural-language description, Copilot can search across repositories in your organization to find relevant context. You spend less time cloning projects, tracking down files, and copying code into the conversation. In addition, Copilot gets the context it needs to make the right changes.
+
+### Try it today
+
+Your team shouldn’t have to teach every agent the same lessons. GitHub intelligence helps agents carry those lessons forward, find the context they need, and put more of each session toward the work you actually want done.
+
+Join the discussion within GitHub Community.--------------------------------------------------------------------------------
+Copilot code review and coding agent now support agent-specific instructions - GitHub Changelog (https://github.blog/changelog/2025-11-12-copilot-code-review-and-coding-agent-now-support-agent-specific-instructions/?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn5search7 [wordlim: 200] Published: last year; Crawled: today; # Copilot code review and coding agent now support agent-specific instructions ... You can already use custom instruction files located in your `.github/instructions` directory to guide Copilot’s behavior for specific areas of your repository.
+
+Improvement
+
+November 12, 2025 • 1 minute read
+
+# Copilot code review and coding agent now support agent-specific instructions
+
+You can now craft targeted custom instructions for Copilot code review and Copilot coding agent. The new `excludeAgent` property for `.instructions.md` custom instructions gives you exact control over when specific instructions apply.
+
+### 🎯 Recap: Customizing Copilot using `instructions.md` files
+
+You can already use custom instruction files located in your `.github/instructions` directory to guide Copilot’s behavior for specific areas of your repository.
+
+The `applyTo` property lets you specify paths or directories with path globs, so your instructions apply where you want them to, and nowhere else. For example, you could create a `models.instructions.md` file which only applies to your models by specifying `applyTo: "app/models/**/*.rb"`.
+
+### 🛡️ Introducing agent-specific repository instructions with `excludeAgent`
+
+The new `excludeAgent` property allows you to control which Copilot agents use a given instructions file:
+
+  * Set `excludeAgent: "code-review"` to hide your instructions file from Copilot code review.
+  * Set `excludeAgent: "coding-agent"` to hide your instructions file from Copilot coding agent.
+
+If you don’t have an `excludeAgent` property in your frontmatter, your instructions file will be used by all agents.
+
+This feature ensures you can tailor your guidance for each agent, reducing overlap and allowing you to provide focused, specific instructions.
+
+### 🛠️ Other custom instructions improvements
+
+Copilot code review recently fixed a bug that prevented it from reading certain `*.instructions.md` files.
+
+For tips on how to write effective instructions files, check out this blog post!
+
+For details on creating instructions files, visit the Copilot instructions documentation.
+
+Join the discussion within GitHub Community.--------------------------------------------------------------------------------
+GitHub Copilot coding agent now supports .instructions.md custom instructions - GitHub Changelog (https://github.blog/changelog/2025-07-23-github-copilot-coding-agent-now-supports-instructions-md-custom-instructions/?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn5search8 [wordlim: 200] Published: 1.3 years ago; Crawled: today; # GitHub Copilot coding agent now supports .instructions.md custom instructions ... You can add custom instructions to your repository to teach Copilot how the repository works as well as how to run any build steps, automated tests, or linters.
+
+Improvement
+
+July 23, 2025 • 1 minute read
+
+# GitHub Copilot coding agent now supports .instructions.md custom instructions
+
+With GitHub Copilot coding agent, you can hand off tasks for it to work on in the background, freeing you up to concentrate on other things.
+
+You can add custom instructions to your repository to teach Copilot how the repository works as well as how to run any build steps, automated tests, or linters. With these instructions, Copilot can produce higher quality pull requests.
+
+Now, along with `.github/copilot-instructions.md`, Copilot coding agent supports `.instructions.md` files stored under `.github/instructions`.
+
+You can create many `.instructions.md` files, and each one can use YAML frontmatter to specify which files or directories it applies to. This means that you can give Copilot different instructions for different parts of your codebase.
+
+To learn more about custom instructions and other best practices for Copilot coding agent, head to our documentation.
+
+### Learn more about Copilot coding agent
+
+Copilot coding agent is available in public preview for all users with Copilot Pro or Copilot Pro+, as well as Copilot Business and Copilot Enterprise users where an administrator has enabled the relevant policy.
+
+Copilot coding agent is also integrated into github.com, many IDEs, GitHub Mobile, the GitHub CLI, and the GitHub MCP Server, so you can delegate tasks from wherever you are. To find out more about Copilot coding agent, head to our documentation.--------------------------------------------------------------------------------
+Copilot coding agent: Automatically generate custom instructions - GitHub Changelog (https://github.blog/changelog/2025-08-06-copilot-coding-agent-automatically-generate-custom-instructions/)
+citeturn5search9 [wordlim: 200] Published: 1.3 years ago; Crawled: today; With GitHub Copilot coding agent, you can delegate tasks to Copilot that it will work on in the background. ... Copilot coding agent can now automatically generate custom instructions for your repository.
+
+Improvement
+
+August 6, 2025 • 1 minute read
+
+# Copilot coding agent: Automatically generate custom instructions
+
+Image: A screenshot of a comment from Copilot offering to generate custom instructions for a repository
+
+With GitHub Copilot coding agent, you can delegate tasks to Copilot that it will work on in the background.
+
+By adding custom instructions to your repository, you can guide Copilot on how to understand your project as well as how to build, test, and validate its changes. With these instructions, Copilot produces higher quality pull requests you can merge more quickly.
+
+Copilot coding agent can now automatically generate custom instructions for your repository. The first time you ask Copilot to open a pull request in a given repository, it will leave a comment on the draft pull request with a link to generate custom instructions.
+
+You can also ask Copilot to generate custom instructions at any time using the recommended prompt in our documentation.
+
+### Learn more about Copilot coding agent
+
+Copilot coding agent is available in public preview for all users with Copilot Pro or Copilot Pro+, as well as Copilot Business and Copilot Enterprise users where an administrator has enabled the relevant policy.
+
+Copilot coding agent is also integrated into github.com, many IDEs, GitHub Mobile, the GitHub CLI, and the GitHub MCP Server, so you can delegate tasks from wherever you are. To find out more about Copilot coding agent, head to our documentation.--------------------------------------------------------------------------------
+Pick the repository and base branch when assigning issues to Copilot - GitHub Changelog (https://github.blog/changelog/2025-09-24-pick-the-repository-and-base-branch-when-assigning-issues-to-copilot/)
+citeturn5search10 [wordlim: 200] Published: 1.2 years ago; Crawled: 3 days ago; When assigning an issue to Copilot coding agent, you can now choose which repository Copilot should work in, pick a starting branch, and provide additional instructions to give it more context.
+
+Improvement
+
+September 24, 2025 • 1 minute read
+
+# Pick the repository and base branch when assigning issues to Copilot
+
+We’re bringing you a range of additional options for assigning Copilot to issues as part of this public preview. When assigning an issue to Copilot coding agent, you can now choose which repository Copilot should work in, pick a starting branch, and provide additional instructions to give it more context.
+
+Here’s what’s new:
+
+  * Start Copilot assignment in one click: Assign tasks directly to Copilot with the new Assign to Copilot button. This feature makes it easier and faster to start a Copilot assignment with a single click.
+  * Pick the target repository: Choose any repository you have access to, even if your issues and code don’t live in the same place. Now you can work with Copilot across repositories, so it’s easy to start assignments from issues no matter where your code is stored.
+  * Pick a starting branch: Choose which branch Copilot should start from. Whether you want Copilot to work off a feature branch, a bug fix branch, or any other starting point, you now have the flexibility to direct Copilot’s work to exactly where you want it.
+  * Add additional instructions: Give Copilot more context with optional instructions. You can provide specific guidance, requirements, or extra details to help Copilot understand exactly what you want to accomplish. This makes assignments more precise and helps Copilot deliver results that match your needs.
+
+For more details, check out our documentation on assigning Copilot to an issue.--------------------------------------------------------------------------------
+Start your new repository with Copilot coding agent - GitHub Changelog (https://github.blog/changelog/2025-09-30-start-your-new-repository-with-copilot-coding-agent/)
+citeturn5search11 [wordlim: 200] Published: 1.1 years ago; Crawled: today; # Start your new repository with Copilot coding agent ... After the repository is created, Copilot will open a draft pull request, write the requested code, and then request a review from you.
+
+Improvement
+
+September 30, 2025 • 1 minute read
+
+# Start your new repository with Copilot coding agent
+
+When creating a repository, you can now use Copilot coding agent to kickstart your work.
+
+On the “New repository” page, enter your prompt in the new Prompt field. After the repository is created, Copilot will open a draft pull request, write the requested code, and then request a review from you. This makes it easier than ever to get started on new projects.
+
+Copilot coding agent is available to Copilot Pro, Copilot Pro+, Copilot Business, and Copilot Enterprise subscribers. If you’re a Copilot Business or Copilot Enterprise subscriber, an administrator will have to enable Copilot coding agent from the “Policies” page before you can use it.
+
+To learn more, head over to our Copilot coding agent documentation.

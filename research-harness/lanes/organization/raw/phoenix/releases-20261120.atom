@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:https://github.com/Arize-ai/phoenix/releases</id>
+  <link type="text/html" rel="alternate" href="https://github.com/Arize-ai/phoenix/releases"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/Arize-ai/phoenix/releases.atom"/>
+  <title>Release notes from phoenix</title>
+  <updated>2026-11-20T02:56:44Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/arize-phoenix-v21.3.0</id>
+    <updated>2026-11-20T02:57:03Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.3.0"/>
+    <title>arize-phoenix: v21.3.0</title>
+    <content type="html">&lt;h2&gt;&lt;a href=&quot;https://github.com/Arize-ai/phoenix/compare/arize-phoenix-v21.2.1...arize-phoenix-v21.3.0&quot;&gt;21.3.0&lt;/a&gt; (2026-11-20)&lt;/h2&gt;
+&lt;h3&gt;Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;brand:&lt;/strong&gt; set the Arize Phoenix wordmark in Geist (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18086&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18086/hovercard&quot;&gt;#18086&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/b1763711d88ac3767b710e92e1f61bede61e3f45&quot;&gt;b176371&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;cli:&lt;/strong&gt; add dataset label assignment commands (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17973&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17973/hovercard&quot;&gt;#17973&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/0b821b2ff030b4cf90e88096fee35f4363e3671a&quot;&gt;0b821b2&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;pxi:&lt;/strong&gt; refresh recommended models and preserve chat transcripts (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18101&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18101/hovercard&quot;&gt;#18101&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/4270bcecd2b488691f871c877b8ec18d51acff1b&quot;&gt;4270bce&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Bug Fixes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;build:&lt;/strong&gt; let the publish wheel check allow duplicate skill files (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18076&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18076/hovercard&quot;&gt;#18076&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/9670b20cb9ed2e73e0941c195b793a99ef25fb0c&quot;&gt;9670b20&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;cost:&lt;/strong&gt; update built-in model token prices (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17762&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17762/hovercard&quot;&gt;#17762&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/74c52b3013aaf22f9fcde4de1eeba23ad5c78eaf&quot;&gt;74c52b3&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;pxi:&lt;/strong&gt; keep view filters out of analytics SQL and narrow experiments skill trigger (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17730&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17730/hovercard&quot;&gt;#17730&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/3df033a6637b5460d6bf7c1f6537ed6567472e2b&quot;&gt;3df033a&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;server:&lt;/strong&gt; price Bedrock regional Claude ids at Bedrock&#39;s rate (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18052&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18052/hovercard&quot;&gt;#18052&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/e792adcaed53e8ddfe3300ff5286a00f2ecb1fe2&quot;&gt;e792adc&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;server:&lt;/strong&gt; trim PHOENIX_CSRF_TRUSTED_ORIGINS entries before validation (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/7183c9813cec7c31aa16d226db2d59b40c45df9b&quot;&gt;7183c98&lt;/a&gt;), closes &lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18100&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/issues/18100/hovercard&quot;&gt;#18100&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Performance Improvements&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;traces:&lt;/strong&gt; read a project&#39;s newest root spans from its own traces (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18120&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18120/hovercard&quot;&gt;#18120&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/77e5e3b8682d0a328717f99be24cf5b1d7165b2c&quot;&gt;77e5e3b&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Documentation&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;remove Slack community links from READMEs (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18109&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18109/hovercard&quot;&gt;#18109&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;02ed180&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;skills:&lt;/strong&gt; add phoenix-social skill for grounded social posts staged in Typefully (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18078&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18078/hovercard&quot;&gt;#18078&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/465be9a24d40bae1108d80356f69d087bbc51c5c&quot;&gt;465be9a&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;skills:&lt;/strong&gt; weekly audit — 2026-11-18 (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18043&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18043/hovercard&quot;&gt;#18043&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/9649308f9e88de1e111b1b0a4a8fa4104897d55a&quot;&gt;9649308&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-otel@3.1.1</id>
+    <updated>2026-11-19T23:02:38Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-otel%403.1.1"/>
+    <title>@arizeai/phoenix-otel@3.1.1</title>
+    <content type="html">&lt;h3&gt;Patch Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;: Remove Slack community links from the package README&lt;/li&gt;
+&lt;li&gt;Updated dependencies [&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;]
+&lt;ul&gt;
+&lt;li&gt;@arizeai/phoenix-config@0.5.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-evals@2.8.1</id>
+    <updated>2026-11-19T23:02:35Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-evals%402.8.1"/>
+    <title>@arizeai/phoenix-evals@2.8.1</title>
+    <content type="html">&lt;h3&gt;Patch Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;: Remove Slack community links from the package README&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-evals@2.8.0</id>
+    <updated>2026-11-19T01:20:30Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-evals%402.8.0"/>
+    <title>@arizeai/phoenix-evals@2.8.0</title>
+    <content type="html">&lt;h3&gt;Minor Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/d03cfdc1ed8852f7f2bd86b8b0331667758ebbc2/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/d03cfdc1ed8852f7f2bd86b8b0331667758ebbc2&quot;&gt;&lt;tt&gt;d03cfdc&lt;/tt&gt;&lt;/a&gt;: Support the Gemini Decisions API (&lt;code&gt;gemini-decision-1&lt;/code&gt;) in classification evaluators. Pass &lt;code&gt;google.decisionModel(&quot;gemini-decision-1&quot;)&lt;/code&gt; as the &lt;code&gt;model&lt;/code&gt; to &lt;code&gt;createClassificationEvaluator&lt;/code&gt; or any built-in. Requires &lt;code&gt;@ai-sdk/google&lt;/code&gt; &amp;gt;= 4.0.118.&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-config@0.5.2</id>
+    <updated>2026-11-19T23:02:32Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-config%400.5.2"/>
+    <title>@arizeai/phoenix-config@0.5.2</title>
+    <content type="html">&lt;h3&gt;Patch Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;: Remove Slack community links from the package README&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-client@8.0.2</id>
+    <updated>2026-11-19T23:02:41Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-client%408.0.2"/>
+    <title>@arizeai/phoenix-client@8.0.2</title>
+    <content type="html">&lt;h3&gt;Patch Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;: Remove Slack community links from the package README&lt;/li&gt;
+&lt;li&gt;Updated dependencies [&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;]
+&lt;ul&gt;
+&lt;li&gt;@arizeai/phoenix-config@0.5.2&lt;/li&gt;
+&lt;li&gt;@arizeai/phoenix-otel@3.1.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-cli@1.24.0</id>
+    <updated>2026-11-19T23:02:44Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-cli%401.24.0"/>
+    <title>@arizeai/phoenix-cli@1.24.0</title>
+    <content type="html">&lt;h3&gt;Minor Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/0b821b2ff030b4cf90e88096fee35f4363e3671a/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/0b821b2ff030b4cf90e88096fee35f4363e3671a&quot;&gt;&lt;tt&gt;0b821b2&lt;/tt&gt;&lt;/a&gt;: Add &lt;code&gt;px dataset-labels list&lt;/code&gt;, &lt;code&gt;add&lt;/code&gt;, &lt;code&gt;remove&lt;/code&gt;, and &lt;code&gt;replace&lt;/code&gt; commands to manage existing label assignments by dataset name or GlobalID, including explicitly clearing all assignments.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Patch Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/4270bcecd2b488691f871c877b8ec18d51acff1b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/4270bcecd2b488691f871c877b8ec18d51acff1b&quot;&gt;&lt;tt&gt;4270bce&lt;/tt&gt;&lt;/a&gt;: Limit PXI to two recommended models per provider: Claude Fable 5.2 and Opus 5.5, GPT-6.2 Sol and GPT-6.1 Terra, and Gemini 4 Carbon and Neon.&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;: Remove Slack community links from the package README&lt;/li&gt;
+&lt;li&gt;Updated dependencies [&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/02ed1808d9fb82263e85479e6ae80310883fcc2b&quot;&gt;&lt;tt&gt;02ed180&lt;/tt&gt;&lt;/a&gt;]
+&lt;ul&gt;
+&lt;li&gt;@arizeai/phoenix-client@8.0.2&lt;/li&gt;
+&lt;li&gt;@arizeai/phoenix-config@0.5.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/arize-phoenix-v21.2.1</id>
+    <updated>2026-11-19T01:26:55Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.2.1"/>
+    <title>arize-phoenix: v21.2.1</title>
+    <content type="html">&lt;h2&gt;&lt;a href=&quot;https://github.com/Arize-ai/phoenix/compare/arize-phoenix-v21.2.0...arize-phoenix-v21.2.1&quot;&gt;21.2.1&lt;/a&gt; (2026-11-19)&lt;/h2&gt;
+&lt;h3&gt;Documentation&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;add Phoenix release notes (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18036&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18036/hovercard&quot;&gt;#18036&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/ed6f1d723f920349d0b9a134aaa83da02ccba805&quot;&gt;ed6f1d7&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;skills:&lt;/strong&gt; teach phoenix-harbor to build Harbor tasks and verifiers you can trust (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17821&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17821/hovercard&quot;&gt;#17821&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/77fe4b4dffccecb5f6bcc50e30366bd517b68a52&quot;&gt;77fe4b4&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/arize-phoenix-v21.2.0</id>
+    <updated>2026-11-18T02:55:22Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.2.0"/>
+    <title>arize-phoenix: v21.2.0</title>
+    <content type="html">&lt;h2&gt;&lt;a href=&quot;https://github.com/Arize-ai/phoenix/compare/arize-phoenix-v21.1.0...arize-phoenix-v21.2.0&quot;&gt;21.2.0&lt;/a&gt; (2026-11-18)&lt;/h2&gt;
+&lt;h3&gt;Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;cli:&lt;/strong&gt; add prompt tag command (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17759&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17759/hovercard&quot;&gt;#17759&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/5160fd586e1ad247ed131c12aa8b7bd168037e45&quot;&gt;5160fd5&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Bug Fixes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;evaluators:&lt;/strong&gt; run LLM evaluators on Anthropic prompts with extended thinking (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17734&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17734/hovercard&quot;&gt;#17734&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/593a776b28da6eb329051f28fdba8f6e2559ae47&quot;&gt;593a776&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;factory:&lt;/strong&gt; pin commits and screen inputs before agent sessions (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17811&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17811/hovercard&quot;&gt;#17811&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/7d3a2450feec8f6b71ab21220b2c41c62bc05207&quot;&gt;7d3a245&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;factory:&lt;/strong&gt; send a user agent Railway accepts from the preview deploy script (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18007&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18007/hovercard&quot;&gt;#18007&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/a94d1297f99d42473e19cefe28732d53e11c2c82&quot;&gt;a94d129&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;factory:&lt;/strong&gt; stop mentioning the requester in factory comments (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18012&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18012/hovercard&quot;&gt;#18012&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/9f9ee7de153e43064d8ae1a530139b6191338bc4&quot;&gt;9f9ee7d&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;notebooks:&lt;/strong&gt; deprecate legacy eval benchmark notebooks (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/17981&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/17981/hovercard&quot;&gt;#17981&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/9c80b636b4d127a54e7dd347f62c2059b87a5efc&quot;&gt;9c80b63&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;server:&lt;/strong&gt; delete retention traces in batches that skip locked rows (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/issues/18021&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/Arize-ai/phoenix/pull/18021/hovercard&quot;&gt;#18021&lt;/a&gt;) (&lt;a href=&quot;https://github.com/Arize-ai/phoenix/commit/364d93e3b3792492659e8526a0f848209e2fb9bf&quot;&gt;364d93e&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/564072810/@arizeai/phoenix-otel@3.1.0</id>
+    <updated>2026-11-17T02:11:21Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai%2Fphoenix-otel%403.1.0"/>
+    <title>@arizeai/phoenix-otel@3.1.0</title>
+    <content type="html">&lt;h3&gt;Minor Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;commit-link&quot; data-hovercard-type=&quot;commit&quot; data-hovercard-url=&quot;https://github.com/Arize-ai/phoenix/commit/f35755badeb865d05f5b2d489027201d9e4dc9d5/hovercard&quot; href=&quot;https://github.com/Arize-ai/phoenix/commit/f35755badeb865d05f5b2d489027201d9e4dc9d5&quot;&gt;&lt;tt&gt;f35755b&lt;/tt&gt;&lt;/a&gt;: &lt;code&gt;register()&lt;/code&gt; accepts &lt;code&gt;sampler&lt;/code&gt; and &lt;code&gt;spanLimits&lt;/code&gt;, and &lt;code&gt;AlwaysOnSampler&lt;/code&gt;, &lt;code&gt;AlwaysOffSampler&lt;/code&gt;, &lt;code&gt;ParentBasedSampler&lt;/code&gt;, and &lt;code&gt;TraceIdRatioBasedSampler&lt;/code&gt; are re-exported. When &lt;code&gt;OTEL_TRACES_SAMPLER&lt;/code&gt;, &lt;code&gt;OTEL_TRACES_SAMPLER_ARG&lt;/code&gt;, &lt;code&gt;OTEL_SPAN_*&lt;/code&gt;, &lt;code&gt;OTEL_ATTRIBUTE_*&lt;/code&gt;, or &lt;code&gt;OTEL_BSP_*&lt;/code&gt; is set and the matching setting is not configured in code, &lt;code&gt;register()&lt;/code&gt; (or, for &lt;code&gt;OTEL_BSP_*&lt;/code&gt; with custom processors, the re-exported &lt;code&gt;BatchSpanProcessor&lt;/code&gt;) logs one warning per variable, since OpenTelemetry JS 3 ignores them. The re-exported &lt;code&gt;BatchSpanProcessor&lt;/code&gt; and &lt;code&gt;SimpleSpanProcessor&lt;/code&gt; throw a &lt;code&gt;TypeError&lt;/code&gt; when given an exporter positionally instead of &lt;code&gt;{ exporter }&lt;/code&gt;, rather than dropping every span.&lt;/li&gt;
+&lt;/ul&gt;</content>
+    <author>
+      <name>arize-phoenix-factory[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/5483146?s=60&amp;v=4"/>
+  </entry>
+</feed>

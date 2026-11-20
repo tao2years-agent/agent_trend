@@ -1,0 +1,11 @@
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -912,7 +912,7 @@
+     #to be removed when Atom is given a suitable func
+     @property
+     def func(self):
+-        return lambda: self
++        return lambda: None
+ 
+ class QuotedString(String):
+     """ Represents a string which should be printed with quotes. """

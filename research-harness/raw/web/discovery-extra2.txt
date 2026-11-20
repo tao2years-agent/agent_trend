@@ -1,0 +1,366 @@
+# Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity (https://metr.org/Early_2025_AI_Experienced_OS_Devs_Study-paper.pdf)
+citeturn15search12 [wordlim: 200] Published: 1.4 years ago; Crawled: 2 weeks ago; # Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity ... We conduct a randomized controlled trial (RCT) to understand how AI tools at the February–June 2025 frontier affect the productivity of experienced open-source developers. 16 developers with moderate AI experience complete 246 tasks in mature projects on which they have an average of 5 years of prior experience.
+# Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity
+
+Joel Becker*, Nate Rush*, Beth Barnes, David Rein  
+Model Evaluation & Threat Research (METR)
+
+## Abstract
+
+Despite widespread adoption, the impact of AI tools on software development in the wild remains understudied. We conduct a randomized controlled trial (RCT) to understand how AI tools at the February–June 2025 frontier affect the productivity of experienced open-source developers. 16 developers with moderate AI experience complete 246 tasks in mature projects on which they have an average of 5 years of prior experience. Each task is randomly assigned to allow or disallow usage of early-2025 AI tools. When AI tools are allowed, developers primarily use Cursor Pro, a popular code editor, and Claude 3.5/3.7 Sonnet. Before starting tasks, developers forecast that allowing AI will reduce completion time by 24%. After completing the study, developers estimate that allowing AI reduced completion time by 20%. Surprisingly, we find that allowing AI actually increases completion time by 19%—AI tooling slowed developers down. --------------------------------------------------------------------------------
+DORA | State of AI-assisted Software Development 2025 (https://dora.dev/research/2025/dora-report/)
+citeturn15search0 [wordlim: 200] Crawled: today; Next, checkout the DORA AI Capabilities Model, a companion guide to this report with more information on how to improve your organization's AI-assisted software development practices. ... The 2025 DORA Report is presented by Google Cloud in collaboration with the following research partners. ... GitLab is the most comprehensive, intelligent DevSecOps platform for software innovation. ... Our AI-native platform decomposes focal work, certifies outputs with internal experts, predicts skill-based outcomes of AI use, and securely traces turn-by-turn developer-AI interactions for validation.
+
+Research
+
+# DORA Research: 2025
+
+Overview DORA Report Errata Questions Measurement Frameworks Sponsors  
+
+## Download the 2025 DORA Report
+
+### Full report
+
+English
+
+### Abridged versions
+
+Español Español - América Latina Français Português - Brasil 中文 – 简体 繁體中文 日本語 한국어
+
+The State of AI-assisted Software Development report reveals AI’s primary role is as an amplifier, magnifying an organization’s existing strengths and weaknesses. The greatest returns on AI investment come not from the tools themselves, but from a strategic focus on the underlying organizational system.
+
+Next, checkout the DORA AI Capabilities Model, a companion guide to this report with more information on how to improve your organization's AI-assisted software development practices.
+--------------------------------------------------------------------------------
+Separating signal from noise in coding evaluations | OpenAI (https://openai.com/index/separating-signal-from-noise-coding-evaluations/)
+citeturn15search1 [wordlim: 200] Published: 4 months ago; Crawled: today; SWE-Bench Pro⁠(opens in a new window) was designed to improve on SWE-bench Verified by testing models on longer horizons and more realistic coding tasks to better track agentic coding capabilities. As in SWE-bench Verified, tasks are sourced programmatically from the history of feature changes in a set of public and private repositories. ... The largest difference was in low-coverage tests, which humans selected as the most common issue for 9.4% of the benchmark compared with 4.1% from the agent pipeline. ... As model capabilities improve, we can use those models to inspect prompts, tests, patches, traces, and edge cases with much greater depth and consistency, helping surface benchmark issues that were previously costly or impractical to find at scale. ... We hope the wider evaluation community will develop new benchmarks built by experienced software developers specifically to test model capabilities. ... Because these results inform OpenAI’s deployment and safety decisions, the evals we track need to be valid and informative.
+
+July 8, 2026
+
+ResearchPublication
+
+# Separating signal from noise in coding evaluations
+
+Through a detailed audit, we find widespread task issues in SWE-Bench Pro and estimate that ~30% of the tasks are broken.
+
+Accurately measuring our models’ capabilities is important for sound deployment and safety decisions, including decisions under OpenAI’s Preparedness Framework⁠(opens in a new window). With each model release, we report results for a variety of external and internal benchmarks to track model progress. When evaluations have flaws that affect results, they can give a false understanding of capabilities, misrepresenting safety cases and affecting research priorities.
+
+We recently investigated how one of the most widely used coding benchmarks, SWE-bench Verified, had fundamental design and contamination issues, and found that the eval no longer provided meaningful signal on software development capabilities. At the time, we encouraged the wider community to switch to SWE-Bench Pro.
+--------------------------------------------------------------------------------
+DORA | Research (https://dora.dev/research/)
+citeturn15search2 [wordlim: 200] Crawled: today; The DORA Core Model is a collection of capabilities, metrics, and outcomes that represent the most firmly-established findings from across the history and breadth of DORA’s research program. ...   * 2025 AI acts as an amplifier, but the greatest returns come from focusing on the underlying sociotechnical systems. ...   * 2024 Platform engineering and user-centricity drive success, while AI begins to reshape the software delivery landscape. ... The DORA research program and Core model are led by a global team of researchers at Google.
+
+# Core Model
+
+View mode: [Input]summary [Input]detail
+
+Capabilities
+
+Climate for learning
+
+Code Maintainability
+
+Documentation quality
+
+Empowering teams to choose tools
+
+Generative culture
+
+Fast flow
+
+Continuous delivery
+
+Database change management
+
+Deployment automation
+
+Flexible infrastructure
+
+Loosely coupled teams
+
+Streamlining change approval
+
+Version control
+
+Working in small batches
+
+Fast feedback
+
+Continuous integration
+
+Monitoring and observability
+
+Reliability engineering
+
+Pervasive security
+
+Test automation
+
+Test data management
+
+predict →
+
+Performance
+
+Software delivery measured by
+
+##### Four key metrics
+
+Change lead time
+
+Deployment frequency
+
+Change fail percentage
+
+Failed deployment recovery time
+
+Reliability measured by
+
+##### Service Level Objectives (SLOs)
+
+Measurement coverage
+
+Measurement focus
+
+Target optimization
+
+Target compliance
+
+predicts →
+
+Outcomes
+
+Organizational performance
+
+Commercial Performance
+
+Non-commercial performance
+
+Well-being
+
+Job satisfaction
+
+Productivity
+
+Reduced burnout
+--------------------------------------------------------------------------------
+Why we no longer evaluate SWE-bench Verified | OpenAI (https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn15search3 [wordlim: 200] Published: 9 months ago; Crawled: today; When we created the Verified benchmark initially, we attempted to solve issues in the original evaluation that made certain tasks impossible to accomplish in the SWE-bench dataset⁠(opens in a new window). ... Until we have those, OpenAI recommends reporting results for SWE-bench Pro.
+
+February 23, 2026
+
+ResearchPublication
+
+# Why SWE-bench Verified no longer measures frontier coding capabilities
+
+SWE-bench Verified is increasingly contaminated. We recommend SWE-bench Pro.
+
+Since we first published SWE-bench Verified in August 2024, the industry has widely used it to measure the progress of models on autonomous software engineering tasks. After its release, SWE-bench Verified provided a strong signal of capability progress and became a standard metric reported in frontier model releases. Tracking and forecasting progress of these capabilities is also an important part of OpenAI’s Preparedness Framework. When we created the Verified benchmark initially, we attempted to solve issues in the original evaluation that made certain tasks impossible to accomplish in the SWE-bench dataset⁠(opens in a new window).
+
+After initial leaps, state-of-the-art progress on SWE-bench Verified has slowed, improving⁠(opens in a new window) from 74.9% to 80.9% in the last 6 months. SWE-bench problems are sourced from open-source repositories many model providers use for training purposes. In our analysis we found that all frontier models we tested were able to reproduce the original, human-written bug fix used as the ground-truth reference, known as the gold patch, or verbatim problem statement specifics for certain tasks, indicating that all of them have seen at least some of the problems and solutions during training.
+
+We also found evidence that models that have seen the problems during training are more likely to succeed, because they have additional information needed to pass the underspecified tests.
+
+This means that improvements on SWE-bench Verified no longer reflect meaningful improvements in models’ real-world software development abilities. Instead, they increasingly reflect how much the model was exposed to the benchmark at training time. This is why we have stopped reporting SWE-bench Verified scores, and we recommend that other model developers do so too.
+
+We’re building new, uncontaminated evaluations to better track coding capabilities, and we think this is an important area to focus on for the wider research community. Until we have those, OpenAI recommends reporting results for SWE-bench Pro.
+
+--------------------------------------------------------------------------------
+DORA | DORA Research: 2025 Errata (https://dora.dev/research/2025/errata/)
+citeturn15search4 [wordlim: 200] Published: last year; Crawled: today;   * 12: Understanding your software delivery performance ...   * 50: DORA AI Capabilities Model ...   * 74: Value stream management ... 97 Footnote 1 should link to https://dora.dev/research/2025/questions.
+
+# DORA Research: 2025
+
+## Errata for the 2025 DORA Report
+
+This page lists errors and corrections to the 2025 State of AI-assisted Software Development report. To track revisions, report PDFs are stamped with a version number. The initial version of the 2025 report was `v. 2025.1`. The latest version is `v. 2025.2`.
+
+### Errata in `v. 2025.2.p`
+
+The printed version of the 2025 report has the following errata:
+
+p. 3 The page numbers in the table of contents are incorrect. They are all off by one, a classic error in computer science. The correct page numbers are:
+
+  * 04: Executive summary
+  * 09: Foreword
+  * 12: Understanding your software delivery performance
+  * 24: AI adoption and use
+  * 34: Exploring AI’s relationship to key outcomes
+  * 50: DORA AI Capabilities Model
+  * 66: Platform engineering
+  * 74: Value stream management
+  * 80: The AI mirror: How AI reflects and amplifies your organization’s true capabilities
+  * 90: Metrics frameworks
+  * 96: Final thoughts: From insight to action
+--------------------------------------------------------------------------------
+2.5 PERFORMANCE IN SPECIFIC DOMAINS | TECHNICAL PERFORMANCE | AI INDEX REPORT 2026 (https://hai.stanford.edu/assets/files/ai_index_report_2026.pdf)
+citeturn15search13 [wordlim: 200] Published: 7 months ago; Bar chart of SWE-bench percent solved, with blue bars for Lite and purple bars for Verified. ... Terminal-Bench is a benchmark for testing AI agents in real terminal environments. ... These are the kinds of tasks a developer might do in a day of work, and it requires an agent to chain together multiple steps without human guidance.
+2.5 PERFORMANCE IN SPECIFIC DOMAINS | TECHNICAL PERFORMANCE | AI INDEX REPORT 2026
+
+SWE-bench: percent solved  
+Source: SWE-bench Leaderboard, 2026 | Chart: 2026 AI Index report
+
+<visual_element id="e1">
+Bar chart of SWE-bench percent solved, with blue bars for Lite and purple bars for Verified. Y-axis is Percent solved from 0% to 100%; x-axis is Model. The chart is split into Lite and Verified groups.
+
+Lite models and values:
+- CodeFuse-CGM — 44.00%
+- + Claude 3.5 Sonnet (20241022) — 46.00%
+- DARS Agent — 47.00%
+- SWE-agent + Claude 3.7 Sonnet — 48.00%
+- ExpeRepair-v1.0 — 48.33%
+- EntroPO + R2E — 49.67%
+- + Qwen3-Coder-30B-A3B-Instruct — 56.67%
+- SWE-agent + Claude 4 Sonnet (20250514) — 58.33%
+- + Claude 4 Sonnet — 60.00%
+- Refact.ai Agent — 60.33%
+
+Verified models and values:
+- ExpeRepair-v1.0 + Claude 4 Sonnet — 70.80%
+- Kimi K2.5 (high reasoning) — 71.40%
+- Claude 4.5 Sonnet (high reasoning) — 72.80%
+- GPT-5.2 Codex (high reasoning) — 72.80%
+- GLM-5 (high reasoning) — 72.80%
+--------------------------------------------------------------------------------
+SWE-Bench Pro V2 (https://labs.scale.com/leaderboard/swe_bench_pro_public_v2?tab=full)
+citeturn15search5 [wordlim: 200] Published: last month; Crawled: today; SWE-Bench Pro is a benchmark designed to provide a rigorous and realistic evaluation of AI agents for software engineering. ... This provides a more accurate measure of an agent’s true problem-solving capabilities in environments that mirror professional software development. ...   * Issue Resolution: The patch must fix the specific bug or implement the feature. ... SWE-Bench Pro is a large-scale benchmark containing 1865 total tasks across 41 professional repositories.
+
+# SWE-Bench Pro V2
+
+Evaluating challenging long-horizon software engineering tasks in public open source repositories
+
+GitHub Dataset
+
+Update September 22, 2026
+
+We're releasing SWE-Bench Pro V2, a refreshed public split with a modified benchmark and a locked evaluation protocol, co-developed with Reflection.
+
+  * 642 tasks across 11 repositories, down from 731. We dropped 89 tasks our review found invalid.
+  * 69 tasks had instructions that contradicted the tests grading them. We corrected the text only, then had an expert solve each one blind from the instruction alone.
+  * The agent phase now reaches only the model endpoint, with web tools disabled. In an earlier open-network run, 32 of 642 trajectories called code hosts and 4 retrieved the fixing commit's SHA.
+  * Every agent diff is re-graded on a pristine image, and we publish both grades. This caught Opus 5 forging a Go module checksum into `go.sum` and Inkling editing the Go module cache on 3 tasks.
+  * A two-sided gate runs before release: every task must pass with the reference patch and fail with the empty patch. --------------------------------------------------------------------------------
+SWE-bench - agentic-evalkit (https://tafreeman.github.io/agentic-evalkit/guides/swebench/)
+citeturn15search6 [wordlim: 200] Crawled: 3 days ago; OpenAI's February 2026 audit found contamination and defective tasks, and its July 2026 audit retracted the earlier recommendation to switch to SWE-Bench Pro. ... See the dated benchmark validity policy before selecting tasks.
+
+`princeton-nlp/SWE-bench_Verified` (config `default`, split `test`) is the curated `swe-bench-verified` preset: real-world GitHub issue resolution tasks. ... The `swe-bench-verified` preset's `readiness` is `prediction_export` (not `runnable`) precisely because that capability is optional: everything up to producing an official prediction works out of the box, and the last authoritative step depends on the `swebench` extra and a reachable Docker daemon, neither of which is present by default. ... The gold-patch / invalid-patch fidelity check (design §7.1) runs via the opt-in `.github/workflows/live-swebench.yml`, which is the only CI that installs the extra and requires Docker; `ci.yml` stays Docker-free.
+
+# SWE-bench¶
+
+Capability claims require a separate validity review
+
+Keep this preset for regression checks and harness integration. OpenAI's February 2026 audit found contamination and defective tasks, and its July 2026 audit retracted the earlier recommendation to switch to SWE-Bench Pro. An official harness result does not resolve those dataset-validity issues. See the dated benchmark validity policy before selecting tasks.
+
+`princeton-nlp/SWE-bench_Verified` (config `default`, split `test`) is the curated `swe-bench-verified` preset: real-world GitHub issue resolution tasks. This release ships everything needed to discover, preview, project, and export official predictions for this dataset without Docker or a code checkout. Authoritative resolved/unresolved grading requires the optional `swebench` harness capability: install `agentic-evalkit[swebench]` and run a reachable Docker daemon (see below).
+
+## What works today¶
+    
+    `agentic-evalkit datasets inspect hf:princeton-nlp/SWE-bench_Verified
+--------------------------------------------------------------------------------
+DORA_ExecutiveSummary_1 (https://dora.dev/research/2024/2024-DORA-Report-Infographic.pdf)
+citeturn15search14 [wordlim: 200] Published: 2.1 years ago; The 2024 DORA report highlights the significant impact of AI on software development, explores platform engineering's promises and challenges, and emphasizes user-centricity and stable priorities for organizational success. ... While 89% of respondents reported using an internal developer platform, the impact on software delivery performance is mixed. ... Learn more about how your team operates and identify areas for improvement which may be inspired by findings from the DORA research program.
+DORA
+
+10  
+A decade with DORA
+
+The 2024 DORA report highlights the significant impact of AI on software development, explores platform engineering's promises and challenges, and emphasizes user-centricity and stable priorities for organizational success.
+
+Google Cloud
+
+Platform Engineering
+
+While 89% of respondents reported using an internal developer platform, the impact on software delivery performance is mixed. Although platform engineering shows promise in boosting individual and team productivity and improving organizational performance, it may also lead to decreased throughput and stability, particularly when mandated for the entire application lifecycle.
+
+Key metrics
+
+- 89% of respondents are using an internal developer platform.
+- 6% gain in productivity at the team level when organization has a dedicated platform team.
+- 5% improvement in productivity when users of the platform are able to complete their tasks without involving an enabling team.
+- 8% decrease in throughput among those using a platform compared to those who do not.
+--------------------------------------------------------------------------------
+SWE-bench Verified · Can Agents Work? (https://canagentswork.com/benchmarks/swe-bench-verified/)
+citeturn15search7 [wordlim: 200] Published: 2.3 years ago; Crawled: today; OpenAI and the SWE-bench team built it in 2024 after 93 developers screened 1,699 SWE-bench tasks for unfair tests and vague issue descriptions. ... 5 Dec 2025 · Source: Princeton University (benchmark maintainers)
+
+Tied at 79.2% with live-SWE-agent + Claude 4.5 Opus (medium), dated 2025-12-15. ... TRAE + Claude Sonnet 4 + Opus 4 + Sonnet 3.7 + Gemini 2.5 Pro harness: TRAE  | 75.2%  | 12 Jun 2025  | Princeton University · primary ... Credit the original work first: SWE-bench Verified by Princeton University and OpenAI (https://arxiv.org/abs/2310.06770).
+--------------------------------------------------------------------------------
+SWE-bench Verified, Pro and What Replaced Them: By the Numbers | MetaPrompt (https://metaprompt.ai/posts/swe-bench-verified-pro-by-the-numbers)
+citeturn15search8 [wordlim: 200] Crawled: today; Benchmark maker's own video, recorded before OpenAI's July 2026 audit. ... SWE-bench Verified^{1}Bash Only view; rated "Flawed" by Epoch AI  | SWE-bench team  | 500  | mini-SWE-agent v2.0.0, 1 attempt  | 76.8  | Claude 4.5 Opus (high)  | Feb 17, 2026  | Measured
+SWE-bench Pro, public set^{5}~30% of tasks broken, per OpenAI's audit  | Scale AI  | 731 (276 private and 858 held-out not scored here)  | SWE-Agent or mini-swe-agent, up to 250 turns  | 61.50 ± 3.10  | Muse Spark 1.1 (Meta)  | Jul 9, 2026 (added)  | Measured
+Terminal-Bench 4.0^{7}Continuous, semantically versioned  | Terminal-Bench (Stanford, Harbor, Laude Institute)  | 74 at 3.0 launch; 4.0 removed 8, fixed 19  | Each lab's agent (top entry: Claude Code), via Harbor  | 64.85 ± 3.11  | Opus 5.5, max (Anthropic)  | Sep 22, 2026  | Measured
+--------------------------------------------------------------------------------
+DORA | Capabilities: Platform engineering (https://dora.dev/capabilities/platform-engineering/)
+citeturn15search9 [wordlim: 200] Published: 10 months ago; Crawled: today; The central theme of DORA’s 2025 research is that AI is an amplifier: it magnifies an organization’s existing strengths, but also its dysfunctions. ... Investing in a quality internal platform is no longer optional; it is the critical enabler for realizing the value of AI investments. ...   * DORA AI Capabilities Model report ...   * Take the DORA quick check to get a baseline of your team’s software delivery performance.
+--------------------------------------------------------------------------------
+APEX Benchmarking Methodology: How Mercor runs benchmarks | Mercor (https://www.mercor.com/apex/methodology/)
+citeturn15search10 [wordlim: 200] Crawled: today; Stanford; Harbor; Laude Institute ... Scale AI ...     mini-swe-agent (250 max steps, 1 hour time limit) ... ### SWE-bench Verified
+
+Princeton; OpenAI (Verified subset) ...     Code patch resolving a GitHub issue ... We evaluate only k=1 runs per task for DeepSeek-V4-Flash, DeepSeek-V4-Pro-0813, GLM-5.2, Kimi K2.7 Code, Kimi K3, Qwen 3.8-Max, and Qwen 3.5. ... Tests whether agents can use a terminal to finish difficult, multi-step technical work involving writing code, running tools, and operating live software.
+--------------------------------------------------------------------------------
+SWE-bench Verified | Epoch AI (https://epoch.ai/benchmarks/swe-bench-verified?tab=release-date&view=graph)
+citeturn15search11 [wordlim: 200] Published: 2.3 years ago; Crawled: today; SWE-bench Verified is a human-validated subset of the original SWE-bench dataset, consisting of 500 samples that evaluate AI models’ ability to solve real-world software engineering issues. Epoch evaluations of this benchmark use 484 samples that are validated on our infrastructure. ... The evaluation workflow is as follows: the model is given access to a code repository and a description of an issue that needs to be fixed. ... There are five parts to our SWE-bench Verified evaluation methodology: ... We provide a `bash` tool to run commands, Inspect’s Anthropic-style `text_editor` tool for file viewing and modification, and an OpenAI-style `apply_patch` tool to apply patches to files.
+--------------------------------------------------------------------------------
+Capabilities and conditions for success (https://dora.dev/ai/gen-ai-report/dora-impact-of-generative-ai-in-software-development.pdf)
+citeturn15search15 [wordlim: 200] Published: 1.6 years ago; DORA's research has focused on identifying the capabilities and conditions that influence software delivery, operational, and organizational performance. ... Table 2: Summary view of the DORA Core model v2.0.0 - https://dora.dev/research/?
+--------------------------------------------------------------------------------
+How do we use the models? (https://dora.dev/research/2024/dora-report/2024-dora-accelerate-state-of-devops-report.pdf)
+citeturn15search16 [wordlim: 200] Published: 2.0 years ago; X is usually a practice, such as creating quality documentation, adopting AI, or investing in culture. ... Here are some of this year's capabilities of interest: ... - **team performance** ... - **software delivery performance** ... DORA v. 2024.3
+--------------------------------------------------------------------------------
+Chain of Thought | Introducing SWE-Bench Pro - YouTube (https://www.youtube.com/watch?v=NUd8fZvGC7A)
+citeturn15youtube17 [wordlim: 200] Published: last year; Crawled: 2 months ago; In this episode of Chain of Thought,  @Scale_AI 's  Brad Kenstler (Head of Agent Capabilities and Environments) and Chetan Rane (Head of Product, Agents) sit down with Edwin Pan (Product Manager) and Jeff Da (ML Research Scientist) to deep dive Scale's latest. benchmark, SWE-Bench Pro. 
+
+SWE-Bench Pro is a benchmark designed to provide a rigorous and realistic evaluation of AI agents for software engineering.
+# Chain of Thought | Introducing SWE-Bench Pro
+By: Scale AI (456000 followers)
+Published: 2025-11-12, 128598 views, 152 likes
+
+## Description
+Introducing SWE-Bench Pro. In this episode of Chain of Thought,  @Scale_AI 's  Brad Kenstler (Head of Agent Capabilities and Environments) and Chetan Rane (Head of Product, Agents) sit down with Edwin Pan (Product Manager) and Jeff Da (ML Research Scientist) to deep dive Scale's latest. benchmark, SWE-Bench Pro. 
+
+SWE-Bench Pro is a benchmark designed to provide a rigorous and realistic evaluation of AI agents for software engineering. It was developed to address several limitations in existing benchmarks by tackling four key challenges: Data Contamination, Limited Task Diversity, Oversimplified Problems,  and Unreliable and Irreproducible Testing.
+
+SWE-Bench Pro addresses these gaps by sourcing tasks from diverse and complex codebases, including consumer applications, B2B services, and developer tools. To reduce contamination risk, the public and held-out OSS subsets use strong copyleft licenses (e.g., GPL). The commercial subset consists of private, proprietary codebases from startup partners.
+
+Topics covered:
+0:00 Intro
+0:50 How coding agents work
+4:58 On coding agent scaffolding and data
+7:02 Fine-tuning coding agents
+8:56 Why coding agents are growing in popularity
+12:31 Coding agents use cases
+17:05 Evaluating coding agents
+18:50 General coding vs agentic coding
+23:40 Agent performance on SWE-Bench
+28:55 Introducing SWE-Bench Pro
+35:20 Repos and Environments in SWE-Bench Pro
+40:24 How we made SWE-Bench Pro
+47:26 Analysis on overcoming failure modes
+50:16 Future of Coding Agents
+
+Check out SWE-Bench Pro here: URL
+--------------------------------------------------------------------------------
+AI agent benchmark (https://en.wikipedia.org/wiki/AI_agent_benchmark)
+citeturn15search18 [wordlim: 200] Crawled: last week; For example, even OpenAI was only able to benchmark 477 of the 500 items in SWE-bench Verified when benchmarking o3 and o4-mini, due to infrastructure challenges. ... * SWE-bench Pro was released later as an update to SWE-bench, containing 1,865 harder items. ... * SWE-Lancer: 1,488 freelance software engineering tasks from Upwork. Two types of tasks: implementation tasks (from $50 bug fixes to $32,000 feature implementations), called "IC" (for "Individual Contributor"); "Management" tasks, where the model must choose between technical implementation proposals. ... Developed by EpochAI and METR. ... * ExploitGym: an extension to CyberGym. 869 tasks. ... *  "Windows Agent Arena: Evaluating Multi-modal OS Agents at Scale". microsoft.github.io. ... *  "𝜏³-Bench: Advancing agent evaluation to knowledge and voice". ... "Multi-SWE-bench: A Multilingual Benchmark for Issue Resolving". arXiv:2504.02605 [cs.SE].
+--------------------------------------------------------------------------------
+Why AI Progress is Increasingly Invisible (https://time.com/7205359/why-ai-progress-is-increasingly-invisible/)
+citeturn15news19 [wordlim: 100] Published: 1.9 years ago; This led to a wave of articles declaring that AI progress has hit a wall, lending further credence to an increasingly widespread feeling that chatbot capabilities haven't improved significantly since OpenAI released GPT-4 in March 2023. ... In an attempt to provide more realistic tests of AI programming capabilities, researchers developed SWE-Bench, a benchmark that evaluates how well AI agents can fix actual open problems in popular open-source software. The top score on the verified benchmark a year ago was 4.4%.
+Still, 82% of scientists report that the AI tools reduced their job satisfaction, mainly citing "skill underutilization and reduced creativity."
+But the Holy Grail for AI companies is a system that can automate AI research itself, theoretically enabling an explosion in capabilities that drives progress across every other domain. The recent improvements made on this front may be even more dramatic than those made on hard sciences.
+In an attempt to provide more realistic tests of AI programming capabilities, researchers developed SWE-Bench, a benchmark that evaluates how well AI agents can fix actual open problems in popular open-source software. The top score on the verified benchmark a year ago was 4.4%. The top score today is closer to 72%, achieved by OpenAI's o3 model.
+This remarkable improvement-from struggling with even the simplest fixes to successfully handling nearly three-quarters of the set of real-world coding tasks-suggests AI systems are rapidly gaining the ability to understand and modify complex software projects. --------------------------------------------------------------------------------
+AI Models Are Getting Smarter. New Tests Are Racing to Catch Up (https://time.com/7203729/ai-evaluations-safety/)
+citeturn15news20 [wordlim: 100] Published: 1.9 years ago; Just one month later, OpenAI's newly-announced o3 model achieved a score of 25.2%, which Epoch's director, Jaime Sevilla, describes as "far better than our team expected so soon after release." ... Another issue is that evals can be "gamed" when "either the person that has the AI model has an incentive to train on the eval, or the model itself decides to target what is measured by the eval, rather than what is intended," says Hobbahn. ... Another benchmark aiming for a longer shelflife is the ominously-named "Humanity's Last Exam," created in collaboration between the nonprofit Center for AI Safety and Scale AI, a for-profit company that provides high-quality datasets and evals to frontier AI labs like OpenAI and Anthropic. ... The benchmark is intended to go live in late 2024 or early 2025. ... Current AI agents do best when given between 30 minutes and 2 hours, depending on the agent, explains Hjalmar Wijk, a member of METR's technical staff. ... Michael Chen, an AI policy researcher at METR, points to SimpleBench as an example of a benchmark consisting of questions that would be easy for the average high schooler, but on which leading models struggle.
+AI Models Are Getting Smarter. New Tests Are Racing to Catch Up
+Date: Tue Dec 24 15:05:49 2024 UTC
+
+Despite their expertise, AI developers don't always know what their most advanced systems are capable of-at least, not at first. To find out, systems are subjected to a range of tests-often called evaluations, or 'evals'-designed to tease out their limits. But due to rapid progress in the field, today's systems regularly achieve top scores on many popular tests, including SATs and the U.S. bar exam, making it harder to judge just how quickly they are improving.
+A new set of much more challenging evals has emerged in response, created by companies, nonprofits, and governments. Yet even on the most advanced evals, AI systems are making astonishing progress. In November, the nonprofit research institute Epoch AI announced a set of exceptionally challenging math questions developed in collaboration with leading mathematicians, called FrontierMath, on which currently available models scored only 2%. AI Models Are Getting Smarter. New Tests Are Racing to Catch Up
+Date: Tue Dec 24 15:05:49 2024 UTC
+
+A new wave
+
+In response to these challenges, new, more sophisticated evals are being built.
+Epoch AI's FrontierMath benchmark consists of approximately 300 original math problems, spanning most major branches of the subject. It was created in collaboration with over 60 leading mathematicians, including Fields-medal winning mathematician Terence Tao. The problems vary in difficulty, with about 25% pitched at the level of the International Mathematical Olympiad, such that an "extremely gifted" high school student could in theory solve them if they had the requisite "creative insight" and "precise computation" abilities, says Tamay Besiroglu, Epoch's associate director. Half the problems require "graduate level education in math" to solve, while the most challenging 25% of problems come from "the frontier of research of that specific topic," meaning only today's top experts could crack them, and even they may need multiple days.
+Solutions cannot be derived by simply testing every possible answer, since the correct answers often take the form of 30-digit numbers. To avoid data contamination, Epoch is not publicly releasing the problems (beyond a handful, which are intended to be illustrative and do not form part of the actual benchmark). Even with a peer-review process in place, Besiroglu estimates that around 10% of the problems in the benchmark have incorrect solutions-an error rate comparable to other machine learning benchmarks. "Mathematicians make mistakes," he says, noting they are working to lower the error rate to 5%.
+Evaluating mathematical reasoning could be particularly useful because a system able to solve these problems may also be able to do much more. While careful not to overstate that "math is the fundamental thing," Besiroglu expects any system able to solve the FrontierMath benchmark will be able to "get close, within a couple of years, to being able to automate many other domains of science and engineering."
+Another benchmark aiming for a longer shelflife is the ominously-named "Humanity's Last Exam," created in collaboration between the nonprofit Center for AI Safety and Scale AI, a for-profit company that provides high-quality datasets and evals to frontier AI labs like OpenAI and Anthropic. The exam is aiming to include between 20 and 50 times as many questions as Frontiermath, while also covering domains like physics, biology, and electrical engineering, says Summer Yue, Scale AI's director of research. Questions are being crowdsourced from the academic community and beyond. To be included, a question needs to be unanswerable by all existing models. The benchmark is intended to go live in late 2024 or early 2025.
+A third benchmark to watch is RE-Bench, designed to simulate real-world machine-learning work. It was created by researchers at METR, a nonprofit that specializes in model evaluations and threat research, and tests humans and cutting-edge AI systems across seven engineering tasks. Both humans and AI agents are given a limited amount of time to complete the tasks; while humans reliably outperform current AI agents on most of them, things look different when considering performance only within the first two hours. Current AI agents do best when given between 30 minutes and 2 hours, depending on the agent, explains Hjalmar Wijk, a member of METR's technical staff. 

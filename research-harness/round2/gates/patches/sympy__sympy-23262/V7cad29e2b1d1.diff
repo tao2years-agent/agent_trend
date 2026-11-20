@@ -1,0 +1,11 @@
+--- a/sympy/utilities/lambdify.py
++++ b/sympy/utilities/lambdify.py
+@@ -956,7 +956,7 @@
+         return doprint(arg)
+     elif iterable(arg):
+         if isinstance(arg, list):
+-            left, right = "[", "]"
++            left, right = '(', "]"
+         elif isinstance(arg, tuple):
+             left, right = "(", ",)"
+         else:

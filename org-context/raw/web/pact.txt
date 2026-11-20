@@ -1,0 +1,308 @@
+检索参数 {"search_query":[{"q":"site:docs.pact.io can-i-deploy matrix deployed environment unknown verification"}],"response_length":"medium"}
+Retries for can-i-deploy | Pact Docs (https://docs.pact.io/blog/2018/07/10/retries-for-can-i-deploy)
+citeturn31search0 [wordlim: 200] Published: 8.4 years ago; Crawled: last month; If you deploy to a test environment as part of your build pipeline, you may find yourself in the situation where the verification result is unknown because the provider build is still running. ... To help out in this scenario, you can now use the following two options to let the `can-i-deploy` command poll until all the verification results arrive.
+
+# Retries for can-i-deploy
+
+July 10, 2018 · 2 min read
+
+Beth Skurrie
+
+The `can-i-deploy` tool is a CLI that ensures you are safe to deploy a consumer or provider into a given environment. To do this, it queries the Pact Broker to ensure that there is a successful verification result between the existing application versions and the application version you're about to deploy.
+
+If you deploy to a test environment as part of your build pipeline, you may find yourself in the situation where the verification result is unknown because the provider build is still running. What typically would happen is that a changed pact would trigger a provider build via a webhook in the Pact Broker, and the provider may not have finished before `can-i-deploy` is invoked.
+
+To help out in this scenario, you can now use the following two options to let the `can-i-deploy` command poll until all the verification results arrive.
+    
+    `[--retry-while-unknown=TIMES] 
+                  # The number of times to retry while there is an unknown
+                  # verification result 
+                  # (ie. the provider verification is likely still running)
+                  # Default: 0
+    [--retry-interval=SECONDS]
+                  # The time between retries in seconds. 
+                  # Use in conjuction with --retry-while-unknown
+                  # Default: 10
+    `
+
+Remember, however, that changes to pacts are best introduced on feature branches of your consumer. This allows your pact to be "pre-verified" by the time the branch is merged into master, which will mean `can-i-deploy` should never block your master build.
+
+You can read about how to do this in The steps to reaching Pact Nirvana.
+
+Want to use this new feature? You'll need version 1.48.0 or later of the Pact CLI, and version 2.23.4 or later of the Pact Broker--------------------------------------------------------------------------------
+Terminology | Pact Docs (https://docs.pact.io/getting_started/terminology)
+citeturn31search1 [wordlim: 200] Crawled: today; Can-i-deploy is a command line tool that uses the Matrix to determine whether an application version is "safe" to deploy to a particular environment. To do this, it checks that there is a successful verification result between the application being deployed and the currently deployed version of each of the integrated applications in that environment.
+
+## Pact Broker​
+
+The Pact Broker is a permanently running, externally hosted service with an API and UI that allows contract testing to be integrated into a CI/CD pipeline. Like the Pact clients, the Pact Broker is an open source project.
+
+## PactFlow​
+
+PactFlow is a commercial offering of the Pact Broker which adds features required to use Pact at scale.
+
+## The Matrix​
+
+The Matrix is a table that shows the compatibility status of each consumer version and provider version, as determined by the contract verification results. It is a feature of the Pact Broker and PactFlow.
+
+## Can-I-Deploy​
+
+Can-i-deploy is a command line tool that uses the Matrix to determine whether an application version is "safe" to deploy to a particular environment. To do this, it checks that there is a successful verification result between the application being deployed and the currently deployed version of each of the integrated applications in that environment. Can-i-deploy is a feature of the Pact Broker and PactFlow.
+
+## Pacticipant​
+
+This is the term used in the Pact Broker/PactFlow API for "an application that participates in a pact". It was a pun created by the Pact Broker author, Beth Skurrie, before she had any idea that the Pact Broker would become such a widely used application. It is a naming decision that she sincerely regrets, 1. because of all the confusion it creates and 2. because she is now incapable of typing the word "participant".--------------------------------------------------------------------------------
+Overview | Pact Docs (https://docs.pact.io/pact_broker/overview)
+citeturn31search2 [wordlim: 200] Crawled: today;   * Consumer and provider CI deployment builds check with the broker before deploying to ensure the application version they are about deploy will be compatible with the versions of the other applications that are already in that environment. ... "The Matrix" is the table that is created when you join every pact publication with every verification result publication. ... The can-i-deploy CLI is a tool that uses the Matrix to ensure that you can release your application safely.
+
+## The Matrix​
+
+"The Matrix" is the table that is created when you join every pact publication with every verification result publication. It shows you what consumer and provider versions are (and are not) compatible with each other.
+
+Consumer  | Consumer version  | Provider  | Provider version  | Success?
+--- | --- | --- | --- | ---
+Foo  | 1  | Bar  | 3  | true
+Foo  | 1  | Bar  | 4  | true
+Foo  | 2  | Bar  | 4  | false
+Foo  | 2  | Bar  | 5  | true
+
+In the above table, Foo published a pact for v1, and Bar v3 verified it successfully. Bar v4 also verified it successfully. Then, Foo published a pact for v2, but Bar v4 verification failed because Foo had added a new interaction without telling the Bar team about it in advance (naughty!). Bar made a code change so that they could successfully verify in v5.
+
+## Can I deploy?​
+
+The can-i-deploy CLI is a tool that uses the Matrix to ensure that you can release your application safely. It checks that the application version you are about to release is compatible with the existing versions of the other applications in that environment. --------------------------------------------------------------------------------
+Pact Broker Client | Pact Docs (https://docs.pact.io/implementation_guides/cli/pact-broker-cli)
+citeturn31search3 [wordlim: 200] Crawled: today; ### Matrix​ ...         Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application ...               The number of times to retry while there is an unknown verification result (ie. the provider verification is likely still running) ... Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy with the versions of each integrated application that are already in that environment.
+
+### Matrix​
+
+#### can-i-deploy​
+    
+    `$ pact-broker-cli can-i-deploy --help
+        Check if a pacticipant can be deployed.
+        Description:
+        Returns exit code 0 or 1, indicating whether or not the specified application (pacticipant) has a successful verification result with
+        each of the application versions that are already deployed to a particular environment. Prints out the relevant pact/verification
+        details, indicating any missing or failed verification results.
+      
+        The can-i-deploy tool was originally written to support specifying versions and dependencies using tags. This usage has now been
+        superseded by first class support for environments, deployments and releases. For documentation on how to use can-i-deploy with tags,
+        please see https://docs.pact.io/pact_broker/client_cli/can_i_deploy_usage_with_tags/
+      
+        Before `can-i-deploy` can be used, the relevant environment resources must first be created in the Pact Broker using the
+        $ pact-broker-cli can-i-deploy --pacticipant PACTICIPANT --version VERSION --to-environment ENVIRONMENT
+      
+        Example: can I deploy version 173153ae0 of application Foo to the test environment?
+      
+        $ pact-broker-cli can-i-deploy --pacticipant Foo --version 173153ae0 --to-environment test
+      
+        Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking 'Can I deploy this
+        application version with the latest version from the main branch of another application' it functions as a 'can I merge' check.
+      
+        $ pact-broker-cli can-i-deploy --pacticipant Foo 173153ae0 // --pacticipant Bar --latest main
+      
+        ##### Polling
+      
+        If the verification process takes a long time and there are results missing when the can-i-deploy command runs in your CI/CD pipeline,
+        you can configure the command to poll and wait for the missing results to arrive. The arguments to specify are `--retry-while-unknown
+        TIMES` and `--retry-interval SECONDS`, set to appropriate values for your pipeline.
+
+`$ pact-broker-cli create-environment --name "uat" --display-name "UAT" --no-production`
+
+After an application is deployed or released, its deployment must be recorded using the `record-deployment` or `record-release` commands. See https://docs.pact.io/pact_broker/recording_deployments_and_releases/ for more information.
+
+`$ pact-broker-cli record-deployment --pacticipant Foo --version 173153ae0 --environment uat`
+
+Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy with the versions of each integrated application that are already in that environment.
+
+`$ pact-broker-cli can-i-deploy --pacticipant PACTICIPANT --version VERSION --to-environment ENVIRONMENT`
+
+Example: can I deploy version 173153ae0 of application Foo to the test environment?
+
+`$ pact-broker-cli can-i-deploy --pacticipant Foo --version 173153ae0 --to-environment test`
+
+Can-i-deploy can also be used to check if arbitrary versions have a successful verification. When asking "Can I deploy this application version with the latest version from the main branch of another application" it functions as a "can I merge" check.
+
+`$ pact-broker-cli can-i-deploy --pacticipant Foo 173153ae0 \ --pacticipant Bar --latest main`
+
+--------------------------------------------------------------------------------
+FAQ | Pact Docs (https://docs.pact.io/faq)
+citeturn31search4 [wordlim: 200] Crawled: today; Use `can-i-deploy`: ... The consumer team should consult the verification status on the index page before deploying. ... ### Can I verify my pacts against a deployed instance of a provider?​
+### How to prevent a consumer from deploying with an invalid contract​
+
+Use `can-i-deploy`:
+
+Use the can-i-deploy feature of the Pact Broker CLI. It will give you a definitive answer if the version of your consumer that is being deployed, is compatible with all of its providers.
+
+For this to work you need to...
+
+Ensure the provider verification results are published back to the broker
+
+As of version 2.0+ of the Pact Broker, and 1.11.1+ of the Pact Ruby implementation, provider verification results can be published back to the broker, and will be displayed on the index page. The consumer team should consult the verification status on the index page before deploying.
+
+One catch - it is only safe to deploy the consumer if it was verified against the production version of the provider.
+
+Some other approaches to consider are:
+
+Use Pact Broker Webhooks:
+
+Trigger a build or Slack notification using webhooks on the Provider as soon as a changed contract is submitted to the server.
+### Why does computer say no in the can-i-deploy tool?​
+
+This is a Little Britain reference (language warning!).
+
+### Can I verify my pacts against a deployed instance of a provider?​
+
+This is not recommended. Pact is designed to give you confidence that your integration is working correctly before you deploy either application. To achieve this, the verification step must be run against a locally running instance of your provider on a development machine or in CI/CD.
+
+Verifying pacts against an already deployed provider will mean you don't get the benefits that contract testing was intended to provide - fast feedback, easy debugging, reliable tests. It will create a bottleneck as you won't be able to run tests in parallel, and you won't be able to use features like the webhook that trigger builds for different versions of your provider. It is also much more difficult to insert, remove or mock the data required for provider states, to stub external dependencies, and to control areas like authentication.--------------------------------------------------------------------------------
+Provider verification results | Pact Docs (https://docs.pact.io/pact_broker/advanced_topics/provider_verification_results)
+citeturn31search5 [wordlim: 200] Crawled: today; The `can-i-deploy` tool should be added to your consumer deployment script, before you do the actual deployment. If all the pacts for the given consumer version are not successfully verified the command will exit with an error code (and will output the current verification results and let you know what is missing/failed). ... The easiest way to find them is to click on the "Matrix" icon for the integration (the little grid icon in between the consumer and provider names) and then click on the link in the "Pact Verified" column for the results that you want to see.
+
+## Querying​
+
+Once your verification is published, your consumer build will need some way of determining the verification results before releasing to production.
+
+To do this, you need to know the version number of your candidate release eg. `1.2.3`, and you will need the Pact Broker CLI. The documentation for the `can-i-deploy` tool is here.
+
+The `can-i-deploy` tool should be added to your consumer deployment script, before you do the actual deployment. If all the pacts for the given consumer version are not successfully verified the command will exit with an error code (and will output the current verification results and let you know what is missing/failed). If your deployment script is configured to stop on error (as would be normal), the rest of the deployment will not proceed.
+
+Something to note is that if the content of your contract has not changed since the previous verification, then the contract will be "pre-verified" with the results of the last verification. This means that most of the time, you should be able to go straight from the consumer test/package phase into the deploy phase.
+
+Changes to the contract that may cause the initial provider verification to fail should be introduced using tags.
+
+## Viewing​
+
+There is no UI for viewing the interaction level verification results in the open source Pact Broker (this UI is available in PactFlow) however, you can view them in the API browser. The easiest way to find them is to click on the "Matrix" icon for the integration (the little grid icon in between the consumer and provider names) and then click on the link in the "Pact Verified" column for the results that you want to see.--------------------------------------------------------------------------------
+Can I Deploy | Pact Docs (https://docs.pact.io/pact_broker/can_i_deploy)
+citeturn31search6 [wordlim: 200] Crawled: today; The Pact way of managing these dependencies is to use the Pact "Matrix" and the `can-i-deploy` tool. ... This means it can now determine whether or not a particular application version can be deployed safely into an environment by inspecting the matrix, and making sure that there is a successful verification result between the version that is about to be deployed, and all the versions of the integrated applications that are already in that environment. ... Once you have configured your build to notify the Pact Broker of the successful deployment using either method describe above, you can use the following simple command to find out if you are safe to deploy (use either `--to` or `--to-environment` as supported):
+
+# Can I Deploy
+
+Before you deploy a new version of an application to a production environment, you need to know whether or not the version you're about to deploy is compatible with the versions of the other apps that already exist in that environment. The old-fashioned way of managing these dependencies involved deploying sets of pre-tested applications together, creating a bottleneck, and meaning that speedy development and testing on one application may be negated by slow development and testing on another.
+
+The Pact way of managing these dependencies is to use the Pact "Matrix" and the `can-i-deploy` tool. The "Matrix" is the grid created when you create a table of all the consumer and provider versions that have been tested against each other using Pact. (When a pact is published, the version of the consumer that generated the pact is recorded. When a pact is verified against a provider, the verification results are published to the Pact Broker, along with the version of the provider that verified the pact. --- | --- | ---
+22  | 56 (production)  | true
+23  | 56 (production)  | true
+23  | 57  | false
+23  | 58  | true
+24  | 58  | true
+25  | 58  | false
+
+The Pact Broker already knows from its contracts what each application's dependencies are, and recording the deployments allows the Pact Broker to know which version of each application is in each environment. This means it can now determine whether or not a particular application version can be deployed safely into an environment by inspecting the matrix, and making sure that there is a successful verification result between the version that is about to be deployed, and all the versions of the integrated applications that are already in that environment.
+
+Here is how we would check to see if we were safe to deploy Foo version 23 to production:
+    
+    `$ pact-broker can-i-deploy --pacticipant Foo --version 23 --to-environment production
+    Computer says yes \o/ 
+     
+    CONSUMER | C.VERSION  | PROVIDER | P.VERSION  | SUCCESS? | RESULT#
+    ---------|------------|----------|------------|----------|--------
+
+## Summary​
+
+To make sure you are safe to deploy an application, add the following line before deploying:
+
+`$ pact-broker can-i-deploy --pacticipant PACTICIPANT --version VERSION --to-environment ENVIRONMENT`
+
+and add the following line after deploying:
+
+`$ pact-broker record-deployment --pacticipant PACTICIPANT --version VERSION --environment ENVIRONMENT`
+
+## Further reading​
+
+Click here for more information on recording deployments and releases.
+
+Other features of `can-i-deploy` include:
+
+  * Polling for verification results to be returned (useful when waiting for results to be returned from a provider build that is triggered by a webhook)
+  * Ignoring specific integrations (useful when a new provider is added that has not had its pact verification tests set up)
+  * "Dry run" mode, where the results can be viewed, but the exit code is always successful, so that you can check that your pipeline working as expected before enabling the `can-i-deploy` check fully.
+
+Please see the Pact Broker Client CLI documentation for an explanation of all the parameters for can-i-deploy.
+--------------------------------------------------------------------------------
+Blog | Pact Docs (https://docs.pact.io/blog/page/5)
+citeturn31search7 [wordlim: 200] Crawled: last month; If you deploy to a test environment as part of your build pipeline, you may find yourself in the situation where the verification result is unknown because the provider build is still running. ... To help out in this scenario, you can now use the following two options to let the `can-i-deploy` command poll until all the verification results arrive.
+## Retries for can-i-deploy
+
+July 10, 2018 · 2 min read
+
+Beth Skurrie
+
+The `can-i-deploy` tool is a CLI that ensures you are safe to deploy a consumer or provider into a given environment. To do this, it queries the Pact Broker to ensure that there is a successful verification result between the existing application versions and the application version you're about to deploy.
+
+If you deploy to a test environment as part of your build pipeline, you may find yourself in the situation where the verification result is unknown because the provider build is still running. What typically would happen is that a changed pact would trigger a provider build via a webhook in the Pact Broker, and the provider may not have finished before `can-i-deploy` is invoked.
+
+To help out in this scenario, you can now use the following two options to let the `can-i-deploy` command poll until all the verification results arrive.
+    
+    `[--retry-while-unknown=TIMES] 
+                  # The number of times to retry while there is an unknown
+--------------------------------------------------------------------------------
+SmartBear MCP Server | Pact Docs (https://docs.pact.io/ai_tools/smartbear-mcp)
+citeturn31search8 [wordlim: 200] Crawled: today; The CLI covers the core operations — publishing pacts, can-i-deploy, recording deployments, managing environments and webhooks — but does not expose the contract matrix, AI generation tools, or BDCT results. ... Use this to diagnose can-i-deploy failures, investigate a specific consumer-provider pair, or get an overview of verification state. ... `contract-testing_get_deployed_versions_for_version`  | Check deployment records for a version in a specific environment
+`contract-testing_admin_create_system_account`  | Create a system account (non-human user for CI pipelines)
+`contract-testing_admin_get_system_account_tokens`  | Get the API tokens for a system account
+
+
+## Troubleshooting​
+
+Symptom  | Likely cause  | Fix
+--- | --- | ---
+`401 Unauthorized`  | Wrong or missing token  | Check `PACT_BROKER_TOKEN` matches the value from the API tokens page
+`404 Not Found`  | Wrong broker URL  | Verify `PACT_BROKER_BASE_URL` — no trailing slash, correct subdomain
+Tools not appearing  | MCP server not starting  | Run `npx @smartbear/mcp@latest` in a terminal to see startup errors
+AI tools return `401`  | Missing PactFlow AI entitlement  | Call `contract-testing_check_pactflow_ai_entitlements` to diagnose
+can-i-deploy fails unexpectedly  | Provider never verified deployed consumer version  | Add `{ deployedOrReleased: true }` to provider's `consumerVersionSelectors`
+Verification results not appearing  | Results published outside CI  | `publishVerificationResults` should be `true` only when `CI=true`
+Webhook not firing  | Event type mismatch  | Use `contract_requiring_verification_published` for triggering provider builds--------------------------------------------------------------------------------
+6. Platinum - Add can-i-deploy with branch to PR pipelines | Pact Docs (https://docs.pact.io/pact_nirvana/step_6)
+citeturn31search9 [wordlim: 200] Crawled: 2 weeks ago; The way you check if you are safe to deploy is to determine if there is a row in the matrix that contains the version of the application you’re about to deploy and the version of the other application that already exists in that environment. ... The `can-i-deploy` tool is a CLI that has been written to query the Matrix to ensure that you are safe to deploy. ... We'll talk about how to check against what is actually deployed in a particular environment in the next section. ...       * You can setup `--retry-while-unknown` to allow this job to poll for verification results published by the triggered provider job.
+
+## Can I Deploy?​
+
+The `can-i-deploy` tool is a CLI that has been written to query the Matrix to ensure that you are safe to deploy. You can read a detailed description of how it works here.
+
+Ultimately, we will want to ask if you can deploy to a particular environment. But a good first step in that direction is to just make sure your change is compatible with what your consumers and providers have currently checked into their main branch.
+
+This is a great step, but it's not fully what we want. It's quite possible that the pact version used by the application checked into the main branch is not the same as the pact version running in production or even staging. The more frequently you deploy, and the faster you deploy, the less likely this is, but it's definitely a possibility.
+
+This is much more the case for native apps, where you will likely have many old pact versions running on user's mobile devices. Any providers those apps talk to need to be compatible with all those versions.
+
+In these cases, checking to see if your provider is compatible with the consumer version checked into main is not sufficient. We'll talk about how to check against what is actually deployed in a particular environment in the next section.
+--------------------------------------------------------------------------------
+Recording deployments and releases | Pact Docs (https://docs.pact.io/pact_broker/recording_deployments_and_releases)
+citeturn31search10 [wordlim: 200] Crawled: yesterday; Before deploying the shared application, the `can-i-deploy` command would need to be called for each sub environment, and it should only deploy if all the results were positive. ... The Pact Broker only allows one unique combination of pacticipant/environment/application instance to be considered the "currently deployed" one, and any call to record a deployment will cause the previously deployed version with the same pacticipant/environment/application instance to be automatically marked as undeployed (mimicking the real world process of "deploying over" a previous version). ...   * The deployed and released versions feature supports use of the new contract_requiring_verification_published webhook which will make it easier to get verification results between the head consumer version and the deployed provider versions, resulting in more "yes" responses for `can-i-deploy`, which will allow consumers to deploy to production more often.
+
+#### Examples​
+    
+    `record-release --pacticipant foo-mobile-app --version 6897aa95e --environment production
+    `
+
+### Recording support ended for a release​
+
+When a released application is deemed to be no longer supported, call `pact-broker record-support-ended`. This will stop all pacts for this version being returned for verification by its providers, and remove it from consideration when checking if an integrated application is safe to deploy.
+
+#### Examples​
+    
+    `record-support-ended --pacticipant foo-mobile-app --version 6897aa95e --environment production
+    `
+
+## Using deployed and released versions​
+
+There are two main uses for the deployed and released version resources in the Pact Broker.
+
+The first is when determining which pacts should be verified by the provider. The pact for every version that is currently deployed or released+supported in an environment should be verified during the provider's release pipeline to ensure backwards compatiblity. The consumer version selector to use to identify these pacts is `{ "deployedOrReleased": true }`. See the section below on which libraries currently support the selector.
+
+The second use for the deployed and released versions is when using can-i-deploy. This is the command that is used to check if the version you are about to deploy into an environment has a successful verification result with each of the application versions that is already in the environment.
+
+eg.
+    
+    `pact-broker can-i-deploy --pacticipant Foo \
+                             --version 617c76e8bf05e1a480aed86a0946357c042c533c \
+                             --to-environment production
+    `
+
+--------------------------------------------------------------------------------
+README | Pact Docs (https://docs.pact.io/pact_broker/client_cli/readme)
+citeturn31search11 [wordlim: 200] Published: 2.1 years ago; Crawled: today; ### Matrix​ ...           [--retry-while-unknown=TIMES] ... Before an application is deployed or released to an environment, the can-i-deploy command must be run to check that the application version is safe to deploy with the versions of each integrated application that are already in that environment. ... If the verification process takes a long time and there are results missing when the can-i-deploy command runs in your CI/CD pipeline, you can configure the command to poll and wait for the missing results to arrive.
+

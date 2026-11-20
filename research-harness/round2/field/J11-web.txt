@@ -1,0 +1,223 @@
+Recipe conventions and best practices | OpenRewrite Docs (https://docs.openrewrite.org/authoring-recipes/recipe-conventions-and-best-practices)
+citeturn107view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://docs.openrewrite.org/authoring-recipes/recipe-conventions-and-best-practices","lineno":null}); Total lines: 220
+L0: 【0†Skip to main content】
+L1: 
+L2: Using OpenRewrite at work? Become an expert with hands-on training, roundtables, and more at AI Software Factory Summit, Feb. 22-24 in Miami. Save 50% on your pass with code REWRITE50. 【1†Register Now†dashboard.eventcombo.com】.
+L3: 
+L4: 【2†Running Recipes】【3†Authoring Recipes】【4†Recipe catalog†codegenomeproject.org】【5†Reference】【6†Concepts & explanations】
+L5: 
+L6: Releases
+L7:   * Authoring Recipes
+L8:   * 【7†Recipe development environment】
+L9:   * 【8†JavaScript recipe development environment】
+L10:   * 【9†Types of recipes】
+L11:   * 【10†Writing a Java refactoring recipe】
+L12:   * 【11†Writing a JavaScript refactoring recipe】
+L13:   * 【12†Writing Kotlin recipes】
+L14:   * 【13†Creating Refaster template recipes】
+L15:   * 【14†Testing recipes】
+L16:   * 【15†Recipe conventions and best practices】
+L17:   * 【16†Modifying methods with JavaTemplates】
+L18:   * 【17†Creating recipes with data tables】
+L19:   * 【18†Automating breaking changes】
+L20:   * 【19†Multiple visitors in one recipe】
+L21:   * 【20†Multiple source file types】
+L22:   * 【21†Estimated time saved】
+L23:   * 【22†Multiple versions of a library】
+L24:   * 【23†Contributing to OpenRewrite】
+L25:   * 【24†Recipe authoring workshop†docs.moderne.io】
+L26:   * 【25†Training】
+L27: [Button: On this page]
+L28: # Recipe conventions and best practices
+L29: 
+L30: To help you create reliable and scalable recipes, this document will describe an assortment of conventions and best practices to keep in mind when making new recipes.
+L31: ## Prerequisites【26†​】
+L32: 
+L33: To get the most use out of this document, it would be beneficial for you to:
+L34: 
+L35:   * Be familiar with the 【7†Recipe Development Environment】
+L36:   * Know how to 【10†create】 and 【14†test】 recipes
+L37:   * Understand how 【27†recipes】 work at a high level (by using 【28†visitors】 to operate on diverse and unexpected 【29†LSTs】)
+L38: 
+L39: ## Best practices【30†​】
+L40: ### Do no harm【31†​】
+L41: 
+L42: One of the most important conventions to keep in mind when creating recipes is the concept of "Do no harm". If your recipe cannot determine that a change is safe, it should make no changes rather than making a potentially wrong change.
+L43: For example, in the 【32†RenameLocalVariableToCamelCase recipe†github.com】, we prevent the recipe from renaming variables to a name that could be a namespace conflict. Likewise, we opt out of renaming class fields since they might be in use by some downstream API. We favor making fewer changes over making wrong changes.
+L44: Relatedly, when making changes, always strive to make the most minimal, least invasive version of that change. For instance, in the 【33†NoGuavaImmutableSetOf recipe†github.com】, we restrict the recipe from changing any code that does not use at least Java 9.
+L45: 
+L46: By reducing a recipe's scope and minimizing the number of changes a recipe makes, you'll make it easier for others to review the changes. This, in turn, will result in more pull requests being accepted and more trust in your recipes.
+L47: On the other hand, a change that unnecessarily clobbers formatting or is otherwise overly broad in scope will burden code reviewers and drastically reduce the rate at which they accept changes.
+L48: 
+L49: Tip
+L50: 
+L51: 【34†RewriteTest】 helps you to verify that your recipe does not make unnecessary changes by running your recipe over multiple cycles. If you see your change being made many times it is likely your visitor fails to avoid making unnecessary changes. See the 【35†cycle section】 for more information.
+L52: 
+L53: Info
+L54: When authoring your tests, always remember to test that changes aren't made when they shouldn't be. For instance, if your recipe only affects a certain package, make sure you include a test that shows that other packages are unaffected.
+L55: ### Naming conventions【36†​】
+L56: 
+L57: All recipe names, descriptions, and parameters should follow our 【37†recipe naming conventions†github.com】.
+L58: 
+L59: By following these conventions, you'll ensure that:
+L60: 
+L61:   * The 【4†documentation†codegenomeproject.org】 generated for your recipe is valid and clear to others
+L62:   * The 【38†Moderne platform†app.moderne.io】 can accurately filter and display your recipe and its parameters
+L63: ### If it can be declarative, it should be declarative【39†​】
+L64: 
+L65: Before you begin writing a new recipe, take the time to examine existing recipes. You may find that what you want to do can be done by combining existing recipes without writing any code. You can achieve this by creating a 【40†declarative YAML】 file.
+L66: For instance, let's say you wanted to create a recipe that combines the functionality of numerous other static analysis recipes. You could 【41†imperatively code†gist.github.com】 a new recipe that calls one recipe after the next. However, that approach is strongly discouraged. Instead, you should 【42†declaratively list out†gist.github.com】 each recipe you want to run in a YAML file. In doing so, you will not only save time, but you will also substantially reduce the number of potential errors.
+L67: If your recipe can be declarative, it should be.
+L68: 
+L69: Info
+L70: 
+L71: For more information on imperative and declarative recipes, please read the 【27†Recipe documentation】. Or if you want to learn how to configure a declarative YAML file, please read our 【40†declarative YAML format doc】.
+L72: ### Be deliberate about LST traversal【43†​】
+L73: 
+L74: As the author of a 【28†visitor】, the traversal of the 【29†Lossless Semantic Tree】 (LST) is in your hands. This traversal through the sub-elements can be achieved by calling a method like `super.visitSomeLstElement()`.
+L75: For instance, let's say you were creating a recipe that adds the `public` visibility modifier to a 【44†ClassDeclaration】. If you did not call `super.visitClassDeclaration()` in your overridden `visitClassDeclaration` method, then your recipe would not visit or check for inner classes. It's possible this is what you want, but it's also possible that this is a bug.
+L76: By not calling `super.visitSomeLstElement()`, you will often improve the performance of your recipe. However, in many cases, that could be a confusing bug. It's your responsibility to take the time to think through these options and decide one way or another.
+L77: 
+L78: Tip
+L79: 
+L80: If you do decide to include `super.visitSomeLstElement()`, it is often most convenient to do so at the beginning of each `visit` method you override.
+L81: ### Use preconditions【45†​】
+L82: 
+L83: Most recipes are not universally applicable to every source file. For instance, a recipe that makes changes to a method introduced in Java 17 would not be useful to run on Java 8 code. Likewise, a recipe that works with ArrayLists would not apply to a file that does not contain an ArrayList.
+L84: Instead of running your recipe on every file, you can have your recipe provide some context on when it should be run. By doing so, you'll not only make it so your recipe can be run on more files more quickly, but you'll also enhance the readability of your recipe. That, in turn, simplifies debugging and maintenance and leads to better recipes.
+L85: 
+L86: To do this, you'll want to utilize the 【46†Preconditions.check() method†github.com】.
+L87: For instance, in the 【47†MigrateCollectionsSingletonSet recipe†github.com】, we add a check that ensures the Java version is 9 and that the file contains a `singleton` method. We can be confident that this recipe won't make changes if those preconditions do not apply.
+L88: 
+L89: You can use 【48†Preconditions.and(), Preconditions.or(), and Preconditions.not()†github.com】 to create more complex applicability criteria from simple building blocks.
+L90: 
+L91: Tip
+L92: Preconditions benefit recipe execution performance when they efficiently prevent unnecessary execution of a more computationally expensive visitor.
+L93: ### Recipes must be idempotent and immutable【49†​】
+L94: 
+L95: A recipe given the same LST and configuration should always produce the same results. This means that a recipe's behavior should not be influenced by LSTs which have been visited previously, only the source file currently being visited.
+L96: 
+L97: Warning
+L98: Mutable recipe state can be a source of strange and confusing bugs. If visiting a source file mutates your recipe's state then your recipe likely has a bug. Mutable state makes recipes more difficult to read, understand, test, debug, and maintain.
+L99: 
+L100: Tip
+L101: Recipes extending 【50†ScanningRecipe】 gather data from any or all LSTs via `ScanningRecipe.getScanner()`. That data is then available to use in the subsequent invocations of `ScanningRecipe.generate()` and `ScanningRecipe.getVisitor()`. Data is passed via a recipe-defined type conventionally referred to as an "accumulator". This is the only correct way to pass data from one LST to another.
+L102: Since recipe options are configured via their constructors there are few valid reasons for recipes to have mutable fields. It is typical, but not required, that recipes use the `@lombok.Value` annotation to declare their fields as `final` and to generate a suitable constructor.
+L103: 
+L104: To help prevent state from accidentally leaking between visits of different LSTs, `Recipe.getVisitor()` is called per source file, per cycle. `Recipe.getVisitor()` is required to always return a new, non-cached visitor instance.
+L105: Info
+L106: 
+L107: If you wish to cache the result of an expensive computation which does not affect Recipe idempotence, you can store the result in a `transient` field or the execution context. Recipe execution is single-threaded but the `transient` modifier will tell lombok not to generate a constructor parameter and jackson not to attempt to serialize the field.
+L108: ### Recipes must not mutate LSTs【51†​】
+L109: OpenRewrite detects changes based on referential comparison of the LST passed into the recipe's visitor with the LST returned by the recipe's visitor. Recipes indicate that a source file should remain unchanged by returning exactly the same LST object as was passed in. Recipes indicate that a patch should be made to a source file by returning an LST which represents the desired state of the source file post-patch.
+L110: Patches themselves are generated by diffing the original, unmodified LST with the new, different LST instance returned by the recipe.
+L111: LSTs are mostly immutable by default, not exposing `set` methods for any field. Instead LSTs provide `with` methods which return a copy of the LST with a different value for the specified field. For example, you "change" the name of a class declaration by visiting it and using `J.ClassDeclaration.withName()` to return a new class declaration with everything the same except for the name.
+L112: 
+L113: Warning
+L114: A Recipe should never mutate a field on an LST. Mutating an LST may result in patches that cannot be applied. Or worse: incomplete patches that can be applied but omit required diffs.
+L115: 
+L116: The most common way a recipe author runs afoul of this important requirement is to get a collection from an LST element and mutate it directly. For example, attempting to remove an argument from a method invocation by calling `method.getArguments().remove(0)`.
+L117: 
+L118: Danger
+L119: The contents of collection fields on LST elements are not enforced to be immutable at runtime. Never directly mutate the contents of any collection that is a field of an LST.
+L120: 
+L121: Info
+L122: 
+L123: Visitors can remove LST elements by returning `null` when visiting the element to be removed.
+L124: Conversely, visiting an LST and returning a copy whose fields are all identical to the original LST looks to OpenRewrite like a change when no change has been made. Typical consequences include excessive recipe execution time due to wasted computation, test failures, and empty patches/diffs. The most common way this happens is that a recipe author instantiates collections of LST elements directly, uses Java `streams`, Kotlin `sequences`, or similar methods.
+L125: OpenRewrite provides the `ListUtils` class which includes referential-equality conscious data access and manipulation faculties that avoid unnecessary memory allocations.
+L126: For instance, in the 【52†UnnecessaryCatch recipe†github.com】, we 【53†utilize ListUtils.flatMap†github.com】 to flatten all of the statements in a block down to one level. We then make changes if that statement matches a `J.Try` with `ListUtils.map`. If this usage of `ListUtils` were replaced with a superficially equivalent Java `stream().map().collect()`, it would always allocate a new list and trigger OpenRewrite to detect and misreport an empty change where no real change was intended.
+L127: 
+L128: Tip
+L129: No recipe/visitor should ever mutate any part of the LST passed into it.
+L130: 
+L131: A recipe/visitor making a change always returns a different LST than was passed into it.
+L132: 
+L133: A recipe/visitor making no change always returns the exact same LST that was passed into it.
+L134: ### Nullability matters【54†​】
+L135: 
+L136: Throughout our LSTs and other APIs, we have been careful to use Java's nullability annotations to indicate whether a field is nullable or not. If a field is nullable then there will be LSTs where that field is null. To operate correctly on the wildly diverse code which exists throughout the world, Recipe/Visitors must not make changes if a field they need is null.
+L137: ### Week Year ("YYYY") should not be used for date formatting【55†​】
+L138: 
+L139: If your recipe is going to work with dates, please ensure that you adhere to 【56†RSPEC-3986†rules.sonarsource.com】. Dates should be constructed with `y` for `Year` instead of `Y` for `Week Year`.
+L140: ### Avoid constructing LST elements by hand【57†​】
+L141: 
+L142: Even very simple pieces of code have complex LST representations which are tedious and error-prone to construct by hand. Never attempt to build up LSTs by hand. Instead, you should use faculties like 【58†JavaTemplate】 to turn code snippets into 【59†LST elements】. For data formats like XML or JSON, it is usually more convenient to use the format's parser to turn a snippet of text into usable LST elements.
+L143: ### Stay single cycle【35†​】
+L144: 
+L145: OpenRewrite executes recipes in a loop. Each iteration of that loop through the full recipe list is called a cycle. This is so that if one recipe makes a change and another recipe would do something based on that change, it will have a chance to do so. This happens regardless of the order the recipes are executed in.
+L146: By default, only a single cycle is executed unless some recipe in the group overrides `Recipe.causesAnotherCycle()` to return `true`. For larger recipes, such as a framework migration, the performance impact of causing another cycle can be substantially detrimental. Whenever possible, a recipe should complete all of its work the first time (which avoids the need to override `Recipe.causesAnotherCycle()`).
+L147: ### State conventions【60†​】
+L148: 
+L149: You should generally avoid passing 【61†state†en.wikipedia.org】 across visitors if at all possible. If you do need to pass state around, though, you should first figure out which parts of your recipe need what information.
+L150: 
+L151: If you need to pass state between functions in the same visitor, then you could 【62†use cursor messaging instead of execution context messaging】.
+L152: If you need to pass state between different visitors, then you could 【50†use a ScanningRecipe】, where a first scanning phase can collect information, which you can then use in subsequent visitors.
+L153: ### Use cursor messaging instead of execution context messaging【62†​】
+L154: 
+L155: When passing state between functions in the same visitor, there are two main options: cursor messaging and execution context messaging. If you merely wish to extract some information from visiting downstream elements, then you can also 【63†use a local visitor with a mutable parameter】.
+L156: Cursor messaging is the preferred method. With it, you can utilize `TreeVisitor.getCursor()` to access a map that arbitrary data can be read from or written to. For instance, in the 【64†AddDependency recipe†github.com】, we pass data from the 【65†overridden visitTag method†github.com】 to the 【66†overridden visitDocument method†github.com】 in our `MavenVisitor`.
+L157: The `Cursor` object is a stack that keeps track of a visitor's current progress through an LST. Once everything has been visited in a particular 【67†cycle】, all of this information is then thrown away. There is no risk of this state leaking into places that you don't want.
+L158: The `ExecutionContext` object, on the other hand, has a few key differences that make it less suitable for most situations. All recipes in a run will have the same `ExecutionContext` object. This object contains a map, similar to the `Cursor`, that recipes can read from or write arbitrary data to. Unlike the `Cursor` map, though, this `ExecutionContext` map sticks around between recipe run cycles. This poses some considerable danger.
+L159: Imagine one recipe author decided to write a `foo` object to the `ExecutionContext` so that the `bar` and `bash` functions could both interact with it. Now, let's imagine another recipe author, unaware of the fact that the other recipe wrote a `foo` object to the `ExecutionContext`, also decides that their recipe should read and write to a `foo` object. If those recipes get chained together, both of those recipes could break.
+L160: Because of that, whenever shared state is needed within a single visitor or recipe, the cursor stack should be used instead of adding state to the execution context.
+L161: ### Remember multi-module projects exist【68†​】
+L162: 
+L163: One common mistake we see is people writing recipes that behave as if there is only ever one project/module in a repository.
+L164: 
+L165: In reality, there are numerous repositories that have multiple projects in them. Each project has its own code and dependencies. They may have a relationship with one another, but they also may have none.
+L166: This typically isn't an issue for recipes that operate on only a single file at a time, but `ScanningRecipe`s can unintentionally conflate repository-level information with project-level information.
+L167: 
+L168: Unit tests won't catch this mistake because you won't write a test for it unless you're already thinking about it.
+L169: The `JavaProject` marker exists to help differentiate which project/module a particular `SourceFile` is associated with. These markers are added at parse time by the build plugins. In unit tests, however, they must be placed manually by the test author. Within a scanning recipe it is common to make a map of `Map<JavaProject, T>` to keep track of per-project information of type `T`.
+L170: A warning sign of this mistake is a `ScanningRecipe` with a `boolean` field in its accumulator. That is appropriate if it is truly something repository-level being evaluated – such as checking the presence of a Gradle wrapper or a `.gitignore` file. However, if the recipe is looking at anything at all related to code or dependencies, it should be tracked per `JavaProject`.
+L171: 
+L172: We recently saw this mistake in the Gradle `AddDependency` recipe. Check out 【69†how we fixed that†github.com】.
+L173: Any time you see a boolean in a scanning recipe's accumulator, ask yourself if it should be a `Map<JavaProject, Boolean>` instead.
+L174: ### Compose visitors with `TreeVisitor.visit()`【70†​】
+L175: 
+L176: Always use `TreeVisitor.visit()` when invoking another visitor from within a visitor. Never directly call specialized methods like `visitMethodInvocation()`.
+L177: 
+L178: Directly calling specialized visit methods bypasses critical functionality that most visitors depend on:
+L179:   * Having access to a cursor which connects up to the root of the tree
+L180:   * `TreeVisitor.preVisit()` and `TreeVisitor.postVisit()` called at the appropriate times
+L181:   * `TreeVisitor.stopAfterPreVisit()` stops traversal as expected
+L182:   * `TreeVisitor.isAcceptable()` guards against applying the visitor to inapplicable LSTs
+L183: It may not immediately cause problems if the visitor you're invoking does not require any of that functionality. But future authors will assume that all the usual facilities are available and be confused when the cursor is incorrect, or they get a `ClassCastException` because their `JavaVisitor` tried to visit a YAML document.
+L184: Correct inline invocation of another visitor on the current LST element looks like this:
+L185: 
+L186:     `class SomeJavaVisitor extends JavaVisitor<ExecutionContext> {
+L187:         @Override
+L188:         public J visitMethodInvocation(J.MethodInvocation method, ExecutionContext ctx) {
+L189:             J m = super.visitMethodInvocation(method, ctx);
+L190:             m = new OtherJavaVisitor()
+L191:                     // When invoking other visitors always use the overload of visit() which accepts a cursor.
+L192:                     // visit() expects to be called with a cursor pointing to the parent Tree of the current element.
+L193:                     // visitNonNull() is preferable to visit() if you know that the other visitor does not delete elements.
+L194:                     .visit(m, ctx, getCursor().getParentTreeCursor());
+L195:             return m;
+L196:         }
+L197:     }
+L198:     `
+L199: 【71†Edit this page†github.com】
+L200: 
+L201: 【14†← Testing recipes】【16†Modifying methods with JavaTemplates →】
+L202:   * 【26†Prerequisites】
+L203:   * 【30†Best practices】
+L204:     * 【31†Do no harm】
+L205:     * 【36†Naming conventions】
+L206:     * 【39†If it can be declarative, it should be declarative】
+L207:     * 【43†Be deliberate about LST traversal】
+L208:     * 【45†Use preconditions】
+L209:     * 【49†Recipes must be idempotent and immutable】
+L210:     * 【51†Recipes must not mutate LSTs】
+L211:     * 【54†Nullability matters】
+L212:     * 【55†Week Year ("YYYY") should not be used for date formatting】
+L213:     * 【57†Avoid constructing LST elements by hand】
+L214:     * 【35†Stay single cycle】
+L215:     * 【60†State conventions】
+L216:     * 【62†Use cursor messaging instead of execution context messaging】
+L217:     * 【68†Remember multi-module projects exist】
+L218:     * 【70†Compose visitors with `TreeVisitor.visit()`】
+L219: © Moderne, 2026 Contact us (support@moderne.io)【72†Licensing】
+

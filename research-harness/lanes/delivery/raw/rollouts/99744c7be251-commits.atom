@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/argoproj/argo-rollouts/commits/master</id>
+  <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commits/master"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/argoproj/argo-rollouts/commits/master.atom"/>
+  <title>Recent Commits to argo-rollouts:master</title>
+  <updated>2026-11-18T08:52:07Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/458eab520fdbf360d1b34b6f6bc0f05e52ae6258</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/458eab520fdbf360d1b34b6f6bc0f05e52ae6258"/>
+    <title>
+        docs(analysis): Document the CloudWatch metricDataQueries fields (#5194)
+    </title>
+    <updated>2026-11-18T08:52:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/65864699?s=30&amp;v=4"/>
+    <author>
+      <name>bhavishyajain545</name>
+      <uri>https://github.com/bhavishyajain545</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs(analysis): Document the CloudWatch metricDataQueries fields (#5194)
+
+* docs(analysis): Document the CloudWatch metricDataQueries fields
+
+The CloudWatch page only linked to the AWS MetricDataQuery API and its
+example never used dimensions or label, although both are part of the
+provider&amp;#39;s schema (CloudWatchMetricDataQuery / CloudWatchMetricStatMetric
+in analysis_types.go). Add a field table and show a dimension in the
+example.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;
+
+* docs(analysis): Give both CloudWatch queries the same Service dimension
+
+CloudWatch treats a metric with and without a dimension as different
+series, so the errors/requests rate in the example compared the
+service&amp;#39;s errors against the undimensioned requests metric.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;
+
+* docs(analysis): Add a Required column to the CloudWatch field table
+
+Same layout as the Kayenta page. Requirements follow the CloudWatch
+GetMetricData API: id, one of expression or metricStat, and for
+metricStat the metric namespace and name, period and stat.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;
+
+---------
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/32fd14544813ebb83917fd5d7b7ed23d03487441</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/32fd14544813ebb83917fd5d7b7ed23d03487441"/>
+    <title>
+        chore(deps): bump the aws-sdk-v2 group across 1 directory with 4 upda…
+    </title>
+    <updated>2026-11-18T07:46:39Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump the aws-sdk-v2 group across 1 directory with 4 updates (#5136)
+
+Bumps the aws-sdk-v2 group with 4 updates in the / directory: [github.com/aws/aws-sdk-go-v2](https://github.com/aws/aws-sdk-go-v2), [github.com/aws/aws-sdk-go-v2/config](https://github.com/aws/aws-sdk-go-v2), [github.com/aws/aws-sdk-go-v2/service/cloudwatch](https://github.com/aws/aws-sdk-go-v2) and [github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2](https://github.com/aws/aws-sdk-go-v2).
+
+
+Updates `github.com/aws/aws-sdk-go-v2` from 1.47.3 to 1.48.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/v1.47.3...v1.48.0)
+
+Updates `github.com/aws/aws-sdk-go-v2/config` from 1.33.9 to 1.33.18
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/config/v1.33.9...config/v1.33.18)
+
+Updates `github.com/aws/aws-sdk-go-v2/service/cloudwatch` from 1.73.3 to 1.76.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/eks/v1.73.3...service/s3/v1.76.0)
+
+Updates `github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2` from 1.63.4 to 1.64.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/ecs/v1.63.4...service/s3/v1.64.0)
+
+---
+updated-dependencies:
+- dependency-name: github.com/aws/aws-sdk-go-v2
+  dependency-version: 1.47.4
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: aws-sdk-v2
+- dependency-name: github.com/aws/aws-sdk-go-v2/config
+  dependency-version: 1.33.10
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: aws-sdk-v2
+- dependency-name: github.com/aws/aws-sdk-go-v2/service/cloudwatch
+  dependency-version: 1.75.1
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: aws-sdk-v2
+- dependency-name: github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2
+  dependency-version: 1.63.5
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: aws-sdk-v2
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1147bc34b4ee737e1a6a40d17fff13a73909da4b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/1147bc34b4ee737e1a6a40d17fff13a73909da4b"/>
+    <title>
+        fix(controller): Correct the --analysis-threads help text (#5191)
+    </title>
+    <updated>2026-11-14T23:08:55Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/65864699?s=30&amp;v=4"/>
+    <author>
+      <name>bhavishyajain545</name>
+      <uri>https://github.com/bhavishyajain545</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix(controller): Correct the --analysis-threads help text (#5191)
+
+The flag sets the worker threads of the Analysis controller, but its help
+text said Experiment controller, copied from the flag above it.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/e062a51a4c0b237c1568a287a85f2fd95a6f821b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/e062a51a4c0b237c1568a287a85f2fd95a6f821b"/>
+    <title>
+        docs(analysis): Document inconclusiveLimit and consecutiveErrorLimit …
+    </title>
+    <updated>2026-11-14T22:46:32Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/65864699?s=30&amp;v=4"/>
+    <author>
+      <name>bhavishyajain545</name>
+      <uri>https://github.com/bhavishyajain545</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs(analysis): Document inconclusiveLimit and consecutiveErrorLimit (#5192)
+
+Both are AnalysisTemplate metric fields (analysis_types.go) and are
+applied in analysis/analysis.go, but the analysis page only described
+failureLimit and consecutiveSuccessLimit. Add a short section with the
+defaults (0 and 4) and an example.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/cb10c9fd9db184989b14b242aca26d51f9143377</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/cb10c9fd9db184989b14b242aca26d51f9143377"/>
+    <title>
+        docs(analysis): Fix the Kayenta examples and document all provider fi…
+    </title>
+    <updated>2026-11-14T22:45:25Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/65864699?s=30&amp;v=4"/>
+    <author>
+      <name>bhavishyajain545</name>
+      <uri>https://github.com/bhavishyajain545</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs(analysis): Fix the Kayenta examples and document all provider fields (#5193)
+
+* docs(analysis): Fix the Kayenta examples and document all provider fields
+
+The Kayenta examples did not match the API: the field is threshold, not
+thresholds; metricsAccountName, configurationAccountName and
+storageAccountName are required by the CRD but were missing; region is
+required in every scope; and interval/count were shown under the provider
+although they are metric-level fields. Fix the examples and add a field
+table.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;
+
+* docs(analysis): Explain which account the canary config lookup uses
+
+getCanaryConfigId builds the lookup URL with storageAccountName as the
+configurationAccountName query parameter, so the examples now use one
+account for config and storage and the field table says so.
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;
+
+---------
+
+Signed-off-by: Bhavishya Jain &amp;lt;65864699+bhavishyajain545@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/86dbc73e30d7de9eff0038979d363ad3b3c86c86</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/86dbc73e30d7de9eff0038979d363ad3b3c86c86"/>
+    <title>
+        chore(deps): bump the golang-x group across 1 directory with 2 update…
+    </title>
+    <updated>2026-11-14T22:01:45Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump the golang-x group across 1 directory with 2 updates (#5182)
+
+Bumps the golang-x group with 2 updates in the / directory: [golang.org/x/oauth2](https://github.com/golang/oauth2) and [golang.org/x/sync](https://github.com/golang/sync).
+
+
+Updates `golang.org/x/oauth2` from 0.37.0 to 0.38.0
+- [Commits](https://github.com/golang/oauth2/compare/v0.37.0...v0.38.0)
+
+Updates `golang.org/x/sync` from 0.24.0 to 0.25.0
+- [Commits](https://github.com/golang/sync/compare/v0.24.0...v0.25.0)
+
+---
+updated-dependencies:
+- dependency-name: golang.org/x/oauth2
+  dependency-version: 0.38.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: golang-x
+- dependency-name: golang.org/x/sync
+  dependency-version: 0.25.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: golang-x
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/bd42b11cc7da05a0df57fb1654b6be4c2d57a9db</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/bd42b11cc7da05a0df57fb1654b6be4c2d57a9db"/>
+    <title>
+        chore(deps): bump github.com/aws/smithy-go from 1.28.5 to 1.28.9 (#5188)
+    </title>
+    <updated>2026-11-14T19:46:55Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump github.com/aws/smithy-go from 1.28.5 to 1.28.9 (#5188)
+
+Bumps [github.com/aws/smithy-go](https://github.com/aws/smithy-go) from 1.28.5 to 1.28.9.
+- [Release notes](https://github.com/aws/smithy-go/releases)
+- [Changelog](https://github.com/aws/smithy-go/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/aws/smithy-go/compare/v1.28.5...v1.28.9)
+
+---
+updated-dependencies:
+- dependency-name: github.com/aws/smithy-go
+  dependency-version: 1.28.9
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9962f9327bcb9568b948a721294c9659efdad535</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/9962f9327bcb9568b948a721294c9659efdad535"/>
+    <title>
+        docs: Add MyFitnessPal to USERS.md (#5186)
+    </title>
+    <updated>2026-11-12T07:26:32Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/4290846?s=30&amp;v=4"/>
+    <author>
+      <name>audip</name>
+      <uri>https://github.com/audip</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: Add MyFitnessPal to USERS.md (#5186)
+
+Signed-off-by: Aditya Purandare &amp;lt;aditya.p1993@hotmail.com&amp;gt;
+Co-authored-by: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4008dce7c67639675f777d5588db366581739534</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/4008dce7c67639675f777d5588db366581739534"/>
+    <title>
+        docs: replace non-existent --aws-region flag with AWS_REGION env var.…
+    </title>
+    <updated>2026-11-08T17:12:49Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/262062452?s=30&amp;v=4"/>
+    <author>
+      <name>souvik-biswas-dev</name>
+      <uri>https://github.com/souvik-biswas-dev</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: replace non-existent --aws-region flag with AWS_REGION env var. Fixes #5166 (#5174)
+
+docs: replace non-existent --aws-region flag with AWS_REGION env var
+
+Signed-off-by: Souvik Biswas &amp;lt;souvikbiswas.dev@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/e9e24f41e4ff8707ad42050d696ccc698bba3733</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/e9e24f41e4ff8707ad42050d696ccc698bba3733"/>
+    <title>
+        docs: add Datadog metric plugin to available plugins (#5175)
+    </title>
+    <updated>2026-11-08T16:51:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/83465122?s=30&amp;v=4"/>
+    <author>
+      <name>mubarak-j</name>
+      <uri>https://github.com/mubarak-j</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: add Datadog metric plugin to available plugins (#5175)
+
+Signed-off-by: Mubarak Jama &amp;lt;mubarak.jama@gmail.com&amp;gt;
+Co-authored-by: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/eac5e9451f1969ebc3d80a398bd8dd1c81be98b7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/eac5e9451f1969ebc3d80a398bd8dd1c81be98b7"/>
+    <title>
+        docs: Update Changelog (automated) (#5169)
+    </title>
+    <updated>2026-11-05T16:23:06Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: Update Changelog (automated) (#5169)
+
+update changelog
+
+Signed-off-by: github-actions[bot] &amp;lt;41898282+github-actions[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: kostis-codefresh &amp;lt;39800303+kostis-codefresh@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1b5bbd5bdd516e60acf3f93aa6c93a695464fdb3</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/1b5bbd5bdd516e60acf3f93aa6c93a695464fdb3"/>
+    <title>
+        docs: Update Changelog (automated) (#5168)
+    </title>
+    <updated>2026-11-04T15:45:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: Update Changelog (automated) (#5168)
+
+update changelog
+
+Co-authored-by: kostis-codefresh &amp;lt;39800303+kostis-codefresh@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/581fd10e9928f05904dff39a353f6f3494ed9b72</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/581fd10e9928f05904dff39a353f6f3494ed9b72"/>
+    <title>
+        docs: add Argyle to USERS.md (#5167)
+    </title>
+    <updated>2026-11-04T14:12:14Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/188585?s=30&amp;v=4"/>
+    <author>
+      <name>chicocvenancio</name>
+      <uri>https://github.com/chicocvenancio</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: add Argyle to USERS.md (#5167)
+
+Add Argyle to the list of organizations using Argo Rollouts.
+
+Signed-off-by: Chico Venancio &amp;lt;francisco@argyle.com&amp;gt;
+Co-authored-by: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/c2c88ae64273e420cb5c01d92ee4bb71d3ae716a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/c2c88ae64273e420cb5c01d92ee4bb71d3ae716a"/>
+    <title>
+        fix: avoid int32 overflow when maxTrafficWeight is large (#4923)
+    </title>
+    <updated>2026-11-04T13:38:11Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/7532921?s=30&amp;v=4"/>
+    <author>
+      <name>semx</name>
+      <uri>https://github.com/semx</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix: avoid int32 overflow when maxTrafficWeight is large (#4923)
+
+replicas and weights were multiplied as int32 before being widened, so
+a large maxTrafficWeight overflowed the product and the canary counts
+came out wrong. With maxTrafficWeight=100000000, a 43 replica rollout at
+50% weight produced -21 canary replicas, and at 100% weight it produced
+1 canary replica instead of 43.
+
+Widen the operands before multiplying, the way trafficWeightToReplicas
+already does.
+
+Signed-off-by: semx &amp;lt;7532921+semx@users.noreply.github.com&amp;gt;
+Co-authored-by: semx &amp;lt;7532921+semx@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/601f4cb4e4e759de004b0b85996262b79620f05e</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/601f4cb4e4e759de004b0b85996262b79620f05e"/>
+    <title>
+        chore(deps): bump actions/download-artifact from 8.0.1 to 8.0.2 (#5093)
+    </title>
+    <updated>2026-11-03T15:59:21Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump actions/download-artifact from 8.0.1 to 8.0.2 (#5093)
+
+Bumps [actions/download-artifact](https://github.com/actions/download-artifact) from 8.0.1 to 8.0.2.
+- [Release notes](https://github.com/actions/download-artifact/releases)
+- [Commits](https://github.com/actions/download-artifact/compare/3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c...9000827ccba6bdab643e8b6fd33ac0654aef8333)
+
+---
+updated-dependencies:
+- dependency-name: actions/download-artifact
+  dependency-version: 8.0.2
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/3fe7061c819c32e4dab5bf59672884463f2e5ea1</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/3fe7061c819c32e4dab5bf59672884463f2e5ea1"/>
+    <title>
+        chore(deps): bump codecov/codecov-action from 7.1.0 to 7.1.1 (#5053)
+    </title>
+    <updated>2026-11-03T14:55:35Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump codecov/codecov-action from 7.1.0 to 7.1.1 (#5053)
+
+Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 7.1.0 to 7.1.1.
+- [Release notes](https://github.com/codecov/codecov-action/releases)
+- [Changelog](https://github.com/codecov/codecov-action/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/codecov/codecov-action/compare/0b35c9ecc4f0529d0eb674914510c22f85b196b4...303a32d7a59b442fa8d48b6a1cc6825c09c847a5)
+
+---
+updated-dependencies:
+- dependency-name: codecov/codecov-action
+  dependency-version: 7.1.1
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b9d53c722cf12aaa75b2bc2eb349db7a5362a88b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/b9d53c722cf12aaa75b2bc2eb349db7a5362a88b"/>
+    <title>
+        chore(deps): bump github.com/newrelic/newrelic-client-go/v2 from 2.96…
+    </title>
+    <updated>2026-11-03T09:10:15Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump github.com/newrelic/newrelic-client-go/v2 from 2.96.2 to 2.97.5 (#5152)
+
+chore(deps): bump github.com/newrelic/newrelic-client-go/v2
+
+Bumps [github.com/newrelic/newrelic-client-go/v2](https://github.com/newrelic/newrelic-client-go) from 2.96.2 to 2.97.5.
+- [Release notes](https://github.com/newrelic/newrelic-client-go/releases)
+- [Changelog](https://github.com/newrelic/newrelic-client-go/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/newrelic/newrelic-client-go/compare/v2.96.2...v2.97.5)
+
+---
+updated-dependencies:
+- dependency-name: github.com/newrelic/newrelic-client-go/v2
+  dependency-version: 2.97.3
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1828c1361d3ee7adcc5607df6607517dba6ce453</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/1828c1361d3ee7adcc5607df6607517dba6ce453"/>
+    <title>
+        test: do not hit the Github API in flaky test (#5158)
+    </title>
+    <updated>2026-11-02T20:26:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/39800303?s=30&amp;v=4"/>
+    <author>
+      <name>kostis-codefresh</name>
+      <uri>https://github.com/kostis-codefresh</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;test: do not hit the Github API in flaky test (#5158)
+
+Signed-off-by: Kostis Kapelonis &amp;lt;kostis.kapelonis@octopus.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1df24808ec73b98c64a16722dba848b27c31c86b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/1df24808ec73b98c64a16722dba848b27c31c86b"/>
+    <title>
+        chore: bump golang to 1.26.10 (#5156)
+    </title>
+    <updated>2026-11-02T16:51:52Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/39800303?s=30&amp;v=4"/>
+    <author>
+      <name>kostis-codefresh</name>
+      <uri>https://github.com/kostis-codefresh</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore: bump golang to 1.26.10 (#5156)
+
+Signed-off-by: Kostis Kapelonis &amp;lt;kostis.kapelonis@octopus.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/72d715fcb083f28c8c3c0009962d230143cdcbf5</id>
+    <link type="text/html" rel="alternate" href="https://github.com/argoproj/argo-rollouts/commit/72d715fcb083f28c8c3c0009962d230143cdcbf5"/>
+    <title>
+        chore(deps): bump github.com/prometheus/common from 0.72.0 to 0.73.1 …
+    </title>
+    <updated>2026-11-02T15:54:15Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): bump github.com/prometheus/common from 0.72.0 to 0.73.1 (#5153)
+
+Bumps [github.com/prometheus/common](https://github.com/prometheus/common) from 0.72.0 to 0.73.1.
+- [Release notes](https://github.com/prometheus/common/releases)
+- [Changelog](https://github.com/prometheus/common/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/prometheus/common/compare/v0.72.0...v0.73.1)
+
+---
+updated-dependencies:
+- dependency-name: github.com/prometheus/common
+  dependency-version: 0.73.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

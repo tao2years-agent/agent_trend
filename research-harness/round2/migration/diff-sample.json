@@ -1,0 +1,317 @@
+[
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "ruff",
+    "file": "django/core/management/templates.py",
+    "diff": "--- \n+++ \n@@ -211,17 +211,10 @@\n     def validate_name(self, name, name_or_dir='name'):\n         if name is None:\n-            raise CommandError('you must provide {an} {app} name'.format(\n-                an=self.a_or_an,\n-                app=self.app_or_project,\n-            ))\n+            raise CommandError(f'you must provide {self.a_or_an} {self.app_or_project} name')\n         # Check it's a valid directory name.\n         if not name.isidentifier():\n             raise CommandError(\n-                \"'{name}' is not a valid {app} {type}. Please make sure the \"\n-                \"{type} is a valid identifier.\".format(\n-                    name=name,\n-                    app=self.app_or_project,\n-                    type=name_or_dir,\n-                )\n+                f\"'{name}' is not a valid {self.app_or_project} {name_or_dir}. Please make sure the \"\n+                f\"{name_or_dir} is a valid identifier.\"\n             )\n         # Check it cannot be imported.\n@@ -232,12 +225,7 @@\n         else:\n             raise CommandError(\n-                \"'{name}' conflicts with the name of an existing Python \"\n-                \"module and cannot be used as {an} {app} {type}. Please try \"\n-                \"another {type}.\".format(\n-                    name=name,"
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "ruff",
+    "file": "django/core/checks/urls.py",
+    "diff": "--- \n+++ \n@@ -44,6 +44,6 @@\n     for namespace in non_unique_namespaces:\n         errors.append(Warning(\n-            \"URL namespace '{}' isn't unique. You may not be able to reverse \"\n-            \"all URLs in this namespace\".format(namespace),\n+            f\"URL namespace '{namespace}' isn't unique. You may not be able to reverse \"\n+            \"all URLs in this namespace\",\n             id=\"urls.W005\",\n         ))\n@@ -78,6 +78,6 @@\n     if isinstance(pattern, str):\n         hint = (\n-            \"Try removing the string '{}'. The list of urlpatterns should not \"\n-            \"have a prefix string as the first element.\".format(pattern)\n+            f\"Try removing the string '{pattern}'. The list of urlpatterns should not \"\n+            \"have a prefix string as the first element.\"\n         )\n     elif isinstance(pattern, tuple):\n@@ -87,6 +87,6 @@\n \n     return [Error(\n-        \"Your URL pattern {!r} is invalid. Ensure that urlpatterns is a list \"\n-        \"of path() and/or re_path() instances.\".format(pattern),\n+        f\"Your URL pattern {pattern!r} is invalid. Ensure that urlpatterns is a list \"\n+        \"of path() and/or re_path() instances.\",\n         hint=hint,\n         id=\"urls.E004\",\n@@ -106,5 +106,5 @@"
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "ruff",
+    "file": "django/template/backends/base.py",
+    "diff": "--- \n+++ \n@@ -29,6 +29,6 @@\n     def app_dirname(self):\n         raise ImproperlyConfigured(\n-            \"{} doesn't support loading templates from installed \"\n-            \"applications.\".format(self.__class__.__name__))\n+            f\"{self.__class__.__name__} doesn't support loading templates from installed \"\n+            \"applications.\")\n \n     def from_string(self, template_code):"
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "flynt",
+    "file": "django/core/checks/urls.py",
+    "diff": "--- \n+++ \n@@ -106,5 +106,5 @@\n def E006(name):\n     return Error(\n-        'The {} setting must end with a slash.'.format(name),\n+        f'The {name} setting must end with a slash.',\n         id='urls.E006',\n     )"
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "flynt",
+    "file": "django/template/backends/base.py",
+    "diff": "--- \n+++ \n@@ -24,5 +24,5 @@\n         if params:\n             raise ImproperlyConfigured(\n-                \"Unknown parameters: {}\".format(\", \".join(params)))\n+                f\"Unknown parameters: {', '.join(params)}\")\n \n     @property"
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "flynt",
+    "file": "django/urls/resolvers.py",
+    "diff": "--- \n+++ \n@@ -116,7 +116,7 @@\n         Format the URL pattern for display in warning messages.\n         \"\"\"\n-        description = \"'{}'\".format(self)\n+        description = f\"'{self}'\"\n         if self.name:\n-            description += \" [name='{}']\".format(self.name)\n+            description += f\" [name='{self.name}']\"\n         return description\n \n@@ -324,5 +324,5 @@\n \n     def describe(self):\n-        return \"'{}'\".format(self)\n+        return f\"'{self}'\"\n \n     def __str__(self):"
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "ruff",
+    "file": "django/urls/resolvers.py",
+    "diff": "--- \n+++ \n@@ -161,7 +161,7 @@\n         Format the URL pattern for display in warning messages.\n         \"\"\"\n-        description = \"'{}'\".format(self)\n+        description = f\"'{self}'\"\n         if self.name:\n-            description += \" [name='{}']\".format(self.name)\n+            description += f\" [name='{self.name}']\"\n         return description\n \n@@ -178,9 +178,7 @@\n         ):\n             warning = Warning(\n-                \"Your URL pattern {} has a route beginning with a '/'. Remove this \"\n+                f\"Your URL pattern {self.describe()} has a route beginning with a '/'. Remove this \"\n                 \"slash as it is unnecessary. If this pattern is targeted in an \"\n-                \"include(), ensure the include() pattern has a trailing '/'.\".format(\n-                    self.describe()\n-                ),\n+                \"include(), ensure the include() pattern has a trailing '/'.\",\n                 id=\"urls.W002\",\n             )\n@@ -227,7 +225,7 @@\n             return [\n                 Warning(\n-                    \"Your URL pattern {} uses include with a route ending with a '$'. \"\n+                    f\"Your URL pattern {self.describe()} uses include with a route ending with a '$'. \"\n                     \"Remove the dollar from the route to avoid problems including \""
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "ruff",
+    "file": "django/core/checks/urls.py",
+    "diff": "--- \n+++ \n@@ -49,6 +49,6 @@\n         errors.append(\n             Warning(\n-                \"URL namespace '{}' isn't unique. You may not be able to reverse \"\n-                \"all URLs in this namespace\".format(namespace),\n+                f\"URL namespace '{namespace}' isn't unique. You may not be able to reverse \"\n+                \"all URLs in this namespace\",\n                 id=\"urls.W005\",\n             )\n@@ -85,6 +85,6 @@\n     if isinstance(pattern, str):\n         hint = (\n-            \"Try removing the string '{}'. The list of urlpatterns should not \"\n-            \"have a prefix string as the first element.\".format(pattern)\n+            f\"Try removing the string '{pattern}'. The list of urlpatterns should not \"\n+            \"have a prefix string as the first element.\"\n         )\n     elif isinstance(pattern, tuple):\n@@ -95,6 +95,6 @@\n     return [\n         Error(\n-            \"Your URL pattern {!r} is invalid. Ensure that urlpatterns is a list \"\n-            \"of path() and/or re_path() instances.\".format(pattern),\n+            f\"Your URL pattern {pattern!r} is invalid. Ensure that urlpatterns is a list \"\n+            \"of path() and/or re_path() instances.\",\n             hint=hint,\n             id=\"urls.E004\",\n@@ -115,5 +115,5 @@"
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "ruff",
+    "file": "django/contrib/postgres/fields/array.py",
+    "diff": "--- \n+++ \n@@ -121,5 +121,5 @@\n \n     def get_placeholder(self, value, compiler, connection):\n-        return \"%s::{}\".format(self.db_type(connection))\n+        return f\"%s::{self.db_type(connection)}\"\n \n     def get_db_prep_value(self, value, connection, prepared=False):"
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "flynt",
+    "file": "django/urls/resolvers.py",
+    "diff": "--- \n+++ \n@@ -161,7 +161,7 @@\n         Format the URL pattern for display in warning messages.\n         \"\"\"\n-        description = \"'{}'\".format(self)\n+        description = f\"'{self}'\"\n         if self.name:\n-            description += \" [name='{}']\".format(self.name)\n+            description += f\" [name='{self.name}']\"\n         return description\n \n@@ -404,5 +404,5 @@\n \n     def describe(self):\n-        return \"'{}'\".format(self)\n+        return f\"'{self}'\"\n \n     def __str__(self):"
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "flynt",
+    "file": "django/core/checks/urls.py",
+    "diff": "--- \n+++ \n@@ -115,5 +115,5 @@\n def E006(name):\n     return Error(\n-        \"The {} setting must end with a slash.\".format(name),\n+        f\"The {name} setting must end with a slash.\",\n         id=\"urls.E006\",\n     )"
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "flynt",
+    "file": "django/contrib/postgres/fields/array.py",
+    "diff": "--- \n+++ \n@@ -121,5 +121,5 @@\n \n     def get_placeholder(self, value, compiler, connection):\n-        return \"%s::{}\".format(self.db_type(connection))\n+        return f\"%s::{self.db_type(connection)}\"\n \n     def get_db_prep_value(self, value, connection, prepared=False):"
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "ruff",
+    "file": "requests/__init__.py",
+    "diff": "--- \n+++ \n@@ -78,5 +78,5 @@\n \n     if cryptography_version < [1, 3, 4]:\n-        warning = 'Old version of cryptography ({}) may cause slowdown.'.format(cryptography_version)\n+        warning = f'Old version of cryptography ({cryptography_version}) may cause slowdown.'\n         warnings.warn(warning, RequestsDependencyWarning)\n \n@@ -85,6 +85,6 @@\n     check_compatibility(urllib3.__version__, chardet.__version__)\n except (AssertionError, ValueError):\n-    warnings.warn(\"urllib3 ({}) or chardet ({}) doesn't match a supported \"\n-                  \"version!\".format(urllib3.__version__, chardet.__version__),\n+    warnings.warn(f\"urllib3 ({urllib3.__version__}) or chardet ({chardet.__version__}) doesn't match a supported \"\n+                  \"version!\",\n                   RequestsDependencyWarning)\n "
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "ruff",
+    "file": "requests/adapters.py",
+    "diff": "--- \n+++ \n@@ -226,5 +226,5 @@\n             if not cert_loc or not os.path.exists(cert_loc):\n                 raise IOError(\"Could not find a suitable TLS CA certificate bundle, \"\n-                              \"invalid path: {}\".format(cert_loc))\n+                              f\"invalid path: {cert_loc}\")\n \n             conn.cert_reqs = 'CERT_REQUIRED'\n@@ -248,8 +248,8 @@\n             if conn.cert_file and not os.path.exists(conn.cert_file):\n                 raise IOError(\"Could not find the TLS certificate file, \"\n-                              \"invalid path: {}\".format(conn.cert_file))\n+                              f\"invalid path: {conn.cert_file}\")\n             if conn.key_file and not os.path.exists(conn.key_file):\n                 raise IOError(\"Could not find the TLS key file, \"\n-                              \"invalid path: {}\".format(conn.key_file))\n+                              f\"invalid path: {conn.key_file}\")\n \n     def build_response(self, req, resp):\n@@ -426,7 +426,7 @@\n             except ValueError as e:\n                 # this may raise a string formatting error.\n-                err = (\"Invalid timeout {}. Pass a (connect, read) \"\n+                err = (f\"Invalid timeout {timeout}. Pass a (connect, read) \"\n                        \"timeout tuple, or a single float to set \"\n-                       \"both timeouts to the same value\".format(timeout))\n+                       \"both timeouts to the same value\")\n                 raise ValueError(err)\n         elif isinstance(timeout, TimeoutSauce):"
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "ruff",
+    "file": "requests/auth.py",
+    "diff": "--- \n+++ \n@@ -39,7 +39,7 @@\n         warnings.warn(\n             \"Non-string usernames will no longer be supported in Requests \"\n-            \"3.0.0. Please convert the object you've passed in ({!r}) to \"\n+            f\"3.0.0. Please convert the object you've passed in ({username!r}) to \"\n             \"a string or bytes object in the near future to avoid \"\n-            \"problems.\".format(username),\n+            \"problems.\",\n             category=DeprecationWarning,\n         )\n@@ -49,7 +49,7 @@\n         warnings.warn(\n             \"Non-string passwords will no longer be supported in Requests \"\n-            \"3.0.0. Please convert the object you've passed in ({!r}) to \"\n+            f\"3.0.0. Please convert the object you've passed in ({type(password)!r}) to \"\n             \"a string or bytes object in the near future to avoid \"\n-            \"problems.\".format(type(password)),\n+            \"problems.\",\n             category=DeprecationWarning,\n         )"
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "flynt",
+    "file": "requests/__init__.py",
+    "diff": "--- \n+++ \n@@ -78,5 +78,5 @@\n \n     if cryptography_version < [1, 3, 4]:\n-        warning = 'Old version of cryptography ({}) may cause slowdown.'.format(cryptography_version)\n+        warning = f'Old version of cryptography ({cryptography_version}) may cause slowdown.'\n         warnings.warn(warning, RequestsDependencyWarning)\n "
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "flynt",
+    "file": "requests/utils.py",
+    "diff": "--- \n+++ \n@@ -174,5 +174,5 @@\n         netrc_locations = (netrc_file,)\n     else:\n-        netrc_locations = ('~/{}'.format(f) for f in NETRC_FILES)\n+        netrc_locations = (f'~/{f}' for f in NETRC_FILES)\n \n     try:\n@@ -747,5 +747,5 @@\n             host_with_port = parsed.hostname\n             if parsed.port:\n-                host_with_port += ':{}'.format(parsed.port)\n+                host_with_port += f':{parsed.port}'\n \n             for host in no_proxy:"
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "flynt",
+    "file": "requests/sessions.py",
+    "diff": "--- \n+++ \n@@ -164,5 +164,5 @@\n \n             if len(resp.history) >= self.max_redirects:\n-                raise TooManyRedirects('Exceeded {} redirects.'.format(self.max_redirects), response=resp)\n+                raise TooManyRedirects(f'Exceeded {self.max_redirects} redirects.', response=resp)\n \n             # Release the connection back into the pool.\n@@ -740,5 +740,5 @@\n \n         # Nothing matches :-/\n-        raise InvalidSchema(\"No connection adapters were found for {!r}\".format(url))\n+        raise InvalidSchema(f\"No connection adapters were found for {url!r}\")\n \n     def close(self):"
+  },
+  {
+    "project": "requests",
+    "version": "2.32.3",
+    "tool": "ruff",
+    "file": "requests/auth.py",
+    "diff": "--- \n+++ \n@@ -36,7 +36,7 @@\n         warnings.warn(\n             \"Non-string usernames will no longer be supported in Requests \"\n-            \"3.0.0. Please convert the object you've passed in ({!r}) to \"\n+            f\"3.0.0. Please convert the object you've passed in ({username!r}) to \"\n             \"a string or bytes object in the near future to avoid \"\n-            \"problems.\".format(username),\n+            \"problems.\",\n             category=DeprecationWarning,\n         )\n@@ -46,7 +46,7 @@\n         warnings.warn(\n             \"Non-string passwords will no longer be supported in Requests \"\n-            \"3.0.0. Please convert the object you've passed in ({!r}) to \"\n+            f\"3.0.0. Please convert the object you've passed in ({type(password)!r}) to \"\n             \"a string or bytes object in the near future to avoid \"\n-            \"problems.\".format(type(password)),\n+            \"problems.\",\n             category=DeprecationWarning,\n         )"
+  },
+  {
+    "project": "requests",
+    "version": "2.32.3",
+    "tool": "ruff",
+    "file": "requests/__init__.py",
+    "diff": "--- \n+++ \n@@ -99,7 +99,5 @@\n \n     if cryptography_version < [1, 3, 4]:\n-        warning = \"Old version of cryptography ({}) may cause slowdown.\".format(\n-            cryptography_version\n-        )\n+        warning = f\"Old version of cryptography ({cryptography_version}) may cause slowdown.\"\n         warnings.warn(warning, RequestsDependencyWarning)\n \n@@ -112,8 +110,6 @@\n except (AssertionError, ValueError):\n     warnings.warn(\n-        \"urllib3 ({}) or chardet ({})/charset_normalizer ({}) doesn't match a supported \"\n-        \"version!\".format(\n-            urllib3.__version__, chardet_version, charset_normalizer_version\n-        ),\n+        f\"urllib3 ({urllib3.__version__}) or chardet ({chardet_version})/charset_normalizer ({charset_normalizer_version}) doesn't match a supported \"\n+        \"version!\",\n         RequestsDependencyWarning,\n     )"
+  },
+  {
+    "project": "requests",
+    "version": "2.32.3",
+    "tool": "ruff",
+    "file": "requests/help.py",
+    "diff": "--- \n+++ \n@@ -48,9 +48,5 @@\n         implementation_version = platform.python_version()\n     elif implementation == \"PyPy\":\n-        implementation_version = \"{}.{}.{}\".format(\n-            sys.pypy_version_info.major,\n-            sys.pypy_version_info.minor,\n-            sys.pypy_version_info.micro,\n-        )\n+        implementation_version = f\"{sys.pypy_version_info.major}.{sys.pypy_version_info.minor}.{sys.pypy_version_info.micro}\"\n         if sys.pypy_version_info.releaselevel != \"final\":\n             implementation_version = \"\".join("
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "ruff",
+    "file": "urllib3/fields.py",
+    "diff": "--- \n+++ \n@@ -73,5 +73,5 @@\n _HTML5_REPLACEMENTS.update(\n     {\n-        six.unichr(cc): u\"%{:02X}\".format(cc)\n+        six.unichr(cc): f\"%{cc:02X}\"\n         for cc in range(0x00, 0x1F + 1)\n         if cc not in (0x1B,)"
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "ruff",
+    "file": "urllib3/util/response.py",
+    "diff": "--- \n+++ \n@@ -54,5 +54,5 @@\n     # To make debugging easier add an explicit check.\n     if not isinstance(headers, httplib.HTTPMessage):\n-        raise TypeError(\"expected httplib.Message, got {0}.\".format(type(headers)))\n+        raise TypeError(f\"expected httplib.Message, got {type(headers)}.\")\n \n     defects = getattr(headers, \"defects\", None)"
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "ruff",
+    "file": "urllib3/util/url.py",
+    "diff": "--- \n+++ \n@@ -28,5 +28,5 @@\n IPV4_PAT = r\"(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\"\n HEX_PAT = \"[0-9A-Fa-f]{1,4}\"\n-LS32_PAT = \"(?:{hex}:{hex}|{ipv4})\".format(hex=HEX_PAT, ipv4=IPV4_PAT)\n+LS32_PAT = f\"(?:{HEX_PAT}:{HEX_PAT}|{IPV4_PAT})\"\n _subs = {\"hex\": HEX_PAT, \"ls32\": LS32_PAT}\n _variations = ["
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "flynt",
+    "file": "urllib3/fields.py",
+    "diff": "--- \n+++ \n@@ -73,5 +73,5 @@\n _HTML5_REPLACEMENTS.update(\n     {\n-        six.unichr(cc): u\"%{:02X}\".format(cc)\n+        six.unichr(cc): f\"%{cc:02X}\"\n         for cc in range(0x00, 0x1F + 1)\n         if cc not in (0x1B,)"
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "flynt",
+    "file": "urllib3/util/response.py",
+    "diff": "--- \n+++ \n@@ -54,5 +54,5 @@\n     # To make debugging easier add an explicit check.\n     if not isinstance(headers, httplib.HTTPMessage):\n-        raise TypeError(\"expected httplib.Message, got {0}.\".format(type(headers)))\n+        raise TypeError(f\"expected httplib.Message, got {type(headers)}.\")\n \n     defects = getattr(headers, \"defects\", None)"
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "flynt",
+    "file": "urllib3/_collections.py",
+    "diff": "--- \n+++ \n@@ -236,6 +236,5 @@\n         if len(args) > 1:\n             raise TypeError(\n-                \"extend() takes at most 1 positional \"\n-                \"arguments ({0} given)\".format(len(args))\n+                f\"extend() takes at most 1 positional arguments ({len(args)} given)\"\n             )\n         other = args[0] if len(args) >= 1 else ()"
+  },
+  {
+    "project": "urllib3",
+    "version": "2.4.0",
+    "tool": "ruff",
+    "file": "urllib3/util/url.py",
+    "diff": "--- \n+++ \n@@ -26,5 +26,5 @@\n _IPV4_PAT = r\"(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\"\n _HEX_PAT = \"[0-9A-Fa-f]{1,4}\"\n-_LS32_PAT = \"(?:{hex}:{hex}|{ipv4})\".format(hex=_HEX_PAT, ipv4=_IPV4_PAT)\n+_LS32_PAT = f\"(?:{_HEX_PAT}:{_HEX_PAT}|{_IPV4_PAT})\"\n _subs = {\"hex\": _HEX_PAT, \"ls32\": _LS32_PAT}\n _variations = ["
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "ruff",
+    "file": "click/formatting.py",
+    "diff": "--- \n+++ \n@@ -220,5 +220,5 @@\n \n             if lines:\n-                self.write(\"{}\\n\".format(lines[0]))\n+                self.write(f\"{lines[0]}\\n\")\n \n                 for line in lines[1:]:"
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "ruff",
+    "file": "click/_winconsole.py",
+    "diff": "--- \n+++ \n@@ -156,5 +156,5 @@\n             time.sleep(0.1)\n         if not rv:\n-            raise OSError(\"Windows error: {}\".format(GetLastError()))\n+            raise OSError(f\"Windows error: {GetLastError()}\")\n \n         if buffer[0] == EOF:\n@@ -173,5 +173,5 @@\n         elif errno == ERROR_NOT_ENOUGH_MEMORY:\n             return \"ERROR_NOT_ENOUGH_MEMORY\"\n-        return \"Windows error {}\".format(errno)\n+        return f\"Windows error {errno}\"\n \n     def write(self, b):\n@@ -224,7 +224,5 @@\n \n     def __repr__(self):\n-        return \"<ConsoleStream name={!r} encoding={!r}>\".format(\n-            self.name, self.encoding\n-        )\n+        return f\"<ConsoleStream name={self.name!r} encoding={self.encoding!r}>\"\n \n "
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "ruff",
+    "file": "click/utils.py",
+    "diff": "--- \n+++ \n@@ -114,5 +114,5 @@\n         if self._f is not None:\n             return repr(self._f)\n-        return \"<unopened file '{}' {}>\".format(self.name, self.mode)\n+        return f\"<unopened file '{self.name}' {self.mode}>\"\n \n     def open(self):\n@@ -286,5 +286,5 @@\n     opener = binary_streams.get(name)\n     if opener is None:\n-        raise TypeError(\"Unknown standard stream '{}'\".format(name))\n+        raise TypeError(f\"Unknown standard stream '{name}'\")\n     return opener()\n \n@@ -303,5 +303,5 @@\n     opener = text_streams.get(name)\n     if opener is None:\n-        raise TypeError(\"Unknown standard stream '{}'\".format(name))\n+        raise TypeError(f\"Unknown standard stream '{name}'\")\n     return opener(encoding, errors)\n \n@@ -420,5 +420,5 @@\n         return os.path.join(folder, app_name)\n     if force_posix:\n-        return os.path.join(os.path.expanduser(\"~/.{}\".format(_posixify(app_name))))\n+        return os.path.join(os.path.expanduser(f\"~/.{_posixify(app_name)}\"))\n     if sys.platform == \"darwin\":\n         return os.path.join("
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "flynt",
+    "file": "click/formatting.py",
+    "diff": "--- \n+++ \n@@ -220,5 +220,5 @@\n \n             if lines:\n-                self.write(\"{}\\n\".format(lines[0]))\n+                self.write(f\"{lines[0]}\\n\")\n \n                 for line in lines[1:]:"
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "flynt",
+    "file": "click/_winconsole.py",
+    "diff": "--- \n+++ \n@@ -156,5 +156,5 @@\n             time.sleep(0.1)\n         if not rv:\n-            raise OSError(\"Windows error: {}\".format(GetLastError()))\n+            raise OSError(f\"Windows error: {GetLastError()}\")\n \n         if buffer[0] == EOF:\n@@ -173,5 +173,5 @@\n         elif errno == ERROR_NOT_ENOUGH_MEMORY:\n             return \"ERROR_NOT_ENOUGH_MEMORY\"\n-        return \"Windows error {}\".format(errno)\n+        return f\"Windows error {errno}\"\n \n     def write(self, b):\n@@ -224,7 +224,5 @@\n \n     def __repr__(self):\n-        return \"<ConsoleStream name={!r} encoding={!r}>\".format(\n-            self.name, self.encoding\n-        )\n+        return f\"<ConsoleStream name={self.name!r} encoding={self.encoding!r}>\"\n \n "
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "flynt",
+    "file": "click/utils.py",
+    "diff": "--- \n+++ \n@@ -114,5 +114,5 @@\n         if self._f is not None:\n             return repr(self._f)\n-        return \"<unopened file '{}' {}>\".format(self.name, self.mode)\n+        return f\"<unopened file '{self.name}' {self.mode}>\"\n \n     def open(self):\n@@ -286,5 +286,5 @@\n     opener = binary_streams.get(name)\n     if opener is None:\n-        raise TypeError(\"Unknown standard stream '{}'\".format(name))\n+        raise TypeError(f\"Unknown standard stream '{name}'\")\n     return opener()\n \n@@ -303,5 +303,5 @@\n     opener = text_streams.get(name)\n     if opener is None:\n-        raise TypeError(\"Unknown standard stream '{}'\".format(name))\n+        raise TypeError(f\"Unknown standard stream '{name}'\")\n     return opener(encoding, errors)\n \n@@ -420,5 +420,5 @@\n         return os.path.join(folder, app_name)\n     if force_posix:\n-        return os.path.join(os.path.expanduser(\"~/.{}\".format(_posixify(app_name))))\n+        return os.path.join(os.path.expanduser(f\"~/.{_posixify(app_name)}\"))\n     if sys.platform == \"darwin\":\n         return os.path.join("
+  },
+  {
+    "project": "networkx",
+    "version": "2.5.1",
+    "tool": "ruff",
+    "file": "networkx/readwrite/nx_shp.py",
+    "diff": "--- \n+++ \n@@ -111,5 +111,5 @@\n                 if strict:\n                     raise nx.NetworkXError(\n-                        \"GeometryType {} not supported\".format(g.GetGeometryType())\n+                        f\"GeometryType {g.GetGeometryType()} not supported\"\n                     )\n "
+  },
+  {
+    "project": "networkx",
+    "version": "2.5.1",
+    "tool": "flynt",
+    "file": "networkx/readwrite/nx_shp.py",
+    "diff": "--- \n+++ \n@@ -111,5 +111,5 @@\n                 if strict:\n                     raise nx.NetworkXError(\n-                        \"GeometryType {} not supported\".format(g.GetGeometryType())\n+                        f\"GeometryType {g.GetGeometryType()} not supported\"\n                     )\n "
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "ruff",
+    "file": "pygments/lexers/usd.py",
+    "diff": "--- \n+++ \n@@ -41,21 +41,17 @@\n     tokens = {\n         \"root\": [\n-            (r\"(custom){_WHITESPACE}(uniform)(\\s+){}(\\s+){}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"(custom){_WHITESPACE}(uniform)(\\s+){_TYPE}(\\s+){_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Token, Whitespace, Keyword.Token, Whitespace,\n                       Keyword.Type, Whitespace, Name.Attribute, Text,\n                       Name.Keyword.Tokens, Whitespace, Operator)),\n-            (r\"(custom){_WHITESPACE}{}(\\s+){}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"(custom){_WHITESPACE}{_TYPE}(\\s+){_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Token, Whitespace, Keyword.Type, Whitespace,\n                       Name.Attribute, Text, Name.Keyword.Tokens, Whitespace,\n                       Operator)),\n-            (r\"(uniform){_WHITESPACE}{}(\\s+){}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"(uniform){_WHITESPACE}{_TYPE}(\\s+){_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Token, Whitespace, Keyword.Type, Whitespace,\n                       Name.Attribute, Text, Name.Keyword.Tokens, Whitespace,\n                       Operator)),\n-            (r\"{}{_WHITESPACE}{}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"{_TYPE}{_WHITESPACE}{_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Type, Whitespace, Name.Attribute, Text,\n                       Name.Keyword.Tokens, Whitespace, Operator)),"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "ruff",
+    "file": "pygments/styles/rainbow_dash.py",
+    "diff": "--- \n+++ \n@@ -41,36 +41,36 @@\n \n     styles = {\n-        Comment: 'italic {}'.format(BLUE_LIGHT),\n+        Comment: f'italic {BLUE_LIGHT}',\n         Comment.Preproc: 'noitalic',\n         Comment.Special: 'bold',\n \n-        Error: 'bg:{} {}'.format(RED, WHITE),\n+        Error: f'bg:{RED} {WHITE}',\n \n-        Generic.Deleted: 'border:{} bg:{}'.format(RED_DARK, RED_LIGHT),\n+        Generic.Deleted: f'border:{RED_DARK} bg:{RED_LIGHT}',\n         Generic.Emph: 'italic',\n         Generic.Error: RED_BRIGHT,\n-        Generic.Heading: 'bold {}'.format(BLUE),\n-        Generic.Inserted: 'border:{} bg:{}'.format(GREEN_NEON, GREEN_LIGHT),\n+        Generic.Heading: f'bold {BLUE}',\n+        Generic.Inserted: f'border:{GREEN_NEON} bg:{GREEN_LIGHT}',\n         Generic.Output: GREY,\n-        Generic.Prompt: 'bold {}'.format(BLUE),\n+        Generic.Prompt: f'bold {BLUE}',\n         Generic.Strong: 'bold',\n-        Generic.Subheading: 'bold {}'.format(BLUE),\n+        Generic.Subheading: f'bold {BLUE}',\n         Generic.Traceback: RED_DARK,\n \n-        Keyword: 'bold {}'.format(BLUE),"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "ruff",
+    "file": "pygments/lexers/cddl.py",
+    "diff": "--- \n+++ \n@@ -120,8 +120,8 @@\n             include(\"commentsandwhitespace\"),\n             # tag types\n-            (r\"#(\\d\\.{uint})?\".format(uint=_re_uint), Keyword.Type),  # type or any\n+            (rf\"#(\\d\\.{_re_uint})?\", Keyword.Type),  # type or any\n             # occurence\n             (\n-                r\"({uint})?(\\*)({uint})?\".format(uint=_re_uint),\n+                rf\"({_re_uint})?(\\*)({_re_uint})?\",\n                 bygroups(Number, Operator, Number),\n             ),\n@@ -131,6 +131,6 @@\n             (words(_controls, suffix=r\"\\b\"), Operator.Word),  # ctlops\n             # into choice op\n-            (r\"&(?=\\s*({groupname}|\\())\".format(groupname=_re_id), Operator),\n-            (r\"~(?=\\s*{})\".format(_re_id), Operator),  # unwrap op\n+            (rf\"&(?=\\s*({_re_id}|\\())\", Operator),\n+            (rf\"~(?=\\s*{_re_id})\", Operator),  # unwrap op\n             (r\"//|/(?!/)\", Operator),  # double und single slash\n             (r\"=>|/==|/=|=\", Operator),\n@@ -144,5 +144,5 @@\n             # Token type is String as barewords are always interpreted as such.\n             (\n-                r\"({bareword})(\\s*)(:)\".format(bareword=_re_id),\n+                rf\"({_re_id})(\\s*)(:)\",\n                 bygroups(String, Text, Punctuation),\n             ),\n@@ -161,5 +161,5 @@"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "flynt",
+    "file": "pygments/lexers/usd.py",
+    "diff": "--- \n+++ \n@@ -46,16 +46,13 @@\n                       Keyword.Type, Whitespace, Name.Attribute, Text,\n                       Name.Keyword.Tokens, Whitespace, Operator)),\n-            (r\"(custom){_WHITESPACE}{}(\\s+){}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"(custom){_WHITESPACE}{_TYPE}(\\s+){_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Token, Whitespace, Keyword.Type, Whitespace,\n                       Name.Attribute, Text, Name.Keyword.Tokens, Whitespace,\n                       Operator)),\n-            (r\"(uniform){_WHITESPACE}{}(\\s+){}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"(uniform){_WHITESPACE}{_TYPE}(\\s+){_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Token, Whitespace, Keyword.Type, Whitespace,\n                       Name.Attribute, Text, Name.Keyword.Tokens, Whitespace,\n                       Operator)),\n-            (r\"{}{_WHITESPACE}{}(\\s*)(=)\".format(\n-                _TYPE, _BASE_ATTRIBUTE, _WHITESPACE=_WHITESPACE),\n+            (rf\"{_TYPE}{_WHITESPACE}{_BASE_ATTRIBUTE}(\\s*)(=)\",\n              bygroups(Keyword.Type, Whitespace, Name.Attribute, Text,\n                       Name.Keyword.Tokens, Whitespace, Operator)),"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "flynt",
+    "file": "pygments/styles/rainbow_dash.py",
+    "diff": "--- \n+++ \n@@ -41,36 +41,36 @@\n \n     styles = {\n-        Comment: 'italic {}'.format(BLUE_LIGHT),\n+        Comment: f'italic {BLUE_LIGHT}',\n         Comment.Preproc: 'noitalic',\n         Comment.Special: 'bold',\n \n-        Error: 'bg:{} {}'.format(RED, WHITE),\n+        Error: f'bg:{RED} {WHITE}',\n \n-        Generic.Deleted: 'border:{} bg:{}'.format(RED_DARK, RED_LIGHT),\n+        Generic.Deleted: f'border:{RED_DARK} bg:{RED_LIGHT}',\n         Generic.Emph: 'italic',\n         Generic.Error: RED_BRIGHT,\n-        Generic.Heading: 'bold {}'.format(BLUE),\n-        Generic.Inserted: 'border:{} bg:{}'.format(GREEN_NEON, GREEN_LIGHT),\n+        Generic.Heading: f'bold {BLUE}',\n+        Generic.Inserted: f'border:{GREEN_NEON} bg:{GREEN_LIGHT}',\n         Generic.Output: GREY,\n-        Generic.Prompt: 'bold {}'.format(BLUE),\n+        Generic.Prompt: f'bold {BLUE}',\n         Generic.Strong: 'bold',\n-        Generic.Subheading: 'bold {}'.format(BLUE),\n+        Generic.Subheading: f'bold {BLUE}',\n         Generic.Traceback: RED_DARK,\n \n-        Keyword: 'bold {}'.format(BLUE),"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "flynt",
+    "file": "pygments/lexers/cddl.py",
+    "diff": "--- \n+++ \n@@ -120,5 +120,5 @@\n             include(\"commentsandwhitespace\"),\n             # tag types\n-            (r\"#(\\d\\.{uint})?\".format(uint=_re_uint), Keyword.Type),  # type or any\n+            (rf\"#(\\d\\.{_re_uint})?\", Keyword.Type),  # type or any\n             # occurence\n             (\n@@ -131,6 +131,6 @@\n             (words(_controls, suffix=r\"\\b\"), Operator.Word),  # ctlops\n             # into choice op\n-            (r\"&(?=\\s*({groupname}|\\())\".format(groupname=_re_id), Operator),\n-            (r\"~(?=\\s*{})\".format(_re_id), Operator),  # unwrap op\n+            (rf\"&(?=\\s*({_re_id}|\\())\", Operator),\n+            (rf\"~(?=\\s*{_re_id})\", Operator),  # unwrap op\n             (r\"//|/(?!/)\", Operator),  # double und single slash\n             (r\"=>|/==|/=|=\", Operator),\n@@ -144,5 +144,5 @@\n             # Token type is String as barewords are always interpreted as such.\n             (\n-                r\"({bareword})(\\s*)(:)\".format(bareword=_re_id),\n+                rf\"({_re_id})(\\s*)(:)\",\n                 bygroups(String, Text, Punctuation),\n             ),\n@@ -161,5 +161,5 @@\n             # Float\n             (\n-                r\"{int}(?=(\\.\\d|e[+-]?\\d))(?:\\.\\d+)?(?:e[+-]?\\d+)?\".format(int=_re_int),\n+                rf\"{_re_int}(?=(\\.\\d|e[+-]?\\d))(?:\\.\\d+)?(?:e[+-]?\\d+)?\","
+  },
+  {
+    "project": "Pygments",
+    "version": "2.19.1",
+    "tool": "flynt",
+    "file": "pygments/lexers/haskell.py",
+    "diff": "--- \n+++ \n@@ -53,5 +53,5 @@\n             (r'\\bmodule\\b', Keyword.Reserved, 'module'),\n             (r'\\berror\\b', Name.Exception),\n-            (r'\\b({})(?!\\')\\b'.format('|'.join(reserved)), Keyword.Reserved),\n+            (rf\"\\b({'|'.join(reserved)})(?!\\')\\b\", Keyword.Reserved),\n             (r\"'[^\\\\]'\", String.Char),  # this has to come before the TH quote\n             (r'^[_' + uni.Ll + r'][\\w\\']*', Name.Function),\n@@ -209,5 +209,5 @@\n         'root': [\n             # Comments\n-            (r'^(\\s*)(%({}))'.format('|'.join(directives)),\n+            (rf\"^(\\s*)(%({'|'.join(directives)}))\",\n              bygroups(Whitespace, Keyword.Reserved)),\n             (r'(\\s*)(--(?![!#$%&*+./<=>?@^|_~:\\\\]).*?)$', bygroups(Whitespace, Comment.Single)),\n@@ -218,5 +218,5 @@\n              bygroups(Whitespace, Name.Function, Whitespace, Operator.Word, Whitespace)),\n             #  Identifiers\n-            (r'\\b({})(?!\\')\\b'.format('|'.join(reserved)), Keyword.Reserved),\n+            (rf\"\\b({'|'.join(reserved)})(?!\\')\\b\", Keyword.Reserved),\n             (r'(import|module)(\\s+)', bygroups(Keyword.Reserved, Whitespace), 'module'),\n             (r\"('')?[A-Z][\\w\\']*\", Keyword.Type),\n@@ -322,5 +322,5 @@\n             # Lexemes:\n             #  Identifiers\n-            (r'\\b({})(?!\\')\\b'.format('|'.join(reserved)), Keyword.Reserved),\n+            (rf\"\\b({'|'.join(reserved)})(?!\\')\\b\", Keyword.Reserved),\n             (r'(import|module)(\\s+)', bygroups(Keyword.Reserved, Whitespace),\n              'module'),"
+  },
+  {
+    "project": "Pygments",
+    "version": "2.19.1",
+    "tool": "flynt",
+    "file": "pygments/lexers/theorem.py",
+    "diff": "--- \n+++ \n@@ -127,5 +127,5 @@\n             # (r'\\b([A-Z][\\w\\']*)(\\.)', Name.Namespace, 'dotted'),\n             (r'\\b([A-Z][\\w\\']*)', Name),\n-            (r'({})'.format('|'.join(keyopts[::-1])), Operator),\n+            (rf\"({'|'.join(keyopts[::-1])})\", Operator),\n             (rf'({infix_syms}|{prefix_syms})?{operators}', Operator),\n "
+  },
+  {
+    "project": "Pygments",
+    "version": "2.19.1",
+    "tool": "flynt",
+    "file": "pygments/lexers/ml.py",
+    "diff": "--- \n+++ \n@@ -122,5 +122,5 @@\n         'core': [\n             # Punctuation that doesn't overlap symbolic identifiers\n-            (r'({})'.format('|'.join(re.escape(z) for z in nonid_reserved)),\n+            (rf\"({'|'.join((re.escape(z) for z in nonid_reserved))})\",\n              Punctuation),\n \n@@ -209,5 +209,5 @@\n \n         'breakout': [\n-            (r'(?=\\b({})\\b(?!\\'))'.format('|'.join(alphanumid_reserved)), Text, '#pop'),\n+            (rf\"(?=\\b({'|'.join(alphanumid_reserved)})\\b(?!\\'))\", Text, '#pop'),\n         ],\n \n@@ -399,9 +399,9 @@\n             (r'\\b([A-Z][\\w\\']*)', Name.Class),\n             (r'\\(\\*(?![)])', Comment, 'comment'),\n-            (r'\\b({})\\b'.format('|'.join(keywords)), Keyword),\n-            (r'({})'.format('|'.join(keyopts[::-1])), Operator),\n+            (rf\"\\b({'|'.join(keywords)})\\b\", Keyword),\n+            (rf\"({'|'.join(keyopts[::-1])})\", Operator),\n             (rf'({infix_syms}|{prefix_syms})?{operators}', Operator),\n-            (r'\\b({})\\b'.format('|'.join(word_operators)), Operator.Word),\n-            (r'\\b({})\\b'.format('|'.join(primitives)), Keyword.Type),\n+            (rf\"\\b({'|'.join(word_operators)})\\b\", Operator.Word),\n+            (rf\"\\b({'|'.join(primitives)})\\b\", Keyword.Type),\n \n             (r\"[^\\W\\d][\\w']*\", Name),"
+  }
+]

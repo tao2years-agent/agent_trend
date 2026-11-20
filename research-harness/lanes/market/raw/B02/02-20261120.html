@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+        <title>Cycle Time Calculation in LinearB - HelpDocs &amp; User Setup | LinearB</title>
+    
+
+      <meta name="description" content="Learn how LinearB calculates Cycle Time across four key development phases—Coding, Pickup, Review, and Deploy—so you can identify bottlenecks, track delivery efficiency, and surface improvement opportunities across your teams.">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+  (function () {
+    var root = document.documentElement;
+    var PREF_NAME = "io.helpdocs.darkmode";
+    var DARK = "dark";
+    var LIGHT = "light";
+    var allowDark = false;
+
+    if (!allowDark) {
+      root.classList.remove("dark-mode");
+      root.classList.add("dark-mode-loaded");
+      return;
+    }
+
+    var pref = null;
+    try {
+      pref = new URLSearchParams(window.location.search).get("hd_color_scheme");
+    } catch (e) {
+      // No URLSearchParams: fall through to the stored preference.
+    }
+    if (pref !== DARK && pref !== LIGHT) {
+      try {
+        pref = window.sessionStorage.getItem(PREF_NAME);
+      } catch (e) {
+        // sessionStorage throws in private-mode and sandboxed contexts.
+      }
+    }
+    if (pref !== DARK && pref !== LIGHT) return;
+
+    if (pref === DARK) {
+      root.classList.add("dark-mode");
+    } else {
+      root.classList.remove("dark-mode");
+    }
+    root.classList.add("dark-mode-loaded");
+  })();
+</script>
+
+
+        <link rel="shortcut icon" href="https://files.helpdocs.io/g5c9ycw6ao/favico.png">
+    
+        <meta property="og:title" content="Cycle Time Calculation in LinearB">
+        <meta property="twitter:title" content="Cycle Time Calculation in LinearB">
+        <meta property="og:description" content="Learn how LinearB calculates Cycle Time across four key development phases—Coding, Pickup, Review, and Deploy—so you can identify bottlenecks, track delivery efficiency, and surface improvement opportunities across your teams.">
+        <meta property="twitter:description" content="Learn how LinearB calculates Cycle Time across four key development phases—Coding, Pickup, Review, and Deploy—so you can identify bottlenecks, track delivery efficiency, and surface improvement opportunities across your teams.">
+        <meta property="og:type" content="article">
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="og:image" content="https://files.helpdocs.io/g5c9ycw6ao/other/1771934754163/linear-b-logo.png?t=1771934754163">
+        <meta property="twitter:image:src" content="https://files.helpdocs.io/g5c9ycw6ao/other/1771934754163/linear-b-logo.png?t=1771934754163">
+        <meta property="og:url" content="https://linearb.helpdocs.io/article/0vif1ihmgc-how-is-cycle-time-calculated">
+        <meta property="twitter:site" content="https://linearb.helpdocs.io">
+        <meta property="article:published_time" content="2021-06-29T16:56:50Z">
+        <meta property="article:modified_time" content="2026-03-16T20:33:39Z">
+        <meta property="og:site_name" content="LinearB">
+    
+
+      <script type="application/ld+json">{"@context":"http://schema.org","@type":"TechArticle","articleBody":"Cycle Time measures how long it takes engineering work to move from initial development to production. It reflects your team’s ability to deliver software efficiently by breaking the delivery process into four distinct phases: Coding Time. Pickup Time. Review Time. Deploy Time. Cycle Time is calculated by averaging the duration of these phases across all branches within a selected time range or iteration. Understanding where time accumulates can help identify bottlenecks and drive process improvements. Coding Time. Definition: The time between the first commit on a branch and the moment a pull request (PR) is opened. If Jira-based coding time is enabled, this phase starts when a linked Jira issue is moved to In Progress. Draft PRs are counted as coding time. Learn how to enable this: Jira-Based Coding Time. Pickup Time. Definition: The time between when a PR is opened (or moved from draft to active) and the first non-author comment. If a PR is approved or merged without comments, pickup time is calculated from the PR open time to the approval or merge timestamp. Comments from the PR author do not count toward triggering review time. Review Time. Definition: This measures the time between when a code review begins and when a PR is merged. Pickup time ends and review time begins only when someone other than the PR author performs a review action. Comments or reviews from the PR author (i.e., self-reviews) are ignored for this transition. If a PR is approved or merged without any comments , LinearB records the review time for this PR as 0. Review time is attributed to the pull request itself. If the PR was contributed to by users on the selected team, the review time will be included—even if the reviewers are not on the team. This metric helps teams evaluate how long it takes to complete peer reviews once collaboration has started. Deploy Time. Definition: The time between when a PR is merged and when it is released to production. LinearB listens for release tags and maps them back to branches. You can customize your release detection rules here: Release Detection Setup. Cycle Time Inclusion and Phase Completion Behavior. All Branches Are Included—Even Incomplete Ones. Cycle Time tracks all branches worked on during a selected iteration or date range, regardless of whether they were completed. Because Cycle Time is calculated as an average of each completed phase , any branch that progresses—even partially—will be included in the calculation. For example: If your team works on five branches during a sprint: Two branches progress through coding and code review but are not deployed. Three branches are fully deployed.. Cycle Time will include: Coding Time and Pickup Time for the two incomplete branches. Full Cycle Time (all four phases) for the three completed branches. Team-Based Tracking Only. Cycle Time is a team-level metric. It tracks the progress of branches through the development lifecycle—not the performance of individual developers. Whether one or several engineers contribute to a branch, the metric only reflects how the branch moves through each phase, making it ideal for evaluating overall process efficiency Time Is Counted Only After a Phase Is Complete e. LinearB does not include time spent in a phase until that phase is fully completed. For example: Coding Time is not counted until a pull request is created. Review Time is not counted until the PR is merged. Deploy Time begins only after the PR is merged and ends when the branch is released. This approach ensures that ongoing work doesn’t skew your averages. However, when a long-running branch finally moves forward, you may notice a sudden increase in your Cycle Time —as the system retroactively includes the full time spent in the newly completed phase. Cycle Time in the Dashboard View. The Dashboard displays Cycle Time for your entire organization or a specific team, based on the currently selected iteration or weekly view. Cycle Time is calculated from active branch data and segmented into four phases— Coding , Pickup , Review , and Deploy. Segment colors range from green to red , reflecting performance benchmarks based on LinearB’s community standards. If complete data isn’t yet available—for example, if a PR hasn’t been deployed—an asterisk (*) will appear, indicating that data collection is still in progress. You can toggle between teams and timeframes to drill down into specific activity: Selecting a team filters Cycle Time to reflect branches worked on by that team’s members. This includes code commits, PR creation, and reviews. Selecting a different timeframe shows cycle performance for other sprints or weeks, helping you compare trends and team velocity over time. Activity View: Cycle Time by Branch. The Activity tab provides a detailed breakdown of Cycle Time for individual branches , allowing you to inspect how each branch progresses through the development lifecycle. Each phase— Coding , Pickup , Review , and Deploy —is color-coded from green to red , based on LinearB’s community benchmarks. Cycle Time is calculated using precise timestamps as the branch advances from its first commit through to deployment. This view is ideal for identifying outliers or bottlenecks on a per-branch basis, helping teams take targeted action when specific work items fall behind. Metrics View: Tracking Cycle Time Trends. To analyze how Cycle Time evolves over time, navigate to the Metrics tab and open the Delivery dashboard. This view provides a time-based breakdown of Cycle Time, allowing you to monitor trends across sprints, weeks, or custom date ranges. The dashboard displays both overall Cycle Time and individual phase durations : Coding, Pickup, Review, and Deploy. You can filter by team to focus on specific groups, and adjust the date range to align with your reporting needs. For even more flexibility, add a Cycle Time widget to any custom dashboard to track it alongside other KPIs that matter to your team. This view is ideal for retrospectives, leadership reporting, and process optimization over time. Learn More. Streamlined Engineering Data Leads to 55% Decrease in Cycle Time at Intsights. What is Cycle Time? (LinearB Blog). Cycle Time: Measuring and Improving Team Process. Related Articles. Jira-Based Coding Time. Handling Squash Merges. Understanding Code Changes. Exclude Non-Working Days from Cycle Time.","articleSection":"Delivery Metrics","author":{"@type":"Person","image":"https://www.gravatar.com/avatar/a6bec9c250ee69a11f44a77d1e2c9423?d=mm\u0026s=150","name":"Steven Silverstone"},"dateCreated":"2021-06-29T16:56:50Z","dateModified":"2026-03-16T20:33:39Z","datePublished":"2021-06-29T16:56:50Z","headline":"Cycle Time Calculation in LinearB","image":"https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1652275218115/screen-shot-2022-05-11-at-8-20-09-am.png","mainEntityOfPage":"https://linearb.helpdocs.io/article/0vif1ihmgc-how-is-cycle-time-calculated","publisher":{"@type":"Organization","logo":"https://files.helpdocs.io/g5c9ycw6ao/logo.png?t=1771934760014","name":"linearb"},"thumbnailUrl":"https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1652275218115/screen-shot-2022-05-11-at-8-20-09-am.png","url":"https://linearb.helpdocs.io/article/0vif1ihmgc-how-is-cycle-time-calculated","version":25,"wordCount":1028}</script>
+
+      <link rel="canonical" href="https://linearb.helpdocs.io/article/0vif1ihmgc-how-is-cycle-time-calculated">
+
+    
+
+    
+
+
+    <link id="gist-css" rel="stylesheet" href="https://cdn.helpdocs.io/css/highlightjs-github-gist.min.css?v=199af40" async>
+
+    <link rel="stylesheet" href="https://cdn.helpdocs.io/css/v5/startup.min.css?v=199af40">
+
+      <style>
+        body {
+  --color-brand: #464748B;
+  --color-brand-header: #464748B;
+  --color-brand-light: #e5e5e5;
+  --color-brand-dark: #000000;
+}
+      </style>
+
+        <style>
+          @import url(https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap);
+
+
+
+#search-container {
+  background-position: center center;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwMCIgaGVpZ2h0PSIxMjU2IiB2aWV3Qm94PSIwIDAgMjQwMCAxMjU2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfMjEzMTlfNDM3MzIpIj4KPHJlY3Qgd2lkdGg9IjI0MDAiIGhlaWdodD0iMTI1NiIgZmlsbD0iIzVCNjZGQiIvPgo8cGF0aCBkPSJNNjczLjY3IDY3My45NjVMNDMzLjg2IDUxNC40ODVMNDMyLjc4IDUxMy43NzVDMzQwLjkyIDQ1My41MTUgMjE3LjUgNDc4LjY1NSAxNTYuNTcgNTcwLjI2NUMxNDIuNjggNTkxLjE1NSAxMzMuMjQgNjEzLjcwNSAxMjguMDEgNjM2LjgwNUMxNTguMTEgNjIxLjA2NSAxOTAuNTEgNjEzLjc0NSAyMjIuNDQgNjE0LjA3NUMyMjUuOTcgNjE0LjExNSAyMjkuNSA2MTQuMjQ1IDIzMy4wMiA2MTQuNDY1QzI2OC4yNSA1NjYuNjk1IDMzNS4xNiA1NTQuNTI1IDM4NS4xMyA1ODcuNzU1TDYyNC45NCA3NDcuMjM1QzYzMC45MiA3NTEuMjE1IDYzNi4zOSA3NTUuNjc1IDY0MS4zNCA3NjAuNTE1TDczNC40MSA3MzcuNTA1QzcxOS42MSA3MTIuODI1IDY5OS4yMyA2OTAuOTU1IDY3My42NyA2NzMuOTU1VjY3My45NjVaIiBmaWxsPSIjMUUyOTNCIi8+CjxwYXRoIGQ9Ik0xMTU5LjIxIDgzOC41MTVDMTEzMi43IDczMS4yODUgMTAyNC4yOCA2NjUuODQ1IDkxNy4wNSA2OTIuMzU1TDczNC40IDczNy41MDVMNjQxLjMzIDc2MC41MTVMNjM3LjQ2IDc2MS40NzVMNjM2LjIgNzYxLjc4NUM1NTYuMTggNzgyLjEwNSA0OTkuNyA4NDguMTM1IDQ4Ny43NiA5MjUuMDI1TDUwMC44OCA5MzMuNzU1QzUyMy4xNSA5NDguNTY1IDU0OC43OSA5NTQuMzU1IDU3My40OSA5NTEuOTk1QzU3NS4wNSA5MDMuMTA1IDYwOC43NiA4NTkuMjI1IDY1OC41OCA4NDYuOTA1TDY3NC44OSA4NDIuODc1TDc2MS45OCA4MjEuMzQ1TDkzOC4xNiA3NzcuNzg1Qzk5OC4yMSA3NjIuOTQ1IDEwNTguOTMgNzk5LjU4NSAxMDczLjc3IDg1OS42MzVDMTA4OC42MiA5MTkuNjg1IDEwNTEuOTcgOTgwLjM5NSA5OTEuOTIgOTk1LjI0NUw3MTIuMzQgMTA2NC4zNkM2NzMuMjIgMTA3NC4wMyA2MzMuODMgMTA2MS44NCA2MDcuMDEgMTAzNS41OEM1NzIuMDMgMTA0My40OCA1MzQuOTcgMTA0Mi4wMSA0OTkuOTQgMTAzMC4zN0M1MzYuMzQgMTEyMS4wNiA2MzQuNjIgMTE3My41NyA3MzIuMjEgMTE1MC4xTDczMy40NyAxMTQ5Ljc5TDEwMTMuMDUgMTA4MC42N0MxMTIwLjI4IDEwNTQuMTYgMTE4NS43MiA5NDUuNzU1IDExNTkuMjEgODM4LjUyNVY4MzguNTE1WiIgZmlsbD0iI0MzRDNGRiIvPgo8cGF0aCBkPSJNNDExLjMgODc0LjE3NUM0MjcuMzggODIzLjA3NSA0MjMuMDQgNzY1LjcwNSAzOTQuNTMgNzE1LjQyNUMzNTkuOTQgNjU0LjQzNSAyOTguMTMgNjE4LjU4NSAyMzMuMDIgNjE0LjQ2NUMyMjkuNSA2MTQuMjQ1IDIyNS45OCA2MTQuMTA1IDIyMi40NCA2MTQuMDc1QzE5MC41MSA2MTMuNzQ1IDE1OC4xMSA2MjEuMDY1IDEyOC4wMSA2MzYuODA1QzEyNS45NiA2MzcuODc1IDEyMy45MiA2MzguOTc1IDEyMS45IDY0MC4xMTVMLTEyOC42MiA3ODIuMTg1TC0xMjkuNzQgNzgyLjgyNUMtMjI0Ljk3IDgzNy42MjUgLTI1OC4yMSA5NTkuMTA1IC0yMDMuOTQgMTA1NC44MUMtMTQ5LjY3IDExNTAuNTIgLTI4LjM0MDQgMTE4NC4zNSA2Ny41NTk2IDExMzAuNzZMNjguNjg5NiAxMTMwLjEzTDMxOS4yMSA5ODguMDY1QzMzNy40NCA5NzcuNzI1IDM1My40MiA5NjQuOTU1IDM2Ni45OCA5NTAuMzk1TDI5MS44OSA5MDAuNDU1QzI4Ni45NCA5MDQuNTM1IDI4MS41NyA5MDguMjQ1IDI3NS44IDkxMS41MTVMMjUuMjc5NiAxMDUzLjU4Qy0yOC41MzA0IDEwODQuMDkgLTk2Ljg4MDQgMTA2NS4yMSAtMTI3LjM5IDEwMTEuNEMtMTU3LjkgOTU3LjU5NSAtMTM5LjAyIDg4OS4yNDUgLTg1LjIxMDQgODU4LjczNUwxMzAuODggNzM2LjE5NUwxNjUuMzEgNzE2LjY2NUMxODAuNDkgNzA4LjA1NSAxOTYuODMgNzAzLjM4NSAyMTMuMTYgNzAyLjMxNUMyNTQuNjggNjk5LjU5NSAyOTYuMDggNzIwLjIyNSAzMTcuOTkgNzU4Ljg0NUMzMjkuMjQgNzc4LjY3NSAzMzMuNzYgODAwLjQ4NSAzMzIuMzEgODIxLjY0NUw0MTEuMzEgODc0LjE4NUw0MTEuMyA4NzQuMTc1WiIgZmlsbD0iI0MzRDNGRiIvPgo8cGF0aCBkPSJNNzYxLjk4OSA4MjEuMzQ1TDY3NC44OTkgODQyLjg3NUM2NzQuNDc5IDg2My40MzUgNjY4LjQwOSA4ODQuMTI1IDY1Ni4xNjkgOTAyLjUyNUM2MzYuNzI5IDkzMS43NjUgNjA1LjkxOSA5NDguOTA1IDU3My40ODkgOTUxLjk5NUM1NDguNzg5IDk1NC4zNTUgNTIzLjE0OSA5NDguNTY1IDUwMC44NzkgOTMzLjc1NUw0ODcuNzU5IDkyNS4wMjVMNDExLjI4OSA4NzQuMTY1TDMzMi4yODkgODIxLjYyNUwyNjEuMDY5IDc3NC4yNTVDMjM1LjA2OSA3NTYuOTY1IDIxOC42MzkgNzMwLjY5NSAyMTMuMTM5IDcwMi4yODVDMTk2LjgxOSA3MDMuMzU1IDE4MC40NzkgNzA4LjAyNSAxNjUuMjg5IDcxNi42MzVMMTMwLjg1OSA3MzYuMTY1QzE0My4zNjkgNzc5LjgyNSAxNzAuNzE5IDgxOS40NzUgMjExLjI1OSA4NDYuODA1TDIxMi4zMjkgODQ3LjUyNUwyOTEuODY5IDkwMC40MjVMMzY2Ljk1OSA5NTAuMzY1TDQ1Mi4xMzkgMTAwNy4wMUM0NjcuMzI5IDEwMTcuMTEgNDgzLjM5OSAxMDI0Ljg1IDQ5OS45MTkgMTAzMC4zNEM1MzQuOTU5IDEwNDEuOTggNTcyLjAwOSAxMDQzLjQ2IDYwNi45ODkgMTAzNS41NUM2NTUuMzY5IDEwMjQuNjIgNjk5Ljc4OSA5OTUuNzk1IDcyOS40MjkgOTUxLjIyNUM3NTUuOTI5IDkxMS4zODUgNzY2LjI0OSA4NjUuNDk1IDc2MS45NjkgODIxLjMxNUw3NjEuOTg5IDgyMS4zNDVaIiBmaWxsPSIjMUUyOTNCIi8+CjxwYXRoIGQ9Ik0xNzI1LjQzIDU4MS4yMjhMMTk2NS4yNCA3NDAuNzA5TDE5NjYuMzIgNzQxLjQxOUMyMDU4LjE4IDgwMS42NzkgMjE4MS42IDc3Ni41MzkgMjI0Mi41MyA2ODQuOTI5QzIyNTYuNDIgNjY0LjAzOSAyMjY1Ljg2IDY0MS40ODkgMjI3MS4wOSA2MTguMzg5QzIyNDAuOTkgNjM0LjEyOSAyMjA4LjU5IDY0MS40NDkgMjE3Ni42NiA2NDEuMTE5QzIxNzMuMTMgNjQxLjA3OSAyMTY5LjYgNjQwLjk0OSAyMTY2LjA4IDY0MC43MjlDMjEzMC44NSA2ODguNDk5IDIwNjMuOTQgNzAwLjY2OSAyMDEzLjk3IDY2Ny40MzlMMTc3NC4xNiA1MDcuOTU5QzE3NjguMTggNTAzLjk3OSAxNzYyLjcxIDQ5OS41MTkgMTc1Ny43NiA0OTQuNjc5TDE2NjQuNjkgNTE3LjY4OEMxNjc5LjQ5IDU0Mi4zNjggMTY5OS44NyA1NjQuMjM4IDE3MjUuNDMgNTgxLjIzOEwxNzI1LjQzIDU4MS4yMjhaIiBmaWxsPSIjMUUyOTNCIi8+CjxwYXRoIGQ9Ik0xMjM5Ljg5IDQxNi42NzhDMTI2Ni40IDUyMy45MDggMTM3NC44MiA1ODkuMzQ4IDE0ODIuMDUgNTYyLjgzOEwxNjY0LjcgNTE3LjY4OEwxNzU3Ljc3IDQ5NC42NzhMMTc2MS42NCA0OTMuNzE4TDE3NjIuOSA0OTMuNDA4QzE4NDIuOTIgNDczLjA4OCAxODk5LjQgNDA3LjA1OCAxOTExLjM0IDMzMC4xNjhMMTg5OC4yMiAzMjEuNDM4QzE4NzUuOTUgMzA2LjYyOCAxODUwLjMxIDMwMC44MzggMTgyNS42MSAzMDMuMTk4QzE4MjQuMDUgMzUyLjA4OCAxNzkwLjM0IDM5NS45NjggMTc0MC41MiA0MDguMjg4TDE3MjQuMjEgNDEyLjMxOEwxNjM3LjEyIDQzMy44NDhMMTQ2MC45NCA0NzcuNDA4QzE0MDAuODkgNDkyLjI0OCAxMzQwLjE3IDQ1NS42MDggMTMyNS4zMyAzOTUuNTU4QzEzMTAuNDggMzM1LjUwOCAxMzQ3LjEzIDI3NC43OTggMTQwNy4xOCAyNTkuOTQ4TDE2ODYuNzYgMTkwLjgyOEMxNzI1Ljg4IDE4MS4xNTggMTc2NS4yNyAxOTMuMzQ4IDE3OTIuMDkgMjE5LjYwOEMxODI3LjA3IDIxMS43MDggMTg2NC4xMyAyMTMuMTc4IDE4OTkuMTYgMjI0LjgxOEMxODYyLjc2IDEzNC4xMjggMTc2NC40OCA4MS42MTgzIDE2NjYuODkgMTA1LjA4OEwxNjY1LjYzIDEwNS4zOThMMTM4Ni4wNSAxNzQuNTE4QzEyNzguODIgMjAxLjAyOCAxMjEzLjM4IDMwOS40MzggMTIzOS44OSA0MTYuNjY4TDEyMzkuODkgNDE2LjY3OFoiIGZpbGw9IiNDM0QzRkYiLz4KPHBhdGggZD0iTTE5ODcuOCAzODEuMDE5QzE5NzEuNzIgNDMyLjExOSAxOTc2LjA2IDQ4OS40ODkgMjAwNC41NyA1MzkuNzY5QzIwMzkuMTYgNjAwLjc1OSAyMTAwLjk3IDYzNi42MDkgMjE2Ni4wOCA2NDAuNzI5QzIxNjkuNiA2NDAuOTQ5IDIxNzMuMTIgNjQxLjA4OSAyMTc2LjY2IDY0MS4xMTlDMjIwOC41OSA2NDEuNDQ5IDIyNDAuOTkgNjM0LjEyOSAyMjcxLjA5IDYxOC4zODlDMjI3My4xNCA2MTcuMzE5IDIyNzUuMTggNjE2LjIxOSAyMjc3LjIgNjE1LjA3OUwyNTI3LjcyIDQ3My4wMDlMMjUyOC44NCA0NzIuMzY5QzI2MjQuMDcgNDE3LjU2OSAyNjU3LjMxIDI5Ni4wODkgMjYwMy4wNCAyMDAuMzc5QzI1NDguNzcgMTA0LjY2OSAyNDI3LjQ0IDcwLjgzODcgMjMzMS41NCAxMjQuNDI5TDIzMzAuNDEgMTI1LjA1OUwyMDc5Ljg5IDI2Ny4xMjlDMjA2MS42NiAyNzcuNDY5IDIwNDUuNjggMjkwLjIzOSAyMDMyLjEyIDMwNC43OTlMMjEwNy4yMSAzNTQuNzM5QzIxMTIuMTYgMzUwLjY1OSAyMTE3LjUzIDM0Ni45NDkgMjEyMy4zIDM0My42NzlMMjM3My44MiAyMDEuNjA5QzI0MjcuNjMgMTcxLjA5OSAyNDk1Ljk4IDE4OS45NzkgMjUyNi40OSAyNDMuNzg5QzI1NTcgMjk3LjU5OSAyNTM4LjEyIDM2NS45NDkgMjQ4NC4zMSAzOTYuNDU5TDIyNjguMjIgNTE4Ljk5OUwyMjMzLjc5IDUzOC41MjlDMjIxOC42MSA1NDcuMTM5IDIyMDIuMjcgNTUxLjgwOSAyMTg1Ljk0IDU1Mi44NzlDMjE0NC40MiA1NTUuNTk5IDIxMDMuMDIgNTM0Ljk2OSAyMDgxLjExIDQ5Ni4zNDlDMjA2OS44NiA0NzYuNTE5IDIwNjUuMzQgNDU0LjcwOSAyMDY2Ljc5IDQzMy41NDlMMTk4Ny43OSAzODEuMDA5TDE5ODcuOCAzODEuMDE5WiIgZmlsbD0iI0MzRDNGRiIvPgo8cGF0aCBkPSJNMTYzNy4xMSA0MzMuODQ5TDE3MjQuMiA0MTIuMzE5QzE3MjQuNjIgMzkxLjc1OSAxNzMwLjY5IDM3MS4wNjkgMTc0Mi45MyAzNTIuNjY5QzE3NjIuMzcgMzIzLjQyOSAxNzkzLjE4IDMwNi4yODkgMTgyNS42MSAzMDMuMTk5QzE4NTAuMzEgMzAwLjgzOSAxODc1Ljk1IDMwNi42MjkgMTg5OC4yMiAzMjEuNDM5TDE5MTEuMzQgMzMwLjE2OUwxOTg3LjgxIDM4MS4wMjlMMjA2Ni44MSA0MzMuNTY5TDIxMzguMDMgNDgwLjkzOUMyMTY0LjAzIDQ5OC4yMjkgMjE4MC40NiA1MjQuNDk5IDIxODUuOTYgNTUyLjkwOUMyMjAyLjI4IDU1MS44MzkgMjIxOC42MiA1NDcuMTY5IDIyMzMuODEgNTM4LjU1OUwyMjY4LjI0IDUxOS4wMjlDMjI1NS43MyA0NzUuMzY5IDIyMjguMzggNDM1LjcxOSAyMTg3Ljg0IDQwOC4zODlMMjE4Ni43NyA0MDcuNjY5TDIxMDcuMjMgMzU0Ljc2OUwyMDMyLjE0IDMwNC44MjlMMTk0Ni45NiAyNDguMTc5QzE5MzEuNzcgMjM4LjA3OSAxOTE1LjcgMjMwLjMzOSAxODk5LjE4IDIyNC44NDlDMTg2NC4xNCAyMTMuMjA5IDE4MjcuMDkgMjExLjcyOSAxNzkyLjExIDIxOS42MzlDMTc0My43MyAyMzAuNTY5IDE2OTkuMzEgMjU5LjM5OSAxNjY5LjY3IDMwMy45NjlDMTY0My4xNyAzNDMuODA5IDE2MzIuODUgMzg5LjY5OSAxNjM3LjEzIDQzMy44NzlMMTYzNy4xMSA0MzMuODQ5WiIgZmlsbD0iIzFFMjkzQiIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzIxMzE5XzQzNzMyIj4KPHJlY3Qgd2lkdGg9IjI0MDAiIGhlaWdodD0iMTI1NiIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K")
+}
+
+.darkModeSwitcher {
+  display: none !important;
+}
+.taHit{
+  box-shadow:none;
+}
+#instant-search{
+  box-shadow:none;
+}
+header {
+  border-bottom: 1px solid #EAEAEA;
+}
+
+body :not(.fa) {
+    font-family: 'Roboto';
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit' !important
+}
+/* ── Links: default colour ── */
+a,a:visited {
+  color: #5B66FB !important;
+  text-decoration: none !important;
+}
+/* ── Links: hover underline ── */
+a:hover,
+a:focus {
+  color: #5B66FB !important;
+  text-decoration: underline !important;
+  
+  .article-body a,
+.content a
+body a {
+  color: #5B66FB !important;
+}
+        </style>
+    
+
+
+    
+      <link rel="stylesheet" href="https://cdn.helpdocs.io/css/font-awesome.min.css?v=199af40">
+    
+
+        <!-- Start of linearb Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=ae15ce87-e55a-4862-9e4d-9d036f8f0a17"> </script>
+<!-- End of linearb Zendesk Widget script -->
+    
+
+
+        <!-- Google Analytics -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-SBX0CKXYK5"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-SBX0CKXYK5');
+          </script>
+      
+    
+    
+    
+    
+
+    <meta property="hd-render" content="hbs">
+  </head>
+
+  <body
+    data-article-id="0vif1ihmgc"
+    data-category-id="zuxjtdypj4"
+    data-search-term="undefined"
+    data-original-search-term="undefined"
+    data-search-result-count="undefined"
+    data-language-code=""
+    data-default-language-code="en"
+    data-account-id="g5c9ycw6ao"
+    data-analytics-mode="cookies"
+    data-enable-generative-search="false"
+    data-ai-answer-string="AI Answer"
+    data-ai-thinking-string="Thinking..."
+    data-ai-searching-string="Searching the docs"
+    data-ai-searching-for-string="Searching for"
+    data-ai-reading-string="Reading"
+    data-ai-sources-string="Sources"
+    data-ai-search-failed-string="I couldn&apos;t find an answer for that"
+    data-ai-helpful-string="This helped"
+    data-ai-unhelpful-string="This didn&apos;t help"
+    data-ai-did-this-help-string="Did this help?"
+    data-ai-ask-string="Ask AI"
+    data-home-path="/"
+    data-search-placeholder="Help me with..."
+    data-see-more-results-string="See more results"
+    data-all-categories-string="All categories"
+    data-category-title="Delivery Metrics"
+    data-no-articles-found-string="No articles found"
+    data-domain="linearb.helpdocs.io"
+  >
+    <a href="#categoryContent" class="skip-to-main-content-link">Skip to main content</a>
+    <div id="main" data-hd-template="startupv5">
+      <div id="overlay"></div>
+      <section id="homeBanner">
+
+  <!-- Main navigation bar -->
+  <header id="homeNav">
+    <nav role="navigation">
+      <div class="navLeft">
+        <!-- Logo and brand -->
+        <a class="hnBranding" href="/">
+            <img class="hnLogo" src="https://files.helpdocs.io/g5c9ycw6ao/logo.png?t=1771934760014" alt="LinearB Logo" />
+                    
+            <span class="hnBrand">LinearB</span>
+        </a>
+      </div>
+
+        <!-- Search bar -->
+        <section id="search-container" class="smallSearchContainer" aria-label="Search section" >
+          <div class="smallInstantSearch" id="instant-search">
+            <div class="siSearchIcon">
+              <svg fill="none" height="13" viewBox="0 0 14 13" width="14" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m9.06117 9.67792c-.825.53698-1.80989.84908-2.86766.84908-2.90695 0-5.263487-2.35658-5.263487-5.26352s2.356537-5.26348 5.263487-5.26348c2.90694 0 5.26349 2.35654 5.26349 5.26348 0 1.12541-.3532 2.16832-.9548 3.02394l3.1818 2.98308c.4029.3777.4233 1.0106.0455 1.4135-.3777.4029-1.0106.4233-1.4135.0455zm.39582-4.41444c0 1.80237-1.46111 3.26349-3.26348 3.26349-1.80238 0-3.26349-1.46112-3.26349-3.26349s1.46111-3.26348 3.26349-3.26348c1.80237 0 3.26348 1.46111 3.26348 3.26348z" fill="#000" fill-rule="evenodd"/></svg>
+            </div>
+            <form action="/search" method="GET" type="submit" role="search">
+              <label>
+                <input id="hd-query" name="query" aria-label="Help Me With..." placeholder="Help Me With..." autocomplete="off" autocorrect="off" autocapitalize="off" >
+              </label>
+            </form>
+            <div class="category-limiter" style="display: none; max-width: 30%;">
+              <select id="category-limiter" class="form-control" style="width: 100%">
+                <option value="-">All categories</option>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                      <option value="8icx91ii3s">Metrics Hub</option>
+                  
+                  
+                  
+                  
+
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                <option value="zuxjtdypj4" selected="selected">Delivery Metrics</option>
+              </select>
+            </div>
+            <div class="siShortcut">
+              <kbd class="siShortcutMeta">Ctrl</kbd>
+              <kbd>K</kbd>
+            </div>
+          </div>
+
+          <!-- Search results -->
+          <section id="searchresults"  class="smallSearchHits" aria-label="Search results">
+            <div class="srLeft"></div>
+            <div class="srHits" id="hits" aria-label="Search hit"></div>
+            <div class="srRight"></div>
+          </section>
+
+        </section>
+
+      <!-- Navigation links -->
+      <div class="hnItems navRightItems">
+        <ul class="hnList">
+                    
+              <li class="hnItem" href="#">
+                <a class="hnLink" rel="noreferrer" href="https://linearb.io/blog/" target="_blank" aria-label="Blog navigation item">
+                  Blog
+                </a>
+              </li>
+              <li class="hnItem" href="#">
+                <a class="hnLink" rel="noreferrer" href="https://devinterrupted.com/" target="_blank" aria-label="Dev Interrupted navigation item">
+                  Dev Interrupted
+                </a>
+              </li>
+              <li class="hnItem" href="#">
+                <a class="hnLink" rel="noreferrer" href="https://linearb.io/pricing/" target="_blank" aria-label="Pricing navigation item">
+                  Pricing
+                </a>
+              </li>
+          
+          <!-- Contact button -->
+          <li class="hnItem contactButton desktop" href="#" aria-label="Contact desktop">
+            
+            
+            
+            
+            
+                  <a
+                    id="contact-modal-trigger"
+                    class="btn btn-primary btn-contact nav-link"
+                    role="button"
+                    aria-haspopup="dialog"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#contact-modal"
+                    data-popup-trigger="contact-modal"
+                  >Contact</a>
+              
+          </li>
+          <!-- Dark mode switcher -->
+        </ul>
+      </div>
+
+      <div data-popup-body="language" class="languageSwitcherPopup popup" style="z-index: 5;">
+        <ul class="languageList">
+        </ul>
+      </div>
+
+      <!-- Mobile navigation -->
+      <a data-popup-trigger="mobile-nav" href="#" class="hnMobileNavButton" aria-label="Mobile navigation">
+        <svg height="14" viewBox="0 0 20 14" width="20" xmlns="http://www.w3.org/2000/svg">
+          <g class="hnMobileIcon" fill="none" stroke="none" stroke-width="2">
+            <path class="hnMobileIconTopBar" d="m0 1h20"/>
+            <path class="hnMobileIconBottomBar" d="m0 13h20"/>
+          </g>
+        </svg>
+      </a>
+      <div data-popup-body="mobile-nav" class="hnMobileItems mobileMenuPopup popup" aria-label="Mobile navigation popup" style="z-index: 4;">
+        <ul class="hnList">
+              <li class="hnItem" href="#">
+                <a class="hnLink" href="https://linearb.io/blog/" target="_blank" aria-label="Blog navigation item">
+                  Blog
+                </a>
+              </li>
+              <li class="hnItem" href="#">
+                <a class="hnLink" href="https://devinterrupted.com/" target="_blank" aria-label="Dev Interrupted navigation item">
+                  Dev Interrupted
+                </a>
+              </li>
+              <li class="hnItem" href="#">
+                <a class="hnLink" href="https://linearb.io/pricing/" target="_blank" aria-label="Pricing navigation item">
+                  Pricing
+                </a>
+              </li>
+          
+          <!-- Contact button -->
+          <li class="hnItem contactButton mobile" href="#" aria-label="Contact mobile">
+            
+            
+            
+            
+            
+                  <a
+                    id="contact-modal-trigger"
+                    class="btn btn-primary btn-contact nav-link"
+                    role="button"
+                    aria-haspopup="dialog"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#contact-modal"
+                    data-popup-trigger="contact-modal"
+                  >Contact</a>
+              
+          </li>
+          <!-- Dark mode switcher -->
+                            </ul>
+      </div>
+
+    </nav>
+  </header>
+
+</section>
+
+
+
+      <div class="container-fluid">
+        <div id="content">
+          
+          <main id="articleContent" class="three-col-large-left-focused-grid">
+          
+          	<!-- Table of contents --->
+          		<section id="tableOfContents" class="three-col-right stickOnScroll" aria-label="Table of Contents">
+          			<h5 class="tocTitle">Table of Contents</h5>
+          			<ul><li><a href="#cycle_time_inclusion_and_phase_completion_behavior">Cycle Time Inclusion and Phase Completion Behavior</a><ul><li><a href="#all_branches_are_included_even_incomplete_ones">All Branches Are Included—Even Incomplete Ones</a><ul><li><a href="#team_based_tracking_only">Team-Based Tracking Only</a></li><li><a href="#time_is_counted_only_after_a_phase_is_completee">Time Is Counted Only After a Phase Is Completee.</a></li></ul></li></ul></li><li><a href="#cycle_time_in_the_dashboard_view">Cycle Time in the Dashboard View</a></li><li><a href="#activity_view_cycle_time_by_branch">Activity View: Cycle Time by Branch</a></li><li><a href="#metrics_view_tracking_cycle_time_trends">Metrics View: Tracking Cycle Time Trends</a></li><li><a href="#learn_more">Learn More</a></li><li><a href="#related_articles">Related Articles</a></li></ul>
+          		</section>
+          
+          	<section id="articleCard" class="three-col-center responsive-toc">
+              <!-- Breadcrumbs -->
+              <section id="breadcrumbs">
+                <div class="bcList">
+                  <ol vocab="https://schema.org/" typeof="BreadcrumbList">
+                    <li property="itemListElement" typeof="ListItem">
+                      <a property="item" typeof="WebPage" class="bcItem" href="/" aria-label="Breadcrumb link to All Categories">
+                        <span property="name">All Categories</span>
+                      </a>
+                      <meta property="position" content="1" />
+                    </li>
+                    <svg class="bcIcon" height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg">
+                      <path d="m-19.594 240 5 3.575-5 3.425" fill="none" stroke="#808080" stroke-linecap="round" stroke-linejoin="round" transform="translate(20.094 -239.5)"/>
+                    </svg>
+                          <li property="itemListElement" typeof="ListItem">
+                            <a property="item" typeof="WebPage" href="/category/8icx91ii3s-metrics-hub">
+                          
+                            <i class="fa breadcrumb-icon fa-cubes" aria-hidden="true"></i>
+                          <span property="name">&#8203;Metrics Hub</span>
+                          </a>
+                            <meta property="position" content="2" />
+                        </li>
+                      
+                        <svg class="bcIcon" height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      		<path d="m-19.594 240 5 3.575-5 3.425" fill="none" stroke="#808080" stroke-linecap="round" stroke-linejoin="round" transform="translate(20.094 -239.5)"></path>
+                      	</svg>
+                        <li property="itemListElement" typeof="ListItem">
+                          <a property="item" typeof="WebPage" href="/category/zuxjtdypj4-delivery-metrics">
+                        
+                        <span property="name">&#8203;Delivery Metrics</span>
+                        </a>
+                          <meta property="position" content="3" />
+                      </li>
+                    <svg class="bcIcon" height="8" viewBox="0 0 6 8" width="6" xmlns="http://www.w3.org/2000/svg">
+                      <path d="m-19.594 240 5 3.575-5 3.425" fill="none" stroke="#808080" stroke-linecap="round" stroke-linejoin="round" transform="translate(20.094 -239.5)"/>
+                    </svg>
+                    <li>
+                      <span>Cycle Time Calculation in LinearB</span>
+                    </li>
+                  </ol>
+                </div>
+              </section>
+          		<section id="articleHeader">
+          			<header class="ahHeader">
+          				<!-- Article title -->
+          				<h1 class="ahTitle">Cycle Time Calculation in LinearB</h1>
+                  <h2 class="ahDescription">Learn how LinearB calculates Cycle Time across four key development phases—Coding, Pickup, Review, and Deploy—so you can identify bottlenecks, track delivery efficiency, and surface improvement opportunities across your teams.</h2>
+          			</header>
+          					<section id="ahAuthorship" >
+          						<div class="ahMeta">
+          								<img class="ahAvatar" src="https://www.gravatar.com/avatar/a6bec9c250ee69a11f44a77d1e2c9423?d=mm&amp;s=150" alt="Steven Silverstone" />
+          							<div class="ahPublishInfo">
+          									<span class="ahTime">
+          										Updated
+          										<time datetime="2025-12-14T14:39:10Z">11 months ago</time>
+          									</span>
+          									<span class="ahAuthor">by <span>Steven Silverstone</span></span>
+          							</div>
+          						</div>
+          					</section>
+          			
+          		</section>
+          
+          			<!-- Inline table of contents — shown below the title on narrow viewports where the right-rail TOC is hidden -->
+          			<section id="tableOfContentsInline" aria-label="Table of Contents">
+          				<h5 class="tocTitle">Table of Contents</h5>
+          				<ul><li><a href="#cycle_time_inclusion_and_phase_completion_behavior">Cycle Time Inclusion and Phase Completion Behavior</a><ul><li><a href="#all_branches_are_included_even_incomplete_ones">All Branches Are Included—Even Incomplete Ones</a><ul><li><a href="#team_based_tracking_only">Team-Based Tracking Only</a></li><li><a href="#time_is_counted_only_after_a_phase_is_completee">Time Is Counted Only After a Phase Is Completee.</a></li></ul></li></ul></li><li><a href="#cycle_time_in_the_dashboard_view">Cycle Time in the Dashboard View</a></li><li><a href="#activity_view_cycle_time_by_branch">Activity View: Cycle Time by Branch</a></li><li><a href="#metrics_view_tracking_cycle_time_trends">Metrics View: Tracking Cycle Time Trends</a></li><li><a href="#learn_more">Learn More</a></li><li><a href="#related_articles">Related Articles</a></li></ul>
+          			</section>
+          
+          		<section id="articleBody">
+          			<!-- Article body --->
+          			<!-- Table of contents ID is only applied if enabled by user -->
+          			<article class="articleHTML" id="articleWithToc">
+          				<div id="htmlWithToc"><div id="toc"><ul><li><a href="#cycle_time_inclusion_and_phase_completion_behavior">Cycle Time Inclusion and Phase Completion Behavior</a><ul><li><a href="#all_branches_are_included_even_incomplete_ones">All Branches Are Included—Even Incomplete Ones</a><ul><li><a href="#team_based_tracking_only">Team-Based Tracking Only</a></li><li><a href="#time_is_counted_only_after_a_phase_is_completee">Time Is Counted Only After a Phase Is Completee.</a></li></ul></li></ul></li><li><a href="#cycle_time_in_the_dashboard_view">Cycle Time in the Dashboard View</a></li><li><a href="#activity_view_cycle_time_by_branch">Activity View: Cycle Time by Branch</a></li><li><a href="#metrics_view_tracking_cycle_time_trends">Metrics View: Tracking Cycle Time Trends</a></li><li><a href="#learn_more">Learn More</a></li><li><a href="#related_articles">Related Articles</a></li></ul></div><p>Cycle Time measures how long it takes engineering work to move from initial development to production. It reflects your team’s ability to deliver software efficiently by breaking the delivery process into four distinct phases:</p><ul><li><strong>Coding Time</strong></li><li><strong>Pickup Time</strong></li><li><strong>Review Time</strong></li><li><strong>Deploy Time</strong></li></ul><p>Cycle Time is calculated by averaging the duration of these phases across all branches within a selected time range or iteration. Understanding where time accumulates can help identify bottlenecks and drive process improvements.</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1652275218115/screen-shot-2022-05-11-at-8-20-09-am.png"/></figure><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1625156229884/v-2-of-cycle-time-calculation-3.png"/></figure><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744966807970/line-image.png"/></figure><h5 id="coding_time">Coding Time</h5><p><strong>Definition:</strong> The time between the <strong>first commit</strong> on a branch and the moment a <strong>pull request (PR)</strong> is opened.</p><ul><li>If Jira-based coding time is enabled, this phase starts when a linked Jira issue is moved to <strong>In Progress</strong>.</li><li>Draft PRs are counted as coding time.</li><li>Learn how to enable this: <a href="https://linearb.helpdocs.io/article/j9toje81cb-jira-based-coding-time">Jira-Based Coding Time</a></li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744966825800/line-image.png"/></figure><h5 id="pickup_time">Pickup Time</h5><p><strong>Definition:</strong> The time between when a PR is opened (or moved from draft to active) and the <strong>first non-author comment.</strong></p><ul><li>If a PR is approved or merged without comments, pickup time is calculated from the PR open time to the approval or merge timestamp.</li><li>Comments from the PR author do <strong>not</strong> count toward triggering review time.</li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744966864148/line-image.png"/></figure><h5 id="review_time">Review Time</h5><p><strong>Definition:</strong> This measures the time between when a code review begins and when a PR is merged. <strong>Pickup time ends and review time begins only when someone other than the PR author performs a review action.</strong></p><ul><li>Comments or reviews from the PR author (i.e., self-reviews) are <strong>ignored</strong> for this transition.</li><li>If a PR is <strong>approved or merged without any comments</strong>, LinearB records the review time for this PR as <strong>0</strong>.</li></ul><div class="note-callout">Review time is attributed to the pull request itself. If the PR was contributed to by users on the selected team, the review time will be included—even if the reviewers are not on the team.</div><p>This metric helps teams evaluate how long it takes to complete peer reviews once collaboration has started.</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744966938086/line-image.png"/></figure><h5 id="deploy_time">Deploy Time</h5><p><strong>Definition:</strong> The time between when a PR is <strong>merged</strong> and when it is <strong>released to production</strong>.</p><ul><li>LinearB listens for release tags and maps them back to branches.</li><li>You can customize your release detection rules here: <a href="https://linearb.helpdocs.io/article/vnw2fw6226-set-up-release-detection-method">Release Detection Setup</a></li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744966987686/line-image.png"/></figure><h3 id="cycle_time_inclusion_and_phase_completion_behavior"><strong>Cycle Time Inclusion and Phase Completion Behavior</strong></h3><h4 id="all_branches_are_included_even_incomplete_ones"><strong>All Branches Are Included—Even Incomplete Ones</strong></h4><p>Cycle Time tracks <strong>all branches</strong> worked on during a selected iteration or date range, regardless of whether they were completed.</p><p>Because Cycle Time is calculated as an <strong>average of each completed phase</strong>, any branch that progresses—even partially—will be included in the calculation. For example:</p><ul><li>If your team works on <strong>five branches</strong> during a sprint:<ul><li>Two branches progress through <strong>coding and code review</strong> but are not deployed.</li><li>Three branches are <strong>fully deployed</strong>.</li></ul></li></ul><p>Cycle Time will include:</p><ul><li><strong>Coding Time</strong> and <strong>Pickup Time</strong> for the two incomplete branches.</li><li>Full Cycle Time (all four phases) for the three completed branches.</li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967190180/line-image.png"/></figure><h5 id="team_based_tracking_only"><strong>Team-Based Tracking Only</strong></h5><p>Cycle Time is a <strong>team-level metric</strong>. It tracks the progress of branches through the development lifecycle—not the performance of individual developers.</p><p>Whether one or several engineers contribute to a branch, the metric only reflects how the branch moves through each phase, making it ideal for evaluating overall process efficiency</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967149924/line-image.png"/></figure><h5 id="time_is_counted_only_after_a_phase_is_completee"><strong>Time Is Counted Only After a Phase Is Complete</strong>e.</h5><p>LinearB does <strong>not</strong> include time spent in a phase until that phase is fully completed. For example:</p><ul><li><strong>Coding Time</strong> is not counted until a <strong>pull request is created</strong>.</li><li><strong>Review Time</strong> is not counted until the PR is <strong>merged</strong>.</li><li><strong>Deploy Time</strong> begins only after the PR is merged and ends when the branch is <strong>released</strong>.</li></ul><p>This approach ensures that ongoing work doesn’t skew your averages. However, when a <strong>long-running branch</strong> finally moves forward, you may notice a sudden <strong>increase in your Cycle Time</strong>—as the system retroactively includes the full time spent in the newly completed phase.</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967278466/line-image.png"/></figure><h3 id="cycle_time_in_the_dashboard_view"><strong>Cycle Time in the Dashboard View</strong></h3><p>The <strong>Dashboard</strong> displays Cycle Time for your entire organization or a specific team, based on the currently selected iteration or weekly view. Cycle Time is calculated from active branch data and segmented into four phases—<strong>Coding</strong>, <strong>Pickup</strong>, <strong>Review</strong>, and <strong>Deploy</strong>.</p><ul><li>Segment colors range from <strong>green to red</strong>, reflecting performance benchmarks based on LinearB’s community standards.</li><li>If complete data isn’t yet available—for example, if a PR hasn’t been deployed—an <strong>asterisk</strong> (*) will appear, indicating that <strong>data collection is still in progress</strong>.</li></ul><p>You can toggle between teams and timeframes to drill down into specific activity:</p><ul><li>Selecting a <strong>team</strong> filters Cycle Time to reflect branches worked on by that team’s members. This includes code commits, PR creation, and reviews.</li><li>Selecting a different <strong>timeframe</strong> shows cycle performance for other sprints or weeks, helping you compare trends and team velocity over time.</li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1625159764644/2021-07-01-10-11-05.gif"/></figure><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967416848/line-image.png"/></figure><h3 id="activity_view_cycle_time_by_branch"><strong>Activity View: Cycle Time by Branch</strong></h3><p>The <strong>Activity</strong> tab provides a detailed breakdown of <strong>Cycle Time for individual branches</strong>, allowing you to inspect how each branch progresses through the development lifecycle.</p><ul><li>Each phase—<strong>Coding</strong>, <strong>Pickup</strong>, <strong>Review</strong>, and <strong>Deploy</strong>—is color-coded from <strong>green to red</strong>, based on LinearB’s community benchmarks.</li><li>Cycle Time is calculated using precise <strong>timestamps</strong> as the branch advances from its first commit through to deployment.</li></ul><p>This view is ideal for identifying outliers or bottlenecks on a per-branch basis, helping teams take targeted action when specific work items fall behind.</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1625008610424/2021-06-29-16-08-45.gif"/></figure><p></p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967360577/line-image.png"/></figure><h3 id="metrics_view_tracking_cycle_time_trends"><strong>Metrics View: Tracking Cycle Time Trends</strong></h3><p>To analyze how Cycle Time evolves over time, navigate to the <strong>Metrics</strong> tab and open the <strong>Delivery</strong> dashboard. This view provides a time-based breakdown of Cycle Time, allowing you to monitor trends across sprints, weeks, or custom date ranges.</p><ul><li>The dashboard displays both <strong>overall Cycle Time</strong> and <strong>individual phase durations</strong>: Coding, Pickup, Review, and Deploy.</li><li>You can <strong>filter by team</strong> to focus on specific groups, and adjust the <strong>date range</strong> to align with your reporting needs.</li><li>For even more flexibility, add a <strong>Cycle Time widget</strong> to any custom dashboard to track it alongside other KPIs that matter to your team.</li></ul><p>This view is ideal for retrospectives, leadership reporting, and process optimization over time.</p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1625012047478/2021-06-29-17-10-27.gif"/></figure><p></p><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967503799/line-image.png"/></figure><h3 id="learn_more"><strong>Learn More</strong></h3><ul><li><a href="https://linearb.io/blog/customer-story-intsights/">Streamlined Engineering Data Leads to 55% Decrease in Cycle Time at Intsights</a></li><li><a href="https://linearb.io/cycle-time/">What is Cycle Time? (LinearB Blog)</a></li><li><a href="https://linearb.io/blog/cycle-time-measuring-and-improving-team-process/">Cycle Time: Measuring and Improving Team Process</a></li></ul><figure><img src="https://files.helpdocs.io/g5c9ycw6ao/articles/0vif1ihmgc/1744967514904/line-image.png"/></figure><h3 id="related_articles"><strong>Related Articles</strong></h3><ul><li><a href="https://linearb.helpdocs.io/article/j9toje81cb-jira-based-coding-time">Jira-Based Coding Time</a></li><li><a href="https://linearb.helpdocs.io/article/7ukyx6lrpu-how-does-linear-b-handle-squash-merges">Handling Squash Merges</a></li><li><a href="https://linearb.helpdocs.io/article/wfoxjzmitp-understanding-code-changes">Understanding Code Changes</a></li><li><a href="https://linearb.helpdocs.io/article/xd0phaa4bm-exclude-non-working-days-from-cycle-time">Exclude Non-Working Days from Cycle Time</a></li></ul><p></p></div>
+          			</article>
+          		</section>
+          
+                <section
+                  id="feedback"
+                  data-thanks="Got it!"
+                  data-feedback-enable="false"
+                  data-sending="Sending..."
+                  data-failed="That didn&apos;t send. Try again?"
+                  data-more-detail="Please add a little more detail."
+                  data-email-invalid="Please enter a valid email address."
+                  data-tell-us-more="Thanks. What could be better?"
+                  data-not-taking-feedback="Thanks. We&apos;re not taking written feedback right now, but your rating was counted."
+                >
+                  <p class="fbTitle">How did we do?</p>
+                  <div class="fbButtons">
+                    <button type="button" class="fbPositive feedback-positive" aria-pressed="false" aria-label="This helped">😍</button>
+                    <button type="button" class="fbNeutral feedback-neutral" aria-pressed="false" aria-label="This was okay">😐</button>
+                    <button type="button" class="fbNegative feedback-negative" aria-pressed="false" aria-label="This didn&apos;t help">😓</button>
+                  </div>
+                </section>
+              
+          
+          			<section id="prevNext">
+          					<a class="pnPrevLink" href="/article/8r4q5ipyzn-coding-time-metric" aria-label="Go to previous article Coding Time Metric">
+          						<div class="pnPrev">
+          							<svg class="backToTopIcon" height="10" viewBox="0 0 23 13" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m0 0 10 10.215-10 9.785" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" transform="matrix(0 -1 1 0 1.5 11.5)"></path></svg>
+          							<p class="pnPrevTitle">Coding Time Metric</p>
+          						</div>
+          					</a>
+          				
+          					<a class="pnNextLink" href="/article/v9pckvmkbj-cycle-time" aria-label="Go to next article Cycle Time Metric">
+          						<div class="pnNext">
+          							<p class="pnNextTitle">Cycle Time Metric</p>
+          							<svg class="backToTopIcon" height="10" viewBox="0 0 23 13" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m0 0 10 10.215-10 9.785" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" transform="matrix(0 -1 1 0 1.5 11.5)"></path></svg>
+          						</div>
+          					</a>
+          			</section>
+          
+            		<section id="relatedArticles">
+            			<h4 class="raTitle">Related Articles</h4>
+            			<div class="raList">
+                      <a class="raLink" href="/article/v9pckvmkbj-cycle-time">
+                        <div class="raHit scaleSmall">
+                          <p class="raCardTitle">Cycle Time Metric</p>
+                        </div>
+                      </a>
+                      <a class="raLink" href="/article/sth7bn9zrd-metrics-glossary-html">
+                        <div class="raHit scaleSmall">
+                          <p class="raCardTitle">Metrics Glossary</p>
+                        </div>
+                      </a>
+                      <a class="raLink" href="/article/fj64ii8qer-how-do-i-build-a-metrics-dashboard">
+                        <div class="raHit scaleSmall">
+                          <p class="raCardTitle">Building a Metrics Dashboard in LinearB</p>
+                        </div>
+                      </a>
+                      <a class="raLink" href="/article/d2v8kqzxzd-metrics-community-benchmarks">
+                        <div class="raHit scaleSmall">
+                          <p class="raCardTitle">LinearB Engineering Metrics Benchmarks</p>
+                        </div>
+                      </a>
+                      <a class="raLink" href="/article/7qvn79yozz-delivery-metrics">
+                        <div class="raHit scaleSmall">
+                          <p class="raCardTitle">Delivery Metrics</p>
+                        </div>
+                      </a>
+                  </div>
+            		</section>
+              
+              
+          	</section>
+          </main>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <style>
+    footer {
+      background-color: var(--color-background) !important;
+    }
+
+    @media screen and (max-width: 768px) {
+      footer {
+        flex-flow: wrap;
+      }
+    }
+
+    footer .ftItems a,
+    footer .ftPoweredBy {
+      text-decoration: none !important;
+      font-weight: 600 !important;
+      color: var(--color-text) !important;
+    }
+
+    footer .ftItems a:hover {
+      color: var(--color-brand) !important;
+    }
+
+    footer .ftLangFlag {
+      fill: var(--color-text) !important;
+    }
+  </style>
+  <footer
+    style="display: flex !important; justify-content: space-between !important; visibility: visible !important; padding: 50px 70px !important; align-items: center !important; border-top: 1px solid #E6E6E6; gap: 10vw; height: 100px; width:100%; position: relative; left: 0; bottom: 0;"
+  >
+    <!-- Navigation links -->
+    <div
+      style="display: initial !important; visibility: visible !important; max-width: 45vw;"
+    >
+    <a
+      href="https://www.helpdocs.io?ref=hd"
+      aria-label="Powered by HelpDocs"
+      target="_blank"
+      style="display: initial !important; visibility: visible !important;"
+      aria-label="Opens in a new tab"
+    >
+
+
+            <a
+              href="https://www.helpdocs.io?ref=hd"
+              target="_blank"
+              title="Powered by HelpDocs"
+              style="display: initial !important; visibility: visible !important; text-decoration: none !important;"
+              aria-label="Opens in a new tab"
+            >
+              <img
+                src="https://cdn.helpdocs.io/img/logo_grey.png?v=199af40"
+                alt="Powered by HelpDocs"
+                style="display: initial !important; visibility: visible !important; filter: brightness(0.8) !important; max-height: 20px !important;"
+              />
+              <span style="position: absolute;width: 1px;clip: rect(0 0 0 0);overflow: hidden;white-space: nowrap;">(opens in a new tab)</span>
+            </a>
+        
+                      
+    </a>
+  </div>
+  <div class="ftItems navRightItems">
+    <ul class="ftList">
+          <li class="ftItem" href="#">
+            <a class="ftLink" href="https://linearb.io/blog/" target="_blank" aria-label="Opens in a new tab">Blog</a>
+          </li>
+          <li class="ftItem" href="#">
+            <a class="ftLink" href="https://devinterrupted.com/" target="_blank" aria-label="Opens in a new tab">Dev Interrupted</a>
+          </li>
+          <li class="ftItem" href="#">
+            <a class="ftLink" href="https://linearb.io/pricing/" target="_blank" aria-label="Opens in a new tab">Pricing</a>
+          </li>
+      
+      <li class="ftItem contactButton" href="#">
+        
+        
+        
+        
+        
+              <a
+                id="contact-modal-trigger"
+                class="btn btn-primary btn-contact nav-link"
+                role="button"
+                aria-haspopup="dialog"
+                href="#"
+                data-toggle="modal"
+                data-target="#contact-modal"
+                data-popup-trigger="contact-modal"
+              >Contact</a>
+          
+      </li> <!-- Contact button -->
+    </ul>
+  </div>
+</footer>
+
+
+          <!-- Back to top button -->
+        	<button id="backToTop" aria-label="Go back to top of document" type="button" name="Top" title="Go to top">
+        		<svg class="backToTopIcon" height="10" viewBox="0 0 23 13" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m0 0 10 10.215-10 9.785" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" transform="matrix(0 -1 1 0 1.5 11.5)"></path></svg>
+        	</button>
+        </div>
+      </div>
+    </div>
+
+    
+  <script type="text/javascript">
+    // ** Contact form functions **
+    // - checkContactFields checks validity of contact fields
+    // - showAnyDeflectArticles displays suggested articles if question
+    // length is over 20 characters
+
+    // When Cap is active, Send stays disabled until the visitor completes the
+    // "I'm a human" check — the widget solves on interaction and exposes the
+    // single-use pass on its `.token` property. Forms without a Cap widget aren't
+    // gated (returns true). capFailedOpen is a fail-open latch: if the widget
+    // can't load (e.g. CDN blocked) we must not permanently disable the form, so
+    // we release the gate and let the submit path fall back (server-side Cap
+    // check fail-opens too). It is NOT set on a mere upgrade-timeout when the
+    // widget is present and working — only when it errors or never upgrades.
+    var capFailedOpen = false;
+    // The widget delivers the pass on the `solve` event's detail. Its `.token` getter
+    // is only reliably populated for a widget that solved speculatively, and can still
+    // read empty inside the solve handler itself — which left Send disabled after a
+    // visibly successful check until some other input event happened to re-run this.
+    // Latch what the event gives us, exactly as the submit path in hdthemeutils does.
+    var capSolveToken = '';
+    function capSolved() {
+      var w = document.getElementById('hd-cap-widget');
+      if (!w) return true;
+      return !!(w.token || capSolveToken) || capFailedOpen;
+    }
+    function checkContactFields() {
+      var q = document.getElementById('question').value;
+      var e = document.getElementById('email').value;
+      var n = document.getElementById('name').value;
+      var sub = document.getElementById('contact-form-submit');
+      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+      if (q === "" || e === "" || n === "") {
+        sub.disabled = true;
+      } else if (!e.match(re)) {
+        sub.disabled = true;
+      } else if (!capSolved()) {
+        sub.disabled = true;
+      } else {
+        sub.disabled = false;
+      }
+    }
+
+    // Re-evaluate the Send gate whenever the Cap widget changes state (visitor
+    // solves or resets the check). The widget is parsed later in this partial and
+    // upgrades asynchronously, so poll briefly until it exists before binding.
+    (function () {
+      var bound = false, tries = 0;
+      var iv = setInterval(function () {
+        var w = document.getElementById('hd-cap-widget');
+        if (w && !bound) {
+          bound = true;
+          w.addEventListener('solve', function (ev) {
+            capSolveToken = (ev && ev.detail && ev.detail.token) || '';
+            checkContactFields();
+          });
+          w.addEventListener('reset', function () {
+            capSolveToken = '';
+            checkContactFields();
+          });
+          w.addEventListener('error', function () { capFailedOpen = true; checkContactFields(); });
+        }
+        if (bound || ++tries > 200) clearInterval(iv);
+      }, 50);
+      // Fail-open if the custom element never upgrades (script blocked / failed
+      // to load) so the form stays submittable. If it DOES upgrade, we require a
+      // real solve — no timeout-based release.
+      if (window.customElements && customElements.whenDefined) {
+        var failTimer = setTimeout(function () {
+          capFailedOpen = true;
+          checkContactFields();
+        }, 15000);
+        customElements.whenDefined('cap-widget').then(function () {
+          clearTimeout(failTimer);
+        }, function () {
+          clearTimeout(failTimer);
+          capFailedOpen = true;
+          checkContactFields();
+        });
+      } else {
+        capFailedOpen = true;
+      }
+    })();
+  </script>
+
+  <div data-popup-body="contact-modal" id="contact-modal" class="contactPopup">
+    <div class="contactContainer" role="dialog" aria-modal="true" aria-labelledby="cpTitle">
+        <img class="cpLogo" aria-label="LinearB Logo" src="https://files.helpdocs.io/g5c9ycw6ao/logo.png?t=1771934760014" alt="LinearB Logo" />
+        
+        
+      <h3 class="cpTitle" id="cpTitle">Contact</h3>
+      <a data-popup-trigger="contact-modal" aria-label="Close contact modal" class="cpCloseLink" href="#">
+        <svg class="cpCloseIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 14.667 14.668" aria-hidden="true"><path d="M32.334-209.666,26-203.332l6.334-6.334L26-216l6.334,6.334L38.667-216l-6.334,6.334,6.334,6.334Z" transform="translate(-25 217)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+      </a>
+      <form
+        id="contact-form"
+        action="/contact"
+        method="POST"
+        data-article-id="0vif1ihmgc"
+        data-category-id="zuxjtdypj4"
+        data-search-term=""
+      >
+        
+        <fieldset class="cpName">
+          
+          <input onkeyup="checkContactFields()" id="name" name="name" type="text" maxlength="100" autocomplete="name" placeholder="Jane Doe" aria-label="Jane Doe">
+        </fieldset>
+        <fieldset class="cpEmail">
+          
+          <input onkeyup="checkContactFields()" id="email" name="email" type="email" maxlength="320" autocomplete="email" placeholder="my.email@example.com" aria-label="my.email@example.com">
+        </fieldset>
+        <fieldset class="cpTextarea">
+            <textarea onkeyup="checkContactFields()" id="question" name="question" type="text" maxlength="6000" placeholder="Help Me With..." aria-label="Help Me With..." rows="5"></textarea>
+        </fieldset>
+        <input id="noop" type="text" name="noop" style="display: none !important">
+      </form>
+      <button disabled id="contact-form-submit" class="cpSubmit" type="button" data-sending="Sending…" data-sent="Sent" data-not-sent="Not sent. Try again?" data-rate-limited="Too many messages. Try again later.">Send</button>
+          </div>
+  </div>
+
+
+
+    <script src="https://cdn.helpdocs.io/js/js.cookie.min.js?v=199af40"></script>
+
+    <script src="https://cdn.helpdocs.io/js/highlight.min.js?v=199af40"></script>
+
+    
+                      
+      
+        <!-- Segment -->
+        <script type="text/javascript">
+          !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="4.0.0";
+          analytics.load("un5HYfxDPPWTx4VgRrNiwXJoRG33PZui");
+          analytics.page();
+          }}();
+        </script>
+      
+    <script src="https://cdn.helpdocs.io/js/libs/hdanalytics.js?v=199af40"></script>
+    <script src="https://cdn.helpdocs.io/js/libs/hdthemeutils.js?v=199af40"></script>
+    <script src="https://cdn.helpdocs.io/js/libs/instantsearch.js?v=199af40"></script>
+
+    
+
+    <script type="text/javascript">
+      window.hd_util_params = {
+        disable_legacy_search_timers: true,
+        enable_linking_headings: true,
+        enable_zoomable_images: true,
+        enable_back_to_top_button: true,
+        enable_popups: true,
+        enable_pre_languages: 'pre',
+        relative_dates_selector: '.ahTime time',
+        search_article_template: `
+          <div class="srHit scaleSmall">
+            <a class="srLink" data-article-id="\{\{article_id\}\}" href="\{\{relative_url\}\}\{\{text_fragment\}\}">
+              <div class="srPath">\{\{category_titles\}\}</div>
+              <h4 class="srHitTitle">\{\{title\}\}</h4>
+              <p class="srHitDescription">\{\{description\}\}</p>
+            </a>
+          </div>
+        `,
+        search_enable_category_limiter: true,
+
+        // Theme behaviour, all implemented in hdthemeutils. Turning one off
+        // here is the supported way to drop it from a custom template.
+        enable_lazy_gifs: true,
+        enable_mobile_nav_toggle: true,
+        enable_search_shortcut: true,
+        enable_dark_mode: false
+      };
+    </script>
+
+
+  </body>
+</html>

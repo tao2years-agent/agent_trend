@@ -1,0 +1,319 @@
+检索参数 {"search_query":[{"q":"after:2026-08-17 before:2026-11-19 site:claude.com \"Claude Tag\" memory channels October November updates agent identity"}],"response_length":"medium"}
+What is Claude Tag? | Claude Help Center (https://support.claude.com/en/articles/15594475-what-is-claude-tag)
+citeturn20search0 [wordlim: 200] Published: last month; Crawled: today; An Activity page in Organization settings > Claude Tag > Activity lists every scheduled and one-time task across your organization in addition to all network calls made using Agent Identity. ... Claude Tag remembers context to do its work, so channel and workspace memory is retained rather than discarded after each task. ... Channel work is attributed to your organization's Claude identity, while work done in a direct message runs on your own account.
+
+# What is Claude Tag?
+
+September 24, 2026
+
+Copy for LLM
+
+Claude in Slack switched over to the new Claude Tag experience on August 3, 2026. To integrate Claude and Slack, use Claude Tag instead. Learn how to set up Claude Tag or migrate from the earlier Claude in Slack.
+
+Claude Tag is a new way to work with Claude: tag @Claude into a conversation and it takes on real work, using your organization's tools and the shared context around it. Claude works under its own identity, builds context by remembering relevant information from the channels it’s in, and can follow up on its own.
+
+Claude Tag is available on Team and Enterprise plans in beta. Claude Tag works in Slack today.
+
+It’s how we’ve brought Claude’s capabilities directly to Slack, bringing AI assistance into your team’s workspace. This integration allows you to work with Claude without leaving Slack through three convenient surfaces:
+
+  * Channel tagging: Tag @Claude in any channel to hand it a task, and follow along as it works in the thread.
+
+  * Direct message with Claude: Start a private conversation with @Claude.
+
+  * AI assistant panel: Click the Claude icon in Slack's AI assistant header to open a panel on the right side of your Slack window, allowing you to access Claude from anywhere in the Slack app.
+
+When you tag @Claude in a channel, Claude works through the task while the whole exchange stays visible to everyone in the channel. Everyone in a channel works with the same Claude, so anyone can steer it or pick up where it left off. Claude can also check in on its own, like posting when a job finishes or tagging you when a thread stalls. To learn more, see the Claude Tag overview.
+
+In direct messages and the assistant panel, Claude has the capabilities you've enabled in your own Claude account, like web search and your connected tools. Channel tagging works differently: Claude acts under your organization's identity, using the tools and access an admin set up for that channel, and the work is billed to your organization rather than to you.
+
+## Set access and permissions for Claude Tag
+
+You decide what Claude Tag can reach by setting credentials and repository access at three levels. Each level inherits the permissions and memory of the one above it.
+
+  * Organization-wide: credentials and repositories that apply everywhere Claude Tag is installed.
+
+  * Workspace: access that applies to every public channel inside a Slack workspace. Inherits organization-wide permissions and memory.
+
+  * Private channel: extra credentials or repositories on top of what the workspace already grants. Use a private channel to keep sensitive connections to a smaller group. For example, a channel set up for legal work keeps its tools and memory separate from an engineering channel.
+
+To configure access, see Claude Tag identity and access.
+
+### Channels with guests
+
+Channels that include Slack guests have a separate Allow Claude to respond to guests setting that controls whether Claude responds there, and what access Claude has when it does. Choose Restrict (the default, which blocks Claude from those channels entirely), Channel only (Claude replies, but while a guest is present it runs with channel-only access), or Allow (Claude replies with the full access configured for it, as in any other channel). For the full guide, see Restrict guest channels.
+
+## Review memory and activity for Claude Tag
+
+Claude Tag keeps context per channel and per workspace. Owners can view, edit, and delete that memory.
+
+An Activity page in Organization settings > Claude Tag > Activity lists every scheduled and one-time task across your organization in addition to all network calls made using Agent Identity. Only Owners can open this page. Each action is also traceable in the tool where it happened: posts come from the Claude app in Slack, and commits and pull requests show the Claude GitHub App as the author with a link back to the Slack thread that started them. In any channel, you can ask "@Claude what triggers do you have set up here?" to see and turn off standing work.
+
+## Privacy and data
+
+### Data storage
+
+Your Slack conversations with Claude remain separate from your Claude history, keeping work organized across platforms.
+
+### Data visibility
+
+  * Conversations initiated in Slack are not visible in your Claude chat history.
+
+  * Conversations initiated in the Claude web app are not accessible in Slack.
+
+  * Each platform maintains separate conversation histories.
+
+### Data deletion
+
+  * Conversations are automatically deleted from Claude within 30 days if you disconnect the integration or uninstall the app.
+
+  * Your conversations in Slack follow your organization's Slack retention policies.
+
+### Claude Tag memory
+
+Claude Tag remembers context to do its work, so channel and workspace memory is retained rather than discarded after each task. Memory and activity respect channel boundaries, and admins can review or delete what Claude remembers. Channel work is attributed to your organization's Claude identity, while work done in a direct message runs on your own account.
+--------------------------------------------------------------------------------
+What is Claude Tag? | Claude Help Center (https://support.claude.com/en/articles/15594475-what-is-claude-tag?helpref=hc_fnav)
+citeturn20search1 [wordlim: 200] Crawled: last month; An Activity page in Organization settings > Claude Tag > Activity lists every scheduled and one-time task across your organization in addition to all network calls made using Agent Identity. ... Claude Tag remembers context to do its work, so channel and workspace memory is retained rather than discarded after each task. ... Channel work is attributed to your organization's Claude identity, while work done in a direct message runs on your own account.
+
+# What is Claude Tag?
+
+Updated over 3 weeks ago
+
+Copy for LLM
+
+Claude in Slack switched over to the new Claude Tag experience on August 3, 2026. To integrate Claude and Slack, use Claude Tag instead. Learn how to set up Claude Tag or migrate from the earlier Claude in Slack.
+
+Claude Tag is a new way to work with Claude: tag @Claude into a conversation and it takes on real work, using your organization's tools and the shared context around it. Claude works under its own identity, builds context by remembering relevant information from the channels it’s in, and can follow up on its own.
+
+Claude Tag is available on Team and Enterprise plans in beta. Claude Tag works in Slack today.
+
+It’s how we’ve brought Claude’s capabilities directly to Slack, bringing AI assistance into your team’s workspace. This integration allows you to work with Claude without leaving Slack through three convenient surfaces:
+
+  * Channel tagging: Tag @Claude in any channel to hand it a task, and follow along as it works in the thread.
+Choose Restrict (the default, which blocks Claude from those channels entirely), Channel only (Claude replies, but while a guest is present it runs with channel-only access), or Allow (Claude replies with the full access configured for it, as in any other channel). For the full guide, see Restrict guest channels.
+
+## Review memory and activity for Claude Tag
+
+Claude Tag keeps context per channel and per workspace. Owners can view, edit, and delete that memory.
+
+An Activity page in Organization settings > Claude Tag > Activity lists every scheduled and one-time task across your organization in addition to all network calls made using Agent Identity. Only Owners can open this page. Each action is also traceable in the tool where it happened: posts come from the Claude app in Slack, and commits and pull requests show the Claude GitHub App as the author with a link back to the Slack thread that started them. In any channel, you can ask "@Claude what triggers do you have set up here?" to see and turn off standing work.
+
+## Privacy and data
+
+### Data storage
+
+Your Slack conversations with Claude remain separate from your Claude history, keeping work organized across platforms.
+
+### Data visibility
+
+  * Conversations initiated in Slack are not visible in your Claude chat history.
+
+  * Conversations initiated in the Claude web app are not accessible in Slack.
+
+  * Each platform maintains separate conversation histories.
+
+### Data deletion
+
+  * Conversations are automatically deleted from Claude within 30 days if you disconnect the integration or uninstall the app.
+
+  * Your conversations in Slack follow your organization's Slack retention policies.
+
+### Claude Tag memory
+
+Claude Tag remembers context to do its work, so channel and workspace memory is retained rather than discarded after each task. Memory and activity respect channel boundaries, and admins can review or delete what Claude remembers. Channel work is attributed to your organization's Claude identity, while work done in a direct message runs on your own account.
+
+## Frequently asked questions
+
+### How is Claude Tag different from the Claude in Slack I already use?
+
+Claude Tag is the next generation of that experience, in the same place. The familiar ways of working still apply, and Claude can now do more: it remembers context across days, schedules its own follow-ups, checks in proactively, and acts under its own identity. An organization’s Primary Owner or Owner opts your organization in to move over.
+
+### Who can set up Claude Tag, and who pays for it?
+
+Only an organization's Primary Owner or Owner can set up Claude Tag's access and channels. Tagging Claude in a channel is billed to your organization. Direct messages are billed to the person’s own Claude account instead.--------------------------------------------------------------------------------
+Claude Tag now reads even more of the room | Claude by Anthropic (https://claude.com/resources/articles/claude-tag-now-reads-even-more-of-the-room)
+citeturn20search2 [wordlim: 200] Published: 3 months ago; Crawled: last month; Now, Claude uses context from across the channel, as well as its memory and the standing instructions you have given it, to determine when to contribute to the conversation. ... An annoying agent is worse than an unhelpful one. ... This update is now available across Claude Tag, available for Claude Teams and Enterprise customers.
+
+# Claude Tag now reads even more of the room
+
+Claude has more context to decide when to proactively collaborate in Slack (and when not to)
+
+  * CategoryAnnouncements
+
+  * Product Claude Tag
+
+  * Date August 13, 2026
+
+  * Reading time 5 min
+
+Claude Tag lets you add Claude to a Slack channel, where it works alongside your team. Claude responds when you @-mention it, or proactively when it thinks it can be helpful.
+
+Before, Claude only saw one message at a time, so it made decisions to act proactively based on what was in front of it, but not the wider context of what was around it.
+
+Now, Claude uses context from across the channel, as well as its memory and the standing instructions you have given it, to determine when to contribute to the conversation.
+
+As a result, Claude is now roughly 30% better at determining when, and when not, to proactively respond.
+
+This update comes at no additional cost today. While holding more context does increase Claude Tag’s usage, the additional context Claude Tag holds does not count toward usage or spend limits on any plan.
+--------------------------------------------------------------------------------
+Claude Tag admin guide · Claude Academy (https://academy.claude.com/tutorials/claude-tag-admin-guide)
+citeturn20search3 [wordlim: 200] Crawled: today; The person has connected a Claude account, or, in a workspace where Claude Tag is on, is a full workspace member (not a Slack guest) still within the limited time your organization pays for  | The identity model (section 4); the limited time is in section 6 ... Public channels can add to the shared workspace memory: a note Claude Tag saves there from one public channel is available when someone asks in another, by design.
+
+### Memory: who can see it, and how you review it
+
+Claude Tag records memories as it works (What Claude Tag remembers(opens in new tab) has the mechanics), and where a memory lands depends on the channel it was made in.
+
+Memory files and transcripts are separate records: deleting a memory file doesn't delete transcripts, and changing a channel between public and private doesn't move what's already saved. Deleting stored data happens at the workspace or channel level (section 4).
+
+Who can see a memory follows two rules:
+
+  1. Public channels can add to the shared workspace memory: a note Claude Tag saves there from one public channel is available when someone asks in another, by design. If that's not what a team wants, that work belongs in a private channel.
+  2. A private channel reads the shared workspace memory but writes only to its own store: nothing Claude Tag learns in a private channel leaks into the shared pool.
+
+Direct messages and other workspaces stay separate in both cases.
+
+From the `⋯` menu on a workspace's or channel's page, an Owner can open `View memory files` to read, edit, or delete the store, and anyone in the channel can curate memory just by asking Claude Tag what it remembers (see checking and correcting memory(opens in new tab)).
+--------------------------------------------------------------------------------
+Release notes | Claude Help Center (https://support.claude.com/en/articles/12138966-release-notes?rel=nofollow)
+citeturn20search4 [wordlim: 200] Crawled: 3 weeks ago; Memory on Claude now works as a set of individual, categorized entries that Claude reads and updates during your conversations, replacing the previous daily memory summary. ... Team and Enterprise plans can now tag Claude directly in Slack conversations and delegate tasks to it while they focus on other work.
+
+## August 2026
+
+### August 25, 2026
+
+Memory in Claude Cowork, editable topics, and a sensitive topics setting
+
+Memory now works across chat and Cowork in the cloud. Everything Claude remembers is listed under Topics in Settings > Memory, where you can edit or delete any item. Topics such as health or beliefs stay out of memory unless you turn on Include sensitive topics in memory. Memory is on by default for Free, Pro, and Max plans and off by default for Team and Enterprise organizations. See Use Claude's chat search and memory to build on previous context.
+
+### August 6, 2026
+
+Skill and plugin security scanning (beta)
+
+Enterprise plans can now turn on skill and plugin security scanning to automatically check third-party skills and plugins for malicious content when someone uploads or edits them. For more information, see Get started with skill and plugin scanning.
+
+## July 2026
+
+### July 24, 2026
+
+Claude Opus 5 launch
+
+We launched Claude Opus 5, a thoughtful and proactive model that comes close to the frontier intelligence of Claude Fable 5 at half the price. For more information, see our blog post: Claude Opus 5.
+
+### July 14, 2026
+
+HIPAA configuration for your Claude organizations is now self-serve
+
+You can now manage HIPAA readiness for your Claude organizations yourself. This applies to both Claude Enterprise and the Claude Platform (API). In each product, an eligible admin can review the Business Associate Agreement (BAA), download the implementation guide, and enable the HIPAA configuration in a single flow. For more information, refer to HIPAA-ready Enterprise plans and HIPAA readiness for Claude API.
+
+### July 10, 2026
+
+Updated memory for Claude
+
+Memory on Claude now works as a set of individual, categorized entries that Claude reads and updates during your conversations, replacing the previous daily memory summary. See Use Claude’s chat search and memory to build on previous context.
+
+### July 9, 2026
+
+A new way to reflect with Claude
+
+Your monthly recap is a new feature at Settings > Reflect that shows you the topics you spent time on, your most active day and peak hour, and observations about how you work with Claude. --------------------------------------------------------------------------------
+Claude Platform release notes - Claude Platform Docs (https://platform.claude.com/docs/en/release-notes/overview?change=you-can-now-let-a-claude-managed-agents-agent-use-dynamic-wo)
+citeturn20search5 [wordlim: 200] Crawled: 3 weeks ago; Updates to the Claude Platform, including the Claude API, client SDKs, and the Claude Console. ... ### October 23, 2026 ... Its `/v1/organizations/claude_tag/` endpoints read and change Claude Tag settings on Slack channels and Slack workspaces, show which settings apply in a channel and where each comes from, and attach Access bundles. ... Supply it for optimistic concurrency (a mismatch returns a 409 error), or omit it to apply the update unconditionally. ... On memory store endpoints, `agent-memory-2026-07-22` replaces `managed-agents-2026-04-01`; sending both returns a `400` error.
+
+# Claude Platform release notes
+
+Updates to the Claude Platform, including the Claude API, client SDKs, and the Claude Console.
+
+The Claude Platform release notes list changes to the Claude API, the client SDKs, and the Claude Console, newest first.
+
+
+### October 23, 2026
+
+  * The Claude Tag API is available in beta for Claude Enterprise organizations with the `experimental-claude-tag-2026-10-21` beta header. Its `/v1/organizations/claude_tag/` endpoints read and change Claude Tag settings on Slack channels and Slack workspaces, show which settings apply in a channel and where each comes from, and attach Access bundles. Call it with an Admin API key that your primary owner creates in claude.ai with the `read:claude_tag` or `write:claude_tag` scope. It is not available to Claude Platform (Claude Console) organizations.
+
+### October 22, 2026
+
+  * We’ve launched Claude Models on Google Cloud (Anthropic managed), the Claude API operated by Anthropic and reached through your Google Cloud project. --------------------------------------------------------------------------------
+Claude Platform release notes - Claude Platform Docs (https://platform.claude.com/docs/en/release-notes/overview?ai_monitoring_entry=2026-10-09-11f9778283)
+citeturn20search6 [wordlim: 200] Crawled: today;   * Long conversations and agent loops on the Messages API can now send smaller requests and get a lower time to first token with message threads, in beta with the `message-threads-2026-08-12` beta header. ... ### October 30, 2026
+
+  * We’ve deprecated fast mode for Claude Opus 4.8, with removal on November 30, 2026. ... Its `/v1/organizations/claude_tag/` endpoints read and change Claude Tag settings on Slack channels and Slack workspaces, show which settings apply in a channel and where each comes from, and attach Access bundles.
+To move an existing integration, see Migrate from the Usage and Cost API or Migrate from the Claude Enterprise usage and cost reports.
+
+### October 28, 2026
+
+  * We’ve raised the maximum request size for the Messages API and the Token Counting API from 32 MB to 128 MB on the first-party Claude API.
+
+### October 23, 2026
+
+  * The Claude Tag API is available in beta for Claude Enterprise organizations with the `experimental-claude-tag-2026-10-21` beta header. Its `/v1/organizations/claude_tag/` endpoints read and change Claude Tag settings on Slack channels and Slack workspaces, show which settings apply in a channel and where each comes from, and attach Access bundles. Call it with an Admin API key that your primary owner creates in claude.ai with the `read:claude_tag` or `write:claude_tag` scope. It is not available to Claude Platform (Claude Console) organizations.
+
+### October 22, 2026
+
+  * We’ve launched Claude Models on Google Cloud (Anthropic managed), the Claude API operated by Anthropic and reached through your Google Cloud project. Google Cloud IAM controls access. Google Cloud Marketplace handles billing.
+  * Fast mode is available for Claude Opus 5.5 on Claude Models on Google Cloud (Anthropic managed).
+
+--------------------------------------------------------------------------------
+Agent identity: a new access model for autonomous, team-wide AI | Claude by Anthropic (https://claude.com/resources/articles/agent-identity-access-model?trk=cndc-detail)
+citeturn20search7 [wordlim: 200] Published: 4 months ago; Crawled: today; Claude Tag creates a distinct identity for each private channel; public channels in a workspace share a workspace-level identity. ... On the audit side, every routine, memory write, and network call made with agent credentials is recorded, and because Claude acts under its own service accounts, those actions also land in each connected system's own logs.
+We call this access model agent identity.
+
+In this post, we explain how agent identity works, how it moves permissions from per-user to per-channel, and how to scope it well in your own workspace.
+
+## Why “act as the user” breaks down
+
+When you use AI as a personal assistant, you can connect platforms like Google Drive, GitHub, and your calendar, and let the model use your access permissions to read and write in them.
+
+This model doesn’t work for Claude Tag for two reasons:
+
+  * Increasing agent autonomy. The length of a task that an AI agent can reliably complete on its own has been doubling roughly every four months. Agents now schedule their own tasks for later and respond to events long after the person who asked has logged off. While users set up routines that trigger them to act given certain situations, the agent works largely autonomously.
+  * Multiplayer teams. Claude Tag places Claude in shared spaces where teams are already working—e.g., a channel where three engineers and a PM are debugging together. That’s a departure from per-user Access Control Lists: it means that a channel member without direct access to the repo can ask Claude to read that repo, if the channel’s profile grants Claude that permission.
+
+This is unusual, but we think it is a necessary step toward an access model that works for autonomous, multiplayer agents. Below, we sketch out how to think about setting those boundaries.
+
+### How identity boundaries work
+
+Claude Tag creates a distinct identity for each private channel; public channels in a workspace share a workspace-level identity. Claude's identity in a legal channel can't reach code that wasn't granted there, and its identity in an engineering channel can't read legal documents that weren't granted there. Memory and access respect those boundaries: what Claude learns in a private channel never appears in the wider workspace.
+
+The identity belongs to the channel, so anyone in it can tag Claude by default, and admins can scope each channel's profile to the least-privileged member. On the audit side, every routine, memory write, and network call made with agent credentials is recorded, and because Claude acts under its own service accounts, those actions also land in each connected system's own logs.
+
+## What’s next
+
+Agent identity is the foundation of Claude Tag's access model. In the future, we plan to strengthen Claude Tag’s security offerings to include just-in-time credential grants—so that a user can approve a single sensitive action in the moment without permanently widening the agent's scope—and an identity-aware overlay for organizations with more complex clearance structures. This will add user-level checks on top of an agent’s scope, so Claude only acts when both the channel's profile and the requesting user's own permissions allow it.
+
+The shift from single player to multiplayer AI in products like Claude Tag makes long-running, team-based work possible. Agent identity ensures that Claude’s access to tools is broad enough to be useful, but scoped enough to be secure at enterprise scale.
+
+Learn more about Claude Tag.
+
+This article was written by Noah Zweben, a member of technical staff on the Claude Code team.--------------------------------------------------------------------------------
+Release notes | Claude Help Center (https://support.claude.com/en/articles/12138966-release-notes?mainArticle=true)
+citeturn20search8 [wordlim: 200] Crawled: last month; Memory on Claude now works as a set of individual, categorized entries that Claude reads and updates during your conversations, replacing the previous daily memory summary. ... With write tools enabled, Claude can draft, send, and organize email, manage calendar events, update mailbox settings, and create and update files in OneDrive and SharePoint.
+For more information, see our blog post: Claude Opus 5.
+
+### July 14, 2026
+
+HIPAA configuration for your Claude organizations is now self-serve
+
+You can now manage HIPAA readiness for your Claude organizations yourself. This applies to both Claude Enterprise and the Claude Platform (API). In each product, an eligible admin can review the Business Associate Agreement (BAA), download the implementation guide, and enable the HIPAA configuration in a single flow. For more information, refer to HIPAA-ready Enterprise plans and HIPAA readiness for Claude API.
+
+### July 10, 2026
+
+Updated memory for Claude
+
+Memory on Claude now works as a set of individual, categorized entries that Claude reads and updates during your conversations, replacing the previous daily memory summary. See Use Claude’s chat search and memory to build on previous context.
+
+### July 9, 2026
+
+A new way to reflect with Claude
+
+Your monthly recap is a new feature at Settings > Reflect that shows you the topics you spent time on, your most active day and peak hour, and observations about how you work with Claude. --------------------------------------------------------------------------------
+Claude Platform release notes - Claude Platform Docs (https://platform.claude.com/docs/en/release-notes/overview)
+citeturn20search9 [wordlim: 200] Crawled: last week;   * Long conversations and agent loops on the Messages API can now send smaller requests and get a lower time to first token with message threads, in beta with the `message-threads-2026-08-12` beta header. ... ### October 30, 2026
+
+  * We’ve deprecated fast mode for Claude Opus 4.8, with removal on November 30, 2026. ... Its `/v1/organizations/claude_tag/` endpoints read and change Claude Tag settings on Slack channels and Slack workspaces, show which settings apply in a channel and where each comes from, and attach Access bundles. ...   * Version 1.30.0 of the `ant` CLI adds `ant apply`, which creates and updates agents, environments, skills, memory stores, and deployments from files in your repository. ... Commit the `claude-lock.json` lockfile it writes so that later runs, on your machine or in CI, update the same resources instead of creating new ones.
+--------------------------------------------------------------------------------
+Agent identity: a new access model for autonomous, team-wide AI | Claude by Anthropic (https://claude.com/resources/articles/agent-identity-access-model?i=3)
+citeturn20search10 [wordlim: 200] Published: 4 months ago; Crawled: 3 weeks ago; # Agent identity in Claude Tag: a new access model for autonomous, team-wide AI ... In the agent identity model, admins define an identity—the baseline set of connections and skills Claude holds everywhere—at the workspace level, and every channel inherits it by default.
+--------------------------------------------------------------------------------
+Release notes | Claude Help Center (https://support.claude.com/en/articles/12138966-release-notes?debug=1&debug=true&debug_url=1)
+citeturn20search11 [wordlim: 200] Crawled: 2 months ago; Memory on Claude now works as a set of individual, categorized entries that Claude reads and updates during your conversations, replacing the previous daily memory summary. ... With write tools enabled, Claude can draft, send, and organize email, manage calendar events, update mailbox settings, and create and update files in OneDrive and SharePoint.
+

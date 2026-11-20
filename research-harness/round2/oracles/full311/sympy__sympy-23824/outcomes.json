@@ -1,0 +1,107 @@
+[
+  {
+    "case": "sympy__sympy-23824",
+    "phase": "original",
+    "module": "sympy/physics/hep/tests/test_gamma_matrices.py",
+    "exit": 0,
+    "seconds": 3.938,
+    "xml": "original_m1.xml",
+    "log": "original_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_algorithm",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_simplify1",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_class",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_trace",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23824",
+    "phase": "regression_on_base",
+    "module": "sympy/physics/hep/tests/test_gamma_matrices.py",
+    "exit": 1,
+    "seconds": 3.484,
+    "xml": "regression_on_base_m1.xml",
+    "log": "regression_on_base_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_algorithm",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_simplify1",
+        "outcome": "failure",
+        "reason": "assert False\n +  where False = <bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)>(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))\n +    where <bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)> = 4*GammaMatrix(sigma)*GammaMatrix(rho).equals\n +    and   GammaMatrix(rho) = G(rho)\n +    and   GammaMatrix(sigma) = G(sigma)"
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_class",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_trace",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23824",
+    "phase": "regression_on_gold",
+    "module": "sympy/physics/hep/tests/test_gamma_matrices.py",
+    "exit": 0,
+    "seconds": 3.453,
+    "xml": "regression_on_gold_m1.xml",
+    "log": "regression_on_gold_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_algorithm",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_kahane_simplify1",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_class",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.physics.hep.tests.test_gamma_matrices",
+        "name": "test_gamma_matrix_trace",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  }
+]

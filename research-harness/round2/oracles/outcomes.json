@@ -1,0 +1,1591 @@
+[
+  {
+    "instance_id": "sympy__sympy-22080",
+    "src_test_paths": [
+      "sympy/codegen/tests/test_rewriting.py",
+      "sympy/printing/tests/test_pycode.py",
+      "sympy/utilities/tests/test_lambdify.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22080-mxz6pq8t\\sympy-3f8c8c2377cb8e0daaf8073e8d03ac7d87580813\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_create_expand_pow_optimization": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_empty_modules": {
+            "role": "FTP",
+            "nodes": [],
+            "outcome": "missing"
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 5.56,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_create_expand_pow_optimization": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_empty_modules": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_empty_modules"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 3.17,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_create_expand_pow_optimization": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_empty_modules": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_empty_modules"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 3.06,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-22456",
+    "src_test_paths": [
+      "sympy/codegen/tests/test_ast.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22456-qojmsog4\\sympy-a3475b3f9ac662cd425157dd3bdb93ad7111c090\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_String": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_String"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Assignment": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Assignment_printing": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Attribute": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Attribute"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_AugAssign": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_AugAssign"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_CodeBlock": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.61,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_String": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_String"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_Assignment": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Assignment_printing": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Attribute": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Attribute"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_AugAssign": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_AugAssign"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_CodeBlock": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 2.22,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_String": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_String"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Assignment": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Assignment_printing": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Assignment_printing"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Attribute": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_Attribute"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_AugAssign": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_AugAssign"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_CodeBlock": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/codegen/tests/test_ast.py::test_CodeBlock"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.12,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-22714",
+    "src_test_paths": [
+      "sympy/geometry/tests/test_point.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22714-d3_riljr\\sympy-3ff4717b6aef6086e78f01cdfa06f64ae23aed7e\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_issue_22684": {
+            "role": "FTP",
+            "nodes": [],
+            "outcome": "missing"
+          },
+          "test_Point2D": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_Point2D"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test__normalize_dimension": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_arguments": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_arguments"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_concyclic_doctest_bug": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_dot": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_dot"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 3.06,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_issue_22684": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_issue_22684"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_Point2D": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_Point2D"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test__normalize_dimension": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_arguments": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_arguments"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_concyclic_doctest_bug": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_dot": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_dot"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 2.31,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_issue_22684": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_issue_22684"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Point2D": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_Point2D"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test__normalize_dimension": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_arguments": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_arguments"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_concyclic_doctest_bug": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_dot": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/geometry/tests/test_point.py::test_dot"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.27,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-22914",
+    "src_test_paths": [
+      "sympy/printing/tests/test_pycode.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22914-vr02vtiu\\sympy-c4e836cdf73fc6aa7bab6a86719a0f08861ffb1d\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter_print_seq": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter_print_seq"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_PythonCodePrinter_standard": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter_standard"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.7,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter_print_seq": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter_print_seq"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_PythonCodePrinter_standard": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter_standard"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 2.16,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_PythonCodePrinter": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Integral": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_Integral"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_MpmathPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_MpmathPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_NumPyPrinter_print_seq": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_NumPyPrinter_print_seq"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_PythonCodePrinter_standard": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/printing/tests/test_pycode.py::test_PythonCodePrinter_standard"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.11,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-23262",
+    "src_test_paths": [
+      "sympy/utilities/tests/test_lambdify.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23262-tuthsc1a\\sympy-fdc707f73a65a429935c01532cd3970d3355eab6\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_issue_14941": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_issue_14941"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_atoms": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_atoms"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_bad_args": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_bad_args"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_beta_math": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_beta_math"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 4.06,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_issue_14941": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_issue_14941"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_atoms": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_atoms"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_bad_args": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_bad_args"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_beta_math": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_beta_math"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 3.05,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_issue_14941": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_issue_14941"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_ITE": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_ITE"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Min_Max": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_Min_Max"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_atoms": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_atoms"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_bad_args": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_bad_args"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_beta_math": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/utilities/tests/test_lambdify.py::test_beta_math"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.74,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-23413",
+    "src_test_paths": [
+      "sympy/matrices/tests/test_normalforms.py",
+      "sympy/polys/matrices/tests/test_normalforms.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23413-iv92et71\\sympy-10de1a18a0efac0b19b611e40c928250dda688bf\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_hermite_normal": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed",
+              "passed"
+            ]
+          },
+          "test_smith_normal": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed",
+              "passed"
+            ]
+          },
+          "test_smith_normal_deprecated": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.5,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_hermite_normal": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure",
+              "failure"
+            ]
+          },
+          "test_smith_normal": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed",
+              "passed"
+            ]
+          },
+          "test_smith_normal_deprecated": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 2.05,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_hermite_normal": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_hermite_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed",
+              "passed"
+            ]
+          },
+          "test_smith_normal": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal",
+              "sympy/polys/matrices/tests/test_normalforms.py::test_smith_normal"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed",
+              "passed"
+            ]
+          },
+          "test_smith_normal_deprecated": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/matrices/tests/test_normalforms.py::test_smith_normal_deprecated"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.12,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-23534",
+    "src_test_paths": [
+      "sympy/core/tests/test_symbol.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23534-sz30qwdm\\sympy-832c24fec1046eaa544a4cab4c69e3af3e651759\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_symbols": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_symbols"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Dummy": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Dummy_force_dummy_index": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy_force_dummy_index"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Str": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Str"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Symbol": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Symbol"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Wild_properties": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Wild_properties"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.0,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_symbols": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_symbols"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_Dummy": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Dummy_force_dummy_index": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy_force_dummy_index"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Str": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Str"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Symbol": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Symbol"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Wild_properties": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Wild_properties"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 1.99,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_symbols": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_symbols"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Dummy": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Dummy_force_dummy_index": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Dummy_force_dummy_index"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Str": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Str"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Symbol": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Symbol"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_Wild_properties": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/core/tests/test_symbol.py::test_Wild_properties"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.06,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-23824",
+    "src_test_paths": [
+      "sympy/physics/hep/tests/test_gamma_matrices.py"
+    ],
+    "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23824-4h7su4vf\\sympy-39de9a2698ad4bb90681c0fdb70b30a78233145f\\sympy\\__init__.py",
+    "phases": {
+      "original": {
+        "selected": {
+          "test_kahane_simplify1": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_gamma_matrix_class": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_kahane_algorithm": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 3.28,
+        "xml": "original.xml",
+        "stdout": "original.txt"
+      },
+      "regression_on_base": {
+        "selected": {
+          "test_kahane_simplify1": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+            ],
+            "outcome": "failure",
+            "observations": [
+              "failure"
+            ]
+          },
+          "test_gamma_matrix_class": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_kahane_algorithm": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 1,
+        "seconds": 2.59,
+        "xml": "regression_on_base.xml",
+        "stdout": "regression_on_base.txt"
+      },
+      "regression_on_gold": {
+        "selected": {
+          "test_kahane_simplify1": {
+            "role": "FTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_gamma_matrix_class": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          },
+          "test_kahane_algorithm": {
+            "role": "PTP",
+            "nodes": [
+              "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+            ],
+            "outcome": "passed",
+            "observations": [
+              "passed"
+            ]
+          }
+        },
+        "exit": 0,
+        "seconds": 2.51,
+        "xml": "regression_on_gold.xml",
+        "stdout": "regression_on_gold.txt"
+      }
+    }
+  }
+]

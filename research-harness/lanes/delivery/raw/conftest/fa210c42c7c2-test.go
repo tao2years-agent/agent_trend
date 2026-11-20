@@ -1,0 +1,278 @@
+package runner
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"path"
+	"path/filepath"
+	"regexp"
+	"strings"
+
+	"github.com/open-policy-agent/conftest/downloader"
+	"github.com/open-policy-agent/conftest/output"
+	"github.com/open-policy-agent/conftest/parser"
+	"github.com/open-policy-agent/conftest/policy"
+)
+
+// TestRunner is the runner for the Test command, executing
+// Rego policy checks against configuration files.
+type TestRunner struct {
+	Trace              bool
+	Strict             bool
+	Capabilities       string
+	RegoVersion        string `mapstructure:"rego-version"`
+	Policy             []string
+	Data               []string
+	Update             []string
+	Ignore             string
+	Parser             string
+	StdinFilename      string `mapstructure:"stdin-filename"`
+	Namespace          []string
+	AllNamespaces      bool `mapstructure:"all-namespaces"`
+	FailOnWarn         bool `mapstructure:"fail-on-warn"`
+	NoColor            bool `mapstructure:"no-color"`
+	NoFail             bool `mapstructure:"no-fail"`
+	SuppressExceptions bool `mapstructure:"suppress-exceptions"`
+	ShowBuiltinErrors  bool `mapstructure:"show-builtin-errors"`
+	Combine            bool
+	Quiet              bool
+	Output             string
+}
+
+// Run executes the TestRunner, verifying all Rego policies against the given
+// list of configuration files.
+func (t *TestRunner) Run(ctx context.Context, fileList []string) (output.CheckResults, error) {
+	files, err := parseFileList(fileList, t.Ignore)
+	if err != nil {
+		return nil, fmt.Errorf("parse files: %w", err)
+	}
+
+	var configurations map[string]any
+	if t.Parser != "" {
+		configurations, err = parser.ParseConfigurationsAs(files, t.Parser)
+	} else {
+		configurations, err = parser.ParseConfigurations(files)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("parse configurations: %w", err)
+	}
+	renameStdinConfiguration(configurations, t.StdinFilename)
+
+	// When there are policies to download, they are currently placed in the first
+	// directory that appears in the list of policies.
+	if len(t.Update) > 0 {
+		if err := downloader.Download(ctx, t.Policy[0], t.Update, downloader.WithOverwrite()); err != nil {
+			return nil, fmt.Errorf("update policies: %w", err)
+		}
+	}
+
+	capabilities, err := policy.LoadCapabilities(t.Capabilities)
+	if err != nil {
+		return nil, fmt.Errorf("load capabilities: %w", err)
+	}
+	opts := policy.CompilerOptions{
+		Strict:       t.Strict,
+		RegoVersion:  t.RegoVersion,
+		Capabilities: capabilities,
+	}
+	engine, err := policy.LoadWithData(t.Policy, t.Data, opts)
+	if err != nil {
+		return nil, fmt.Errorf("load: %w", err)
+	}
+	engine.EnableInterQueryCache()
+
+	if t.Trace {
+		engine.EnableTracing()
+	}
+
+	if t.ShowBuiltinErrors {
+		engine.ShowBuiltinErrors()
+	}
+
+	namespaces := t.Namespace
+	if t.AllNamespaces {
+		namespaces = engine.Namespaces()
+	} else if hasWildcard(t.Namespace) {
+		namespaces, err = filterNamespaces(engine.Namespaces(), t.Namespace)
+		if err != nil {
+			return nil, fmt.Errorf("filter namespaces: %w", err)
+		}
+	}
+
+	var results output.CheckResults
+	for _, namespace := range namespaces {
+		if t.Combine {
+			result, err := engine.CheckCombined(ctx, configurations, namespace)
+			if err != nil {
+				return nil, fmt.Errorf("check combined: %w", err)
+			}
+
+			results = append(results, result)
+		} else {
+			result, err := engine.Check(ctx, configurations, namespace)
+			if err != nil {
+				return nil, fmt.Errorf("query rule: %w", err)
+			}
+
+			results = append(results, result...)
+		}
+	}
+
+	return results, nil
+}
+
+func renameStdinConfiguration(configurations map[string]any, stdinFilename string) {
+	if stdinFilename == "" {
+		return
+	}
+
+	configuration, ok := configurations["-"]
+	if !ok {
+		return
+	}
+
+	delete(configurations, "-")
+	configurations[stdinFilename] = configuration
+}
+
+func parseFileList(fileList []string, ignoreRegex string) ([]string, error) {
+	var ignoreRegexp *regexp.Regexp
+	if ignoreRegex != "" {
+		var err error
+		ignoreRegexp, err = regexp.Compile(ignoreRegex)
+		if err != nil {
+			return nil, fmt.Errorf("given regexp couldn't be parsed :%w", err)
+		}
+	}
+
+	var files []string
+	for _, file := range fileList {
+		if file == "" {
+			continue
+		}
+
+		if file == "-" {
+			files = append(files, "-")
+			continue
+		}
+
+		fileInfo, err := os.Stat(file)
+		if err != nil {
+			return nil, fmt.Errorf("get file info: %w", err)
+		}
+
+		if fileInfo.IsDir() {
+			directoryFiles, err := getFilesFromDirectory(file, ignoreRegexp)
+			if err != nil {
+				return nil, fmt.Errorf("get files from directory: %w", err)
+			}
+
+			files = append(files, directoryFiles...)
+		} else if ignoreRegexp == nil || !ignoreRegexp.MatchString(file) {
+			files = append(files, file)
+		}
+	}
+
+	if len(files) == 0 {
+		return nil, fmt.Errorf("no files found")
+	}
+
+	return files, nil
+}
+
+func getWalkFn(visitedDirs map[string]bool, files *[]string, ignoreRegexp *regexp.Regexp) filepath.WalkFunc {
+	return func(currentPath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return fmt.Errorf("walk path: %w", err)
+		}
+
+		if info.IsDir() {
+			if visitedDirs[currentPath] {
+				return filepath.SkipDir
+			}
+			visitedDirs[currentPath] = true
+			return nil
+		}
+
+		if ignoreRegexp != nil && ignoreRegexp.MatchString(currentPath) {
+			return nil
+		}
+
+		if info.Mode()&os.ModeSymlink == 0 {
+			if parser.FileSupported(currentPath) {
+				*files = append(*files, currentPath)
+			}
+			return nil
+		}
+
+		realPath, err := filepath.EvalSymlinks(currentPath)
+		if err != nil {
+			return err
+		}
+
+		ri, err := os.Stat(realPath)
+		if err != nil {
+			return err
+		}
+
+		if ri.IsDir() {
+			return filepath.Walk(realPath, getWalkFn(visitedDirs, files, ignoreRegexp))
+		}
+
+		if parser.FileSupported(realPath) {
+			*files = append(*files, realPath)
+		}
+
+		return nil
+	}
+}
+
+func getFilesFromDirectory(directory string, ignoreRegexp *regexp.Regexp) ([]string, error) {
+	var files []string
+	visitedDirs := make(map[string]bool)
+	err := filepath.Walk(directory, getWalkFn(visitedDirs, &files, ignoreRegexp))
+	if err != nil {
+		return nil, err
+	}
+
+	return files, nil
+}
+
+// hasWildcard reports whether any of the given namespace patterns contains a
+// glob metacharacter (*, ?, or [). When none do, namespaces are matched
+// literally and the previous behaviour is preserved.
+func hasWildcard(patterns []string) bool {
+	for _, pattern := range patterns {
+		if strings.ContainsAny(pattern, "*?[") {
+			return true
+		}
+	}
+
+	return false
+}
+
+// filterNamespaces returns the subset of the available namespaces that match at
+// least one of the given patterns. Patterns are matched with path.Match, which
+// supports *, ?, and [...] glob syntax. The "." separator in a namespace is
+// treated as an ordinary character, so "main.*" matches "main.gke" and "*"
+// matches every namespace. The result preserves the order of the available
+// namespaces and contains no duplicates.
+func filterNamespaces(namespaces []string, patterns []string) ([]string, error) {
+	var result []string
+	for _, namespace := range namespaces {
+		for _, pattern := range patterns {
+			matched, err := path.Match(pattern, namespace)
+			if err != nil {
+				return nil, fmt.Errorf("match pattern %q: %w", pattern, err)
+			}
+
+			if matched {
+				result = append(result, namespace)
+				break
+			}
+		}
+	}
+
+	return result, nil
+}

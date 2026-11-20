@@ -1,0 +1,146 @@
+# SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering (https://papers.neurips.cc/paper_files/paper/2024/file/5a7c947568c1b1328ccc5230172e1e7c-Paper-Conference.pdf)
+citeturn44search12 [wordlim: 200] Published: 2.0 years ago; Crawled: 2 weeks ago; # SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering ... Princeton Language and Intelligence, Princeton University ... SWE-agent’s custom agent-computer interface (ACI) significantly enhances an agent’s ability to create and edit code files, navigate entire repositories, and execute tests and other programs. ... 38th Conference on Neural Information Processing Systems (NeurIPS 2024).
+# SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
+
+**John Yang***, **Carlos E. Jimenez***, **Alexander Wettig**, **Kilian Lieret**, **Shunyu Yao**, **Karthik Narasimhan**, **Ofir Press**
+
+Princeton Language and Intelligence, Princeton University
+
+## Abstract
+
+Language model (LM) agents are increasingly being used to automate complicated tasks in digital environments. Just as humans benefit from powerful software applications, such as integrated development environments, for complex tasks like software engineering, we posit that LM agents represent a new category of end users with their own needs and abilities, and would benefit from specially-built interfaces to the software they use. We investigate how interface design affects the performance of language model agents. As a result of this exploration, we introduce SWE-agent: a system that facilitates LM agents to autonomously use computers to solve software engineering tasks. SWE-agent’s custom agent-computer interface (ACI) significantly enhances an agent’s ability to create and edit code files, navigate entire repositories, and execute tests and other programs. 
+<visual_element id="e1">
+
+**Figure 1: SWE-agent system architecture and interaction flow**
+
+Diagram showing an LM agent interacting with a computer through an agent-computer interface (ACI).
+
+- **SWE-agent**: Large enclosing light-colored box on the left, containing:
+  - **LM Agent**: Blue rounded rectangle with a robot icon.
+  - **Agent-Computer Interface**: Gray rounded rectangle in the center, containing two interface components:
+    - **LM-friendly commands** (blue-outlined box):
+      - Navigate repo
+      - Search files
+      - View files
+      - Edit lines
+    - **LM-friendly environment feedback** (orange-outlined box).
+- **Computer**: Orange rounded rectangle on the right, containing:
+  - **Terminal**
+  - **Filesystem**
+    - sklearn/
+    - examples/
+    - README.rst
+
+**Interaction flow:** The LM Agent sends commands through the Agent-Computer Interface to the Computer. The Computer provides environment feedback through the interface back to the LM Agent. Blue arrows indicate the command direction; orange arrows indicate the feedback direction.
+
+**Figure caption:** Figure 1: SWE-agent is an LM interacting with a computer through an agent-computer interface (ACI), which includes the commands the agent uses and the format of the feedback from the computer.
+
+</visual_element>
+
+---
+
+*Equal contribution. Correspondence to* `johnby@stanford.edu`, `carlos ej@princeton.edu`.
+
+Data, code, and leaderboard at **swe-agent.com**
+
+38th Conference on Neural Information Processing Systems (NeurIPS 2024).--------------------------------------------------------------------------------
+SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering (https://papers.nips.cc/paper/2024/hash/5a7c947568c1b1328ccc5230172e1e7c-Abstract-Conference.html)
+citeturn44search0 [wordlim: 200] Crawled: today; # SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering ... Advances in Neural Information Processing Systems 37 (NeurIPS 2024) Main Conference Track DOI: 10.52202/079017-1601 ... We investigate how the role of interface design affects the performance of language model agents. ... We evaluate SWE-agent on SWE-bench and HumanEvalFix, achieving state-of-the-art performance on both with a pass@1 rate of 12.5% and 87.7%, respectively, far exceeding the previous state-of-the-art achieved with non-interactive language models.
+# SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
+
+John Yang, Carlos E. Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik Narasimhan, Ofir Press
+
+Advances in Neural Information Processing Systems 37 (NeurIPS 2024) Main Conference Track DOI: 10.52202/079017-1601
+
+Bibtex Paper Supplemental
+
+## Abstract
+
+Language model agents are increasingly being used to automate complicated tasks in digital environments. Just as humans benefit from powerful software applications, such as integrated development environments, for complex tasks like software engineering, we posit that language model agents represent a new category of end users with their own needs and abilities, and would benefit from specially built interfaces to the software they use. We investigate how the role of interface design affects the performance of language model agents. As a result of this exploration, we introduce SWE-agent: a system that facilitates language model agents to autonomously use computers to solve software engineering tasks. SWE-agent's custom agent-computer interface significantly enhances an agent's ability to create and edit code files, navigate entire repositories, and execute tests and other programs. We evaluate SWE-agent on SWE-bench and HumanEvalFix, achieving state-of-the-art performance on both with a pass@1 rate of 12.5% and 87.7%, respectively, far exceeding the previous state-of-the-art achieved with non-interactive language models. Finally, we provide insight on how the design of the agent-computer interface can impact agents' behavior and performance.--------------------------------------------------------------------------------
+SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering (https://arxiv.org/abs/2405.15793)
+citeturn44academia13 [wordlim: 200] Published: 2.5 years ago; Title: SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering ... We investigate how interface design affects the performance of language model agents. ... We evaluate SWE-agent on SWE-bench and HumanEvalFix, achieving state-of-the-art performance on both with a pass@1 rate of 12.5% and 87.7%, respectively, far exceeding the previous state-of-the-art achieved with non-interactive LMs.
+--------------------------------------------------------------------------------
+Published as a conference paper at ICLR 2024 (https://proceedings.iclr.cc/paper_files/paper/2024/file/edac78c3e300629acfe6cbe9ca88fb84-Paper-Conference.pdf)
+citeturn44search14 [wordlim: 200] Published: 2.7 years ago; Published as a conference paper at ICLR 2024 ... ¹ Princeton University ² Princeton Language and Intelligence ³ University of Chicago ... To this end, we introduce SWE-bench, an evaluation framework consisting of 2,294 software engineering problems drawn from real GitHub issues and corresponding pull requests across 12 popular Python repositories.
+--------------------------------------------------------------------------------
+Research - METR (https://metr.org/research/)
+citeturn44search1 [wordlim: 200] Crawled: today; MirrorCode: Evidence that AI can already do some weeks-long coding tasks April 10, 2026 Early results from MirrorCode benchmark with METR: AI agents can complete weeks-long coding tasks, including reimplementing a 16,000-line codebase. ... We are Changing our Developer Productivity Experiment Design February 24, 2026 Our second developer productivity study faces selection effects from wider AI adoption, prompting us to redesign our approach.
+--------------------------------------------------------------------------------
+We are Changing our Developer Productivity Experiment Design (https://metr.org/blog/2026-02-24-uplift-update/?trk=article-ssr-frontend-pulse_x-social-details_comments-action_comment-text)
+citeturn44search2 [wordlim: 200] Published: 8 months ago; Crawled: today;         title = {We are Changing our Developer Productivity Experiment Design}, ...         howpublished = {\url{https://metr.org/blog/2026-02-24-uplift-update/}},
+--------------------------------------------------------------------------------
+We are Changing our Developer Productivity Experiment Design (https://metr.org/blog/2026-02-24-uplift-update/)
+citeturn44search3 [wordlim: 200] Published: 8 months ago; Crawled: today; METR previously published a paper which found the use of AI tools caused a 20% slowdown in completing tasks among experienced open-source developers, using data from February to June 2025.
+
+To understand how AI is impacting developer productivity over time, we started a new experiment in August 2025 with a larger pool of developers using the latest AI tools. ... Based on conversations with study participants, we believe it is likely that developers are more sped up from AI tools now — in early 2026 — compared to our estimates from early 2025. ... There are many rich data sources on AI use in software development – from aggregate statistics (e.g. approximately 4% of GitHub commits are authored by Claude Code) to fine-grained transcripts (e.g.
+--------------------------------------------------------------------------------
+SWTBenchNeurips (https://nips.cc/media/neurips-2024/Slides/96304.pdf)
+citeturn44search15 [wordlim: 200] Crawled: last week; **Source:** Yang et. al: SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering, NeurIPS 2024 ... | SWT-Bench | NeurIPS 2024
+--------------------------------------------------------------------------------
+Research | Kilian Lieret (https://www.lieret.net/research/)
+citeturn44search4 [wordlim: 200] Crawled: today; The SWE-agent project has been the first open source system to demonstrate how modern language models can effectively utilize tools to fix complex repository-level tasks (as measured on the SWE-bench benchmark). ... Research at Princeton University with PLI NeurIPS '24 ... The central innovation discussed in our paper is the design and optimization of the agent-computer interface (ACI) that allows the language model to effectively navigate, understand, and modify large codebases. ... This language model achieved the top scores among open-source models, and outperformed GPT-4o on SWE-bench Verified, a benchmark that tests AI agents on real-world software engineering tasks. ... We open source SWE-smith (collection procedure, task instances, trajectories, models) to lower the barrier of entry for research in LM systems for automated software engineering. ... Research at Princeton University with PLI ICLR '25
+--------------------------------------------------------------------------------
+SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering (https://www.proceedings.com/content/079/079017-1601open.pdf)
+citeturn44search16 [wordlim: 200] Published: 1.1 years ago; Because of this, SWE-agent’s infrastructure makes it easy for a user to swap out the Dockerfile (a domain specific language for defining a container) to support other codebases and programming languages beyond the scope of SWE-bench task instances. ... The commands for the top performing SWE-agent with GPT 4 configuration are shown in Table 4. ... An agent-computer interface is generally made up of four categories of configurable components:
+--------------------------------------------------------------------------------
+SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering · NeurIPS 2024 (https://deep-diver.github.io/neurips2024/posters/mxpq6ut8j3/)
+citeturn44search5 [wordlim: 200] Published: 2.2 years ago; Crawled: last week; # SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
+
+26 September 2024·10845 words·51 mins· loading · loading ·  Like
+
+AI Applications Security 🏢 Princeton University ... ↗ OpenReview ↗ NeurIPS Homepage ↗ Hugging Face ↗ Chat ... It introduces a novel concept—the Agent-Computer Interface (ACI)—demonstrating its significant impact on language model (LM) agent performance. ... > This table presents the main results of the SWE-agent experiments, comparing its performance on the SWE-bench dataset with various baseline models.
+--------------------------------------------------------------------------------
+Agentic Artifact Creation — Complete Paper Index (https://agentic-creation.github.io/papers.html)
+citeturn44search6 [wordlim: 200] Crawled: today; ICLR 2024 Published ... ### SWE-bench: Can Language Models Resolve Real-world Github Issues? ... NeurIPS 2024 Published ... ### SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering
+--------------------------------------------------------------------------------
+Published as a conference paper at ICLR 2025 (https://proceedings.iclr.cc/paper_files/paper/2025/file/d7b50b8ac2c781a12f26155f48310d8d-Paper-Conference.pdf)
+citeturn44search17 [wordlim: 200] Published: 1.8 years ago; Published as a conference paper at ICLR 2025
+
+**Fundamental Language Agent**  Pioneering AI agent methods along this line of work include ReAct (Yao et al., 2023), Reflexion (Shinn et al., 2023), CodeAct (Wang et al., 2024b), etc., in which ReAct interprets the user query, generates functional API calls, and gets the tool outputs in real time; Reflexion further appends failed trial experience into the memory, enabling effective retries to prevent repetitive errors. ... Finally, SWE-agent (Yang et al., 2024) developed agent-computer interface that consists of LM-friendly commands and environment feedback to enable LM agents to autonomously use computers to solve software engineering tasks.
+--------------------------------------------------------------------------------
+DORA | DORA 2025: Year in review (https://dora.dev/insights/dora-2025-year-in-review/)
+citeturn44search7 [wordlim: 200] Published: 10 months ago; Crawled: today; This year, we officially “de-acronymed” DORA to stand on its own and renamed our annual report from “Accelerate State of DevOps” to the “State of AI-assisted Software Development.” ... ## 2026 and beyond
+
+DORA will continue to research and provide insights into the capabilities, conditions, practices, and metrics that help high-performing technology-driven teams thrive.
+--------------------------------------------------------------------------------
+SWE-agent-public/README.md at main · emergent-experimental/SWE-agent-public · GitHub (https://github.com/emergent-experimental/SWE-agent-public/blob/main/README.md)
+citeturn44search8 [wordlim: 200] Crawled: 2 weeks ago; On SWE-bench, SWE-agent resolves 12.47% of issues, achieving the state-of-the-art performance on the full test set. ... We call this an Agent-Computer Interface (ACI). ... Our most recent lecture touches on the project's motivation, showcases our research findings and provides a hands-on tutorial on how to install, use, and configure SWE-agent: ...     `@misc{yang2024sweagent,
+          title={SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering},
+--------------------------------------------------------------------------------
+SWE-bench — repo-scale software engineering benchmark · Codesota | CodeSOTA (https://www.codesota.com/browse/computer-code/code-generation/swe-bench)
+citeturn44search9 [wordlim: 200] Crawled: today; (Princeton) · ICLR 2024 SWE-bench Verified OpenAI + SWE-bench team · OpenAI 2024 SWE-bench Pro: Contamination-Controlled SE Evaluation Scale AI · arXiv 2509.16941 SWE-agent: Agent-Computer Interfaces for Automated SE Yang, Jimenez, Wettig, et al. · NeurIPS 2024 Agentless: Demystifying LLM-based Software Engineering Agents Xia, Wen, Deng, Kang, Zou, Zhang · ICSE 2025 Multi-SWE-bench: A Multilingual SWE-bench Variant ByteDance team · arXiv 2504.02605 ... SWE-bench/SWE-bench · 4.4k★2,294 real GitHub issues + evaluation harness SWE-bench/experiments · 1.2k★Open-sourced predictions, logs, leaderboard runs princeton-nlp/SWE-agent · 14.5k★Original agent-computer interface OpenAutoCoder/Agentless · 2.0k★Raw model patching without scaffolding microsoft/SWE-bench-Live · 167★Contamination-free monthly evaluation multi-swe-bench/multi-swe-bench · 420★Multi-language fork (Java, TS, Go, Rust, C/C++)
+--------------------------------------------------------------------------------
+Independent Assessment of AI R&D Acceleration at Anthropic in October 2026 (https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn44search10 [wordlim: 200] Published: 2 weeks ago; Crawled: today; ### November 6, 2026 ... METR has published multiple lines of research relevant to AI R&D acceleration, with results pointing in both directions: our time-horizon trends suggest rapid progress, while our 2025 developer productivity study found early-2025 AI tools caused a slowdown, our estimates of future compute bottlenecks point to limits on scaling, and our analysis of benchmarks overstating AI progress cautions against reading too much into headline scores. ... A separate problem is benchmarks intended to have an interpretable outcome, e.g. if SWE-bench tasks fail to fit the description of “resolving github issues.”
+--------------------------------------------------------------------------------
+John Y (https://john-b-yang.github.io/publications/index.html)
+citeturn44search11 [wordlim: 200] Crawled: yesterday; SWE-bench Multimodal: Do AI Systems Generalize to Visual Software Domains? ... SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering ... 2024 • ICLR • Oral ... 2023 • Multi-Agent Security Workshop @ NeurIPS 2023 • Best Paper Award
+--------------------------------------------------------------------------------
+SWE-bench: Can Language Models Resolve Real-World GitHub Issues? (https://arxiv.org/abs/2310.06770)
+citeturn44academia18 [wordlim: 200] Published: 3.1 years ago; We find real-world software engineering to be a rich, sustainable, and challenging testbed for evaluating the next generation of language models. To this end, we introduce SWE-bench, an evaluation framework consisting of $2,294$ software engineering problems drawn from real GitHub issues and corresponding pull requests across $12$ popular Python repositories.
+--------------------------------------------------------------------------------
+From Code Completion to Autonomous Software Engineering Agents - YouTube (https://www.youtube.com/watch?v=OefEyzkW6dM)
+citeturn44youtube19 [wordlim: 200] Published: 1.4 years ago; Crawled: 2 months ago; To address this, we first introduce SWE-bench, a benchmark built from real GitHub issues that has become the standard for assessing AI's ability to resolve complex software tasks in large codebases. ... Next, we will explore the fundamentals of agents based on hands-on demonstrations with SWE-agent, a simple yet powerful agent framework designed for software engineering but adaptable to a variety of domains. ... Talk By: Kilian Lieret, Research Software Engineer, Princeton University
+--------------------------------------------------------------------------------
+SWE-Bench authors reflect on the state of LLM agents at Neurips 2024 - YouTube (https://www.youtube.com/watch?v=bivZWNQHRfE)
+citeturn44youtube20 [wordlim: 200] Published: 1.9 years ago; Crawled: 2 months ago; # SWE-Bench authors reflect on the state of LLM agents at Neurips 2024 ... The SWE-bench task measures AI agents on software engineering tasks at the level of a github issue.
+--------------------------------------------------------------------------------
+What AI coding benchmarks still miss about software quality (https://www.techradar.com/pro/what-ai-coding-benchmarks-still-miss-about-software-quality)
+citeturn44news21 [wordlim: 100] Published: 6 months ago; What AI coding benchmarks still miss about software quality ... Most AI coding benchmarks still ask the question: did the agent produce code that passes the current tests? ... A recent paper, SlopCodeBench: Benchmarking How Coding Agents Degrade Over Long-Horizon Iterative Tasks (Orlanski et al.), gets closer to that question than most benchmark work. ... Those are failure modes familiar for every engineering manager. ... The paper is about coding broadly, not automation test suites specifically, but the mechanism carries over. ... One anti-slop prompt cut initial verbosity by about a third on GPT-5.4.
+--------------------------------------------------------------------------------
+AI agent benchmark (https://en.wikipedia.org/wiki/AI_agent_benchmark)
+citeturn44search22 [wordlim: 200] Crawled: last week; * Agents' Last Exam: long-horizon, professional computer tasks, currently containing 1500+ tasks collected toward a 5000-task target. 
+* ARC-AGI (Abstraction and Reasoning Corpus for Artificial General Intelligence): Given three pairs of before-and-after diagrams of applying a rule, apply the same rule to the fourth before-diagram. ... Each task has a deterministic automated verifier. ... * PaperBench: 8,316 individually gradable tasks that would be necessary for replicating 20 Spotlight and Oral papers from ICML 2024 from scratch. ... *  Chen, Ziru; Chen, Shijie; Ning, Yuting; Zhang, Qianheng; Wang, Boshi; Yu, Botao; Li, Yifei; Liao, Zeyi; Wei, Chen (2025-03-31), ScienceAgentBench: Toward Rigorous Assessment of Language Agents for Data-Driven Scientific Discovery, arXiv:2410.05080 ... SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?. ... "Multi-SWE-bench: A Multilingual Benchmark for Issue Resolving". arXiv:2504.02605 [cs.SE]. ... "MirrorCode: What's the largest software project AI can complete on its own?". ... *  "PaperBench: Evaluating AI's Ability to Replicate AI Research". openai.com.
+--------------------------------------------------------------------------------
+In 2024, artificial intelligence was all about putting AI tools to work (https://apnews.com/article/0b6ab89193265c3f60f382bae9bbabc9)
+citeturn44news23 [wordlim: 100] Published: 1.9 years ago; There was a "shift from putting out models to actually building products," said Arvind Narayanan, a Princeton University computer science professor and co-author of the new book "AI Snake Oil: What Artificial Intelligence Can Do, What It Can't, and How to Tell The Difference." ... At the same time, since OpenAI released GPT-4 in March 2023 and competitors introduced similarly performing AI large language models, these models have stopped getting significantly "bigger and qualitatively better," resetting overblown expectations that AI was racing every few months to some kind of better-than-human intelligence, Narayanan said. ... But generative AI still can't create unique work or "completely new things," said Walid Saad, a professor of electrical and computer engineering and AI expert at Virginia Tech. ... That could mean being able to ask an AI agent an ambiguous question and have the model able to reason and plan out steps to solving an ambitious problem, Pandey said. ... Future Bitcoin software, for example, will likely rely on the use of AI software agents, Pandey said.
+--------------------------------------------------------------------------------
+Why AI Progress is Increasingly Invisible (https://time.com/7205359/why-ai-progress-is-increasingly-invisible/)
+citeturn44news24 [wordlim: 100] Published: 1.9 years ago; This led to a wave of articles declaring that AI progress has hit a wall, lending further credence to an increasingly widespread feeling that chatbot capabilities haven't improved significantly since OpenAI released GPT-4 in March 2023. ... A groundbreaking paper by Aidan Toner-Rodgers at MIT recently found that material scientists assisted by AI systems "discover 44% more materials, resulting in a 39% increase in patent filings and a 17% rise in downstream product innovation." ... In an attempt to provide more realistic tests of AI programming capabilities, researchers developed SWE-Bench, a benchmark that evaluates how well AI agents can fix actual open problems in popular open-source software. ... But it could also take the form of a major disaster caused or enabled by an AI system, or a society upended by devastating labor automation. ... When the researchers inspected the models' reasoning, they found that the chatbots knew what they were doing, using language like "sabotage, lying, manipulation."
+--------------------------------------------------------------------------------
+How far will artificial intelligence go? (https://www.lemonde.fr/en/science/article/2025/02/09/how-far-will-artificial-intelligence-go_6737951_10.html)
+citeturn44news25 [wordlim: 100] Published: 1.8 years ago; No sooner had the US-based OpenAI announced its intention to invest a <a href="https://www.lemonde.fr/en/economy/article/2025/01/22/stargate-trump-s-500-billion-project-to-boost-artificial-intelligence_6737299_19.html">massive $500 billion over five years in infrastructure </a>dedicated to these calculations, than a Chinese start-up was playing spoilsport. ... The article notes that in many fields, such as medical imaging, data science, computer vision or language processing, maximalist methods are reaching their limits. ... OpenAI and, more recently, DeepSeek have automated this new inference phase by teaching their models, through examples, to develop this reasoning process. ... Apple is working on this with its Ferret-UI model, while Google is developing ScreenAI: two MLLMs specifically designed to understand software interfaces. ... Some models do this convincingly, such as OpenAI's <a href="https://openai.com/index/gpt-4o-system-card/">GPT-4o</a> or Mistral's <a href="https://mistral.ai/fr/news/pixtral-12b/">Pixtral 12B.</a>
+--------------------------------------------------------------------------------
+Science Is Drowning in AI Slop (https://www.theatlantic.com/science/2026/01/ai-slop-science-publishing/685704/?utm_source=apple_news)
+citeturn44news26 [wordlim: 100] Published: 10 months ago; Almost immediately after large language models went mainstream, manuscripts started pouring into journal inboxes in unprecedented numbers. ... Publishers are sharing intelligence about the most egregious ones, according to Jennifer Wright, the head of research integrity and publication ethics at Cambridge University Press. ... A now-retracted 2024 review paper in Frontiers in Cell and Developmental Biology featured an AI-generated illustration of a rat with hilariously disproportionate testicles, which not only passed peer review but was published before anyone noticed. ... Conference proceedings are the main publishing venue for articles in AI and other computer sciences, and in recent years they've been overrun with submissions. NeurIPS, one of the top AI conferences, has seen them double in five years. ... Pangram Labs recently analyzed thousands of peer reviews that were submitted to ICLR, and found that more than half of them were written with help from an LLM, and about a fifth of them were wholly AI-generated. ... Automated slop-detectors may also fail.
+

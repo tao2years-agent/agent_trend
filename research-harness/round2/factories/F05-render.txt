@@ -1,0 +1,398 @@
+Building LLM Judges to Judge LLMs — Ramp Builders Blog
+Discover engineering stories and ideas from the Ramp team.
+Builders Blog
+Home
+Subscribe
+We're hiring!
+November 17, 2026
+Building LLM Judges to Judge LLMs
+Sachet Bangia
+Shaiyon Hariri
+We recently launched
+Ramp SWE Bench V2
+! At Ramp, we spend millions of dollars on tokens to produce and review code internally, and now for our customers through
+Router
+. We’re in the business of saving time and money, which means we care deeply about spending those dollars well. So we built our own benchmark to understand how different models perform on the specific coding tasks our engineers delegate to AI, and use that evidence to guide our spending.
+A reliable coding benchmark needs a reliable way to distinguish correct solutions from plausible ones. Figuring out whether code satisfies the user’s request is harder than it might seem — this was the central challenge we tackled going from V1 to V2. The new version has six times as many benchmark tasks (!) and evaluates models on their native harnesses as well as a common harness, but the biggest change was how we grade solutions. Given the scale of our AI spend, we gave this decision a lot of thought.
+Like earlier iterations of many coding benchmarks, we previously graded solutions by running them against a predefined suite of tests. We have since replaced those tests with LLM judges. That might seem like a strange trade: tests give us explicit, repeatable checks, while open-ended LLM judgments are notoriously flaky and sensitive to how a question is framed. This post explains why we made the switch and how we wrangled these non-deterministic beasts into giving us consistent judgments that we trust.
+Where Tests Fall Short, and Why LLM Judges Aren’t a Simple Fix
+Ramp SWE-Bench is built from real engineering work at Ramp. We turn a subset of Inspect sessions that ended in merged pull requests into benchmark tasks, asking new models to solve the same requests (Inspect is Ramp’s collaborative, cloud-based coding agent; you can
+sign up for early access here
+!). The code that passed engineer review and went live in production gives us a reference solution, or
+gold patch
+. Previously, we used the accompanying tests in the gold patch to grade new solutions.
+The tests merged with those patches often rejected valid solutions because they expected a particular implementation. These
+overspecified
+tests became a bottleneck: for
+V1
+, we painstakingly audited and repaired test suites, and struggled to keep up. Similar test failures are documented in
+OpenAI’s audit of SWE-Bench Pro
+. Aggressively filtering out tasks with overly restrictive tests left us with a set more vulnerable to the opposite problem:
+underspecified
+tests that checked some requirements but missed others, letting incomplete or incorrect solutions slip through the cracks.
+LLM judges, increasingly common across benchmarks, offer a more flexible and scalable way to grade solutions. But we cannot simply hand an LLM the task and a candidate solution and ask: “Is this correct?” There is little reason to take those answers at face value, particularly if we’re asking less capable models to grade the work of more capable ones.
+We have something more concrete to work with: the engineer-reviewed gold patch. We can take a more directed approach: give an LLM judge the task prompt, relevant repository context, and the gold and candidate patches, then ask whether the patches implement the same requested behavior. This seemingly straightforward question — whether two code patches do the same thing — turns out to have surprisingly model-dependent answers. As a test, we had seven judge models evaluate solutions from twenty solver models across 72 tasks from Ramp SWE-Bench V1. Below, each point represents one solver assessed by one judge, comparing its test-based pass rate with its judge-based pass rate.
+Model Scores Depend on Who’s Judging
+0%
+0%
+20%
+20%
+40%
+40%
+60%
+60%
+80%
+80%
+100%
+100%
+Test-based pass rate
+Judge-based pass rate
+Claude Fable 5: DeepSeek V4 Pro 58.0%
+Claude Opus 4.7: DeepSeek V4 Pro 51.4%
+GPT-5.4 Nano: DeepSeek V4 Pro 23.6%
+GPT-5.6 Luna: DeepSeek V4 Pro 41.7%
+GPT-5.6 Sol: DeepSeek V4 Pro 45.8%
+GLM 5.2: DeepSeek V4 Pro 50.0%
+GPT-4.1: DeepSeek V4 Pro 4.3%
+Claude Opus 4.6: DeepSeek V4 Pro 43.1%
+Claude Sonnet 5: DeepSeek V4 Pro 36.6%
+Claude Opus 4.8: DeepSeek V4 Pro 34.3%
+Grok 4.5: DeepSeek V4 Pro 45.8%
+GLM 5.1: DeepSeek V4 Pro 35.2%
+Gemini 3.1 Pro: DeepSeek V4 Pro 41.7%
+Kimi K2.7 Code: DeepSeek V4 Pro 34.7%
+DeepSeek V4 Pro: DeepSeek V4 Pro 26.4%
+Kimi K2.6: DeepSeek V4 Pro 30.6%
+GPT-5.4: DeepSeek V4 Pro 36.1%
+GPT-5.6 Terra: DeepSeek V4 Pro 43.1%
+GPT-5.4 Mini: DeepSeek V4 Pro 25.0%
+Qwen3.7 Plus: DeepSeek V4 Pro 41.7%
+Claude Fable 5: Gemini 3.6 Flash 56.5%
+Claude Opus 4.7: Gemini 3.6 Flash 47.2%
+GPT-5.4 Nano: Gemini 3.6 Flash 26.4%
+GPT-5.6 Luna: Gemini 3.6 Flash 34.7%
+GPT-5.6 Sol: Gemini 3.6 Flash 45.8%
+GLM 5.2: Gemini 3.6 Flash 48.6%
+GPT-4.1: Gemini 3.6 Flash 5.7%
+Claude Opus 4.6: Gemini 3.6 Flash 43.1%
+Claude Sonnet 5: Gemini 3.6 Flash 33.8%
+Claude Opus 4.8: Gemini 3.6 Flash 35.7%
+Grok 4.5: Gemini 3.6 Flash 40.3%
+GLM 5.1: Gemini 3.6 Flash 35.2%
+Gemini 3.1 Pro: Gemini 3.6 Flash 34.7%
+Kimi K2.7 Code: Gemini 3.6 Flash 33.3%
+DeepSeek V4 Pro: Gemini 3.6 Flash 25.0%
+Kimi K2.6: Gemini 3.6 Flash 31.9%
+GPT-5.4: Gemini 3.6 Flash 37.5%
+GPT-5.6 Terra: Gemini 3.6 Flash 41.7%
+GPT-5.4 Mini: Gemini 3.6 Flash 20.8%
+Qwen3.7 Plus: Gemini 3.6 Flash 31.9%
+Claude Fable 5: Grok 4.5 58.0%
+Claude Opus 4.7: Grok 4.5 56.9%
+GPT-5.4 Nano: Grok 4.5 27.8%
+GPT-5.6 Luna: Grok 4.5 47.2%
+GPT-5.6 Sol: Grok 4.5 55.6%
+GLM 5.2: Grok 4.5 52.8%
+GPT-4.1: Grok 4.5 7.1%
+Claude Opus 4.6: Grok 4.5 50.0%
+Claude Sonnet 5: Grok 4.5 42.3%
+Claude Opus 4.8: Grok 4.5 50.0%
+Grok 4.5: Grok 4.5 45.8%
+GLM 5.1: Grok 4.5 38.0%
+Gemini 3.1 Pro: Grok 4.5 38.9%
+Kimi K2.7 Code: Grok 4.5 38.9%
+DeepSeek V4 Pro: Grok 4.5 30.6%
+Kimi K2.6: Grok 4.5 37.5%
+GPT-5.4: Grok 4.5 47.2%
+GPT-5.6 Terra: Grok 4.5 51.4%
+GPT-5.4 Mini: Grok 4.5 41.7%
+Qwen3.7 Plus: Grok 4.5 37.5%
+Claude Fable 5: Kimi K3 66.7%
+Claude Opus 4.7: Kimi K3 58.3%
+GPT-5.4 Nano: Kimi K3 25.0%
+GPT-5.6 Luna: Kimi K3 45.8%
+GPT-5.6 Sol: Kimi K3 52.8%
+GLM 5.2: Kimi K3 54.2%
+GPT-4.1: Kimi K3 7.1%
+Claude Opus 4.6: Kimi K3 44.4%
+Claude Sonnet 5: Kimi K3 40.8%
+Claude Opus 4.8: Kimi K3 45.7%
+Grok 4.5: Kimi K3 45.8%
+GLM 5.1: Kimi K3 32.4%
+Gemini 3.1 Pro: Kimi K3 40.3%
+Kimi K2.7 Code: Kimi K3 40.3%
+DeepSeek V4 Pro: Kimi K3 27.8%
+Kimi K2.6: Kimi K3 36.1%
+GPT-5.4: Kimi K3 44.4%
+GPT-5.6 Terra: Kimi K3 48.6%
+GPT-5.4 Mini: Kimi K3 23.6%
+Qwen3.7 Plus: Kimi K3 40.3%
+Claude Fable 5: Luna 5.6 xhigh 44.9%
+Claude Opus 4.7: Luna 5.6 xhigh 37.5%
+GPT-5.4 Nano: Luna 5.6 xhigh 13.9%
+GPT-5.6 Luna: Luna 5.6 xhigh 25.0%
+GPT-5.6 Sol: Luna 5.6 xhigh 33.3%
+GLM 5.2: Luna 5.6 xhigh 33.3%
+GPT-4.1: Luna 5.6 xhigh 4.3%
+Claude Opus 4.6: Luna 5.6 xhigh 29.2%
+Claude Sonnet 5: Luna 5.6 xhigh 26.8%
+Claude Opus 4.8: Luna 5.6 xhigh 28.6%
+Grok 4.5: Luna 5.6 xhigh 30.6%
+GLM 5.1: Luna 5.6 xhigh 22.5%
+Gemini 3.1 Pro: Luna 5.6 xhigh 20.8%
+Kimi K2.7 Code: Luna 5.6 xhigh 20.8%
+DeepSeek V4 Pro: Luna 5.6 xhigh 15.3%
+Kimi K2.6: Luna 5.6 xhigh 22.2%
+GPT-5.4: Luna 5.6 xhigh 22.2%
+GPT-5.6 Terra: Luna 5.6 xhigh 26.4%
+GPT-5.4 Mini: Luna 5.6 xhigh 12.5%
+Qwen3.7 Plus: Luna 5.6 xhigh 25.0%
+Claude Fable 5: Opus 4.8 78.3%
+Claude Opus 4.7: Opus 4.8 66.7%
+GPT-5.4 Nano: Opus 4.8 44.4%
+GPT-5.6 Luna: Opus 4.8 54.2%
+GPT-5.6 Sol: Opus 4.8 75.0%
+GLM 5.2: Opus 4.8 72.2%
+GPT-4.1: Opus 4.8 10.0%
+Claude Opus 4.6: Opus 4.8 69.4%
+Claude Sonnet 5: Opus 4.8 63.4%
+Claude Opus 4.8: Opus 4.8 64.3%
+Grok 4.5: Opus 4.8 72.2%
+GLM 5.1: Opus 4.8 62.0%
+Gemini 3.1 Pro: Opus 4.8 54.2%
+Kimi K2.7 Code: Opus 4.8 59.7%
+DeepSeek V4 Pro: Opus 4.8 52.8%
+Kimi K2.6: Opus 4.8 52.8%
+GPT-5.4: Opus 4.8 65.3%
+GPT-5.6 Terra: Opus 4.8 70.8%
+GPT-5.4 Mini: Opus 4.8 54.2%
+Qwen3.7 Plus: Opus 4.8 54.2%
+Claude Fable 5: Sol 5.6 43.5%
+Claude Opus 4.7: Sol 5.6 41.7%
+GPT-5.4 Nano: Sol 5.6 15.3%
+GPT-5.6 Luna: Sol 5.6 26.4%
+GPT-5.6 Sol: Sol 5.6 33.3%
+GLM 5.2: Sol 5.6 37.5%
+GPT-4.1: Sol 5.6 4.3%
+Claude Opus 4.6: Sol 5.6 27.8%
+Claude Sonnet 5: Sol 5.6 28.2%
+Claude Opus 4.8: Sol 5.6 30.0%
+Grok 4.5: Sol 5.6 30.6%
+GLM 5.1: Sol 5.6 23.9%
+Gemini 3.1 Pro: Sol 5.6 23.6%
+Kimi K2.7 Code: Sol 5.6 20.8%
+DeepSeek V4 Pro: Sol 5.6 16.7%
+Kimi K2.6: Sol 5.6 20.8%
+GPT-5.4: Sol 5.6 22.2%
+GPT-5.6 Terra: Sol 5.6 25.0%
+GPT-5.4 Mini: Sol 5.6 20.8%
+Qwen3.7 Plus: Sol 5.6 22.2%
+Judge · Overall pass rate
+DeepSeek V4 Pro
+37.5%
+Gemini 3.6 Flash
+35.5%
+Grok 4.5
+42.8%
+Kimi K3
+41.0%
+Luna 5.6 xhigh
+24.7%
+Opus 4.8
+59.8%
+Sol 5.6
+25.7%
+Each point represents one solver assessed by one judge.
+Reassuringly, the judges generally agreed with the tests about which models were stronger: using a majority vote across the seven judges, the correlation between solver pass rates under the two approaches was 0.85. But individual judges gave enormously different scores: Opus passed nearly 60% of comparisons, while Sol and Luna passed only about 25%. Nearly half of comparisons had at least one dissenting judge.
+All seven judges were also substantially more strict than the tests. In the task-level plot below, the bottom-right points are tasks where solutions often passed the tests but rarely satisfied the judges. When we investigated those cases, we found tests passing solutions that missed task requirements. This leniency made Ramp SWE-Bench V1 appear more saturated than it actually was.
+Tasks Look Easier Under Tests
+0%
+0%
+20%
+20%
+40%
+40%
+60%
+60%
+80%
+80%
+100%
+100%
+Test-based pass rate
+Mean judge-based pass rate
+Mean across seven judges 28.6%
+Mean across seven judges 67.1%
+Mean across seven judges 17.1%
+Mean across seven judges 12.1%
+Mean across seven judges 65.7%
+Mean across seven judges 68.6%
+Mean across seven judges 93.6%
+Mean across seven judges 56.4%
+Mean across seven judges 18.6%
+Mean across seven judges 32.9%
+Mean across seven judges 52.1%
+Mean across seven judges 18.8%
+Mean across seven judges 87.1%
+Mean across seven judges 53.6%
+Mean across seven judges 22.9%
+Mean across seven judges 21.4%
+Mean across seven judges 55.7%
+Mean across seven judges 33.6%
+Mean across seven judges 32.1%
+Mean across seven judges 13.6%
+Mean across seven judges 60.0%
+Mean across seven judges 94.3%
+Mean across seven judges 2.9%
+Mean across seven judges 28.6%
+Mean across seven judges 43.6%
+Mean across seven judges 15.0%
+Mean across seven judges 22.1%
+Mean across seven judges 53.6%
+Mean across seven judges 28.6%
+Mean across seven judges 10.0%
+Mean across seven judges 0.7%
+Mean across seven judges 35.7%
+Mean across seven judges 41.4%
+Mean across seven judges 43.6%
+Mean across seven judges 3.6%
+Mean across seven judges 39.3%
+Mean across seven judges 57.1%
+Mean across seven judges 65.0%
+Mean across seven judges 0.0%
+Mean across seven judges 60.7%
+Mean across seven judges 2.1%
+Mean across seven judges 30.0%
+Mean across seven judges 77.1%
+Mean across seven judges 5.0%
+Mean across seven judges 12.9%
+Mean across seven judges 44.3%
+Mean across seven judges 92.5%
+Mean across seven judges 45.7%
+Mean across seven judges 6.0%
+Mean across seven judges 32.9%
+Mean across seven judges 32.9%
+Mean across seven judges 35.0%
+Mean across seven judges 59.3%
+Mean across seven judges 40.0%
+Mean across seven judges 57.9%
+Mean across seven judges 9.3%
+Mean across seven judges 84.3%
+Mean across seven judges 7.9%
+Mean across seven judges 40.7%
+Mean across seven judges 22.9%
+Mean across seven judges 2.9%
+Mean across seven judges 25.0%
+Mean across seven judges 86.4%
+Mean across seven judges 25.7%
+Mean across seven judges 45.0%
+Mean across seven judges 55.7%
+Mean across seven judges 53.6%
+Mean across seven judges 32.3%
+Mean across seven judges 2.5%
+Mean across seven judges 65.7%
+Mean across seven judges 1.6%
+Mean across seven judges 45.0%
+High test scores,
+low judge scores
+Getting the LLM Judges to Agree
+Our goal was to build a verification process where, to the extent possible, a solution’s grade would not hinge on which model judged it. To get there, we needed to understand why the judges disagreed. Sometimes one spotted a difference that another missed. More often, both noticed the same differences but disagreed about their relevance to the task. We tried clarifying the instructions (aka prompt tuning), but that barely moved the needle. We also experimented with task-specific guidance, but tailoring prompts to individual examples risked overfitting and wouldn’t scale.
+We started making progress when we separated
+identifying differences between the two patches
+from
+judging whether those differences mattered to the task
+. The original approach bundled both into a single judgment, making it harder to distinguish something a judge missed from something it considered unimportant. Separating those steps lets the judges assess the same evidence and work through their reasons for disagreeing, rather than simply cast conflicting votes. Through successive experimentation, we arrived at the following pipeline:
+LLM Judge Pipeline
+(Hover for detail)
+1. Extract differences
+2. Deduplicate and consolidate
+3. Judge each difference
+4. Resolve disagreements
+5. Verdict
+Putting the Pipeline to the Test
+Here are results from 360 comparisons (spanning 72 tasks and 20 solver models, with five models evaluated per task and 18 tasks per model). We show Sol and Opus’ judgments because the two displayed markedly different grading tendencies in the original one-shot experiment, comparing those judgments with their independent first votes in the new pipeline and their decisions after deliberation.
+Metric
+Original panel
+New pipeline: first vote
+After deliberation
+Sol passes
+89/360 (24.7%)
+100/360 (27.8%)
+116/360 (32.2%)
+Opus passes
+240/360 (66.7%)
+174/360 (48.3%)
+135/360 (37.5%)
+Sol/Opus agreement
+195/360 (54.2%)
+275/360 (76.4%)
+337/360 (93.6%)
+Agreement rose from
+54% to 76% before any discussion, and to 94% after deliberation
+. Having both judges work off the same list and assess each difference individually closed much of the gap, and the deliberation narrowed it further.
+Of course, while greater judge agreement is encouraging, it does not by itself prove that the LLMs are converging to the truth. As a sanity check, we did some small-scale human labelling to validate the accuracy of the pipeline’s judgments. We asked engineers behind the original PRs for each task to evaluate whether the identified differences were material enough that they would not merge the candidate patch without changes: the engineers agreed with nearly 90% of the task-level verdicts.
+Given that our grading approach rests on direct comparison with the gold patch, we were naturally concerned that a candidate would score better if it came from the same model provider as the gold patch. We found no evidence of such an advantage: models were neither rewarded nor penalized for sharing a provider with the model that produced the gold patch.
+Example Tasks
+Here are two tasks from the benchmark, each graded for a Claude Opus 5.5 solution. In the first, deliberation confirms a real gap. In the second, it resolves a disagreement in the candidate’s favor.
+Card activation over SMS
+Bill policy at the line level
+Task prompt
+Cardholders can activate a card by texting its last four digits, but a partially activated card only finishes activation through a separate flow that follows a declined transaction. Make the ordinary last-four SMS flow finish activating those cards too, without requiring a decline first.
+How Opus’ patch differs from the original
+Say a cardholder has two cards ending in the same four digits: one partially activated, one already active. The original change finishes activating the partial card. Opus replies “card already active,” so the partial card stays stuck.
+Does that difference matter for the task?
+Round 1 · Independent votes
+Judge 1
+Not material
+No. The task doesn’t say what to do when two cards share the last four.
+Judge 2
+Material
+Yes. The whole point is that texting the last four finishes activation, and here it doesn’t.
+Round 2 · After deliberation
+Judge 1
+Material
+Yes. The existing code already ignores active cards in this situation, so Opus shouldn’t stop there.
+Judge 2
+Material
+Yes. Another active card doesn’t mean this one is done, so the cardholder stays stuck.
+Fail.
+Both judges agree this difference matters (along with three similar edge cases), so Opus fails.
+Here’s the payoff of all that work: the
+Ramp SWE-Bench V2 leaderboard
+.
+Ramp SWE-Bench v2
+pass@1 · N=500 · high effort · Native harnesses
+Fable 5.2
+Haiku 5.5
+Opus 5.5
+Sonnet 5.5
+V4.1 Flash
+Carbon
+Hydrogen
+Ember
+Wonder
+6 Luna
+6.1 Terra
+6.2 Astra
+6.2 Sol
+Grok 4.7
+Log scale
+Show 95% CI
+Mean
+cost per task
+time elapsed per task
+turns per task
+output tokens per task
+Claude Code
+DeepSeek Harness
+OpenCode
+Muse Code
+Codex
+Grok Build
+View the live leaderboard
+· November 17, 2026 snapshot
+Like what you see? Join us →
+Come build the future of finance automation that increases the lifespan of businesses.
+Get our latest posts the moment they go live
+Subscribe
+RSS Feed
+© 2026 Ramp Business Corporation. "Ramp," "Ramp Financial" and the Ramp logo are trademarks of the company.

@@ -1,0 +1,14 @@
+# 哪些研究团队值得持续跟踪，为什么
+
+若只能跟六条线，优先选能持续给出可重用工件、并能反驳团队当前产品假设的团队。下面有可查的实验室、跨校合作或项目署名。选择按与本题的关联、公开证据和复现价值；没有用引用数、热度或所在学校排名。另有十条由会议论文重复署名得到的线索，可沿研究者和问题检索。[官方页与原稿快照登记](sources.json) · [连续共同署名的十条研究线](../recall/groups.md)
+
+|持续跟踪对象|已经做过什么|什么决策会因此改变|
+|---|---|---|
+|Princeton Language and Intelligence 及 SWE-bench 跨校合作者，含 Stanford 成员|SWE-agent 把仓库操作封装为可重复的交互接口；SWE-smith 从原项目的运行环境和既有用例生成可执行任务，论文报告 128 仓、约 5 万个训练实例。两项有重合维护者；后项有多机构参与。|平台可从真实代码中批量编制练习与回归集。若生成器总沿用原本就有的测试，模型可能学会满足测试的窄目标。另留出由维护者给出的未见验收点，与[独立判据实验](../gates/result.md)对照。[大学项目说明](https://rse.princeton.edu/research/selected-rse-projects) · [论文及工件](https://swesmith.com/)|
+|滑铁卢大学 Software REBELs，Shane McIntosh、Rungroj Maipradit 等|ASE 2023 以 OpenStack 66,932 个 code review 分析为什么重复构建；ASE 2025 研究能否预测已发出的 recheck 结果，给出代码和历史数据。两个分母不同，后一项有 UCL 合作者。|选择“帮人归纳失败”或“替人停止运行”时，用同一派发时机的可见字段比较，另外计算错过转绿和额外等待。我们的跨生态留出就是沿这条研究线做的。[实验室发表记录](https://rebels.cs.uwaterloo.ca/publications.html) · [2023 原文](https://rebels.cs.uwaterloo.ca/papers/ase2023_maipradit.pdf) · [2025 原文](https://rebels.cs.uwaterloo.ca/papers/ase2025_brus.pdf)|
+|UT Austin 的 August Shi 与 George Mason 的 Wing Lam 合作线|ICSE 2025 定位影响执行顺序的测试，ISSTA 2026 发布可重复的 flaky failures，ASE 2026 的 TDRepro 针对时序相关失败。作者主页可查会议类别及合作者，公开软件目录包含 IDoFT 和 iDFlakies。|CI 试点先按顺序依赖、时间依赖、基础设施问题分别做重现。报告一条能重复出现的失败和一条明确无法重现的失败，避免用重复运行变绿代替病因定位。[作者发表目录](https://sites.utexas.edu/august/publications/) · [公开工件](https://mir.cs.illinois.edu/winglam/software.html)|
+|Carnegie Mellon 的 STRUDEL，Bogdan Vasilescu 团队|其问题覆盖分布式团队、持续集成和工作方式。MSR 2026 区分有无既往 IDE 工具痕迹，以仓月分析 agent 采用，agent-first 一组 401 个处理仓匹配 606 个对照，IDE-first 为 117 对 73。原文表 2 与图 2 同时看产出与静态维护指标。|扩到第二个部门前记录团队以往的自动化水平，观察交付终点和维护成本。公开仓中首次能观察到工具的时间只是处理代理，这项研究本身也不能回答你们的内部人工分钟。[实验室](https://cmustrudel.github.io/) · [MSR 完整论文](https://cmustrudel.github.io/papers/msr2026agarwal.pdf)|
+|Microsoft Research 与 AIOpsLab 多机构合作者|从云运维 agent 的设计原则发展为可启动应用、模拟工作负载、注入故障并收集观察数据的 MLSys 2025 评估框架。与 Microsoft 的 StepFly、Triangle 一同覆盖调查与分诊，但人员和原型不应自动合并为同一个系统。|可把线上处置需求改成可回放工单，在预期资源上观察恢复，而非让同一个 agent 自我报告完成。应用、负载和故障的选取会限定外部可迁移性。[官方项目](https://microsoft.github.io/AIOpsLab/) · [较早的设计工作](https://www.microsoft.com/en-us/research/publication/building-ai-agents-for-autonomous-clouds-challenges-and-design-principles/)|
+|CodeTracer / SWE-CoWork 的跨机构作者线|Han Li、Yifan Yao、Xinping Lei、Jiaheng Liu 等在两项预印本都署名。4 月的 CodeTracer 为四种运行框架重建轨迹并定位早期失误；11 月的 SWE-CoWork 用模拟同事分散需求，测试跨人交接能否走到整项验收。后一项以 TokenWave AI 发布；数据帐户及共同作者均不足以将二者写成同一家实验室的产品。|组织平台需要同时记录“谁知道什么”和“哪项约定被真正实现”。从首次错误定位走向完整交付，新的独立可测件是需求到验收的逐件匹配，而不是继续增加消息轮数。[CodeTracer 原文](https://arxiv.org/abs/2604.11641) · [CodeTraceBench 数据](https://huggingface.co/datasets/NJU-LINK/CodeTraceBench) · [SWE-CoWork 原文](https://arxiv.org/abs/2611.20218)|
+
+每条线的下一次更新应回答一个可证伪的问题。对于测试研究，查新增数据是否包括没有成功重现的用例；对于组织研究，查分母、取消/超时和对照组选择；对于模拟协作，查被模拟者承担的劳动能否在真实项目中测到。G01 的大学网页通过网页阅读工具核对，本地 HTTP 存档遇到 403，在清单内保留失败。

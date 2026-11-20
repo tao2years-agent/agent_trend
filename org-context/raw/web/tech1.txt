@@ -1,0 +1,174 @@
+检索参数 {"search_query":[{"q":"Cursor rules always apply auto attached agent requested Devin knowledge triggers Qoder repowiki rules official docs"}],"response_length":"medium"}
+Cursor – Rules (https://docs.cursor.com/context/rules-for-ai)
+citeturn17search0 [wordlim: 200] Crawled: 1.2 years ago;   * Encode domain-specific knowledge about your codebase ... Control how rules are applied from the type dropdown which changes properties `description`, `globs`, `alwaysApply`. ... `Auto Attached`  | Included when files matching a glob pattern are referenced ... `Agent Requested`  | Available to AI, which decides whether to include it. ... Create rules using the `New Cursor Rule` command or going to `Cursor Settings > Rules`. This creates a new rule file in `.cursor/rules`. ... Write rules like clear internal docs
+
+Image: Rule applied in context with chat
+
+Rules apply to Chat and Inline Edit. Active rules show in the Agent sidebar.
+
+## 
+
+​
+
+Project rules
+
+Project rules live in `.cursor/rules`. Each rule is a file and version-controlled. They can be scoped using path patterns, invoked manually, or included based on relevance. Subdirectories can include their own `.cursor/rules` directory scoped to that folder. Use project rules to:
+
+  * Encode domain-specific knowledge about your codebase
+  * Automate project-specific workflows or templates
+  * Standardize style or architecture decisions
+
+### 
+
+​
+
+Rule anatomy
+
+Each rule file is written in MDC (`.mdc`), a format supporting metadata and content. Control how rules are applied from the type dropdown which changes properties `description`, `globs`, `alwaysApply`.
+Rule Type  | Description
+--- | ---
+`Always`  | Always included in model context
+`Auto Attached`  | Included when files matching a glob pattern are referenced
+--------------------------------------------------------------------------------
+Rules | Cursor Docs (https://prod.cursor.com/help/customization/rules)
+citeturn17search1 [wordlim: 200] Crawled: today; Create a new rule using the command palette: search for "New Cursor Rule" ... `CLAUDE.md` files are always applied to every conversation, regardless of any `alwaysApply` frontmatter setting. ... Rules only apply to Agent (Chat).
+
+# Rules
+
+Rules give Agent persistent instructions for your project. They help Agent follow your coding style, patterns, and workflows every time, without you repeating yourself in chat.
+
+## What is a rule?
+
+A rule is a persistent set of instructions Agent follows while working in your project. You can scope rules globally, per project, or to specific files.
+
+## How do I create a project rule?
+
+Project rules live in your codebase and are version-controlled. Your whole team benefits when you check them into git.
+
+  1. Open the command palette:
+     * Mac: Press `Cmd Ctrl` + `Shift` + `P`
+     * Windows/Linux: Press `Ctrl` + `Shift` + `P`
+  2. Type "New Cursor Rule" and select it
+  3. Give your rule a name (e.g., `react-patterns`)
+  4. Write your instructions in markdown. For example:
+    
+    `- Use TypeScript for all new files- Prefer functional components in React- Use snake_case for database columns`
+
+  5. Choose when the rule applies from the type dropdown:
+     * Always Apply: included in every conversation
+     * Apply Intelligently: Agent decides when it's relevant
+     * Apply to Specific Files: only applies for files matching a pattern (e.g., `*.tsx`)
+     * Apply Manually: only used when you @mention it in chat
+  6. Save the file. It's stored in `.cursor/rules/` in your project.
+
+## How do I set up user rules?
+
+User rules are global preferences that apply across all your projects. They sync with your Cursor account across devices.
+
+  1. Open Customize in the sidebar
+  2. Click Rules
+  3. Add your preferences. For example: "Reply in a concise style. Avoid unnecessary repetition."
+
+## How do I use AGENTS.md?
+
+Create an `AGENTS.md` file in your project root. Write instructions in plain markdown. Cursor picks it up automatically.
+    
+    `# Project instructions- Use TypeScript for all new files- Follow the repository pattern for data access- Keep components under 200 lines`
+
+For more control over when rules apply, use project rules in `.cursor/rules/` instead.
+--------------------------------------------------------------------------------
+Rules | Cursor Docs (https://cursor.com/docs/rules)
+citeturn17search2 [wordlim: 200] Crawled: today;   * Content: Team Rules are free‑form text. ...   * Glob patterns: Team Rules support glob patterns for file-scoped application. ...   * Where they apply: When a Team Rule is enabled (and not disabled by the user, unless enforced), it is included in the model context for Agent (Chat) across all repositories and projects for that team. ... The file is not inlined into the prompt, so if something must always be in context, paste it into the rule body. ... Do rules impact Cursor Tab or other AI features?
+--------------------------------------------------------------------------------
+Rules | Cursor Docs (https://cursor.com/docs/rules?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn17search3 [wordlim: 200] Crawled: today;   * Encode domain-specific knowledge about your codebase ... A plain `.md` file in `.cursor/rules` is ignored by the rules system because it has no frontmatter to specify `description`, `globs`, and `alwaysApply`. ... Auto-attached by file pattern ...     `---description: RPC service conventions and patterns for the backend alwaysApply: false---- Define each service in its own file under `src/services/`- Always validate inputs at the service boundary before passing data  to internal functions- Return structured error objects with a `code` and `message` field,  never throw raw strings- Read `@service-template.ts` for the standard boilerplate before  creating a new service` ... Agent generates the rule file with proper frontmatter and saves it to `.cursor/rules`.
+--------------------------------------------------------------------------------
+Rules | Cursor Docs (https://prod.cursor.com/docs/rules)
+citeturn17search4 [wordlim: 200] Crawled: today; User Rules are global preferences defined in Customize → Rules that apply across all projects. ... Mention a file by path, for example `@service-template.ts`, and Agent reads it with its tools when the rule applies and it needs the content. The file is not inlined into the prompt, so if something must always be in context, paste it into the rule body. ... Do rules impact Cursor Tab or other AI features?
+--------------------------------------------------------------------------------
+How to Write Rules for AI Coding Agents · Learn Cursor (https://www.learncursor.dev/guides/how-to-write-rules-for-ai-coding-agents)
+citeturn17search5 [wordlim: 200] Published: 4 months ago; Crawled: 2 months ago; Good AI coding rules are short, specific and tied to files, commands or patterns the agent can follow. ...     The repo has patterns the agent must follow ... Create rules via Settings > Rules, Skills and Sub Agents > Project rule, which writes an MDC file under .cursor/rules. ... Always Apply  | Attached to every single prompt - keep this one tiny.
+Apply Intelligently  | You write a description; the agent invokes the rule when it judges it relevant.
+--------------------------------------------------------------------------------
+Agent model change around the weekend? Frustration rising - #5 by deanrie - Feedback - Cursor - Community Forum (https://forum.cursor.com/t/agent-model-change-around-the-weekend-frustration-rising/160562/5)
+citeturn17search6 [wordlim: 200] Published: 5 months ago; Crawled: today;   * The `Always` / `Auto Attached` / `Agent Requested` / `Manual` modes apply only to Project Rules `.cursor/rules/*.mdc`. ... Docs: https://cursor.com/docs/rules ... If file edits are set to auto-approve, the agent will edit without asking even if a rule says to ask.
+--------------------------------------------------------------------------------
+A Deep Dive into Cursor Rules (> 0.45) - Guides - Cursor - Community Forum (https://forum.cursor.com/t/a-deep-dive-into-cursor-rules-0-45/60721)
+citeturn17search7 [wordlim: 200] Published: 1.7 years ago; Crawled: today; After diving into Cursor 0.45’s Rules mechanism, I discovered that the official documentation is incomplete. ... User Rules are always sent to the AI in all chat sessions and conversations triggered by pressing Command-K. ...   * Do the same rules apply equally across ask/edit/agent modes? ...     Some rules may automatically attach to the conversation if the user links a file matching the rule's glob; those won't need to be fetched. ...   3. `description` : Determines activation during conversations by instructing the model through natural language. ... Similarly, a rule that was already in the context (because of alwaysApply or glob pattern matching) can still be omitted if it’s not really relevant to the query. ...     * Consistent “USE WHEN” prefix makes it clear these are trigger conditions
+--------------------------------------------------------------------------------
+@Mention - Qoder CN (https://docs.qoder.cn/en/user-guide/context)
+citeturn17search8 [wordlim: 200] Crawled: today; Automatic inclusion of other rules depends on conditions such as Always Apply, Model Decision, or Specific Files; not every project rule applies to every request. ... > Rule files (such as `.md` files in the `.qoder/rules` directory) can be referenced as `@rule` (persistent context) or found via `@file` search (regular file). ...   * Using the shortcut `Command+L` (macOS) / `Ctrl+L` (Windows/Linux)
+The selected content will be attached as context to the input box, helping the agent understand your intent more precisely.
+--------------------------------------------------------------------------------
+Using cursor rules for agent context, why this is the default flow yet? - Discussions - Cursor - Community Forum (https://forum.cursor.com/t/using-cursor-rules-for-agent-context-why-this-is-the-default-flow-yet/159825)
+citeturn17search9 [wordlim: 200] Published: 6 months ago; Crawled: 2 months ago;   * Cursor Feature Request – cq Integration cq as a knowledge layer ... In Cursor there are four rule types, see https://cursor.com/docs/rules:
+
+  * Always `alwaysApply: true` applies to every message
+  * Auto Attached `globs:` in the frontmatter gets pulled in when a file matching the globs is in context, including when the agent opens or reads the file on its own, not only when you manually @ tag it
+--------------------------------------------------------------------------------
+Rules & AGENTS.md | Arantic Documentation (https://docs.arantic.com/de/cursor/rules)
+citeturn17search10 [wordlim: 200] Crawled: today; Rules are Cursor's mechanism for that: Markdown files (and dashboard-managed text) that Cursor inserts at the start of the model context so Agent follows your conventions, commands, and guardrails without being told each time. ... Project Rules  | `.cursor/rules/*.mdc`  | Everyone working in the repo  | Yes  | You ... `alwaysApply`  | boolean  | `true` includes the rule in every conversation and ignores the other two fields ... Older Cursor documentation and community material call these Always, Auto Attached, Agent Requested, and Manual. ... `docs/**/*.md, docs/**/*.mdx`  | `.md` and `.mdx` files under `docs/`
+--------------------------------------------------------------------------------
+Cursor Rules Developer Guide — NVIDIA NeMo Agent Toolkit (1.5) (https://docs.nvidia.com/nemo/agent-toolkit/1.5/resources/contributing/cursor/cursor-rules-developer-guide.html)
+citeturn17search11 [wordlim: 200] Crawled: last week; Important: To ensure the context window of the Cursor agent is large enough, DO NOT use the `Auto` mode of LLM model selection. ... According to the official Cursor documentation, there are four types of Cursor rules, which are defined in the `.mdc` metadata header: ... Auto Attached (with `globs` pattern)  | Included when files matching a glob pattern are referenced  | Rules specific to certain file types or directories
+Agent Requested (`alwaysApply: false` + `description`)  | Available to the AI, which decides whether to include it  | Task-specific rules that the AI should choose based on context ... For Agent Requested rules, the description is crucial as it helps the AI determine when to apply the rule.
+--------------------------------------------------------------------------------
+Thread by @msfeldstein on Thread Reader App – Thread Reader App (https://www.peregianhub.com.au/chatmedia/aichat/00001329-Thread%20by%20%40msfeldstein%20on%20Thread%20Reader%20App%20%E2%80%93%20Thread%20Reader%20App.pdf)
+citeturn17search12 [wordlim: 200] Published: 1.8 years ago; Crawled: 11 months ago; One of the things I've been working on at @cursor_ai is beefing up Cursor Rules. ... Screenshot of a dark “Project Rules” panel with a blue “+ Add new rule” button. ... Useful to add logic that hooks onto Composer functions like stream chat, apply — add-composer-capability.mdc ... Project Rules can be auto-attached to any composer/agent request based on filename globbing, or the agent can grab one based on its description.
+--------------------------------------------------------------------------------
+Configuring Your AI: Cursor Rules (https://www.randalolson.com/assets/How-Meta-Programming-With-AI-Will-Transform-Your-Software-Engineering-Career-Randy-Olson.pdf)
+citeturn17search13 [wordlim: 200] Crawled: 11 months ago; Configuring Your AI: Cursor Rules ... These preferences get sent to the AI on all chats, composers and Command-K sessions. ... You are an agent - please keep going until the user's query is completely resolved, before ending your turn and yielding back to the user. ... If you are not sure about file content or codebase structure pertaining to the user's request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer.
+--------------------------------------------------------------------------------
+Cursor oh Cursor (https://on.notist.cloud/pdf/deck-53e545fdd97f7eb1.pdf)
+citeturn17search14 [wordlim: 200] Cursor oh Cursor ... Left sidebar shows account “anant@ananthsri.info” with “Pro Plan”, a “Search settings ⌘F” field, and navigation items: General, Chat (selected), Tab, Models, Tools & Integrations, Rules, Indexing & Docs, Network, Beta, Docs. ... - Auto-Run Mode — “Allow Agent to run tools like command execution and file writes without asking for confirmation” (toggle on)
+--------------------------------------------------------------------------------
+AI-Assisted Software Engineering 2025-06-25 (https://www.panozzaj.com/presentations/ai-assisted-software-engineering/slides.pdf)
+citeturn17search15 [wordlim: 200] Crawled: 6 days ago; alwaysApply: true ... - To add a new rule, create a file in `.cursor/rules` with `.mdc` extension ... description: <Several word text description of the rule>
+--------------------------------------------------------------------------------
+A comprehensive list of Agent-rule files: do we need a standard? (https://www.reddit.com/r/ArtificialInteligence/comments/1kw16yi)
+citeturn17reddit16 [wordlim: 200] Published: 1.5 years ago; Crawled: 1.5 years ago; Different names for the same idea: a repo-local file that tells the agent how to behave. ... Older single-file form is `.cursorrules`. ... > - **Auto Attached:** Included when files matching a glob pattern are referenced.
+> - **Agent Requested:** Rule is available to the AI, which decides whether to include it. ... Official docs can be found here.
+--------------------------------------------------------------------------------
+A Deep Dive into Cursor Rules (> 0.45) (https://www.reddit.com/r/cursor/comments/1j7wv39)
+citeturn17reddit17 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.1 years ago; After diving into Cursor 0.45’s Rules mechanism, I discovered that the official documentation is incomplete. ... User Rules are always sent to the AI in all chat sessions and conversations triggered by pressing Command-K. ...     Some rules may automatically attach to the conversation if the user links a file matching the rule's glob; those won't need to be fetched. ... I initially had the following, without the `description`, `globs` and `alwaysApply` as part of a larger `.cursorrules` file, which worked. ... The project allow installing basics rules for many different stacks, support different versions and adapt the rule to explain to the agent how works our language and project structure.
+--------------------------------------------------------------------------------
+バイブコーディングによるプログラム開発 (https://www.opensquare.co.jp/seminar_document/168/01.pdf)
+citeturn17search18 [wordlim: 200] Published: 1.3 years ago; User Rules には「Always respond in 日本語」、Project Rules には「Include .cursorrules file」が表示されている。右側に coding-rules.mdc の編集画面例があり、Rule Type は「Always」、説明として「This rule is attached to every chat and command+k request」が見える。
+--------------------------------------------------------------------------------
+.cursor/rules is nice - but how to have it consistently follow them? (https://www.reddit.com/r/cursor/comments/1ilbcuy)
+citeturn17reddit19 [wordlim: 200] Published: 1.8 years ago; Crawled: 1.8 years ago; One of which is instructions to log its own actions using the system date command and a certain format. ... My only current workaround is split work into small pieces, start a fresh agent very quickly and have a standard intro text on each conversation calling out the rules explicitly. ... Not every model’s tokenizer is public so you won’t be able to always see exactly, but this’ll give you a sense of scale ...     Cursor rules are user provided instructions for the AI to follow to help work with the codebase. ...     Some rules may be automatically attached to the conversation if the user attaches a file that matches the rule's glob, and wont need to be fetched. ... Hoping they'll fix it soon, I ended up on a jailbreaking side-quest trying to figure out how it's possible for it to completely ignore 2 out of 2 rules with no extra stuff added anywhere (clean repo), even when specifically pointed at them in prompts.
+--------------------------------------------------------------------------------
+Working with AI Coding Agents — The Practitioner's Guide (2026) (https://dtx.systems/resources/working-with-ai-coding-agents-2026.pdf)
+citeturn17search20 [wordlim: 200] Published: 9 months ago;   "command": "jq -r '.tool_input.file_path' | grep -qE '\\.(env|pem|key)$' && exit 2 ||" ... If your team uses Cursor and wants context-aware rule activation, create `.cursor/rules/logging-standards.mdc`: ... alwaysApply: false ... Two side-by-side callout cards under the heading “Agent Observability — Cutting Through the Confusion”: left card titled “Observability of Generated Code” in blue, right card titled “Observability of the Agent Itself” in purple.
+--------------------------------------------------------------------------------
+Cursor 0.49 rolling out (https://www.reddit.com/r/cursor/comments/1k2bdu9)
+citeturn17reddit21 [wordlim: 200] Published: 1.6 years ago; Crawled: 1.6 years ago; If you have a conversations with decisions you want to reuse later, just run the command.
+* Auto‑attached rules now trigger correctly when path patterns match. ... * *Always*‑attached rules finally persist across long conversations (no longer forgotten) ... * Define user‑level ignore patterns once; they apply across all projects and keep noisy artifacts out of prompts. ...     Thanks, I think it's essential when working with libraries or version of libraries that are not in the LLM's knowledge base. ...   Let me know if this is helpful: https://docs.cursor.com/context/rules ...     The script uses the following pattern for spell casting: ... Running repomix in terminal is a quick, dirty fix I've been using, but even then, I have to either memorize or search up the limits for each model online, and confirm the method used for token counting is correct (o200k\_base, cl100k\_base, etc...) ... I added a rule for it and now cursor outputs a commit message at the end of every agent action, although it has also fixed the commit messages it was generating.
+--------------------------------------------------------------------------------
+Cursor ignores CursorRules.md — critical guardrails like “test locally before pushing” being bypassed (https://www.reddit.com/r/cursor/comments/1m9afz2)
+citeturn17reddit22 [wordlim: 200] Published: 1.3 years ago; Crawled: 1.3 years ago; If you want to create rules, put mdc file in a .cursor folder at the top of your repo. You can use the / command for Generate Cursor rules. ... You have file pattern rules that will apply for work in any file or folder part of the glob pattern. You can do agent requested rules, which the agent will automatically pull based on the rule's description (these can be flaky and don't always get picked up! ... Read their wiki on how to use rules.
+--------------------------------------------------------------------------------
+What are the lesson learned using Cursor? (https://www.reddit.com/r/cursor/comments/1rf9klx/what_are_the_lesson_learned_using_cursor/)
+citeturn17reddit23 [wordlim: 200] Published: 8 months ago; ** The single biggest upgrade was writing `.cursor/rules/*.mdc` files with `alwaysApply: true` in the frontmatter. ... If you're still using `.cursorrules` in the project root — that file doesn't load in agent mode anymore.
+--------------------------------------------------------------------------------
+How will i know when a subagent is working? (https://www.reddit.com/r/cursor/comments/1rd6cln/how_will_i_know_when_a_subagent_is_working/)
+citeturn17reddit24 [wordlim: 200] Published: 8 months ago; \- I created a subagent, ...     : `always_applied_workspace_rules` (from `.cursorrules` in each workspace) ...     - Creating rules → `create-rule` ...     : Based on the current request or conversation, identify which skills apply. ... I noticed that when using Auto, it didn't invoke my subagents despite specifically instructed to do so.
+--------------------------------------------------------------------------------
+Is it possible to add an universal or system prompt to every cursor call? Issues with proxy and software licensing... (https://www.reddit.com/r/cursor/comments/1ujg0yh/is_it_possible_to_add_an_universal_or_system/)
+citeturn17reddit25 [wordlim: 200] Published: 4 months ago; Put the rules in repo docs plus a reusable project rule, and make blocked package sources fail loudly in CI if possible. ... From what I know the .rules files are exactly this -> a system prompt that auto-loads with every chat and agent session, no re-explaining. ... Project wide: drop a `.cursorrules` file at the repo root (or `.cursor/rules/*.mdc` with `alwaysApply: true` on newer versions).
+--------------------------------------------------------------------------------
+Any short explanation on what rules are and how to use them? (for dummies) (https://www.reddit.com/r/cursor/comments/1illqwd)
+citeturn17reddit26 [wordlim: 200] Published: 1.8 years ago; Crawled: 1.8 years ago; If you find the model continues to get confused or make the same mistakes, it's a good cue to add a rule to your file to better guide the model in the future.
+Also, check out our docs, which give an overview of the different types of rules files and how they're used by Cursor: https://docs.cursor.com/context/rules-for-ai ... Hi everyone, I hope this information helps, but since I was getting confused by repeating rules in each project, I decided to create agent-rules-kit.
+--------------------------------------------------------------------------------
+Any way to get the agent to *actually* follow the rules? (https://www.reddit.com/r/cursor/comments/1jivup3)
+citeturn17reddit27 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.6 years ago; ATTENTION CURSOR AI: This is the MOST IMPORTANT rule in this project. ... ATTENTION CURSOR AI: This is the SECOND MOST IMPORTANT rule in this project. ... description: "Before running any terminal command, confirm with the user to prevent unintended executions." ... description: "Always verify with the user before executing multi-step tasks or making large-scale changes in agent mode." ... # Test Script Location ... other directories or alongside application code. ... It seems the issue is that it 'forgets' to read the rules even though every time I give it a message i remind it to follow the rules ...       Yes every time I tell it anything I tag the rules file and and often Interrupt what's it's doing to remind it
+--------------------------------------------------------------------------------
+How to make auto-applied rules like in Cursor? (https://www.reddit.com/r/RooCode/comments/1jad374)
+citeturn17reddit28 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.4 years ago; For those who don't know, Cursor has a very convenient dynamic rule functionality for the AI Agent. ... I would like to ask and discuss in what ways it is possible to combine auto-application of Cursor rules with Cline/Roo Code rules or custom instructions.
+
+The only thing I can think of is to create a Cline/Roo rule that simply describes the rule, when to apply it and specifies the path to the rule itself `.cursor/rules/*.mdc`.
+--------------------------------------------------------------------------------
+Tip for Cursor users: Make sure you're using the model you actually want (https://www.reddit.com/r/cursor/comments/1xbg3v0/tip_for_cursor_users_make_sure_youre_using_the/)
+citeturn17reddit29 [wordlim: 200] Published: 3 weeks ago; One thing that helps: set the rule to alwaysApply: true in .cursor/rules, otherwise the agent only pulls it in when it thinks it is relevant and the model check gets skipped.
+

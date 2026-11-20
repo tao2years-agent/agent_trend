@@ -1,0 +1,61 @@
+Exploring and Evaluating Proactive AI Programming
+Figure 4: Summary of Heuristics for Proactive Assistance Timin
+by our timing heuristics (Table 1), with 212 (53.3%) instances 
+disruptions, and 138 (34.7%) instances of ignored AI proactivity
+(Fig.4). Overall, we recorded 398 proactivity instances, with 212
+(53.3%) interactions leading to the user’s effective engagement (e.g.
+adapting AI code changes, respond to the agent’s message), 48 dis-
+ruptions (12.1%), and 138 interactions (34.7%) where the user did not
+engage with the proactive agent (i.e. ignored or did not notice). The
+most frequently triggered heuristics were code block completion
+(107 times), program execution (102 times), and user-written in-line
+comment (78 times). Additionally, the most effective heuristics that
+led to user engagement are multi-line change (73.1%), user-written
+comment (69.2%) and program execution (66.7%). Reflecting on the
+proactivity features, Design Rationale 2 — intervening at program-
+mer’s task boundary — was the most effective design principle
+overall. The only exception is the heuristic of intervening at code
+block completion, which resulted in excessive AI responses. Many
+were affirmatory messages to acknowledge the completed code and
+ask if the user needs further help. This led users to ignore around
+50% of the proactive agent signals (Fig.4) to avoid disruption to
+their workflow.
+On the other hand, the implementation of Design Rationale 3 —
+intervening based on the user’s implicit signals of adding a code
+comment or selecting a range of code — resulted in many false
+positives that led to workflow disruptions. Code comments and
+cursor selections conveyed different utilities for different users,
+which led to misinterpretation of user intent. For example, P10 did
+not perceive comments as instructions for AI: “I feel like when I
+think of comments, I think of just writing helpful little notes for myself.
+---
+CHI ’25, April 26–May 01, 2025, Yokohama, Japan
+ng. Overall, we recorded 398 instances of AI proactivity defined
+ leading to effective user engagement, 48 (12.1%) instances of
+y.
+Like I don’t see them necessarily as instructions. So I feel like it would
+have been a little distracting right now.” Code selection, similarly,
+was used by some participants as a habitual behavior to focus their
+own attention on a part of code. Therefore, the agent’s proactivity
+could be perceived as unexpected and unnecessary.
+Design Rationale 1 — intervening at moments of low mental
+workload — was not effectively operationalized. Participants re-
+ported that when they were inactive for an extended period, they
+were likely thinking through the code design or solving an issue,
+which represents high mental workload. While it is likely that
+idleness is a signal to assist, participants preferred to initiate the
+help-seeking after they could not resolve the issue themselves,
+rather than having the AI agent intervene at a potentially mentally
+occupied moment. The design rationale requires more involved
+modeling of the programmer’s mental state to render it effective.
+We outline the design implications from these finding in the discus-
+sion.
+6.3
+Users Adapted to AI Proactivity and
+Established New Collaboration Patterns
+Throughout the user study, participants calibrated their mental
+model of the AI agent’s capabilities in the editor, developing a
+level of trust and reliance after experiencing proactive assistance.
+Half of the participants (𝑁= 9) exhibited a level of reliance on
+the AI’s generative power to tackle the coding task at hand and
+resorted to an observer and code reviewer role. With this role

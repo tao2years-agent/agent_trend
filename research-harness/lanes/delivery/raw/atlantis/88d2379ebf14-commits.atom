@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/runatlantis/atlantis/commits/main</id>
+  <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commits/main"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/runatlantis/atlantis/commits/main.atom"/>
+  <title>Recent Commits to atlantis:main</title>
+  <updated>2026-11-18T04:01:24Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/2714f4a6dfcd75c798eec34b6dbe653a99c34a89</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/2714f4a6dfcd75c798eec34b6dbe653a99c34a89"/>
+    <title>
+        chore(deps): update redis:8.6-alpine docker digest to 91c71f9 in dock…
+    </title>
+    <updated>2026-11-18T04:01:24Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update redis:8.6-alpine docker digest to 91c71f9 in docker-compose.yml (#7114)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/afb1657535e5716feb454a09e076f68f63819ac6</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/afb1657535e5716feb454a09e076f68f63819ac6"/>
+    <title>
+        chore(deps): update alpine docker tag to v3.24.4 in dockerfile (#7104)
+    </title>
+    <updated>2026-11-15T04:04:34Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update alpine docker tag to v3.24.4 in dockerfile (#7104)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/6bb9515e35dff421f1d5177dba48696db5ef0614</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/6bb9515e35dff421f1d5177dba48696db5ef0614"/>
+    <title>
+        chore(deps): update dependency git-lfs/git-lfs to v3.8.1 in dockerfil…
+    </title>
+    <updated>2026-11-14T21:55:19Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update dependency git-lfs/git-lfs to v3.8.1 in dockerfile (main) (#7080)
+
+* chore(deps): update dependency git-lfs/git-lfs to v3.8.1 in dockerfile
+
+* fix(docker): update Git LFS 3.8.1 checksums
+
+Signed-off-by: Rui Chen &amp;lt;rui@chenrui.dev&amp;gt;
+
+---------
+
+Signed-off-by: Rui Chen &amp;lt;rui@chenrui.dev&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: Rui Chen &amp;lt;rui@chenrui.dev&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/85a404648e23dbbfeb47b30b27b4088ed7635cd3</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/85a404648e23dbbfeb47b30b27b4088ed7635cd3"/>
+    <title>
+        fix(e2e): delete webhooks left by cancelled runs (#7103)
+    </title>
+    <updated>2026-11-14T21:05:42Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/2208324?s=30&amp;v=4"/>
+    <author>
+      <name>jamengual</name>
+      <uri>https://github.com/jamengual</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix(e2e): delete webhooks left by cancelled runs (#7103)
+
+Each e2e run adds a webhook to the test repository and deletes it only when the run exits normally. Cancelled or killed runs left their webhooks behind, and once 20 piled up GitHub rejected new ones, failing every e2e-github job.
+
+Before creating its webhook, a run now deletes earlier e2e webhooks: https ngrok URLs ending in /events. The e2e jobs already run one at a time per VCS, so none of them belongs to a live run. Runs also stop on SIGINT or SIGTERM, which a cancelled workflow sends, and still delete their webhook and close their pull requests.
+
+
+Assisted-by: Claude &amp;lt;noreply@anthropic.com&amp;gt;
+
+Signed-off-by: PePe Amengual &amp;lt;2208324+jamengual@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d09f4ea9389964f229ec57acad71696d15ddf8b7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/d09f4ea9389964f229ec57acad71696d15ddf8b7"/>
+    <title>
+        docs: use the CNCF Atlantis logos on the website and built-in UI (#7099)
+    </title>
+    <updated>2026-11-14T19:38:59Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/2208324?s=30&amp;v=4"/>
+    <author>
+      <name>jamengual</name>
+      <uri>https://github.com/jamengual</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: use the CNCF Atlantis logos on the website and built-in UI (#7099)
+
+* docs: use the CNCF Atlantis logos on the website and built-in UI
+
+Replace the old island artwork with the project&amp;#39;s logo from the CNCF
+artwork repository (cncf/artwork, projects/atlantis/icon/color):
+
+- Website: hero image, favicons, favicon.ico, Apple touch icons, and
+  Windows tiles, regenerated at their existing sizes. Touch icons get a
+  white background because iOS fills transparent pixels with black.
+- Website: show the logo next to the site title in the navbar.
+- Built-in UI: the header logo and favicon under server/static/images.
+
+Signed-off-by: PePe Amengual &amp;lt;2208324+jamengual@users.noreply.github.com&amp;gt;
+Assisted-by: Claude &amp;lt;noreply@anthropic.com&amp;gt;
+
+* fix(website): hide the navbar logo on the narrowest phones
+
+At 320px the navbar logo left no room for the documentation version
+selector and the page scrolled sideways, failing the mobile navigation
+test. Show only the site title below 360px.
+
+Signed-off-by: PePe Amengual &amp;lt;2208324+jamengual@users.noreply.github.com&amp;gt;
+Assisted-by: Claude &amp;lt;noreply@anthropic.com&amp;gt;
+
+---------
+
+Signed-off-by: PePe Amengual &amp;lt;2208324+jamengual@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/71ae94d2501f350f4dcea8a69cf0ff57727a4873</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/71ae94d2501f350f4dcea8a69cf0ff57727a4873"/>
+    <title>
+        fix: prevent validation comments from being parsed as commands (#6724)
+    </title>
+    <updated>2026-11-14T05:07:23Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/29624902?s=30&amp;v=4"/>
+    <author>
+      <name>omk2477</name>
+      <uri>https://github.com/omk2477</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix: prevent validation comments from being parsed as commands (#6724)
+
+* fix: ignore comments authored by the Atlantis account
+
+Reuse provider identities before parsing comments, fill missing identity paths,
+and separate Azure comment authors from existing command users. Keep validation messages.
+
+Continue normal command processing when identity lookup fails, including parsing
+errors. Keep missing GitHub App slug discovery optional and document the fallback.
+Add focused regression coverage for identity checks and compatibility.
+
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+
+* fix: bound GitHub app identity lookups
+
+Cancel identity requests after ten seconds and retain the optional slug startup fallback. Cover unresponsive APIs and configured-slug errors.
+
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+
+* fix: preserve valid self-authored commands and cache identities
+
+Suppress parser-generated replies to the Atlantis account while preserving commands posted by automation. Bound identity lookups, cache successful results per client and Azure organization, and document GitHub App slug discovery.
+
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+
+* fix: share concurrent VCS identity lookups
+
+Share in-flight identity results, including errors, while caching successful identities and allowing later requests to retry. Keep Azure DevOps lookups isolated by organization.
+
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+
+* fix: resolve a lint error in the Azure DevOps identity cache test
+
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+
+* fix: compare Gitea usernames case-insensitively
+
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+
+---------
+
+Signed-off-by: Lee Seungyoon &amp;lt;omk2477@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b0f199a5388d094fab36892ad7538e9714a91c18</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/b0f199a5388d094fab36892ad7538e9714a91c18"/>
+    <title>
+        chore(deps): update module golang.org/x/crypto to v0.59.0 [security] …
+    </title>
+    <updated>2026-11-13T13:47:53Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update module golang.org/x/crypto to v0.59.0 [security] (#7087)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/3032b8e16bc19844f649b0a738449250c6ef8702</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/3032b8e16bc19844f649b0a738449250c6ef8702"/>
+    <title>
+        chore(deps): update docker/login-action digest to 8aa5831 in .github/…
+    </title>
+    <updated>2026-11-13T05:23:02Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update docker/login-action digest to 8aa5831 in .github/workflows/testing-env-image.yml (#7095)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/48861e3d0f8b0eec1c041d79ac8421baf28e49ae</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/48861e3d0f8b0eec1c041d79ac8421baf28e49ae"/>
+    <title>
+        ci: serialize e2e jobs that share the atlantis-tests repo (#7097)
+    </title>
+    <updated>2026-11-13T05:11:09Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/2208324?s=30&amp;v=4"/>
+    <author>
+      <name>jamengual</name>
+      <uri>https://github.com/jamengual</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;ci: serialize e2e jobs that share the atlantis-tests repo (#7097)
+
+Concurrent runs from different PRs each start an Atlantis server with a
+webhook on the same test repo, so they autoplan each other&amp;#39;s PRs and fail
+on project locks held by another run&amp;#39;s plan. Give e2e-github and
+e2e-gitlab branch-independent concurrency groups so only one run uses
+the shared repo at a time.
+
+Signed-off-by: PePe Amengual &amp;lt;jamengual@PePes-MacBook-Pro-M6.local&amp;gt;
+Co-authored-by: PePe Amengual &amp;lt;jamengual@PePes-MacBook-Pro-M6.local&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/ece627d9876be216e4f9d1f3193c7eda543371c7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/ece627d9876be216e4f9d1f3193c7eda543371c7"/>
+    <title>
+        chore(deps): update dependency esbuild to v0.28.2 in package.json (#7…
+    </title>
+    <updated>2026-11-13T04:46:50Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update dependency esbuild to v0.28.2 in package.json (#7077)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/8b7c4d9190e10f6c08a72e9a72f539f1406f838c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/8b7c4d9190e10f6c08a72e9a72f539f1406f838c"/>
+    <title>
+        chore(deps): update github/codeql-action digest to 33d7b85 in .github…
+    </title>
+    <updated>2026-11-13T03:54:32Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update github/codeql-action digest to 33d7b85 in .github/workflows/codeql.yml (#7096)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/6d56478dcd91b296689d00a209f15397fd82d57f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/6d56478dcd91b296689d00a209f15397fd82d57f"/>
+    <title>
+        chore(deps): update step-security/harden-runner digest to 1d88384 in …
+    </title>
+    <updated>2026-11-13T03:25:50Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update step-security/harden-runner digest to 1d88384 in .github/workflows/scorecard.yml (#7098)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/da275c6b047f070a31f19ec0cf424e4690864ed2</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/da275c6b047f070a31f19ec0cf424e4690864ed2"/>
+    <title>
+        chore(deps): update alpine docker tag to v3.24.3 in dockerfile (#7076)
+    </title>
+    <updated>2026-11-13T01:20:46Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update alpine docker tag to v3.24.3 in dockerfile (#7076)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/b808e064bcf3cdb9e41b8a0cbc87560948f36f18</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/b808e064bcf3cdb9e41b8a0cbc87560948f36f18"/>
+    <title>
+        fix(deps): update Alpine Git pin to 2.54.1-r0 (#7093)
+    </title>
+    <updated>2026-11-13T01:09:00Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5635801?s=30&amp;v=4"/>
+    <author>
+      <name>pseudomorph</name>
+      <uri>https://github.com/pseudomorph</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix(deps): update Alpine Git pin to 2.54.1-r0 (#7093)
+
+Assisted-by: OpenAI Codex &amp;lt;noreply@openai.com&amp;gt;
+
+Signed-off-by: pseudomorph &amp;lt;5635801+pseudomorph@users.noreply.github.com&amp;gt;
+Co-authored-by: pseudomorph &amp;lt;5635801+pseudomorph@users.noreply.github.com&amp;gt;
+Co-authored-by: PePe Amengual &amp;lt;2208324+jamengual@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/84b01c12357de9f5fa3b7104e7c8cfab419e81d4</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/84b01c12357de9f5fa3b7104e7c8cfab419e81d4"/>
+    <title>
+        chore(deps): update amannn/action-semantic-pull-request digest to 225…
+    </title>
+    <updated>2026-11-13T00:44:47Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update amannn/action-semantic-pull-request digest to 2252a14 in .github/workflows/pr-lint.yml (#7085)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/39dd70d098c129df0e7b513f7c1892b2889ccf6b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/39dd70d098c129df0e7b513f7c1892b2889ccf6b"/>
+    <title>
+        docs: add Ross Strickland as a maintainer (#7094)
+    </title>
+    <updated>2026-11-13T00:40:12Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5635801?s=30&amp;v=4"/>
+    <author>
+      <name>pseudomorph</name>
+      <uri>https://github.com/pseudomorph</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: add Ross Strickland as a maintainer (#7094)
+
+Assisted-by: OpenAI Codex &amp;lt;noreply@openai.com&amp;gt;
+
+Signed-off-by: Ross Strickland &amp;lt;ross.strickland@braincompany.ai&amp;gt;
+Co-authored-by: Ross Strickland &amp;lt;ross.strickland@braincompany.ai&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/dcbc0e21be4cd6f791ad8e8d411d8bf76865e441</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/dcbc0e21be4cd6f791ad8e8d411d8bf76865e441"/>
+    <title>
+        chore(deps): update module github.com/klauspost/compress to v1.20.2 […
+    </title>
+    <updated>2026-11-06T01:19:53Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update module github.com/klauspost/compress to v1.20.2 [security] (#7066)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/74795ed0d99a2c7cd3746ab41cb007d442c4ed5c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/74795ed0d99a2c7cd3746ab41cb007d442c4ed5c"/>
+    <title>
+        fix: update Alpine OpenSSH for CVE-2026-123158 (#7065)
+    </title>
+    <updated>2026-11-06T01:09:16Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5635801?s=30&amp;v=4"/>
+    <author>
+      <name>pseudomorph</name>
+      <uri>https://github.com/pseudomorph</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix: update Alpine OpenSSH for CVE-2026-123158 (#7065)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/3e90e44066c70739bbbb25a730b62813ef8b354a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/3e90e44066c70739bbbb25a730b62813ef8b354a"/>
+    <title>
+        chore(deps): update step-security/harden-runner digest to 46b06ce in …
+    </title>
+    <updated>2026-11-05T03:56:27Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;chore(deps): update step-security/harden-runner digest to 46b06ce in .github/workflows/scorecard.yml (#7058)
+
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/34082a781d1000b8eec94e234a27a92b9dd07e3f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/runatlantis/atlantis/commit/34082a781d1000b8eec94e234a27a92b9dd07e3f"/>
+    <title>
+        docs: accept API enhancement and drift detection ADR (#7053)
+    </title>
+    <updated>2026-11-04T23:36:37Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5635801?s=30&amp;v=4"/>
+    <author>
+      <name>pseudomorph</name>
+      <uri>https://github.com/pseudomorph</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;docs: accept API enhancement and drift detection ADR (#7053)
+
+Assisted-by: Codex &amp;lt;noreply@openai.com&amp;gt;
+
+Signed-off-by: Ross Strickland &amp;lt;ross.strickland@braincompany.ai&amp;gt;
+Co-authored-by: Ross Strickland &amp;lt;ross.strickland@braincompany.ai&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

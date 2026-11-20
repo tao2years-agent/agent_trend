@@ -1,0 +1,46 @@
+{
+  "recorded": "2026-11-20",
+  "prior_record": {
+    "id": "BUY26",
+    "product": "LaunchDarkly Guarded Rollouts",
+    "buying_task": "T6",
+    "task": "验证发布中指标并决定是否继续推广",
+    "trigger": "在 flag 环境建立受监控的流量推广，观察新旧 variation 及选定指标",
+    "accepted_artifact": "按序贯检验判定回归，按相应设置回退；受支持的错误指标可继续查关联异常",
+    "human_takeover": "负责人选择指标方向、启用/检查回退并决定新一轮推广",
+    "availability_version": "Enterprise Guardian add-on，官方说明可有限试用",
+    "unknown_or_boundary": "不能把暂停 Kubernetes rollout 等同于暂停 flag rollout；错误指标若方向错会反向解读",
+    "evidence_ids": "P18 P19 P20",
+    "chapters": "round2/buyers/result.md"
+  },
+  "prior_sources": [
+    {
+      "id": "P18",
+      "url": "https://launchdarkly.com/docs/home/releases/errors",
+      "path": "round2/buyers/raw/P18-362da0c0dcf2.html",
+      "sha256": "362da0c0dcf267e77fd8bf2cfb0d4596a39a943dfb4ae36c9138500114fe5362",
+      "date": "",
+      "locator": "Enterprise Guardian、顺序检验与退化指标诊断",
+      "retrieved": "2026-11-20T03:53:51.685621+00:00"
+    },
+    {
+      "id": "P19",
+      "url": "https://support.launchdarkly.com/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts",
+      "path": "round2/buyers/raw/P19-3657b5eed31d.html",
+      "sha256": "3657b5eed31d869ec5f411c2570eae7633c8047e001359edcddcde5dc6e81855",
+      "date": "",
+      "locator": "流量调整、暂停与自动回退限制",
+      "retrieved": "2026-11-20T03:54:14.049647+00:00"
+    },
+    {
+      "id": "P20",
+      "url": "https://launchdarkly.com/docs/integrations/monitoring/error-events",
+      "path": "round2/buyers/raw/P20-56fff90822e6.html",
+      "sha256": "56fff90822e60c92fda1eaa562415de30bda41faf5b71e9b72a906bba859deb6",
+      "date": "",
+      "locator": "错误指标方向、退化条件与回退设置",
+      "retrieved": "2026-11-20T03:53:52.243472+00:00"
+    }
+  ],
+  "reason": "Support FAQ names Guardian. Current plan and checkout matrix use Release Autopilot; tenant/contract eligibility needs confirmation."
+}

@@ -1,0 +1,13 @@
+F.....                                                                   [100%]
+================================== FAILURES ===================================
+_________________________________ test_String _________________________________
+sympy\codegen\tests\test_ast.py:270: in test_String
+    assert st.func(*st.args) == st
+sympy\codegen\ast.py:237: in __new__
+    raise TypeError('No value for %r given and attribute has no default' % attrname)
+E   TypeError: No value for 'text' given and attribute has no default
+- generated xml file: F:\dongcha\research-harness\round2\oracles\sensitivity\sympy__sympy-22456\without-4.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_ast.py::test_String - TypeError: No value for...
+1 failed, 5 passed in 0.39s

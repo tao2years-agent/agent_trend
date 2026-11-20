@@ -1,0 +1,15 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_____________________________ test_hermite_normal _____________________________
+sympy\polys\matrices\tests\test_normalforms.py:44: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+sympy\polys\matrices\normalforms.py:406: in hermite_normal_form
+    return _hermite_normal_form(A)
+sympy\polys\matrices\normalforms.py:225: in _hermite_normal_form
+    if A[i][j] != 0:
+E   IndexError: list index out of range
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23413\V4bebf6b6a3c3\modules1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/polys/matrices/tests/test_normalforms.py::test_hermite_normal - ...
+1 failed, 1 passed in 0.21s

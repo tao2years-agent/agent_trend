@@ -1,0 +1,233 @@
+检索参数 {"search_query":[{"q":"site:arxiv.org shared memory coding agents team knowledge maintenance longitudinal organizational coding agents benchmark shared memory enterprise"}],"response_length":"medium"}
+ChainSWE: Benchmarking Coding Agents on Multi-Bug Software Maintenance (https://arxiv.org/abs/2607.02606)
+citeturn35academia0 [wordlim: 200] Published: 4 months ago; Title: ChainSWE: Benchmarking Coding Agents on Multi-Bug Software Maintenance ... Language model (LM) agents are increasingly deployed to maintain codebases over extended periods, fixing streams of related defects while carrying context from one fix to the next. ... To bridge this gap, we introduce ChainSWE, the first benchmark for evaluating agents on sequential, dependent bug fixes within a shared codebase.
+Title: ChainSWE: Benchmarking Coding Agents on Multi-Bug Software Maintenance
+Authors: Qirui Jin, Lingching Tung, Kenan Li, Qiyang Shi, Yushi She, Huanzhong Jia, Harrison Zhao, Kejing Xia, Zhenbang Du, Jiaxin Pei, Zhenyu Zhang, Zhen Qi, Yuyan Duan, Wenke Lee, Zijian Jin
+Date: Wed Jul  1 13:32:15 2026
+
+Language model (LM) agents are increasingly deployed to maintain codebases over extended periods, fixing streams of related defects while carrying context from one fix to the next. Yet existing software engineering (SWE) benchmarks evaluate models one bug at a time: the repository is reset, the codebase is re-read, and a single self-contained issue is graded in isolation. This setting collapses a continuous maintenance workflow into a series of independent sessions, ignoring the cumulative dependencies that make real-world bug fixing challenging. To bridge this gap, we introduce ChainSWE, the first benchmark for evaluating agents on sequential, dependent bug fixes within a shared codebase. We collect chronological chains of 304 issues across 54 Python projects, mined from six SWE-bench-family datasets. Our evaluation across a range of agents and models reveals a consistent performance drop by up to 70% as the chain length increases.--------------------------------------------------------------------------------
+When Agents Coordinate: Measuring Coordination in Multi-Agent AI Coding (https://arxiv.org/abs/2608.16801)
+citeturn35academia1 [wordlim: 200] Published: 3 months ago; Title: When Agents Coordinate: Measuring Coordination in Multi-Agent AI Coding ... We apply this instrument to 1902 runs, each evaluated with a fixed test suite, across configurations that vary the team size, the team structure, and the file policy. ... Shared files can replace repeated 1-to-1 communication, cutting output tokens by about 42% at eight agents on message-heavy work, while adding overhead when files already carry the coordination.
+Title: When Agents Coordinate: Measuring Coordination in Multi-Agent AI Coding
+Authors: Giuseppe Destefanis, Tomaso Aste
+Date: Mon Aug 17 16:57:38 2026
+
+We study how teams of AI coding agents coordinate while solving programming tasks. Current evaluations usually report whether the agents complete the task and how much the run costs, leaving the coordination inside the team largely unmeasured. We introduce an instrument to measure this coordination. Each run is represented as a temporal network in which agents and files are nodes, and messages, file writes, and file reads are timestamped directed edges with an associated cost. We apply this instrument to 1902 runs, each evaluated with a fixed test suite, across configurations that vary the team size, the team structure, and the file policy. The resulting networks show how coordination changes as teams grow and as the work changes. Direct messaging initially increases close to quadratically with the number of agents, with much of this growth coming from an early round of introductions. As the teams grow further, this increase levels off in the largest teams we study, where agents increasingly communicate through broadcast messages. The task also shapes the network that emerges. Work built around a shared specification produces dense, highly connected teams, while pipeline tasks produce sparse networks organised around local interfaces. Shared files can replace repeated 1-to-1 communication, cutting output tokens by about 42% at eight agents on message-heavy work, while adding overhead when files already carry the coordination. Naming one agent as coordinator creates no communication hub and provides no reliable improvement in success. We also observe an unprompted tendency for agents to seek out hidden grading material. We repeat the key experimental conditions in a sealed environment, replacing the hidden material with marked placeholder files. Across 244 additional runs, agents still reach for it in four fifths of runs, while the coordinator and file-channel findings reproduce.--------------------------------------------------------------------------------
+MEMTRACK: Evaluating Long-Term Memory and State Tracking in Multi-Platform Dynamic Agent Environments (https://arxiv.org/abs/2510.01353)
+citeturn35academia2 [wordlim: 200] Published: 1.1 years ago; Recent works on context and memory benchmarking have primarily focused on conversational instances but the need for evaluating memory in dynamic enterprise environments is crucial for its effective application. We introduce MEMTRACK, a benchmark designed to evaluate long-term memory and state tracking in multi-platform agent environments. ... This work provides an extensible framework for advancing evaluation research for memory-augmented agents, beyond existing focus on conversational setups, and sets the stage for multi-agent, multi-platform memory benchmarking in complex organizational settings
+Title: MEMTRACK: Evaluating Long-Term Memory and State Tracking in Multi-Platform Dynamic Agent Environments
+Authors: Darshan Deshpande, Varun Gangal, Hersh Mehta, Anand Kannappan, Rebecca Qian, Peng Wang
+Date: Wed Oct  1 18:34:03 2025
+
+Recent works on context and memory benchmarking have primarily focused on conversational instances but the need for evaluating memory in dynamic enterprise environments is crucial for its effective application. We introduce MEMTRACK, a benchmark designed to evaluate long-term memory and state tracking in multi-platform agent environments. MEMTRACK models realistic organizational workflows by integrating asynchronous events across multiple communication and productivity platforms such as Slack, Linear and Git. Each benchmark instance provides a chronologically platform-interleaved timeline, with noisy, conflicting, cross-referring information as well as potential codebase/file-system comprehension and exploration. Consequently, our benchmark tests memory capabilities such as acquistion, selection and conflict resolution. We curate the MEMTRACK dataset through both manual expert driven design and scalable agent based synthesis, generating ecologically valid scenarios grounded in real world software development processes. We introduce pertinent metrics for Correctness, Efficiency, and Redundancy that capture the effectiveness of memory mechanisms beyond simple QA performance. Experiments across SoTA LLMs and memory backends reveal challenges in utilizing memory across long horizons, handling cross-platform dependencies, and resolving contradictions. Notably, the best performing GPT-5 model only achieves a 60\% Correctness score on MEMTRACK. This work provides an extensible framework for advancing evaluation research for memory-augmented agents, beyond existing focus on conversational setups, and sets the stage for multi-agent, multi-platform memory benchmarking in complex organizational settings--------------------------------------------------------------------------------
+Smarter Together: Creating Agentic Communities of Practice through Shared Experiential Learning (https://arxiv.org/abs/2511.08301)
+citeturn35academia3 [wordlim: 200] Published: last year; The transition from human-centric to agent-centric software development practices is disrupting existing knowledge sharing environments for software developers. ... Spark enables AI coding agents to both contribute to and draw from a persistent and continuously evolving experiential memory. Agents operating in the same general problem space use the Spark shared memory as a repository of new knowledge to achieve collective continual learning.
+Title: Smarter Together: Creating Agentic Communities of Practice through Shared Experiential Learning
+Authors: Valentin Tablan, Scott Taylor, Gabriel Hurtado, Kristoffer Bernhem, Anders Uhrenholt, Gabriele Farei, Karo Moilanen
+Date: Tue Nov 11 14:34:26 2025
+
+The transition from human-centric to agent-centric software development practices is disrupting existing knowledge sharing environments for software developers. Traditional peer-to-peer repositories and developer communities for shared technical knowledge and best practice have witnessed dramatic drops in participation in a short period of time. At the same time, agentic functional equivalents are yet to emerge leaving AI agents, which already generate a significant proportion of all new software code produced, without access to repositories of valuable shared learning. In this paper, we introduce Spark, a novel shared agentic memory architecture which is designed to emulate the collective intelligence and know-how of human developer communities. Spark enables AI coding agents to both contribute to and draw from a persistent and continuously evolving experiential memory. Agents operating in the same general problem space use the Spark shared memory as a repository of new knowledge to achieve collective continual learning. We evaluate Spark as a coach for AI coding agents performing software development tasks. We demonstrate that recommendations made by Spark improve the quality of code generated by generic code generation models at varying sizes and capability tiers. Boosted by Spark, a small open-weights model with 30 billion parameters was able to match the code quality afforded by a much larger state-of-the-art model. Separately, we measure the intrinsic quality of recommendations generated by Spark against a wide range of criteria inspired by software development best practice, and achieve helpfulness levels of up to 98.2% in the top two (out of five) qualitative helpfulness bands.--------------------------------------------------------------------------------
+Teams of LLM Agents can Exploit Zero-Day (https://arxiv.org/pdf/2406.01637)
+citeturn35search4 [wordlim: 200] Published: 2.2 years ago; a benchmark of 15 real-world vulnerabilities and show that our team of agents ... world GitHub issues [1] and real-world email organization tasks [2]. ... HPTSA, which (to our knowledge) is the first multi-agent system to successfully accomplish
+Teams of LLM Agents can Exploit Zero-Day
+Vulnerabilities
+Richard Fang, Rohan Bindu, Akul Gupta, Qiusi Zhan, Daniel Kang
+University of Illinois Urbana-Champaign
+{rrfang2, bindu2, akulg3, qiusiz2, ddkang}@illinois.edu
+Abstract
+LLM agents have become increasingly sophisticated, especially in the realm of
+cybersecurity. Researchers have shown that LLM agents can exploit real-world
+vulnerabilities when given a description of the vulnerability and toy capture-the-flag
+problems. However, these agents still perform poorly on real-world vulnerabilities
+that are unknown to the agent ahead of time (zero-day vulnerabilities).
+In this work, we show that teams of LLM agents can exploit real-world, zero-day
+vulnerabilities. Prior agents struggle with exploring many different vulnerabilities
+and long-range planning when used alone. To resolve this, we introduce HPTSA,
+a system of agents with a planning agent that can launch subagents. The planning
+agent explores the system and determines which subagents to call, resolving
+long-term planning issues when trying different vulnerabilities. We construct
+a benchmark of 15 real-world vulnerabilities and show that our team of agents
+improve over prior work by up to 4.5×.
+1
+Introduction
+AI agents are rapidly becoming more capable. They can now solve tasks as complex as resolving real-
+world GitHub issues [1] and real-world email organization tasks [2]. However, as their capabilities
+for benign applications improve, so does their potential in dual-use settings.
+arXiv:2406.01637v1  [cs.MA]  2 Jun 2024
+Of the dual-use applications, hacking is one of the largest concerns [3]. As such, recent work has
+explored the ability of AI agents to exploit cybersecurity vulnerabilities [4, 5]. This work has shown
+that simple AI agents can autonomously hack mock “capture-the-flag” style websites and can hack
+real-world vulnerabilities when given the vulnerability description. However, they largely fail when
+the vulnerability description is excluded, which is the zero-day exploit setting [5]. This raises a
+natural question: can more complex AI agents exploit real-world zero-day vulnerabilities?
+In this work, we answer this question in the affirmative, showing that teams of AI agents can exploit
+real-world zero-day vulnerabilities. To show this, we develop a novel multi-agent framework for
+cybersecurity exploits, extending prior work in the multi-agent setting [6–8]. We call our technique
+HPTSA, which (to our knowledge) is the first multi-agent system to successfully accomplish
+meaningful cybersecurity exploits.
+Prior work uses a single AI agent that explores the computer system (i.e., website), plans the attack,
+and carries out the attack. Because all highly capable AI agents in the cybersecurity setting at the time
+of writing are based on large language models (LLMs), the joint exploration, planning, execution is
+challenging for the limited context lengths these agents have.
+We design task-specific, expert agents to resolve this issue. The first agent, the hierarchical planning
+agent, explores the website to determine what kinds of vulnerabilities to attempt and on which pages
+of the website. After determining a plan, the planning agent dispatches to a team manager agent
+Preprint. Under review.--------------------------------------------------------------------------------
+A Review of 40 Years in Cognitive Architecture Research (https://arxiv.org/pdf/1610.08602)
+citeturn35search5 [wordlim: 200] Published: 2.2 years ago; maintenance of information in human working memory and its relationship to other processes in the human ... suﬃcient detail about its internal organization and connections to other modules. ... most relevant knowledge, which is retrieved from the long-term memory as determined by bias. ... blackboard architecture, represents memory as a shared repository of goals, problems and partial results
+A Review of 40 Years in Cognitive Architecture Research Core Cognitive Abilities and Practical Applications
+29
+7.2 Working memory
+Working memory can be deﬁned as a mechanism for temporary storage of information related to the current
+task. It is critical for cognitive capacities such as attention, reasoning and learning, thus every cognitive
+architecture in our list implements it in some form. Particular realizations of working memory diﬀer mainly in
+what information is being stored, how it is represented, accessed and maintained. Furthermore, some cognitive
+architectures contribute to ongoing research about the processes involved in encoding, manipulation and
+maintenance of information in human working memory and its relationship to other processes in the human
+brain. Despite the importance of working memory for human cognition, relatively few publications provide
+suﬃcient detail about its internal organization and connections to other modules. Often it is summarized
+in a few words, e.g. ”current world state” or ”data from the sensors”. Based on these statements we infer
+that in many architectures working memory or an equivalent structure serves as a cache for the current
+world model, the state of the system and/or current goals. Although there are no apparent limitations on
+the capacity of working memory, new goals or new sensory data usually overwrite the existing content. This
+simpliﬁed account of working memory can be found in many symbolic architectures (3T [55], ATLANTIS
+[179], Homer [566], IMPRINT [70], MIDCA [110], PRODIGY [564], R-CAST [611], RALPH [398], REM
+[381], Theo [375], Disciple [528], OSCAR [420], ARS/SiMA [468], CoJACK [434], ERE [69], MAX [299],
+Companions [166], RCS [6]) as well as hybrids (CSE [223], MusiCog [359], MicroPsi [30], Pogamut [74]). More
+cognitively plausible models of working memory use an activation mechanism. Some of the earliest models of
+activation of working memory contents were implemented in ACT-R. As before, working memory holds the
+most relevant knowledge, which is retrieved from the long-term memory as determined by bias. Another common paradigm, the
+blackboard architecture, represents memory as a shared repository of goals, problems and partial results
+which can be accessed and modiﬁed by the modules running in parallel (AIS [213], CERA-CRANIUM [23],
+CoSy [490], FORR [137], Ymir [536], LIDA [171], ARCADIA [46], Copycat/Metacat [350], CHARISMA
+[102], PolyScheme [94], PRS [183]). The solution to the problem is obtained by continuously updating the
+shared short-term storage with information from specialized heterogeneous modules analogous to a group
+of people completing a jigsaw puzzle. Although not directly biologically plausible, this paradigm works well
+in situations where many disparate sources of information must be combined to solve a complex real-time
+task. Finally, neuronal models of working memory based on the biology of the prefrontal cortex are realized
+within SPA [500], ART [203] and Leabra [401]. They demonstrate a range of phenomena (validated on
+human data) such as adaptive switching between rapid updating of the memory and maintaining previously
+stored information [400] and reduced accuracy with time (e.g. in a list memory task) [500]. In some robotics
+architectures, ego-sphere (discussed in Section 4) besides enabling spatiotemporal integration also provides
+representation for the current location and the orientation of the robot within the environment (iCub [449],
+ISAC [269], MACSi [257]). Along the same lines, Kismet and RoboCog [34] use a map built on the camera
+reference frame to maintain information about recently perceived regions of interest.--------------------------------------------------------------------------------
+Unprecedented Code Change Automation: The Fusion of (https://arxiv.org/pdf/2402.07138)
+citeturn35search6 [wordlim: 200] Published: 2.2 years ago; Software developers frequently change code to improve performance, manage resources efficiently, ... These repetitions stem from the adoption of shared coding ... vectorization, memory efficiency, optimized algorithms, and parallel processing support. ... SDK [20, 21, 25, 26, 35, 65], type migrations in Java [33], and API migrations in Linux systems [55]. ... coding idioms, where there can be numerous potential target sites that are semantically equivalent,
+29:2
+Malinda Dilhara, Abhiram Bellur, Timofey Bryksin, and Danny Dig
+1
+INTRODUCTION
+Software developers frequently change code to improve performance, manage resources efficiently,
+integrate new libraries, etc. Throughout this process, they frequently repeat identical or similar
+code modifications [7, 17, 30, 40, 41]. These repetitions stem from the adoption of shared coding
+idioms [3, 12, 44, 67], adherence to common best practices [16, 34], and the need to tackle similar
+programming challenges [33, 55]. Such repeated changes occur at a fine-grained level, frequently
+appearing within specific methods, and consistently retaining the same semantics.
+For example, Listing 1 shows such a repeated change in project NifTK/NiftyNet, an open-source
+convolutional neural network platform. The developers replaced a for loop that summed elements
+of a list with the more efficient numpy.sum function, which is a best practice and improves perfor-
+mance. The performance gain is attributed to several factors, including NumPy’s C implementation,
+vectorization, memory efficiency, optimized algorithms, and parallel processing support. This
+change involves specific programming idioms and is localized to a particular method within the
+project. This change recurs at multiple locations across various commits, prompting previous
+researchers [14, 16, 41] to identify these recurrent changes as code change patterns (CPATs).
+Developers often perform these changes manually [16, 41]: they first must identify potential
+target code sites and then apply the required syntax transformations. This manual process is
+time-consuming, tedious, and error-prone due to two main reasons: (i) identifying all potential
+target sites to apply CPATs is challenging, as they may be deeply embedded within the code,
+exhibiting syntactic variations along with variations in data- and control-flow, and (ii) ensuring
+consistency and correctness in applying identical changes across multiple locations in the codebase
+is challenging, as developers must reason about syntactic variations. To address these challenges
+and enhance developer productivity, researchers have employed “Transformation by Example”
+(TBE) [5, 13, 20, 22, 26–29, 31, 33, 35, 35, 37, 39, 57, 58, 65] techniques to automate code changes.
+These techniques infer transformation rules from before-and-after versions of code changes and
+use these inferred rules to automatically transform new target code sites that exhibit syntactical
+similarities and have a program structure similar to the original code change. These approaches are
+effective in API migrations, e.g., replacing obsolete API calls with modern ones from the Android
+SDK [20, 21, 25, 26, 35, 65], type migrations in Java [33], and API migrations in Linux systems [55].
+Despite their successes, existing TBE techniques face challenges when handling more complex
+coding idioms, where there can be numerous potential target sites that are semantically equivalent,
+yet differ in terms of syntax and data- and control-flow. These techniques are limited to transforming
+target codes that perfectly resemble the input example code change and struggle with variations
+beyond those specific examples. We call these previously unseen variants. Unseen variants can
+be of two types: (i) syntax variants, and/or (ii) data- or control-flow variants. Listing 2 shows an
+example of syntax variant where the code computes the sum of elements in the list losses by using
+a different syntax involving len and range. It is also a data-flow variant through list indexing and
+accumulation in the variable loss. Notably, this target code would not be identified or transformed
+by existing techniques that inferred transformation rules based on Listing 1 as input. Our initial
+analysis uncovered 50 other ways to compute the sum of elements, all of which are unseen variants
+of Listing 1. They could all benefit from and be sped up by transforming them to np.sum. Sadly,
+existing techniques fail to identify and transform these unseen variants.
+Listing 1. Commit c8b28432 in GitHub project
+NifTK/NiftyNet: Replace for loop with numpy.sum
+Listing 2. GitHub repository CDE-GAN/models
+employs a for loop for calculating the sum of an
+array similar to the tranformed code in Listing 1
+1 loss = 0
+2 for i in range(len(losses)):
+3
+loss += losses[i]
+-  | result = 0  |  |  |  |  | 
+--- | --- | --- | --- | --- | --- | ---
+-  | for elem in elements:  |  |  |  |  | 
+-  |  | result = elem + result  |  |  |  | 
++  | result = numpy.sum(elements)  |  |  |  |  | Proc. ACM Softw. Eng., Vol. 1, No. FSE, Article 29. Publication date: July 2024.--------------------------------------------------------------------------------
+OSWORLD: Benchmarking Multimodal Agents for (https://arxiv.org/pdf/2404.07972)
+citeturn35search7 [wordlim: 200] Published: 2.2 years ago; baseline agent is only 6.57%. ... Results also show that while additional knowledge such as the ... We also observe performance changes in these agents compared to consistent ... environment and benchmark, including environment initial state setup, reliable evaluation scripts, ... Additionally, efforts can be made to improve agent
+architectures to better handle complex computer tasks through exploration, memory, and reflection. ... The environment is configured through a config file (shown in the left
+for workflow tasks that involve cooperation from multiple apps, the highest performance of the
+baseline agent is only 6.57%. This indicates that current LLMs and VLMs are far from capable of
+serving as computer assistants (§4.2). Results also show that while additional knowledge such as the
+accessibility tree and Set-of-Mark (§4.1) can be helpful, it can also lead to potential misguidance and
+varies across models. We also observe performance changes in these agents compared to consistent
+human performance across different types of computer tasks. Analysis reveals that VLM-based
+agents struggle to ground on screenshots to predict precise coordinates for actions, tend to predict
+repetitive actions, are unable to handle noise from unexpected application windows and exhibit limited
+knowledge of basic GUI interactions and domain-specific features of apps (§5.2, §5.4). Feeding
+higher resolution and more trajectory history can help improve the performance by even doubling
+while requiring longer context length and efficient modeling (§5.2). We open-source OSWORLD
+environment and benchmark, including environment initial state setup, reliable evaluation scripts,
+documentation, and our implementation of baseline models to promote research towards the goal of
+generalist capable computer agents 1. Future work can focus on enhancing VLM GUI grounding
+abilities, including interaction commonsense knowledge, higher-resolution support, and coordinates
+accuracy for more robust GUI interactions. Additionally, efforts can be made to improve agent
+architectures to better handle complex computer tasks through exploration, memory, and reflection.
+2
+OSWORLD Environment
+In this section, we will introduce the task definition of autonomous agents, the components and
+implementation of the OSWORLD environment, and the supported observation and action spaces.
+2.1
+Task Definition
+An autonomous digital agent task can be formalized as a partially observable Markov decision
+process (POMDP) (S, O, A, T , R) with state space S, observation space O (§2.3, including natural
+language I), action space A (§2.4), transition function T : S × A →S, and reward function
+R : S × A →R. Given current observation ot ∈O (a natural language instruction observation and a
+screenshot observation (e.g., computer screenshot), accessibility (a11y) tree, or their combination
+according to facilities available), an agent generates executable action at ∈A (e.g., clicking on the
+certain pixel of the screen — .click(300, 540, button=‘right’), press key combination —
+.hotkey(‘ctrl’, ‘alt’, ‘t’)), which results in a new state st+1 ∈S (e.g., current Desktop
+environment) and a new partial observation ot+1 ∈O (e.g., current screenshot). The interaction loop
+repeats until an action that marks termination (DONE or FAIL, see Sec. 2.4) is generated or the agent
+reaches the max number of steps (e.g., 15 in our experiments). In this version of OSWORLD, we
+implement an execution-based reward function R : S × A →[0, 1] (§2.2.3). The reward function
+awards a value of 1 or a positive decimal under 1 at the final step if the state transitions meet the
+expectations of the task objective (i.e., the goal is successfully achieved or partially achieved), or if
+the agent accurately predicts failure for an infeasible task. In all other scenarios, it returns 0.
+2.2
+Real Computer Environment Infrastructure
+OSWORLD is an executable and controllable environment that supports task initialization, execution-
+based evaluation, and interactive agent learning in a range of real operating systems (e.g., Ubuntu,
+Windows, macOS) using virtual machine techniques, shown in the middle and right of Fig. 2.
+Virtual machine offers a safe isolated environment and prevents the agent resulting in irreversible
+damaging effect on the real host machine. The snapshot feature also enables efficient reset of
+the virtual environment. The environment is configured through a config file (shown in the left
+of Fig. 2) for interface initialization during the initialization phase (including downloading files,
+opening software, adjusting interface layout) (§2.2.2, highlighted with red in Fig. 2), post-processing
+during the evaluation phase (activating certain windows, saving some files for easy retrieval of
+information, highlighted with orange), and acquiring files and information for evaluation (such as
+the final spreadsheet file for spreadsheet tasks, cookies for Chrome tasks, highlighted with yellow in
+Fig. 2), as well as the evaluation functions and parameters used (§2.2.3, highlighted with green in
+Fig. 2). See App. A.1 for more details.
+1https://os-world.github.io
+3

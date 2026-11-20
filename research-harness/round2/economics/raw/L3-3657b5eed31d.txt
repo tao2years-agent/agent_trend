@@ -1,0 +1,85 @@
+Overview
+Frequently asked questions (FAQs) for guarded rollouts. Topics:
+Availability and access
+Setup and configuration
+Metrics
+Updates and resources
+FAQs
+Availability and access
+Do I need to be on a specific plan to create a guarded rollout?
+All LaunchDarkly accounts include a limited trial of guarded rollouts; however, full access to guarded rollouts is available to customers on the Enterprise plan with the Guardian add-on. To learn more, read
+Pricing
+.
+Is this feature available for Federal customers?
+Yes, it is. Read
+Guarded rollouts
+to learn how to get started.
+Is there an Academy class to learn more about getting started?
+Yes. You can take the
+Introduction to guarded releases
+learning path on LaunchDarkly Academy to help get started with guarded releases.
+Setup and configuration
+What's the best way to ensure that the guarded rollout is set up correctly?
+You can use
+health checks
+. Health checks validate that your system is sending the appropriate signals for a guarded rollout and help detect configuration issues throughout the rollout. To learn more, read
+Health checks for releases
+.
+Can you change the percentages of a guarded rollout during the rollout period?
+No, you cannot adjust the rollout percentages while a guarded rollout is in progress.
+However, when creating a guarded rollout, you can either:
+Use the
+default duration
+, where LaunchDarkly automatically increases the percentage of contexts receiving the new variation.
+Set a custom schedule
+, which lets you define how the rollout percentage changes at different points throughout the rollout.
+Regardless of which option you choose, no individual rollout step can exceed
+50%
+of traffic. To learn more, read
+Create a guarded rollout on a rule
+.
+Can a guarded rollout be created if there's an active experiment running?
+No. If a flag already has an active experiment, you'll need to stop that experiment before creating a guarded rollout for the flag.
+Is it possible to pause a guarded rollout?
+No. If a regression is detected during a guarded rollout, the default behavior is to roll back the rollout rather than pause it. To learn more, read
+Regression detection
+.
+Metrics
+How can you input metrics to LaunchDarkly and use them for a guarded rollout?
+You can connect metrics to LaunchDarkly using any of the following methods:
+Use one of our
+metrics integrations
+.
+Call the
+metric import API
+.
+Use a
+LaunchDarkly SDK
+to send custom events, and connect them to metrics.
+Enable
+OpenTelemetry
+in a LaunchDarkly SDK and send the OpenTelemetry traces to LaunchDarkly to autogenerate metrics.
+To learn more, read
+Metrics and guarded rollouts
+.
+Can guarded rollouts use Snowflake metrics?
+No, you cannot use metrics that receive events from Snowflake with a guarded rollout. This is because warehouse native metrics are not supported with guarded rollouts.
+Updates and resources
+What's the best way to learn about new updates?
+Check out our
+What's new
+page, where you can also subscribe to updates.
+Have a question that isn't covered on this page?
+Please
+contact LaunchDarkly support
+for assistance.
+Related articles
+Flag removed from code is still showing evaluations
+Error: "403 Forbidden" with Code References
+How to improve implementation to be resilient to network failures
+How to bulk convert numeric targeting values to strings in custom rules
+How to diagnose Client-side SDK Monthly Active Users (cMAU)
+Was this article helpful?
+Yes
+No
+0 out of 0 found this helpful

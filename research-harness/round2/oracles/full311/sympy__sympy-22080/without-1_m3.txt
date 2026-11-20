@@ -1,0 +1,305 @@
+.....................F.F...F..F.........F....FF..FFssssssssss........... [ 63%]
+..............F........F.............sssF                                [100%]
+================================== FAILURES ===================================
+_______________________________ test_issue_9334 _______________________________
+sympy\utilities\tests\test_lambdify.py:253: in test_issue_9334
+    func_numexpr = lambdify((a,b), expr, modules=[numexpr], dummify=False)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\lambdarepr.py:182: in doprint
+    lstr = super().doprint(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:56: in _print_Add
+    t = self._print(term)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_____________________________ test_empty_modules ______________________________
+sympy\utilities\tests\test_lambdify.py:272: in test_empty_modules
+    no_modules = lambdify([x, y], expr)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+________________________________ test_integral ________________________________
+sympy\utilities\tests\test_lambdify.py:311: in test_integral
+    l = lambdify(y, Integral(f(x), (x, y, oo)))
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\numpy.py:453: in _print_Integral
+    self._print(e.args[0]),
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\pycode.py:68: in _print_known_func
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\pycode.py:68: in <lambda>
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+__________________________ test_vector_discontinuous __________________________
+sympy\utilities\tests\test_lambdify.py:336: in test_vector_discontinuous
+    f = lambdify(x, (-1/x, 1/x))
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:855: in _print_Tuple
+    return self._print_tuple(expr)
+sympy\printing\str.py:852: in _print_tuple
+    return "(%s)" % self.stringify(expr, ", ")
+sympy\printing\str.py:40: in stringify
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:40: in <listcomp>
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_____________________________ test_numpy_inverse ______________________________
+sympy\utilities\tests\test_lambdify.py:451: in test_numpy_inverse
+    f = lambdify((x), A**-1, modules="numpy")
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\pycode.py:317: in <lambda>
+    lambda self, expr: self._print_MatrixBase(expr)
+sympy\printing\numpy.py:233: in _print_MatrixBase
+    return "%s(%s)" % (func, self._print(expr.tolist()))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:224: in _print_list
+    return "[%s]" % self.stringify(expr, ", ")
+sympy\printing\str.py:40: in stringify
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:40: in <listcomp>
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:224: in _print_list
+    return "[%s]" % self.stringify(expr, ", ")
+sympy\printing\str.py:40: in stringify
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:40: in <listcomp>
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_______________________________ test_issue_9871 _______________________________
+sympy\utilities\tests\test_lambdify.py:517: in test_issue_9871
+    fv_numpy = lambdify((x, y), expr, modules='numpy')(xn, yn)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+____________________________ test_numpy_piecewise _____________________________
+sympy\utilities\tests\test_lambdify.py:531: in test_numpy_piecewise
+    nodef_func = lambdify(x, Piecewise((x, x > 0), (-x, x < 0)))
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\numpy.py:152: in _print_Piecewise
+    exprs = '[{}]'.format(','.join(self._print(arg.expr) for arg in expr.args))
+sympy\printing\numpy.py:152: in <genexpr>
+    exprs = '[{}]'.format(','.join(self._print(arg.expr) for arg in expr.args))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_____________________________ test_numpy_numexpr ______________________________
+sympy\utilities\tests\test_lambdify.py:577: in test_numpy_numexpr
+    npfunc = lambdify((x, y, z), expr, modules='numpy')
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:56: in _print_Add
+    t = self._print(term)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_________________________ test_numexpr_userfunctions __________________________
+sympy\utilities\tests\test_lambdify.py:590: in test_numexpr_userfunctions
+    func = lambdify(x, 1-uf(x), modules='numexpr')
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\lambdarepr.py:182: in doprint
+    lstr = super().doprint(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+____________________ test_lambdify_mixed_symbol_dummy_args ____________________
+sympy\utilities\tests\test_lambdify.py:1033: in test_lambdify_mixed_symbol_dummy_args
+    f = lambdify([d, dsym], d - dsym)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:56: in _print_Add
+    t = self._print(term)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+______________________________ test_issue_15654 _______________________________
+sympy\utilities\tests\test_lambdify.py:1219: in test_issue_15654
+    f = lambdify((n, l, r, Z), hydrogen.R_nl(n, l, r, Z))
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:497: in _print_Mul
+    a_str = [self.parenthesize(x, prec) for x in a]
+sympy\printing\codeprinter.py:497: in <listcomp>
+    a_str = [self.parenthesize(x, prec) for x in a]
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\numpy.py:205: in _print_Pow
+    return self._hprint_Pow(expr, rational=rational, sqrt=self._module + '.sqrt')
+sympy\printing\pycode.py:413: in _hprint_Pow
+    arg = self._print(expr.base)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:497: in _print_Mul
+    a_str = [self.parenthesize(x, prec) for x in a]
+sympy\printing\codeprinter.py:497: in <listcomp>
+    a_str = [self.parenthesize(x, prec) for x in a]
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\pycode.py:68: in _print_known_func
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\pycode.py:68: in <lambda>
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:56: in _print_Add
+    t = self._print(term)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+______________________________ test_lambdify_cse ______________________________
+sympy\utilities\tests\test_lambdify.py:1504: in test_lambdify_cse
+    f = case.lambdify(cse=cse)
+sympy\utilities\tests\test_lambdify.py:1437: in lambdify
+    return lambdify(self.args, self.exprs, cse=cse)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:224: in _print_list
+    return "[%s]" % self.stringify(expr, ", ")
+sympy\printing\str.py:40: in stringify
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:40: in <listcomp>
+    return sep.join([self.parenthesize(item, level) for item in args])
+sympy\printing\str.py:37: in parenthesize
+    return self._print(item)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\str.py:56: in _print_Add
+    t = self._print(term)
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+- generated xml file: F:\dongcha\research-harness\round2\oracles\full311\sympy__sympy-22080\without-1_m3.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_9334 - NameError: n...
+FAILED sympy/utilities/tests/test_lambdify.py::test_empty_modules - NameError...
+FAILED sympy/utilities/tests/test_lambdify.py::test_integral - NameError: nam...
+FAILED sympy/utilities/tests/test_lambdify.py::test_vector_discontinuous - Na...
+FAILED sympy/utilities/tests/test_lambdify.py::test_numpy_inverse - NameError...
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_9871 - NameError: n...
+FAILED sympy/utilities/tests/test_lambdify.py::test_numpy_piecewise - NameErr...
+FAILED sympy/utilities/tests/test_lambdify.py::test_numpy_numexpr - NameError...
+FAILED sympy/utilities/tests/test_lambdify.py::test_numexpr_userfunctions - N...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_mixed_symbol_dummy_args
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_15654 - NameError: ...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_cse - NameError:...
+12 failed, 88 passed, 13 skipped, 3 warnings in 3.68s

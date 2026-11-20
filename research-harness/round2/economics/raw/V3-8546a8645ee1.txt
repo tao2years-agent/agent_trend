@@ -1,0 +1,222 @@
+Devin has four self-serve plans you can sign up for directly at
+app.devin.ai
+. For authoritative pricing, see the
+Devin pricing page
+. This page explains how the plans relate to each other and how billing mechanics work.
+Plan overview
+Plan
+For
+Price
+Members
+Free
+Individuals trying Devin
+Free
+1
+Pro
+Individual users
+$20/month
+1
+Max
+Power users who need more quota
+$200/month
+1
+Teams
+Teams working with Devin together
+$80/month
+Multiple
+The
+Pro
+and
+Max
+plans are individual plans. They cannot be shared across multiple users. If you want multiple people to use Devin under a single subscription, you need the
+Teams
+plan.
+The
+Jira
+and
+Microsoft Teams
+integrations are available on
+Enterprise
+only. To add them,
+contact sales
+.
+Free
+The Free plan lets you try Devin with limited usage. It includes:
+Limited Devin usage
+Access to
+Devin Review
+Access to
+DeepWiki
+Free users can upgrade to any paid plan at any time from
+Settings > Plans
+.
+Pro
+Pro is Devin’s entry-level individual plan. It’s designed for a single developer who uses Devin regularly. Pro includes:
+A daily and weekly usage quota that covers Devin sessions,
+Devin CLI
+, and
+Devin Desktop
+Pay-as-you-go
+on-demand credits
+for usage past your quota
+Slack, Linear, and
+MCP
+integrations
+Pro is a single-user plan. Pro subscribers cannot invite additional members to their organization. To work with teammates on a shared subscription, use the
+Teams
+plan.
+Max
+Max is for individual users who consistently exceed the Pro quota. It includes everything in Pro, plus a significantly larger weekly usage quota (with no daily cap), also shared between Devin sessions,
+Devin CLI
+, and Devin Desktop.
+Like Pro, Max is a single-user plan and does not support multiple members.
+Teams
+The Teams plan is Devin’s self-serve plan for teams working with Devin together. Key properties:
+$80/month
+: every Teams subscription is a flat $80/month, charged as prepaid
+on-demand credits
+.
+On-demand credits
+are shared across the whole team. Every member draws from the same pool, and admins can
+top up
+at any time.
+Every member gets the same access to Devin cloud sessions,
+Devin CLI
+, and Devin Desktop.
+SAML or OIDC single sign-on
+for your team account. See
+SSO for Teams
+.
+Cost controls with 3 usage tiers
+to cap how much each member can use. See
+Cost controls
+.
+Free mode
+: each member can run up to 2 cloud sessions at a time at no cost. See
+Free mode
+.
+Larger teams that need more controls should
+contact sales
+about Enterprise.
+SSO
+Teams admins can connect a SAML 2.0 or OIDC identity provider (Okta, Microsoft Entra ID, or any compliant IdP) from
+Settings > Authentication
+. On a Teams account, SSO signs in existing members only, so invite people before they sign in through SSO. Follow the identity provider setup steps in the
+SSO onboarding guide
+; its auto-membership, role assignment, and SCIM provisioning steps apply to
+Enterprise
+only.
+Cost controls
+Teams admins can cap each member’s usage with up to
+3 usage tiers
+from
+Settings > Usage policies
+. Each tier sets a usage limit, members are assigned to a tier or fall back to the default tier, and new work is blocked once a member reaches their limit. The
+usage tiers
+section of the Usage policies guide explains how tiers work; budgets and budget-scoped limits apply to Enterprise only.
+Free mode
+On the Teams plan, every member can pick
+Free (powered by SWE-2)
+in the agent selector to run Devin cloud sessions at no cost. Each member can run up to
+2 Free sessions at a time
+; to start a third, wait for one to finish or pick another mode. Sessions in other modes are billed as usual.
+How quotas work
+Pro and Max include a usage allowance that refreshes automatically on a calendar basis:
+Pro
+has a
+daily and weekly
+allowance. The daily allowance is more than 1/7 of the weekly, so you can keep working through weekends without giving up overall capacity for the week.
+Max
+has a
+weekly
+allowance only, with no daily cap.
+Teams
+has no per-member allowance: all usage draws from the team’s shared
+on-demand credits
+.
+When you’ve used up your allowance,
+on-demand credits
+keep you working without interruption. If your on-demand balance is also empty, sessions pause until your allowance refreshes or you purchase more credits.
+If you have an eligible ChatGPT Go, Plus, or Pro subscription, you can also
+use your ChatGPT plan
+to pay for GPT model usage so it doesn’t count against your Devin allowance.
+On-demand credits
+On-demand credits are prepaid usage credit that fund any work past your plan’s included quota:
+Roll over
+month-to-month. Purchased credits never expire.
+Can be topped up at any time: select
+Purchase on-demand usage
+on the current plan card in
+Settings > Plans
+or
+Settings > Usage & limits
+. Select
+Configure auto-reload settings
+next to it to refill credits automatically.
+Admins can set auto-reload thresholds and default session spending limits from
+Settings > Usage & limits
+.
+On the
+Teams
+plan, credits are
+shared across all members
+, with no per-member balance. Any teammate can draw from the shared pool.
+On the
+Teams
+plan, credits fund all usage, and the $80/month subscription is added to the pool as credits each month.
+Devin Review and Automations Pricing
+Automations
+and
+Devin Review
+are available on self-serve plans.
+Teams use shared on-demand credits.
+On the Teams plan, Automations and Devin Review draw directly from the team’s shared
+on-demand credit
+pool.
+What happens when you run out of credits.
+If you run out of credits, Automations stop running and Devin Review switches to its diff viewer. Top up
+on-demand credits
+to start Automations again and re-enable AI-powered review.
+Public PRs are free.
+Anyone can review a public GitHub PR at
+devinreview.com
+— or by replacing
+github.com
+with
+devinreview.com
+in any PR URL — without a Devin account, and no on-demand credits are consumed.
+Review managers can keep usage predictable with auto-review rules in
+Settings > Review
+. Choose when a rule starts (
+PR is created
+or
+PR is ready
+) and its cadence (
+Only once
+or
+Every push
+), then narrow its scope with repository or author conditions. See
+Trigger Modes
+in the Devin Review docs for details.
+Managing your plan
+Admins can view and change the account’s plan from
+Settings > Plans
+. From there you can:
+Upgrade or downgrade between Free, Pro, Max, and Teams with the button on each plan’s card:
+Purchase
+from the Free plan,
+Upgrade
+or
+Downgrade
+from a paid plan. To cancel a paid plan, select
+Downgrade
+on the Free card.
+Purchase on-demand credits or configure auto-reload to replenish them automatically
+Past invoices are available to download from
+Settings > Invoices
+. For accepted payment methods and how to update your billing details, see
+Plans and Usage
+.
+For tips on keeping consumption under control across all plans, see
+Usage
+.

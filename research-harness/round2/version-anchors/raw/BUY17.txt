@@ -1,0 +1,73 @@
+← Blog
+Product
+Moderne Changelog: Change intelligence for multi-repository systems
+Bryan Friedman
+May 19, 2026
+5 min read
+Contents
+A unified view of change
+Automated transformation results as changesets
+Agent loops across repositories
+Coordinating change across dependency boundaries
+Native agent infrastructure via MCP
+From source control to change control
+Key takeaways
+Source control answers what changed inside a repository; Moderne Changelog answers what is changing across the organization. Changelog overlays existing GitHub, GitLab, and Bitbucket systems to give engineering teams a portfolio-wide view of every pull request, commit, and in-flight change, scoped to the organization structure defined in Moderne.
+Changesets group every repository affected by a single transformation into one coordinated effort. Reviewers can distinguish recipe runs, agent-driven edits, and hand-written commits at a glance, so review effort matches the scrutiny each change actually requires.
+Coding agents query Changelog through MCP and the Moderne GraphQL API. Instead of scanning repositories to figure out what is already in flight, agents read system-wide change context directly, which cuts token usage on rediscovery and helps them sequence changes correctly across dependency boundaries.
+Bulk action across hundreds of repositories collapses the coordination overhead of large initiatives. Approve, merge, or close pull requests across any filtered set from a single view, with available actions updating based on the real-time state of what is selected.
+Most organizations have no unified view of what’s changing across their codebase. Pull requests, merge requests, and commits accumulate across GitHub organizations, Bitbucket instances, GitLab deployments, and internal VCS systems. Each one is a separate island of change.
+Add fleets of agents updating hundreds of repositories simultaneously, and the problem compounds fast. Progress, blockers, and initiative status are invisible when activity is scattered across disconnected repository systems. Engineering leaders can’t tell who’s using agents, who’s actually accelerating delivery with mergeable changes, and who’s just generating noise.
+The challenge isn’t generating code changes anymore. How are you supposed to understand and coordinate it all at scale?
+Moderne Changelog is that coordination layer that no other system gives you.
+A unified view of change
+Changelog is the unified control plane that makes cross-repository change visible and manageable. It overlays your existing SCM systems and gives you a portfolio-wide view of change, scoped to your organization as defined in Moderne, whether that’s by business unit, team, or whatever structure makes sense for you.
+But this isn’t just passive visibility. Changelog also enables action. You can approve, merge, or close pull requests across repositories in bulk, with available actions updating dynamically based on the real-time state of what you’ve selected. Instead of navigating dozens of tabs, you coordinate change deliberately and at scale.
+Automated transformation results as changesets
+When Moderne runs transformation recipes across your repositories, the results surface in Changelog as a
+changeset
+— a logical unit of change that spans all affected repositories, tracked together as a single coordinated effort.
+Not all changes are equal: manual edits, agent-driven modifications, and automated transformations (like recipe runs or batch changes) each carry different review expectations. Changelog preserves that distinction, so reviewers can immediately see which parts of a changeset came from automation and which are more likely to require judgment calls, making large-scale review more manageable.
+For engineering leaders, this visibility extends further. Rather than piecing together activity across dozens of disconnected repository dashboards, Changelog surfaces who is driving change, what’s in flight, and where initiatives are stalling, across the entire codebase.
+Agent loops across repositories
+Changesets aren’t just the end result of an automated run. They’re a starting point for continued refinement.
+An agent can download changeset results, inspect changes across repositories, handle edge cases that the automation couldn’t, and push updates back as part of the same coordinated effort. Large transformations often evolve through multiple passes:
+Automated transformation generates the bulk of the changes
+Agent refines edge cases and applies additional reasoning
+More automated passes to apply further cleanup
+Agent continues refining across repositories
+Manual changes fill in where human judgment is required
+Agents can also initiate those automated passes directly, choosing which transformation to run, and even writing new ones when the right recipe doesn’t exist yet. The result is a fully agentic loop where deterministic automation and agent reasoning alternate as needed.
+Soon, it will also be possible to see which changes were specifically driven by agents, and the reasoning behind them. Capturing the full record of interactions allows agents to review in-progress work so they can see not just the code changes, but the sequence of decisions made by agents that came before them.
+Coordinating change across dependency boundaries
+Order of operations matters when changes span repositories, particularly when binary dependencies are involved. Updating a shared library requires it to build and publish before dependent services can be safely updated. Getting that wrong risks breaking downstream builds across teams that may not even be aware of the dependency.
+Changelog gives you visibility into what’s ready, what’s blocked, and what’s waiting, all across the entire changeset, not just within the individual repositories. Teams can manage the full lifecycle of a multi-repository initiative from one place:
+Track pull requests and commits across repositories and VCS instances
+See which related changes are ready, blocked, or waiting on dependencies
+Approve, merge, or close pull requests across many repositories at once
+Identify and clean up stale PRs that accumulate during large initiatives
+Instead of jumping between repository dashboards, teams can drive the entire effort from a single view.
+Native agent infrastructure via MCP
+Moderne exposes multi-repository search, transformation, and analysis as agent tools through its MCP interface. Changelog extends that, giving agents operational awareness of what’s changing across the codebase, not just the ability to query or transform it. Agents can query active changesets, download results, and continue coordinated transformations without reconstructing context by scanning individual repositories.
+Rather than each agent invocation starting from scratch, agents operate on system-wide context, so they know what’s already been changed, what’s in review, and what’s still pending across the entire codebase.
+Software development at scale has always been a coordination problem. The tooling to generate changes has never been better, but visibility into what’s changing, why, and in what order has lagged behind. Moderne Changelog is the missing link.
+From source control to change control
+GitHub and other SCM tools are exceptional at showing what changed
+inside
+a repository. Moderne Changelog focuses on something different: what is changing
+across
+the organization. It bridges the gap between
+source
+control and
+change
+control.
+As workflows evolve toward greater autonomy, three capabilities become essential:
+Understanding the structure of code
+— what exists and how it fits together
+Applying change safely and deterministically
+— transforming code at scale without breaking it
+Maintaining awareness of system-wide change
+— knowing what’s in flight, who owns it, what needs to happen next, and making it happen
+Moderne has long provided the first two. Now Changelog provides the third.
+It gives humans clarity across complex systems and gives agents the situational awareness they’ve been missing, turning fragmented pull requests into coordinated, portfolio-level evolution.
+Modern software isn’t a single repository, and in a world of accelerating human- and agent-driven change, your coordination layer matters as much as your code.

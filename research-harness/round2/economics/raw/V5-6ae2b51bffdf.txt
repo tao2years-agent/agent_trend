@@ -1,0 +1,51 @@
+Devin Enterprise customers are billed in
+Agent Compute Units (ACUs)
+at the rate set in their order form.
+Contact sales
+for pricing.
+For how Devin meters work in general (sleep behavior, what counts toward consumption, tips for keeping costs down), see
+Usage
+.
+Budgets.
+Organization-level and user-level ACU limits are unifying under
+Budgets
+. Budgets cap ACU usage with one limit for the account, shared pools for teams or projects, and per-user limits inside each pool.
+Tracking ACU consumption
+Enterprise customers can track ACU consumption at both the Enterprise and Organization level:
+Enterprise admins
+view Enterprise ACU consumption at
+Settings > Consumption
+in Enterprise Settings.
+Organization admins
+view Organization ACU consumption at
+Settings > Consumption Analytics
+within Organization Settings.
+Any user
+can see the ACU cost of a specific session from
+Session Insights
+.
+Setting budgets
+Enterprise admins set ACU limits with
+Budgets
+in
+Enterprise Settings
+.
+Budget limits apply to cloud Devin sessions, Devin Review, Devin Desktop, Windsurf JetBrains, and Devin CLI usage billed to the budget’s organizations, including organizations in its child budgets.
+Budget tree with utilization per budget (mock data)
+When a budget reaches its limit, new work billed to those organizations is blocked. An enterprise admin can raise the limit or set a temporary limit, or users can wait until usage resets in the next monthly billing window. User limits remain in effect independently.
+Composer banner when the budget is used up
+Setting user limits
+Each budget can also cap each member’s monthly ACU consumption with usage tiers, IdP group mappings, and per-member overrides. See
+Usage policies
+.
+Frequently asked questions
+When will I be billed?
+Enterprise customers are billed for ACUs as stated in their order form.
+What are Enterprise ACUs?
+Enterprise ACUs represent the work performed by Devin for customers on the Enterprise plan, which adheres more strictly to task planning and end-to-end testing. They are distinct from self-serve quota and on-demand credits, and are priced per the customer’s Enterprise order form.
+How can I tell which Organization or user consumed the most ACUs?
+Enterprise admins can break consumption down by Organization from the
+Consumption
+page in Enterprise Settings. Org admins can break it down by user from
+Consumption Analytics
+inside Organization Settings.

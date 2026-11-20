@@ -1,0 +1,180 @@
+GitHub Agentic Workflows generally available - GitHub Changelog (https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/)
+citeturn32view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/","lineno":null}); Total lines: 177
+L0: 【0†Skip to content】 【1†Skip to sidebar】
+L1: 
+L2: / 【2†Blog】
+L3: 
+L4: [Input: Search the blog…]
+L5: 
+L6: Search
+L7: 
+L8:   * 【3†Changelog】
+L9:   * 【4†Docs†docs.github.com】
+L10:   * 【5†Customer stories†github.com】
+L11: 【6†See what's new†github.com】 【7†Try GitHub Copilot app†github.com】
+L12: 
+L13: 【3†Back to changelog】
+L14: 
+L15: Release
+L16: 
+L17: October 28, 2026 • 2 minute read
+L18: 
+L19: # GitHub Agentic Workflows generally available
+L20: 
+L21: 【8†Image: Actions run featuring an agentic workflow created by GitHub Agentic Workflows】
+L22: ## Table of Contents
+L23: 
+L24:   * 【9†Built-in safeguards】
+L25:   * 【10†Additional capabilities for general availability】
+L26:   * 【11†Get started】
+L27: 
+L28: Menu. Currently selected: Built-in safeguards
+L29: 
+L30:   * 【9†Built-in safeguards】
+L31:   * 【10†Additional capabilities for general availability】
+L32:   * 【11†Get started】
+L33: 【12†GitHub Agentic Workflows†github.github.com】, an open source project from GitHub Next, is now generally available. With agentic workflows, you can automate reasoning-based tasks like issue triage, CI failure analysis, documentation updates, and test writing by using coding agents inside GitHub Actions.
+L34: Define your automation in natural language Markdown files, and GitHub Agentic Workflows compiles them into standard Actions YAML. Because these are GitHub Actions, they reuse your existing runner groups and policy constraints. You can use GitHub Copilot or bring your own coding agent to power each workflow.
+L35: > We’ve been rolling out our agentic developer workflows, and the results are measurable. One of our leads saved an estimated 29 hours a week on his development work alone. Across his team, measured velocity has more than doubled on average, and AI now authors 91% of the team’s commits. With these workflows, the team cut production errors from about 11,000 a day to under 1,000 and drove a technology migration end to end.
+L36: >
+L37: > One workflow takes a feature from requirements to implementation with validation evidence. Others keep our frameworks current and steadily raise code quality and test coverage. Because AI drives the process to completion, our engineers can run four or five efforts in parallel and stay focused on the bigger goals.
+L38: > Ben Alton – Senior manager, Strategy, Architecture & Innovation team at Accenture
+L39: ### 【9†Built-in safeguards】
+L40: GitHub Agentic Workflows incorporates layered safeguards for your automation. Agents access GitHub content respecting the 【13†integrity filter†github.github.io】 rules, run with read-only permissions by default, and execute inside a sandboxed container behind the 【14†Agent Workflow Firewall†github.github.com】. The outputs are validated through the 【15†safe outputs†github.github.com】 process, and a dedicated 【16†threat detection†github.github.com】 job scans all proposed changes before they are applied.
+L41: ### 【10†Additional capabilities for general availability】
+L42: 
+L43: Highlights since the public preview include:
+L44:   * Actions Runner Controller (ARC) and Docker-in-Docker support: Run agentic workflows on self-hosted ARC runners with Docker-in-Docker.
+L45:   * Improved budget forecasting: `gh aw forecast` is no longer experimental. It now includes both threat detection credits and monthly ranges for a fuller picture of your AI credit spend.
+L46:   * New models, engine choices, and workflows: The model inventory has been refreshed, model providers can be picked per workflow, and there are new workflow templates that can be added with `gh aw add-wizard`.
+L47:   * Model routing: Workflows can use a model router that optimizes for task type and difficulty.
+L48:   * Improved agent isolation: Agents can run in a Cloud Hypervisor or NVX micro-VM and prevent data leaks in cross-repository workflows with enclaves.
+L49: See the 【17†GitHub Agentic Workflows release notes†github.com】 for the full list of changes.
+L50: ### 【11†Get started】
+L51: 
+L52: Follow the 【18†quickstart guide†github.github.com】 to install the CLI extension and trigger your first workflow in minutes. Explore prebuilt workflows in GitHub Next’s 【19†agentics repository†github.com】 for ready-to-use examples covering triage, dependency management, code review, and reporting.
+L53: GitHub Agentic Workflows is now generally available on github.com for GitHub Free, Team, and Enterprise. Using the default GitHub Copilot CLI engine to power a workflow requires a Copilot license.
+L54: 
+L55: Learn more in the 【20†GitHub Agentic Workflows documentation†github.github.com】, and join the conversation in the 【21†community discussion†github.com】.
+L56: ## Table of Contents
+L57: 
+L58:   * 【9†Built-in safeguards】
+L59:   * 【10†Additional capabilities for general availability】
+L60:   * 【11†Get started】
+L61: 
+L62: Menu. Currently selected: Built-in safeguards
+L63: 
+L64:   * 【9†Built-in safeguards】
+L65:   * 【10†Additional capabilities for general availability】
+L66:   * 【11†Get started】
+L67: 
+L68: 【22†actions】 【23†copilot】 【24†universe26】 Copied Shared 【3†Back to changelog】
+L69: 
+L70: ## Related Posts
+L71: 
+L72: ### Nov.19 Improvement
+L73: 
+L74: 【25†Red Hat Enterprise Linux runner images now generally available】
+L75: 
+L76: 【22†actions】
+L77: ### Nov.18 Improvement
+L78: 
+L79: 【26†Connect Supabase, Box, Calendly, and more to Copilot】
+L80: 
+L81: 【23†copilot】
+L82: 
+L83: ### Nov.18 Release
+L84: 
+L85: 【27†Gemini 4 Neon in GitHub Copilot】
+L86: 
+L87: 【23†copilot】
+L88: 
+L89: ### Nov.18 Release
+L90: 
+L91: 【28†Customize GitHub Copilot for your team】
+L92: 
+L93: 【23†copilot】
+L94: 
+L95: ### Nov.17 Release
+L96: 
+L97: 【29†OpenAI’s GPT-6.2 Astra and GPT-6.2 Sol now available】
+L98: 
+L99: 【23†copilot】
+L100: 
+L101: ### Nov.17 Improvement
+L102: 
+L103: 【30†GitHub Copilot Fusion updates: more availability, benchmarks, and models】
+L104: 
+L105: 【23†copilot】
+L106: ### Nov.17 Release
+L107: 
+L108: 【31†GitHub Copilot app, Microsoft Ignite releases】
+L109: 
+L110: 【23†copilot】
+L111: 
+L112: ### Nov.17 Release
+L113: 
+L114: 【32†Copilot code review: Adaptive effort, secret detection, and more】
+L115: 
+L116: 【23†copilot】
+L117: 
+L118: ### Nov.17 Release
+L119: 
+L120: 【33†MAI Code 2 and MAI Code 2 Flash in GitHub Copilot】
+L121: 
+L122: 【23†copilot】
+L123: ## Subscribe to our developer newsletter
+L124: 
+L125: Discover tips, technical guides, and best practices in our biweekly newsletter just for devs.
+L126: 
+L127: Enter your email^{*} [Input] [Input] [Button: Subscribe ]
+L128: 
+L129: By submitting, I agree to let GitHub and its affiliates use my information for personalized communications, targeted advertising, and campaign effectiveness. See the 【34†GitHub Privacy Statement†github.com】 for more details.
+L130: 
+L131: 【0†Back to top】
+L132: 
+L133: ## Site-wide Links
+L134: ### Product
+L135: 
+L136:   * 【35†Features†github.com】
+L137:   * 【36†Security†github.com】
+L138:   * 【37†Enterprise†github.com】
+L139:   * 【38†Customer Stories†github.com】
+L140:   * 【39†Pricing†github.com】
+L141:   * 【40†Resources†resources.github.com】
+L142: 
+L143: ### Platform
+L144: 
+L145:   * 【41†Developer API†developer.github.com】
+L146:   * 【42†Partners†partner.github.com】
+L147:   * 【43†Atom†atom.io】
+L148:   * 【44†Electron†www.electronjs.org】
+L149:   * 【45†GitHub Desktop†desktop.github.com】
+L150: ### Support
+L151: 
+L152:   * 【4†Docs†docs.github.com】
+L153:   * 【46†Community Forum†github.community】
+L154:   * 【47†Training†services.github.com】
+L155:   * 【48†Status†www.githubstatus.com】
+L156:   * 【49†Contact†support.github.com】
+L157: ### Company
+L158: 
+L159:   * 【50†About†github.com】
+L160:   * 【2†Blog】
+L161:   * 【51†Careers†github.com】
+L162:   * 【52†Press†github.com】
+L163:   * 【53†Shop†shop.github.com】
+L164: 
+L165:   * © 2026 GitHub, Inc.
+L166:   * 【54†Terms†docs.github.com】
+L167:   * 【55†Privacy†docs.github.com】
+L168:   * [Button: Manage Cookies]
+L169:   * [Button: Do not share my personal information]
+L170:   * 【56†GitHub on LinkedIn†www.linkedin.com】
+L171:   * 【57†GitHub on Instagram†www.instagram.com】
+L172:   * 【58†GitHub on YouTube†www.youtube.com】
+L173:   * 【59†GitHub on X†twitter.com】
+L174:   * 【60†GitHub on TikTok†www.tiktok.com】
+L175:   * 【61†GitHub on Twitch†www.twitch.tv】
+L176:   * 【62†GitHub’s organization on GitHub†github.com】
+

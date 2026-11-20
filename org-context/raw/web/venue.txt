@@ -1,0 +1,183 @@
+检索参数 {"search_query":[{"q":"site:conf.researchr.org ISSTA test selection regression testing Ekstazi STARTS change impact test selection ASE TOSEM TSE program comprehension developer tasks empirical information"}],"response_length":"medium"}
+An empirical comparison of four Java-based regression test selection techniques (ASE 2022 - Journal-first Papers) - ASE 2022 (https://conf.researchr.org/details/ase-2022/ase-2022-journal-first-papers/18/An-empirical-comparison-of-four-Java-based-regression-test-selection-techniques)
+citeturn13search0 [wordlim: 200] Published: 4.1 years ago; Crawled: 2 weeks ago; ## An empirical comparison of four Java-based regression test selection techniques ... Regression testing is a critical but expensive activity that ensures previously tested functionality is not broken by changes made to the code. ... Using HyRTS as the baseline, OpenClover had significantly worse safety violations compared to STARTS and Ekstazi, and significantly worse precision violations compared to Ekstazi.
+
+## An empirical comparison of four Java-based regression test selection techniques
+
+Who
+
+Min Kyung Shin, Sudipto Ghosh, Leo R. Vijayasarathy
+
+Track
+
+ASE 2022 Journal-first Papers
+
+When
+
+Tue 11 Oct 2022 14:30 - 14:50 at Ballroom C East - Technical Session 5 - Code Analysis Chair(s): Vahid Alizadeh
+
+Abstract
+
+Regression testing is a critical but expensive activity that ensures previously tested functionality is not broken by changes made to the code. Regression test selection (RTS) techniques aim to select and run only those test cases impacted by code changes. The techniques possess different characteristics related to their selection accuracy, test suite size reduction, time to select and run the test cases, and the fault detection ability of the selected test cases. This paper presents an empirical comparison of four Java-based RTS techniques (Ekstazi, HyRTS, OpenClover and STARTS) using multiple revisions from five open source projects.
+
+The results show that STARTS selects more test cases than Ekstazi and HyRTS. OpenClover selects the most test cases. Safety and precision violations measure to what extent a technique misses test cases that should be selected and selects only the test cases that are impacted. Using HyRTS as the baseline, OpenClover had significantly worse safety violations compared to STARTS and Ekstazi, and significantly worse precision violations compared to Ekstazi. While STARTS and Ekstazi did not differ on safety violations, Ekstazi had significantly fewer precision violations than STARTS. The average fault detection ability of the RTS techniques was 8.75% lower than the original test suite.
+
+Link to Publication
+
+https://www.sciencedirect.com/science/article/abs/pii/S0164121221002582?via%3Dihub
+
+DOI
+
+https://doi.org/10.1016/j.jss.2021.111174
+
+Min Kyung Shin Colorado State University
+
+Sudipto Ghosh Colorado State University, USA United States
+
+Leo R. Vijayasarathy Colorado State University--------------------------------------------------------------------------------
+Hybrid Regression Test Selection by Integrating File and Method Dependences (ASE 2024 - Research Papers) - ASE 2024 (https://conf.researchr.org/details/ase-2024/ase-2024-research/125/Hybrid-Regression-Test-Selection-by-Integrating-File-and-Method-Dependences)
+citeturn13search1 [wordlim: 200] Published: 2.1 years ago; Crawled: 2 weeks ago; Regression Testing Selection (RTS) significantly reduces the cost of regression testing by only running test cases that are affected by code changes. ... We have found that once existing RTS approaches use static method-level analysis, it is difficult to analyze the scenarios of external library callbacks the project code, leading to missed selection of affected test cases. ... The experimental results showed that, compared with the state-of-the-art RTS tool FineEkstazi, JcgEks had the same level of end-to-end testing time and number of selected test classes, while FineEkstazi was confirmed to have missed test classes in the experiment.
+
+ASE 2024 (series) / Research Papers /
+
+## Hybrid Regression Test Selection by Integrating File and Method Dependences
+
+Who
+
+Guofeng Zhang, Luyao Liu, Zhenbang Chen, Ji Wang
+
+Track
+
+ASE 2024 Research Papers
+
+When
+
+Tue 29 Oct 2024 11:30 - 11:45 at Camellia - Test selection and prioritization Chair(s): Wing Lam
+
+Abstract
+
+Regression Testing Selection (RTS) significantly reduces the cost of regression testing by only running test cases that are affected by code changes. Due to the bottleneck in the improvement effect of single granularity analysis, the latest RTS technology tends to analyze with mixed granularity. We have found that once existing RTS approaches use static method-level analysis, it is difficult to analyze the scenarios of external library callbacks the project code, leading to missed selection of affected test cases.
+
+To address this difficulty, we introduce a new hybrid RTS approach, JcgEks, which enhances Ekstazi by integrating static method call graphs. --------------------------------------------------------------------------------
+Dependent-Test-Aware Regression Testing Techniques (ISSTA 2020 - Technical Papers) - ISSTA 2020 (https://conf.researchr.org/details/issta-2020/issta-2020-papers/14/Dependent-Test-Aware-Regression-Testing-Techniques)
+citeturn13search2 [wordlim: 200] Published: 6.3 years ago; Crawled: last month; ISSTA 2020 (series) / Technical Papers / ... To understand the necessity of dependent-test-aware regression testing techniques, we conduct the first study on the impact of dependent tests on three regression testing techniques: test prioritization, test selection, and test parallelization. ... Session Program ... Displayed time zone: Tijuana, Baja California change
+
+To understand the necessity of dependent-test-aware regression testing techniques, we conduct the first study on the impact of dependent tests on three regression testing techniques: test prioritization, test selection, and test parallelization. In particular, we implement 4 test prioritization, 6 test selection, and 2 test parallelization algorithms, and we evaluate them on 11 Java modules with dependent tests. When we run the orders produced by the traditional, dependent-test-unaware regression testing algorithms, 90% of the human-written test suites with dependent tests have at least one flaky test failure, while 100% of the automatically-generated test suites have at least one flaky test failure.
+
+We develop a general approach for enhancing regression testing algorithms to make them dependent-test-aware, and we apply our approach to enhance 12 algorithms. Compared to traditional, unenhanced regression testing algorithms, the enhanced algorithms use provided test dependencies to produce different orders or orders with extra tests. --------------------------------------------------------------------------------
+Empirically Evaluating Readily Available Information for Regression Test Optimization in Continuous Integration (ISSTA 2021 - Technical Papers) - ISSTA 2021 (https://conf.researchr.org/details/issta-2021/issta-2021-technical-papers/15/Empirically-Evaluating-Readily-Available-Information-for-Regression-Test-Optimization)
+citeturn13search3 [wordlim: 200] Published: 5.3 years ago; Crawled: 2 months ago; ## Empirically Evaluating Readily Available Information for Regression Test Optimization in Continuous Integration ... Fri 16 Jul 2021 08:00 - 08:20 at ISSTA 1 - Session 15 (time band 3) Testing 1 Chair(s): Phil McMinn ... Regression test selection (RTS) and prioritization (RTP) techniques aim to reduce testing efforts and developer feedback time after a change to the code base. ... To investigate how these approaches from prior research compare in heterogeneous settings, we apply the methodology in a large-scale empirical study on a set of 23 projects covering 37,000 CI logs and 76,000 VCS commits.
+
+ECOOP and ISSTA 2021 (series) / ISSTA 2021 (series) / Technical Papers /
+
+## Empirically Evaluating Readily Available Information for Regression Test Optimization in Continuous Integration
+
+Who
+
+Daniel Elsner, Florian Hauer, Alexander Pretschner, Silke Reimer
+
+Track
+
+ISSTA 2021 Technical Papers
+
+When
+
+Fri 16 Jul 2021 08:00 - 08:20 at ISSTA 1 - Session 15 (time band 3) Testing 1 Chair(s): Phil McMinn
+Fri 16 Jul 2021 19:20 - 19:40 at ISSTA 1 - Session 19 (time band 1) Testing 2 Chair(s): Rohan Padhye
+
+Abstract
+
+Regression test selection (RTS) and prioritization (RTP) techniques aim to reduce testing efforts and developer feedback time after a change to the code base. Using various information sources, including test traces, build dependencies, version control data, and test histories, they have been shown to be effective. However, not all of these sources are guaranteed to be available and accessible for arbitrary continuous integration (CI) environments. --------------------------------------------------------------------------------
+Reinforcement Learning for Automatic Test Case Prioritization and Selection in Continuous Integration (ISSTA 2017 - Technical Papers) - ISSTA 2017 (https://conf.researchr.org/details/issta-2017/issta-2017-research/19/Reinforcement-Learning-for-Automatic-Test-Case-Prioritization-and-Selection-in-Contin)
+citeturn13search4 [wordlim: 200] Published: 9.4 years ago; Crawled: last week; Selecting the most promising test cases to detect bugs is hard if there are uncertainties on the impact of committed code changes or, if traceability links between code and tests are not available. This paper introduces Retecs, a new method for automatically learning test case selection and prioritization in CI with the goal to minimize the round-trip time between code commits and developer feedback on failed test cases. ... By applying Retecs on data extracted from three industrial case studies, we show for the first time that reinforcement learning enables fruitful automatic adaptive test case selection and prioritization in CI and regression testing.
+
+Mon 10 - Fri 14 July 2017 Santa Barbara, California, United States
+
+ISSTA 2017 (series) / Technical Papers /
+
+## Reinforcement Learning for Automatic Test Case Prioritization and Selection in Continuous Integration
+
+Who
+
+Helge Spieker, Arnaud Gotlieb, Dusica Marijan, Morten Mossige
+
+Track
+
+ISSTA 2017 Technical Papers
+
+When
+
+Mon 10 Jul 2017 10:55 - 11:20 at Bren 1414 - Improving Testing Chair(s): Cristian Cadar
+
+Abstract
+
+Testing in Continuous Integration (CI) involves test case prioritization, selection, and execution at each cycle. Selecting the most promising test cases to detect bugs is hard if there are uncertainties on the impact of committed code changes or, if traceability links between code and tests are not available. This paper introduces Retecs, a new method for automatically learning test case selection and prioritization in CI with the goal to minimize the round-trip time between code commits and developer feedback on failed test cases. The Retecs method uses reinforcement learning to select and prioritize test cases according to their duration, previous last execution and failure history. In a constantly changing environment, where new test cases are created and obsolete test cases are deleted, the Retecs method learns to prioritize error-prone test cases higher under guidance of a reward function and by observing previous CI cycles. By applying Retecs on data extracted from three industrial case studies, we show for the first time that reinforcement learning enables fruitful automatic adaptive test case selection and prioritization in CI and regression testing.
+
+DOI
+
+https://doi.org/10.1145/3092703.3092709
+
+Helge Spieker Simula Research Laboratory, Norway
+
+Arnaud Gotlieb Simula Research Laboratory, Norway Norway
+
+Dusica Marijan Simula
+
+Morten Mossige University of Stavanger, Norway / ABB Robotics, Norway--------------------------------------------------------------------------------
+Test Selection for Unified Regression Testing (ICSE 2023 - Technical Track) - ICSE 2023 (https://conf.researchr.org/details/icse-2023/icse-2023-technical-track/59/Test-Selection-for-Unified-Regression-Testing)
+citeturn13search5 [wordlim: 200] Published: 3.5 years ago; Crawled: last month; To combat failure-inducing software changes, unified regression testing (URT) is needed to synergistically test the changed code and all changed production configurations (configs) for deployment reliability. ... We implemented uRTS on top of Ekstazi (a RTS tool for code changes) and Ctest (a config testing framework). ... Session Program ... Displayed time zone: Hobart change ...  | 13:45 15m Talk  |  | Test Selection for Unified Regression Testing Technical Track Shuai Wang University of Illinois at Urbana-Champaign, Xinyu Lian University of Illinois at Urbana-Champaign, Darko Marinov University of Illinois at Urbana-Champaign, Tianyin Xu University of Illinois at Urbana-Champaign Pre-print ...  | 14:45 7m Talk  |  | Flakify: A Black-Box, Language Model-based Predictor for Flaky Tests Journal-First Papers Sakina Fatima University of Ottawa, Taher A.
+It selects regular tests and configuration tests with a unified selection algorithm. The uRTS algorithm analyzes code and config dependencies of each test across runs and across configs. uRTS provides the same safety guarantee as the state-of-the-art RTS while selecting fewer tests and, more importantly, reducing the end-to-end testing time. We implemented uRTS on top of Ekstazi (a RTS tool for code changes) and Ctest (a config testing framework). We evaluate uRTS on hundreds of code revisions and dozens of configs of five large projects. The results show that uRTS reduces the end-to-end testing time, on average, by 3.64X compared to executing all tests and 1.87X compared to a competitive reference solution that directly extends RTS for URT.
+
+Link to Preprint
+
+https://mir.cs.illinois.edu/~swang516/uRTS.pdf
+
+Shuai Wang University of Illinois at Urbana-Champaign
+
+Xinyu Lian University of Illinois at Urbana-Champaign United States
+
+Darko Marinov University of Illinois at Urbana-Champaign United States
+--------------------------------------------------------------------------------
+Empirically Revisiting and Enhancing IR-Based Test-Case Prioritization (ISSTA 2020 - Technical Papers) - ISSTA 2020 (https://conf.researchr.org/details/issta-2020/issta-2020-papers/29/Empirically-Revisiting-and-Enhancing-IR-Based-Test-Case-Prioritization)
+citeturn13search6 [wordlim: 200] Published: 6.3 years ago; Crawled: last month; ISSTA 2020 (series) / Technical Papers / ... Test-case prioritization (TCP) aims to detect regression bugs faster via reordering the tests run. ... In this work, we study the recent change-aware information retrieval (IR) technique for TCP. ... As a result, we explore various configurations of Moreover, we show that flaky tests have a substantial impact on evaluating the change-aware TCP techniques based on real test failures. ... Session Program
+--------------------------------------------------------------------------------
+Evolution-Aware Detection of Order-Dependent Flaky Tests (ISSTA 2022 - Technical Papers) - ISSTA 2022 (https://conf.researchr.org/details/issta-2022/issta-2022-technical-papers/48/Evolution-Aware-Detection-of-Order-Dependent-Flaky-Tests)
+citeturn13search7 [wordlim: 200] Published: 4.3 years ago; Crawled: last month; Wed 20 Jul 2022 07:40 - 08:00 at ISSTA 1 - Session 2-1: Oracles, Models, and Measurement E Chair(s): Christoph Csallner ... Regression testing is an important part of the software development process but suffers from the presence of flaky tests. ... Building upon existing work in iDFlakies that reruns tests in different test orders, IncIDFlakies analyzes and selects to run only the tests that (1) are affected by the change, and (2) can potentially result in a test-order dependency among each other due to potential shared state. ... Session Program
+--------------------------------------------------------------------------------
+QADroid: Regression Event Selection for Android Applications (ISSTA 2019 - Technical Papers) - ISSTA 2019 (https://conf.researchr.org/details/issta-2019/issta-2019-Technical-Papers/4/QADroid-Regression-Event-Selection-for-Android-Applications)
+citeturn13search8 [wordlim: 200] Published: 7.3 years ago; Crawled: 2 weeks ago; ISSTA 2019 (series) / ISSTA 2019 Technical Papers / ... Salient features of QADroid are: (i) a richer change-set analyzer that covers code as well as non-code components for regression, (ii) it presents a pictorial representation of the app’s functioning, and (iii) it displays the regression points in the app as a mapping between activities to user-elements to events. ... The results show that QADroid reduced the activity selection by 58% and event selection by 74% compared to the traditional way of exhaustive testing of all activities and events, thereby significantly reducing the manual testing efforts. ... Session Program ...  | 15:07 22m Talk  |  | SARA: Self-replay Augmented Record and Replay for Android in Industrial Cases Technical Papers Jiaqi Guo Xi'an Jiaotong University, Shuyue Li Xi'an Jiaotong University, Jian-Guang Lou Microsoft Research, Zijiang Yang Western Michigan University, Ting Liu MOEKLINNS Lab, Department of Computer Science and Technology, Xi'an Jiaotong University, 710049, China
+--------------------------------------------------------------------------------
+Efficient Incremental Code Coverage Analysis for Regression Test Suites (ASE 2024 - Research Papers) - ASE 2024 (https://conf.researchr.org/details/ase-2024/ase-2024-research/151/Efficient-Incremental-Code-Coverage-Analysis-for-Regression-Test-Suites)
+citeturn13search9 [wordlim: 200] Crawled: last month; ASE 2024 (series) / Research Papers / ... While regression test selection (RTS) techniques exist to select a subset of tests whose behaviors may be affected by code changes, they are not compatible with code coverage analysis techniques—that is, simply executing RTS-selected tests leads to incorrect code coverage results. ... We implement our technique in a tool dubbed iJaCoCo, which builds on Ekstazi and JaCoCo—the state-of-the-art RTS and code coverage analysis tools for Java. ... Session Program ... Displayed time zone: Pacific Time (US & Canada) change
+--------------------------------------------------------------------------------
+Log-Based Slicing for System-Level Test Cases (ISSTA 2021 - Technical Papers) - ISSTA 2021 (https://conf.researchr.org/details/issta-2021/issta-2021-technical-papers/40/Log-Based-Slicing-for-System-Level-Test-Cases)
+citeturn13search10 [wordlim: 200] Published: 5.3 years ago; Crawled: last week; Fri 16 Jul 2021 08:40 - 09:00 at ISSTA 1 - Session 15 (time band 3) Testing 1 Chair(s): Phil McMinn ... This decomposition can be achieved with program slicing techniques, since test cases are software programs too. ... The idea is to use test case execution logs, obtained from past regression testing sessions, to identify "hidden" dependencies in the slices generated by static slicing. ...  | 08:00 20m Talk  |  | Empirically Evaluating Readily Available Information for Regression Test Optimization in Continuous Integration Technical Papers Daniel Elsner TU Munich, Florian Hauer TU Munich, Alexander Pretschner TU Munich, Silke Reimer IVU Traffic Technologies DOI
+--------------------------------------------------------------------------------
+Semantic-based and Learning-based Regression Test Selection focusing on Test Objectives (InSTA 2023) - ICST 2023 (https://conf.researchr.org/details/icst-2023/insta-2023-papers/3/Semantic-based-and-Learning-based-Regression-Test-Selection-focusing-on-Test-Objectiv)
+citeturn13search11 [wordlim: 200] Published: 3.6 years ago; Crawled: 4 months ago; ## Semantic-based and Learning-based Regression Test Selection focusing on Test Objectives ... ### Program Display Configuration ... Displayed time zone: Dublin change ... Hagar Grand Software Testing, LLC, Hot Sulphur Springs, CO, Marc-Florian Wendland Fraunhofer Fokus
+ | 09:40 30m Talk  |  | Semantic-based and Learning-based Regression Test Selection focusing on Test Objectives InSTA Junji Suzuki , Yasuharu Nishi University of Electro-Communications, Tokyo, Shoma Tanaka , Kimihiko Naruse , Minako Shimoji , Zhen Zhong
+ | 10:10 20m Other  |  | Information exchange in InSTA InSTA
+--------------------------------------------------------------------------------
+Opening2 (https://conf.researchr.org/getImage/ecoop-issta-2023/orig/Opening.pdf)
+citeturn13search12 [wordlim: 200] Published: 3.3 years ago; Crawled: today; - **Eunomia: Enabling User-Specified Fine-Grained Search in Symbolically Executing WebAssembly Binaries** ... - **More Precise Regression Test Selection via Reasoning about Semantics-Modifying Changes**
+--------------------------------------------------------------------------------
+# Contents
+
+## Monday 12 October 2026
+
+<table id=" (https://conf.researchr.org/getImage/ase-2026/orig/program.pdf)
+citeturn13search13 [wordlim: 200] Crawled: last week; <tr><td>Forum 9</td><td>ASE New-Faculty Symposium</td><td>4</td></tr> ... <tr><td>Forum 6</td><td>Human and Social Aspects: Program Comprehension and Visualization</td><td>11</td></tr>
+<tr><td>Forum 7</td><td>Testing and Analysis: Regression and Model-Based Testing 1</td><td>11</td></tr> ... <tr><td>Forum 2</td><td>Testing and Analysis: Regression and Model-Based Testing 2</td><td>13</td></tr>
+--------------------------------------------------------------------------------
+ICSE2021 - Printed Program (https://conf.researchr.org/getImage/icse-2021/orig/printed_program.pdf)
+citeturn13search14 [wordlim: 200] Published: 5.5 years ago; Crawled: 6 months ago; Detailed Program: May 25th ... | Technical Track | Measuring Discrimination to Boost Comparative Testing for Multiple Deep Learning Models | Linghan Meng, Yanhui Li, Lin Chen, Zhi Wang, Di Wu, Yuming Zhou, Baowen Xu | 12:05 – 12:25 | ... | Technical Track | Enhancing Genetic Improvement of Software with Regression Test Selection | Giovanni Guizzo, Justyna Petke, Federica Sarro, Mark Harman | 12:45 – 13:05 | ... | SEIS | Résumé-Driven Development: A Definition and Empirical Characterization | Jonas Fritzsch, Marvin Wyrich, Justus Bogner, Stefan Wagner | 13:00 – 13:15 |
+--------------------------------------------------------------------------------
+ICSE2021 - Printed program (Main conference) (https://conf.researchr.org/getImage/icse-2021/orig/printed_program_main.pdf)
+citeturn13search15 [wordlim: 200] Published: 5.5 years ago; Crawled: 2 weeks ago; # ICSE 21 — Detailed Program: May 25th ... | Technical Track | **Measuring Discrimination to Boost Comparative Testing for Multiple Deep Learning Models** | Linghan Meng, Yanhui Li, Lin Chen, Zhi Wang, Di Wu, Yuming Zhou, Baowen Xu | 12:05–12:25 | ... | Technical Track | **Enhancing Genetic Improvement of Software with Regression Test Selection** | Giovani Guizzo, Justyna Petke, Federica Sarro, Mark Harman | 12:45–13:05 | ... | SEIS | **Résumé-Driven Development: A Definition and Empirical Characterization** | Jonas Fritzsch, Marvin Wyrich, Justus Bogner, Stefan Wagner | 13:00–13:15 | ... Two ACM artifact badges are displayed beneath the paper **“Enhancing Genetic Improvement of Software with Regression Test Selection”**:
+--------------------------------------------------------------------------------
+CONFERENCE PROGRAM — WEDNESDAY, MAY 30 (https://conf.researchr.org/getImage/icse-2018/orig/ICSE2018_ProgrambookA4-webb.pdf)
+citeturn13search16 [wordlim: 200] Published: 8.5 years ago; CONFERENCE PROGRAM — WEDNESDAY, MAY 30 ...   <td><b>Hybrid Regression Test Selection</b><br>Lingming Zhang</td> ...   <td><b>FAST Approaches to Scalable Similarity-based Test Case Prioritization</b><br>Breno Miranda, Emilio Cruciani, Roberto Verdecchia, Antonia Bertolino</td> ...   <td><b>[Journal First] Model Comprehension for Security Risk Assessment: An Empirical Comparison of Tabular vs. ...   <td><b>A Large-Scale Empirical Study on the Effects of Code Obfuscations on Android Apps and Anti-Malware Products</b><br>Mahmoud Hammad, Joshua Garcia, Sam Malek</td>
+--------------------------------------------------------------------------------
+Date None | UTC Start Time | End Time | Track Name None | Titles None (https://conf.researchr.org/getImage/icpc-2020/orig/ICPC2020_Virtual_Session_Schedule.pdf)
+citeturn13search17 [wordlim: 200] Published: 8 months ago; Date None | UTC 15:00 | 16:00 | Track Name Session 1: Tests | Titles Measuring Software Testability Modulo Test Quality ... Date None | UTC |  | Track Name | Titles A Literature Review of Automatic Traceability Links Recovery for Software Change Impact Analysis ... Date None | UTC 8:30 | 9:30 | Track Name Session 6: Artifacts | Titles A Self-Attentional Neural Architecture for Code Completion with Multi-Task Learning Knowledge Transfer in Modern Code Review How are Deep Learning Models Similar? ... Date 15-Jul | UTC 0:00 | 1:00 | Track Name Session 9: For Developers | Titles An Empirical Study on Dynamic Typing Related Practices in Python Systems Performing Tasks Do Improve Program Comprehension of Novice Developers SimplyHover: Improving Comprehension of else Statements Combining biometric data with focused document types classifies a success of program comprehension Program Comprehension in Virtual Reality ... Date None | UTC 8:30 | 9:30 | Track Name Session 11: Search | Titles GGF: A Graph-based Method for Programming Language Syntax Error Correction Adaptive Deep Code Search Duplicate Bug Report Detection Using Dual-Channel Convolutional Neural Networks
+

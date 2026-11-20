@@ -1,0 +1,187 @@
+diff --git a/docs/dashboard.md b/docs/dashboard.md
+index 621b9d62a4..2b32cd399a 100644
+--- a/docs/dashboard.md
++++ b/docs/dashboard.md
+@@ -1,10 +1,17 @@
+ # UI Dashboard
+ 
+-The Argo Rollouts Kubectl plugin can serve a local UI Dashboard to visualize your Rollouts.
++The Argo Rollouts Kubectl plugin can serve a **local** UI Dashboard to visualize your Rollouts.
+ 
+ To start it, run `kubectl argo rollouts dashboard` in the namespace that contains your Rollouts.
+ Then visit `localhost:3100` to view the user interface.
+ 
++!!! important
++    Available since v1.8.5, v1.9.2, v1.10.1
++    
++The dashboard server binds to `127.0.0.1` by default instead of
++`0.0.0.0`. Pass `--address 0.0.0.0` to the dashboard command to expose the local dashboard in all interfaces to 
++bring back the previous behavior.
++
+ ## List view
+ 
+ ![Rollouts List](dashboard/rollouts-list.png)
+diff --git a/docs/generated/kubectl-argo-rollouts/kubectl-argo-rollouts_dashboard.md b/docs/generated/kubectl-argo-rollouts/kubectl-argo-rollouts_dashboard.md
+index ad99bfb5ca..f00f1368b2 100644
+--- a/docs/generated/kubectl-argo-rollouts/kubectl-argo-rollouts_dashboard.md
++++ b/docs/generated/kubectl-argo-rollouts/kubectl-argo-rollouts_dashboard.md
+@@ -23,6 +23,7 @@ kubectl argo rollouts dashboard --port 8080
+ ## Options
+ 
+ ```
++      --address string     address to listen on: use 0.0.0.0 when fronting the dashboard with a Kubernetes Service (default "127.0.0.1")
+   -h, --help               help for dashboard
+   -p, --port int           port to listen on (default 3100)
+       --root-path string   changes the root path of the dashboard (default "rollouts")
+diff --git a/manifests/dashboard-install.yaml b/manifests/dashboard-install.yaml
+index e0013dbed5..70bf15880a 100644
+--- a/manifests/dashboard-install.yaml
++++ b/manifests/dashboard-install.yaml
+@@ -128,7 +128,10 @@ spec:
+         app.kubernetes.io/name: argo-rollouts-dashboard
+     spec:
+       containers:
+-      - image: quay.io/argoproj/kubectl-argo-rollouts:latest
++      - args:
++        - dashboard
++        - --address=0.0.0.0
++        image: quay.io/argoproj/kubectl-argo-rollouts:latest
+         name: argo-rollouts-dashboard
+         ports:
+         - containerPort: 3100
+diff --git a/manifests/dashboard-install/dashboard-deployment.yaml b/manifests/dashboard-install/dashboard-deployment.yaml
+index 11d9224e9e..a90a4e5a1b 100644
+--- a/manifests/dashboard-install/dashboard-deployment.yaml
++++ b/manifests/dashboard-install/dashboard-deployment.yaml
+@@ -20,5 +20,8 @@ spec:
+       containers:
+         - name: argo-rollouts-dashboard
+           image: quay.io/argoproj/kubectl-argo-rollouts
++          args:
++            - dashboard
++            - --address=0.0.0.0
+           ports:
+             - containerPort: 3100
+diff --git a/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go b/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go
+index f431a479ba..6cb6b3e1ac 100644
+--- a/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go
++++ b/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go
+@@ -21,6 +21,7 @@ var (
+ func NewCmdDashboard(o *options.ArgoRolloutsOptions) *cobra.Command {
+ 	var rootPath string
+ 	var port int
++	var address string
+ 	var cmd = &cobra.Command{
+ 		Use:     "dashboard",
+ 		Short:   "Start UI dashboard",
+@@ -36,6 +37,7 @@ func NewCmdDashboard(o *options.ArgoRolloutsOptions) *cobra.Command {
+ 				RolloutsClientset: rolloutclientset,
+ 				DynamicClientset:  o.DynamicClientset(),
+ 				RootPath:          rootPath,
++				ListenAddr:        address,
+ 			}
+ 
+ 			for {
+@@ -49,6 +51,7 @@ func NewCmdDashboard(o *options.ArgoRolloutsOptions) *cobra.Command {
+ 	}
+ 	cmd.Flags().StringVar(&rootPath, "root-path", "rollouts", "changes the root path of the dashboard")
+ 	cmd.Flags().IntVarP(&port, "port", "p", 3100, "port to listen on")
++	cmd.Flags().StringVar(&address, "address", "127.0.0.1", "address to listen on: use 0.0.0.0 when fronting the dashboard with a Kubernetes Service")
+ 
+ 	return cmd
+ }
+diff --git a/server/server.go b/server/server.go
+index bc24c51d2d..5f9e0a7daa 100644
+--- a/server/server.go
++++ b/server/server.go
+@@ -57,6 +57,10 @@ type ServerOptions struct {
+ 	DynamicClientset  dynamic.Interface
+ 	Namespace         string
+ 	RootPath          string
++	// ListenAddr is the address the dashboard/API server listens on. Defaults to
++	// localhost-only (defaultListenAddr) when empty, since the dashboard command is
++	// typically run on a user's workstation.
++	ListenAddr string
+ }
+ 
+ const (
+@@ -75,16 +79,31 @@ func NewServer(o ServerOptions) *ArgoRolloutsServer {
+ 	return &ArgoRolloutsServer{Options: o}
+ }
+ 
+-const (
+-	listenAddr  = "0.0.0.0"
+-	connectAddr = "localhost"
+-)
++const defaultListenAddr = "127.0.0.1"
++
++func (s *ArgoRolloutsServer) listenAddr() string {
++	if s.Options.ListenAddr != "" {
++		return s.Options.ListenAddr
++	}
++	return defaultListenAddr
++}
++
++// connectAddr returns the address the grpc-gateway should connect to, to reach the
++// in-process gRPC server.
++func (s *ArgoRolloutsServer) connectAddr() string {
++	switch addr := s.listenAddr(); addr {
++	case "0.0.0.0", "::", "":
++		return "localhost"
++	default:
++		return addr
++	}
++}
+ 
+ func (s *ArgoRolloutsServer) newHTTPServer(ctx context.Context, port int) *http.Server {
+ 	mux := http.NewServeMux()
+ 
+ 	httpS := http.Server{
+-		Addr:    net.JoinHostPort(listenAddr, fmt.Sprintf("%d", port)),
++		Addr:    net.JoinHostPort(s.listenAddr(), fmt.Sprintf("%d", port)),
+ 		Handler: mux,
+ 	}
+ 
+@@ -103,7 +122,7 @@ func (s *ArgoRolloutsServer) newHTTPServer(ctx context.Context, port int) *http.
+ 	}
+ 	opts = append(opts, grpc.WithInsecure())
+ 
+-	endpoint := net.JoinHostPort(connectAddr, fmt.Sprintf("%d", port))
++	endpoint := net.JoinHostPort(s.connectAddr(), fmt.Sprintf("%d", port))
+ 	err := rollout.RegisterRolloutServiceHandlerFromEndpoint(ctx, gwmux, endpoint, opts)
+ 	if err != nil {
+ 		panic(err)
+@@ -152,7 +171,7 @@ func (s *ArgoRolloutsServer) Run(ctx context.Context, port int, dashboard bool)
+ 	var conn net.Listener
+ 	var realErr error
+ 	_ = wait.ExponentialBackoff(backoff, func() (bool, error) {
+-		conn, realErr = net.Listen("tcp", fmt.Sprintf(":%d", port))
++		conn, realErr = net.Listen("tcp", net.JoinHostPort(s.listenAddr(), fmt.Sprintf("%d", port)))
+ 		if realErr != nil {
+ 			log.Warnf("failed listen: %v", realErr)
+ 			return false, nil
+@@ -161,9 +180,9 @@ func (s *ArgoRolloutsServer) Run(ctx context.Context, port int, dashboard bool)
+ 	})
+ 	errors.CheckError(realErr)
+ 
+-	startupMessage := fmt.Sprintf("Argo Rollouts api-server serving on port %d (namespace: %s)", port, s.Options.Namespace)
++	startupMessage := fmt.Sprintf("Argo Rollouts api-server serving on port %s %d (namespace: %s)", s.listenAddr(), port, s.Options.Namespace)
+ 	if dashboard {
+-		startupMessage = fmt.Sprintf("Argo Rollouts Dashboard is now available at http://localhost:%d/%s", port, s.Options.RootPath)
++		startupMessage = fmt.Sprintf("Argo Rollouts Dashboard is now available at http://%s:%d/%s", s.listenAddr(), port, s.Options.RootPath)
+ 	}
+ 
+ 	log.Info(startupMessage)
+diff --git a/server/server_test.go b/server/server_test.go
+index 592b5a6b0f..a2f02389fe 100644
+--- a/server/server_test.go
++++ b/server/server_test.go
+@@ -22,7 +22,7 @@ func TestNewHTTPServer(t *testing.T) {
+ 		httpServer := s.newHTTPServer(ctx, port)
+ 
+ 		assert.NotNil(t, httpServer)
+-		assert.Equal(t, "0.0.0.0:8080", httpServer.Addr)
++		assert.Equal(t, "127.0.0.1:8080", httpServer.Addr)
+ 		assert.NotNil(t, httpServer.Handler)
+ 	})
+ 

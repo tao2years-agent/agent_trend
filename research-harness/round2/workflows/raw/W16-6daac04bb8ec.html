@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Troubleshoot: Why CodeRabbit reviews might not trigger | CodeRabbit Knowledge Base</title>
+<meta charset="UTF-8" />
+<meta name="description" content="Overview
+If CodeRabbit reviews are not triggering automatically or manually on a pull request or merge request, this article will help identify and" />
+<meta property="og:description" content="Overview
+If CodeRabbit reviews are not triggering automatically or manually on a pull request or merge request, this article will help identify and" />
+<meta property="og:title" content="Troubleshoot: Why CodeRabbit reviews might not trigger" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kb.coderabbit.ai/articles/1442026547-troubleshoot-why-coderabbit-reviews-might-not-trigger" />
+<meta property="og:site_name" content="CodeRabbit Knowledge Base" />
+<link rel="canonical" href="https://kb.coderabbit.ai/articles/1442026547-troubleshoot-why-coderabbit-reviews-might-not-trigger" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="pylon-custom-theme" content="true" />
+<link rel="icon" href="https://avatars.slack-edge.com/2025-09-15/9523466555334_d7b903a1727cd5c883a7_88.png" />
+<link rel="stylesheet" href="/theme/styles.css?t=118438424492489">
+<link rel="stylesheet" href="/islands/1db0f46d63e20655631c9189a0114d063af4c092/kb-islands.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.usepylon.com" crossorigin>
+<style>
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwkT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwAT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwgT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwcT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwsT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwoT9mI1F55MKw.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwQT9mI1F54.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvvYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvmYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvuYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvhYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvtYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvsYwYZ8UA3J58.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcviYwYZ8UA3.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+@font-face { font-family: "PylonBodyFont"; src: url("https://fonts.usepylon.com/94c9a2a2-d0a0-43c3-9417-bec33917fd82/1755467906889-WorkSans-VariableFont_wght.ttf") format("truetype"); font-display: swap; }
+:root { --body-font-family: "PylonBodyFont", "Inter", system-ui, sans-serif; }
+@font-face { font-family: "PylonHeadlinesFont"; src: url("https://fonts.usepylon.com/94c9a2a2-d0a0-43c3-9417-bec33917fd82/1755467846405-Scandia-Bold.otf") format("opentype"); font-weight: 600; font-display: swap; }
+:root { --headlines-font-family: "PylonHeadlinesFont", "Inter", system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div class="kb-page-layout">
+  <style>:root { --primaryColor: #ff570a; --text-link-color: #25bab1; }</style>
+<div class="kb-header">
+  <div class="kb-header-inner">
+    <a href="/" class="kb-header-logo">
+      <img class="kb-logo-default" src="https://avatars.usepylon.com/94c9a2a2-d0a0-43c3-9417-bec33917fd82/org-avatars/1fe9467d-30a4-4e35-9352-acd5e73a434c-1757989559884" alt="CodeRabbit Knowledge Base" /><img class="kb-logo-bright" src="https://avatars.usepylon.com/94c9a2a2-d0a0-43c3-9417-bec33917fd82/org-avatars/1fe9467d-30a4-4e35-9352-acd5e73a434c-1757989559884" alt="CodeRabbit Knowledge Base" />
+    </a>
+    <div class="kb-header-nav">
+      
+      <a class="kb-header-link" href="https://docs.coderabbit.ai/" target="_blank" rel="noreferrer">Documentation</a>
+      
+      <a class="kb-header-link" href="https://app.coderabbit.ai/" target="_blank" rel="noreferrer">App</a>
+      
+      <div id="kb-locale"></div>
+      <div id="kb-auth"></div>
+      <button class="kb-header-hamburger" onclick="this.closest('.kb-header').classList.toggle('kb-header--menu-open')" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </div>
+  </div>
+  <div class="kb-header-mobile-nav">
+    
+    <a class="kb-header-mobile-link" href="https://docs.coderabbit.ai/" target="_blank" rel="noreferrer">Documentation</a>
+    
+    <a class="kb-header-mobile-link" href="https://app.coderabbit.ai/" target="_blank" rel="noreferrer">App</a>
+    
+  </div>
+</div>
+  <div class="kb-article-content-wrapper">
+    <div class="kb-content">
+      <div id="kb-search"><div class="kb-search-input-wrapper" data-kb-ssr-placeholder aria-hidden="true"><div class="kb-search-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path></svg></div><input class="KnowledgeBaseSearchInput" type="text" tabindex="-1" readonly /></div></div>
+      <div id="kb-search-results"></div>
+      <div class="kb-article-page-content">
+        <div class="kb-article-layout">
+          <div class="kb-article-main">
+            
+            <div class="kb-article-badges-row">
+              
+              <nav class="kb-breadcrumbs">
+                <a class="kb-breadcrumb-link" href="/">All Collections</a><span class="kb-breadcrumb-separator">›</span><a class="kb-breadcrumb-link" href="/collections/6885774537-troubleshooting">Troubleshooting</a>
+              </nav>
+              
+              
+            </div>
+            
+            <div class="kb-article-header">
+              <h1 class="kb-article-title">Troubleshoot: Why CodeRabbit reviews might not trigger</h1>
+              
+              <div class="kb-article-meta">
+                Last updated 7 months ago<span id="kb-article-edit"></span>
+              </div>
+              
+            </div>
+            <div class="kb-article-body kb-article-body--ssr">
+              <div class="kb-article-body-placeholder"><h1 id="">Overview</h1><p>If CodeRabbit reviews are not triggering automatically or manually on a pull request or merge request, this article will help identify and resolve the most common causes.</p><h1 id="">Common causes for skipped reviews</h1><p>Reviews are automatically skipped in these scenarios:</p><ol><li><p><strong>PR was closed or merged</strong> <strong>Title or description edited</strong> - No code changes were detected by CodeRabbit.</p></li><li><p><strong>Assignees/reviewers modified</strong> - Administrative change only and does not require review.</p></li><li><p><strong>Draft PR actions</strong> - Converting to/from draft (except GitLab draft→ready) as drafts are not normally reviewed by CodeRabbit.</p></li><li><p><strong>Label removed</strong> - (GitHub only) - Only label additions trigger reviews.</p></li><li><p><strong>Approval/rejection events</strong> - Not considered code changes and are not intended to trigger reviews.</p></li><li><p><strong>PR author doesn&#39;t have an active seat</strong> - Reviews will be skipped in this case. If the PR author needs reviews, they must be assigned a seat via the CodeRabbit web page.</p></li><li><p><strong>Organization reached seat limit</strong> - New users who exceed the seat limit can&#39;t get reviews until the organization either increases the number of available seats and assigns one to the user, or reassigns a seat from one user to another.</p></li><li><p><strong>Repository not properly installed</strong> - Verify installation status in the organization&#39;s Git provider and ensure it is visible in the repositories section of the CodeRabbit web page.</p></li><li><p><strong>Webhook issues</strong> - Check webhook delivery and responses.</p></li><li><p><strong>Base branch configuration</strong> - Ensure target branches are configured for auto-review.</p></li><li><p><strong>Auto-review disabled</strong> - Check repository settings or <code>.coderabbit.yaml</code> file and ensure this option is ticked if auto reviews are desired.</p></li><li><p><strong>Insufficient repository permissions</strong> - CodeRabbit must have read/write access in order to post comments in a specific repository.</p></li><li><p><strong>Organization access</strong> - Ensure the organization appears in the CodeRabbit web page.</p></li><li><p><strong>Rate limiting</strong> - This is caused by too many reviews being requested in a short time. Try requesting another review after ~1 hour has elapsed.</p></li></ol><h1 id="">Step-by-step troubleshooting checklist</h1><ol><li><p>Verify the repository shows as &#34;Installed&#34; in your CodeRabbit dashboard.</p></li><li><p>Confirm the PR author has an assigned seat.</p></li><li><p>Check that auto-review is enabled in organization settings.</p></li><li><p>Ensure the target branch is configured for reviews.</p></li><li><p>Manually trigger a review with: - <code>@coderabbitai review</code> (incremental review) or <code>@coderabbitai full review</code> (complete review) If manual triggers don&#39;t work, this indicates a deeper configuration issue.</p></li><li><p>Verify webhook is present in your Git provider settings.</p></li><li><p>Check webhook delivery logs for HTTP 200 responses.</p></li><li><p>Check the  <code>.coderabbit.yaml</code> file for: - <code>reviews.auto_review.enabled: false</code>.</p></li><li><p>Ensure CodeRabbit has: Read access to repository and pull requests, write access for posting comments, and appropriate organization-level permissions.</p></li><li><p>Platform-Specific Considerations: GitHub - Verify GitHub App installation and permissions. On GitLab, ensure the service account has Developer+ permissions. Bitbucket - Confirm repository access for the CodeRabbit user. Azure DevOps - Check organization permissions and project access.</p></li><li><p>Check organization settings, which should not block third-party apps.</p></li><li><p>Verify Personal Access Token has required scopes - Check group-level vs project-level installation. Bitbucket - Confirm repository access for the CodeRabbit user.</p></li><li><p>Verify webhook configuration. Azure DevOps - Check organization permissions and project access.</p></li></ol><h1 id="">When to contact support</h1><p>Contact CodeRabbit support if:</p><ol><li><p>Manual triggers show &#34;Review triggered&#34; but no review appears.</p></li><li><p>All configuration appears correct but reviews still don&#39;t trigger.</p></li><li><p>Reviews are experiencing consistent failures across multiple repositories.</p></li><li><p>Error messages appear in PR comments.</p></li></ol><p></p><p>Include in your support request:</p><ol><li><p>Specific PR/MR URLs where reviews failed.</p></li><li><p>Screenshots of configuration settings.</p></li><li><p>Any error messages from CodeRabbit.</p></li><li><p>Your Git provider (GitHub/GitLab/Bitbucket/Azure DevOps)</p></li></ol><h1 id="">Prevention Tips</h1><ul><li><p><strong>Monitor seat usage</strong> - Set up alerts for seat limits</p></li><li><p><strong>Regular webhook health checks</strong> - Verify delivery success</p></li><li><p><strong>Configuration validation</strong> - Test settings after changes</p></li><li><p><strong>Team training</strong> - Ensure developers understand manual trigger commands</p></li><li><p><strong>Status page monitoring</strong> - Check <a data-link-relationship="standard" href="https://status.coderabbit.ai" rel="noopener noreferrer" target="_blank">https://status.coderabbit.ai</a> for service issues.</p></li></ul></div>
+              <div class="kb-article-body-skeleton">
+                <div class="kb-article-skeleton-line kb-article-skeleton-line--lg"></div>
+                <div class="kb-article-skeleton-line"></div>
+                <div class="kb-article-skeleton-line"></div>
+                <div class="kb-article-skeleton-line kb-article-skeleton-line--md"></div>
+                <div class="kb-article-skeleton-gap"></div>
+                <div class="kb-article-skeleton-line"></div>
+                <div class="kb-article-skeleton-line"></div>
+                <div class="kb-article-skeleton-line kb-article-skeleton-line--sm"></div>
+              </div>
+              <div id="kb-article-body"></div>
+            </div>
+            <div id="kb-feedback"></div>
+          </div>
+          <div class="kb-article-sidebar">
+            <div id="kb-toc"><span class="kb-toc-item" data-kb-ssr-placeholder style="display:none"></span></div>
+            
+            <div class="kb-related-articles">
+              <div class="kb-related-articles-title">Related Articles</div>
+              
+              <a class="kb-related-article-link" href="/articles/2912942216-how-to-fix-failed-to-install-repositories-error-on-azure-devops">How to fix &#34;Failed to install repositories!&#34; error on Azure DevOps</a>
+              
+              <a class="kb-related-article-link" href="/articles/3842327150-troubleshoot-unable-to-login-to-the-coderabbit-cli">Troubleshoot: Unable to login to the CodeRabbit CLI</a>
+              
+              <a class="kb-related-article-link" href="/articles/8520279909-troubleshoot-problems-logging-in-to-coderabbit-with-azure-devops">Troubleshoot: Problems logging in to CodeRabbit with Azure DevOps</a>
+              
+              <a class="kb-related-article-link" href="/articles/9082011749-coderabbit-is-creating-a-new-gitlab-pipeline-that-overrides-our-pipeline">CodeRabbit is creating a new GitLab Pipeline that overrides our pipeline</a>
+              
+            </div>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="kb-footer">
+  <div class="kb-footer-divider"></div>
+  <div class="kb-footer-content">
+    <div class="kb-footer-inner">
+      
+      <div class="kb-footer-bottom">
+        <a href="/" class="kb-footer-logo">
+          <img src="https://avatars.slack-edge.com/2025-09-15/9523466555334_d7b903a1727cd5c883a7_88.png" alt="CodeRabbit Knowledge Base" />
+        </a>
+        <a class="kb-powered-by" href="https://usepylon.com" target="_blank" rel="noreferrer">
+          Powered by <img src="https://static.usepylon.com/logo_subtle.png" alt="" height="12" /><span>Pylon</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+<script>window.__KB_DATA__ = {"webMCPSupportEnabled":false,"graphqlEndpoint":"https://kb.coderabbit.ai/multiauth/graphql","region":"us","kb":{"id":"2fd942b5-c7d6-4d81-adfe-dd4cba6ecc7f","slug":"coderabbit-kb","title":"CodeRabbit Knowledge Base","orgID":"94c9a2a2-d0a0-43c3-9417-bec33917fd82","orgSlug":"coderabbit","orgName":"CodeRabbit","appURL":"https://app.usepylon.com","brandColorHex":"#ff570a","customerPortalDomain":"portal.coderabbit.ai"},"pageType":"article","languageCode":"en","externalSites":[{"id":"50e0e94d-8a75-44cd-9eb1-70f7a5918923","type":"crawled_site","baseURL":"https://www.coderabbit.ai","favicon":"https://www.coderabbit.ai/favicon.ico","name":"CodeRabbit Website"},{"id":"5102a8a3-b9b4-4db9-9155-e1d416472af4","type":"crawled_site","baseURL":"https://vdp.coderabbit.ai/","favicon":"https://vdp.coderabbit.ai/favicon.ico","name":"CodeRabbit Vulnerability Disclosure Program"},{"id":"806d6f30-f641-4897-9ae2-da9fe5e4a56f","type":"crawled_site","baseURL":"https://docs.coderabbit.ai/","favicon":"","name":"CodeRabbit Docs"},{"id":"a8756597-fff1-4e23-884f-153a7484eb9c","type":"crawled_site","baseURL":"https://github.com/coderabbitai/awesome-coderabbit","favicon":"https://github.githubassets.com/favicons/favicon.svg","name":"awesome-coderabbit"},{"id":"ee98241f-fea7-4b33-a718-8df70a786125","type":"crawled_site","baseURL":"https://trust.coderabbit.ai/","favicon":"https://trust.coderabbit.ai/favicon.ico","name":"CodeRabbit Trust Center"}],"article":{"id":"d9e6ee6c-6794-454d-b79b-edccf1893696","identifier":"1442026547","versionID":"10fa3347-d44d-4b4b-a283-64c723c57bd9"}};</script>
+<script type="module" src="/islands/1db0f46d63e20655631c9189a0114d063af4c092/kb-islands.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+Accelerating Large-Scale Test Migration with LLMs | Airbnb Engineering & Data Science (https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/)
+citeturn97view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/","lineno":null}); Total lines: 99
+L0: 【0†Airbnb Engineering & Data Science】
+L1: 
+L2:   * 【1†Blog】
+L3:   * 【2†Open Source】
+L4:   * 【3†Research】
+L5:   * 【4†Events】
+L6:   * 【5†Careers】
+L7: # Accelerating Large-Scale Test Migration with LLMs
+L8: 
+L9: How Airbnb migrated nearly 3.5K Enzyme test files to React Testing Library in just 6 weeks using automation and LLMs
+L10: 
+L11: By: 【6†Charles Covey-Brandt†www.linkedin.com】
+L12: Airbnb recently completed our first large-scale, LLM-driven code migration, updating nearly 3.5K React component test files from Enzyme to use React Testing Library (RTL) instead. We’d originally estimated this would take 1.5 years of engineering time to do by hand, but — using a combination of frontier models and robust automation — we finished the entire migration in just 6 weeks.
+L13: In this blog post, we’ll highlight the unique challenges we faced migrating from Enzyme to RTL, how LLMs excel at solving this particular type of challenge, and how we structured our migration tooling to run an LLM-driven migration at scale.
+L14: # Background
+L15: 
+L16: In 2020, Airbnb adopted React Testing Library (RTL) for all new React component test development, marking our first steps away from Enzyme. Although Enzyme had served us well since 2015, it was designed for earlier versions of React, and the framework’s deep access to component internals no longer aligned with modern React testing practices.
+L17: However, because of the fundamental differences between these frameworks, we couldn’t easily swap out one for the other (read more about the differences 【7†here†kentcdodds.com】). We also couldn’t just delete the Enzyme files, as analysis showed this would create significant gaps in our code coverage. To complete this migration, we needed an automated way to refactor test files from Enzyme to RTL while preserving the intent of the original tests and their code coverage.
+L18: # How We Did It
+L19: 
+L20: In mid-2023, an Airbnb hackathon team demonstrated that large language models could successfully convert hundreds of Enzyme files to RTL in just a few days.
+L21: Building on this promising result, in 2024 we developed a scalable pipeline for an LLM-driven migration. We broke the migration into discrete, per-file steps that we could parallelize, added configurable retry loops, and significantly expanded our prompts with additional context. Finally, we performed breadth-first prompt tuning for the long tail of complex files.
+L22: # 1. File Validation and Refactor Steps
+L23: 
+L24: We started by breaking down the migration into a series of automated validation and refactor steps. Think of it like a production pipeline: each file moves through stages of validation, and when a check fails, we bring in the LLM to fix it.
+L25: 
+L26: We modeled this flow like a state machine, moving the file to the next state only after validation on the previous state passed:
+L27: 【8†Image】Diagram shows refactor steps from Enzyme refactor, fixing Jest, fixing lint and tsc, and marking file as complete.
+L28: This step-based approach provided a solid foundation for our automation pipeline. It enabled us to track progress, improve failure rates for specific steps, and rerun files or steps when needed. The step-based approach also made it simple to run migrations on hundreds of files concurrently, which was critical for both quickly migrating simple files, and chipping away at the long tail of files later in the migration.
+L29: # 2. Retry Loops & Dynamic Prompting
+L30: Early on in the migration, we experimented with different prompt engineering strategies to improve our per-file migration success rate. However, building on the stepped approach, we found the most effective route to improve outcomes was simply brute force: retry steps multiple times until they passed or we reached a limit.
+L31: We updated our steps to use dynamic prompts for each retry, giving the validation errors and the most recent version of the file to the LLM, and built a loop runner that ran each step up to a configurable number of attempts.
+L32: 【9†Image】Diagram of a retry loop. For a given step N, if the file has errors, we retry validation and attempt to fix errors unless we hit the max retries or the file no longer contains errors.
+L33: 
+L34: With this simple retry loop, we found we could successfully migrate a large number of our simple-to-medium complexity test files, with some finishing successfully after a few retries, and most by 10 attempts.
+L35: # 3. Increasing the Context
+L36: 
+L37: For test files up to a certain complexity, just increasing our retry attempts worked well. However, to handle files with intricate test state setups or excessive indirection, we found the best approach was to push as much relevant context as possible into our prompts.
+L38: By the end of the migration, our prompts had expanded to anywhere between 40,000 to 100,000 tokens, pulling in as many as 50 related files, a whole host of manually written 【10†few-shot†docs.anthropic.com】 examples, as well as examples of existing, well-written, passing test files from within the same project.
+L39: 
+L40: Each prompt included:
+L41:   * The source code of the component under test
+L42:   * The test file we were migrating
+L43:   * Validation failures for the step
+L44:   * Related tests from the same directory (maintaining team-specific patterns)
+L45:   * General migration guidelines and common solutions
+L46: Here’s how that looked in practice (significantly trimmed down for readability):
+L47: 
+L48:     // Code example shows a trimmed down version of a prompt
+L49:     // including the raw source code from related files, imports,
+L50:     // examples, the component source itself, and the test file to migrate.
+L51:     const prompt = [
+L52:       'Convert this Enzyme test to React Testing Library:',
+L53:       `SIBLING TESTS:\n${siblingTestFilesSourceCode}`,
+L54:       `RTL EXAMPLES:\n${reactTestingLibraryExamples}`,
+L55:       `IMPORTS:\n${nearestImportSourceCode}`,
+L56:       `COMPONENT SOURCE:\n${componentFileSourceCode}`,
+L57:       `TEST TO MIGRATE:\n${testFileSourceCode}`,
+L58:     ].join('\n\n');
+L59: This rich context approach proved highly effective for these more complex files — the LLM could better understand team-specific patterns, common testing approaches, and the overall architecture of the codebase.
+L60: We should note that, although we did some prompt engineering at this step, the main success driver we saw was choosing the right related files (finding nearby files, good example files from the same project, filtering the dependencies for files that were relevant to the component, etc.), rather than getting the prompt engineering perfect.
+L61: After building and testing our migration scripts with retries and rich contexts, when we ran our first bulk run, we successfully migrated 75% of our target files in just four hours.
+L62: # 4. From 75% to 97%: Systematic Improvement
+L63: 
+L64: That 75% success rate was really exciting to get to, but it still left us with nearly 900 files failing our step-based validation criteria. To tackle this long tail, we needed a systematic way to understand where remaining files were getting stuck and improve our migration scripts to address these issues. We also wanted to do this breadth first to aggressively chip away at our remaining files without getting stuck on the most difficult migration cases.
+L65: To do this, we built two features into our migration tooling.
+L66: 
+L67: First, we built a simple system to give us visibility into common issues our scripts were facing by stamping files with an automatically-generated comment to record the status of each migration step. Here’s what that code comment looked like:
+L68: 
+L69:     // MIGRATION STATUS: {"enyzme":"done","jest":{"passed":8,"failed":2,"total":10,"skipped":0,"successRate":80},"eslint":"pending","tsc":"pending",}
+L70: And second, we added the ability to easily re-run single files or path patterns, filtered by the specific step they were stuck on:
+L71: 
+L72:     $ llm-bulk-migration --step=fix-jest --match=project-abc/**
+L73: 
+L74: Using these two features, we could quickly run a feedback loop to improve our prompts and tooling:
+L75:   1. Run all remaining failing files to find common issues the LLM is getting stuck on
+L76:   2. Select a sample of files (5 to 10) that exemplify a common issue
+L77:   3. Update our prompts and scripts to address that issue
+L78:   4. Re-run against the sample of failing files to validate our fix
+L79:   5. Repeat by running against all remaining files again
+L80: After running this “sample, tune, sweep” loop for 4 days, we had pushed our completed files from 75% to 97% of the total files, and had just under 100 files remaining. By this point, we had retried many of these long tail files anywhere between 50 to 100 times, and it seemed we were pushing into a ceiling of what we could fix via automation.
+L81: Rather than invest in more tuning, we opted to manually fix the remaining files, working from the baseline (failing) refactors to reduce the time to get those files over the finish line.
+L82: # Results and Impact
+L83: 
+L84: With the validation and refactor pipeline, retry loops, and expanded context in place, we were able to automatically migrate 75% of our target files in 4 hours.
+L85: 
+L86: After four days of prompt and script refinement using the “sample, tune, and sweep” strategy, we reached 97% of the 3.5K original Enzyme files.
+L87: And for the remaining 3% of files that didn’t complete through automation, our scripts provided a great baseline for manual intervention, allowing us to complete the migration for those remaining files in another week of work.
+L88: Most importantly, we were able to replace Enzyme while maintaining original test intent and our overall code coverage. And even with high retry counts on the long tail of the migration, the total cost — including LLM API usage and six weeks of engineering time — proved far more efficient than our original manual migration estimate.
+L89: # What’s Next
+L90: 
+L91: This migration underscores the power of LLMs for large-scale code transformation. We plan to expand this approach, develop more sophisticated migration tools, and explore new applications of LLM-powered automation to enhance developer productivity.
+L92: 
+L93: Want to help shape the future of developer tools? We’re hiring engineers who love solving complex problems at scale. Check out our 【11†careers page†careers.airbnb.com】 to learn more.
+L94: All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.
+L95: 
+L96: 【12†© Airbnb, Inc.†www.airbnb.com】
+L97: 
+L98: 【13†Privacy†www.airbnb.com】 【14†Terms†www.airbnb.com】 【15†Cookie Preferences】 【15†Your Privacy Choices】
+

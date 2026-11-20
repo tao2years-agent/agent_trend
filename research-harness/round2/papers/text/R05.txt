@@ -1,0 +1,1338 @@
+                                           AI Writes Faster Than Humans Can Review: A
+                                          Longitudinal Study of an Enterprise “2×” Mandate
+                                          Hao He,∗ Shyam Agarwal,∗ Yegor Denisov-Blanch,† Pavel Azaletskiy,‡ Sanmi Koyejo,† and Bogdan Vasilescu∗
+                                                                    ∗ Carnegie Mellon University        † Stanford University   ‡ Independent Researcher
+
+
+
+                                             Abstract—Enterprises increasingly mandate the use of AI             open-source developers found a 19% slowdown [8]; a public-
+                                         coding tools and set ambitious productivity targets, yet there is       sector study did not find a significant change [9]; and the
+                                         little longitudinal evidence on whether such productivity targets       within-engineer study closest to ours found roughly 40% more
+                                         have been reached, how, and at what cost. In this paper, we
+                                         present a quantitative case study of a documented enterprise            pull requests (PRs) in developers’ heaviest-usage weeks [10].
+                                                                                                                 Whether a doubling is attainable at all is therefore an open
+arXiv:2607.01904v3 [cs.SE] 10 Nov 2026
+
+
+
+
+                                         “2×” mandate: in June 2025, the CTO of a mid-sized, AI-forward
+                                         software company set the goal of doubling merged pull requests          question. More importantly, these point-in-time estimates pro-
+                                         (PRs) per engineer with AI. Using a panel of 802 developers and         vide little evidence on the question an organization faces once
+                                         196,212 PRs (January 2024–April 2026), we estimate the effect of        it has set a target: what it takes, and how long, to reach
+                                         AI adoption by comparing each developer’s PR throughput after
+                                         they started using AI tools with their throughput before adoption       it. Prior qualitative work supplies possible mechanisms, such
+                                         (i.e., a staggered difference-in-differences design). We find that      as the “productivity pressure paradox” in which a mandate
+                                         the company eventually reached the target, but only in the tenth        imposed without enablement undermines its own goal [11],
+                                         month and not in the way the mandate implied: PR throughput             without explicitly tracing the quantitative outcomes across a
+                                         barely changed at the mandate date, increased by about 12%              rollout. A public target also creates a well-known risk: once a
+                                         when each developer started using AI, and then kept increasing
+                                         as developers accumulated use. The target was not met merely            measure becomes a target, it ceases to be a good measure [12].
+                                         by working longer or splitting work: extra working days account         The number an organization reports after a mandate may
+                                         for at most one-fifth of the throughput increase, and the added         therefore no longer mean what it meant before. Answering
+                                         PRs became larger and skewed toward features and bug fixes              these questions requires a documented mandate and years of
+                                         rather than routine changes. The gain is similar across seniority       telemetry from an identifiable company, a combination rarely
+                                         levels and larger in repositories created since 2022. The cost of
+                                         AI adoption fell on code review, where load per reviewer doubled        available to researchers.
+                                         and automated review exceeded human review in coverage within               In this paper, we study one such case: a mid-sized B2B soft-
+                                         months of the mandate. We interpret these results as strong             ware company with an R&D organization of several hundred
+                                         evidence that the adoption and sustained usage of AI raises PR          engineers (Section III, company anonymized per our research
+                                         throughput in an enterprise setting, with two caveats: throughput       agreement). The company is close to an ideal scenario for
+                                         is only a proxy for productivity, and the exact size of the effect
+                                         remains uncertain due to a lack of truly randomized assignment          an AI mandate: it is AI-forward and pays for commercial AI
+                                         in our setting. Our results have implications for organizations         coding tools with no per-seat or token limits. If the gains that
+                                         under AI transformations and researchers studying the impact            proponents promise appear anywhere, they should appear here.
+                                         of AI on software development productivity.                             In June 2025, its CTO publicly announced a “2× mandate” to
+                                                                                                                 double engineering productivity through AI adoption within
+                                                                 I. I NTRODUCTION                                twelve months, naming merged PRs per engineer per month
+                                            Enterprises are adopting AI coding tools across entire               as the progress metric. This public commitment gives us a
+                                         engineering organizations: in 2026, over 70% of developers              date, a magnitude, a deadline, and a named metric. Our study
+                                         reported using AI daily [1], and Google’s 2025 DORA report              window also spans the Opus 4.5 and 4.6 model generations,
+                                         put adoption at 90% [2]. Increasingly, company leaders also             which were regarded at the time as a step change in agentic
+                                         mandate adoption. For example, Shopify made effective AI                coding capability (on vendor benchmarks, in independent
+                                         use “a fundamental expectation” of every employee [3], and              evaluations, and in practitioner reviews [13–18]), but whose
+                                         Coinbase dismissed engineers who did not adopt the tools [4].           organizational effects have not been studied longitudinally.
+                                         In this paper, we use mandate as a shorthand for this range             The company granted us research access to its internal AI-
+                                         of top-down commitments to AI-driven productivity, from a               tool usage telemetry and PR history, from which we build a
+                                         stated expectation to enforced adoption, without implying the           panel of 802 developers and 196,212 PRs from January 2024
+                                         strictest form in any given case.                                       to April 2026. Following a longitudinal case study design [19],
+                                            These mandates rely on the large payoffs that industry               we estimate the effect of AI adoption by comparing each
+                                         leaders publicly promise, but the credible evidence is far more         developer’s monthly PR throughput after they start using AI
+                                         modest. Controlled experiments report speedups of 21–56%                tools with their own throughput before, relative to colleagues
+                                         on isolated tasks [5–7]; the largest field study of experienced         whose AI use did not change in the same months. Developers
+                                                                                                                 started using AI at different times, so this is a staggered
+                                           Hao He is now at Microsoft; work done while at Carnegie Mellon.       difference-in-differences design [20, 21], which we previously
+used to study the adoption of Cursor in open source [22].                                   II. R ELATED W ORK
+Specifically, we ask the following research questions:                    Our study builds on two lines of research: empirical ev-
+                                                                        idence on the effects of AI coding tools on productivity,
+  • RQ1 (Throughput): How much and how fast did PR                      quality, and code review (§II-A), and the literature on what
+    throughput rise after the mandate, and what produced the            those effects depend on, in particular developers’ accumulated
+    gain?                                                               experience with the tools (§II-B).
+  • RQ2 (Heterogeneity): Is the gain uniform across devel-
+    opers, the codebase, and model generations?                         A. Empirical Evidence on AI Coding Tools
+  • RQ3 (Review and Quality): How did the organization                     Most studies of AI coding tools measure velocity or
+    absorb the added throughput, and at what cost to code               throughput, which is only one dimension of developer produc-
+    review and quality?                                                 tivity [23], and their results disagree. Early in-IDE code com-
+                                                                        pletion tools showed modest or no measurable effects despite
+   Our findings show that the company reached its target, but           positive developer perceptions [24, 25]. In randomized trials,
+slowly and not in the way the announcement implied (RQ1).               developers then completed tasks 21–56% faster [5–7], and
+Per-capita PR throughput approached 2× only in April 2026,              observational studies added evidence of coordination overhead
+ten months after the announcement, and the change tied to               and a shift of effort toward core coding activities [26, 27].
+the mandate date itself is small. Instead, the gain follows             More recent evidence is less optimistic: experienced open-
+each developer’s own AI adoption: PR throughput rises by                source developers were 19% slower with AI [8], and gains
+about 12% when a developer starts using AI and then keeps               went mostly to experienced developers [28]. Meanwhile, AI
+increasing with accumulated use, reaching 1.5× at observed              coding tools now include autonomous agents that author entire
+usage under strict calendar-month controls and 2× only after            PRs [29–31]. Overall, these estimates are point-in-time and of
+roughly nine months’ usage. Developers did not reach the                mixed sign, and none of them follows an organization through
+target merely by working longer or splitting work into more             a rollout.
+PRs. The added PRs are larger and contain proportionally                   A second line of work compares throughput gains with
+more features and bug fixes, and at most a fifth of the gain            their effects on code quality and review, again with mixed
+comes from developers working more days. To the best of our             results. AI-generated code shows a persistent velocity–quality
+knowledge, this is among the largest within-developer gains             tradeoff [22], introduces technical debt [32], and weakens
+reported from a field deployment of AI coding tools. However,           code ownership and developer understanding [33], which
+the rollout was not randomized: developers chose when to                Storey [34] describes as cognitive and intent debt. Agent-
+adopt and how heavily to use AI. We therefore interpret the             authored code also churns more [35], and the added output
+within-developer comparisons, and the way the gain increases            concentrates maintenance on a shrinking pool of experienced
+with usage, as strong evidence that adopting and continuing to          reviewers [36]. In contrast, a controlled experiment did not
+use AI drives the gain, but we cannot pin down the exact size           find any maintainability penalty when later developers evolved
+of the causal effect. The gain is broadly shared but uneven             AI-co-developed code [37]. Code review is both a knowledge-
+(RQ2): it is statistically indistinguishable across seniority           transfer and a defect-detection mechanism [38, 39], and it
+levels, largest in proportional terms for managers, concentrated        is cognitively demanding [40, 41], so more PRs mean more
+in newer repositories, barely present in legacy ones, and not           load on reviewers. Agent-authored PRs merge faster but
+separable across the three frontier-model generations. Finally,         are accepted less often and draw more analytic, less social
+the added volume came at a cost to code review (RQ3). As                discussion [42–44], and recent work studies why agentic
+AI-authored PRs increased, review demand exceeded review                contributions are rejected and how humans and agents split
+capacity. Each reviewer handled about twice as many PRs,                review work [45–49]. Our study therefore examines where the
+automated review exceeded human review in coverage soon                 added work goes after a mandate, especially in code review.
+after the mandate, and the human review that remained was                  Two studies are closest to ours. He et al. [22] use the
+increasingly approval without comment. Revert rates and post-           same staggered difference-in-differences design to study the
+merge fixes stayed flat, so the merged-PR count that defined            adoption of Cursor in open-source projects, and Heilman et al.
+success recorded the speedup, but not this shift in who reviews         [10] relate weekly AI usage to output within each of 16,223
+the code.                                                               Microsoft engineers, finding roughly 40% more PRs in an
+   In summary, this paper contributes a longitudinal, instru-           engineer’s heaviest-usage weeks. Our study differs from these
+mented case study of a documented enterprise AI mandate. It             and other field studies in two ways. First, we follow the same
+provides within-developer evidence on how long reaching the             developers for 28 months, from before most of them used
+target took, what produced the gain, who gained, and what it            AI, through a company-wide mandate, to the point where AI
+cost in code review. For organizations that set such targets, our       tools author most of their code, whereas prior field studies
+case shows that the gain arrived ten months after the mandate,          observe a fixed model over a shorter window. Second, we
+through each developer’s accumulated use and not from the               date each developer’s adoption and intensity of AI use from
+mandate itself, and at the cost of moving code review from              tool telemetry, so our within-developer comparisons rest on
+humans onto automation.                                                 recorded use rather than on self-reports or inferred labels.
+
+
+
+                                                                    2
+B. Complementary Investments and the Productivity Paradox                                                               Claude Code       Cursor               Other
+                                                                                                 600
+
+
+
+
+                                                                                                                                                                       4.6 gen
+                                                                                                                              Mandate
+
+
+
+
+                                                                                                                                                          Opus 4.5
+                                                                                                                                            Sonnet 4.5
+                                                                           Developers using AI
+   The wide variation in returns across developers and over                                                    Claude $/mo
+time points to a second literature, which indicates that the                                           $400K
+                                                                                                 400   $200K
+payoff from a general-purpose technology depends on com-
+                                                                                                          $0
+plementary investments. For example, the large IT investments
+                                                                                                 200
+of the 1970s to 1990s increased productivity only alongside
+reorganized workflows, new skills, and decentralized decision
+making [50, 51]. Importantly, automation replaces some tasks                                      0
+                                                                                                               Mar 25        Jun 25     Sep 25           Dec 25              Mar 26
+but increases demand for complementary, judgment-intensive
+ones [52]. The same pattern appears with AI: gains concentrate
+                                                                           Fig. 1: Monthly AI tool users. Inset: Claude Code token spend.
+among less-experienced workers in writing and customer
+support [53, 54], but performance drops on tasks beyond
+the model’s “jagged frontier” [55]. In coding, the ability to
+                                                                           for this study.1 We use the public “2×” commitment only as
+evaluate, debug, and check AI output remains concentrated
+                                                                           the documented prompt and calibration point for our analysis;
+among experienced developers, and access to AI widens that
+                                                                           all results below come from the company’s internal data.
+gap [56]. Sustained reliance on AI can also erode these
+skills [57]. Qualitative studies find that frequent users treat the           Developers used two commercial AI coding tools during
+tool as a collaborator and invest in learning it: Miller et al. [11]       our study window (Figure 1): Cursor, with telemetry from
+describe a “productivity pressure paradox” in which a mandate              February 2025 until its deprecation in February 2026, and
+that raises expectations without granting time to build skill              Claude Code, with telemetry from July 2025. In-house agents
+undermines the gains it seeks. Because this evidence is mostly             arrived near the end of our window. Three frontier models were
+qualitative or from other domains, it remains an open question             also released in our window: Sonnet 4.5 with Claude Code 2.0
+whether developers’ gains grow with their accumulated use                  (September 2025), Opus 4.5 (November 2025), and Opus 4.6
+of AI tools. Our study tests this quantitatively by separating,            (February 2026), the latter two regarded at release as large
+within each developer, the one-time jump at adoption from the              advances in agentic coding [13, 14, 17, 18]. The telemetry does
+gain that grows with accumulated use of the tools.                         not record which model a developer used, so we do not observe
+                                                                           when anyone switched. Internal uptake comes later than each
+                         III. M ETHODS                                     release and coincides with the company’s own rollout, so we
+                                                                           treat each release date only as the earliest month in which
+   We study one organization’s AI coding rollout as a quanti-              exposure to the new model could have begun.
+tative case study [19], following the company across the two
+years surrounding its “2×” mandate. This section describes
+                                                                           B. Data Collection and Processing
+the case company (§III-A), the data we mine (§III-B), and
+our analysis approach (§III-C).                                               We mine two internal data sources: the company’s private
+                                                                           GitHub repositories and its AI-tool subscription logs.
+A. Case Company and the “2×” Mandate                                            a) Pull-request (PR) and review history: We extract each
+   The case is a mid-sized commercial B2B software company                 PR’s title, anonymized author, state, timestamps, size (lines
+with an R&D organization of several hundred engineers. It                  and files changed), labels, commits, comments, and review
+offers a software-as-a-service platform that businesses use to             events. From these we compute per-PR throughput, review
+support their customers, and its products include AI features.             counts, reverts, and two latency measures: total cycle time,
+The codebase combines a long-lived Ruby core, first written                from first commit to merge or close, which DORA calls lead
+in 2012, with newer services in TypeScript, Python, and Go.                time for changes [2, 58], and review lead, from the first human
+Between 2024 and 2026, it grew from about 500 to over 1,000                review to merge or close. Bots (AI reviewers and deploy,
+repositories and from about 4 to 6.5 million lines of code                 coverage, and policy bots) account for about 38% of review
+(RQ2 compares repositories created before and after 2022).                 rows, so we take the first review to be the first non-author
+The company is AI-forward: it provides commercial AI coding                human review or PR-thread comment. Suppl. C-C splits total
+tools without per-seat limits or token budgets, encourages                 cycle time into coding, pickup, and review phases.
+experimentation, and treats AI fluency as a priority. These con-                b) AI-tool usage logs: From the Cursor and Claude
+ditions make it an unusually favorable site for an AI rollout, so          Code logs, we mine per-developer, per-month AI-written and
+the effects we observe are better interpreted as an upper bound            suggested lines, token spend, and acceptance rates, which give
+than as a representative industry average. In June 2025, the               us a direct measure of who used AI, when, and how heavily
+CTO sent the R&D organization an email setting an explicit                 (Figure 1). Cursor was the early tool; Claude Code, introduced
+goal to double engineering productivity through AI adoption                around the mandate, quickly became dominant.
+over twelve months, naming merged pull requests per engineer
+per month as the metric. The company granted us research                     1 The company’s role was limited to data sharing; it did not participate in
+access to its internal, anonymized engineering and AI-tool data            the analysis or writing, and no company employee is an author.
+
+
+
+
+                                                                       3
+                  120%
+                                                                                                             per month), and how far that estimate admits a causal inter-
+
+
+
+
+                                                                                      4.6 gen
+                                      Mandate
+
+
+
+
+                                                                       Opus 4.5
+                                                          Sonnet 4.5
+Share of AI PRs
+                                                                                                             pretation. The effect may have two components: an imme-
+                  90%
+                                                                                                91%          diate jump when a developer first adopts any AI tool, and
+                  60%
+                                                                                                             a further gain as they accumulate use.2 We estimate both,
+                  30%                                                                                        because any aggregate change combines them. Neither comes
+                   0%                                                                                        about at random, however. Developers who adopted early,
+                    Jan 25   Apr 25             Jul 25   Oct 25                   Jan 26        Apr 26
+                                                                                                             or used AI most heavily, differ from the rest: for example,
+Fig. 2: The share of AI-authored PRs climbs from near zero                                                   early adopters already had much higher PR throughput be-
+to ∼90%, with the steepest rise after the Opus 4.5 release.                                                  fore adoption (nearly two standard deviations above other
+                                                                                                             developers). Simply comparing adopters with non-adopters
+                                                                                                             would therefore confound the effect of the tools with these
+      c) Identifying AI-authored PRs: We use the company’s                                                   pre-existing differences, so we never compare the throughput
+own created-by-ai PR label, an internal convention for                                                       levels of adopters and non-adopters directly.
+PRs that the company attributes to AI; we do not observe or                                                       a) Staggered difference-in-differences: Instead, we make
+control how the label is attached. Throughout the paper, we                                                  each developer their own control, comparing their monthly PR
+call PRs with this label AI-authored, including in the per-PR                                                throughput after they start using AI with their throughput in
+regressions (Eq. 4). The label is sparse before the mandate                                                  the months before (Figure 3A–B). The 113 developers who
+and marks most PRs by the end of our window (Figure 2).                                                      never adopt (Table V) serve a different purpose: they reflect
+The label may correlate with other PR characteristics, so                                                    only the shared calendar trend, i.e., the path adopters would
+we treat comparisons between AI-authored and other PRs                                                       have followed had they not started using AI (Figure 3B).
+as correlational, and reserve causal claims for the developer                                                Developers adopted at different times, since some took up
+panel, which relies on the timing of each developer’s tool                                                   Cursor well before the mandate while most started using
+adoption. The label also captures AI use from tools without                                                  Claude Code in the wave the mandate set off (Figure 1).
+usage logs (the Other series in Figure 1).                                                                   We therefore align each developer on their own adoption
+      d) Identifying automated bots: Following established                                                   month rather than on the calendar. This alignment is known
+practice [59–62], we flag automated accounts by combin-                                                      as a staggered difference-in-differences design [21]. It is a
+ing lexical signals (bot and service-account username and                                                    “difference in differences” because the estimate subtracts the
+email patterns) with behavioral signals (machine-generated                                                   change among developers whose AI use did not change in
+branch names, single-repository activity, and templated, low-                                                the same months from the change in adopters’ throughput
+diversity event bodies), and adjudicate borderline cases manu-                                               around adoption. It is “staggered” because adoption happens
+ally (Suppl. B). We also mark a review event as automated                                                    at different times for different developers. The mandate, by
+when its author is a flagged bot or its body matches a                                                       contrast, is a single date shared by everyone, so its direct effect
+templated-tool pattern. Review timing therefore starts at the                                                cannot be separated from any other organization-wide change
+first human review, and per-PR comment counts include only                                                   at that time. Aligning developers on the mandate date would
+human comments (review-bot comments account for about                                                        also mix developers at different stages of adoption and blur the
+half of all comment events).                                                                                 jump into a gradual ramp (Figure 3C). We therefore treat the
+                                                                                                             mandate as the catalyst for adoption and estimate the effect
+      e) Linking developers, tools, and roles: We match
+                                                                                                             of adopting AI. We do not estimate a separate direct effect of
+GitHub users to AI tool logs on company logins. For most cur-
+                                                                                                             the mandate. Our baseline model is the following regression
+rent employees, we also have anonymized HR roles, linked by
+                                                                                                             on the developer-month panel:
+name and email (≈91% coverage). For the seniority analysis
+(Section IV-B), we group role titles into individual contributor,                                                     log(yit ) = αi + β1 Adoptedit + β2 Postt + εit ,                     (1)
+senior, staff, principal, and management tiers.                                                              where yit is the number of PRs authored by developer i in
+      f) Resulting datasets: The final developer-month panel                                                 month t,3 αi is a developer fixed effect, i.e., a separate intercept
+(i.e., one row per developer per month) includes 802 devel-                                                  for each developer that captures all stable differences between
+opers from January 2024 to April 2026. The PR-level dataset                                                  developers (so that the estimate uses only each developer’s
+contains 196,212 non-bot PRs across 364 active repositories                                                  change over time), Adoptedit equals one in months when
+over the same window (Suppl. A). Our estimation sample                                                       developer i uses Cursor or Claude Code in the telemetry,4 and
+keeps the 564 developers with at least three active months (451                                                 2 We treat adoption as a single event, a developer’s first use of either Cursor
+adopters and 113 never-adopters), because developers seen                                                    or Claude Code, because Cursor use was largely pre-mandate and Claude Code
+for only one or two months contribute no within-developer                                                    post-mandate, leaving the two tools nearly collinear with calendar time.
+                                                                                                                3 The mandate’s metric is merged PRs. We count authored PRs because
+variation.
+                                                                                                             whether a PR merges also depends on its reviewers. Counting only the PRs
+                                                                                                             that eventually merged barely changes the estimate (Section IV-A).
+C. Analysis Approach                                                                                            4 We base adoption on the usage logs because they are a ground-truth
+                                                                                                             record, rather than on the per-PR created-by-ai label, which may miss
+  Our goal is to estimate how much AI changed each de-                                                       or misattribute AI assistance. Suppl. D-B relaxes this choice and finds the
+veloper’s PR throughput (i.e., the number of PRs they author                                                 estimate intact, if anything strengthened.
+
+
+
+
+                                                                                                         4
+                                                        first AI use         early (Cursor)              mandate wave        late            never
+                   A. Calendar (wall-clock) time                       B. Aligned on own adoption                                                       C. Same effect, averaged two ways
+              35                                                 35
+
+
+
+
+                                     mandate
+
+
+
+
+                                                                                              adoption
+                                                                                                                                                           aligned on own adoption
+              30                                                 30                                                                                 9      aligned on the mandate
+
+
+
+
+                                                                                                                                    mean PRs/mo
+                                                                                                                                    vs pre-period
+PRs / month
+
+
+
+
+              25                                                 25
+                                                                                                                                                    6
+              20                                                 20
+              15                                                 15                                                                                 3
+
+              10                                                 10                                                                                 0
+                        Oct 24   Apr 25        Oct 25   Apr 26         -10         -5              0          5         10                                -10     -5      0          5   10
+                                                                              months relative to own adoption                                             months relative to alignment point
+
+Fig. 3: The logic of our design, on simulated data for six developers in four adoption cohorts (colors); open circles mark each
+developer’s first AI use. (A) In calendar time, developers adopt AI at staggered dates, starting pre-mandate; after the mandate
+(dotted line), many more developers adopt. (B) Re-centered on each developer’s own adoption month (τ = 0), throughput is
+flat before adoption and clearly jumps and then climbs after. That within-developer jump is the effect β1 (Eq. 1) estimates. It
+can be interpreted causally under parallel trends—that absent AI, adopters’ throughput would have followed the comparison
+group’s (never-adopters)—an assumption supported by the flat pre-adoption trends. (C) The same simulated effect, averaged
+across a larger population for smoothness: the jump is not identifiable in the gradual ramp when the curves are aligned on the
+mandate (a shared date that developers reach at different lags relative to their own AI adoption).
+
+
+Postt marks months after the June 2025 mandate. Specifically,                                            only the increase beyond that 10%. The assumption fails if
+a developer counts as using AI in month t if the telemetry                                               developers were already trending upward before adoption, or
+records at least one accepted Cursor line, or any Claude                                                 if the most eager developers adopted AI and changed how
+Code lines or spend, in that month; a later month with no                                                they worked (e.g., by splitting PRs or working longer) in the
+recorded use counts as not using AI. The coefficient β1 is                                               same month. We consider it plausible here because the CTO
+thus the average within-developer change in PR throughput                                                set one target for the entire organization, so developers who
+on adoption, and β2 captures any organization-wide shift after                                           did not use AI faced the same metric and pressure. To test
+the mandate. We use this baseline model, with its single                                                 the first failure mode, we fit an event study, a version of Eq. 1
+Postt term, to estimate the mandate’s residual effect and to                                             that estimates a separate coefficient for each month before and
+decompose the gain (below). Our preferred, more conservative                                             after adoption: throughput should be flat before adoption and
+model replaces Postt with calendar-month fixed effects, i.e.,                                            step up afterward (Suppl. Figure 14). This check cannot rule
+a separate intercept for each calendar month. These month                                                out a change in behavior that begins exactly at adoption, so
+intercepts capture everything that affects all developers in that                                        Section IV-A additionally checks whether the timing of the
+month (the mandate, model releases, holidays, and so on), so                                             gain fits a one-time change in behavior and tests PR splitting
+each adopter is compared only with colleagues observed in the                                            and longer hours directly.
+same month (Section IV-A). We also fit a Poisson count model,                                               We interpret β1 as the total effect of adoption as it happened
+which, unlike the log model, can keep months with zero PRs                                               in this rollout, including the process changes that adoption
+(Suppl. D-D). In all models, standard errors are clustered by                                            set in motion, most visibly the shift of code review onto
+developer, which allows a developer’s monthly observations                                               automation (Section IV-C). We do not control these changes
+to be correlated with each other. The outcome is logged, so                                              away, because they are part of how adoption pays off, and
+coefficients are in log points: a coefficient b multiplies the                                           removing them would subtract part of the effect.
+outcome by eb (e.g., +0.54 corresponds to 1.72×).                                                           Throughput is also only part of a developer’s work. PR
+   Because Adoptedit is an on/off switch, β1 captures a single                                           counts correspond to the activity dimension of the SPACE
+average step at adoption; whether the gain also grows with use                                           framework [23] and do not include satisfaction, commu-
+is tested by the usage-tier event study (Figure 5) and by the                                            nication, and efficiency. They also miss work outside the
+accumulated-use model described below.                                                                   repositories, such as design, meetings, or mentoring. We use
+   Interpreting β1 as a causal effect requires the parallel                                              the metric because it is the mandate’s own yardstick, and we
+trends assumption: had they not started using AI, developers                                             return to what it omits in Sections IV-C and V.
+who adopt in a given month would have seen the same                                                           b) Multiple estimators: Econometric research shows that
+change in throughput as their colleagues, including any change                                           this design can mislead when the effect grows over time,
+caused by the firm’s response to the mandate. Under this                                                 because developers who adopted earlier, whose throughput
+assumption, such shared changes cancel out. For example, if                                              has already increased, serve as controls for those who adopt
+every developer responded to the mandate by splitting work                                               later [21, 63]. We therefore re-estimate the effect with two
+into more PRs, raising PR counts by 10% in one month, the                                                estimators built for adoption at different times, those of
+estimate for a developer who adopted in that month includes                                              Callaway and Sant’Anna [63] and Borusyak et al. [20]. Both
+
+
+
+                                                                                                    5
+use as controls only developers who have not adopted by that                                                                                                                        20K
+
+
+
+
+                                                                                                                                                                                          total PRs / month
+                                                                                              50                                                                           2.1×
+
+
+
+
+                                                                            PRs / developer
+
+
+
+
+                                                                                                                                                                 4.6 gen
+                                                                                                                 Mandate
+
+
+
+
+                                                                                                                                                  Opus 4.5
+                                                                                                                                     Sonnet 4.5
+month, whether they adopt later or never. Separately, we fit the
+                                                                                              40                                                                                    15K
+baseline model on adopters alone, without the never-adopters.                                 30
+                                                                                                                                                                            vol     10K
+     c) Distinguishing accumulation from capability: Next we                                  20                                                                           3.1×
+                                                                                              10                                                                                    5K
+test whether the gain grows with accumulated AI use. A
+competing explanation is that the models themselves improved                                   0                                                                                    0
+                                                                                               Jan 25   Apr 25             Jul 25   Oct 25                   Jan 26        Apr 26
+over the same months. To separate the two, we add a de-
+veloper’s total AI-written lines through the previous month,             Fig. 4: Per-developer throughput (navy, left) grows ≈2× over
+CumAIi,t−1 , and one frontier-model indicator for each of the            the pre-mandate baseline (Jan–Apr 2025), while the company-
+three model releases:                                                    wide PR volume (gray area, right) grows 3.1×.
+  log(yit ) = αi + γS Sonnet45t + γO Opus45t + γ46 Gen46t
+              + β log(1+CumAIi,t−1 ) + θ Postt + εit ,                   estimate the following model:
+                                                               (2)
+where each γ switches on in the first full month after the                   log(yp ) = αi(p) + δt(p) + β AIp + ζ1 log(1+Sizep )
+                                                                                                                                      (4)
+corresponding release and stays on, so each step adds to the                             + ζ2 log(1+Filesp ) + εp ,
+previous one. The coefficient β is the gain from accumulated             where p indexes PRs, αi(p) is an author fixed effect, δt(p) a
+use: how much throughput increases with accumulated AI use               calendar-month fixed effect, AIp the created-by-ai label,
+once the model-release jumps are held separate.                          and standard errors are clustered by author. The coefficient
+   We interpret β more cautiously than β1 , because accumu-              β is thus the within-author, within-month difference between
+lated use is not an exogenous treatment but a choice that                AI-authored and other PRs, controlling for size because larger
+varies with workload, task mix, and motivation. It is also partly        changes attract more review attention [64]. We apply Eq. 4 to
+mechanical: developers who ship more also accumulate more                the review and cycle-time outcomes (comment count, review
+AI-written lines. Using the measure from the previous month              rounds, review coverage, review lead, and total cycle time,
+removes the same-month feedback, and the developer fixed                 with review rounds via Poisson and the rest in logs), and to
+effect absorbs stable productivity differences, but neither rules        the binary merge, revert, and any-review outcomes as linear
+out that higher throughput causes more use rather than the               probability models, i.e., linear regressions on a 0/1 outcome
+reverse. We therefore interpret β as an association, i.e., a dose–       whose coefficients are changes in probability. Trends in review
+response pattern (the gain rises with the amount of use) that            supply across the organization form a single time series, so we
+is consistent with a gain compounding from use, and rely on              report them descriptively rather than model them.
+it for the direction of that gain more than for its exact size.
+                                                                                                                           IV. F INDINGS
+   The release indicators might also pick up a general upward
+trend over the calendar year rather than capability gains. We            A. RQ1: A Near-Doubling That Grows with Accumulated Use
+test this with a placebo, a fake release in August 2025, a month            Per-capita throughput nearly doubled: mean PRs per ac-
+without a model launch, where we should not find any effect.             tive developer rose from 21.2 in the pre-mandate baseline
+If the indicators mark capability jumps, the fake one should             (January–April 2025) to 44.3 in April 2026, a 2.09× increase
+register nothing; a comparable jump would instead expose                 (Figure 4).5,6 The increase does not come from a change
+them as a calendar trend. Suppl. F details this check and the            in who contributes code, since the 246 developers active
+month-of-year fixed effects we add to absorb seasonality.                throughout the study period increased their mean throughput
+   To split the observed within-developer gain (Section IV-A)            by 2.3×. Usage intensity increased even faster. Per-capita
+into the adoption jump and the gain from accumulated use,                Claude Code token spend among PR authors rose about 20×,
+we add the accumulation term to Eq. 1:                                   from $42 to $856 per developer-month, between July 2025,
+                                                                         when its telemetry starts, and April 2026 (Suppl. Figure 13).
+  log(yit ) = αi + β1 Adoptedit + β log(1+CumAIi,t−1 )
+                                                              (3)        Over the same months, PRs per developer rose about 1.7×,
+              + θ Postt + εit .                                          so tool spend per PR rose more than tenfold, which is a lower
+We then evaluate the fitted change at the observed April 2026            bound on the cost of the added throughput because it omits
+usage level and attribute it to a one-time adoption jump (β1 ),          Cursor spend (not dollar-denominated) as well as engineering
+a gain from accumulated use (β), and a residual mandate term             and review time.
+(θ).                                                                        Within developers, both components of the gain are positive
+     d) Downstream models: For the heterogeneity questions               and significant (Table II): adopting AI raises a developer’s
+(Section IV-B), we run Eq. 1 on subsamples and add interac-                 5 Like the other overview figures, this is computed on the estimation sample
+tion terms (adoption × seniority tier, adoption × repository             (the 564 developers with 3+ active months).
+cohort), which let the adoption effect differ by group. The                 6 This counts authored PRs per active developer. On the mandate’s own
+
+repository-cohort analysis uses a developer-×-cohort-×-month             metric, merged PRs per engineer with zero-output months included, the
+                                                                         increase is larger (2.31×, Suppl. D-D). Re-estimating Eq. 1 on merged PRs
+panel, so a developer’s adoption is observed separately in older         barely changes the adoption coefficient (+0.354 to +0.347), since the merge
+and newer code. For the per-PR outcomes (Section IV-C), we               rate drifts down only slightly (from 91% to 85%).
+
+
+
+
+                                                                     6
+TABLE I: Developer-level difference-in-differences (Eq. 1).                +42%) is smaller than the decomposition’s +0.54 and the
+Developer fixed effects; standard errors clustered by developer.           nine-month effect, because it averages over short and long
+Log-point coefficients; approximate percentages via exp(β̂) −              periods after adoption and so summarizes the growing gain
+1. + p<0.10, ∗ p<0.05, ∗∗ p<0.01, ∗∗∗ p<0.001.                             as one step. It survives calendar-month fixed effects (+0.201,
+ Outcome                          AI Adopted         Post Mandate
+                                                                           p < 0.001) and dropping never-adopters (+0.369), but shrinks
+                                               ∗∗∗
+                                                                           under the two estimators that compare each adopter only
+ log(Monthly PRs)                    +0.354               +0.093∗          with not-yet-adopted developers: +0.132 (p < 0.10) under
+ log(1+Avg PR Size)                  +0.317∗∗∗            +0.286∗∗∗
+ log(1+Avg Review Time)              +0.111∗              −0.029           Borusyak imputation and a non-significant +0.162 under
+ log(1+Avg Review Comments)          +0.037+              +0.340∗∗∗        Callaway–Sant’Anna (Suppl. D-D). These estimators attribute
+ Merge Rate                          +0.006               −0.013∗          the steep organization-wide ramp of early 2026 to calendar
+ Revert Rate                         −0.004+              +0.003           time rather than to AI, which understates an effect that grows
+                                                                           with use (Table II). The same bundling of model releases
+TABLE II: Decomposing the within-developer throughput gain                 with the calendar is what makes model-generation effects
+(Eq. 3). Coefficients on log(Monthly PRs) with developer                   inseparable, as we will show later (Section IV-B).
+fixed effects, standard errors clustered by developer. The                       a) Real work, or a response to the target?: A public
+contribution column gives each term’s value at the April 2026              target metric raises the concern that developers reached the
+usage level; the total is the implied within-developer change.             target without producing more work. To test whether the in-
+                                                                           crease in PR throughput reflects real work, we run four checks
+Term                              Coefficient Contribution (log pts)
+                                                                           (Suppl. E), all of which support the real work interpretation.
+Adoption jump (β1 )               +0.143∗∗∗                    +0.14       First, a response to pressure would appear soon after the
+Accumulated use (β)               +0.041∗∗∗                    +0.45       mandate and among all developers; instead, the change tied
+Residual mandate (θ)               −0.05                       −0.05
+                                                                           to the mandate date is small (+0.09 log points, Table I),
+Total (within-developer change)                                +0.54       the gain begins only when each developer starts using AI,
+                                                                           and it reaches 2× only after about nine months on tool.
+                                                                           Second, PRs did not get smaller, as splitting would require.
+monthly PR throughput, which keeps increasing with accu-                   Median PR size nearly doubled from the baseline to April 2026
+mulated use. At April 2026 usage, the adoption jump and                    (35 to 61 lines), and the share of PRs with 10 lines or
+the gain from accumulated use together predict +0.54 log                   fewer decreased by nine percentage points. Lines changed per
+points (1.72×) under the baseline model. Under the preferred               developer-month also increased faster than PR counts (+0.81
+model with calendar-month fixed effects, which capture all                 versus +0.57 log points at April 2026 usage), while files and
+organization-wide changes in each month, they predict +0.38                commits per PR stayed unchanged. Third, the added PRs are
+(1.46×; adoption jump +0.11, accumulated-use slope +0.025,                 not concentrated in routine work. Classifying PRs by title,
+each p < 0.05). We take this more conservative 1.46× as our                commit prefix, and branch name, we find that feature PRs
+main estimate. A Poisson model that keeps zero-output months               per developer grow 2.1× and bug-fix PRs 2.6× at April 2026
+confirms the adoption jump (+0.24, p < 0.001; Suppl. D-D),                 usage, compared with 1.8× for all PRs, while maintenance
+so the result is not an artifact of the log transform or of                PRs (dependency updates, tests, documentation, and cleanup)
+dropping inactive months. In both models, accumulated use                  grow at the overall rate. Without issue-tracker data, we cannot
+supplies the larger share of the gain and the mandate only a               tell whether the added fixes address older defects or defects
+small residual. As discussed in Section III-C, the accumulated-            in new AI-generated code, but authors do not open fixes after
+use slope is an association, so we rely on its direction more              their AI-authored PRs more often than they open features
+than its exact size. Because it is a slope, the multiplier is the          (Section IV-C). Fourth, longer hours explain only part of the
+value realized at April 2026 usage and rises with use.                     gain. Developers gain about one active day per month (14.1 to
+   The gain grows with time on tool. Traced month by month                 15.2), and off-hours activity rises from 7% to 11%. However,
+in the event study, the adoption effect rises from 1.51× at                extra days account for about a third of the adoption jump and
+three months to 1.55× at six and 1.99× at nine (Suppl.                     only a fifth of the total gain at April 2026 usage. Because every
+Figure 14). It also grows with intensity of use: heavy users               added PR adds a timestamp, even that share is an upper bound.
+(top usage quartile) pull sharply away from average and light              None of these checks measures how much the added code
+users after adoption, while the pre-adoption coefficients are              accomplishes. The PR-type classification also relies on titles,
+indistinguishable from zero in every tier (Figure 5). Note,                which AI tools write in a more uniform format than developers
+however, that the tiers are defined by realized post-adoption              do. The checks are therefore evidence against metric gaming.
+usage, which is determined after adoption: heavy use may                   They do not show the value of the added code.
+result from high productivity as much as cause it, so we
+treat the tiered curves as descriptive. The raw 2.09× aggregate
+                                                                           B. RQ2: The Gain Is Broadly Shared but Uneven
+exceeds all of these within-developer estimates because it also
+includes the organization-wide calendar trend.                               A near-doubling on average can hide differences across
+   The single pooled adoption estimate (Table I, +0.354, about             people, codebases, and tools, which we examine in turn.
+
+
+
+                                                                       7
+                                           Heavy        Average       Light
+                                                                                                                                           any human                automated
+Effect on log(PRs)
+                     2
+                                                                                                             100%                                                                 85%
+
+
+
+
+                                                                                              share of PRs
+                     1                                                                                       75%
+                     0                                                                                                                                                            68%
+                                                                                                             50%
+                     -1                                                                                      25%
+                     -2                                                                                        0%
+                          -6     -4          -2          0        2           4       6                         Jan 25         Apr 25             Jul 25     Oct 25      Jan 26   Apr 26
+                                      Months relative to first AI tool use
+                                                                                              Fig. 6: The share of PRs receiving any human review
+ Fig. 5: PR throughput rises more for developers who use AI                                   (black) falls to 68%, and automated review—AI review bots
+ more heavily (a descriptive dose–response; Section IV-A).                                    (purple)—exceeds it shortly after the mandate, reaching 84%.
+
+                      TABLE III: Heterogeneity in the AI adoption effect.
+
+                     Group                         n     AI Adopted           approx. %                                       commented (substantive)                    silent (approve only)
+                                                                                                                              1.0        all reviews       substantive
+                     Seniority tier                                                                                           0.5
+
+
+
+
+                                                                                                  reviewer / month
+                                                                                                  median reviews /
+                                                                                                                              0.0
+                       IC                         163        +0.235∗∗∗            +27%                                                                                                        16
+                       Senior                     110        +0.352∗∗∗            +42%                               16             -6              0               6
+                                                                                                                                           months since adoption
+                       Staff                       55        +0.330∗∗∗            +39%                               12
+                       Principal                   16        +0.323+              +38%                               8
+                       Management                  42        +0.619∗∗∗            +86%
+                                                                                                                     4
+                     Repository cohort                                                                                                                                                           4
+                       Pre-2022 (legacy)      2,763          +0.117               +12%                               0
+                                                                                                                     Jan 24              Jul 24            Jan 25        Jul 25      Jan 26
+                       2022+ (newer)          8,121          +0.364∗∗∗            +44%
+                                                                                              Fig. 7: Review activity rises after adoption, faster in light-
+                                                                                              touch (approve-only) than substantive review. Inset: a within-
+       a) Across seniority levels – broadly uniform: Within                                   developer event study around their own AI adoption (developer
+ each engineering tier (Table III), adoption raises throughput                                fixed effects, mandate control) shows the same gap.
+ for individual contributors (+0.24, +27%), senior engineers
+ (+0.35, +42%), and staff engineers (+0.33, +39%), each
+ p < 0.001. The principal estimate is similar (+0.32) but                                     effect as the real releases. We report the release indicators
+ imprecise, with only 16 developers (p < 0.10). A model that                                  only to document this limit (Suppl. F). Per-developer model
+ lets the effect differ by tier does not find significant differences                         logs would date each switch, but would likely not break
+ across the IC, senior, staff, and principal tiers, so the gain                               the confound, because uptake of each release is spread over
+ from AI is fairly uniform across seniority. Management is the                                months and coincides with each developer’s own rising use of
+ exception, with the largest jump (+0.62, ≈ + 86%), consistent                                the tools.
+ with the interpretation that AI is letting managers who had
+ shipped little code contribute more.
+                                                                                              C. RQ3: Adoption Reshaped the Review Process
+       b) Across the codebase – concentrated in newer reposito-
+ ries: The picture differs sharply by code age. On a developer-                                   Reviewers faced the rising PR volume. As AI-authored PRs
+ ×-cohort-×-month panel (Table III, lower block), adoption                                    grew to ∼90% of the total (Figure 2), PR volume grew 3.1×
+ raises throughput by +0.36 (+44%) in repositories created                                    over the early-2025 baseline (Figure 4), while the pool of
+ since 2022 but only +0.12 (+12%, p > 0.10) in older ones,                                    developers acting as reviewers grew only 1.5×, so the load
+ and the difference is itself significant (+0.25, p < 0.01). The                              per reviewer roughly doubled (2.0×).
+ newer repositories also use a more modern technology stack,                                      The organization closed this gap partly with more human
+ so we cannot fully separate code age from technology.                                        review but mostly by moving review to automation (Figure 6).
+       c) Across model generations – not separable: Through-                                  The share of PRs receiving at least one human review fell
+ put rises with accumulated AI use, but the gain cannot be                                    from 89% to 68%, while the share receiving an automated
+ attributed to particular model releases. In Eq. 2, the gain from                             AI review increased from ∼19% to ∼84%, exceeding human
+ accumulated use is positive and significant (β = +0.039,                                     review shortly after the mandate. Automated review thus
+ p < 0.001) and survives month-of-year fixed effects as well as                               replaced part of human review rather than only adding to
+ post-mandate-only, Claude-Code-only, and PR-count variants.                                  it. The remaining human review also thinned. We distinguish
+ The release indicators, however, cannot be credibly estimated.                               substantive reviews, which include a human-written comment,
+ Each release date coincides with the steep organization-wide                                 from silent approvals, which do not. The substantive share
+ usage ramp (the token-spend inset of Figure 1), so a company-                                fell from ∼39% to ∼21% of PRs while silent approvals
+ wide calendar cutoff captures the ramp rather than isolating                                 stayed at ∼50% (Figure 10, Suppl. C-B). Likewise, the median
+ the model. The August 2025 placebo also shows as large an                                    reviewer’s commented reviews stayed flat (∼3 per month)
+
+
+
+                                                                                          8
+                                                                                              TABLE IV: Per-PR effects of the created-by-ai label
+                                                                                              (Eq. 4). Author and month fixed effects, controlling for log
+             100%                                                      5%
+merge rate
+
+
+
+
+                                                                            revert rate
+                                                                                              size and files; author-clustered SEs. Quality and coverage rows
+             75%                                            merge
+                                                                       4%
+                                                                       3%                     are linear probabilities, review rounds Poisson, and review-
+             50%
+                                                                       2%                     time rows log-point coefficients (exp(β̂) − 1 for percentages).
+             25%                                            revert     1%                     Significance levels as in Table I.
+              0%                                                       0%
+               Jan 25   Apr 25   Jul 25   Oct 25   Jan 26     Apr 26
+                                                                                              Outcome                             Pooled      Post-mandate
+Fig. 8: Merge and revert rates stayed stable as review was                                    Quality (linear probability)
+automated.                                                                                    P(merged)                           +0.006          +0.011+
+                                                                                              P(is a revert)                      −0.059∗∗∗       −0.067∗∗∗
+                                                                                              Review process
+while their silent approvals roughly doubled (Figure 7), so                                   log(1+Comments)                     +0.073∗∗∗        +0.083∗∗∗
+                                                                                              log(1+Review Lead)                  +0.140∗∗∗        +0.181∗∗∗
+most of the added load went to approvals without comment.
+                                                                                              log(1+Total Cycle)                  +0.154∗∗∗        +0.202∗∗∗
+      a) The shift to automation left coarse quality proxies                                  Review Rounds (Poisson)             −0.014           −0.007
+unchanged: The merge rate stayed essentially flat (Figure 8),                                 Human Review Coverage (LPM)         −0.016           −0.002
+so the added volume shipped rather than remaining open.
+At the PR level, controlling for author, month, and change
+size (Table IV), AI-authored PRs merge at the same rate as                                    comments without more revision rounds, which points to more
+other PRs, even though they are larger (about 56% more lines                                  reviewer engagement rather than more rework by the author.
+changed post-mandate, +0.45 log points; median 66 versus 41                                      This is the bottleneck one would expect when AI speeds
+lines). The merge rate says little about quality, however, since                              up authoring while human review capacity stays fixed: work
+once review becomes lenient or automated, the gate itself has                                 accumulates downstream. The created-by-ai label may
+changed. Signals after merge are more informative, because                                    reflect unmeasured complexity that the author, month, and
+lenient review that let more defective code through would                                     size controls only partly absorb, so these per-PR estimates
+raise reverts and follow-up fixes. Instead, the share of PRs                                  remain correlational (Section III-B0c). Moreover, late in the
+that are reverts declined slightly company-wide (Figure 8),                                   window the company began routing PRs through AI review
+and the share of a developer’s PRs that are reverts does not                                  and auto-approval, which reduced human-review latency for
+increase with adoption (Table I). Revert PRs per developer do                                 many PRs. This bypass biases the measured effect toward zero,
+increase, but more slowly than all PRs (1.4× versus 1.8× at                                   so our estimate is conservative. The same bottleneck appears
+April 2026 usage; Suppl. E-B). Within 7 or 14 days after an                                   organization-wide. As PR volume outpaced review capacity,
+AI-authored PR merges, its author is also no more likely to                                   end-to-end cycle time increased and the substantive-review
+open a bug fix PR in the same repository than to open a new-                                  queue never returned to its earlier speed. The company kept
+feature PR there (differences of 0.3 and 0.6 percentage points,                               pace by routing work around human review rather than by
+p = 0.78 and 0.63; Suppl. E). Without file-level change data                                  reviewing faster (Suppl. C-D).
+this link is coarse, so we report it as suggestive. These signals
+warrant care for other reasons as well: the created-by-ai                                                              V. D ISCUSSION
+label is not randomized and may select toward safer changes,                                     We estimate a within-developer gain of roughly 1.5× at
+revert shares are diluted as PR volume grows, and both proxies                                observed usage under strict calendar-month controls and 2×
+miss defects, incidents, and maintainability (Section V). We                                  by nine months on tool. This gain is among the largest reported
+interpret these findings as evidence against a sudden drop in                                 from a field deployment of AI coding tools [8, 10] and ap-
+quality after long-term AI adoption.                                                          proaches the doublings that AI’s enterprise proponents claim.
+      b) Per-PR, the AI penalty is review latency: If we                                      However, the gain accrues only as developers accumulate
+compare AI-authored and other PRs within author and month,                                    use (Section IV-A). We also measure it in a near-best-case
+controlling for change size (Eq. 4), we find two results                                      setting (an AI-forward company with uncapped tool budgets,
+(Table IV). First, AI-authored PRs receive about 9% more                                      many new repositories, and a strong adoption push), and on a
+human comments post-mandate. Second, post-mandate, AI-                                        single activity metric that does not capture downstream costs
+authored PRs take about 20% longer from first human review                                    (Section IV-C). We therefore interpret the result as evidence
+to merge and 22% longer in total cycle time. These effects are                                that a near-doubling is attainable under favorable conditions
+larger and more stable across model variants than the comment                                 and over a long enough horizon, rather than that it is typical,
+effect (Suppl. C-C splits the cycle into phases). The delay does                              immediate, or free.
+not appear to reflect rework or evasion: buggier PRs would
+go through more review rounds, and PRs merged with less                                       A. Implications for Practitioners
+scrutiny would draw less human review, yet review rounds are                                       a) Enterprise AI transformation is a continuous process
+flat and AI-authored PRs are no less likely to receive a human                                of adaptation: In our study, throughput barely changed at the
+review (Table IV). AI-authored PRs instead accumulate more                                    mandate date itself (+0.09 log points, Table I), the jump at
+
+
+
+                                                                                          9
+each developer’s own adoption was about 12%, and a doubling            Humans examine less of the code, and the automated reviewers
+arrived only after about nine months on tool (Section IV-A).           that replace them are only beginning to be evaluated [49, 68].
+The gain also concentrated in heavy users and newer repos-             Since DORA and SPACE metrics [2, 23] assume that humans
+itories, was small and not significant in older repositories           write the code, measuring where human effort goes under
+(Section IV-B), and came with new ways of working, from                agentic development, and what debt accrues without it, is a
+managers returning to hands-on coding to a review process re-          prerequisite for the next round of productivity studies.
+built around AI review bots and auto-approval (Section IV-C).
+This pattern matches the IT productivity paradox of the 1970s          C. Threats to Validity
+to 1990s, in which IT paid off only after a lag and alongside                a) Internal validity: Adoption was not randomized, so
+reorganized workflows and new skills (Section II-B) [50, 51].          a causal interpretation depends on parallel trends, which the
+We therefore recommend treating a mandate as the start of an           flat pre-adoption event study supports but cannot establish
+organizational transformation. Organizations should plan over          (Section III-C, Suppl. D-C). A response to the target that
+several quarters, invest in intensity of use before demanding          begins exactly at adoption is the main alternative explanation,
+the target [11], and pair the target metric with other signals.        but never-adopters faced the same target and the checks in
+A count that becomes a target stops measuring what it was              Section IV-A find little added work time and no PR splitting.
+meant to measure (Goodhart’s law [12]).                                The size of the effect is less certain than its direction (+0.13
+      b) Human attention and judgment become the bottleneck            to +0.35 across estimators, Suppl. D-D). The accumulated-
+once AI makes authoring cheap: In our study, PR volume                 use slope is an association, because productive developers
+grew 3.1× while the reviewer pool grew 1.5×. The company               accumulate use faster, and model effects are not identified,
+closed the gap by routing review to automation, which ex-              because each release coincides with the usage ramp (Suppl. F).
+ceeded human review in coverage within months. Meanwhile,                    b) Construct validity: PR counts capture only the ac-
+substantive human review fell from 39% to 21% of PRs and               tivity dimension of productivity. The company applies the
+silent approvals doubled (Section IV-C). AI-authored PRs also          created-by-ai label, which may favor safer changes, so
+spent about 20% longer in human review, and the merged-                per-PR contrasts are correlational. Merge, revert, and follow-
+PR metric did not show any of this. The automation literature          up-fix rates are short-horizon proxies that miss defects, inci-
+warns that reliance drifts toward misuse when operators cannot         dents, and maintainability, so we do not find any evidence of
+keep up with what they supervise [65, 66], and developers              a sudden drop in quality, but we cannot rule out quality costs.
+already describe reviewing AI output as “an endless stream                   c) External validity: The case is one AI-forward com-
+of AI slop” [67]. In this situation, review capacity planning          pany with uncapped tool budgets, many new repositories, and
+is as important as authoring capacity planning: set targets for        a public target, so our estimates are better interpreted as an
+review coverage and depth alongside throughput, decide in              upper bound than as an industry average. We can estimate
+advance which PRs may be approved without a human review,              factors that were constant for all developers (budgets, training,
+and monitor which code humans no longer review. How to                 review policy, how the mandate was communicated) only
+allocate scarce human attention across AI output, and how              across companies. The window also spans rapid change in
+much a human must understand before code ships, remain                 tools and models, so whether the gain levels off and the review
+open questions for both enterprises and researchers.                   shift persists needs longer panels and replication elsewhere.
+
+B. Implications for Research                                                                 VI. C ONCLUSION
+   Our within-developer estimates add to a literature whose               In this paper, we examined how an AI productivity mandate
+point estimates vary widely, from a 19% slowdown [8] to                unfolds in practice. Our longitudinal case study shows that
+21–56% task-level speedups [5–7] and about 40% more PRs                the mandate target is eventually within reach for the case
+in heavy-usage weeks [10]. Much of this disagreement may               company, but not necessarily in the way implied by the
+reflect differences in time window and setting. A short window         mandate itself. Instead, the results indicate that organizational
+captures only the adoption jump, about 12% in our data,                AI transformation unfolds through accumulated use and shifts
+whereas the near-doubling appears only after months of accu-           in review practices rather than through the mandate alone.
+mulated use (Section IV-A). The gain is also smallest in our           Human attention and judgment become the new bottleneck of
+older repositories, consistent with the slowdown on mature             the AI era. Our study is only one case in a rapidly changing
+open-source codebases [8], and largest in newer ones, con-             world—we look forward to more research on mandates and AI
+sistent with speedups on self-contained tasks (Section IV-B).          transformations across diverse organizational contexts, longer
+Reconciling them requires longitudinal designs that date ex-           time horizons, and beyond AI coding tools.
+posure from telemetry, and cross-firm or staggered rollouts               Data Availability. The data analyzed in this study are
+to separate accumulated use from model capability. Our code            proprietary and cannot be shared. Our statistical analysis code
+review findings also describe a mechanism through which the            is at https://github.com/CMUSTRUDEL/2x-mandate.
+quality costs reported elsewhere could accumulate unobserved.             Supplementary Material. The supplementary material ref-
+These costs include rising complexity and churn [22, 32, 35],          erenced throughout the paper is in the extended version on
+diluted ownership [33], and cognitive and intent debt [34].            arXiv: https://arxiv.org/abs/2607.01904. It includes: (1)
+
+
+
+                                                                  10
+a summary of the paper’s datasets, (2) additional details on                   [15] S. Willison, “Claude Opus 4.5, and why evaluating new LLMs is
+automated account detection, (3) robustness checks for code-                        increasingly difficult,” 11 2025, accessed 2026-10-21. [Online].
+review-related findings (RQ3), (4) additional checks on the                         Available: https://simonwillison.net/2025/Nov/24/claude-opus/
+                                                                               [16] Z. Mowshowitz, “Claude Opus 4.5 is the best model
+AI adoption definition, the parallel-trends assumption, and                         available,” 12 2025, accessed 2026-10-21. [Online]. Available:
+alternative estimators (RQ1), (5) robustness checks on whether                      https://thezvi.substack.com/p/claude-opus-45-is-the-best-model
+the observed PR throughput gain reflects real work (testing                    [17] S. Willison, “2025: The year in LLMs,” 12 2025, accessed
+against alternative interpretations of PR splitting, PR type                        2026-10-21. [Online]. Available: https://simonwillison.net/2025
+changes, working time increases, and AI-driven follow-up                            /Dec/31/the-year-in-llms/
+                                                                               [18] Anthropic, “Introducing Claude Opus 4.6,” 2 2026, accessed
+fixes), and (6) checks on whether model capability effects are                      2026-10-21. [Online]. Available: https://www.anthropic.com/ne
+separable from calendar trends (RQ2).                                               ws/claude-opus-4-6
+                           R EFERENCES                                         [19] P. Runeson and M. Höst, “Guidelines for conducting and re-
+                                                                                    porting case study research in software engineering,” Empirical
+ [1] Stack Overflow, “2026 Stack Overflow developer survey:                         software engineering, vol. 14, no. 2, pp. 131–164, 2009.
+     AI,” 2026, accessed 2026-10-21. [Online]. Available: https:               [20] K. Borusyak, X. Jaravel, and J. Spiess, “Revisiting event-study
+     //survey.stackoverflow.co/2026/ai                                              designs: robust and efficient estimation,” Review of Economic
+ [2] Google and DORA, “2025 DORA report: State of AI-assisted                       Studies, vol. 91, no. 6, pp. 3253–3285, 2024.
+     software development,” 2025, accessed 2026-06-23. [Online].               [21] J. Roth, P. H. Sant’Anna, A. Bilinski, and J. Poe, “What’s
+     Available: https://dora.dev/research/2025/                                     trending in difference-in-differences? A synthesis of the recent
+ [3] A. Palmer, “Shopify CEO says staffers need to prove jobs                       econometrics literature,” Journal of Econometrics, vol. 235,
+     can’t be done by AI before asking for more headcount,”                         no. 2, pp. 2218–2244, 2023.
+     4 2025, accessed 2026-06-23. [Online]. Available: https:                  [22] H. He, C. Miller, S. Agarwal, C. Kästner, and B. Vasilescu,
+     //www.cnbc.com/2025/04/07/shopify-ceo-prove-ai-cant-do-job                     “Speed at the cost of quality: How Cursor AI increases
+     s-before-asking-for-more-headcount.html                                        short-term velocity and long-term complexity in open-source
+ [4] M. Quiroz-Gutierrez, “Coinbase CEO urged engineers to                          projects,” in International Conference on Mining Software
+     use AI—then shocked them by firing those who wouldn’t,”                        Repositories (MSR), 2026, pp. 181–193.
+     8 2025, accessed 2026-06-23. [Online]. Available: https:                  [23] N. Forsgren, M.-A. Storey, C. Maddila, T. Zimmermann,
+     //fortune.com/2025/08/25/coinbase-ceo-brian-armstrong-ai-cod                   B. Houck, and J. Butler, “The SPACE of developer produc-
+     ing-assistants-mandate-tech/                                                   tivity,” Communications of the ACM, vol. 64, no. 6, pp. 46–53,
+ [5] S. Peng, E. Kalliamvakou, P. Cihon, and M. Demirer, “The                       2021.
+     impact of AI on developer productivity: Evidence from GitHub              [24] S. Imai, “Is GitHub Copilot a substitute for human pair-
+     Copilot,” arXiv preprint arXiv:2302.06590, 2023.                               programming? An empirical study,” in International Confer-
+ [6] K. Z. Cui, M. Demirer, S. Jaffe, L. Musolff, S. Peng, and T. Salz,             ence on Software Engineering (ICSE): Companion Proceedings,
+     “The effects of generative AI on high-skilled work: Evidence                   2022, pp. 319–321.
+     from three field experiments with software developers,” Man-              [25] P. Vaithilingam, T. Zhang, and E. L. Glassman, “Expectation
+     agement Science, 2026.                                                         vs. experience: Evaluating the usability of code generation
+ [7] E. Paradis, K. Grey, Q. Madison, D. Nam, A. Macvean,                           tools powered by large language models,” in CHI Conference
+     V. Meimand, N. Zhang, B. Ferrari-Church, and S. Chandra,                       on Human Factors in Computing Systems (CHI) Extended
+     “How much does AI impact development speed? An enterprise-                     Abstracts, 2022, pp. 1–7.
+     based randomized controlled trial,” in International Conference           [26] F. Song, A. Agarwal, and W. Wen, “The impact of generative AI
+     on Software Engineering: Software Engineering in Practice                      on collaborative open-source software development: Evidence
+     (ICSE-SEIP). IEEE, 2025, pp. 618–629.                                          from GitHub Copilot,” Information Systems Research, 2026.
+ [8] J. Becker, N. Rush, E. Barnes, and D. Rein, “Measuring the                [27] M. Hoffmann, S. Boysel, F. Nagle, S. Peng, and K. Xu,
+     impact of early-2025 AI on experienced open-source developer                   “Generative AI and the nature of work,” Harvard Business
+     productivity,” arXiv preprint arXiv:2507.09089, 2025.                          School Strategy Unit Working Paper, no. 25-021, 2024.
+ [9] V. Stray, E. G. Brandtzæg, V. T. Wivestad, A. Barbala, and                [28] S. Daniotti, J. Wachs, X. Feng, and F. Neffke, “Who is using AI
+     N. B. Moe, “Developer productivity with and without GitHub                     to code? Global diffusion and impact of generative AI,” Science,
+     Copilot: A longitudinal mixed-methods case study,” in Hawaii                   vol. 391, no. 6787, pp. 831–835, 2026.
+     International Conference on System Sciences (HICSS), 2026,                [29] S. Agarwal, H. He, and B. Vasilescu, “AI IDEs or autonomous
+     pp. 7413–7422.                                                                 agents? Measuring the Impact of Coding Agents on Software
+[10] A. Heilman, A. Kyllo, and E. Murphy-Hill, “GitHub Copilot                      Development,” in International Conference on Mining Software
+     and developer productivity: An observational dose-response                     Repositories (MSR) – Mining Challenge, 2026, pp. 857–862.
+     analysis,” arXiv preprint arXiv:2606.00438, 2026.                         [30] S. K. Sarkar, “AI agents and higher-order work,” SSRN Elec-
+[11] C. Miller, R. Choudhuri, M. Ulloa, S. Haniyur, R. DeLine, M.-                  tronic Journal, 2025.
+     A. Storey, E. Murphy-Hill, C. Bird, and J. L. Butler, “‘Maybe             [31] V. Chen, A. Talwalkar, R. Brennan, and G. Neubig, “Code
+     We Need Some More Examples:’ Individual and Team Drivers                       with me or for me? How increasing AI automation transforms
+     of Developer GenAI Tool Use,” in International Conference on                   developer workflows,” in CHI Conference on Human Factors
+     Software Engineering (ICSE), 2026, pp. 2582–2595.                              in Computing Systems (CHI), 2026, pp. 1–19.
+[12] M. Strathern, “‘improving ratings’: Audit in the British uni-             [32] Y. Liu, R. Widyasari, Y. Zhao, I. C. Irsan, J. Chen, and D. Lo,
+     versity system,” European Review, vol. 5, no. 3, pp. 305–321,                  “Debt behind the AI boom: A large-scale empirical study of AI-
+     1997.                                                                          generated code in the wild,” arXiv preprint arXiv:2603.28592,
+[13] Anthropic, “Introducing Claude Opus 4.5,” 11 2025, accessed                    2026.
+     2026-10-21. [Online]. Available: https://www.anthropic.com/ne             [33] A. Martin-Lopez, R. Tufano, E. Guglielmi, A. B. Sánchez, A. L.
+     ws/claude-opus-4-5                                                             Sanz, S. Scalabrino, R. Oliveto, S. Segura, and G. Bavota,
+[14] METR, “Time horizon 1.1,” 1 2026, accessed 2026-10-21.
+     [Online]. Available: https://metr.org/blog/2026-01-29-time-hor                 “More Code, Less Understanding? On the Impact of AI Assis-
+     izon-1-1/
+
+
+
+                                                                          11
+     tants on Developers’ Productivity and Code Ownership,” IEEE                   2026.
+     Transactions on Software Engineering, vol. 52, no. 7, pp. 2173–          [50] E. Brynjolfsson, “The productivity paradox of information tech-
+     2187, 2026.                                                                   nology,” Communications of the ACM, vol. 36, no. 12, pp. 66–
+[34] M.-A. Storey, “From technical debt to cognitive and intent debt,”             77, 1993.
+     ACM Queue, vol. 24, no. 2, 2026.                                         [51] T. F. Bresnahan, E. Brynjolfsson, and L. M. Hitt, “Informa-
+[35] R. M. Popescu, D. Gros, A. Botocan, R. Pandita, P. Devanbu,                   tion technology, workplace organization, and the demand for
+     and M. Izadi, “Investigating Autonomous Agent Contributions                   skilled labor: Firm-level evidence,” The Quarterly Journal of
+     in the Wild: Activity Patterns and Code Change over Time,”                    Economics, vol. 117, no. 1, pp. 339–376, 2002.
+     in International Conference on Mining Software Repositories              [52] D. H. Autor, “Why are there still so many jobs? The history
+     (MSR), 2026, pp. 236–248.                                                     and future of workplace automation,” Journal of Economic
+[36] F. Xu, P. K. Medappa, M. M. Tunc, M. Vroegindeweij, and J. C.                 Perspectives, vol. 29, no. 3, pp. 3–30, 2015.
+     Fransoo, “AI-Assisted Programming Decreases the Productivity             [53] S. Noy and W. Zhang, “Experimental evidence on the produc-
+     of Experienced Developers by Increasing the Technical Debt                    tivity effects of generative artificial intelligence,” Science, vol.
+     and Maintenance Burden,” arXiv preprint arXiv:2510.10165,                     381, no. 6654, pp. 187–192, 2023.
+     2025.                                                                    [54] E. Brynjolfsson, D. Li, and L. Raymond, “Generative ai at
+[37] M. Borg, D. Hewett, N. Hagatulah, N. Couderc, E. Söderberg,                  work,” The Quarterly Journal of Economics, vol. 140, no. 2,
+     D. Graham, U. Kini, and D. Farley, “Echoes of AI: Investigating               pp. 889–942, 2025.
+     the downstream effects of AI assistants on software maintain-            [55] F. Dell’Acqua, E. McFowland III, E. Mollick, H. Lifshitz, K. C.
+     ability,” Empirical Software Engineering, vol. 31, no. 6, p. 161,             Kellogg, S. Rajendran, L. Krayer, F. Candelon, and K. R.
+     2026.                                                                         Lakhani, “Navigating the jagged technological frontier: Field
+[38] A. Bacchelli and C. Bird, “Expectations, outcomes, and chal-                  experimental evidence of the effects of artificial intelligence
+     lenges of modern code review,” in International Conference on                 on knowledge worker productivity and quality,” Organization
+     Software Engineering (ICSE). IEEE, 2013, pp. 712–721.                         Science, vol. 37, no. 2, pp. 403–423, 2026.
+[39] J. Czerwonka, M. Greiler, and J. Tilford, “Code reviews do not           [56] A. Fawzy, A. Tahir, and K. Blincoe, “From prompting to
+     find bugs. How the current code review best practice slows us                 verification: How experience shapes vibe coding practices,”
+     down,” in International Conference on Software Engineering                    arXiv preprint arXiv:2605.24521, 2026.
+     (ICSE), vol. 2. IEEE, 2015, pp. 27–28.                                   [57] C. M. Lüders, O. Krużycki, and C. Brandt, “Keeping Humans
+[40] J. T. Liang, C. Yang, and B. A. Myers, “A large-scale survey on               in the Driver’s Seat: A Conceptual Framework for GenAI and
+     the usability of AI programming assistants: Successes and chal-               Competence Debt,” in International Conference on the Founda-
+     lenges,” in International Conference on Software Engineering                  tions of Software Engineering (FSE), Companion Proceedings.
+     (ICSE), 2024, pp. 1–13.                                                       ACM, 2026, pp. 1812–1820.
+[41] S. McIntosh, Y. Kamei, B. Adams, and A. E. Hassan, “The                  [58] N. Forsgren, J. Humble, and G. Kim, Accelerate: The science
+     impact of code review coverage and code review participa-                     of lean software and DevOps: Building and scaling high per-
+     tion on software quality: A case study of the Qt, VTK, and                    forming technology organizations. IT Revolution, 2018.
+     ITK projects,” in International Conference on Mining Software            [59] T. Dey, S. Mousavi, E. Ponce, T. Fry, B. Vasilescu, A. Filip-
+     Repositories (MSR), 2014, pp. 192–201.                                        pova, and A. Mockus, “Detecting and characterizing bots that
+[42] A. O. Njoku, Z. Sharafi, and F. Khomh, “When code authors                     commit code,” in International Conference on Mining Software
+     are agents: A large-scale study of human–agent collaboration                  Repositories (MSR), 2020, pp. 209–219.
+     in pull requests,” in International Conference on AI-Powered             [60] M. Golzadeh, A. Decan, D. Legay, and T. Mens, “A ground-truth
+     Software (AIware), 2026, pp. 188–196.                                         dataset and classification model for detecting bots in GitHub
+[43] Y. J. Chung and S. Hassan, “Collaborator or assistant? How                    issue and PR comments,” Journal of Systems and Software, vol.
+     AI coding agents partition work across pull request lifecycles,”              175, p. 110911, 2021.
+     in International Conference on AI-Powered Software (AIware),             [61] R. He, H. He, Y. Zhang, and M. Zhou, “Automating dependency
+     2026, pp. 61–70.                                                              updates in practice: An exploratory study on GitHub Depend-
+[44] G. Pinna, J. Gong, D. Williams, and F. Sarro, “Comparing                      abot,” IEEE Transactions on Software Engineering, vol. 49,
+     AI coding agents: A task-stratified analysis of pull request                  no. 8, pp. 4004–4022, 2023.
+     acceptance,” in International Conference on Mining Software              [62] S. Lambiase, G. Catolino, F. Palomba, and F. Ferrucci, “Mo-
+     Repositories (MSR) – Mining Challenge, 2026, pp. 792–796.                     tivations, challenges, best practices, and benefits for bots and
+[45] M. Watanabe, H. Li, Y. Kashiwa, B. Reid, H. Iida, and A. E.                   conversational agents in software engineering: A multivocal
+     Hassan, “On the use of agentic coding: An empirical study                     literature review,” ACM Computing Surveys, vol. 57, no. 4, pp.
+     of pull requests on GitHub,” ACM Transactions on Software                     1–37, 2025.
+     Engineering and Methodology, vol. 35, no. 10, pp. 1–24, 2026.            [63] B. Callaway and P. H. Sant’Anna, “Difference-in-differences
+[46] M. Hindi, Y. Mahmood, L. Mohammed, S. Bouktif, and M. Me-                     with multiple time periods,” Journal of Econometrics, vol. 225,
+     diani, “Coding agents in the wild: Failure modes and rejection                no. 2, pp. 200–230, 2021.
+     patterns of ai-generated pull requests,” IEEE Access, vol. 14,           [64] C. Sadowski, E. Söderberg, L. Church, M. Sipko, and A. Bac-
+     pp. 83 075–83 094, 2026.                                                      chelli, “Modern code review: a case study at Google,” in
+[47] R. Ehsani, S. Pathak, S. Rawal, A. A. Mujahid, M. M. Im-                      International Conference on Software Engineering: Software
+     ran, and P. Chatterjee, “Where do AI coding agents fail? An                   Engineering in Practice (ICSE-SEIP), 2018, pp. 181–190.
+     Empirical Study of Failed Agentic Pull Requests in GitHub,”              [65] R. Parasuraman and V. Riley, “Humans and automation: Use,
+     in International Conference on Mining Software Repositories                   misuse, disuse, abuse,” Human factors, vol. 39, no. 2, pp. 230–
+     (MSR) – Mining Challenge, 2026, pp. 807–811.                                  253, 1997.
+[48] K. Duma, P. Wróblewski, J. Bobińska, J. Winiarska, and P. Przy-        [66] J. D. Lee and K. A. See, “Trust in automation: Designing for
+     mus, “These Aren’t the Reviews You’re Looking For: How                        appropriate reliance,” Human factors, vol. 46, no. 1, pp. 50–80,
+     Humans Review AI-Generated Pull Requests,” arXiv preprint                     2004.
+     arXiv:2605.02273, 2026.                                                  [67] S. Baltes, M. Cheong, and C. Treude, “‘An endless stream of
+[49] S. Zhong, S. Noei, Y. Zou, and B. Adams, “Human-AI Synergy                    AI slop’: How developers discuss the burden of AI-assisted
+     in Agentic Code Review,” arXiv preprint arXiv:2603.15911,                     software development,” arXiv preprint arXiv:2603.27249, 2026.
+
+
+
+                                                                         12
+[68] C. Yang, H. He, T.-C. Cheng, J. Butler, E. Murphy-Hill,            lights-off? Benchmarking code review agents on bug detection,”
+     C. Badea, and C. Bird, “(when) should a software factory be        arXiv preprint arXiv:2610.13668, 2026.
+
+
+
+
+                                                                   13
+                 Supplementary Materials                                                                                 Commented (substantive)           Silent (approve only)
+
+
+
+
+                                                                        Mean reviews / reviewer / month
+     AI Writes Faster Than Humans Can Review: A
+                                                                                                          25
+   Longitudinal Study of an Enterprise “2×” Mandate
+                                                                                                          20
+
+
+                       A PPENDIX A                                                                        15
+                    DATASET S UMMARY
+                                                                                                          10
+  Table V summarizes the two datasets used throughout the
+paper, as described in Section III-B.                                                                     5
+                                                                                                               Jan 24        Jul 24            Jan 25       Jul 25         Jan 26
+TABLE V: Summary of our datasets (Jan 2024–Apr 2026).
+                                                                          Fig. 9: Mean reviews per reviewer, decomposed into com-
+      Quantity                                     Value                  mented reviews and silent approvals. The recurring March–
+      Developers (panel)                              802                 April spikes in the commented series are driven by a few high-
+        estimation sample (≥3 active months)          564                 volume reviewers and motivate the use of monthly medians in
+        AI-tool adopters / never-adopters       451 / 113                 the main text (Figure 7) instead.
+      Pull requests (non-bot)                    196,212
+        AI-authored (created-by-ai)                30.2%
+      Repositories (active)                           364
+                                                                          B. Human-Review Composition
+                                                                             Figure 6 reports the overall shift from human to auto-
+                    A PPENDIX B                                           mated review, and Figure 10 decomposes the human share
+            AUTOMATED -ACCOUNT D ETECTION                                 into its substantive (with a human-written comment) and
+                                                                          silent (approval-only) parts. Substantive review decreases from
+   This appendix details the rules we use to flag automated               ∼39% to ∼21% of PRs while silent approvals stay roughly
+accounts (Section III-B). We match each account’s user-                   flat (∼50%). The human review that remains is therefore
+name against a list of well-known bots (e.g., dependabot,                 increasingly approval without comment, consistent with the
+renovate, github-actions, copilot, vercel) and                            per-reviewer decomposition shown in Figure 7 of the main
+against name patterns that signal automation, such as names               text.
+ending in [bot] or -bot or resembling CI, auto-merge, or
+release tooling. We also inspect the associated email addresses
+for service-account markers (e.g., noreply, automation,                                                                               substantive       silent
+                                                                                                          100%
+notifications, service). For high-volume accounts
+that escape these lexical cues, we examine behavioral signals.
+                                                                                                           75%
+                                                                             share of PRs
+
+
+
+
+On the author side, these are head branches that follow
+machine-generated templates, activity confined to a single                                                 50%
+repository, and an absence of authorship labels. On the re-                                                                                                          47%
+
+viewer side, they are a high fraction of templated event bodies,                                           25%
+low body diversity, and many events with an empty body.                                                                                                              21%
+
+Borderline cases (for instance, humans who invoke a review                                                     0%
+bot via a mention) are adjudicated manually by inspection.                                                      Jan 25    Apr 25      Jul 25      Oct 25    Jan 26   Apr 26
+
+                                                                          Fig. 10: The human-review share decomposed into substantive
+                       A PPENDIX C
+                                                                          (navy) and silent approval-only (muted violet) reviews, among
+              R EVIEW P ROCESS ROBUSTNESS
+                                                                          non-bot PRs on the estimation sample. Substantive review
+  This appendix supports the review findings of Section IV-C.             decreases while silent approvals stay flat, so the remaining
+                                                                          human review is increasingly approval without comment.
+A. Mean Per-Reviewer Decomposition                                        Rules as in Figure 2.
+   Figure 7 reports the per-reviewer decomposition into com-
+mented reviews and silent approvals using monthly medians,
+and Figure 9 shows the same series using means. The means                 C. Per-PR Cycle-Time Decomposition
+are driven by a small number of very high-volume reviewers                   Total cycle time (Section III-B) is the sum of three phases:
+and exhibit recurring March–April spikes in the commented                 coding lead (first commit to PR opened), pickup (opened to
+series that are not reflected in the median, which is why the             first human review), and review lead (first human review to
+main text uses medians. The qualitative conclusion is un-                 merge or close). The boundary between pickup and review
+changed: silent approvals per reviewer rise while commented               lead is the first review or PR-thread comment from a human
+reviews stay comparatively flat.                                          other than the author, because a bot that responds within
+
+
+
+                                                                   14
+seconds would otherwise reduce the measured pickup time                     The timing is observational and the monthly tail is noisy, but
+to seconds and move the entire wait after opening into review               the pattern corroborates the per-PR result and shows how the
+lead. Table VI reports, for each phase, how much longer AI-                 case company kept pace: it handled the queue by routing work
+authored PRs take under Eq. 4, and Figure 11 visualizes the                 around substantive human review, rather than by reviewing
+post-mandate column. The extra latency of AI-authored PRs                   each PR any faster.
+concentrates in the review-lead phase; their coding lead is
+slightly shorter, and the pickup delay is small by comparison
+                                                                                                           80                                                     100%
+with the review-lead phase.
+                                                                                                                                       66h
+
+
+
+
+                                                                              90th-pctile cycle time (h)
+
+
+
+
+                                                                                                                                                                         human-review coverage
+TABLE VI: Per-PR effect of AI authorship by cycle-time                                                     60
+phase (Eq. 4); log-point coefficients, author and month fixed                                                                                                     90%
+effects, size controls, author-clustered SEs. Significance as in                                           40
+Table I.
+                                                                                                                                                                  80%
+      Phase                         Pooled    Post-mandate                                                 20
+                                                                                                                                                         76%
+      log(1+Coding Lead)          −0.042∗∗          −0.028∗
+      log(1+Pickup)               +0.112∗∗∗         +0.139∗∗∗                                              0                                                      70%
+      log(1+Review Lead)          +0.140∗∗∗         +0.181∗∗∗                                               Jan 25   Apr 25   Jul 25   Oct 25   Jan 26   Apr 26
+      log(1+Total Cycle)          +0.154∗∗∗         +0.202∗∗∗
+                                                                            Fig. 12: The same bottleneck over time: 90th-percentile end-
+                                                                            to-end cycle time (teal, left) and human-review coverage (navy,
+                        Authoring      Commentary    Latency                right), both among merged PRs. Latency increases through
+                                                                            2025 as volume exceeds review capacity, then recedes in 2026
+Coding lead          -2% (n.s.)
+                                                                            as coverage falls and PRs increasingly bypass human review.
+ Comments                             +8%                                   Monthly, on the estimation sample, excluding bot-authored
+                                                                            PRs; vertical rules as in Figure 2.
+     Pickup                            +9%
+
+
+Review lead                                                     +23%
+                                                                                                                            A PPENDIX D
+ Total cycle                                                   +22%                                             A DOPTION AND C AUSAL I DENTIFICATION
+                 0                     10             20
+                                                                              This appendix supports the adoption definition and the
+                          AI premium (%), post-mandate                      parallel-trends assumption underlying the causal interpretation
+                                                                            of the adoption jump β1 (Section III-C).
+Fig. 11: The per-PR effect of AI authorship across the cycle-
+time phases, controlling for size, author, and month (post-                 A. Usage-Intensity Ramp
+mandate). AI-authored PRs open slightly sooner after their                     Figure 13 plots the per-capita Claude Code token spend
+first commit and draw few extra comments. The latency falls in              cited in Section IV-A. Spend per developer-month rises
+the review-lead phase, while the pickup delay is comparatively              roughly 20× between July 2025 and April 2026, from $42
+small.                                                                      to $856, and steepens through the model-release window
+                                                                            rather than at any single release date. Cursor usage is not
+                                                                            dollar-denominated, so this is a Claude-only lower bound
+D. Organization-Level Latency
+                                                                            on the true intensity ramp. It is also the organization-wide
+   The longer per-PR review latency has a counterpart in the                ramp that overlaps with every model release and so prevents
+organization’s aggregate cycle time over the window (Fig-                   release effects from being separated from accumulated use
+ure 12). The 90th-percentile end-to-end cycle time increases                (Section IV-B and Table VII).
+through 2025 as volume exceeds review capacity, peaking near
+66 hours, and then recedes through early 2026. However, the                 B. Adoption Signal Robustness
+recovery comes from a change in which PRs go through re-                       Our primary specification dates a developer’s adoption from
+view. When we split PRs by review depth, the 90th-percentile                Cursor and Claude Code usage telemetry, which records tool
+cycle time of PRs that received a substantive human review                  use directly. The company’s created-by-ai label on the
+increases to its own peak near 114 hours and remains around                 PR itself provides an independent adoption signal, and the
+73 hours in 2026, above its ∼63-hour pre-ramp level. The                    two signals do not always agree. Of the 113 developers our
+substantive-review queue itself therefore never returns to its              telemetry treats as never-adopters, 36 (about a third) authored
+earlier speed. What falls is the share of PRs routed through it:            at least one created-by-ai PR. In addition, 87 of the
+substantive-review coverage among merged PRs drops from a                   451 telemetry adopters had an AI-authored PR before their
+pre-mandate peak of ∼48% to ∼21%, and the fast bypassed                     first telemetry month. With telemetry alone, we keep these
+lanes pull the aggregate down even as the queue stays slow.                 developers in the control group or date their adoption too late,
+
+
+
+                                                                       15
+                                                                                           4.6 gen
+                                           Mandate
+
+
+
+
+                                                                            Opus 4.5
+                                                               Sonnet 4.5
+
+
+
+
+                                                                                                                   Effect on log(PRs)
+                                                                                                                                        0.4
+AI spend / developer
+
+                                                                                                     20×
+                       $750
+                                                                                                                                        0.2
+                       $500
+                                                                                                                                        0.0
+
+                       $250                                                                                                             -0.2
+
+                        $0                                                                                                                     -6   -4          -2        0        2            4   6
+                         Jan 25   Apr 25             Jul 25   Oct 25                   Jan 26        Apr 26                                              Months relative to first AI tool use
+
+Fig. 13: Per-capita Claude Code token spend among active                                                            Fig. 14: Pooled AI-adoption event study on monthly PRs (log
+PR authors, in dollars per developer-month. Spend increases                                                         scale), controlling for the company-wide mandate. Coefficients
+about 20× ($42 to $856) over the observation window; the                                                            are near zero before adoption, supporting parallel trends, and
+series begins in July 2025 when Claude Code telemetry starts.                                                       the effect emerges on adoption and grows with time on tool.
+Vertical rules mark the company-wide mandate and the three                                                          Reference month τ = −1; the shaded band shows the 95%
+frontier-model releases in our window.                                                                              confidence interval around each monthly estimate.
+
+
+which should, if anything, understate rather than overstate the
+adoption effect.
+                                                                                                                    term) and +0.201 (p < 0.001) once we replace that term
+   To check this, we re-estimate Eq. 1 with Adoptedit switched                                                      with calendar-month fixed effects. The effect remains highly
+on whenever a developer either has usage telemetry or authors                                                       significant after this reduction of roughly 40%. It is +0.369
+a created-by-ai PR in that month. This reclassifies 36 de-                                                          when we drop never-adopters, +0.132 under the Borusyak
+velopers from controls to adopters (487 adopters and 77 never-                                                      imputation estimator, and shrinks to a non-significant +0.162
+adopters, compared with 451 and 113 under telemetry alone)                                                          under Callaway–Sant’Anna. This pattern localizes the reduc-
+and moves 87 adoption dates earlier. The adoption coefficient                                                       tion rather than indicating a failure of the result: controlling
+rises from +0.354 to +0.410 (p < 0.001), confirming that                                                            for calendar time alone leaves the estimate large and highly
+the telemetry-only definition is conservative: the developers                                                       significant, and the further drop appears only under the es-
+it misses are genuine adopters whose gains were previously                                                          timators that additionally forbid already-adopted developers
+counted in the control baseline. The residual mandate term                                                          from serving as controls. Callaway–Sant’Anna compares each
+falls to near zero, as the adopters identified by the PR label,                                                     adopter only with developers who have not yet adopted, so
+who started around the mandate, now load on the adoption                                                            the steep organization-wide ramp of early 2026, which lifts
+indicator rather than on the mandate term Postt .                                                                   adopted and not-yet-adopted developers alike, is attributed to
+   A separate timing concern is that telemetry is observed only                                                     calendar time rather than to AI. This restriction understates an
+in months when a developer is active in PRs, so tool use                                                            effect that grows with use (Table II), for which a single average
+in an inactive month dates adoption slightly late. Assigning                                                        step is a poor summary. The same overlap between the usage
+adoption dates from the raw tool-use telemetry, ignoring this                                                       ramp and the calendar is what makes model-generation effects
+censoring, changes the coefficient by less than 0.01, because                                                       inseparable (Section IV-B).
+the recovered months do not have a PR outcome and drop out
+of the log-count regression anyway.                                                                                      a) Denominator and zero-output months: The through-
+                                                                                                                    put ratio in Section IV-A counts authored PRs per active
+C. Adoption Event Study (Parallel-Trends Check)
+                                                                                                                    developer, whereas the mandate’s metric is merged PRs per
+   Figure 14 reports the pooled AI-adoption event study refer-                                                      engineer per month; conditioning on active developers might
+enced in Section III-C, i.e., a version of Eq. 1 with a separate                                                    in principle inflate the ratio during churn or reactivation.
+coefficient for each month before and after adoption. PR                                                            It does not here. Recomputing per engineer, i.e., counting
+throughput is flat in the months before a developer’s first AI-                                                     the zero-output months within each engineer’s tenure so that
+tool use and rises only afterward, supporting the parallel-trends                                                   inactive months are part of the denominator, yields a 2.42×
+assumption behind the causal interpretation of the adoption                                                         increase for authored and 2.31× for merged PRs, at least as
+jump (β1 , Section III-C).                                                                                          large as the per-active ratio, because the pre-mandate baseline
+                                                                                                                    contains proportionally more low-output months than the post-
+D. Throughput Across Staggered-Adoption Estimators                                                                  ramp endpoint. The within-developer estimate is likewise
+   The pooled adoption effect of Section IV-A is robust to                                                          robust to including these zero-output months. On the tenure-
+controlling for organization-wide changes over time, and its                                                        spanning panel (11.8% zero-output months), a Poisson model
+sensitivity to the choice of estimator is itself informative                                                        with calendar-month fixed effects gives an adoption coefficient
+(Table VII). The AI-adoption coefficient on log(Monthly PRs)                                                        of +0.24 (p < 0.001). Conditioning on active developers is
+is +0.354 under our baseline model (Eq. 1, with a single Postt                                                      thus, if anything, a conservative choice.
+
+
+
+                                                                                                              16
+TABLE VII: Throughput robustness: AI-adoption coefficient               TABLE VIII: Pull-request splitting: within-developer effects
+on log(Monthly PRs) across estimators. TWFE is the baseline             of AI adoption on monthly volume and PR shape. Volume
+two-way fixed-effects model of Eq. 1; +Month FE replaces                rows are Poisson (log points); shape rows are OLS on the
+its Postt term with calendar-month fixed effects (which ab-             developer-month average. Base and April 2026 columns are
+sorb Postt ); Drop never drops never-adopters; C&S is the               means over the estimation sample. Significance as in Table I.
+Callaway–Sant’Anna average effect on adopters with not-yet-
+                                                                          Outcome              Base Apr 26       Adopt.    +Mo. FE Apr 26 use
+adopted controls; Borusyak is the imputation estimator with
+developer and month fixed effects. Significance as in Table I.            Monthly volume per developer
+                                                                          PRs                  21.2    43.4 +0.31∗∗∗ +0.14∗∗∗             +0.57
+                                                                          Lines changed       5,246 12,505 +0.36∗∗∗    +0.06              +0.81
+             TWFE      +Mo. FE Drop never     C&S    Borusyak
+                                                                          Files changed         120     244 +0.29∗∗∗   +0.10              +0.58
+ log(PRs) +0.354∗∗∗ +0.201∗∗∗ +0.369∗∗∗ +0.162 +0.132+                    Commits                79     150 +0.32∗∗∗   +0.13              +0.41
+                                                                          Shape of a developer’s PRs
+                                                                          log(1+lines/PR)       4.78    5.28 +0.28∗∗∗      +0.11+         +0.67
+                                                                          log(1+files/PR)       1.69    1.75   +0.04        −0.00         +0.10
+                       A PPENDIX E                                        log(1+commits/PR) 1.40        1.40   +0.00        +0.01         −0.02
+    I S THE G AIN R EAL W ORK OR A R ESPONSE TO THE                       Share ≤ 10 lines      0.31    0.22 −0.03∗∗∗       −0.01         −0.11
+                         TARGET ?                                         Share ≥ 500 lines     0.10    0.14   +0.01        −0.00         +0.05
+
+   This appendix reports the checks summarized in Sec-
+tion IV-A on whether developers met the “2×” target with-               1.8× for all PRs. Maintenance PRs grow at about the overall
+out producing more work. All analyses use the estimation                rate (1.9×), and the unclassifiable remainder grows least
+sample and the within-developer models of Section III-C:                (1.2×). The added throughput is therefore not concentrated
+Eq. 1 (“adoption”), its calendar-month fixed-effects variant            in routine or automatable work such as dependency updates.
+(“+month FE”), and the decomposition of Eq. 3 evaluated at
+                                                                           Because AI tools write more regular titles than developers
+the April 2026 usage level (“at April 2026 usage”). Count
+                                                                        do, we also checked whether this shift reflects titling rather
+outcomes use Poisson regressions with developer fixed effects,
+                                                                        than work. Within author and month, AI-labeled PRs are 10
+so coefficients are in log points; standard errors are clustered
+                                                                        percentage points more likely to have a classifiable title (78%
+by developer. Per-PR size and files are capped at the 99th per-
+                                                                        versus 63%), so part of the measured shift could come from
+centile (winsorized) before monthly sums, because a handful
+                                                                        more parseable titles. Among classifiable titles, however, AI-
+of vendored or generated-file PRs otherwise dominate.
+                                                                        labeled PRs remain 8 percentage points more likely to be fixes
+A. Pull-Request Splitting                                               post-mandate, so the fix share does not reduce to parseability.
+                                                                        The type mix of PRs without the AI label is stable across the
+   If developers met the target by splitting work into smaller
+                                                                        window (a fix share of 15% in both the first half of 2024 and
+PRs, PRs would shrink while lines changed stayed flat. Ta-
+                                                                        the first half of 2026, and a feature share of 25% to 27%), so
+ble VIII shows the opposite. Lines changed per developer-
+                                                                        the company’s own conventions did not drift. Neither check
+month increase faster than PR counts at April 2026 usage
+                                                                        can rule out that AI tools title the same work differently from
+(+0.81 versus +0.57 log points). The median PR grows from
+                                                                        developers, and no ground truth for what a PR accomplished
+35 to 61 lines between the pre-mandate baseline (January–
+                                                                        is available to us for validation.
+April 2025) and April 2026, and the share of PRs with 10 or
+fewer lines falls from 31% to 22%. Files and commits per                TABLE IX: Pull requests by type: within-developer Poisson
+PR are unchanged. The added PRs therefore contain more                  effects of AI adoption on the monthly count of each type.
+code, which splitting alone cannot produce. Lines per PR rise           Base is the pre-mandate mean count per developer-month, and
+while files per PR do not, which may reflect more verbose               significance levels are as in Table I.
+AI-generated code; however, we cannot measure how much
+useful work the added lines actually accomplish.                                Type          Base     Adopt.    +Mo. FE     Apr 26 use
+                                                                                All PRs       21.2 +0.31∗∗∗     +0.14∗∗∗+0.58 (1.8×)
+B. What the Added Pull Requests Contain                                         Feature        5.8 +0.36∗∗∗      +0.17∗∗+0.76 (2.1×)
+                                                                                Bug fix        2.9 +0.48∗∗∗     +0.22∗∗ +0.96 (2.6×)
+   The company’s issue tracker and release records are not                      Maintenance    3.5 +0.31∗∗∗      +0.14∗ +0.62 (1.9×)
+part of our data, so we cannot count fixed bugs or shipped                      Revert         0.7 +0.23∗∗        +0.06 +0.36 (1.4×)
+features directly. Instead, we classify each PR by its title,                   Other          8.3 +0.19∗∗∗      +0.10∗ +0.21 (1.2×)
+conventional-commit prefix, and branch name, after stripping
+ticket identifiers, as new functionality, bug fix, maintenance
+(dependency updates, tests, documentation, cleanup), or revert.         C. Working Time
+In total, 33% of PRs do not match any of the patterns and are             We measure working time from developers’ activity times-
+labeled other. Re-estimating the within-developer models on             tamps (PRs opened, commits, and reviews written), taking
+the monthly count of each type (Table IX), we find that all             dates and weekends in the company’s home time zone and
+types grow after adoption. At April 2026 usage, feature PRs             defining off-hours activity as events more than five hours from
+per developer grow 2.1× and fix PRs 2.6×, compared with                 each developer’s own 2024 weekday reference hour. After
+
+
+
+                                                                   17
+adopting AI, developers are somewhat more active (Table X).                 The fix-minus-placebo difference is 0.3 percentage points
+They have about one more active day per month (14.1 to 15.2,                (p = 0.78) at 7 days and 0.6 points (p = 0.63) at 14 days.
++0.10 log points), and off-hours activity rises from 7% to 11%              Authors of AI-authored PRs are thus busier afterward, but not
+of events. Weekend activity increases slightly in absolute terms            disproportionately busy fixing. Without file-level change data
+(0.3 to 0.6 active weekend days per month), and the daily                   the link between a PR and a later fix is coarse, so we report
+span from first to last event lengthens by about 40 minutes.                this result as suggestive.
+These measures overstate any change in hours, because every
+additional PR, commit, or review leaves a timestamp.                                               A PPENDIX F
+    To see how much of the PR gain extra days explain, we                             C APABILITY VERSUS C ALENDAR T REND
+split monthly PRs into active days times PRs per active day                    This appendix details the two checks behind the attempt in
+and estimate the within-developer effect on each. The last                  Eq. 2 to separate the gain from accumulated use from frontier-
+row of Table X fits PRs per active day as a Poisson model                   model capability (Section III-C), and reports the resulting
+of PR counts with log(active days) as an offset, i.e., holding              estimates (Table XI, Figure 15).
+active days fixed. Extra days explain about a third of the one-                Each release indicator in Eq. 2 switches on in the first full
+time jump at adoption: of the +0.31 log-point jump in PRs,                  month after the corresponding launch (dated from the releases
+active days contribute +0.10 and PRs per active day +0.23                   listed in Section III-A) and stays on thereafter, so the coeffi-
+(with calendar-month fixed effects the jump is +0.14 and splits             cients γS , γO , γ46 are incremental steps on the previous one.
+about evenly). They explain almost none of the growth after                 Because internal uptake of every release followed the same
+it: at April 2026 usage, active days are up 13% while PRs per               company-wide usage ramp, a release indicator can capture a
+active day are up 59%, so extra days account for about a fifth              general upward calendar trend, which we could then mistake
+of the +0.57 total. Descriptively, between the pre-mandate                  for a capability gain. For both checks below, we modify Eq. 2
+baseline and April 2026 the average developer’s monthly PRs                 and re-estimate it on the same panel with developer-clustered
+doubled (21 to 43) while active days went from 14 to 15                     standard errors.
+and PRs per active day from 1.4 to 2.5. Every added PR                            a) Placebo release: We replace the three release indi-
+adds a timestamp, so the active-days share is an upper bound.               cators with a single placebo indicator Placebot = ⊮[t ≥
+Restricting the events to PRs opened and reviews written,                   Aug 2025], a month with no model launch, leaving every other
+which agents do not author, gives the same picture.                         term of Eq. 2 unchanged, as follows:
+TABLE X: Working time: within-developer effects of AI                          log(yit ) = αi + γP Placebot
+                                                                                                                                       (5)
+adoption on activity-timestamp measures. Count rows are                                     + β log(1+CumAIi,t−1 ) + θ Postt + εit .
+Poisson (log points); share and span rows are OLS. Base and                 The quantity of interest is γP , the throughput jump at the
+April 2026 columns are means over the estimation sample.                    fabricated release date. If the release indicators marked real
+Significance levels as in Table I.                                          capability gains, γP should be indistinguishable from zero. A
+                                                                            coefficient comparable in magnitude to those of the genuine
+ Outcome                  Base Apr 26    Adopt.   +Mo. FE Apr 26 use
+                                                                            releases (γS , γO , γ46 ) instead indicates that the design is
+ Active days / month      14.1    15.2 +0.10∗∗∗ +0.08∗∗∗      +0.13         capturing calendar drift.
+ Weekend days / month     0.29    0.59 +0.47∗∗∗  +0.27∗∗      +0.64
+ Off-hours share          0.07    0.11 +0.02∗∗∗ +0.02∗∗∗      +0.03               b) Seasonality: We add month-of-year fixed effects
+ Daily span, hours         4.7     5.6 +0.63∗∗∗ +0.34∗∗∗      +1.10         µm(t) , where m(t) ∈ {1, . . . , 12} is the calendar month of
+ PRs / month               21.2   43.4 +0.31∗∗∗ +0.14∗∗∗      +0.57         t, to Eq. 2, which yields the model:
+ PRs / active day (offset) 1.4     2.5 +0.23∗∗∗  +0.08∗       +0.46
+                                                                               log(yit ) = αi + µm(t) + γS Sonnet45t
+                                                                                           + γO Opus45t + γ46 Gen46t                      (6)
+D. Follow-Up Fixes after AI-Authored Pull Requests                                          + β log(1+CumAIi,t−1 ) + θ Postt + εit .
+   If lenient review let more defective AI-authored code                    The µm(t) capture recurring within-year patterns such as
+through, the authors of AI-authored PRs should more often                   holiday or end-of-quarter slowdowns. The test is whether the
+have to fix it afterward. For each merged post-mandate PR,                  release coefficients γS , γO , γ46 retain their sign and magnitude
+we ask whether the same author opened a bug-fix PR (by the                  once these effects are included.
+classification above) in the same repository within 7 or 14                      c) Results: Table XI and Figure 15 report both checks.
+days, and compare AI-labeled with other PRs within author                   The three incremental release coefficients flip sign (Sonnet 4.5
+and month, controlling for size, in a linear probability model.             −0.123, Opus 4.5 −0.208, and Opus 4.6 +0.613, an implau-
+Because busier authors open more PRs of every kind, we                      sible 85% jump), and this sign instability persists once month-
+control for the number of non-fix follow-ups and use follow-up              of-year fixed effects are added. The August 2025 placebo,
+feature PRs as a placebo outcome that defect-driven rework                  a month with no release, shows as large an effect as the
+should not affect. AI-labeled PRs are followed by a fix 5.3                 genuine events (γP = −0.236, p < 0.001), so the design
+percentage points more often within 7 days (base rate 45.5%)                is capturing calendar drift rather than capability. Figure 15A
+but also by a feature PR 4.8 points more often (base 58.0%).                makes the pattern visible: the model-generation paths cross
+
+
+
+                                                                       18
+                             A. Capability event studies: sign-flipping + failing placebo                                        B. Decomposition (capability shown but not identified)
+                                            Sonnet 4.5 (Oct '25)       4.6 gen (Feb '26)
+                                                                                                                                       Mandate        Experience   Capability (not identified)
+                                            Opus 4.5 (Dec '25)         Placebo (Aug '25)
+                                                                                                                           0.8
+
+
+
+
+                                                                                                    Predicted Δ log(PRs)
+ Effect on log(PRs)
+
+
+
+
+                      0.5                                                                                                  0.6
+
+
+                      0.0                                                                                                  0.4
+
+                                                                                                                           0.2
+                      -0.5
+
+                                                                                                                           0.0
+                              -6       -4        -2       0        2          4        6       8                                              Early                         Late
+                                                Months relative to release                                                                              Adoption cohort
+
+Fig. 15: Accumulated use, not the model frontier. (A) Event studies around each release on log(Monthly PRs), controlling
+for accumulated use and the mandate. The model-generation paths flip sign across releases, and the August 2025 placebo
+(no release that month) has an effect as large as the real events. (B) Predicted productivity change attributed to the mandate,
+accumulated use (labeled experience in the figure), and (net) model capability by adoption cohort; the capability contribution
+is shown but cannot be separately estimated.
+
+
+TABLE XI: Model-release steps (each step is incremental on
+the previous) versus a developer’s accumulated use.
+
+        Term                                          Releases     + Month-of-year FE
+                                                              ∗∗
+        Sonnet 4.5 (γS )                              −0.123                       −0.031
+        Opus 4.5, incr. (γO )                         −0.208∗∗∗                    −0.116∗
+        4.6 generation, incr. (γ46 )                  +0.613∗∗∗                    +0.421∗∗∗
+        Accumulated use (β)                           +0.039∗∗∗                    +0.041∗∗∗
+        Post mandate (θ)                              +0.051                           —
+        Placebo (Aug 2025)                            −0.236∗∗∗                            —
+
+
+
+zero in different directions, and the placebo is as active as the
+real releases. Even the large positive 4.6 coefficient cannot
+be interpreted as a release effect, because it is observationally
+equivalent to the usage ramp accelerating at the same date, the
+very confound the placebo exposes. We therefore report the
+release indicators only to document the limit of company-level
+calendar designs; the interpretable term is accumulated use.
+
+
+
+
+                                                                                                   19
+

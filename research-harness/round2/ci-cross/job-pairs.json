@@ -1,0 +1,470 @@
+{
+  "bands": [
+    [
+      60247183359,
+      60248183358
+    ],
+    [
+      77135684967,
+      77136684966
+    ],
+    [
+      94024186574,
+      94025186573
+    ]
+  ],
+  "new_groups": 101,
+  "checked_key_bytes": 195149737,
+  "rows_scanned_within_bands": {
+    "runs_rows": 9544,
+    "jobs_rows": 12977
+  },
+  "total": {
+    "coverage": {
+      "run_suites": 9544,
+      "run_without_job": 6128,
+      "matched_runs": 3416,
+      "matched_job_rows": 12977,
+      "job_suites_without_run": 0
+    },
+    "by_workflow_final_state": {
+      "all": {
+        "runs": 3416,
+        "job_rows": 12977,
+        "with_failed_job": 301,
+        "with_success_job": 2519,
+        "with_both_failed_and_success_jobs": 127,
+        "all_jobs_failed": 152
+      },
+      "first_only/skipped": {
+        "runs": 631,
+        "job_rows": 923,
+        "with_failed_job": 0,
+        "with_success_job": 0,
+        "with_both_failed_and_success_jobs": 0,
+        "all_jobs_failed": 0
+      },
+      "skipped": {
+        "runs": 632,
+        "job_rows": 927,
+        "with_failed_job": 0,
+        "with_success_job": 0,
+        "with_both_failed_and_success_jobs": 0,
+        "all_jobs_failed": 0
+      },
+      "first_only/failure": {
+        "runs": 288,
+        "job_rows": 2866,
+        "with_failed_job": 287,
+        "with_success_job": 117,
+        "with_both_failed_and_success_jobs": 117,
+        "all_jobs_failed": 151
+      },
+      "failure": {
+        "runs": 290,
+        "job_rows": 2876,
+        "with_failed_job": 289,
+        "with_success_job": 119,
+        "with_both_failed_and_success_jobs": 119,
+        "all_jobs_failed": 151
+      },
+      "first_only/cancelled": {
+        "runs": 137,
+        "job_rows": 692,
+        "with_failed_job": 9,
+        "with_success_job": 44,
+        "with_both_failed_and_success_jobs": 6,
+        "all_jobs_failed": 0
+      },
+      "cancelled": {
+        "runs": 137,
+        "job_rows": 692,
+        "with_failed_job": 9,
+        "with_success_job": 44,
+        "with_both_failed_and_success_jobs": 6,
+        "all_jobs_failed": 0
+      },
+      "first_only/success": {
+        "runs": 2353,
+        "job_rows": 8375,
+        "with_failed_job": 3,
+        "with_success_job": 2352,
+        "with_both_failed_and_success_jobs": 2,
+        "all_jobs_failed": 1
+      },
+      "success": {
+        "runs": 2357,
+        "job_rows": 8482,
+        "with_failed_job": 3,
+        "with_success_job": 2356,
+        "with_both_failed_and_success_jobs": 2,
+        "all_jobs_failed": 1
+      },
+      "retried/success": {
+        "runs": 4,
+        "job_rows": 107,
+        "with_failed_job": 0,
+        "with_success_job": 4,
+        "with_both_failed_and_success_jobs": 0,
+        "all_jobs_failed": 0
+      },
+      "retried/failure": {
+        "runs": 2,
+        "job_rows": 10,
+        "with_failed_job": 2,
+        "with_success_job": 2,
+        "with_both_failed_and_success_jobs": 2,
+        "all_jobs_failed": 0
+      },
+      "retried/skipped": {
+        "runs": 1,
+        "job_rows": 4,
+        "with_failed_job": 0,
+        "with_success_job": 0,
+        "with_both_failed_and_success_jobs": 0,
+        "all_jobs_failed": 0
+      }
+    },
+    "matched_job_conclusions": {
+      "skipped": 1993,
+      "failure": 553,
+      "success": 9958,
+      "cancelled": 470,
+      "neutral": 3
+    },
+    "run_without_job_states": {
+      "success": 3990,
+      "failure": 640,
+      "skipped": 804,
+      "cancelled": 548,
+      "startup_failure": 10,
+      "action_required": 136
+    }
+  },
+  "by_band": [
+    {
+      "coverage": {
+        "run_suites": 4927,
+        "run_without_job": 3276,
+        "matched_runs": 1651,
+        "matched_job_rows": 6543,
+        "job_suites_without_run": 0
+      },
+      "by_workflow_final_state": {
+        "all": {
+          "runs": 1651,
+          "job_rows": 6543,
+          "with_failed_job": 144,
+          "with_success_job": 1184,
+          "with_both_failed_and_success_jobs": 58,
+          "all_jobs_failed": 75
+        },
+        "first_only/skipped": {
+          "runs": 325,
+          "job_rows": 439,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "skipped": {
+          "runs": 326,
+          "job_rows": 443,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "first_only/failure": {
+          "runs": 136,
+          "job_rows": 1407,
+          "with_failed_job": 136,
+          "with_success_job": 52,
+          "with_both_failed_and_success_jobs": 52,
+          "all_jobs_failed": 74
+        },
+        "failure": {
+          "runs": 137,
+          "job_rows": 1415,
+          "with_failed_job": 137,
+          "with_success_job": 53,
+          "with_both_failed_and_success_jobs": 53,
+          "all_jobs_failed": 74
+        },
+        "first_only/cancelled": {
+          "runs": 75,
+          "job_rows": 341,
+          "with_failed_job": 5,
+          "with_success_job": 19,
+          "with_both_failed_and_success_jobs": 4,
+          "all_jobs_failed": 0
+        },
+        "cancelled": {
+          "runs": 75,
+          "job_rows": 341,
+          "with_failed_job": 5,
+          "with_success_job": 19,
+          "with_both_failed_and_success_jobs": 4,
+          "all_jobs_failed": 0
+        },
+        "first_only/success": {
+          "runs": 1109,
+          "job_rows": 4237,
+          "with_failed_job": 2,
+          "with_success_job": 1108,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 1
+        },
+        "success": {
+          "runs": 1113,
+          "job_rows": 4344,
+          "with_failed_job": 2,
+          "with_success_job": 1112,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 1
+        },
+        "retried/success": {
+          "runs": 4,
+          "job_rows": 107,
+          "with_failed_job": 0,
+          "with_success_job": 4,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "retried/failure": {
+          "runs": 1,
+          "job_rows": 8,
+          "with_failed_job": 1,
+          "with_success_job": 1,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "retried/skipped": {
+          "runs": 1,
+          "job_rows": 4,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        }
+      },
+      "matched_job_conclusions": {
+        "skipped": 960,
+        "failure": 294,
+        "success": 5072,
+        "cancelled": 214,
+        "neutral": 3
+      },
+      "run_without_job_states": {
+        "success": 2008,
+        "failure": 353,
+        "skipped": 572,
+        "cancelled": 338,
+        "startup_failure": 4,
+        "action_required": 1
+      }
+    },
+    {
+      "coverage": {
+        "run_suites": 2779,
+        "matched_runs": 993,
+        "matched_job_rows": 4134,
+        "run_without_job": 1786,
+        "job_suites_without_run": 0
+      },
+      "by_workflow_final_state": {
+        "all": {
+          "runs": 993,
+          "job_rows": 4134,
+          "with_failed_job": 93,
+          "with_success_job": 745,
+          "with_both_failed_and_success_jobs": 44,
+          "all_jobs_failed": 42
+        },
+        "first_only/skipped": {
+          "runs": 179,
+          "job_rows": 256,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "skipped": {
+          "runs": 179,
+          "job_rows": 256,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "first_only/success": {
+          "runs": 686,
+          "job_rows": 2550,
+          "with_failed_job": 1,
+          "with_success_job": 686,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "success": {
+          "runs": 686,
+          "job_rows": 2550,
+          "with_failed_job": 1,
+          "with_success_job": 686,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "first_only/cancelled": {
+          "runs": 38,
+          "job_rows": 215,
+          "with_failed_job": 2,
+          "with_success_job": 17,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "cancelled": {
+          "runs": 38,
+          "job_rows": 215,
+          "with_failed_job": 2,
+          "with_success_job": 17,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "first_only/failure": {
+          "runs": 89,
+          "job_rows": 1111,
+          "with_failed_job": 89,
+          "with_success_job": 41,
+          "with_both_failed_and_success_jobs": 41,
+          "all_jobs_failed": 42
+        },
+        "failure": {
+          "runs": 90,
+          "job_rows": 1113,
+          "with_failed_job": 90,
+          "with_success_job": 42,
+          "with_both_failed_and_success_jobs": 42,
+          "all_jobs_failed": 42
+        },
+        "retried/failure": {
+          "runs": 1,
+          "job_rows": 2,
+          "with_failed_job": 1,
+          "with_success_job": 1,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        }
+      },
+      "matched_job_conclusions": {
+        "skipped": 671,
+        "success": 3147,
+        "cancelled": 148,
+        "failure": 168
+      },
+      "run_without_job_states": {
+        "skipped": 162,
+        "success": 1240,
+        "failure": 176,
+        "cancelled": 116,
+        "startup_failure": 5,
+        "action_required": 87
+      }
+    },
+    {
+      "coverage": {
+        "run_suites": 1838,
+        "matched_runs": 772,
+        "matched_job_rows": 2300,
+        "run_without_job": 1066,
+        "job_suites_without_run": 0
+      },
+      "by_workflow_final_state": {
+        "all": {
+          "runs": 772,
+          "job_rows": 2300,
+          "with_failed_job": 64,
+          "with_success_job": 590,
+          "with_both_failed_and_success_jobs": 25,
+          "all_jobs_failed": 35
+        },
+        "first_only/success": {
+          "runs": 558,
+          "job_rows": 1588,
+          "with_failed_job": 0,
+          "with_success_job": 558,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "success": {
+          "runs": 558,
+          "job_rows": 1588,
+          "with_failed_job": 0,
+          "with_success_job": 558,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "first_only/skipped": {
+          "runs": 127,
+          "job_rows": 228,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "skipped": {
+          "runs": 127,
+          "job_rows": 228,
+          "with_failed_job": 0,
+          "with_success_job": 0,
+          "with_both_failed_and_success_jobs": 0,
+          "all_jobs_failed": 0
+        },
+        "first_only/failure": {
+          "runs": 63,
+          "job_rows": 348,
+          "with_failed_job": 62,
+          "with_success_job": 24,
+          "with_both_failed_and_success_jobs": 24,
+          "all_jobs_failed": 35
+        },
+        "failure": {
+          "runs": 63,
+          "job_rows": 348,
+          "with_failed_job": 62,
+          "with_success_job": 24,
+          "with_both_failed_and_success_jobs": 24,
+          "all_jobs_failed": 35
+        },
+        "first_only/cancelled": {
+          "runs": 24,
+          "job_rows": 136,
+          "with_failed_job": 2,
+          "with_success_job": 8,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        },
+        "cancelled": {
+          "runs": 24,
+          "job_rows": 136,
+          "with_failed_job": 2,
+          "with_success_job": 8,
+          "with_both_failed_and_success_jobs": 1,
+          "all_jobs_failed": 0
+        }
+      },
+      "matched_job_conclusions": {
+        "success": 1739,
+        "skipped": 362,
+        "failure": 91,
+        "cancelled": 108
+      },
+      "run_without_job_states": {
+        "success": 742,
+        "skipped": 70,
+        "failure": 111,
+        "action_required": 48,
+        "cancelled": 94,
+        "startup_failure": 1
+      }
+    }
+  ]
+}

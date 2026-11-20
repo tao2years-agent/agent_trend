@@ -1,0 +1,123 @@
+{
+  "instance_id": "sympy__sympy-23824",
+  "src_test_paths": [
+    "sympy/physics/hep/tests/test_gamma_matrices.py"
+  ],
+  "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-23824-4h7su4vf\\sympy-39de9a2698ad4bb90681c0fdb70b30a78233145f\\sympy\\__init__.py",
+  "phases": {
+    "original": {
+      "selected": {
+        "test_kahane_simplify1": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_gamma_matrix_class": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_kahane_algorithm": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 3.28,
+      "xml": "original.xml",
+      "stdout": "original.txt"
+    },
+    "regression_on_base": {
+      "selected": {
+        "test_kahane_simplify1": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+          ],
+          "outcome": "failure",
+          "observations": [
+            "failure"
+          ]
+        },
+        "test_gamma_matrix_class": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_kahane_algorithm": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 1,
+      "seconds": 2.59,
+      "xml": "regression_on_base.xml",
+      "stdout": "regression_on_base.txt"
+    },
+    "regression_on_gold": {
+      "selected": {
+        "test_kahane_simplify1": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_gamma_matrix_class": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_kahane_algorithm": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.51,
+      "xml": "regression_on_gold.xml",
+      "stdout": "regression_on_gold.txt"
+    }
+  }
+}

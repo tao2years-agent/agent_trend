@@ -1,0 +1,463 @@
+FAQs - Sourcegraph docs (https://sourcegraph.com/docs/batch-changes/faq)
+citeturn77search0 [wordlim: 200] Crawled: today; It is possible to publish many types of changesets when previewing a batch change by modifying the publication state for the changeset directly from the UI (see "Publishing changesets"). ... The changeset may also be in a state that we cannot currently publish from: for example, because a previous push to the code host failed (in which case you should re-apply the batch change), or if you are actively detaching the changeset from your batch change.
+    
+    BASH
+    
+    `${{ "${{ leave me alone! }}" }}`
+
+Remember the context in which the inner `${{ }}` will be evaluated, and be sure to escape characters as appropriate. Check out the cheat sheet for an example within a shell script.
+
+## How is commit author determined for commits produced from Batch Changes?
+
+Commit author is determined when running `src batch [apply|preview]`. If no author key is defined in the batch spec, `src` will try to use the git config values for `user.name` and `user.email` from your local environment, or `batch-changes@sourcegraph.com` if no user is set.
+
+## Why is the checkbox on my changeset disabled when previewing a batch change?
+
+It is possible to publish many types of changesets when previewing a batch change by modifying the publication state for the changeset directly from the UI (see "Publishing changesets"). However, not every changeset can be published by Sourcegraph. By hovering over your changeset's disabled checkbox, you can see why that specific changeset is not currently publishable. The most common reasons include:
+
+  * The changeset is already published (we cannot unpublish a changeset or convert it back to a draft)
+  * The changeset's publication state is being controlled from your batch spec file (i.e., you have the `published` flag set in your batch spec); the batch spec takes precedence over the UI
+  * You do not have permission to publish to the repository the changeset would be opened against
+  * The changeset was imported (and was therefore already published by someone or something else)
+
+The changeset may also be in a state that we cannot currently publish from: for example, because a previous push to the code host failed (in which case you should re-apply the batch change), or if you are actively detaching the changeset from your batch change.
+--------------------------------------------------------------------------------
+Recipes | OpenRewrite Docs (https://docs.openrewrite.org/concepts-and-explanations/recipes)
+citeturn77search1 [wordlim: 200] Crawled: today; A recipe can represent a single, stand-alone operation or it can be linked together with other recipes to accomplish a larger goal such as a framework migration. ... Recipes can add other recipes to the execution pipeline by overriding the `List<Recipe> getRecipeList()` function and returning the list of recipes that should be run. ... These are more than just a string replacement, though; they offer compiler and type support. ... Those two recipes are executed in order, so the formatting recipe is applied before the second recipe adds its generated code. ... When large recipes are applied to large repositories, the performance impact of additional cycles can be substantial.
+Recipes may be linked together with many other recipes and run in a variety of orders, contexts, and number of cycles. Making your recipes immutable, as this one is, is a strongly recommended best practice. Any mutable state should be local to the visitor, a fresh instance of which should be returned from each invocation of `getVisitor()`.
+
+### Linking Recipes Together​
+
+Consider this non-exhaustive list of steps required to migrate a project from JUnit 4 to JUnit 5:
+
+  * Replace the annotation `org.junit.Test` with `org.junit.jupiter.api.Test`
+  * Change assertions from `org.junit.Assert` to `org.junit.jupiter.api.Assertions`, including updating the order of arguments within the method invocations
+  * Remove public visibility from test classes and methods that no longer need to be `public` in JUnit 5
+  * Modify the Maven `pom.xml` to include dependencies on JUnit 5, and remove dependencies on JUnit 4
+
+No one recipe should be responsible for implementing all of these different responsibilities. Instead, each responsibility is handled by its own recipe and those recipes are aggregated together into a single "Migrate JUnit 4 to 5" recipe. Those two recipes are executed in order, so the formatting recipe is applied before the second recipe adds its generated code. For the formatting recipe to get a second pass in which it can format the generated code, the code-generating recipe must declare that it causes another cycle. Without that declaration the generated code is left unformatted.
+
+When large recipes are applied to large repositories, the performance impact of additional cycles can be substantial. Whenever possible recipes should complete all of their own work within a single cycle, rather than spreading it out over multiple cycles.
+
+If a Declarative Recipe needs to cause another cycle but none of its constituent recipes return `true` from `Recipe.causesAnotherCycle()`, the declarative recipe can set the property in yaml:
+    
+    `---
+    type: specs.openrewrite.org/v1beta/recipe
+    name: com.yourorg.NeedsAnotherCycle
+    displayName: Test
+    causesAnotherCycle: true
+    recipeList:
+      - com.yourorg.SomeRecipeThatDoesNotCauseAnotherCycle
+--------------------------------------------------------------------------------
+Recipe conventions and best practices | OpenRewrite Docs (https://docs.openrewrite.org/authoring-recipes/recipe-conventions-and-best-practices)
+citeturn77search2 [wordlim: 200] Crawled: today; For instance, a recipe that makes changes to a method introduced in Java 17 would not be useful to run on Java 8 code. ... If you wish to cache the result of an expensive computation which does not affect Recipe idempotence, you can store the result in a `transient` field or the execution context. ... For larger recipes, such as a framework migration, the performance impact of causing another cycle can be substantially detrimental. ... Within a scanning recipe it is common to make a map of `Map<JavaProject, T>` to keep track of per-project information of type `T`.
+
+You can use Preconditions.and(), Preconditions.or(), and Preconditions.not() to create more complex applicability criteria from simple building blocks.
+
+Tip
+
+Preconditions benefit recipe execution performance when they efficiently prevent unnecessary execution of a more computationally expensive visitor.
+
+### Recipes must be idempotent and immutable​
+
+A recipe given the same LST and configuration should always produce the same results. This means that a recipe's behavior should not be influenced by LSTs which have been visited previously, only the source file currently being visited.
+
+Warning
+
+Mutable recipe state can be a source of strange and confusing bugs. If visiting a source file mutates your recipe's state then your recipe likely has a bug. Mutable state makes recipes more difficult to read, understand, test, debug, and maintain.
+
+Tip
+
+Recipes extending ScanningRecipe gather data from any or all LSTs via `ScanningRecipe.getScanner()`. That data is then available to use in the subsequent invocations of `ScanningRecipe.generate()` and `ScanningRecipe.getVisitor()`. Data is passed via a recipe-defined type conventionally referred to as an "accumulator". This is the only correct way to pass data from one LST to another.
+
+Since recipe options are configured via their constructors there are few valid reasons for recipes to have mutable fields. It is typical, but not required, that recipes use the `@lombok.Value` annotation to declare their fields as `final` and to generate a suitable constructor.
+
+To help prevent state from accidentally leaking between visits of different LSTs, `Recipe.getVisitor()` is called per source file, per cycle. `Recipe.getVisitor()` is required to always return a new, non-cached visitor instance.
+
+Info
+
+If you wish to cache the result of an expensive computation which does not affect Recipe idempotence, you can store the result in a `transient` field or the execution context. Recipe execution is single-threaded but the `transient` modifier will tell lombok not to generate a constructor parameter and jackson not to attempt to serialize the field.
+
+For data formats like XML or JSON, it is usually more convenient to use the format's parser to turn a snippet of text into usable LST elements.
+
+### Stay single cycle​
+
+OpenRewrite executes recipes in a loop. Each iteration of that loop through the full recipe list is called a cycle. This is so that if one recipe makes a change and another recipe would do something based on that change, it will have a chance to do so. This happens regardless of the order the recipes are executed in.
+
+By default, only a single cycle is executed unless some recipe in the group overrides `Recipe.causesAnotherCycle()` to return `true`. For larger recipes, such as a framework migration, the performance impact of causing another cycle can be substantially detrimental. Whenever possible, a recipe should complete all of its work the first time (which avoids the need to override `Recipe.causesAnotherCycle()`).
+
+### State conventions​
+
+You should generally avoid passing state across visitors if at all possible. If you do need to pass state around, though, you should first figure out which parts of your recipe need what information.
+
+If you need to pass state between functions in the same visitor, then you could use cursor messaging instead of execution context messaging.
+
+If you need to pass state between different visitors, then you could use a ScanningRecipe, where a first scanning phase can collect information, which you can then use in subsequent visitors.
+
+--------------------------------------------------------------------------------
+Batch Changes - Sourcegraph docs (https://sourcegraph.com/docs/batch-changes)
+citeturn77search3 [wordlim: 200] Crawled: 3 weeks ago; Supported on Enterprise plans. ... batch-spec  | A YAML file that defines a batch change, including target repositories, commands to execute, and templates for changesets and commits. ... batch-changes-controller  | The batch change controller reconciles the actual state of the batch change's changesets on the code host to match your desired intent (as described in the changeset specs)
+
+# Batch Changes
+
+Supported on Enterprise plans.
+
+Learn how to automate and ship large-scale code changes across many repositories and code hosts.
+
+Batch Changes helps you ship large-scale code changes across many repositories and code hosts. You can create pull requests on all affected repositories, and it tracks their progress until they're all merged. You can also preview the changes and update them at any time.
+
+## Batch Spec Reference
+
+Learn about the reference guide to the batch spec YAML format in which batch specs are defined.
+
+## Key Concepts
+
+As you learn about Batch Changes, it's helpful to understand the following terms:
+
+Term  | Description
+--- | ---
+batch-change  | A group of related changes to code, along with a title and description
+batch-spec  | A YAML file that defines a batch change, including target repositories, commands to execute, and templates for changesets and commits. It represents your high-level intent, like "linting files in repositories with a `package.json` file"
+changesets  | Refers to associated pull requests, merge requests, or any reviewable code segments linked to a batch change
+published-changeset  | A published changeset is a commit, branch, and changeset that has been created on the code host. An unpublished changeset is a preview visible in the batch change but not yet existing on the code host
+spec  | A spec is a record of intent for batch changes or changesets. It guides the system to align the actual outcomes with your specified intent continuously
+changeset-spec  | A batch change has many changeset specs, which are produced by executing the batch spec (i.e., running the commands on each selected repository) and then using its changeset template to produce a list of changesets, including the diffs, commit messages, changeset title, and changeset body
+batch-changes-controller  | The batch change controller reconciles the actual state of the batch change's changesets on the code host to match your desired intent (as described in the changeset specs)
+
+## Create a Batch Change
+
+To create a batch change, use Code Search to run a search query to find all occurrences of code to change and make every change with a single declarative spec file.
+
+A batch change then tracks all of its changesets (a generic term for pull requests or merge requests) for updates to:
+
+  * Status: Open, merged, or closed
+  * Checks: Passed (green), failed (red), or pending (yellow)
+  * Review status: Approved, changes requested, pending, or other statuses (depending on your code host or code review tool)
+
+Image: batch-changes-tracking
+
+You can see the overall trend of a batch change in the burndown chart, which shows the proportion of changesets that have been merged over time since the batch change was created.
+
+Image: batch-changes-charts
+
+You can also create a batch change on a monorepo by specifying which projects to run the script on. A batch change can also be used to track and manage manually created changesets.
+
+## Supported code hosts and changeset types
+
+A single batch change can span many repositories and many code hosts. The generic term changeset is used to refer to any of the following:
+
+  * GitHub pull requests
+  * Bitbucket Server/Bitbucket Data Center and Bitbucket Data Center pull requests
+  * GitLab merge requests
+  * Bitbucket Cloud pull requests
+  * Gerrit changes
+  * Perforce changelists (Beta)
+  * Phabricator diffs (not yet supported)
+
+## Common use cases
+
+You can use Batch Changes to make the following kinds of changes:
+
+  * Upgrading dependencies
+  * Patching critical security issues
+  * Updating uses of deprecated library APIs
+  * Cleaning up common problems using linters
+  * Standardizing build, configuration, and deployment files
+
+## More Resources
+
+## Batch Changes design theory
+
+Learn everything about how is the Batch Changes feature designed.
+
+## Requirements
+
+Learn about the requirements before getting started with Batch Changes with the Sourcegraph CLI.
+
+## Architecture
+
+Learn about how Batch Changes fits into Sourcegraph in the architecture overview.--------------------------------------------------------------------------------
+Agentic Batch Changes - Sourcegraph docs (https://sourcegraph.com/docs/agentic-batch-changes)
+citeturn77search4 [wordlim: 200] Crawled: 3 days ago; Agentic Batch Changes turns a description of a change into changesets across your codebase. ...   * A changeset is one proposed change on a code host: a pull request on GitHub, a merge request on GitLab. ...   * The plan is what the agent proposes before it runs: the repositories in scope, what will change in each one, and the branch, title, and commit message for the resulting changesets. ... At any time, you can ask the agent to show you the plan or adjust it in plain language, including after publication.
+
+# Agentic Batch Changes
+
+Agentic Batch Changes turns a description of a change into changesets across your codebase. You tell the agent what should be different. It researches your repositories with Deep Search, proposes a plan, previews the change on one repository, and rolls it out in stages you control. After it opens pull requests, it can keep watching them: when CI fails or a merge conflict appears, it can iterate to fix the problem and report back.
+
+You can use it for:
+
+  * Dependency upgrades and CVE remediation, including upgrades with breaking changes, transitive dependencies, and lockfiles.
+  * Language and framework migrations, such as replacing deprecated APIs across every service.
+  * Generating or refreshing repository documentation and `AGENTS.md` guidance for coding agents.
+  * Splitting one large change in a monorepo into a separate pull request per team.
+
+The agent also handles changes that need judgment in each repository, reading the surrounding code before it edits rather than applying one pattern everywhere.
+You can ask for corrective code changes to existing changesets; see During the conversation for how revisions affect completed work.
+
+### Watch the test run
+
+After you approve, the agent runs the change in one repository and shows you the diff. Review the proposed changes and assess the agent's suggested solution. If the diff has a problem, tell the agent. You can also highlight and comment on lines in the diff itself. The agent will then revise the plan and adjust the next changes as well.
+
+### Publish a draft
+
+Where your code host supports drafts, tell the agent to publish the test result as a draft changeset to get CI, code owner checks, and reviewer comments on one changeset before the rollout goes any wider. If the agent needs a secret to read CI logs, it might ask you to configure one.
+
+### Expand the rollout
+
+If everything goes well, the agent might ask if it can continue. By default, the agent runs the next stage and pauses again when it's done. Each pause is a checkpoint where you can inspect a diff, skip a repository, or adjust a title. When you trust the change, "run everything else" fans out the remainder.
+
+### Let the agent finish
+
+When configured to handle CI failures, the agent fetches the logs, iterates to fix the problem, and updates the changeset. You can step away and ask "what happened while I was away?" when you return for a summary of everything that changed. When reviewers approve and CI is green, merge on the code host or use Merge in Sourcegraph's changeset view, where available. The agent cannot merge changesets from the conversation.
+
+To let colleagues follow the work, use Share on the agent page. See Sharing and visibility. To let a colleague take over the work, use Share > Hand over. See Handing over an agent.--------------------------------------------------------------------------------
+Tracking existing changesets - Sourcegraph docs (https://sourcegraph.com/docs/batch-changes/tracking-existing-changesets)
+citeturn77search5 [wordlim: 200] Crawled: 2 months ago; Batch Changes allow you not only to publish changesets but also to import and track changesets that already exist on different code hosts. ... Once you've created the batch change, you'll see the existing changeset in the list of changesets.
+
+# Tracking existing changesets
+
+Learn how to track your existing changesets.
+
+Batch Changes allow you not only to publish changesets but also to import and track changesets that already exist on different code hosts. That allows you to get an overview of the status of multiple changesets, with the ability to filter and drill down into the details of a specific changeset. After you have successfully imported changesets, you can perform the following bulk actions:
+
+  * Write comments on each of the imported changesets
+  * Merge each of the imported changesets to main
+  * Close each of the imported changesets
+
+## Requirements
+
+  * Sourcegraph instance with repositories in it. See the Quickstart guide on how to set up a Sourcegraph instance
+  * A global service account token for Batch Changes (a personal access token cannot currently be used for importing changesets)
+
+## Importing changesets into a batch change
+
+To track existing changesets in a batch change, you add them to the batch spec under the `importChangesets` property and apply the batch spec.
+--------------------------------------------------------------------------------
+Update a batch change - Sourcegraph docs (https://sourcegraph.com/docs/batch-changes/update-a-batch-change)
+citeturn77search6 [wordlim: 200] Crawled: 2 months ago; For example, change the commit message in the `changesetTemplate`, or add a new changeset id to the importedChangesets, or modify the repositoriesMatchingQuery to return different search results ... See the Batch Changes design docs for more information on the declarative nature of the Batch Changes system. ... When you apply this new batch spec, all the changesets published in repositories other than `my-one-repository` will be closed on the code host and archived from the batch change.
+
+# Update a batch change
+
+Learn in detail about how to update your Batch Changes.
+
+Updating a batch change works by applying a batch spec to an existing batch change in the same namespace.
+
+Since batch changes are uniquely identified by their `name` and the namespace in which they were created, you can edit any other part of a batch spec and apply it again.
+
+When a new batch spec is applied to an existing batch change, the existing batch change is updated, and its changesets are updated to match the new desired state.
+
+## Requirements
+
+To update a changeset, you need:
+
+  * Admin permissions for the batch change
+  * Write access to the changeset's repository (on the code host)
+  * A personal access token or a global service account token configured for the code host
+
+For more information, see Code host interactions in Batch Changes.
+
+## Preview and apply a new batch spec
+
+To update a batch change after previewing the changes, do the following:
+    
+    BASH
+    
+    `src batch apply -f YOUR_BATCH_SPEC.yaml`
+
+The new batch spec will be applied directly, and the batch change and its changesets will be updated.
+
+## How batch change updates are processed
+
+Changes in the batch spec that affect the batch change, such as the `description`, are applied directly when you apply the new batch spec.
+
+Changes affecting the changesets are processed asynchronously to update the desired state. Different fields are processed differently.
+
+Here are some examples:
+
+  * When the diff or attributes that affect the resulting commit of a changeset directly (such as the `changesetTemplate.commit.message` or the `changesetTemplate.commit.author`) and the changeset has been published, the commit on the code host will be overwritten by a new commit that includes the updated diff
+  * When the `changesetTemplate.title` or the `changesetTemplate.body` are changed and the changeset has been published, the changeset on the code host will be updated accordingly
+  * When the `changesetTemplate.branch` is changed after the changeset has been published on the code host, the existing changeset will be closed on the code host and the new one, with the new branch, will be created
+  * When the batch spec is changed in such a way that no diff is produced in a repository in which the batch change has already created and published a changeset, the existing changeset will be closed on the code host and archived in the batch change
+  * When the changeset has been published and the batch spec is changed in such a way that a commit on the code host will be overwritten, any commits that have been manually added to the changeset on the code host will be deleted
+
+See the Batch Changes design docs for more information on the declarative nature of the Batch Changes system.
+
+## Updating a batch change to change its scope
+
+### Adding changesets
+
+You can gradually increase the number of repositories to which a batch change applies by modifying the entries in the `on` property of the batch spec.
+--------------------------------------------------------------------------------
+Module 1: Migration assessment in the Moderne Platform | Moderne Docs (https://docs.moderne.io/hands-on-learning/spring-boot-migration/module-1-migration-assessment/)
+citeturn77search7 [wordlim: 200] Crawled: last month; After the recipe run, click on the Data tables tab. ... Download and open the `Java version migration plan` data table as a CSV or Excel file. ... Open the `SearchResults` data table and note which repos use QueryDSL.
+## Exercise 1-3: Run code insight recipes​
+
+### Goals for this exercise​
+
+  * Identify Java versions and build tooling in use
+  * Discover current Spring Boot versions across your repositories
+  * Find `javax.*` usage hotspots and code generators
+
+### Steps​
+
+#### Step 1: Understand your Java adoption​
+
+  1. Click Marketplace in the left navigation to browse available recipes. Search for and select `Plan a Java version migration` (`org.openrewrite.java.migrate.search.PlanJavaMigration`).
+  2. Make sure Moderne - Training is still selected and click Dry run to run the recipe against the org.
+  3. After the recipe run, click on the Data tables tab. Some recipes do not modify code — instead they analyze it and produce structured output called "data tables." Download and open the `Java version migration plan` data table as a CSV or Excel file.
+
+Image: Data tables tab with Java version migration plan available for download
+--------------------------------------------------------------------------------
+Batch Changes site admin configuration reference - Sourcegraph docs (https://sourcegraph.com/docs/admin/config/batch-changes)
+citeturn77search8 [wordlim: 200] Crawled: last month; This can result in CI systems being overwhelmed if hundreds or thousands of changesets are being handled as part of a single batch change. ... We recommend maintaining a rate that is no faster than `5/minute`; however, you can refer to your code host's API docs if you wish to increase it beyond this recommendation: ... When using a global service account token with Batch Changes, keep in mind that this token will also be used for other Batch Changes with code host interactions, too. ... To rate limit changeset publication to 3 per minute between 08:00 and 16:00 UTC on weekdays, and allow unlimited changesets outside of those hours:
+Batch changes created in other namespaces (user or organization) will still be restricted to the author and site admins.
+
+## Rollout windows
+
+By default, Sourcegraph attempts to reconcile (create, update, or close) changesets as quickly as the rate limits on the code host allow. This can result in CI systems being overwhelmed if hundreds or thousands of changesets are being handled as part of a single batch change.
+
+Configuring rollout windows allows changesets to be reconciled at a slower or faster rate based on the time of day and/or the day of the week. These windows are applied to changesets across all code hosts, but they only affect the rate at which changesets are created/published, updated, or closed, as well as some other internal operations like importing and detaching. Bulk operations to publish changesets also respect the rollout window; however, bulk commenting, merging, and closing will happen all at once.
+
+Rollout windows are configured through the `batchChanges.rolloutWindows` site configuration option. --------------------------------------------------------------------------------
+Site Admin Configuration for Batch Changes - Sourcegraph docs (https://7.6.sourcegraph.com/batch-changes/site-admin-configuration)
+citeturn77search9 [wordlim: 200] Crawled: last month;   * Configure which users have access to Batch Changes (Beta): By default, all users can create and view batch changes, but only the batch change's author or a site admin can administer a given batch change ...     * Rollout windows, which control the rate at which Batch Changes will publish changesets on code hosts
+
+# Site Admin Configuration for Batch Changes
+
+Learn what configuration permissions site admins have with Batch Changes.
+
+Using Batch Changes requires a code host connection to a supported code host (currently GitHub, Bitbucket Server/Bitbucket Data Center, GitLab, and Bitbucket Cloud). Site admins can configure the following when setting and disabling Batch Changes:
+
+## Set up Batch Changes
+
+  * Configure which users have access to Batch Changes (Beta): By default, all users can create and view batch changes, but only the batch change's author or a site admin can administer a given batch change
+    * Additionally, you can also customize org settings to allow members of an organization to share administration privileges over batch changes created in that organization
+  * (Optional) Configure repository permissions, that Batch Changes will follow
+  * Configure credentials
+  * Setup incoming webhooks to make sure changesets sync fast. Learn more about Batch Changes effect on code host rate limits
+  * Configure any desired optional features, such as:
+    * Rollout windows, which control the rate at which Batch Changes will publish changesets on code hosts
+    * Forks, which push branches created by Batch Changes onto forks of the upstream repository instead of the repository itself
+    * Outgoing webhooks, which publish events related to batch changes and changesets to enable deeper integrations with your other tools and systems
+    * Auto-delete branch on merge/close, which automatically deletes branches created by Batch Changes when changesets are merged or closed
+    * Commit signing for GitHub, which signs commits created by Batch Changes via a GitHub App (Beta)
+    * Batch spec library, which help your users write batch specs and follow best practices
+
+## Disable Batch Changes
+
+  * Disable Batch Changes.
+  * Disable Batch Changes for non-site-admin users--------------------------------------------------------------------------------
+Publishing changesets to the code host - Sourcegraph docs (https://sourcegraph.com/docs/batch-changes/publishing-changesets)
+citeturn77search10 [wordlim: 200] Crawled: last month; After you've created a batch change with the `published` field set to `false` or omitted in its batch spec, you can see a preview of the changesets (e.g., GitHub pull requests) that will be created on the code host once they're published: ...   * Publication state isn't reproducible across multiple batch changes ... Instead of publishing all changesets at the same time, you can also publish some of a batch change's changesets by specifying which changesets you want to publish in the `published` field: ... See `changesetTemplate.commit` for details on how to set the author and the commit message.
+
+# Publishing changesets to the code host
+
+Learn how to publish changesets to the code host.
+
+After you've created a batch change with the `published` field set to `false` or omitted in its batch spec, you can see a preview of the changesets (e.g., GitHub pull requests) that will be created on the code host once they're published:
+
+Image: browser_batch_created
+
+To create these changesets on the code hosts, you need to publish them.
+
+## Requirements
+
+To publish a changeset, you need:
+
+  * Admin permissions for the batch change
+  * Write access to the changeset's repository (on the code host)
+  * A personal access token or a global service account token configured for the code host
+
+For more information, see Code host interactions in Batch Changes.
+
+## Publishing changesets
+
+You can publish changesets either by:
+
+  * Setting the `published` field in the batch spec, or
+  * Through the Sourcegraph UI
+
+Each of these options has its pros and cons. Here is a summary:
+
+Workflow  | Pros  | Cons
+--- | --- | ---
+Setting `published` in the batch spec  | 
+
+  * If you reuse your batch spec or share it with others, the new batch changes will have the same changesets published
+  * Easy to publish changesets in large batch changes based on specific criteria, such as the organization each repository is in
+ | 
+
+  * Requires the batch spec to be re-applied before changes take effect, which can be slower
+  * Requires more context switching from the UI back to the spec file when previewing diffs
+Publishing from the UI  | 
+
+  * Rapid feedback loop: you can check a specific diff and immediately publish it
+  * Easy to publish random changesets without having to specify rules in the `published` field
+ | 
+
+  * Publication state isn't reproducible across multiple batch changes
+
+We currently do not support changing the state of a `published` changeset to `draft` or `unpublished`. Once a changeset is published, it can't be `unpublished` or changed to a `draft`.
+
+When you run `src batch preview` against your batch spec and open the preview link, you'll see the current status of each of your changesets, as well as a preview of the actions that will be performed when you apply:
+
+Image: publish_ui_browser_preview
+
+For any changesets that are currently unpublished or only published as drafts, you can select the checkbox and choose an action from the dropdown menu to indicate what publication state you want to set the changesets to apply on:
+
+Image: publish_ui_browser_select_action_on_apply
+
+Certain types of changeset cannot be published from the UI and will have their checkbox disabled. Not sure why your changeset is disabled? Check the FAQ.
+
+Once the preview actions look good, click Apply to publish the changesets. You should see an alert appear indicating that the publication states actions have been updated, and the changesets' "Actions" will reflect the new publication states:
+
+Image: publish_ui_browser_preview_update
+
+### From an open batch change
+
+Once applied, you can select the changesets you want to publish from the batch change page and publish them using the publish bulk operation, as demonstrated in this video:
+
+## Specifying Git commit details
+
+Regardless of how you publish your changesets, the commit created and pushed to the branch uses the details specified in the batch spec's `changesetTemplate` field.
+
+See `changesetTemplate.commit` for details on how to set the author and the commit message.--------------------------------------------------------------------------------
+whats-new | Moderne Docs (https://docs.moderne.io/whats-new/)
+citeturn77search11 [wordlim: 200] Published: 3 days ago; Crawled: today; Results and data tables persist now, so work someone already ran is there to open instead of repeat. ... This is an evolution of the commit screen into a historical campaign view of a recipe run, from the point it produces changes to the point every repository reaches a terminal state. ... Image: A change campaign view with a burn-down chart of repositories by state above a table of repositories and their PR status A change campaign’s burn-down chart and per-repository PR status. ... The Maven repository at `artifacts.codegenomeproject.org/maven` has been live since August 11.
+
+## August 2026​
+
+Platform Feature
+
+### Make the most of SaaS v2​
+
+If you have transitioned to SaaS v2, you know it's more than a UI refresh. There are new capabilities and greater visibility you can already take advantage of.
+
+  * Run against your whole organization. Recipe execution scales further now, so runs complete even on much larger organizations.
+  * Run native recipes written in more languages. JavaScript, TypeScript, Python, C#, and Go all run in the platform now.
+  * Look in the activity view first. Results and data tables persist now, so work someone already ran is there to open instead of repeat.
+
+What's changed in SaaS v2
+
+Platform Feature
+
+### Platform telemetry exports and reports​
+
+Moderne now exports structured usage telemetry for every recipe run, build, and commit from the SaaS platform and CLI. You can replicate this data to your own object storage bucket, where you can query it directly or feed it into your BI stack. A starter pack of BI templates shows how to build reports with your own BI tool. --------------------------------------------------------------------------------
+1
+Sourcegraph’s code AI platform
+available nativel (https://sourcegraph.com/guides/sourcegraph-gitlab-solution-brief.pdf)
+citeturn77search12 [wordlim: 200] Published: 2.3 years ago; organizations to share data between GitLab and the partner’s tools to extract more value from both products. ... in their text editor or wherever they’re writing and reading code. ... Batch Changes: Automate large-scale code changes across the entire codebase such as updating legacy
+--------------------------------------------------------------------------------
+21_0329-SG-One Pager-v4 (https://info.sourcegraph.com/hubfs/CTA%20assets/Sourcegraph-big-code-one-pager.pdf)
+citeturn77search13 [wordlim: 200] Published: 5.6 years ago; We’re living in the world of Big Code: massive and ever-growing codebases and repositories, multiple languages and file formats, and a wide variety of developer tools. ... <td>Rapidly and securely remove legacy code, fix critical security issues, pay down tech debt, and make large-scale code changes and refactors across the entire codebase.</td> ... With Sourcegraph, our engineers can understand all of the repercussions of committing a change to a service that is exposed to other services.” ... “The ability to automate downstream changes that Sourcegraph Batch Changes provides is a key capability for reducing the hidden burden of updates pushed across teams and enabling us to increase our engineering velocity.”
+--------------------------------------------------------------------------------
+THE EMERGENCE OF BIG CODE (https://info.sourcegraph.com/hubfs/CTA%20assets/sourcegraph-big-code-survey-report.pdf)
+citeturn77search14 [wordlim: 200] Published: 6.3 years ago; The top challenge cited is the time and effort for new hires to be productive (62%), followed by code breaking because of a lack of understanding dependencies (57%), difficulties managing code changes (50%), lack of visibility (46%), slow code reviews (43%), increased frustration for developers finding specific code (40%), problems understanding new codebases (38%), and much more.
+--------------------------------------------------------------------------------
+It’s more than search — key traits (https://sourcegraph.com/guides/key-traits-of-a-code-intelligence-platform.pdf)
+citeturn77search15 [wordlim: 200] Published: 2.3 years ago; Track code changes all the way to merge from ... code changes
+--------------------------------------------------------------------------------
+Remote software (https://info.sourcegraph.com/hubfs/CTA%20assets/Sourcegraph-remote-software-development-made-easier.pdf)
+citeturn77search16 [wordlim: 200] Published: 1.4 years ago; writing a lot of docs (in code and in Markdown files).
+

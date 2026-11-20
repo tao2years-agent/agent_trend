@@ -1,0 +1,49 @@
+[
+  {
+    "case": "sympy__sympy-22714",
+    "version": "gold",
+    "probe": "point",
+    "interpreter": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+    "sympy_version": "1.10.dev",
+    "observation": {
+      "result": "rejected",
+      "exception": "ValueError",
+      "message": "Imaginary coordinates are not permitted."
+    }
+  },
+  {
+    "case": "sympy__sympy-22714",
+    "version": "Ve63126860e55",
+    "probe": "point",
+    "interpreter": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+    "sympy_version": "1.10.dev",
+    "observation": {
+      "result": "accepted",
+      "value": "Point2D(-1 - 2*I/3, 1)"
+    }
+  },
+  {
+    "case": "sympy__sympy-23262",
+    "version": "base",
+    "probe": "tuple",
+    "interpreter": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+    "sympy_version": "1.11.dev",
+    "observation": {
+      "result": "returned",
+      "value": "()"
+    }
+  },
+  {
+    "case": "sympy__sympy-23262",
+    "version": "gold",
+    "probe": "tuple",
+    "interpreter": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+    "sympy_version": "1.11.dev",
+    "observation": {
+      "result": "error",
+      "exception": "SyntaxError",
+      "generated_line": "return (,)",
+      "offset": 13
+    }
+  }
+]

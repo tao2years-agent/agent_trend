@@ -1,0 +1,72 @@
+FFF.F...                                                                 [100%]
+================================== FAILURES ===================================
+_____________________ test_create_expand_pow_optimization _____________________
+sympy\codegen\tests\test_rewriting.py:269: in test_create_expand_pow_optimization
+    assert cc(-x**4) == '-(x*x*x*x)'
+sympy\codegen\tests\test_rewriting.py:259: in <lambda>
+    cc = lambda x: ccode(
+sympy\printing\codeprinter.py:681: in ccode
+    return c_code_printers[standard.lower()](settings).doprint(expr, assign_to)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\c.py:139: in _meth_wrapper
+    return meth(self, expr, **kwargs)
+sympy\printing\c.py:274: in _print_Mul
+    return super()._print_Mul(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:33: in test_PythonCodePrinter
+    assert prntr.doprint(-Mod(x, y)) == '-(x % y)'
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+_____________________________ test_empty_modules ______________________________
+sympy\utilities\tests\test_lambdify.py:272: in test_empty_modules
+    no_modules = lambdify([x, y], expr)
+sympy\utilities\lambdify.py:867: in lambdify
+    funcstr = funcprinter.doprint(funcname, args, _expr, cses=cses)
+sympy\utilities\lambdify.py:1113: in doprint
+    str_expr = self._exprrepr(expr)
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+________________________________ test_Integral ________________________________
+sympy\printing\tests\test_pycode.py:294: in test_Integral
+    assert prntr.doprint(single) == 'scipy.integrate.quad(lambda x: numpy.exp(-x), 0, numpy.PINF)[0]'
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\numpy.py:453: in _print_Integral
+    self._print(e.args[0]),
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\pycode.py:68: in _print_known_func
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\pycode.py:68: in <lambda>
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+- generated xml file: F:\dongcha\research-harness\round2\oracles\sensitivity\sympy__sympy-22080\without-1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - NameErro...
+FAILED sympy/utilities/tests/test_lambdify.py::test_empty_modules - NameError...
+FAILED sympy/printing/tests/test_pycode.py::test_Integral - NameError: name '...
+4 failed, 4 passed in 1.77s

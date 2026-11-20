@@ -1,0 +1,269 @@
+[
+  {
+    "case": "sympy__sympy-23534",
+    "phase": "original",
+    "module": "sympy/core/tests/test_symbol.py",
+    "exit": 0,
+    "seconds": 1.937,
+    "xml": "original_m1.xml",
+    "log": "original_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Str",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy_force_dummy_index",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_lt_gt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_no_len",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_ineq_unequal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Wild_properties",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols_become_functions_issue_3539",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_unicode",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_uniquely_named_symbol_and_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_disambiguate",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23534",
+    "phase": "regression_on_base",
+    "module": "sympy/core/tests/test_symbol.py",
+    "exit": 1,
+    "seconds": 1.657,
+    "xml": "regression_on_base_m1.xml",
+    "log": "regression_on_base_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Str",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy_force_dummy_index",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_lt_gt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_no_len",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_ineq_unequal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Wild_properties",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols",
+        "outcome": "failure",
+        "reason": "AssertionError: assert <class 'sympy.core.symbol.Symbol'> == UndefinedFunction\n +  where <class 'sympy.core.symbol.Symbol'> = type(q0)"
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols_become_functions_issue_3539",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_unicode",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_uniquely_named_symbol_and_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_disambiguate",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23534",
+    "phase": "regression_on_gold",
+    "module": "sympy/core/tests/test_symbol.py",
+    "exit": 0,
+    "seconds": 1.547,
+    "xml": "regression_on_gold_m1.xml",
+    "log": "regression_on_gold_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Str",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Dummy_force_dummy_index",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_lt_gt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_no_len",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_ineq_unequal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_Wild_properties",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_symbols_become_functions_issue_3539",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_unicode",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_uniquely_named_symbol_and_Symbol",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.core.tests.test_symbol",
+        "name": "test_disambiguate",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  }
+]

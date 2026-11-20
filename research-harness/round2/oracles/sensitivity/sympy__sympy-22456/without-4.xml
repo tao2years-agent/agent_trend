@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="0.340" timestamp="2026-11-20T12:04:07.785575" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.codegen.tests.test_ast" name="test_String" time="0.001"><failure message="TypeError: No value for 'text' given and attribute has no default">sympy\codegen\tests\test_ast.py:270: in test_String
+    assert st.func(*st.args) == st
+sympy\codegen\ast.py:237: in __new__
+    raise TypeError('No value for %r given and attribute has no default' % attrname)
+E   TypeError: No value for 'text' given and attribute has no default</failure></testcase><testcase classname="sympy.codegen.tests.test_ast" name="test_Assignment" time="0.001" /><testcase classname="sympy.codegen.tests.test_ast" name="test_Assignment_printing" time="0.002" /><testcase classname="sympy.codegen.tests.test_ast" name="test_Attribute" time="0.000" /><testcase classname="sympy.codegen.tests.test_ast" name="test_AugAssign" time="0.001" /><testcase classname="sympy.codegen.tests.test_ast" name="test_CodeBlock" time="0.000" /></testsuite></testsuites>

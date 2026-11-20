@@ -1,0 +1,21 @@
+.FF.....                                                                 [100%]
+================================== FAILURES ===================================
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:33: in test_PythonCodePrinter
+    assert prntr.doprint(-Mod(x, y)) == '-(x % y)'
+E   AssertionError: assert '-x % y' == '-(x % y)'
+E     - -(x % y)
+E     ?  -     -
+E     + -x % y
+_____________________________ test_empty_modules ______________________________
+sympy\utilities\tests\test_lambdify.py:274: in test_empty_modules
+    assert no_modules(3, 7) == empty_modules(3, 7)
+E   assert -3 == 4
+E    +  where -3 = <function _lambdifygenerated at 0x000001C17859C860>(3, 7)
+E    +  and   4 = <function _lambdifygenerated at 0x000001C17859CAE0>(3, 7)
+- generated xml file: F:\dongcha\research-harness\round2\oracles\sensitivity\sympy__sympy-22080\without-3.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - Assertio...
+FAILED sympy/utilities/tests/test_lambdify.py::test_empty_modules - assert -3...
+2 failed, 6 passed in 1.13s

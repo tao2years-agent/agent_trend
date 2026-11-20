@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-20T03:19:44.014550+00:00",
+  "commit": "b5bdfed1286513700b12b5ea5bbe6c8fa15734e6",
+  "source": "lanes/delivery/raw/pragent/61b4e7a25297-config_security.py",
+  "sha256": "61b4e7a25297c7f9452c7e5c37a4f07d7234ad5dd3b8710821e477df69b8990a",
+  "entrypoint": "is_repo_host_only_key",
+  "cases": [
+    {
+      "section": "config",
+      "key": "enable_auto_approval",
+      "expected_host_only": true,
+      "observed_host_only": true
+    },
+    {
+      "section": "config",
+      "key": "num_retries",
+      "expected_host_only": true,
+      "observed_host_only": true
+    },
+    {
+      "section": "skills",
+      "key": "max_skills_tokens",
+      "expected_host_only": false,
+      "observed_host_only": false
+    },
+    {
+      "section": "skills",
+      "key": "enabled",
+      "expected_host_only": false,
+      "observed_host_only": false
+    }
+  ]
+}

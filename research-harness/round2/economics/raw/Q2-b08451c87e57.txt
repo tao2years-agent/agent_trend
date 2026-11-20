@@ -1,0 +1,248 @@
+This article explains member management, role permissions, and seat occupancy rules for Teams and Enterprise.
+Applicable plans: Teams, Enterprise
+Organizations support 4 member roles. Admins and Members occupy seats; Config Admins and Directory Members do not.
+Admin:
+Has full administrative permissions for the organization, can access the admin console and manage billing, and can use the advanced features and resources included in the subscription plan.
+Config Admin:
+Has full administrative permissions for the organization and can access the admin console and manage billing. Cannot use paid features or Credits.
+Member:
+Can use the advanced features and resources included in the subscription plan. Cannot access the admin console.
+Directory Member:
+Used to sync organization members to Qoder without occupying seats when they join, allowing administrators to assign seats within the organization as needed. Cannot use paid features or Credits and has no organization management permissions.
+Config Admin is intended for people responsible for subscription or organization management. When a Directory Member needs paid features, an administrator changes their role to Member and assigns a seat.
+Admins and Config Admins can perform the member management operations below. In these instructions, “administrators” includes both roles.
+The default role for new members is Member. Administrators can change this setting by navigating to Organization Settings > Member Configuration > Default Role. Set the default role to Directory Member to let new users join without occupying seats.
+​
+Role Permissions
+Feature
+Config Admin
+Admin
+Member
+Directory Member
+Manage personal information
+✓
+✓
+✓
+✓
+Use the client
+✓
+✓
+Access seat Credits quota
+Teams only
+and advanced features
+✓
+✓
+Basic organization settings (e.g., name, privacy mode)
+✓
+✓
+Identity management configuration
+✓
+✓
+Invite members
+✓
+✓
+Manage member roles
+✓
+✓
+Remove members
+✓
+✓
+Usage management
+✓
+✓
+Model management
+Enterprise only
+✓
+✓
+Codebase policy
+Enterprise only
+✓
+✓
+Enterprise knowledge base
+Enterprise only
+✓
+✓
+Extensions & Marketplace
+Enterprise only
+✓
+✓
+Analytics & Insights
+Enterprise only
+✓
+✓
+IM channel management
+Enterprise only
+✓
+✓
+Audit log
+Enterprise only
+✓
+✓
+Billing & subscription management
+✓
+✓
+Delete organization
+✓
+✓
+Occupies a paid seat
+✓
+✓
+​
+Add Members
+You can add members to your organization using multiple methods:
+By approving applications from an invite link
+By email invitation
+By configuring Single Sign-On (SSO) for automatic joining
+By manual creation
+Enterprise only
+​
+Invite via Link
+Administrators can navigate to
+Organization Settings > Member Configuration
+to enable the invite link feature, set an expiration period, and generate an invite link.
+Share this link with the users you wish to invite. If a user is not already part of another organization and meets your domain check requirements (if any), they can use this link to apply to join your organization.
+When a user applies, you will see a join request on the Member Management page. For security, you must review and approve this request. Once approved, the user will be immediately added to the organization with their assigned role.
+The invitation link is reusable until it expires and has no limit on the number of invites. Administrators can revoke a created link at any time. Once revoked, the link will become invalid.
+For security purposes, only Admins and Config Admins can generate invite links.
+​
+Email Invitation
+Administrators can navigate to
+Members > Add Members
+and select email invitation. Choose the invitation validity period and role, then enter the target recipients' email addresses. Multiple email addresses can be pasted at once and will be automatically recognized and populated.
+Email invitations do not require additional admin approval — recipients can join the organization directly using the link in the email.
+​
+Join via Single Sign-On (SSO)
+Administrators can navigate to
+Organization Settings > Security & Identity
+to configure Domain Verification and SAML Single Sign-On (SSO). See:
+Configure Domain Verification
+Configure SSO
+After SSO is configured and enabled, any user with an email address from a verified domain will be automatically added to your organization with the default role upon signing in.
+When configuring SSO, please review the scope of your verified domains to ensure that users are added automatically as expected.
+If the default role is Admin or Member, users occupy seats when they join. If no seats are available, automatic member creation via SSO fails. Contact an administrator to add available seats, or change the default role to Directory Member, then try signing in again.
+If the default role is Config Admin or Directory Member, users join without occupying seats and are not limited by the number of available seats.
+​
+Modify Member Roles
+Administrators can modify member roles at any time.
+Navigate to
+Organization Settings > Member Management
+, select the target user, click the
+...
+icon on the right side of the list, and choose the
+Edit Role
+option.
+Role changes automatically adjust seat occupancy. There is no need to assign or release seats separately:
+Changing a Config Admin or Directory Member to Admin or Member occupies one available seat. If no seat is available, the change fails and the original role remains unchanged.
+Changing an Admin or Member to Config Admin or Directory Member releases the seat while keeping the user in the organization. In Enterprise, the seat becomes available immediately. In Teams, if the user has not used any Credits during the current usage period, the seat is returned and can be reassigned; otherwise, it cannot be reassigned during that period.
+Switching between Admin and Member retains the existing seat. Switching between Config Admin and Directory Member continues without occupying a seat.
+For example, changing an Admin to Config Admin preserves administrative permissions while releasing the seat. Changing a Member to Directory Member removes access to paid features and Credits while retaining organization membership. A Config Admin cannot change their own role to Admin; another member with full administrative permissions must make this change.
+An organization must have at least
+2 billable members
+and at least
+one Administrator
+.
+​
+Remove Members
+Administrators can remove members at any time, provided the organization's minimum member and role requirements are met. The removal is effective immediately.
+Navigate to
+Organization Settings > Member Management
+, select the target user, click the
+...
+icon on the right side of the list, and choose the
+Remove Member
+option.
+After removal, the member leaves the organization and is downgraded to the trial plan. To reclaim a seat while retaining organization membership, change the user to Directory Member. To also retain administrative permissions, change the user to Config Admin.
+Removing a Config Admin or Directory Member does not release a seat. Note the following:
+Enterprise
+: When a member occupying a seat is removed, the seat is automatically released and becomes available. It can be reassigned to another member within the current billing cycle. Seats are assigned automatically in the background, so you do not need to select one manually. A seat can be occupied by only one member at a time.
+Releasing a seat does not increase the organization's resource quota or Credits.
+Knowledge in the enterprise knowledge base
+belongs to the organization and is not deleted or transferred when a member is removed.
+Teams
+: Because each seat includes a Credits quota, removing a member occupying a seat clears the remaining Credits on that seat. If the member has not used any Credits during the current usage period, the seat is returned and can be reassigned to another user. If they have used Credits, the seat cannot be reassigned during that period. The same seat return rules apply when changing to a role that does not require a seat.
+If SSO is enabled, also revoke the user’s access to Qoder in your identity provider (IdP) to prevent them from automatically rejoining the organization via SSO.
+​
+Members and Seat Billing
+Members are added to the organization with the specified role. If no role is specified, the organization’s default role is used:
+An
+Admin
+or
+Member
+occupies one seat. For seat pricing, see
+Plans & Pricing
+.
+A
+Config Admin
+or
+Directory Member
+does not occupy a seat or incur seat charges. Seat occupancy and the associated billing apply only when they later switch to a role that requires a seat.
+When adding a new seat during a billing cycle, you will be charged on a
+prorated
+basis for the remainder of the cycle. If the seat includes Credits (Teams plan), the included Credits will also be allocated proportionally.
+For existing Config Admins or Directory Members who switch to a role requiring a seat for the first time, seat billing and Credits quota calculations start when they begin occupying the seat. For example, if a user joins as a Directory Member at the start of the month and switches to Member mid-month, calculations start mid-month. The time before they occupied a seat is not charged retroactively.
+Teams plan only:
+If you are using an organization created via
+redemption code mode
+, the seat calculation rules are as follows:
+When an Admin or Member occupies a seat, seat-months are automatically deducted from the organization’s balance according to this mode’s rules. Config Admins and Directory Members do not consume seat-months.
+Administrators can manually select the billing method for when a member first occupies a seat. Two modes are available:
+Prorated by Remaining Cycle Time
+and
+Full Cycle Deduction
+. The default is Prorated by Remaining Cycle Time. This rule also applies when an existing member without a seat first switches to a role that requires one.
+Organization administrators can go to
+Organization Settings > Advanced Settings > Usage Management > New Member Billing Method
+to set how seat-months are deducted and how resource quotas are allocated when members first occupy seats.
+The rules of the two billing methods are compared below (using first seat occupancy at mid-month as an example):
+Billing Method
+Seat-month Balance Deduction
+Credits Quota Allocation
+Example
+Prorated by Remaining Cycle Time (default)
+The seat-month balance is deducted proportionally based on the time from the start of seat occupancy until the cycle ends
+Allocated at the same proportion
+0.5 seat-month deducted, 50% Credits allocated
+Full Cycle Deduction
+Regardless of when the member starts occupying a seat, 1 full seat-month is deducted
+The full Credits quota for the entire cycle is allocated
+1 seat-month deducted, 100% Credits allocated
+Changes to the billing method apply to members who first occupy seats afterwards, including existing organization members who have not yet occupied a seat. The current deduction and quota for members already occupying seats are not affected.
+With
+Full Cycle Deduction
+, the allocated Credits expire at the end of the organization's current unified monthly cycle and are not extended based on when seat occupancy begins.
+Detailed calculation rules when Prorated by Remaining Cycle Time is selected
+Applicable to organizations that activated subscriptions via Alibaba Cloud Marketplace redemption codes. When a member first occupies a seat, whether by joining the organization or switching from a role that does not require a seat, the system calculates the number of "seat-months" to be deducted from the balance and the member's Credits quota for the current cycle according to the following rules.
+Since members may start occupying seats mid-cycle, their balance deduction and Credits quota for the first cycle may be lower than the standard values. Standard values apply in the next complete cycle if they continue to occupy seats.
+1. Core Formulas
+Time Ratio = Remaining hours from when the member first occupies a seat until cycle end ÷ Total hours in the cycle
+Calculated to the hour, rounded to two decimal places
+Seat-month Balance Deduction = Time Ratio × 1 seat-month
+Minimum deduction: 0.01 seat-month
+Member's Current Cycle Credits Quota = Time Ratio × Full Cycle Credits
+2. Typical Scenarios
+Using a 31-day billing cycle (744 hours) with 2,000 Credits per seat as an example:
+First Seat Occupancy
+Time Ratio
+Seat-month Deduction
+Seat Credits Quota
+Start of Month (Day 1)
+~1.00 (744 hours remaining)
+~1.00
+~2000
+Mid-Month (Day 15)
+~0.53 (396 hours remaining)
+~0.53
+~1060
+End of Month (Day 29)
+~0.10 (72 hours remaining)
+~0.10
+~200
+3. Impact of Different Month Lengths
+Due to different total hours in months of varying lengths, time ratios may differ by approximately 3-5%. The system calculates using actual hours, requiring no special handling.
+4. Summary
+The earlier seat occupancy begins in a cycle, the more balance (cost) is deducted, but the more Credits the member receives for the current cycle.
+The later seat occupancy begins in a cycle, the less balance (cost) is deducted, but the fewer Credits the member receives for the current cycle.
+If the member still occupies a seat in the next cycle, deductions will start from the beginning of the cycle with a time ratio of 1, so the member will receive the full Credits quota.
+When a member occupying a seat is removed, any seat charges already incurred are non-refundable, and no refund is provided for the remaining time. Whether the removed member's seat can be reassigned depends on the plan. See
+Remove Members
+.

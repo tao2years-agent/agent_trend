@@ -1,0 +1,591 @@
+检索参数 {"open":[{"ref_id":"https://claude.com/resources/articles/claude-tag-now-reads-even-more-of-the-room"},{"ref_id":"https://docs.glean.com/administration/search/access-verification"},{"ref_id":"https://docs.qoder.com/user-guide/repo-wiki"},{"ref_id":"https://docs.slack.dev/apis/web-api/real-time-search-api/"}],"response_length":"long"}
+Claude Tag now reads even more of the room | Claude by Anthropic (https://claude.com/resources/articles/claude-tag-now-reads-even-more-of-the-room)
+citeturn40view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://claude.com/resources/articles/claude-tag-now-reads-even-more-of-the-room","lineno":null}); Total lines: 354
+L0: Product
+L1: 
+L2: Developers
+L3: 
+L4: Enterprise
+L5: 
+L6: Resources
+L7: 
+L8: Pricing
+L9: 
+L10: 【0†Login†claude.ai】
+L11: 
+L12: 【1†Contact sales】【2†Try Claude†claude.ai】
+L13: 
+L14: Claude Resources
+L15: 
+L16: 【3†Home】【4†Articles】【5†Guides】【6†Webinars】【7†Videos】
+L17: 
+L18: 【3†Home】【4†Articles】【5†Guides】【6†Webinars】【7†Videos】
+L19: 
+L20: Search
+L21: # Claude Tag now reads even more of the room
+L22: 
+L23: Claude has more context to decide when to proactively collaborate in Slack (and when not to)
+L24: 
+L25:   * Category【8†Product updates】
+L26: 
+L27:   * Product Claude Tag
+L28: 
+L29:   * Date August 13, 2026
+L30: 
+L31:   * Reading time 5 min
+L32: 
+L33:   * Share[Button: Copy link]
+L34: 
+L35: Contents
+L36: 
+L37:   1. 【9†From passive responder to active participant】
+L38:   2. 【10†How Claude decides when not to speak】
+L39:   3. 【11†The first reply is faster】
+L40:   4. 【12†Live today】
+L41: Claude Tag lets you add Claude to a Slack channel, where it works alongside your team. Claude responds when you @-mention it, or proactively when it thinks it can be helpful.
+L42: 
+L43: Before, Claude only saw one message at a time, so it made decisions to act proactively based on what was in front of it, but not the wider context of what was around it.
+L44: Now, Claude uses context from across the channel, as well as its memory and the standing instructions you have given it, to determine when to contribute to the conversation.
+L45: 
+L46: As a result, Claude is now roughly 30% better at determining when, and when not, to proactively respond.
+L47: 
+L48: This update comes at no additional cost today. While holding more context does increase Claude Tag’s usage, the additional context Claude Tag holds does not count toward usage or spend limits on any plan.
+L49: ## From passive responder to active participant
+L50: 
+L51: Previously a lightweight classifier decided when Claude should act. It looked at each new message on its own and made one yes-or-no call.
+L52: 
+L53: For example, here are two engineers chasing the same bug from opposite ends. Neither has a free hour to run it down, and neither message asks for anything.
+L54: 
+L55: 【13†Image†assets.claude.com】Priya has a theory. Devon has the evidence. Neither message is for Claude, and neither asks for anything.
+L56: Read one at a time, neither message is for Claude, so the classifier correctly does nothing, twice. Read together, there's an obvious piece of work sitting there. One engineer has a theory, the other has the evidence for it, and nobody has time to check.
+L57: 
+L58: With the classifier removed, Claude uses context across the channel to make one of four moves:
+L59:   * Reply inline, when the answer is short, verifiable, and something the channel doesn't already know.
+L60:   * Start deeper work in a thread, when a message deserves real time.
+L61:   * Route the message to work it has in flight, when it adds to a workstream Claude already has open.
+L62:   * Say nothing, when nothing is called for.
+L63: Here's the same conversation with Claude Tag using additional context. Claude picks the second move, even without being @-mentioned. It sees Priya's hypothesis and Devon's evidence, opens a thread with the investigation already running, and pulls both engineers in. It acts within the boundaries of the permissions, tools, and scope you have configured.
+L64: 
+L65: 【14†Image†assets.claude.com】
+L66: 
+L67: Same thread, two minutes later. Claude reads the two messages together and starts the work. No @-mention.
+L68: The conversations aren't walled off from each other. So when Devon posts an update, it lands in the right workstream. When two investigations turn out to be the same bug, that connection gets made.
+L69: 
+L70: 【15†Image†assets.claude.com】
+L71: 
+L72: Claude now looks at all messages to understand the full context of the channel, to more accurately determine if it should participate in a conversation unprompted.
+L73: ## How Claude decides when not to speak
+L74: 
+L75: An annoying agent is worse than an unhelpful one. We built Claude Tag to speak up only when it's useful, and in most channels, on most messages, that means saying nothing.
+L76: 
+L77: We do this by grading Claude’s channel-by-channel choices against a rubric based on principles like how useful the comment is, how confident Claude is in the response, and whether there is a person better suited to respond.
+L78: Claude also knows when to stop paying attention, similar to how people navigate Slack. It follows a few channels closely while paying less attention to others until someone tags it in. In a channel where, message after message, Claude keeps concluding it has nothing to add, it goes to sleep. A @-mention wakes it instantly.
+L79: 
+L80: You can also steer its response behavior in plain language: "Never respond here unless someone tags you," or "Feel free to jump in on anything about the deploy pipeline."
+L81: And if you'd rather Claude only spoke in a channel when someone tags it, 【16†any member can switch ‘Respond automatically’ off】.
+L82: ## The first reply is faster
+L83: 
+L84: The additional context also allows Claude to respond more quickly. It acknowledges you in seconds instead of operating silently while it starts up. The work itself takes as long as it always did; what's gone is the silent first minute when you couldn't tell whether it heard you.
+L85: ## Live today
+L86: 
+L87: This update is now available across Claude Tag, available for Claude Teams and Enterprise customers. You can get started 【17†here†claude.ai】. Claude now acts as a more effective collaborator, one that can follow the conversation, decide for itself when to act, and when to stay out of the way.
+L88: 
+L89: Add Claude to one channel and watch what it adds to your conversations. Learn more about 【18†Claude Tag】.
+L90: ## Related articles
+L91: 
+L92: Explore more product news and best practices for teams building with Claude.
+L93: 【19†Article Nov 17, 2026 Linked billing on the Claude Platform Claude Platform】【20†Article Nov 12, 2026 Operate Claude Managed Agents inside your security perimeter Introducing self-hosted Claude Managed Agents. Now you can run agents in your own environment, whether that’s in your own cloud or on-premise.
+L94: You host the agents, credentials, and session history, and choose where requests to Claude are sent.Claude Platform Claude Managed Agents】【21†Article Nov 12, 2026 Introducing Claude for Manufacturing A new plugin with 17 skills and four connectors helps manufacturers draft quotes, quality reports, and supplier requests from the systems they already run.】【22†Article Nov 12, 2026 Introducing Claude Meetings Add Claude to your video call and get the work started while you talk】
+--------------------------------------------------------------------------------
+Access verification (https://docs.glean.com/administration/search/access-verification)
+citeturn40view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://docs.glean.com/administration/search/access-verification","lineno":null}); Total lines: 235
+L0: 【0†Skip to main content】
+L1: 
+L2: User Guide Agents Get Started for Admins Connectors Tools Admin Guide Security & Architecture Troubleshooting Release Notes
+L3: 
+L4:   * General
+L5: 
+L6:     * 【1†About the Admin console】
+L7:     * 【2†Notifications dashboard】
+L8:     * 【3†Usage dashboard】
+L9: 
+L10:   * Models
+L11:     * 【4†Supported LLMs】
+L12:     * 【5†Configure LLMs】
+L13:     * 【6†Change default model】
+L14:     * 【7†Feature availability by LLM key】
+L15:     * 【8†Exclude or restrict models】
+L16:     * 【9†Review new models】
+L17:     * 【10†Manage open models by region】
+L18:     * 【11†Model capability and safety evaluations】
+L19:     * 【12†Model deprecation】
+L20:     * 【13†Provider setup】
+L21: 
+L22:   * Assistant
+L23: 
+L24:     * 【14†Configuration】
+L25: 
+L26:     * 【15†Administered features】
+L27: 
+L28:     * 【16†Warehouse data】
+L29: 
+L30:     * 【17†Data Analysis】
+L31: 
+L32:   * Glean Tau
+L33:     * 【18†Administer Glean Tau】
+L34:     * 【19†Managed settings】
+L35:     * 【20†Security and permissions】
+L36:     * 【21†Configuration reference】
+L37:     * 【22†macOS deployment】
+L38:     * 【23†Windows deployment】
+L39:     * 【24†Server-managed settings】
+L40:     * 【25†Troubleshoot managed settings】
+L41:   * Agents
+L42: 
+L43:     * 【26†Manage the agent library】
+L44: 
+L45:     * 【27†Control access and governance】
+L46: 
+L47:     * 【28†Schedule and automate agents】
+L48: 
+L49:     * 【29†Maintain and monitor】
+L50: 
+L51:     * 【30†Agent identity】
+L52: 
+L53:   * Skills
+L54:     * 【31†Set up Skills and manage access】
+L55:     * 【32†Share Skills】
+L56:     * 【33†Scanning and safety review】
+L57:   * Tools
+L58: 
+L59:     * 【34†Tools overview】
+L60:     * 【35†Set up tools】
+L61: 
+L62:     * 【36†Managing Tools】
+L63: 
+L64:     * 【37†Tools OAuth reference】
+L65:     * 【38†Connect remote MCP servers to Glean】
+L66:     * 【39†Vendor-specific MCP requirements】
+L67:     * 【40†Custom MCP headers】
+L68:     * 【41†MCP server template catalog guide】
+L69:   * Glean MCP server
+L70: 
+L71:     * 【42†About Glean MCP server】
+L72:     * 【43†Glean MCP Gateway】
+L73:     * 【44†Glean plugin】
+L74:     * 【45†Set up】
+L75: 
+L76:     * 【46†MCP tools】
+L77: 
+L78:     * 【47†Connect hosts】
+L79: 
+L80:     * 【48†Manage and monitor】
+L81: 
+L82:     * 【49†MCP server best practices】
+L83:     * 【50†Response format and stability】
+L84:   * A2A
+L85: 
+L86:     * 【51†About A2A server】
+L87:     * 【52†Configure A2A server】
+L88:     * 【53†Expose agents over A2A】
+L89:     * 【54†About A2A host】
+L90:     * 【55†Configure A2A host】
+L91:   * Developer
+L92: 
+L93:     * 【56†API Tokens】
+L94:   * Embedded Integrations
+L95: 
+L96:     * 【57†Embedded integrations Home】
+L97:     * 【58†Supported app integrations】
+L98: 
+L99:   * Identity
+L100: 
+L101:     * 【59†Roles】
+L102:     * 【60†People Data】
+L103: 
+L104:     * 【61†SSO】
+L105: 
+L106:     * 【62†Third-party access】
+L107: 
+L108:     * 【63†Support access】
+L109:   * Management
+L110: 
+L111:     * 【64†People and teams】
+L112: 
+L113:     * 【65†Platforms and access】
+L114: 
+L115:     * 【66†Appearance】
+L116: 
+L117:     * 【67†User-generated content】
+L118:     * 【68†Self-serve beta features and managed rollouts】
+L119:     * 【69†Maintenance Window Policy】
+L120:   * Search
+L121:     * 【70†About Glean Search】
+L122:     * 【71†Content hiding】
+L123:     * 【72†Access verification】
+L124:     * 【73†Troubleshooting Search】
+L125:     * 【74†Search FAQ】
+L126:     * 【75†Glean language support】
+L127:   * Protect
+L128: 
+L129:     * 【76†About Protect and Protect+】
+L130:     * 【77†Protect+ quickstart】
+L131:     * 【78†Protect notifications】
+L132:     * 【79†Security posture】
+L133: 
+L134:     * 【80†Sensitive findings】
+L135: 
+L136:     * 【81†AI Security】
+L137: 
+L138:   * Insights
+L139:     * 【82†Insights overview】
+L140:     * 【83†Insights chat】
+L141:     * 【84†Departments and Managers】
+L142:     * 【85†Assistant insights】
+L143:     * 【86†LLM insights】
+L144:     * 【87†Agents insights】
+L145:     * 【88†MCP insights】
+L146:     * 【89†Embedded integrations】
+L147:     * 【90†Announcements】
+L148:   * Monitoring and alerts
+L149: 
+L150:     * 【91†Alerts】
+L151: 
+L152:     * 【92†Audit Logs】
+L153:   * Glean customer event logs
+L154: 
+L155:     * 【93†Overview】
+L156:     * 【94†Event schemas】
+L157:     * 【95†WorkflowRun event log】
+L158:     * 【96†Queries】
+L159: 
+L160: [Button: On this page]
+L161: # Access verification
+L162: 
+L163: Use Document lookup to check whether Glean has indexed a document and whether a teammate can access it.
+L164: ## Look up a document【97†​】
+L165: 
+L166:   1. Navigate to 【98†Admin console → Content management → Document lookup†app.glean.com】.
+L167:   2. Enter the document URL or ID in Document URL.
+L168:   3. To check access for a teammate, select them in User (optional).
+L169:   4. Click Check document.
+L170: 
+L171: After Glean finds the document, review these fields:
+L172:   * Last crawled: When Glean last scanned the document for changes
+L173:   * Last indexed: When Glean last added those changes to search
+L174:   * Document visibility on Glean: Whether the document is visible or hidden in Glean
+L175:   * Document access: Whether the selected teammate can access the document
+L176: 
+L177: note
+L178: 
+L179: Glean assigns a unique document ID when it successfully crawls a document.
+L180: ### Find a document ID【99†​】
+L181: 
+L182: If you don't know the document URL or ID, or the URL returns an error:
+L183: 
+L184:   1. Below Document URL, click using the document ID.
+L185:   2. Select the option that describes your access to the document.
+L186:   3. If you can access the document, search by title or URL and click Add ID next to the correct result. If you can't access it, ask a teammate with access to find the document ID.
+L187:   4. Click Check document.
+L188: 
+L189: ## Troubleshoot missing or stale documents【100†​】
+L190: ### Document not found in lookup【101†​】
+L191: 
+L192: If the document URL or ID returns no results, possible causes include:
+L193: 
+L194:   * The document was recently created or approved in the source application and the next crawl cycle has not run yet.
+L195:   * The connector's permissions prevent Glean from accessing the document.
+L196:   * The URL or ID does not match the format Glean expects for that connector.
+L197: To resolve this, confirm that the document is accessible in the source application, then check your connector's crawl schedule on the 【102†Connector refresh rates】 page. If the document should have been crawled already, go to Admin console → Platform → Connectors, select the connector, and review its Status and Last crawled timestamp.
+L198: ### Stale "Last crawled" or "Last indexed" timestamps【103†​】
+L199: 
+L200: If the Last crawled or Last indexed timestamps are older than expected, the connector may be experiencing crawl delays. Common causes include API rate limits, large corpus sizes, or source application outages.
+L201: Go to Admin console → Platform → Connectors and review Crawl rate and Change rate for the connector. If the connector appears healthy but the document is still stale, contact 【104†Glean Support†support.glean.com】 to request a targeted recrawl.
+L202: ### Expected latency for newly created or approved documents【105†​】
+L203: 
+L204: After a document is created or approved in the source application, it becomes available in Glean after the next applicable update or crawl completes for that connector. The time this takes depends on the connector type:
+--------------------------------------------------------------------------------
+Repo Wiki - Qoder (https://docs.qoder.com/user-guide/repo-wiki)
+citeturn40view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://docs.qoder.com/user-guide/repo-wiki","lineno":null}); Total lines: 364
+L0: > ## Documentation Index
+L1: >
+L2: > Fetch the complete documentation index at: 【0†/llms.txt】
+L3: >
+L4: > Use this file to discover all available pages before exploring further.
+L5: 
+L6: 【1†Skip to main content】
+L7: 
+L8: 【2†Qoder home page†qoder.com】
+L9: 
+L10:   * 【3†Download†qoder.com】
+L11: 
+L12: 【4†Qoder Series】【5†Qoder】【6†IDE】【7†JetBrains Plugin】【8†CLI】【9†Agent SDK】【10†Cloud Agents】【11†Mobile & Web】【12†QoderWake】【13†Enterprise】
+L13: 
+L14: IDE Repo Wiki
+L15:   * 【2†Website†qoder.com】
+L16:   * 【14†Forum†forum.qoder.com】
+L17:   * 【15†Blog†qoder.com】
+L18:   * 【16†Changelog†changelog.qoder.com】
+L19: 
+L20: Get Started
+L21: 
+L22:   * 【6†Product Overview】
+L23:   * 【17†Quick Start】
+L24: 
+L25: User Guide
+L26: 
+L27:   * Models
+L28:   * Editor
+L29:   * Quest (Retired)
+L30:   * Knowledge
+L31:     * 【18†Overview】
+L32:     * 【19†Repo Wiki】
+L33:     * 【20†Knowledge Card】
+L34:     * 【21†Memory】
+L35:   * 【22†Security】
+L36: 
+L37: Context
+L38: 
+L39:   * Input Enhancement
+L40:   * 【23†Codebase indexing】
+L41:   * 【24†Rules】
+L42:   * 【25†Context compression】
+L43: 
+L44: Extensions
+L45:   * Built-in Agents
+L46:   * 【26†Custom Agent】
+L47:   * 【27†Skills】
+L48:   * 【28†Plugins】
+L49:   * 【29†MCP】
+L50:   * 【30†Hooks】
+L51:   * 【31†Deeplinks】
+L52:   * 【32†Canvas】
+L53:   * 【33†Commands】
+L54: 
+L55: Configuration
+L56: 
+L57:   * 【34†Keyboard Shortcuts】
+L58:   * 【35†Configure a Network Proxy】
+L59:   * 【36†Remote Control】
+L60: 
+L61: Support
+L62: 
+L63:   * 【37†Troubleshooting Guide】
+L64:   * 【38†FAQ】
+L65:   * 【39†MCP Common Issues】
+L66:   * 【40†Terminal Execution Exceptions】
+L67: 
+L68:   1. 【4†Home】
+L69:   2. 【6†IDE】
+L70:   3. User Guide
+L71:   4. Knowledge
+L72:   5. Repo Wiki
+L73: # Repo Wiki
+L74: 
+L75: Repo Wiki automatically generates structured documentation for your project and continuously tracks changes in code and documentation. When you query knowledge points, code explanations, or add feature enhancements during development, Repo Wiki deeply analyzes the project structure and code implementation. Combining Repo Wiki with context information, it provides more accurate and detailed answers and documentation support, giving the agent a deeper understanding of the codebase.
+L76: 【41†Image: Repo Wiki†g-adoc.alcasset.com】
+L77: ##
+L78: 
+L79: 【42†​】
+L80: 
+L81: Use Cases
+L82: 
+L83:   * Architecture and Implementation Queries
+L84: Relying on pre-built architectural knowledge, the agent can quickly answer questions like "How is X implemented?" or "Which services depend on this module?" with almost no need to invoke tools.
+L85:   * Agent-Driven Development Tasks
+L86: When context width is limited, Repo Wiki accelerates code location, supporting tasks such as:
+L87:     * Adding new features
+L88:     * Fixing bugs
+L89: ##
+L90: 
+L91: 【43†​】
+L92: 
+L93: Repo Wiki Generation
+L94: 
+L95: The Wiki in your repository is not static—it stays synchronized with your code. The Wiki updates in three key scenarios. Understanding when and why it triggers helps you keep the Wiki updated in real-time.
+L96:   1. Initial Wiki Generation When you open a project for the first time, no Wiki exists by default. You can generate it from scratch with one click.
+L97:   2. Code Changes Detected After the initial generation, the system continuously monitors code changes. If you modify content already recorded by the Wiki (e.g., function signatures, class definitions, API endpoints), the system detects the inconsistency between the current code and the existing Wiki. You can click Update to regenerate only the affected parts.
+L98:   3. Git Directory Sync If you directly edit Markdown files in the Git directory, the system detects inconsistencies between the Git content and the Wiki. You can click Sync to synchronize the Git changes and update the Wiki.
+L99:   4. Generation Limits
+L100:      * A maximum of 10,000 files per project. If your project contains more than 10,000 files, it is recommended to exclude non-essential paths in Qoder IDE Settings → Codebase Indexing → Index Exclusions.
+L101:      * Only supports Git repositories with at least one commit.
+L102: ##
+L103: 
+L104: 【44†​】
+L105: 
+L106: Intervening in Wiki Generation
+L107: 
+L108: Repo Wiki is not a "generate once and read-only" artifact. You can guide the direction through a configuration file before generation, or modify it anytime after generation. Every knowledge revision made by the team is recognized by the system as new cognitive deposits—it won't be overwritten by the next automatic update, but instead reverse-synced to the corresponding knowledge cards—truly embedding human judgment into knowledge assets.
+L109: ###
+L110: 
+L111: 【45†​】
+L112: 
+L113: /knowledge Command
+L114: 
+L115: Type `/knowledge` in the chat input to intervene in Repo Wiki and Knowledge Cards:
+L116: 
+L117: Operation  | Description
+L118: --- | ---
+L119: Generate  | Generate Wiki or Knowledge Cards for the project for the first time
+L120: Modify  | Make partial modifications to existing knowledge content
+L121: Supplement  | Append new content to existing knowledge
+L122: Rewrite  | Completely rewrite a knowledge page or card
+L123: 
+L124: How to use:
+L125:   1. Invoke `/knowledge` in the input box
+L126:   2. Enter your instruction describing the desired changes
+L127:   3. Optionally upload local files as reference (e.g., design docs, API docs)
+L128:   4. The Agent will modify the corresponding knowledge content based on your instruction
+L129: Manually modified content is marked and protected by the system—it won't be overwritten during the next automatic update, making every team knowledge revision a persistent knowledge asset.
+L130: ###
+L131: 
+L132: 【46†​】
+L133: 
+L134: wiki_plan.yaml — Pre-Generation Configuration
+L135: 
+L136: Through a configuration file, you can inject guiding intent before Wiki generation to control direction and scope. Type `/knowledge-plan` in the chat input to create or edit the `wiki_plan.yaml` pre-generation configuration file, controlling the generation strategy for Wiki and Knowledge Cards.
+L137: 
+L138: 【47†Image: /knowledge-plan command†g-adoc.alcasset.com】
+L139: 
+L140: File location:
+L141: 
+L142: Copy
+L143: 
+L144:     `<project_root>/.qoder/repowiki/wiki_plan.yaml
+L145:     `
+L146: This file is shared with the team via Git commits. Configuration structure:
+L147: Copy
+L148: 
+L149:     `version: 1
+L150: 
+L151:     repowiki:
+L152:       template: ""           # Preset template (architecture / product_requirement)
+L153:       notes:                 # Inject guidance prompts during the planning phase
+L154:         - text: "Prompt text"
+L155:           author: "Author"
+L156:       documents:             # Page allowlist (strictly outputs listed pages when provided)
+L157:         - title: "Page title"
+L158:           goal: "Writing intent for this page"
+L159:           parent: ""         # Optional, parent page title
+--------------------------------------------------------------------------------
+Using the Real-time Search API | Slack Developer Docs (https://docs.slack.dev/apis/web-api/real-time-search-api/)
+citeturn40view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://docs.slack.dev/apis/web-api/real-time-search-api/","lineno":null}); Total lines: 824
+L0: 【0†iframe†www.googletagmanager.com】
+L1: 
+L2: guide
+L3: 
+L4: 【1†Skip to main content】
+L5: 
+L6:   * 【2†Quickstart】
+L7:   * 【3†Resources】
+L8: 
+L9:   * * * *
+L10: 
+L11:   * 【4†Slack platform concepts】
+L12: 
+L13:   * 【5†AI in Slack】
+L14: 
+L15:   * 【6†APIs】
+L16: 
+L17:     * 【7†Web API】
+L18: 
+L19:       * 【8†Pagination】
+L20:       * 【9†Rate limits】
+L21:       * 【10†Using the Calls API】
+L22:       * 【11†Using the Conversations API】
+L23:       * 【12†Using the Real-time Search API】
+L24:       * 【13†Using the Web API with Postman】
+L25:       * 【14†User presence and status】
+L26:     * 【15†Events API】
+L27: 
+L28:     * 【16†Slack Connect】
+L29:   * 【17†App management】
+L30: 
+L31:   * 【18†App manifests】
+L32: 
+L33:   * 【19†Admin resources】
+L34: 
+L35:   * 【20†Authentication】
+L36: 
+L37:   * 【21†Block Kit】
+L38: 
+L39:   * 【22†Enterprise】
+L40: 
+L41:   * 【23†Enterprise Search for apps】
+L42: 
+L43:   * 【24†GovSlack】
+L44:   * 【25†Interactivity】
+L45: 
+L46:   * 【26†Messaging】
+L47: 
+L48:   * 【27†Slack Marketplace】
+L49: 
+L50:   * 【28†Surfaces】
+L51: 
+L52:   * 【29†Workflows】
+L53: 
+L54:   * * * *
+L55: 
+L56:   * 【30†Legacy】
+L57: 
+L58:   * * * *
+L59: 
+L60:   * 【31†日本語のドキュメント】
+L61: 
+L62: [Button: On this page]
+L63: # Using the Real-time Search API
+L64: 
+L65: The API formerly known as the Data Access API
+L66: 
+L67: Are you looking for the Data Access API? You found it! The Data Access API has evolved into the Real-time Search API. Read more about it 【32†here】.
+L68: The Real-time Search (RTS) API allows apps to access Slack data through a secure search interface. This approach enables third-party applications to retrieve relevant Slack data without storing customer information on external servers. Supplying this data as context to a large language model (LLM) helps ensure more relevant and accurate responses to user queries. Read on to discover how to employ this API exclusively in your 【33†app using AI features】.
+L69: The Real-time Search API is designed for real-time data retrieval and is intended to be used in response to user interactions, either within Slack or from a third-party system that has an active Slack connection. It performs searches across all channels the user has access to within their Slack workspace and returns an array of messages and files relevant to the search query.
+L70: 
+L71: Make it org-ready
+L72: Consider making your app that uses the RTS API an 【34†org-ready】 app. Doing so allows you to manage a single user token and send a single request to query every workspace the user and app have access to.
+L73: ## API overview【35†​】
+L74: 
+L75: The Real-time Search API can be used in two scenarios:
+L76: 
+L77:   * When a user interacts with an 【36†AI-enabled app】 within the Slack client. With this method, a bot or user token can be used.
+L78:   * When a user interacts with a third-party service that has an active Slack connection outside of the Slack client. With this method, a user token is required. Details on user authentication and API flows are outlined below.
+L79: Using the Real-time Search API, your app performs the search on behalf of the authenticated user, ensuring that only content the user has access to is returned.
+L80: 
+L81: No unlisted distributed apps allowed
+L82: 
+L83: The RTS API is available for directory-published apps and internal apps only.
+L84: ### User authentication【37†​】
+L85: 
+L86: To use the Real-time Search API to fetch private conversation data or to use it outside the Slack client, a user token is required. To obtain this token, your application must ask each user to go through the 【38†OAuth authorization flow】. To initiate this, direct the user to your Slack app's installation URL, which can be found in the Manage Distribution section of the app settings page. Upon successful authorization, your app will receive the user's `xoxp-` user token.
+L87: ### Required Scopes【39†​】
+L88: 
+L89: Your app must contain at least the `search:read.public` scope and can optionally contain any of the scopes following that in this list. Each provides various levels of access. Include all of them for a wider base from which to search.
+L90: Scope  | Description  | Token Type Allowed
+L91: --- | --- | ---
+L92: 【40†`search:read.public`】  | Read access to all public channel messages  | Bot, User
+L93: 【41†`search:read.private`】  | Read access to all private channel messages  | User
+L94: 【42†`search:read.mpim`】  | Read access to all multi-person direct messages  | User
+L95: 【43†`search:read.im`】  | Read access to all direct messages  | User
+L96: 【44†`search:read.files`】  | Read access to all files  | Bot, User
+L97: 【45†`search:read.users`】  | Read access to a workspace's users  | Bot, User
+L98: The `search:read.public` scope allows searching for data in public channels within the workspace(s) where the app is installed AND the searching user is a member. The searching user need not be a member of the public channels, just of the workspace, for the channels to be included in the search results.
+L99: Including any one of the `search:read.private`, `search:read.mpim`, and `search:read.im` scopes allows users to consent to those scopes within the Slack client. Users can choose to grant access to their private channels. They can only grant that access if the app has been installed with the corresponding scope. For example, if an admin installs the app with the `search:read.public` and `search:read.im` scopes, users will be able to consent to the IM scope, but not private/MPIM.
+L100: The `search:read.files` scope grants access to search for files, but it needs to be combined with channel-type scopes to determine where those files can be search. For example,
+L101: 
+L102:   * `search:read.files` + `search:read.public` grants access to public files
+L103:   * `search:read.files` + `search:read.private` grants access to public and private files
+L104: 
+L105: Having the `search:read.files` scope lets you search for files, but if you want to download the file content, you also need the `files:read` scope.
+L106: Additionally, the following scopes are useful to have in an AI-enabled app too:
+L107: 
+L108: Scope  | Description
+L109: --- | ---
+L110: 【46†`im:history`】  | View messages and other content in DMs the app has been added to
+L111: 【47†`chat:write`】  | Write access to post messages channels and conversations
+L112: 
+L113: To add these scopes, go to your 【48†app settings†api.slack.com】, select your app, then:
+L114: 
+L115:   1. Go to the OAuth & Permissions section in the navigation sidebar
+L116:   2. Scroll down to the Scopes section
+L117:   3. Add the scopes listed above
+

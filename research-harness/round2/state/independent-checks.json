@@ -1,0 +1,96 @@
+{
+  "at_utc": "2026-11-20T05:22:01.136598+00:00",
+  "validators": [
+    {
+      "script": "empirical/verify.py",
+      "sha256": "332d7b26f839c1266fa64a9f112d7fd168bf847bd2c7a0ba2e619c1c381bfbd8",
+      "exit": 0,
+      "stdout": "Verified sample keys, 7/30-day outcomes, reviewer overlaps, per-agent totals and weighted estimates.",
+      "error": ""
+    },
+    {
+      "script": "handoff/verify.py",
+      "sha256": "cbfcb317d146ea51db7edb4a5956bb76131355b36c2e4dd09db18fc815ebcbc4",
+      "exit": 0,
+      "stdout": "16 matrix cells x 2 fresh runs plus 2 native controls; 9 raw source hashes verified.",
+      "error": ""
+    },
+    {
+      "script": "ownership/verify.py",
+      "sha256": "2db81a1e1edf36705aede10dbfc6196ec0b064f847d00785231fe7184f721aca",
+      "exit": 0,
+      "stdout": "Verified 50 result cells, 280 day/policy groups, independent SQL count match, primary evidence links and capacity.",
+      "error": ""
+    },
+    {
+      "script": "oracles/verify.py",
+      "sha256": "ba6d91d555693f33341f8857be680d331c445afdbdd188e1534e10ea6c74503e",
+      "exit": 0,
+      "stdout": "Verified 8 fixed rows, 54 sources, 24 targeted + 7 partial + 46 full-module pytest subprocesses and report links.",
+      "error": ""
+    },
+    {
+      "script": "gates/verify.py",
+      "sha256": "c39e4b0bd85c9dba83837baace599d0dd7bef7bdd77d197bac7b0459e405225d",
+      "exit": 0,
+      "stdout": "8 historic golds; 64 eligible, 49 selected candidate patches; main XML, independent inputs, two-version witnesses, package XML, source hashes and report links checked.",
+      "error": ""
+    },
+    {
+      "script": "ci-cross/verify.py",
+      "sha256": "e03d3436888bd719b68fdb2cb718b793868995cc7e278cf0e502762181598269",
+      "exit": 0,
+      "stdout": "361 row groups; 130,338,516 runs, 221,534,997 jobs; 601 hashed source ranges, 601 cache blocks verified; independent SQLite counts, holdout, joins, sources and links checked.",
+      "error": ""
+    },
+    {
+      "script": "ci-availability/verify.py",
+      "sha256": "2abbaad317a6a59dd165c5a37a2c3cb8d5f64140d612cabdd07fe267a95898df",
+      "exit": 0,
+      "stdout": "{'validated': True, 'years_all': 353700, 'explicit_zuul_pairs': 8, 'historical_api_responses_without_clock': {'404': 16}, 'bson_tail_valid_bytes': 144, 'bson_tail_declared_bytes': 223, 'local_links_checked': 23}",
+      "error": ""
+    },
+    {
+      "script": "dependency-bot/verify.py",
+      "sha256": "8646ad9126e183c4203678e790261cc4c8eb2137bae463dda41365bbd2723869",
+      "exit": 0,
+      "stdout": "12 CLI runs; 21 loopback GETs; 7 installation combos; 235 upstream test executions; 42 failed; offline evidence checks passed.",
+      "error": ""
+    },
+    {
+      "script": "cowork/check.py",
+      "sha256": "3abbd3c45ea11731682e3075a5aa82ef143d823a5c76619de19ad3712e8b843b",
+      "exit": 0,
+      "stdout": "{\n  \"task_count\": 101,\n  \"revision\": \"529b67ddf03ff6efd74658b4b2a436abf371c5cf\",\n  \"budget_seconds\": [\n    28800\n  ],\n  \"release\": {\n    \"new_nodes\": {\n      \"sum\": 2700,\n      \"min\": 15,\n      \"median\": 27.0,\n      \"max\": 67,\n      \"largest_10_tasks\": 396,\n      \"smallest_10_tasks\": 166,\n      \"zeros\": 0\n    },\n    \"regression_nodes\": {\n      \"sum\": 562,\n      \"min\": 1,\n      \"median\": 4.0,\n      \"max\": 19,\n      \"largest_10_tasks\": 149,\n      \"smallest_10_tasks\": 10,\n      \"zeros\": 0\n    }\n  },\n  \"paper_table2\": {\n    \"new_nodes\": 2699,\n    \"regression_nodes\": 562,\n    \"tasks\": 101\n  },\n  \"same_per_task_manifest_config\": true,\n  \"listed_files\": 23970,\n  \"campaign_status_files\": 0,\n  \"exact_statistics_files\": 0\n}",
+      "error": ""
+    },
+    {
+      "script": "message-quality/verify.py",
+      "sha256": "c8060f6c735e1acea6bf025e8bc5939432f8140590499e23ae9c158aa12b4537",
+      "exit": 0,
+      "stdout": "40 task means, 5 upstream submissions, 1,485 joined patch/issue pairs, 10 three-card scenarios checked.",
+      "error": ""
+    },
+    {
+      "script": "eng-intel-vendors/verify.py",
+      "sha256": "000bb965f7117e1d343e3c13c6738562094a8b3c92b5fb346d3d64175113948b",
+      "exit": 0,
+      "stdout": "fixture passed\n28 available unique source IDs; 19 publication/document anchors; 38 string locators verified.",
+      "error": ""
+    },
+    {
+      "script": "promotion-replay/validate.py",
+      "sha256": "80eab2ad6ef3282172ace67aba92318aaf48c8badb0175bccc695730a80623d0",
+      "exit": 0,
+      "stdout": "{'checked': True, 'operations': 51, 'successful': 50, 'deliberate_native_rejections': 1, 'fixture_checks': 9, 'sqlite_snapshots': 6, 'isolated_worker_processes': 4, 'runtime_socket_attempts': 0, 'fixture_model_calls': 0, 'environment_wheels': 91, 'actual_ttl_wait_seconds': 61.015, 'native_alias_schema': ['alias', 'version', 'name', 'workspace']}",
+      "error": ""
+    },
+    {
+      "script": "devlake/independent-check.py",
+      "sha256": "2458f2efade5cc89c881a08da01354c206e7fcfb131750ed8d61dfa73830b1b9",
+      "exit": 0,
+      "stdout": "[37, 19, 8] {'pipeline1': 0, 'pipeline2': 1, 'pipeline4': 0, 'pipeline6': 0, 'pipeline7': 5} {'mysql_ratio': 0.4, 'postgresql_ratio': 1.2}",
+      "error": ""
+    }
+  ]
+}

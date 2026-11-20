@@ -1,0 +1,299 @@
+{
+  "raw": [
+    {
+      "id": "s1",
+      "group": "dev",
+      "event_key": "A:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "write",
+      "review_b": "write",
+      "reporter": "s1@example.invalid"
+    },
+    {
+      "id": "s2",
+      "group": "dev",
+      "event_key": "B:1",
+      "permission": "revoked",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "s2@example.invalid"
+    },
+    {
+      "id": "e1",
+      "group": "blind",
+      "event_key": "C:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "write",
+      "review_b": "write",
+      "reporter": "e1@example.invalid"
+    },
+    {
+      "id": "e2",
+      "group": "blind",
+      "event_key": "D:1",
+      "permission": "expired",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "e2@example.invalid"
+    },
+    {
+      "id": "e3",
+      "group": "blind",
+      "event_key": "E:1",
+      "permission": "approved",
+      "existing": true,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "e3@example.invalid"
+    },
+    {
+      "id": "e4",
+      "group": "blind",
+      "event_key": "F:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": false,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "e4@example.invalid"
+    },
+    {
+      "id": "r3",
+      "group": "blind",
+      "event_key": "E:1",
+      "permission": "approved",
+      "existing": true,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "r3@example.invalid"
+    },
+    {
+      "id": "q1",
+      "group": "pending",
+      "event_key": "G:1",
+      "permission": "changed_owner",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "write",
+      "reporter": "q1@example.invalid"
+    }
+  ],
+  "redacted_deduplicated": [
+    {
+      "id": "s1",
+      "group": "dev",
+      "event_key": "A:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "write",
+      "review_b": "write",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "s2",
+      "group": "dev",
+      "event_key": "B:1",
+      "permission": "revoked",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "e1",
+      "group": "blind",
+      "event_key": "C:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "write",
+      "review_b": "write",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "e2",
+      "group": "blind",
+      "event_key": "D:1",
+      "permission": "expired",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "e3",
+      "group": "blind",
+      "event_key": "E:1",
+      "permission": "approved",
+      "existing": true,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "e4",
+      "group": "blind",
+      "event_key": "F:1",
+      "permission": "approved",
+      "existing": false,
+      "context_ok": false,
+      "review_a": "hold",
+      "review_b": "hold",
+      "reporter": "[masked]"
+    },
+    {
+      "id": "q1",
+      "group": "pending",
+      "event_key": "G:1",
+      "permission": "changed_owner",
+      "existing": false,
+      "context_ok": true,
+      "review_a": "hold",
+      "review_b": "write",
+      "reporter": "[masked]"
+    }
+  ],
+  "results": [
+    {
+      "id": "s1",
+      "group": "dev",
+      "variant": "before",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "s1",
+      "group": "dev",
+      "variant": "candidate",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "s1",
+      "group": "dev",
+      "variant": "control",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "s2",
+      "group": "dev",
+      "variant": "before",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "s2",
+      "group": "dev",
+      "variant": "candidate",
+      "expected": "hold",
+      "answer": "hold"
+    },
+    {
+      "id": "s2",
+      "group": "dev",
+      "variant": "control",
+      "expected": "hold",
+      "answer": "hold"
+    },
+    {
+      "id": "e1",
+      "group": "blind",
+      "variant": "before",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "e1",
+      "group": "blind",
+      "variant": "candidate",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "e1",
+      "group": "blind",
+      "variant": "control",
+      "expected": "write",
+      "answer": "write"
+    },
+    {
+      "id": "e2",
+      "group": "blind",
+      "variant": "before",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "e2",
+      "group": "blind",
+      "variant": "candidate",
+      "expected": "hold",
+      "answer": "hold"
+    },
+    {
+      "id": "e2",
+      "group": "blind",
+      "variant": "control",
+      "expected": "hold",
+      "answer": "hold"
+    },
+    {
+      "id": "e3",
+      "group": "blind",
+      "variant": "before",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "e3",
+      "group": "blind",
+      "variant": "candidate",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "e3",
+      "group": "blind",
+      "variant": "control",
+      "expected": "hold",
+      "answer": "hold"
+    },
+    {
+      "id": "e4",
+      "group": "blind",
+      "variant": "before",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "e4",
+      "group": "blind",
+      "variant": "candidate",
+      "expected": "hold",
+      "answer": "write"
+    },
+    {
+      "id": "e4",
+      "group": "blind",
+      "variant": "control",
+      "expected": "hold",
+      "answer": "hold"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+____________________________ test_kahane_simplify1 ____________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:204: in test_kahane_simplify1
+    r = kahane_simplify(t)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is <class 'NoneType'>
+___________________________ test_gamma_matrix_class ___________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:274: in test_gamma_matrix_class
+    ts = simplify_gamma_expression(t)
+sympy\physics\hep\gamma_matrices.py:77: in simplify_gamma_expression
+    res_expr = _simplify_single_line(extracted_expr)
+sympy\physics\hep\gamma_matrices.py:218: in _simplify_single_line
+    t1 = kahane_simplify(t1)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is <class 'NoneType'>
+____________________________ test_kahane_algorithm ____________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:192: in test_kahane_algorithm
+    execute_gamma_simplify_tests_for_function(tfunc, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:41: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(tfunc(t), -4*G(mu11)*G(mu31)*G(mu21) - 4*G(mu31)*G(mu11)*G(mu21))
+sympy\physics\hep\tests\test_gamma_matrices.py:190: in tfunc
+    return _simplify_single_line(e)
+sympy\physics\hep\gamma_matrices.py:218: in _simplify_single_line
+    t1 = kahane_simplify(t1)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is <class 'NoneType'>
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23824\V3b511cb69411\labels0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm
+3 failed in 0.52s

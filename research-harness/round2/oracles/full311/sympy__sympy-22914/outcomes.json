@@ -1,0 +1,413 @@
+[
+  {
+    "case": "sympy__sympy-22914",
+    "phase": "original",
+    "module": "sympy/printing/tests/test_pycode.py",
+    "exit": 0,
+    "seconds": 1.984,
+    "xml": "original_m1.xml",
+    "log": "original_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter_standard",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_MpmathPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_18770",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_SciPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_pycode_reserved_words",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_20762",
+        "outcome": "skipped",
+        "reason": "antlr not installed."
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_sqrt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_frac",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_printmethod",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_codegen_ast_nodes",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_14283",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter_print_seq",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_16535_16536",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_Integral",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_fresnel_integrals",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_beta",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy_prime",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_numerical_accuracy_functions",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-22914",
+    "phase": "regression_on_base",
+    "module": "sympy/printing/tests/test_pycode.py",
+    "exit": 1,
+    "seconds": 1.641,
+    "xml": "regression_on_base_m1.xml",
+    "log": "regression_on_base_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter",
+        "outcome": "failure",
+        "reason": "AssertionError: assert '((x) if (x <= y) else (y))' == 'min(x, y)'\n  - min(x, y)\n  + ((x) if (x <= y) else (y))"
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter_standard",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_MpmathPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_18770",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_SciPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_pycode_reserved_words",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_20762",
+        "outcome": "skipped",
+        "reason": "antlr not installed."
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_sqrt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_frac",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_printmethod",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_codegen_ast_nodes",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_14283",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter_print_seq",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_16535_16536",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_Integral",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_fresnel_integrals",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_beta",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy_prime",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_numerical_accuracy_functions",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-22914",
+    "phase": "regression_on_gold",
+    "module": "sympy/printing/tests/test_pycode.py",
+    "exit": 0,
+    "seconds": 1.578,
+    "xml": "regression_on_gold_m1.xml",
+    "log": "regression_on_gold_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_PythonCodePrinter_standard",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_MpmathPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_18770",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_SciPyPrinter",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_pycode_reserved_words",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_20762",
+        "outcome": "skipped",
+        "reason": "antlr not installed."
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_sqrt",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_frac",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_printmethod",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_codegen_ast_nodes",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_14283",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_NumPyPrinter_print_seq",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_issue_16535_16536",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_Integral",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_fresnel_integrals",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_beta",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_airy_prime",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.printing.tests.test_pycode",
+        "name": "test_numerical_accuracy_functions",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  }
+]

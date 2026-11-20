@@ -1,0 +1,11 @@
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -868,7 +868,7 @@
+         return _sympify(itr)
+ 
+ 
+-class String(Atom, Token):
++class String(Token):
+     """ SymPy object representing a string.
+ 
+     Atomic object which is not an expression (as opposed to Symbol).

@@ -1,0 +1,56 @@
+{
+  "Argo Rollouts": {
+    "window": 9,
+    "narrow_candidates": 4,
+    "timeline": 4,
+    "adjacent": 0,
+    "outside": 5,
+    "pre": 2,
+    "criterion": "abort scale|bind local interface|dashboard should only bind|bind to 127"
+  },
+  "Atlantis": {
+    "window": 11,
+    "narrow_candidates": 5,
+    "timeline": 5,
+    "adjacent": 0,
+    "outside": 6,
+    "pre": 0,
+    "criterion": "sticky policy approvals|lock backend|drift detection and remediation APIs|stale head/base plan|verified managed.plan|apply lock|plan store|plan snapshot"
+  },
+  "PR-Agent": {
+    "window": 21,
+    "narrow_candidates": 6,
+    "timeline": 6,
+    "adjacent": 0,
+    "outside": 15,
+    "pre": 0,
+    "criterion": "github checks|files excluded|preserve findings across review reruns|action fails on tool errors|self.review|findings across|incomplete review|excluded from review coverage"
+  },
+  "Sourcegraph src-cli": {
+    "window": 9,
+    "narrow_candidates": 4,
+    "timeline": 4,
+    "adjacent": 0,
+    "outside": 5,
+    "pre": 1,
+    "criterion": "(?:batch.changes|fix/batch|remove/batches|workspace paths|changeset hooks)"
+  },
+  "Devin": {
+    "window": 62,
+    "narrow_candidates": 8,
+    "timeline": 8,
+    "adjacent": 0,
+    "outside": 54,
+    "pre": 0,
+    "criterion": "per.PR auto.review|composable set of custom rules|personal access tokens default to approval required|network.policy edits now apply|whether Devin fixes Devin Review findings|Mark done replaces Archive|preflight|automation.{0,40}already.running|stop session"
+  },
+  "Jules": {
+    "window": 1,
+    "narrow_candidates": 1,
+    "timeline": 1,
+    "adjacent": 0,
+    "outside": 0,
+    "pre": 0,
+    "criterion": "wind down|read.only|turndown"
+  }
+}

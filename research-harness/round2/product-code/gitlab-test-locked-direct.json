@@ -1,0 +1,22 @@
+{
+  "commit": "ed4ff2990049ace5c675203c70d41676fa55682c",
+  "packages": {
+    "langchain-core": "1.7.7",
+    "langgraph": "1.2.14",
+    "langgraph-checkpoint": "4.3.1",
+    "langgraph-prebuilt": "1.1.0",
+    "langgraph-sdk": "0.4.7",
+    "pytest": "9.2.0",
+    "pytest-asyncio": "1.5.0"
+  },
+  "driver": "Python direct invocation of all upstream test functions, asyncio.run for awaitables",
+  "files": [
+    "tests/duo_workflow_service/checkpointer/test_node_lifecycle.py",
+    "duo_workflow_service/checkpointer/node_lifecycle.py",
+    "duo_workflow_service/agent_platform/node_naming.py",
+    "duo_workflow_service/agent_platform/constants.py"
+  ],
+  "exit": 0,
+  "stdout": "PASS test_event_to_dict_is_the_wire_shape\nPASS test_handler_against_real_langgraph_interrupt_and_resume\nPASS test_handler_against_real_langgraph_stream\nPASS test_handler_handles_legacy_node_without_role_suffix\nPASS test_handler_ignores_nested_runnable_starts\nPASS test_handler_ignores_start_with_no_component\nPASS test_handler_records_ended_not_errored_on_graph_interrupt\nPASS test_handler_records_ended_on_node_end\nPASS test_handler_records_errored_on_non_interrupt_error\nPASS test_handler_records_started_on_node_boundary\nPASS test_handler_terminal_for_unopened_run_is_a_noop\nPASS test_handler_tracks_concurrent_nodes_by_run_id\nPASS test_log_records_in_order\n",
+  "stderr": ""
+}

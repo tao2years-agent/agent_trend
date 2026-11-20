@@ -1,0 +1,456 @@
+import sys
+
+sys.path.insert(0, "./")
+
+from pymongo import MongoClient
+
+username = "admin"
+password = "password"
+
+conn = MongoClient("mongodb://%s:%s@localhost:27018" % (username, password))
+db = conn["recheck_builds_common"]
+recheck_builds_collection = db["recheck_builds"]
+one_run_builds_collection = db["one_run_builds"]
+change_info_full_collection = db["all_10_years_detailed_info"]
+revisions_collection = db["revisions_filtered"]
+author_info_collection = db["author_info"]
+db = conn["recheck_builds_helper_years_20"]
+bots_occurrences_collection = db["bots_occurrences"]
+users_occurrences_collection = db["users_occurrences"]
+jobs_occurrences_collection = db["jobs_occurrences"]
+job_flips_collection = db["job_flips"]
+bot_flips_collection = db["bot_flips"]
+files_occurrences_collection = db["files_occurrences"]
+user_experience_collection = db["user_experience"]
+bots_sequences_avg_collection = db["bots_sequences_avg_collection"]
+
+def get_user_occurrences_status_query(account_id, number):
+    return [
+        {
+            "$match": {
+                "_number": int(number),
+                "$or": [
+                    {"owner._account_id": account_id},
+                    {"reviewer_updates.reviewer._account_id": account_id},
+                ],
+            }
+        },
+        {
+            "$project": {
+                "owner": {
+                    "$cond": {
+                        "if": {"$eq": ["$owner._account_id", account_id]},
+                        "then": "$owner",
+                        "else": "$$REMOVE",
+                    }
+                },
+                "reviewer_updates": {
+                    "$filter": {
+                        "input": "$reviewer_updates",
+                        "as": "review",
+                        "cond": {"$eq": ["$$review.reviewer._account_id", account_id]},
+                    }
+                },
+            }
+        },
+    ]
+
+from math import nan
+
+
+DEFAULT_SUCCESS_RATIO = nan  # for bots and user
+
+def fetch_bot_diff_avg_sequence(bot_id, key, recheck_number, started_at):
+    return bots_sequences_avg_collection.find_one(
+        {
+            "recheck_number": int(recheck_number),
+            "key": str(key),
+            "bot_id": bot_id,
+            "started_at": started_at,
+        }
+    )
+
+
+def fetch_job_flips(feature_key, date_before, bot_id, job_name):
+    return job_flips_collection.find_one(
+        {
+            "feature_key": str(feature_key),
+            "date_before": date_before,
+            "bot_id": bot_id,
+            "job_name": job_name,
+        }
+    )
+
+
+def fetch_bot_flips(feature_key, date_before, bot_id):
+    return bot_flips_collection.find_one(
+        {
+            "feature_key": str(feature_key),
+            "date_before": date_before,
+            "bot_id": bot_id,
+        }
+    )
+
+
+def fetch_bot_occurrences(feature_key, date_before, bot_id):
+    return bots_occurrences_collection.find_one(
+        {
+            "feature_key": str(feature_key),
+            "date_before": date_before,
+            "bot_id": bot_id,
+        }
+    )
+
+
+def fetch_job_occurrences(feature_key, date_before, bot_id, job_name):
+    return jobs_occurrences_collection.find_one(
+        {
+            "feature_key": str(feature_key),
+            "date_before": date_before,
+            "bot_id": str(bot_id),
+            "job_name": job_name,
+        }
+    )
+
+
+def fetch_user_occurrences(account_id, created_at, key):
+    return users_occurrences_collection.find_one(
+        {
+            "account_id": int(account_id),
+            "created_at": created_at,
+            "key": str(key),
+        }
+    )
+
+
+def fetch_user_experience(account_id, created_at):
+    return user_experience_collection.find_one(
+        {
+            "account_id": int(account_id),
+            "created_at": created_at,
+        }
+    )
+
+
+def fetch_file_occurrences(file_name, feature_key):
+    return files_occurrences_collection.find_one(
+        {
+            "file_name": file_name,
+            "feature_key": str(feature_key),
+        }
+    )
+
+from math import isnan, nan
+
+
+def get_bots_success_failure_interval_diff(bots, key, recheck_number):
+    bots_diff_avg_success_sequence = []
+    bots_diff_avg_failure_sequence = []
+
+    for bot_id, bot_info in bots.items():
+        if bot_id != "":
+            bot_diff_avg_sequence = fetch_bot_diff_avg_sequence(
+                bot_id,
+                key,
+                recheck_number,
+                bot_info["started_at"],
+            )
+
+            bots_diff_avg_success_sequence.append(
+                bot_diff_avg_sequence["diff_avg_success_interval"]
+            )
+            bots_diff_avg_failure_sequence.append(
+                bot_diff_avg_sequence["diff_avg_failure_interval"]
+            )
+
+    return max(bots_diff_avg_success_sequence), min(bots_diff_avg_failure_sequence)
+
+
+def get_bots_success_ratio(bots, feature_key):
+    bots_success_ratios = []
+    bots_flip_success_ratios = []
+    jobs_success_ratios = []
+    for bot_id, bot_info in bots.items():
+        if bot_id != "":
+            bot_flips = fetch_bot_flips(feature_key, bot_info["started_at"], bot_id)
+            all_flips = (
+                bot_flips["flip_from_failure_to_success_num"]
+                + bot_flips["flip_from_failure_to_failure_num"]
+            )
+            current_bot_flip_success_ratio = (
+                bot_flips["flip_from_failure_to_success_num"] / all_flips
+                if all_flips
+                else DEFAULT_SUCCESS_RATIO
+            )
+            bots_flip_success_ratios.append(current_bot_flip_success_ratio)
+
+            bot_occurrences = fetch_bot_occurrences(
+                feature_key, bot_info["started_at"], bot_id
+            )
+            current_bot_success_ratio = (
+                bot_occurrences["num_success_occurences"]
+                / bot_occurrences["num_all_occurences"]
+                if bot_occurrences["num_all_occurences"]
+                else DEFAULT_SUCCESS_RATIO
+            )
+            bots_success_ratios.append(current_bot_success_ratio)
+
+            for job in bot_info["jobs"]:
+                if job["voting"]:
+                    job_occurrences = fetch_job_occurrences(
+                        feature_key, bot_info["started_at"], bot_id, job["name"]
+                    )
+                    current_job_success_ratio = (
+                        job_occurrences["num_success_occurences"]
+                        / job_occurrences["num_all_occurences"]
+                        if job_occurrences["num_all_occurences"]
+                        else DEFAULT_SUCCESS_RATIO
+                    )
+                    jobs_success_ratios.append(current_job_success_ratio)
+
+    bots_success_ratio = (
+        min(bots_success_ratios) if bots_success_ratios else DEFAULT_SUCCESS_RATIO
+    )
+    jobs_success_ratio = (
+        min(jobs_success_ratios) if jobs_success_ratios else DEFAULT_SUCCESS_RATIO
+    )
+    bots_flip_success_ratio = (
+        min(bots_flip_success_ratios)
+        if bots_flip_success_ratios
+        else DEFAULT_SUCCESS_RATIO
+    )
+
+    return (
+        bots_success_ratio,
+        jobs_success_ratio,
+        bots_flip_success_ratio,
+    )
+
+
+def get_user_success_ratio(user, key):
+    user_occurrences = fetch_user_occurrences(
+        user["account_id"], user["created_at"], key
+    )
+    user_success_ratio = (
+        user_occurrences["num_success_occurences"]
+        / user_occurrences["num_all_occurences"]
+        if user_occurrences["num_all_occurences"]
+        else DEFAULT_SUCCESS_RATIO
+    )
+    return user_success_ratio
+
+
+def get_user_status(account_id, number):
+    status = 0
+    user_occurrences_status_query = get_user_occurrences_status_query(
+        account_id, number
+    )
+    user_occurrences_status = list(
+        change_info_full_collection.aggregate(user_occurrences_status_query)
+    )
+
+    if user_occurrences_status:
+        user_occurrences_status = user_occurrences_status[0]
+        if "owner" in user_occurrences_status:
+            status = 2
+        elif user_occurrences_status["reviewer_updates"]:
+            status = 1
+
+    return status
+
+
+def get_user_experience(user, number):
+    user_experience = fetch_user_experience(user["account_id"], user["created_at"])
+    try:
+        user_experience["num_of_activity_before"]
+    except:
+        print(number)
+        print(user["account_id"])
+        print(user["created_at"])
+    return user_experience["num_of_activity_before"]
+
+
+def get_patch_info(revision, project, feature_key):
+    lines_inserted = 0
+    lines_deleted = 0
+    numbers_of_unique_files = 0
+    files_occurrences = []
+
+    for filename, file_info in revision["files"].items():
+        numbers_of_unique_files += 1
+        lines_inserted += file_info.get("lines_inserted", 0)
+        lines_deleted += file_info.get("lines_deleted", 0)
+
+        file_occurrences = fetch_file_occurrences(f"{project}/{filename}", feature_key)
+        file_occurrences_ratio = (
+            file_occurrences["num_of_success_occurrences"]
+            / file_occurrences["num_of_occurrences"]
+            if file_occurrences["num_of_occurrences"] != 0
+            else DEFAULT_SUCCESS_RATIO
+        )
+        files_occurrences.append(file_occurrences_ratio)
+
+    files_success_ratio = (
+        min(files_occurrences) if files_occurrences else DEFAULT_SUCCESS_RATIO
+    )
+    return lines_inserted, lines_deleted, numbers_of_unique_files, files_success_ratio
+
+from math import ceil
+import pickle
+
+with open("recheck_builds_items.pkl", "rb") as f:
+    recheck_builds_items = pickle.load(f)
+
+import ast
+import datetime
+import re
+from tqdm import tqdm
+import multiprocessing as mp
+
+
+def calculate_features(recheck_builds):
+    features = []
+
+    for recheck_build in tqdm(recheck_builds):
+        key = ast.literal_eval(recheck_build["key"])  # (change_id, patch_number)
+        number = str(key[0])
+
+        len_bots = len(recheck_build["bot"])
+        if len_bots > 1:
+            for index, bot in enumerate(recheck_build["bot"]):
+                recheck_number = bot["recheck_number"]
+                user = next(
+                    user
+                    for user in recheck_build["rerun_requestors"]
+                    if user["recheck_number"] == int(recheck_number)
+                )
+                user_full_info = author_info_collection.find_one(
+                    {"_account_id": int(user["account_id"])}
+                )
+                if (
+                    index != 0
+                    and user_full_info["is_bot"] == False
+                    and recheck_build["bot"][index - 1]["status"] == "failure"
+                ):
+                    feature_key = (*key, int(recheck_number))
+
+                    # bots_success_ratio
+                    new_bots = {
+                        k: v
+                        for k, v in bot.items()
+                        if k not in ["recheck_number", "status"]
+                    }
+                    diff_avg_success, diff_avg_failure = (
+                        get_bots_success_failure_interval_diff(
+                            new_bots, key, recheck_number
+                        )
+                    )
+                    bots_success_ratio, jobs_success_ratio, bots_flip_success_ratio = (
+                        get_bots_success_ratio(new_bots, feature_key)
+                    )
+
+                    # user_success_ratio
+
+                    user_success_ratio = get_user_success_ratio(user, key)
+                    user_experience = get_user_experience(user, number)
+                    user_status = get_user_status(user["account_id"], number)
+
+                    revision_info = revisions_collection.find_one(
+                        {"number": int(number), "revision_number": int(key[1])}
+                    )
+
+                    project = revision_info["project"]
+                    (
+                        lines_inserted,
+                        lines_deleted,
+                        numbers_of_unique_files,
+                        files_success_ratio,
+                    ) = get_patch_info(revision_info, project, feature_key)
+
+                    date_of_recheck = next(
+                        user["created_at"]
+                        for user in recheck_build["rerun_requestors"]
+                        if str(user["recheck_number"]) == str(recheck_number)
+                    )
+                    date_object = datetime.datetime.strptime(
+                        date_of_recheck, "%Y-%m-%d %H:%M:%S"
+                    )
+
+                    # Extract date and time features
+                    month_number = date_object.month
+                    day_of_week_number = date_object.weekday()
+                    hour = date_object.hour
+                    minute = date_object.minute
+
+                    features.append(
+                        {
+                            "key": feature_key,
+                            "user_status": user_status,
+                            "user_success_ratio": user_success_ratio,
+                            "bots_success_ratio": bots_success_ratio,
+                            "bots_flip_success_ratio": bots_flip_success_ratio,
+                            "jobs_success_ratio": jobs_success_ratio,
+                            "lines_inserted": lines_inserted,
+                            "lines_deleted": lines_deleted,
+                            "numbers_of_unique_files": numbers_of_unique_files,
+                            "files_success_ratio": files_success_ratio,
+                            "user_experience": user_experience,
+                            "queued_month": month_number,
+                            "queued_day": day_of_week_number,
+                            "queued_hour": hour,
+                            "queued_minute": minute,
+                            "date_of_recheck": date_of_recheck,
+                            "diff_avg_success": diff_avg_success,
+                            "diff_avg_failure": diff_avg_failure,
+                            "project": project,
+                            "label": (1 if bot["status"] == "success" else 0),
+                        }
+                    )
+    return features
+
+
+def divide_array(arr, num_pieces):
+    k, m = divmod(len(arr), num_pieces)
+    return [
+        arr[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(num_pieces)
+    ]
+
+
+if __name__ == "__main__":
+    print(mp.cpu_count())
+    with mp.Pool(mp.cpu_count()) as pool:
+        recheck_builds_chunks = divide_array(recheck_builds_items, mp.cpu_count())
+        results = pool.map(calculate_features, recheck_builds_chunks)
+
+import pandas as pd
+from sklearn import preprocessing
+
+features = [item for sublist in results for item in sublist]
+
+df_base = pd.DataFrame(features)
+df_base["lines_deleted"] = preprocessing.normalize([df_base["lines_deleted"]])[0]
+df_base["lines_inserted"] = preprocessing.normalize([df_base["lines_inserted"]])[0]
+df_base["numbers_of_unique_files"] = preprocessing.normalize(
+    [df_base["numbers_of_unique_files"]]
+)[0]
+df_base["user_experience"] = preprocessing.normalize([df_base["user_experience"]])[0]
+
+df_base.to_csv("features_full_dataset_only_human_failed.csv")
+
+import pandas as pd
+
+df_to_merge = pd.DataFrame(
+    [result for result_arr in results_diff_avg_sequence for result in result_arr]
+)
+# print(df_to_merge.head())
+df_to_merge["key"] = df_to_merge["key"].astype(str)
+initial_dataset = pd.read_csv("./features_datasets/by_project/features_years_20.csv")
+initial_dataset["key"] = initial_dataset["key"].astype(str)
+# print(initial_dataset.head())
+result = pd.merge(initial_dataset, df_to_merge, on="key", how="left")
+
+result.to_csv(
+    "./features_datasets/test/features_years_20_diff_success_failure_by_time.csv"
+)
+
+result.head()

@@ -1,0 +1,849 @@
+ Fragmented Markers, Mixed Results: A Systematic Review of AI
+        Coding Assistants and Developer Productivity
+              Annemarie Wittig✉                                             Alina Mailach                               Norbert Siegmund
+                Leipzig University                                       Leipzig University                             Leipzig University
+                Leipzig, Germany                                         Leipzig, Germany                               Leipzig, Germany
+             awittig@cs.uni-leipzig.de                            alina.mailach@cs.uni-leipzig.de              norbert.siegmund@cs.uni-leipzig.de
+
+Abstract                                                                                2026, Munich, Germany. ACM, New York, NY, USA, 13 pages. https://doi.
+AI coding assistants are increasingly embedded in software engi-                        org/10.1145/3832783.3834386
+neering practice, yet the literature still offers no cumulative, easily
+interpretable picture of their effects on software developer produc-                    1   Introduction
+tivity. The central problem is not a lack of studies, but a lack of com-                Coding assistants such as ChatGPT and GitHub Copilot are rapidly
+parability: prior work operationalizes productivity through hetero-                     reshaping software engineering practice across tasks such as code
+geneous markers, settings, and reporting styles, making cross-study                     and test generation [4, 20, 43–45, 49], code review [2, 10, 20, 49, 55],
+conclusions difficult. To address this, we conduct a staged system-                     and automated program repair [26, 59]. By 2025, 84 % of profes-
+atic literature review. In the first stage, we synthesize studies that                  sional developers reported that they either want to adopt or have
+explicitly examine developer productivity. In the second, we extend                     already adopted AI coding assistants in their workflow [47], making
+the scope to productivity-related developer outcomes using SPACE                        productivity effects a central practical concern.
+as a theory-informed lens, capturing human-centered evidence that                          Despite the growing number of studies on AI coding assistants,
+explicit productivity studies often omit. Across both stages, we                        the evidence on developer productivity remains difficult to inter-
+analyze how productivity is operationalized, which confounding                          pret. Reported effects vary substantially across studies: some find
+factors are discussed, and how reported effects are distributed.                        large time savings when completing a task [41], no statistically
+   We identify 187 unique productivity and productivity-related                         significant time savings in some phases [7], and some even slower
+markers, while individual studies typically only use five, revealing                    task completion [3]. These differences are not surprising: studies
+a broad but highly fragmented evidence base. Explicit productivity                      examine different kinds of tasks (researcher-designed exercises [41],
+research is dominated by time-, output-, and artifact-oriented prox-                    realistic maintenance tasks [7], and real repository issues [3]) and
+ies, whereas the broader SPACE-aligned corpus makes satisfaction,                       use highly heterogeneous productivity measures. Across the litera-
+psychological aspects, and well-being substantially more visible.                       ture, “productivity” may refer to task completion time [31], devel-
+Reported effects are often positive, but this pattern is stronger in                    oper perceptions [22, 29, 31, 37], repository activity metrics (e.g.,
+perceived and tendency-based findings than in objective or statisti-                    commits, pull requests, lines of code) [18, 51, 60], or observational
+cally evaluated ones. Overall, the literature suggests that AI coding                   findings [25, 31]. Even task completion time itself is operationalized
+assistants can support productivity, but current evidence does not                      in multiple ways (e.g., direct measurement, Likert-scale perceptions,
+yet support simple, context-independent conclusions. The key con-                       percentage estimates, or qualitative interview results). As a result,
+tribution of this review is therefore a structured basis for making                     findings are hard to compare, and the field still lacks a coherent
+productivity evidence more interpretable, multidimensional, and                         view of when and how AI coding assistants improve productivity.
+comparable across studies.                                                                 This comparability problem is not merely a methodological in-
+                                                                                        convenience, but directly affects the conclusions that researchers
+CCS Concepts                                                                            and practitioners draw from the literature. When results from fun-
+• Software and its engineering;                                                         damentally different study settings are interpreted side by side
+                                                                                        as if they were equivalent, the field risks overgeneralizing effects
+Keywords                                                                                that may depend on task type, population, study environment,
+coding assistants, productivity, systematic literature review                           or unreported contextual factors. The consequences are twofold:
+                                                                                        practitioners may base adoption decisions on evidence from study
+ACM Reference Format:                                                                   designs that do not reflect realistic software engineering work, and
+Annemarie Wittig, Alina Mailach, and Norbert Siegmund. 2026. Fragmented
+                                                                                        researchers may repeatedly reproduce similar weaknesses because
+Markers, Mixed Results: A Systematic Review of AI Coding Assistants and
+                                                                                        the literature lacks a structured overview of which findings are
+Developer Productivity. In Proceedings of the 41st IEEE/ACM International
+Conference on Automated Software Engineering (ASE ’26), October 12–16,                  comparable, under what conditions, and with which confounders
+                                                                                        in mind. The key question for a review is therefore not only what
+                                                                                        effects have been reported, but whether existing syntheses make
+                                                                                        those effects interpretable and comparable in the first place.
+This work is licensed under a Creative Commons Attribution 4.0 International License.      Existing literature reviews provide useful orientation, but do
+ASE ’26, Munich, Germany                                                                not yet make productivity evidence interpretable and comparable
+© 2026 Copyright held by the owner/author(s).
+ACM ISBN 979-8-4007-2882-2/2026/10                                                      across heterogeneous contexts [15, 21, 34, 40, 54]. Prior reviews
+https://doi.org/10.1145/3832783.3834386                                                 either take a broad LLM-in-software-engineering perspective [21,
+ASE ’26, October 12–16, 2026, Munich, Germany                                                    Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+54], focus on specific populations [15], or summarize effects without          • We provide a first list of confounding variables analyzed for
+systematically tracing operationalizations, study conditions, and                results in explicit productivity research.
+contextual factors relevant to comparability [34]. To our knowledge,           • We synthesize reported effects of coding assistant usage on
+no existing secondary study jointly analyzes these dimensions to                 explicit productivity markers and summarize where evidence
+make productivity evidence comparable and interpretable.                         is consistent, mixed, or absent across study contexts.
+   We address this gap with a staged systematic literature review              • We derive implications for researchers designing future eval-
+(SLR) designed to improve the interpretability and comparability                 uations and practitioners assessing productivity impact.
+of evidence on AI coding assistants’ effects on software developers’
+productivity. The staged design reflects two analytically distinct syn-
+thesis objectives. Explicit productivity studies provide the clearest      2   Background and Related Work
+basis for analyzing how productivity is defined, measured, reported,       Productivity in Software Engineering. Developer productivity has
+and under which conditions effects emerge. At the same time, pro-          been studied for decades without converging on a universal def-
+ductivity is widely understood as multidimensional, and prior work         inition or metric set. Early approaches relied on output-oriented
+does not consistently label all developer-centered, productivity-          indicators such as lines of code [24], while recent work recognizes it
+relevant outcomes as productivity. We therefore structure the re-          as multi-faceted and not to be reduced to a single measure [17, 38].
+view in two stages: the first synthesizes explicit productivity studies,      This shift is reflected in multidimensional frameworks such as
+while the second synthesizes studies reporting outcomes aligned            DevEx and SPACE. DevEx frames developer productivity through
+with one or more dimensions of the SPACE framework (Satisfaction           developer-centric drivers such as feedback loops, cognitive load,
+and well-being, Performance, Activity, Communication and collab-           and flow state, and recommends combining subjective perceptions
+oration, and Efficiency and flow) — even when productivity is not          with objective process indicators [38]. SPACE similarly argues for
+the primary stated construct. We do not assume prior studies con-          a multidimensional view of productivity and distinguishes five
+sistently apply SPACE or map cleanly to its dimensions. Instead, we        dimensions: Satisfaction and well-being, Performance, Activity,
+use it as a theory-informed scoping lens, integrating broader human-       Communication and collaboration, and Efficiency and flow [17].
+centered evidence without collapsing into the explicit-productivity        These frameworks are relevant for two reasons: they motivate why
+corpus. This staged design supports both a precise analysis of direct      single-metric interpretations of AI coding assistant productivity
+productivity claims and a broader account of productivity-related          gains are often incomplete, and they provide a lens for identify-
+effects, reducing construct undercoverage and strengthening the            ing productivity-related outcomes in studies that do not explicitly
+basis for cumulative research and evidence-informed practice.              use the term productivity while still reporting developer-centered
+   Our analysis produced a taxonomy that organizes the method-             effects relevant to productivity in practice.
+ological fragmentation, arranging research insights according to              Secondary Studies on AI Coding Assistants and Developer Produc-
+their operationalization approaches. From this taxonomy, we derive         tivity. Existing review studies provide valuable orientation for this
+three key observations: (i) human-centered dimensions (e.g., devel-        rapidly evolving research area, but do not yet deliver the synthesis
+opers’ well-being) are rarely investigated in explicit productivity        required to make productivity evidence interpretable and compa-
+research; (ii) confounders are not systematically analyzed; and (iii)      rable across heterogeneous contexts [15, 21, 34, 40, 54]. Available
+opinion- and tendency-based findings are largely positive, whereas         reviews differ substantially in scope, population focus, source pol-
+statistically evaluated and objective results contain substantially        icy, and synthesis objective, making them informative for mapping
+more neutral and negative findings. This strengthens the observa-          the field, but less suitable for resolving the comparability problem
+tion that the central challenge is not the absence of evidence, but        that motivates our work.
+the absence of an interpretable and comparable evidence base. We              Ferino et al. [15] focus on novice developers’ adoption of LLMs,
+contribute an important structured basis for making heterogeneous          covering motivations, perceptions, and experiences in only edu-
+productivity findings more comparable and interpretable across             cational and early-career contexts. Mohamed et al. [34] are the
+software engineering contexts. Our consolidated overview of mark-          closest prior work, conducting an SLR on LLM-assistant produc-
+ers, confounders, and effect directions provides the shared ground         tivity across 37 studies, mapping findings to SPACE. Our review
+the field needs to move from isolated studies toward a cumula-             differs in analytical purpose: where Mohamed et al. characterize
+tive and coherent evidence base. For academia, this supports more          study methods and synthesize benefits, risks, and SPACE-dimension
+cumulative and better-calibrated research designs; for industry, it        coverage, we explicitly target the comparability problem by ana-
+enables more defensible interpretation of productivity claims when         lyzing marker-level operationalizations, extracting confounding
+evaluating AI coding assistants for real development environments.         variables, and preserving study-setting differences in effect synthe-
+   To summarize, our contributions are as follows:                         sis. We also use SPACE, but with a different purpose: as a staged
+                                                                           scoping mechanism to recover human-centered evidence that an
+     • We conduct a staged systematic literature review of AI cod-
+                                                                           explicit-productivity-only review would miss.
+       ing assistants’ impact on software developers’ productivity(-
+                                                                              Further, we considered broader LLM-in-software-engineering
+       related) markers.
+                                                                           reviews [21, 54], which map application areas and trends but are
+     • We compile and categorize 187 unique productivity and
+                                                                           not designed to synthesize human-centered productivity evidence
+       productivity-related markers, identifying which aspects are
+                                                                           across heterogeneous settings. We additionally examined Friso and
+       measured frequently and which are largely missing.
+                                                                           Kalava [40], but their scope and reporting style differ substantially
+                                                                           from protocol-driven SLRs, limiting direct comparability.
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity            ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+   The source policy also varies across prior reviews. Most existing                   we define markers as study-reported operationalizations of higher-
+SLRs are restricted to peer-reviewed studies [15, 21, 34], a defensible                level constructs (e.g., productivity, satisfaction, activity), including
+choice for methodological rigor. However, for productivity impact                      quantitative measures and qualitative operationalizations.
+in practice, influential evidence also appears in industry reports and
+preprints reporting original study designs and results. Excluding                      3.2     Review Design and Search Strategy
+these improves uniformity but risks omitting practically relevant                      We design a staged systematic literature review following the SIG-
+evidence. We therefore include peer-reviewed studies, industry                         SOFT Empirical Standard for Systematic Reviews [42]. Phase one
+reports, and preprints, but only when they report original empirical                   synthesizes studies explicitly examining productivity with AI cod-
+designs and results, and we label them explicitly in the analysis.                     ing assistants. Phase two extends this with a scoping stage using
+   Taken together, to the best of our knowledge, no existing sec-                      SPACE to capture productivity-related developer outcomes not la-
+ondary study is explicitly designed to make AI coding assistant                        beled as productivity. The full review protocol, including detailed
+productivity evidence comparable and interpretable across studies                      processes and author responsibilities can be found in the supple-
+by jointly analyzing marker-level operationalizations, study set-                      mentary material.
+tings and documented confounding variables.
+                                                                                       3.2.1 Staged Review Design. We conducted the review in two stages
+3     Methodology                                                                      corresponding to RQ1.1 and RQ1.2 with two complementary syn-
+                                                                                       thesis objectives. Phase one focuses on studies explicitly examining
+We conducted a staged SLR to synthesize evidence on the impact of
+                                                                                       developer productivity with AI coding assistants (ICp1), providing
+AI coding assistants on software development. The core challenge
+                                                                                       the most direct and methodologically interpretable corpus for ana-
+was obtaining interpretable results across heterogeneous study
+                                                                                       lyzing how productivity is explicitly operationalized and grounds
+designs, tasks, and measurement approaches, making a statistical
+                                                                                       the phase-specific analyses of explicit productivity markers, con-
+meta-analysis of effect sizes currently infeasible. Instead, we aimed
+                                                                                       founders, and reported effects. Phase two focuses on productivity-
+for a structured and transparent synthesis of (i) how productiv-
+                                                                                       related outcomes aligned with one or more SPACE dimensions
+ity is operationalized via markers used to assess productivity and
+                                                                                       (ICp2), acknowledging that relevant developer-centered evidence
+productivity-related outcomes in human-centered studies of AI
+                                                                                       is not always labeled as productivity.
+coding assistants, (ii) which confounders are discussed in relation
+                                                                                          This design was empirically confirmed during phase one screen-
+to reported effects, and (iii) how reported effects are distributed
+                                                                                       ing: multiple studies reported outcomes conceptually aligned with
+across explicit productivity and productivity-related outcomes.
+                                                                                       SPACE dimensions without naming productivity as the primary con-
+                                                                                       struct, and would have been excluded under an explicit-productivity-
+3.1     Research Questions                                                             only criterion. Phase one was retained as the explicit-productivity
+To support an interpretable synthesis across heterogeneous evi-                        corpus and complemented by phase two as a theory-informed exten-
+dence, we first characterize how prior work operationalizes produc-                    sion, with phase-specific analyses preserved throughout to broaden
+tivity and productivity-related outcomes, then extract confounding                     conceptual coverage without collapsing distinct forms of evidence.
+variables, and finally summarize reported effects at the marker level.                 Merging the two phases would therefore risk conflating method-
+We state the following research questions:                                             ologically distinct forms of evidence.
+RQ1. How is the productivity impact of AI coding assistants on                         3.2.2 Selection Criteria. We defined inclusion and exclusion cri-
+     software developers operationalized and measured in existing                      teria to include only studies that provide direct, human-centered
+     software engineering research regarding                                           evidence relevant to software developers’ work with AI coding
+ 1.1 explicit productivity, and                                                        assistants. The key criteria are summarized as follows:
+ 1.2 productivity-related effects based on the SPACE dimensions?
+                                                                                      • Phase-specific scope criteria:
+RQ2. Which confounding variables are discussed in relation to the
+                                                                                       – ICp1 (Phase one, RQ1.1 ): The paper explicitly examines pro-
+     reported explicit productivity effects?
+                                                                                         ductivity effects of coding assistants on software developers.
+RQ3. What effects of AI coding assistants are reported for explicit
+                                                                                       – ICp2 (Phase two, RQ1.2 ): The paper examines productivity-
+     productivity markers?
+                                                                                         related effects aligned with one or more SPACE dimensions.
+RQ1 focuses on operationalization (i.e., which markers are used and                   • Common inclusion criteria (both phases):
+how they are measured), RQ2 captures contextual interpretation                         – Addresses a software engineering activity/developers’ work (IC2).
+and limitations (i.e., confounding influences explicitly discussed                     – Directly reports productivity(-related) results (IC3).
+in the studies), and RQ3 summarizes reported effect directions                         – Involves human participants/data from human developers (IC4).
+to enable cautious cross-study comparison under heterogeneous                          – Publicly available in English (IC5).
+reporting. Essentially, we cannot go directly to RQ3 without a prior                   – Peer-reviewed, preprint, or industry report with an original em-
+analysis and contextualization of how and under which constraints                        pirical study design and results (IC6).
+the results were obtained. This is a key and unique aspect of our                     • Key exclusions:
+analysis compared to other secondary studies on this topic.                            – Published before 2023, predating the LLM-assistant period (EC1).
+   We use the term marker rather than metric because many studies                      – Exclusively teaching/student/non-developer populations (EC2).
+are not operationalized via standardized quantitative metrics, but                     – Fully automated benchmark/ground-truth evaluations and LLM–
+instead with qualitative/mixed-methods, such as interviews. Thus,                        LLM comparisons (EC3).
+ASE ’26, October 12–16, 2026, Munich, Germany                                                   Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+– Humans only for ground-truth creation/output evaluation (EC4).         Screening the first 20 results per query added 79 further unique
+– Other gray literature not meeting IC6 (EC5).                           candidate papers. One candidate was provided by Google’s AI sum-
+Mixed-participant studies (e.g., developers and students) are in-        mary. This summary is generated automatically with most Google
+cluded when conducted in non-teaching contexts and labeled ac-           searches and is thus part of the search interface rather than an ac-
+cordingly. The temporal scope starts in 2023 (EC1), reflecting main-     tive AI tool used in our collection pipeline. This source contributed
+stream LLM availability from 2022 onward. Full criterion formula-        13 relevant papers in phase one and 1 in phase two (14 total).
+tions are provided in the supplementary material.
+                                                                             Screening and full-text verification. We screened candidates by
+3.2.3 Paper Collection and Screening Procedure. To reduce depen-         title and abstract against the selection criteria. All screening and ver-
+dence on a single search source and ranking mechanism, we col-           ification steps were performed by the first author. The third author
+lected candidate papers from three complementary sources.                independently screened the first 1,000 venue-paper titles as a calibra-
+ (a) a venue-based search in major software engineering venues           tion subset. Disagreements were resolved through discussion. For
+     (to cover established software engineering venues),                 any undecided paper, the second author was consulted. For abstract
+ (b) an automated keyword-based search using the Semantic Scholar        screening, the second author reviewed venue paper abstracts for
+     API (for scalable retrieval across indexed sources), and            calibration. When abstracts were ambiguous on the phase-specific
+ (c) a manual search using Google and Google Scholar (for targeted       scope criterion (ICp1/ICp2), we inspected the full text for keywords
+     recovery of additional studies and industry reports).               related to (i) the AI tool (e.g., ChatGPT, LLM), (ii) the study popula-
+                                                                         tion (e.g., human, participant), and (iii) the productivity(-related)
+   Venue-based search. We evaluated research track papers of 12          construct under consideration. Papers passing abstract screening
+major software engineering venues (including ASE, ICSE, and ESE;         underwent full-text verification using the selection criteria, with
+full list in supplementary). The venue-based screening covered           particular attention to participant population and the requirement
+3,746 papers in total, resulting in 1 relevant paper in phase one        that productivity(-related) results are reported rather than only in-
+(ICp1) and additional 4 (5 total) relevant papers in phase two (ICp2).   termediate measures. For any paper where the first author remained
+   Semantic Scholar API search. As a second source, we queried           undecided, the second author was consulted.
+the Semantic Scholar API using 120 iteratively refined keyphrase             We defined a control set of 10 papers identified through a small-
+combinations and collected up to 20 results per query. Keyphrases        scale manual pre-study and used it to validate search completeness.
+were constructed from template strings combining placeholders for        Search expansion was stopped after the third source once all control
+person type (PERSON: human, participant, developer, practitioner,        papers had been recovered.
+expert) and tool type (CHAT: chatgpt, LLM, coding assistant, chatbot,
+copilot), combined with fixed keyphrases. Placeholders and combi-
+nations were refined iteratively, with unsuitable ones dropped. The
+                                                                         3.3    Data Processing and Synthesis Procedure
+template and static phrases are as follows:                              The first two authors aligned on coding decisions after each step;
+                                                                         phase-specific differences are stated below.
+• Templates:
+ – PERSON using CHAT                                                     3.3.1 Step 1: Extracting Markers. In phase one, we extracted all
+ – How CHAT impact PERSONs                                               markers used to assess productivity, excluding markers unrelated
+ – Do CHAT increase productivity of PERSONs?                             to productivity (e.g., use-case reporting without productivity impli-
+ – Productivity of CHAT in practice                                      cations) even when reported in otherwise relevant papers.
+ – Software PERSON on CHAT-usage                                            In phase two, we applied the same extraction logic but evaluated
+ – Impact of CHAT on Software PERSON                                     whether each paper’s objective or RQs addressed developer impact
+• Static:                                                                aligned to one or more SPACE-related constructs, rather than ex-
+ – Developers using LLMs                                                 plicit productivity. We reassessed the phase-one pool for previously
+ – LLMs in development                                                   excluded markers that aligned with SPACE, allowing re-inclusion
+ – how do coding assistants improve productivity in practice             where appropriate. Derived analyses combining existing markers
+ – Do coding assistants increase productivity of software develop-       without introducing a new operationalization (e.g., correlations
+   ers?                                                                  between previously extracted constructs) were excluded.
+ – Developer productivity coding assistants                                 Operationalizing SPACE alignment (phase two). Because SPACE
+ – Effectiveness LLMs in Software Engineering                            defines dimensions conceptually without formal classification crite-
+ – Coding Assistants in Software Development                             ria, we operationalized inclusion by examining each paper’s stated
+ – Chatbots in Software Development                                      objective, introduction, and (where applicable) research questions/
+The full list of template and placeholder combinations is provided       hypotheses to determine whether the investigated construct di-
+in the supplementary material.                                           rectly aligned with one or more SPACE dimensions from a developer-
+   After deduplication, this step contributed 893 unique candidate       centered perspective. Mapping required clear conceptual correspon-
+papers, contributing 13 relevant papers in each phase (26 total).        dence to a SPACE dimension rather than indirect influence. Cases
+   Manual search. As a third source, we manually queried 10 pro-         with conceptual overlap were resolved through author discussion.
+ductive keyphrases in Google and Google Scholar, adapting syntax         For example, Khojah et al. [25] investigate perceived usefulness and
+where needed (e.g., appending pdf to reduce blog results, or refor-      trust in a single RQ: usefulness was retained as its operationaliza-
+mulating llm impact developers as How LLMs impact developers).           tion directly addresses SPACE dimensions (e.g., reducing repetitive
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity             ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+tasks maps to Efficiency and Flow), while trust, a perception of the                   also extracted evidence type per finding to distinguish quantitative
+tool rather than a developer-centered outcome, was excluded.                           metrics, perceptions, and qualitative findings.
+
+3.3.2 Step 2: Mapping Markers to Normalized Labels. In both phases,                    4     Results
+we mapped each extracted marker to a normalized label via open
+                                                                                       We analyzed a total of 45 papers (27 in phase one and 18 in phase
+coding, enabling cross-study comparison across semantically simi-
+                                                                                       two), summarized in Table 1. Overall, 26 of the 45 papers were peer
+lar but differently described operationalizations (e.g., varying for-
+                                                                                       reviewed (57.8%), with a lower share in phase one than in phase
+mulations of time savings or code-activity measures). The output of
+                                                                                       two (37.0% vs. 88.9%). The most common methods were surveys and
+this step is therefore a concept-level normalization layer above the
+                                                                                       experiments, or combinations thereof (Top Methods). Participant
+raw study-reported markers. Quantitative markers were generally
+                                                                                       numbers ranged from 5 to 88022 (N (min–max)), depending on
+straightforward to normalize, while qualitative ones required more
+                                                                                       the method used. The smallest sample came from a think-aloud
+semantic interpretation. To calibrate the coding scheme, the first
+                                                                                       study embedded in a larger study setup [4], and the largest from
+two authors jointly categorized an initial subset of 75 markers in a
+                                                                                       an analysis of participant activity data in repositories [5]. Given
+card-sorting session. Then, the first author completed the remainder
+                                                                                       this skewed distribution, we report participant ranges rather than
+and discussed ambiguous cases with the second author.
+                                                                                       averages. Participants were predominantly software engineering
+3.3.3 Step 3: Grouping into Higher-Level Categories. We grouped                        professionals. Study duration differed between phases. Phase two
+normalized concepts into higher-level categories inductively via                       papers were almost exclusively one-shot studies (17/18), whereas
+open coding (phase one), extending the structure in phase two                          phase one included a broader spread of durations, including all
+to accommodate SPACE-aligned markers not present previously.                           long-term studies in the sample (6/27). Interestingly, phase one
+Categories were further grouped into generalizable groups for read-                    papers used established productivity frameworks only rarely, with
+ability. An overview of all groups, categories, and markers can be                     5 papers using SPACE [4, 7, 22, 37, 56] and 3 papers using other
+found in our results in Figure 1.                                                      frameworks [16, 25, 32].
+
+3.3.4 Step 4: Collecting explicitly discussed confounding variables.                                  Table 1: Overview of papers by phase
+To operationalize RQ2 , we collected confounding variables only
+when explicitly discussed in relation to extracted explicit produc-                                          Phase One         Phase Two             Total
+tivity markers (phase one). For each marker, we identified variables
+explicitly linked to the reported effect and assigned them a normal-                       Unique Paper            27               18                45
+ized label, synthesizing discussed contextual influences rather than                       Peer-Reviewed      10 (37.04%)      16 (88.89%)       26 (57.78%)
+all variables measured in the included studies.                                            Top Methods        survey (16)      survey (10)       survey (26)
+                                                                                                            experiment (8)   experiment (4)    experiment (12)
+3.3.5 Step 5: Coding Reported Effects. To operationalize RQ3 , we                          N (min–max)         5–88022           10–268            5–88022
+coded the reported effect direction of each phase-one marker using                         Mixed               2 (7.41%)        3 (16.67%)        5 (11.11%)
+                                                                                           Study Length
+an ordinal scheme: negative, mixed, positive, neutral/no-effect. We
+                                                                                             one-shot        17 (62.96%)       17 (94.44%)        34 (75.56%)
+introduced this harmonization layer because studies report similar                           short-term      4 (14.81%)         1 (5.56%)          5 (11.11%)
+concepts using heterogeneous measurement formats (e.g., time                                 long-term       6 (22.22%)         0 (0.00%)          6 (13.33%)
+measurements, percentage changes, Likert-scale perceptions, or
+qualitative findings), making a quantitative comparison infeasible.
+   We proceeded three-ways, depending on reporting format. (i)
+Statistical results: we coded effect direction based on reported                       4.1     RQ1 : Markers of productivity research
+significance, with effect sizes extracted if available. (ii) Proportion-               We report marker results phase-specific. Phase one captures how
+based results: we derived proportions of positive, neutral, and                        prior work explicitly operationalizes productivity and therefore
+negative responses and coded the dominant category, using mixed                        provides the tighter basis for comparability. Phase two is not in-
+when two categories were within 5 percentage points. (iii) Re-                         tended as a second explicit-productivity corpus. Instead, it focuses
+ported tendencies: we coded direction based on tendencies stated                       on developer-centered outcomes aligned with SPACE dimensions.
+by the authors. Effect directions were summarized per marker by                        This approach highlights the aspects that are excluded by an explicit
+counting occurrences; multiple results for the same marker within                      productivity-only lens. We therefore interpret phase differences
+a paper were counted separately when derived from distinct data.                       not simply as differences in marker counts, but as evidence of what
+   This aggregation inevitably abstracts from deeper analyses in                       explicit productivity research emphasizes versus what it overlooks.
+the original studies and compares substantively different result                          Table 2 summarizes the extracted markers used to assess pro-
+types. Nevertheless, it was necessary given the substantial het-                       ductivity(-related) impacts of AI coding assistants on developers.
+erogeneity in operationalizations, analytical depth, and reporting                     Overall, we identified 187 unique markers. Both phases showed the
+formats across studies. Without a shared comparison layer, the                         same median of 5 unique markers per paper and a similar category
+synthesis would risk conflating differences in reporting practice                      distribution: each contained 19 unique categories, with a median of
+with differences in substantive findings. The directional coding is                    3 categories per paper. This suggests a broad corpus-level evidence
+thus not a meta-analytic effect-size estimate, but a structured and                    base but narrow study-level coverage: many markers exist, but each
+methodologically defensible summary of reported tendencies. We                         paper captures only a small part of the construct. To test whether
+ASE ’26, October 12–16, 2026, Munich, Germany                                                   Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+      Table 2: Overview of markers per paper by phase                     markers, but captures forms of developer-centered evidence that
+                                                                          explicit productivity studies largely leave outside the construct.
+                                         Phase One    Phase Two   Total      At paper level, the most frequent category pairings in phase one
+                                                                          are Direct productivity assessment with Time (9 papers), followed
+ Papers with markers                            27       31        45     by Task success and task quality with Time, and Time with itself (7
+ Total Markers                                  178      240      418
+                                                                          papers each). Self-combinations are common overall, such as Code
+ Unique Markers                                 91       124      187
+ Unique Categories                              19       19        20
+                                                                          quality and Repository activity (5 and 4 papers, respectively). In
+ Median # unique Markers per Paper               5        5         6     phase two, the most frequent pairing is AI assessment with Time (13
+ Median # Categories per Paper                   3        3        4      papers), followed by self-combinations of Time and AI assessment
+                                                                          (12 and 11 papers, respectively). These pairing patterns highlight
+                                                                          that studies often focus on narrow clusters of closely related mark-
+                                                                          ers. Such obtained insights are therefore often narrow in scope even
+the mix of peer-reviewed, industry, and preprint papers affected the      when the broader corpus appears rich.
+identified markers, we used a PERMANOVA. We did not observe
+statistically detectable differences in marker distributions by peer-
+review status in either phase one (𝑝 = 0.839, pseudo-𝐹 = 0.874,               Insight
+𝑅 2 = 0.033), or phase two (𝑝 = 0.107, pseudo-𝐹 = 1.168, 𝑅 2 = 0.038)      The phase contrast is a central result. Phase one shows the
+paper pool, providing no evidence that marker distributions differ         field’s default productivity lens, centered on observable work-
+systematically by publication type.                                        performance proxies and phase two shows the human and expe-
+                                                                           riential dimensions that this default lens misses.
+    Insight
+ The field has collected a broad productivity evidence base, though          Human markers. This group covers the developers’ individual
+ the study-level coverage remains narrow. Across the corpus 187           experiences, including Well-being, Satisfaction, Psychological aspects,
+ distinct markers are used, but individual studies usually only           and Personal career aspects, with Satisfaction being the most frequent
+ rely on a small subset, further limiting comparability.                  category. Of the four main groups, it has the fewest occurrences
+                                                                          and is concentrated in the phase two paper pool. Markers related
+   Markers and groups. We identified 187 unique markers, organized        to Psychological aspects and Satisfaction roughly double or triple in
+into 20 categories and four groups in a tree-level structure. Quanti-     phase two compared to phase one, while Personal career aspects and
+tative evidence was usually easier to consolidate than qualitative        Well-being occur almost exclusively in phase two. For instance, Well-
+evidence: closely related metrics such as “volume of code changes”        being is defined by three papers and captured exclusively through
+and “lines of code added” were unified under “#LoC”, whereas qual-        perceived markers including stress, physical and mental discomfort,
+itatively phrased findings about faster work or time savings had          and fatigue. Human markers are therefore where the value of phase
+to be consolidated at the level of shared meaning. When the same          two becomes most visible: explicit productivity research includes
+construct appeared across multiple task contexts, we retained a           these outcomes only sparsely, whereas the broader SPACE-aligned
+single shared marker to avoid unnecessary fragmentation. The re-          set shows that substantial productivity-relevant evidence exists
+sulting tree is visualized in Figure 1. Only a subset of categories       outside explicit productivity labels.
+is shown in detail, as displaying every marker would exceed the              AI markers. This group describes telemetry and metadata on the
+paper’s space. All markers with categories and their corresponding        interactions of developers and tools measured primarily objectively
+references are provided in the supplementary material.                    (AI usage; e.g., usage frequency or amount of accepted code), as
+   We identified four main groups of markers: AI markers, covering        well as developers’ perceptions of tool interaction at a more prac-
+the AI tool itself; artifact and repository markers, covering produced    tical level (AI tooling; e.g., perceived ease of use and integration
+code and repository behavior; organizational and process markers,         challenges). These categories are relatively balanced between the
+covering task, workflow, and organizational outcomes; and human           two phases. The most prominent category is AI assessment, which
+markers, covering developers’ experiences, perceptions, and well-         captures how developers evaluate the tool itself and can therefore
+being. The most frequently addressed categories are Time (84 total        shape both performance and perceptions of productivity (e.g., per-
+markers used), followed by AI assessment (60) and Code quality (43).      ceived suggestion accuracy). Overall, AI assessment accounts for
+Because Time belongs to the organizational and process marker             68 % (60/87) of all AI markers. While AI markers are more frequent
+group, this group is also the largest overall.                            than human markers, they remain the second smallest group over-
+   Two patterns are particularly notable. First, both phases remain       all. Their stronger phase-two presence is driven primarily by the
+similarly narrow at paper level, as reflected in the identical medians.   concentration of AI assessment markers in that phase.
+Second, they differ systematically in what they focus on. Phase one          Artifact and repository markers. This group is the second largest
+contains more artifact and repository markers, whereas phase two is       in our paper pool and the only group for which phase one contains
+centered more around human and AI markers, and to a lesser extent         more markers than phase two. It contains six distinct categories,
+organizational and process markers. This contrast is also visible         although Production activity (phase-one exclusive) and CI activity
+in the phase-unique categories: production activity (artifact and         contain only three markers each, drawn from one and two pa-
+repository), appears only in phase one, whereas well-being (human)        pers, respectively. The largest category is Code quality, collected in
+appears only in phase two. Phase two therefore does not simply add        both phases but more often in phase two, and spanning 29 unique
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity               ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+                                                                                    perc Well-being [32]
+               No group                    Direct productivity as-                  perc Stress [32]
+               (29, 27, 2)                 sessment                                 perc Physical discomfort [32]
+                                                 (29, 27, 2)                        perc Physical demand [36]
+                                           Well-being                               perc Mental health impact [32]
+                                           (9, 0, 9)                                perc Mental fatigue [32]
+                                           Satisfaction                             perc Job-related stress [32]
+               Human                             (30, 8, 22)                        perc Guilt [4]
+               marker                      Psychological aspects                    perc Frustration [36]
+               (80, 17, 63)                      (27, 8, 19)                        perc AI tool quality       [56, 57]
+                                           Personal career aspects
+                                                                                    perc Usefulness [27, 36, 61]
+                                                 (14, 1, 13)                        perc Team AI tool learning curve [14]
+                                           AI usage                                 perc Sentiment on AI tools [13]
+                                                 (19, 11, 8)                        perc Opinion of AI tool [35, 49]
+               AI marker                   AI tooling                               perc LLM quality [11, 50, 53]
+               (87, 23, 64)                      (8, 4, 4)                          perc Importance to have access to coding assistants [31]
+                                           AI assessment                            perc Importance of AI-found issues [11]
+                                                 (60, 8, 52)                        perc Assistance in code understandability [43]
+                                                                                    perc Assistance in bugfixing [11]
+                                                                                    perc AI tool limitation [8, 9, 25, 29, 37, 43, 49, 61]
+                                                                                    perc AI tool code quality [61]
+                                                                                    perc AI code understandability [61]
+                                                                                    perc Ability to identify issues found by AI alone [11]
+                                           Production activity
+                                                                                    perc AI tool accuracy        [4, 8, 27, 29, 33, 35–37, 39, 48, 52, 53, 56, 61]
+                                                 (3, 3, 0)
+                                           Security                                 obj Time until PR merged           [46]
+                                                 (12, 3, 9)                         obj Time until PR is reviewed / approved             [1, 12, 30]
+                                           Repository activity                      obj Requirement completion per minute              [56]
+               Artifact and                      (25, 21, 4)                        obj PR cycle time      [30]
+               repository                  Code volume                              obj Mean time to resolve          [1, 6]
+               marker                            (8, 7, 1)
+                                                                                    obj # tasks per day       [1]
+               (94, 52, 42)                Code quality
+                                                 (43, 16, 27)                       obj # of characters per minute by developer             [56]
+                                           CI activity                              obj Time until PR closed [11]
+                                                 (3, 2, 1)                          perc Time spent on on specific task/action [4]
+                                                                                    perc Temporal demand [36]
+                                           Time
+                                                                                    perc Overtime due to AI tool usage [32]
+                                                 (84, 41, 43)
+                                                                                    perc Coding efficiency [16]
+                                           Task success and task                    perc AI-driven time pressure [32]
+                                           quality                                  perc Ability to meet deadline [8]
+                                                 (17, 8, 9)                         perc&obj Time spent on specific task/action             [4, 14, 28, 37, 53]
+                                           Organizational
+               Organizational                                                       perc Time saving       [7–9, 14, 23, 25, 35–37, 43, 48, 49, 57]
+                                                 (2, 1, 1)
+               and process                                                          perc&obj Task completion time            [3, 7, 9, 19, 31, 36, 37, 41, 43, 56]
+                                           Documentation
+               marker
+                                                 (11, 4, 7)                         perc Efficiency     [22, 28, 39, 43, 48, 53, 56]
+               (128, 59, 69)
+                                           Collaboration activity                   perc Development speed           [8, 11, 28, 33, 61]
+                                                 (10, 2, 8)                         perc Coding speed        [23, 29, 35]
+                                           Code authorship
+                                           (4, 3, 1)
+
+
+Figure 1: Markers used in productivity research. Green lines indicate phase-one-only markers, categories, and groups; yellow
+lines indicate phase-two-only; black lines indicate those found in both phases. Numbers below categories and groups show total
+collected (not unique) markers by phase. Bar graphs show the distribution of positive (green), mixed (purple), negative (red), and
+neutral/no-effect (gray) results for phase one markers. Leaf labels indicate whether operationalizations are perception-based
+(perc), objective (obj), or both (perc&obj). Perceived and objective markers are counted separately in the statistics.
+
+
+markers. It includes objective markers such as cyclomatic com-                         Code volume). Specifically, these markers are often operationalized
+plexity and test coverage as well as perceived markers such as                         through directly observable outcomes (e.g., #PRs, #commits). The
+perceived readability and understandability. A notable subset con-                     remaining categories are more mixed, but even there many per-
+sists of bug- and issue-related operationalizations and raw counts.                    ceived markers are phase-two exclusives. Taken together, artifact
+Because this group primarily focuses on code and repository arti-                      and repository markers represent the clearest expression of the
+facts, its markers are predominantly objective, with three categories                  explicit-productivity lens foregrounded in phase one.
+being entirely objective (Production activity, Repository activity, and
+ASE ’26, October 12–16, 2026, Munich, Germany                                                    Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+   Organizational and process markers. This is the largest group                 Insight
+overall and contains six categories, all present in both phases. The        A notable phase contrast is that framework-aligned productivity
+category sizes differ widely, with Code authorship and Organiza-            research primarily recovers human-centered outcomes, whereas
+tional containing only two unique markers each (e.g., amount of AI          explicit productivity assessments focus much more strongly on
+code in repository and Company impact, respectively). Collabora-            performance and artifact-related proxies. Human aspects there-
+tion activity captures the social aspects of organizational processes       fore appear substantially underrepresented in explicit productiv-
+(e.g., satisfaction with communication flows) and occurs primarily          ity assessment.
+in phase two, whereas the other categories are distributed more
+evenly. Similar to artifact and repository markers, this group is
+objective-heavy, but some of its most central categories include           4.2     RQ2 Confounders of explicit productivity
+both objective and perceived operationalizations.                          Across the 27 phase-one papers, we identified 44 unique confound-
+   The Time category alone accounts for 65 % (84/128) of all orga-         ing variables in 15 studies. Of these 44 variables, 21 were reported
+nizational and process markers and is distributed evenly across            in a single paper [3], which is also one of the few papers in our sam-
+phases, with as many markers based on objective measurements as            ple whose primary finding indicates a negative effect of AI tools
+on participants’ perceptions. Two patterns are particularly notable,       on developer productivity. The median number of confounding
+both of which generalize beyond Time. First, some markers are              variables per paper is 1, which stands in sharp contrast to the 44
+closely related but still not directly comparable. For example, the        unique variables identified across the corpus. The most frequently
+time until a pull request (PR) is merged is closely related to the time    discussed variables are developer experience (6 papers), AI tool
+until a PR is reviewed or approved, but not identical, as merging fol-     experience (4), project/task complexity (4), project involvement (2),
+lows approval and may occur later. Second, the operationalization          usage approach (2), and usage frequency (2).
+of even central constructs varies strongly across studies, making             This pattern suggests that explicit productivity studies do rec-
+direct comparison difficult. Task completion time, for example, has        ognize relevant sources of variation, but not in a sufficiently sys-
+been measured directly [3, 7, 9, 36, 41, 56] and reported in seconds,      tematic way to support cumulative interpretation across studies.
+minutes, hours, or percentage changes; it has also been captured           Given the small number of papers focusing on different aspects of
+through perceived measures, including Likert-scale items [7, 22, 44],      productivity, we cannot draw generalizable conclusions about how
+other closed-response formats [37, 43], and qualitative coding [19].       these variables affect specific markers and therefore report only
+These measures were applied at the level of tasks or subtasks, in          tendencies observed in the included studies.
+both artificial and realistic settings, and with different forms of evi-      Focusing on developer experience, the evidence indicates a trend
+dence and reporting. As a result, even clearly related findings can        but no clear consensus. Junior developers appear to benefit more
+usually only be compared at the level of direction, such as whether        from AI [3, 18, 37, 41, 60], while findings for senior developers are
+task completion time improved or worsened, but not by degree.              mixed: some studies report smaller gains [18, 37], others find no
+                                                                           significant effects [3], and some suggest either exclusive benefits for
+                                                                           experienced developers [56] or declines in their productivity [60].
+                                                                           The evidence for AI tool experience and task/project complexity
+                                                                           is somewhat more consistent. Prior experience with the tools is
+    Insight                                                                associated with neutral, but mostly positive, impacts [7, 22, 51, 56],
+ The large number of markers should not be read as measurement             while increasing task complexity is associated with less positive
+ richness alone. It also signals a fragmented operationalization           productivity impacts [22, 37, 53]. Thus, even for the most frequently
+ landscape in which even highly central constructs such as Time            discussed confounders, the overall picture remains mixed.
+ are often only comparable at the level of direction, not magnitude.          The remaining 38 confounding variables were each reported
+                                                                           only once, although some overlap conceptually with the top six.
+                                                                           For example, programming skills [41] and programming language
+                                                                           experience [7] likely relate to developer experience as sub-factors,
+                                                                           while others are distinct, such as prompting behavior [56]. Many of
+   Direct productivity assessment. We define Direct productivity           these variables are also not specific to the settings of their respec-
+assessment as a category of its own because all other markers rep-         tive studies and overlap with markers derived in RQ1 . Examples
+resent proxy operationalizations, whereas this category captures           include AI output accuracy [57], AI output speed [57], or AI tool
+productivity explicitly from developers through instruments such           limitations [3], all of which appear in Figure 1. This reinforces that
+as Likert-scale items, multi-item questionnaires, and qualitative          the field has not yet stabilized which constructs should be treated
+coding. With 29 total occurrences, it is one of the more common            as dependent variables, contextual factors, or confounders.
+categories. At the same time, these measures vary substantially in
+wording and scale design. Many Likert-based formulations, not lim-               Insight
+ited to this category, do not permit a clear negative interpretation:       Confounding variables are acknowledged, but not standard-
+disagreement with “My productivity is improved using the AI tool”           ized. The literature recognizes many potentially important con-
+may indicate either no change or a negative effect. Even where pro-         founders, yet most are discussed only once, which sharply limits
+ductivity is assessed explicitly, comparability is therefore limited        cross-study interpretability.
+by heterogeneity in how the construct is phrased and elicited.
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity               ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+   Naturally, this analysis does not imply that these 44 variables                     Table 3: Result direction by reporting type and operational-
+are the only confounding variables discussed in the papers, as addi-                   ization; percentages are row-wise.
+tional variables may have been collected without being explicitly
+discussed in relation to productivity findings. Moreover, to avoid                                          positive   negative      neutral      mixed      Total
+blurring the results with unrelated confounders, we excluded the
+phase-two data from this step and maintain focus on variables                            Tendency     44 (81.5%)       7 (13.0%)     3 (5.6%)    0 (0.0%)      54
+                                                                                         Proportional 21 (56.8%)        0 (0.0%)    11 (29.7%)   5 (13.5%)     37
+discussed alongside explicit productivity findings.
+                                                                                         Statistical  41 (53.9%)       10 (13.2%)   24 (31.6%)   1 (1.3%)      76
+                                                                                         Perceived      64 (71.1%)      6 (6.7%)    15 (16.7%)   5 (5.6%)      90
+4.3     RQ3 Explicit productivity effect directions                                      Objective      42 (54.5%)     11 (14.3%)   23 (29.9%)   1 (1.3%)      77
+We include the aggregated effect directions (positive, negative,                         Total         106 (63.5%)     17 (10.2%)   38 (22.8%)   6 (3.6%)     167
+mixed, or neutral/no effect) of phase-one productivity markers
+and categories as bar charts in the tree representation in Figure 1.
+Categories at higher levels aggregate results of lower levels. We
+                                                                                            Insight
+chose this aggregation to maintain readability, as many markers oc-
+curred only rarely and separate representations for tendency-based,                     The literature is not simply “mostly positive”. Positivity is
+proportional, and statistically evaluated reports would have been                       strongest in tendency-based and perceived results, whereas sta-
+overly sparse. Results not clearly positive, neutral, or negative were                  tistically evaluated and objective results contain substantially
+omitted; for example, accepted code size [56] was reported without                      more neutral and negative findings.
+directional interpretation by the original authors.
+    Across explicit productivity markers, positive reported effects                        Put differently, the more interpretively lightweight the reporting
+dominate overall. However, this aggregated pattern masks a more                        format, the more positive the reported productivity picture appears.
+important result: effect direction varies systematically with report-                  This shifts the interpretation of the overall trend. The central ques-
+ing format and marker type. Tendency-based findings are decidedly                      tion is not only whether positive findings outnumber negative ones,
+more positive than statistically evaluated findings, and perceived                     but whether positivity is robust across stronger and weaker forms
+markers are more positive than objective markers. The key result                       of evidence. In our data, the strongest positive skew appears in
+is therefore not simply that positive findings outnumber negative                      tendency-based reports, whereas statistically evaluated effects and
+ones, but that the apparent positivity of the literature depends, in                   objective markers show more neutral and negative results. The re-
+part, on how effects are measured and reported.                                        sulting picture is therefore not one of uniformly positive evidence,
+    We report the counts of result directions by reporting type (ten-                  but of positivity filtered through heterogeneous reporting practices.
+dencies, proportions, and statistically evaluated effects) and by                          Looking at the distributions shown in Figure 1, most marker
+marker type (perceived and objective) across all markers in Ta-                        categories exhibit predominantly positive reported directions. Time
+ble 3. Positive results were the most common for all three reporting                   is particularly notable, as it is the most frequently reported category
+types. However, the distribution differs substantially across them:                    and is associated almost exclusively with positive results. Most time-
+tendency-based results show the highest proportion of positive                         related markers show positive trends, with the main exceptions
+findings, proportional results contain relatively more mixed find-                     being the time until a pull request is merged and the time until a
+ings and no negatives, and statistically evaluated effects contain                     pull request is reviewed or approved. One study reported both a
+relatively more neutral and negative findings. Likewise, perceived                     significant increase in time until merge (classified negative), yet
+markers show a higher proportion of positive results than objective                    more timely merges (positive) [46]. For time until review/approval,
+markers. Overall, about two thirds of all results are positive (63 %),                 findings were mixed across studies, with one significant increase,
+with 10 % negative and 23 % neutral.                                                   one significant decrease, and one non-significant result [1, 12, 30].
+    Given the small sample size, we used pooled Fisher’s exact tests                       Other largely positive categories include Direct productivity as-
+to explore associations between result direction and reporting type                    sessment and Repository activity, albeit with slightly more neutral
+(tendencies, proportions, and effects). The omnibus test indicated a                   findings than Time. More diverse patterns appear in Production
+significant association (𝑝 < .001). Post hoc pairwise Fisher’s exact                   activity and Collaboration activity, although these categories were
+tests with Holm correction showed significant differences between                      reported only rarely (2–3 results each). Code quality is overall more
+all three reporting types (tendencies vs. proportions: adjusted 𝑝 <                    positive than negative, but includes a substantial number of neutral
+.001; tendencies vs. effects: adjusted 𝑝 < .005; proportions vs. effects:              results, with 3 of 16 reports classified as negative. Negative find-
+adjusted 𝑝 < .01). We then applied the same pooled exploratory                         ings come from two papers reporting more bugs and issues [1, 46],
+analysis to perceived versus objective markers and again found                         and one reporting more pull request revisions after the AI tool’s
+a significant association (𝑝 < .05). By contrast, the association                      introduction [60].
+between result direction and gray versus non-gray studies was                              The most negative category is AI assessment, with 62 % negative
+not statistically significant (𝑝 > .05), with distributions appearing                  reported results (5/8). These were mostly tendency-based reports
+broadly similar across groups. Because we extracted multiple results                   concerning AI-tool accuracy, for example open-text responses on
+from some papers, these pooled contingency analyses do not fully                       hallucinations or incorrect code [39, 56]. This creates a notable
+account for within-paper dependence and should be interpreted as                       tension in the literature: productivity-related outcomes often trend
+exploratory rather than confirmatory.                                                  positive, while evaluations of the AI tools themselves are frequently
+ASE ’26, October 12–16, 2026, Munich, Germany                                                   Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+critical. Developers may therefore perceive practical gains even             Our taxonomy did not just highlight this gap, it is the first step
+while remaining skeptical about tool reliability and correctness.         towards closing it. We grouped markers according to their oper-
+                                                                          ationalization rather than by conceptual similarity. This allows
+                                                                          researchers to compare two studies not just on the construct, but
+    Insight
+                                                                          on how it was measured. They may find whether two studies gen-
+ One of the most interesting tensions in the data is that produc-         uinely disagree or whether their operationalizations were simply
+ tivity markers often trend positive, while AI assessment trends          incompatible. They may also use the taxonomy to design their stud-
+ negative. Developers may experience gains in speed or task com-          ies in a way that makes them inherently better comparable to other
+ pletion while still judging the tool itself as inaccurate, brittle, or   related studies with similar markers and goals.
+ error-prone.
+                                                                          5.2    RQ2 : Confounders of explicit productivity
+   Similar to the confounding variable analysis, we restricted this       The findings on confounding variables reinforce the same broader
+step to explicit productivity markers, because comparability was          picture. The literature clearly recognizes that productivity effects
+already substantially constrained by the aggregation of heteroge-         depend on context, but it does not yet treat that context in a sys-
+neous reported effects across studies, marker operationalizations,        tematic or comparable way. Even the most frequently discussed
+and reporting types. Extending the analysis to the broader marker         confounders, such as developer experience, AI tool experience, and
+set would have introduced additional conceptual heterogeneity,            task complexity, appear in only a limited number of studies, while
+further weakening the interpretability of the aggregations.               many others are mentioned only once. As a result, contextualization
+                                                                          exists, but mostly in a fragmented form.
+                                                                             This has two implications. First, the effects of AI coding assistants
+5 Discussion and Implications                                             on productivity are unlikely to be universal. They appear to depend
+5.1 RQ1 : Markers of productivity research                                on who is using the tool, potentially the task type and the conditions.
+                                                                          The field should therefore move away from asking whether AI
+The central contribution of this review is not that research on AI
+                                                                          coding assistants improve productivity in general, and instead ask
+coding assistants and developer productivity is scarce, but that
+                                                                          under which conditions they help, hinder, or shift work. Second,
+the available evidence is difficult to compare in a cumulative way.
+                                                                          the overlap between markers and confounding variables indicates
+Across the literature, productivity and productivity-related impacts
+                                                                          conceptual instability. Variables such as AI output accuracy or
+are operationalized through a broad range of markers, while indi-
+                                                                          output speed appear in some studies as outcomes and in others
+vidual studies usually only capture a narrow subset of them. This
+                                                                          as confounding variables. This makes studies diverge not only in
+indicates that while the field contains numerous relevant findings,
+                                                                          what they measure and how they measure it, but also in how they
+there is not yet a coherent evidence base from which more robust
+                                                                          position the same construct analytically. For cumulative research,
+conclusions can be drawn easily.
+                                                                          that is a substantial problem. For the SE community, this suggests
+    The phase distinction helps interpret what kind of productivity
+                                                                          that contextual factors should be treated as part of the core study
+evidence the field currently prioritizes. Phase one shows a default
+                                                                          design rather than optional additions. Not every study needs to
+operationalization of productivity that centers on observable work
+                                                                          cover every possible confounder, but more consistent reporting and
+performance, especially time-, artifact-, and repository-related prox-
+                                                                          justification of key contextual variables would make productivity
+ies. This is understandable, as such markers are often easier to
+                                                                          findings substantially more interpretable across studies.
+observe, quantify, and compare within individual study designs.
+Concurrently, when the broader literature is mapped onto estab-
+lished productivity frameworks such as SPACE, human-centered              5.3    RQ3 : Explicit productivity effect directions
+outcomes, such as satisfaction, psychological aspects, and well-          At first glance, the literature appears predominantly positive. Across
+being, occur far more prominently than in phase one. This suggests        explicit productivity markers, positive reported directions outnum-
+that current explicit productivity assessment in software engineer-       ber neutral and negative ones. However, our results suggest that
+ing tends to underrepresent the human side of productivity, even          this pattern should not be interpreted as a simple answer. The pos-
+though these dimensions are central to productivity effects.              itivity of the literature is not stable across reporting forms. It is
+    This matters because software development productivity is not         strongest in tendency-based and perceived findings, whereas statis-
+reducible to output and speed alone. Prior work such as SPACE and         tically evaluated and objective findings contain substantially more
+DevEx already frames productivity as a multidimensional construct         neutral and negative results. Accordingly, the main interpretation
+that also includes internal experience, collaboration, and friction       is not that the field has converged on a uniformly positive effect,
+in day-to-day work [17, 38]. Our findings suggest that the corre-         but that the apparent strength of that effect depends in part on how
+sponding conceptual foundation already exists, though practice            productivity is measured and reported.
+remains narrower. Therefore, the gap is not one of missing theory,           This is important for two reasons. First, some of the most com-
+but one of shared research practice. The challenge for the software       mon operationalizations do not allow negative findings to be ex-
+engineering community is not that every study must measure every          pressed clearly. For example, positively framed self-report items
+productivity dimension at once, but that focused studies should           may collapse negative outcomes into neutral disagreement. Second,
+still define and report productivity in ways that make their findings     perceived gains do not necessarily reflect the same construct as ob-
+more interpretable relative to one another.                               servable performance changes. Future studies should therefore be
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity                 ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+more explicit about whether they are reporting perceived produc-                       base with many different markers, narrow study-level operational-
+tivity, observed behavioral change, or statistically tested effects, and               izations, and limited cross-study comparability. Explicit produc-
+should avoid treating these forms of evidence as interchangeable.                      tivity research focuses primarily on output-, time-, and artifact-
+    A particularly notable tension in the data is that most outcome                    oriented proxies, whereas the broader framework-aligned literature
+categories trend positive, while AI assessment appears frequently                      makes human-centered dimensions such as satisfaction, psycholog-
+negative. This suggests that developers can experience tangible                        ical aspects, and well-being much more visible. This suggests that
+improvements in speed, task completion, or output volume, yet                          current productivity assessment in software engineering captures
+simultaneously hold a critical view of the tool itself. For practice,                  important parts of the construct, but not yet the full picture.
+this means that productivity gains and tool quality should not be                         Our findings further show that reported productivity effects are
+conflated. A tool may appear beneficial in narrow output-oriented                      often positive, but that this positivity depends on how evidence
+terms while simultaneously introducing correction effort, uncer-                       is measured and reported. Perceived and tendency-based results
+tainty, or maintenance burden. For research, it means that evalu-                      are more positive than objective and statistically evaluated find-
+ations of AI coding assistants should not focus only on speed or                       ings, while contextual factors such as developer experience, tool
+throughput, but also consider such downstream effort introduced by                     experience, and task complexity are recognized only inconsistently.
+imperfect suggestions. Taken together, the findings from RQ3 sup-                         Taken together, the current literature does not point to a single
+port a more careful interpretation of the current evidence base. The                   stable answer to whether AI coding assistants improve produc-
+literature points to recurring positive patterns, but not to context-                  tivity in general. Instead, it points to a field that already contains
+or method-independent conclusions about productivity effects.                          many valuable findings, but still lacks a sufficiently shared, mul-
+                                                                                       tidimensional, and context-sensitive research practice. The next
+                                                                                       key step is therefore not only to produce more productivity studies,
+6    Threats to Validity                                                               but to make them more comparable through clearer specifications
+Our synthesis involves interpretation-dependent coding decisions.                      of which productivity dimensions are assessed, more consistent
+In particular, normalizing markers and confounders required seman-                     reporting and assessing of markers, broader inclusion of human-
+tic judgment, which may have introduced labeling inconsistencies                       centered outcomes, and more systematic analysis of confounding
+despite calibration and discussion among authors. We also captured                     variables. If developer productivity with AI coding assistants is a
+confounding variables only when studies explicitly related them                        puzzle, the field has already collected many important pieces. This
+to productivity findings. Therefore, collected but not discussed                       study adds a precise account of which pieces are missing, how they
+confounders are absent from the synthesis, but this also reflects                      look, and where they fit. The next challenge is to make them fit
+inconsistent reporting in the field. In addition, separating explicit                  together.
+productivity studies from other outcomes within the same paper
+imposed an analytic distinction not always made by original au-                        Data Availability Statement
+thors, although we mitigated this by revisiting phase-one papers
+                                                                                       All data, analysis scripts and additional visualizations can be found
+during phase two.
+                                                                                       at our supplementary material published via Zenodo [58]; URL:
+   Because the corpus includes peer-reviewed papers, preprints,
+                                                                                       https://doi.org/10.5281/zenodo.19219046
+and industry reports, some aggregated patterns may also reflect
+variation in rigor and reporting quality across source types. As
+with any SLR, relevant studies may have been missed despite our                        Acknowledgements
+multi-source search strategy and control-set validation. Further,                      The authors acknowledge the financial support by the Federal Min-
+applying SPACE in phase two required interpretive judgment in                          istry of Research, Technology and Space of Germany and by Säch-
+boundary cases.                                                                        sische Staatsministerium für Wissenschaft, Kultur und Tourismus
+   Our search combined venue-based screening of 3,746 papers                           in the programme Center of Excellence for AI-research “Center for
+across twelve major SE venues, Semantic Scholar API queries, and                       Scalable Data Analytics and Artificial Intelligence Dresden/Leipzig”
+manual Google Scholar searches, but did not include snowballing or                     (project identification number: ScaDS.AI) and by the European So-
+further database coverage, which could increase the paper pool fur-                    cial Fund (ESF) together with the German state of Saxony under
+ther. However, any resulting gaps in collected papers are unlikely to                  grant number A.100760692 (project: Teaching-AI).
+alter the central finding, given the pronounced heterogeneity and
+fragmentation of productivity research already evident in the cor-                     References
+pus. Finally, many individual markers were reported only in a small                     [1] Faros AI. 2025.       The AI Productivity Paradox: AI Coding Assistants In-
+number of studies, limiting the strength of directional summaries.                          crease Developer Output, But Not Company Productivity. Technical Report.
+Thus, we aggregate mainly at category level and treat statistical                           Faros AI.        https://cdn.prod.website-files.com/66f2fa250759eeb1f2b1199a/
+                                                                                            68d6e93f3060b3c8a32e72bf_AI_Engineering_Impact_Report_July_2025_Faros_
+analyses as exploratory rather than confirmatory.                                           AI.pdf
+                                                                                        [2] A. Alami, V. Jensen, and N. Ernst. 2025. Accountability in Code Review: The
+                                                                                            Role of Intrinsic Drivers and the Impact of LLMs. ACM Transactions on Software
+                                                                                            Engineering and Methodology 34, 8 (2025), 1–44. https://doi.org/10.1145/3721127
+7    Conclusion                                                                         [3] J. Becker, N. Rush, E. Barnes, and D. Rein. 2025. Measuring the Impact of Early-
+This literature review synthesized how software developer pro-                              2025 AI on Experienced Open-Source Developer Productivity. https://doi.org/
+                                                                                            10.48550/arXiv.2507.09089 arXiv:2507.09089 [cs.AI]
+ductivity with AI coding assistants is currently studied. Across 45                     [4] C. Bird, D. Ford, T. Zimmermann, N. Forsgren, E. Kalliamvakou, T. Lowdermilk,
+papers and reports, we identified a broad but fragmented evidence                           and I. Gazit. 2022. Taking Flight with Copilot: Early insights and opportunities
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                              Annemarie Wittig, Alina Mailach, and Norbert Siegmund
+
+
+     of AI-powered pair-programming tools. Queue 20, 6 (2022), 35–57. https:                      Case Pairs. ACM Transactions on Software Engineering and Methodology 34, 8,
+     //doi.org/10.1145/3582083                                                                    Article 216 (2025), 31 pages. https://doi.org/10.1145/3719345
+ [5] S. Bonabi, S. Bana, V. Gurbaxani, and T. Nian. 2025. Beyond Code: The Mul-              [27] P. Kuang, E. Söderberg, and M. Höst. 2024. Developers’ Perspective on Today’s
+     tidimensional Impacts of Large Language Models in Software Development.                      and Tomorrow’s Programming Tool Assistance: A Survey. In Companion Pro-
+     https://doi.org/10.48550/arXiv.2506.22704 arXiv:2506.22704 [econ.GN]                         ceedings of the International Conference on the Art, Science, and Engineering of
+ [6] J. Bono, J. Grana, K. Karakolios, P. Hanumanthapura Ramakrishna, and A.                      Programming. ACM, 108–116. https://doi.org/10.1145/3660829.3660848
+     Srivastava. 2025. Security Copilot: Evidence of Productivity Gains in Live              [28] A. Kudriavtseva, N. A. Hotak, and O. Gadyatskaya. 2025. My Code Is Less Secure
+     Operations. Technical Report. Microsoft Corporation. https://cdn-dynmedia-                   with Gen AI: Surveying Developers’ Perceptions of the Impact of Code Generation
+     1.microsoft.com/is/content/microsoftcorp/microsoft/final/en-us/microsoft-                    Tools on Security. In Proceedings of the Symposium on Applied Computing. ACM,
+     brand/documents/Copilot_productivity_external_Spring2025_042125_v3_                          1637–1646. https://doi.org/10.1145/3672608.3707778
+     remediated.pdf                                                                          [29] M. A. Kuhail, S. S. Mathew, A. Khalil, J. Berengueres, and S. J. H. Shah. 2024.
+ [7] M. Borg, D. Hewett, N. Hagatulah, N. Couderc, E. Söderberg, D. Graham, U. Kini,              “Will I be replaced?” Assessing ChatGPT’s effect on software development and
+     and D. Farley. 2025. Echoes of AI: Investigating the Downstream Effects of AI                programmer perceptions of AI tools. Science of Computer Programming 235 (2024),
+     Assistants on Software Maintainability. https://doi.org/10.48550/arXiv.2507.                 103111. https://doi.org/10.1016/j.scico.2024.103111
+     00788 arXiv:2507.00788 [cs.SE]                                                          [30] A. Kumar, V. Khare, D. Sharma, S. Kumar, V. Saini, A. Yadav, S. Jain, A. Rana, P.
+ [8] S. Cavalcante, E. Ribeiro, and A. Oran. 2025. The Impact of AI Tools on Software             Verma, V. Meena, and A. Edubilli. 2025. Intuition to Evidence: Measuring AI’s True
+     Development: A Case Study with GitHub Copilot and Other AI Assistants. In                    Impact on Developer Productivity. https://doi.org/10.48550/ARXIV.2509.19708
+     Proceedings of the International Conference on Enterprise Information Systems.               arXiv:2509.19708 [cs.SE]
+     SciTePress, 245–252. https://doi.org/10.5220/0013294700003929                           [31] Gorilla Logic. 2024. AI Coding Assistants: A Gorilla Logic Experiment. Technical
+ [9] T. Chen. 2024. The Impact of AI-Pair Programmers on Code Quality and Devel-                  Report. Gorilla Logic. https://gorillalogic.com/using-ai-coding-assistants/
+     oper Satisfaction: Evidence from TiMi studio. In Proceedings of the International       [32] F. N. Meem and B. Johnson. 2025. Investigating the Impact of AI-Assisted Tools on
+     Conference on Generative Artificial Intelligence and Information Security. ACM,              Software Practitioner Well-Being. In Adjunct Proceedings of the Annual Symposium
+     201–205. https://doi.org/10.1145/3665348.3665383                                             on Human-Computer Interaction for Work. ACM, 1–5. https://doi.org/10.1145/
+[10] M. S. S. Chowdhury, M. N. U. R. Chowdhury, F. F. Neha, and A. Haque. 2024. AI-               3707640.3731915
+     Powered Code Reviews: Leveraging Large Language Models. In 2024 International           [33] W. Mendes, S. Souza, and C. De Souza. 2024. "You’re on a bicycle with a little
+     Conference on Signal Processing and Advance Research in Computing (SPARC),                   motor": Benefits and Challenges of Using AI Code Assistants. In Proceedings
+     Vol. 1. IEEE, 1–6. https://doi.org/10.1109/SPARC61891.2024.10829223                          of the International Conference on Cooperative and Human Aspects of Software
+[11] U. Cihan, V. Haratian, A. İçöz, M. K. Gül, Ö. Devran, E. F. Bayendur, B. M. Uçar, and        Engineering. ACM, 144–152. https://doi.org/10.1145/3641822.3641882
+     E. Tüzün. 2025. Automated Code Review in Practice. In IEEE/ACM International            [34] A. Mohamed, M. Assi, and M. Guizani. 2025. The Impact of LLM-Assistants
+     Conference on Software Engineering: Software Engineering in Practice. IEEE, 425–             on Software Developer Productivity: A Systematic Literature Review. https:
+     436. https://doi.org/10.1109/ICSE-SEIP66354.2025.00043                                       //doi.org/10.48550/arXiv.2507.03156 arXiv:2507.03156 [cs.SE]
+[12] Z. Cui, M. Demirer, S. Jaffe, L. Musolff, S. Peng, and T. Salz. 2025. The Effects of    [35] V. Murali, C. Maddila, I. Ahmad, M. Bolin, D. Cheng, N. Ghorbani, R. Fernandez,
+     Generative AI on High-Skilled Work: Evidence from Three Field Experiments                    N. Nagappan, and P. C. Rigby. 2024. AI-Assisted Code Authoring at Scale: Fine-
+     with Software Developers. SSRN Paper. https://doi.org/10.2139/ssrn.4945566                   Tuning, Deploying, and Mixed Methods Evaluation. Proceedings of the ACM on
+[13] J. K. Das, S. Mondal, and C. K. Roy. 2025. Why Do Developers Engage with Chat-               Software Engineering 1, FSE (2024), 1066–1085. https://doi.org/10.1145/3643774
+     GPT in Issue-Tracker? Investigating Usage and Reliance on ChatGPT-Generated             [36] D. Nam, A. Macvean, V. Hellendoorn, B. Vasilescu, and B. Myers. 2024. Using
+     Code. In IEEE International Conference on Software Analysis, Evolution and Reengi-           an LLM to Help With Code Understanding. In Proceedings of the International
+     neering. IEEE, 68–79. https://doi.org/10.1109/SANER64311.2025.00015                          Conference on Software Engineering. ACM, 1–13. https://doi.org/10.1145/3597503.
+[14] D. Dhanuka. 2025. Impact of LLMs on Team Collaboration in Software Develop-                  3639187
+     ment. https://doi.org/10.48550/arXiv.2510.08612 arXiv:2510.08612 [cs.SE]                [37] K. K. B. Ng, L. Fauzi, L. Leow, and J. Ng. 2024. Harnessing the Potential of
+[15] S. Ferino, R. Hoda, J. Grundy, and C. Treude. 2025. Novice Developers’ Perspec-              Gen-AI Coding Assistants in Public Sector Software Development.                      https:
+     tives on Adopting LLMs for Software Development: A Systematic Literature                     //doi.org/10.48550/arXiv.2409.17434 arXiv:2409.17434 [cs.SE]
+     Review. https://doi.org/10.48550/arXiv.2503.07556 arXiv:2503.07556 [cs.SE]              [38] A. Noda, M.-A. Storey, N. Forsgren, and M. Greiler. 2023. DevEX: What Actually
+[16] C. Flores-Saviaga, B. V. Hanrahan, K. Imteyaz, S. Clarke, and S. Savage. 2025.               Drives Productivity? Commun. ACM 66, 11 (2023), 44–49. https://doi.org/10.
+     The Impact of Generative AI Coding Assistants on Developers Who Are Visually                 1145/3610285
+     Impaired. In Proceedings of the CHI Conference on Human Factors in Computing            [39] F. Oliveira, L. Tiago, and L. Chaves. 2025. The Influence of Using LLMs on
+     Systems. ACM, Article 1164, 17 pages. https://doi.org/10.1145/3706598.3714008                the Activities of a Software Testing Team: An Industry Case. In Anais do X
+[17] N. Forsgren, M.-A. Storey, C. Maddila, T. Zimmermann, B. Houck, and J. Butler.               Simpósio Brasileiro de Testes de Software Sistemático e Automatizado. SBC, 144–
+     2021. The SPACE of Developer Productivity: There’s more to it than you think.                146. https://doi.org/10.5753/sast.2025.13592
+     Queue 19, 1 (2021), 20–48. https://doi.org/10.1145/3454122.3454124                      [40] S. Peddineni Kalava. 2024. AI-Powered Development: How Artificial Intelli-
+[18] L. Gambacorta, H. Qiu, S. Shan, and D. M. Rees. 2024. Generative AI and labour               gence is Shaping Software Productivity. Journal of Artificial Intelligence & Cloud
+     productivity: a field experiment on coding. Technical Report 1208. Bank for                  Computing 3, 2 (2024), 1–4. https://doi.org/10.47363/JAICC/2024(3)E148
+     International Settlements. https://www.bis.org/publ/work1208.pdf                        [41] S. Peng, E. Kalliamvakou, P. Cihon, and M. Demirer. 2023. The Impact of AI
+[19] H. Ge and Y. Wu. 2023. An Empirical Study of Adoption of ChatGPT for Bug                     on Developer Productivity: Evidence from GitHub Copilot. https://doi.org/10.
+     Fixing among Professional Developers. Innovation & Technology Advances 1, 1                  48550/arXiv.2302.06590 arXiv:2302.06590 [cs.SE]
+     (2023), 21–29. https://doi.org/10.61187/ita.v1i1.19                                     [42] P. Ralph, N. bin Ali, S. Baltes, D. Bianculli, J. Diaz, Y. Dittrich, N. Ernst, M. Felderer,
+[20] H. Hao, K. A. Hasan, H. Qin, M. Macedo, Y. Tian, S. H. H. Ding, and A. E. Hassan.            R. Feldt, A. Filieri, B. B. N. de França, C. A. Furia, G. Gay, N. Gold, D. Graziotin, P.
+     2024. An Empirical Study on Developers Shared Conversations with ChatGPT                     He, R. Hoda, N. Juristo, B. Kitchenham, V. Lenarduzzi, J. Martínez, J. Melegati,
+     in GitHub Pull Requests and Issues. https://doi.org/10.48550/arXiv.2403.10468                D. Mendez, T. Menzies, J. Molleri, D. Pfahl, R. Robbes, D. Russo, N. Saarimäki,
+     arXiv:2403.10468 [cs.SE]                                                                     F. Sarro, D. Taibi, J. Siegmund, D. Spinellis, M. Staron, K. Stol, M.-A. Storey, D.
+[21] X. Hou, Y. Zhao, Y. Liu, Z. Yang, K. Wang, L. Li, X. Luo, D. Lo, J. Grundy, and H.           Taibi, D. Tamburri, M. Torchiano, C. Treude, B. Turhan, X. Wang, and S. Vegas.
+     Wang. 2024. Large Language Models for Software Engineering: A Systematic Liter-              2020. Empirical Standards for Software Engineering Research. arXiv:2010.03525
+     ature Review. https://doi.org/10.48550/arXiv.2308.10620 arXiv:2308.10620 [cs.SE]             [cs.SE]. https://doi.org/10.48550/arXiv.2010.03525 arXiv:2010.03525 [cs.SE]
+[22] B. Houck, T. Lowdermilk, C. Beyer, S. Clarke, and B. Hanrahan. 2025. The SPACE          [43] D. Russo. 2024. Navigating the Complexity of Generative AI Adoption in Software
+     of AI: Real-World Lessons on AI’s Impact on Developers. https://doi.org/10.                  Engineering. https://doi.org/10.48550/arXiv.2307.06081 arXiv:2307.06081 [cs.SE]
+     48550/arXiv.2508.00178 arXiv:2508.00178 [cs.HC]                                         [44] A. Sergeyuk, Y. Golubev, T. Bryksin, and I. Ahmed. 2025. Using AI-based coding
+[23] M. Jaworski and D. Piotrkowski. 2023. Study of software developers’ experience               assistants in practice: State of affairs, perceptions, and ways forward. Information
+     using the Github Copilot Tool in the software development process. https:                    and Software Technology 178 (2025), 107610. https://doi.org/10.1016/j.infsof.2024.
+     //doi.org/10.48550/arXiv.2301.04991 arXiv:2301.04991 [cs.SE]                                 107610
+[24] T. C. Jones. 1978. Measuring programming quality and productivity. IBM Systems          [45] J. Shin, C. Tang, T. Mohati, M. Nayebi, S. Wang, and H. Hemmati. 2025. Prompt
+     Journal 17, 1 (1978), 39–63. https://doi.org/10.1147/sj.171.0039                             Engineering or Fine-Tuning: An Empirical Assessment of LLMs for Code. ,
+[25] R. Khojah, M. Mohamad, P. Leitner, and F. G. de Oliveira Neto. 2024. Beyond Code             490-502 pages. https://doi.org/10.1109/MSR66628.2025.00082
+     Generation: An Observational Study of ChatGPT Usage in Software Engineering             [46] F. Song, A. Agarwal, and W. Wen. 2025. The Impact of Generative AI on Col-
+     Practice. Proceedings of the ACM on Software Engineering 1, FSE (2024), 22 pages.            laborative Open-Source Software Development: Evidence from GitHub Copilot.
+     https://doi.org/10.1145/3660788                                                              https://doi.org/10.48550/arXiv.2410.02091 arXiv:2410.02091 [cs.SE]
+[26] J. Kong, X. Xie, M. Cheng, S. Liu, X. Du, and Q. Guo. 2025. ContrastRepair:             [47] Stack Overflow. 2025. Stack Overflow Developer Survey 2025: AI. Survey report.
+     Enhancing Conversation-Based Automated Program Repair via Contrastive Test                   https://stackoverflow.co
+Fragmented Markers, Mixed Results: A Systematic Review of AI Coding Assistants and Developer Productivity                      ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+[48] B. Tabarsi, H. Reichert, S. Gilson, A. Limke, S. Kuttal, and T. Barnes. 2025. LLMs’        https://doi.org/10.1145/3664646.3665664
+     Reshaping of People, Processes, Products, and Society in Software Development:        [56] T. Weber, M. Brandmaier, A. Schmidt, and S. Mayer. 2024. Significant Productivity
+     A Comprehensive Exploration with Early Adopters. https://doi.org/10.48550/                 Gains through Programming with Large Language Models. Proceedings of the
+     arXiv.2503.05012 arXiv:2503.05012 [cs.SE]                                                  ACM on Human-Computer Interaction 8, EICS (2024), 29 pages. https://doi.org/
+[49] M. H. Tanzil, J. Y. Khan, and G. Uddin. 2024. ChatGPT Incorrectness Detection              10.1145/3661145
+     in Software Reviews. In Proceedings of the International Conference on Software       [57] J. D. Weisz, S. Kumar, M. Muller, K.-E. Browne, A. Goldberg, E. Heintze, and S.
+     Engineering. ACM, 1–12. https://doi.org/10.1145/3597503.3639194                            Bajpai. 2025. Examining the Use and Impact of an AI Code Assistant on Developer
+[50] A. Thool and C. Brown. 2024. Harnessing the Power of LLMs: LLM Summarization               Productivity and Experience in the Enterprise. In Proceedings of the Extended
+     for Human-Centric DAST Reports. In IEEE Symposium on Visual Languages and                  Abstracts of the CHI Conference on Human Factors in Computing Systems. ACM,
+     Human-Centric Computing. IEEE, 33–39. https://doi.org/10.1109/VL/HCC60511.                 Article 673, 13 pages. https://doi.org/10.1145/3706599.3706670
+     2024.00014                                                                            [58] A. Wittig, A. Mailach, and N. Siegmund. 2026. Supplementary Material to "Frag-
+[51] Turing. 2025. Using LLM Coding Assistants to Increase Software Development Pro-            mented Markers, Mixed Results: A Systematic Review of AI Coding Assistants
+     ductivity by 33%. Technical Report. Turing. https://www.turing.com/resources/              and Developer Productivity". https://doi.org/10.5281/zenodo.21352349
+     llm-coding-assistants-increase-software-development-productivity                      [59] C. S. Xia, Y. Wei, and L. Zhang. 2023. Automated Program Repair in the Era
+[52] R. Ulfsnes, N. B. Moe, V. Stray, and M. Skarpen. 2024. Transforming Software De-           of Large Pre-Trained Language Models. In Proceedings of the 45th International
+     velopment with Generative AI: Empirical Insights on Collaboration and Workflow.            Conference on Software Engineering. IEEE Press, 1482–1494. https://doi.org/10.
+     https://doi.org/10.48550/arXiv.2405.01543 arXiv:2405.01543 [cs.SE]                         1109/ICSE48619.2023.00129
+[53] T. S. Vaillant, F. D. de Almeida, P. A. M. S. Neto, C. Gao, J. Bosch, and E. S. de    [60] F. Xu, P. K. Medappa, M. M. Tunc, M. Vroegindeweij, and J. C. Fransoo. 2025. AI-
+     Almeida. 2024. Developers’ Perceptions on the Impact of ChatGPT in Soft-                   assisted Programming May Decrease the Productivity of Experienced Developers
+     ware Development: A Survey.             https://doi.org/10.48550/arXiv.2405.12195          by Increasing Maintenance Burden. https://doi.org/10.48550/arXiv.2510.10165
+     arXiv:2405.12195 [cs.SE]                                                                   arXiv:2510.10165 [econ.GN]
+[54] N. V. Viet and N. T. Vinh. 2024. Large language models in software engineering:       [61] B. Zhang, P. Liang, X. Zhou, A. Ahmad, and M. Waseem. 2023. Practices and
+     A systematic review and vision. Journal of Education For Sustainable Innovation            Challenges of Using GitHub Copilot: An Empirical Study. In Proceedings of the
+     2, 2 (2024), 146–156. https://doi.org/10.56916/jesi.v2i2.968                               International Conference on Software Engineering and Knowledge Engineering,
+[55] M. Vijayvergiya, M. Salawa, I. Budiselić, D. Zheng, P. Lamblin, M. Ivanković, J.           Vol. 2023. KSI Research Inc., 124–129. https://doi.org/10.18293/seke2023-077
+     Carin, M. Lewko, J. Andonov, G. Petrović, D. Tarlow, P. Maniatis, and R. Just.
+     2024. AI-Assisted Assessment of Coding Practices in Modern Code Review. In            Received 2026-03-26; accepted 2026-06-18
+     Proceedings of the International Conference on AI-Powered Software. ACM, 85–93.
+

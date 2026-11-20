@@ -1,0 +1,748 @@
+flynt · PyPI (https://pypi.org/project/flynt/1.0.6/)
+citeturn111view0 [wordlim: 200] Crawled: 3 weeks ago; Content type: text/html; Source: open({"ref_id":"https://pypi.org/project/flynt/1.0.6/","lineno":null}); Total lines: 927
+L0: 【0†Skip to main content】
+L1: 
+L2: Warning Some features may not work without JavaScript. Please try enabling it if you encounter problems.
+L3: 
+L4: Search PyPI [Input: Type '/' to search projects] Search
+L5: 
+L6:   * 【1†Docs†docs.pypi.org】
+L7:   * 【2†Blog†blog.pypi.org】
+L8:   * 【3†Log in】
+L9:   * 【4†Register】
+L10: 
+L11:   * 【1†Docs†docs.pypi.org】
+L12:   * 【2†Blog†blog.pypi.org】
+L13:   * 【3†Log in】
+L14:   * 【4†Register】
+L15:   * [Button: Deutsch ]
+L16:   * English
+L17:   * [Button: español ]
+L18:   * [Button: Esperanto ]
+L19:   * [Button: français ]
+L20:   * [Button: português (Brasil) ]
+L21:   * [Button: Ελληνικά ]
+L22:   * [Button: русский ]
+L23:   * [Button: українська ]
+L24:   * [Button: עברית ]
+L25:   * [Button: 中文 (简体) ]
+L26:   * [Button: 中文 (繁體) ]
+L27:   * [Button: 日本語 ]
+L28:   * [Button: 한국어 ]
+L29: 
+L30: Search PyPI [Input: Search projects] Search
+L31: 
+L32:   * 【5†Description】
+L33:   * 【6†Metadata】
+L34:   * 【7†Release files】
+L35:   * 【8†Security】
+L36:   * 【9†Release history】
+L37: # flynt - string formatting converter
+L38: 
+L39: `flynt` is a command line tool to automatically convert a project's Python code from old "%-formatted" and .format(...) strings into Python 3.6+'s "f-strings".
+L40: 
+L41: F-Strings:
+L42: 
+L43: > Not only are they more readable, more concise, and less prone to error than other ways of formatting, but they are also faster!
+L44: 
+L45: ### Installation
+L46: 
+L47: `pip install flynt`. It requires Python version 3.9+.
+L48: ### Usage
+L49: 
+L50: Flynt will modify the files it runs on. Add your project to version control system before using flynt.
+L51: 
+L52: To run: `flynt {source_file_or_directory}`
+L53: 
+L54:   * Given a single file, it will 'f-stringify' it: replace all applicable string formatting in this file (file will be modified).
+L55:   * Given a folder, it will search the folder recursively and f-stringify all the .py files it finds. It skips some hard-coded folder names: `blacklist = {'.tox', 'venv', 'site-packages', '.eggs'}`.
+L56: It turns the code it runs on into Python 3.6+, since 3.6 is when "f-strings" were introduced.
+L57: ### Command line options
+L58: From the output of `flynt -h`:
+L59: 
+L60:     `usage: flynt [-h] [-v | -q] [--no-multiline | -ll LINE_LENGTH] [-d |
+L61:                  --stdout] [-s] [--no-tp] [--no-tf] [-tc] [-tj] [-f]
+L62:                  [-a] [-e EXCLUDE [EXCLUDE ...]] [-nb] [--version]
+L63:                  [--report]
+L64:                  [src ...]
+L65: 
+L66:     flynt v.1.0.3
+L67: 
+L68:     positional arguments:
+L69:       src                   source file(s) or directory (or a single `-`
+L70:                             to read stdin and output to stdout)
+L71: 
+L72:     options:
+L73:       -h, --help            show this help message and exit
+L74:       -v, --verbose         run with verbose output
+L75:       -q, --quiet           run without outputting statistics to stdout
+L76:       --no-multiline        convert only single line expressions
+L77:       -ll, --line-length LINE_LENGTH
+L78:                             for expressions spanning multiple lines,
+L79:                             convert only if the resulting single line
+L80:                             will fit into the line length limit. Default
+L81:                             value is 88 characters.
+L82:       -d, --dry-run         Do not change the files in-place and print
+L83:                             the diff instead. Note that this must be
+L84:                             used in conjunction with '--fail-on-change'
+L85:                             when used for linting purposes.
+L86:       --stdout              Do not change the files in-place and print
+L87:                             the result instead. This argument implies
+L88:                             --quiet, i.e. no statistics are printed to
+L89:                             stdout, only the resulting code. It is
+L90:                             incompatible with --dry-run and --verbose.
+L91:       -s, --string          Interpret the input as a Python code snippet
+L92:                             and print the converted version. The snippet
+L93:                             must use single quotes or escaped double
+L94:                             quotes.
+L95:       --no-tp, --no-transform-percent
+L96:                             Don't transform % formatting to f-strings
+L97:                             (default: do so)
+L98:       --no-tf, --no-transform-format
+L99:                             Don't transform .format formatting to
+L100:                             f-strings (default: do so)
+L101:       -tc, --transform-concats
+L102:                             Replace string concatenations (defined as +
+L103:                             operations involving string literals) with
+L104:                             f-strings. Available only if flynt is
+L105:                             installed with a 3.9+ interpreter.
+L106:       -tj, --transform-joins
+L107:                             Replace static joins (where the joiner is a
+L108:                             string literal and the joinee is a static-
+L109:                             length list) with f-strings. Available only
+L110:                             if flynt is installed with a 3.9+
+L111:                             interpreter.
+L112:       -f, --fail-on-change  Fail when changing files (for linting
+L113:                             purposes)
+L114:       -a, --aggressive      Include conversions with potentially changed
+L115:                             behavior. Use -aa to omit int() wrapping for
+L116:                             %d conversions.
+L117:       -e, --exclude EXCLUDE [EXCLUDE ...]
+L118:                             ignore files with given strings in it's
+L119:                             absolute path.
+L120:       -nb, --notebook       Also search and transform Jupyter notebooks
+L121:                             (.ipynb files). Warning: feature in alpha
+L122:                             and was not thoroughly tested.
+L123:       --version             Print the current version number and exit.
+L124:       --report              Show detailed conversion report
+L125: 
+L126:     `
+L127: ### Sample output of a successful run:
+L128: 
+L129:     `$ git clone https://github.com/pallets/flask.git
+L130:     Cloning into 'flask'...
+L131:     ...
+L132:     Resolving deltas: 100% (12203/12203), done.
+L133: 
+L134:     $ flynt flask
+L135:     Running flynt v.1.0.3
+L136:     Modified 21 of 70 files in 0.79s
+L137:     $
+L138:     `
+L139: ### Pre-commit hook
+L140: 
+L141: To make sure all formatted strings are always converted to f-strings, you can add flynt to your 【10†pre-commit†www.pre-commit.com】 hooks.
+L142: 
+L143: Add a new section to `.pre-commit-config.yaml`:
+L144: 
+L145:     `-   repo: https://github.com/ikamensh/flynt/
+L146:         rev: ''
+L147:         hooks:
+L148:         -   id: flynt
+L149:     `
+L150: 
+L151: This will run flynt on all modified files before committing.
+L152: 
+L153: You can skip conversion of certain lines by adding `# noqa [: anything else] flynt [anything else]` or `# flynt: skip`
+L154: ### Configuration files
+L155: 
+L156: Since v0.71 flynt can be configured using `pyproject.toml` file on a per-project basis. Use same arguments as in CLI, and add them to `[tool.flynt]` section. CLI arguments takes precedence over the config file. It can also be configured globally with a toml file located in `~/.config/flynt.toml` on Unix / `~/.flynt.toml` on Windows.
+L157: ### About
+L158: 
+L159: Read up on f-strings here:
+L160: 
+L161:   * 【11†https://realpython.com/python-f-strings/†realpython.com】
+L162:   * 【12†https://www.python.org/dev/peps/pep-0498/†www.python.org】
+L163: 
+L164: After obsessively refactoring a project at work, and not even covering 50% of f-string candidates, I realized there was some place for automation. Also it was very interesting to work with ast module.
+L165: ### Dangers of conversion
+L166: 
+L167: It is not guaranteed that formatted strings will be exactly the same as before conversion.
+L168: 
+L169: `'%s' % var` is converted to `f'{var}'`. There is a case when this will behave different from the original - if var is a tuple of one element. In this case, %s displays the element, and f-string displays the tuple. Example:
+L170: 
+L171:     `foo = (1,)
+L172:     print('%s' % foo) # prints '1'
+L173:     print(f'{foo}')   # prints '(1,)'
+L174:     `
+L175: Furthermore, some arguments cause formatting of strings to throw exceptions. One example where f-strings are inconsistent with previous formatting is %d vs {:d} - new format no longer accepts floats. While most cases are covered by taking the formatting specifiers to the f-strings format, the precise exception behaviour might differ as well. Make sure you have sufficient test coverage.
+L176: ### Other Credits / Dependencies / Links
+L177: 
+L178:   * Python's built-in `ast.unparse` is used to turn the transformed AST back into code.
+L179:   * Thanks to folks from 【13†pyddf†www.pyddf.de】 for their support, advice and participation during spring hackathon 2019, in particular Holger Hass, Farid Muradov, Charlie Clark.
+L180:   * Logic finding the pyproject.toml and parsing it was partially copied from 【14†black†github.com】
+L181: 
+L182: ## Project links
+L183: 
+L184:   * 【15†Homepage†github.com】
+L185: ## Key dates
+L186: 
+L187: PyPI data
+L188: 
+L189: Data sourced directly from PyPI's database.
+L190: 
+L191:   * Released: Jul 29, 2025
+L192: Latest release
+L193: 
+L194: ## 1 maintainer
+L195: 
+L196: PyPI data
+L197: 
+L198: Data sourced directly from PyPI's database.
+L199: 
+L200: 【16†ikamen】
+L201: 
+L202: ## Credits
+L203: 
+L204: Author: Ilya Kamenshchikov
+L205: 
+L206: ## License
+L207: 
+L208: MIT
+L209: 
+L210: ## Requires
+L211: 
+L212: Python >=3.9
+L213: 
+L214: ## Provides Extra
+L215: 
+L216: `dev`
+L217: 
+L218: ## Tags
+L219: 
+L220: `strings` `utility`
+L221: ## Classifiers
+L222: 
+L223:   * Programming Language
+L224:     * 【17†Python】
+L225:     * 【18†Python :: 3】
+L226:     * 【19†Python :: 3.9】
+L227:     * 【20†Python :: 3.10】
+L228:     * 【21†Python :: 3.11】
+L229:     * 【22†Python :: 3.12】
+L230:     * 【23†Python :: 3.13】
+L231:   * Topic
+L232:     * 【24†Software Development :: Libraries :: Python Modules】
+L233:     * 【25†Utilities】
+L234: 
+L235: ## Metadata
+L236: 
+L237: ## Project links
+L238: 
+L239:   * 【15†Homepage†github.com】
+L240: 
+L241: ## Key dates
+L242: 
+L243: PyPI data
+L244: 
+L245: Data sourced directly from PyPI's database.
+L246: 
+L247:   * Released: Jul 29, 2025
+L248: Latest release
+L249: ## 1 maintainer
+L250: 
+L251: PyPI data
+L252: 
+L253: Data sourced directly from PyPI's database.
+L254: 
+L255: 【16†ikamen】
+L256: 
+L257: ## Credits
+L258: 
+L259: Author: Ilya Kamenshchikov
+L260: 
+L261: ## License
+L262: 
+L263: MIT
+L264: 
+L265: ## Requires
+L266: 
+L267: Python >=3.9
+L268: 
+L269: ## Provides Extra
+L270: 
+L271: `dev`
+L272: 
+L273: ## Tags
+L274: 
+L275: `strings` `utility`
+L276: ## Classifiers
+L277: 
+L278:   * Programming Language
+L279:     * 【17†Python】
+L280:     * 【18†Python :: 3】
+L281:     * 【19†Python :: 3.9】
+L282:     * 【20†Python :: 3.10】
+L283:     * 【21†Python :: 3.11】
+L284:     * 【22†Python :: 3.12】
+L285:     * 【23†Python :: 3.13】
+L286:   * Topic
+L287:     * 【24†Software Development :: Libraries :: Python Modules】
+L288:     * 【25†Utilities】
+L289: 
+L290: ## Release files for flynt 1.0.6
+L291: 
+L292: For a detailed explanation of source distributions (sdists) and built distributions (wheels), please see the 【26†package formats documentation†packaging.python.org】.
+L293: ### Source distribution (sdist)
+L294: 
+L295: Source distribution for flynt 1.0.6
+L296: File  | Size  | Uploaded  | Provenance  |
+L297: --- | --- | --- | --- | ---
+L298: 【27†flynt-1.0.6.tar.gz†files.pythonhosted.org】  | 25.9 kB  | Jul 29, 2025  | Without provenance  | 【28†Details】
+L299: 
+L300: * * *
+L301: ### Built distribution (wheel)
+L302: 
+L303: Table of built distributions (wheels) for flynt 1.0.6
+L304: File  | Interpreter  | ABI  | Platform  |
+L305: --- | --- | --- | --- | ---
+L306: 【29†flynt-1.0.6-py3-none-any.whl†files.pythonhosted.org】 36.7 kB Jul 29, 2025 Without provenance  | Python 3  | none  | any  | 【30†Details】
+L307: 
+L308: * * *
+L309: 
+L310: Total release size: 62.6 kB
+L311: ## 【7†Release files】 / flynt-1.0.6.tar.gz
+L312: Download URL  | 【27†flynt-1.0.6.tar.gz†files.pythonhosted.org】
+L313: Size  | 25.9 kB
+L314: Tags  | Source
+L315: SHA-256 checksum
+L316: 【31†How to use checksums†pip.pypa.io】  | ` 471b7ff00756678e2912d4261dcbcd8fc1395129b66bf6977f88a3b3ad220c90 `
+L317: BLAKE2b-256 checksum
+L318: 【31†How to use checksums†pip.pypa.io】  | ` 23eabe0bd620182b18af37cc784c6f0e1766246982084776702cd1b5649b6885 `
+L319: Upload date  | Jul 29, 2025
+L320: Uploaded using Trusted Publishing?
+L321: 【32†What is trusted publishing?†docs.pypi.org】  | No
+L322: Uploaded via  | `twine/6.1.0 CPython/3.13.5`
+L323: ## 【7†Release files】 / flynt-1.0.6-py3-none-any.whl
+L324: Download URL  | 【29†flynt-1.0.6-py3-none-any.whl†files.pythonhosted.org】
+L325: Size  | 36.7 kB
+L326: Tags  | Python 3
+L327: SHA-256 checksum
+L328: 【31†How to use checksums†pip.pypa.io】  | ` 4e837c9597036b634a347855a89acf1483c4f8b73daa82c49372b10b6e1d1778 `
+L329: BLAKE2b-256 checksum
+L330: 【31†How to use checksums†pip.pypa.io】  | ` d78014dc476cf6b6897a613f242beda253ba380f0e25d6355cb299e6b95f2aee `
+L331: Upload date  | Jul 29, 2025
+L332: Uploaded using Trusted Publishing?
+L333: 【32†What is trusted publishing?†docs.pypi.org】  | No
+L334: Uploaded via  | `twine/6.1.0 CPython/3.13.5`
+L335: ## Security for flynt 1.0.6
+L336: 
+L337: 【33†Report project as malware】
+L338: 
+L339: ### Provenance
+L340: 
+L341: Provenance describes where a file came from. On PyPI, provenance is shared via attestations, which provide a verifiable record of the build or publishing details. 【34†View details, limitations and caveats.†docs.pypi.org】
+L342: 
+L343: ### No provenance found
+L344: 
+L345: None of the files in this release were uploaded with provenance metadata.
+L346: ### A note on package security
+L347: 
+L348: PyPI is a repository for distributing packages, not a service for auditing them. While third-party security researchers and our staff do their best to detect and remove malicious packages, PyPI cannot guarantee the quality, security or suitability of any given package.
+L349: 
+L350: To learn more about protecting yourself from malicious actors, visit our 【35†package security documentation†docs.pypi.org】.
+L351: ## Release history 【36†Release notifications†docs.pypi.org】 | 【37†RSS feed】
+L352: 
+L353: 【38†Image】
+L354: 
+L355: 【39†Pre-release†docs.pypi.org】
+L356: 
+L357: 【40†2.0.0b1】
+L358: 
+L359: Jul 18, 2026 【41†8 release files】 【42†No provenance】
+L360: 
+L361: This release
+L362: 
+L363: 【43†Image】
+L364: 
+L365: 【44†1.0.6】 This release
+L366: 
+L367: Jul 29, 2025 【7†2 release files】 【8†No provenance】
+L368: 
+L369: 【38†Image】
+L370: 
+L371: 【45†1.0.5】
+L372: 
+L373: Jul 28, 2025 【46†2 release files】 【47†No provenance】
+L374: 
+L375: 【38†Image】
+L376: 
+L377: 【48†1.0.4】
+L378: 
+L379: Jul 28, 2025 【49†2 release files】 【50†No provenance】
+L380: 
+L381: 【38†Image】
+L382: 
+L383: 【51†1.0.3】
+L384: Jul 26, 2025 【52†2 release files】 【53†No provenance】
+L385: 
+L386: 【38†Image】
+L387: 
+L388: 【54†1.0.2】
+L389: 
+L390: Feb 2, 2025 【55†2 release files】 【56†No provenance】
+L391: 
+L392: 【38†Image】
+L393: 
+L394: 【57†1.0.1】
+L395: 
+L396: Jul 28, 2023 【58†2 release files】 【59†No provenance】
+L397: 
+L398: 【38†Image】
+L399: 
+L400: 【60†1.0.0】
+L401: 
+L402: Jul 10, 2023 【61†2 release files】 【62†No provenance】
+L403: 
+L404: 【38†Image】
+L405: 
+L406: 【63†0.78】
+L407: 
+L408: Mar 24, 2023 【64†2 release files】 【65†No provenance】
+L409: 
+L410: 【38†Image】
+L411: 
+L412: 【66†0.77】
+L413: 
+L414: Nov 26, 2022 【67†2 release files】 【68†No provenance】
+L415: 
+L416: 【38†Image】
+L417: 
+L418: 【39†Pre-release†docs.pypi.org】
+L419: 
+L420: 【69†0.77a0】
+L421: Nov 20, 2022 【70†2 release files】 【71†No provenance】
+L422: 
+L423: 【38†Image】
+L424: 
+L425: 【72†0.76】
+L426: 
+L427: Jan 7, 2022 【73†2 release files】 【74†No provenance】
+L428: 
+L429: 【38†Image】
+L430: 
+L431: 【75†0.75】
+L432: 
+L433: Jan 6, 2022 【76†2 release files】 【77†No provenance】
+L434: 
+L435: 【38†Image】
+L436: 
+L437: 【78†0.74】
+L438: 
+L439: Jan 6, 2022 【79†2 release files】 【80†No provenance】
+L440: 
+L441: 【38†Image】
+L442: 
+L443: 【81†0.73】
+L444: 
+L445: Jan 6, 2022 【82†2 release files】 【83†No provenance】
+L446: 
+L447: 【38†Image】
+L448: 
+L449: 【84†0.72】
+L450: 
+L451: Jan 5, 2022 【85†2 release files】 【86†No provenance】
+L452: 
+L453: 【38†Image】
+L454: 
+L455: 【87†Yanked†docs.pypi.org】
+L456: 
+L457: 【88†0.71】
+L458: Jan 5, 2022 【89†2 release files】 【90†No provenance】
+L459: 
+L460: Yanked reason: Bug: dependency on black
+L461: 
+L462: 【38†Image】
+L463: 
+L464: 【91†0.70】
+L465: 
+L466: Jan 4, 2022 【92†2 release files】 【93†No provenance】
+L467: 
+L468: 【38†Image】
+L469: 
+L470: 【94†0.69】
+L471: 
+L472: Sep 9, 2021 【95†2 release files】 【96†No provenance】
+L473: 
+L474: 【38†Image】
+L475: 
+L476: 【97†0.68】
+L477: 
+L478: Sep 9, 2021 【98†2 release files】 【99†No provenance】
+L479: 
+L480: 【38†Image】
+L481: 
+L482: 【100†0.66】
+L483: 
+L484: Aug 16, 2021 【101†2 release files】 【102†No provenance】
+L485: 
+L486: 【38†Image】
+L487: 
+L488: 【103†0.65】
+L489: 
+L490: Jun 24, 2021 【104†2 release files】 【105†No provenance】
+L491: 
+L492: 【38†Image】
+L493: 
+L494: 【106†0.64】
+L495: Mar 31, 2021 【107†2 release files】 【108†No provenance】
+L496: 
+L497: 【38†Image】
+L498: 
+L499: 【109†0.63】
+L500: 
+L501: Mar 27, 2021 【110†2 release files】 【111†No provenance】
+L502: 
+L503: 【38†Image】
+L504: 
+L505: 【112†0.62】
+L506: 
+L507: Mar 27, 2021 【113†2 release files】 【114†No provenance】
+L508: 
+L509: 【38†Image】
+L510: 
+L511: 【115†0.61】
+L512: 
+L513: Mar 23, 2021 【116†2 release files】 【117†No provenance】
+L514: 
+L515: 【38†Image】
+L516: 
+L517: 【118†0.60】
+L518: 
+L519: Jan 21, 2021 【119†2 release files】 【120†No provenance】
+L520: 
+L521: 【38†Image】
+L522: 
+L523: 【121†0.59】
+L524: 
+L525: Jan 21, 2021 【122†2 release files】 【123†No provenance】
+L526: 
+L527: 【38†Image】
+L528: 
+L529: 【124†0.58】
+L530: Dec 5, 2020 【125†2 release files】 【126†No provenance】
+L531: 
+L532: 【38†Image】
+L533: 
+L534: 【127†0.57】
+L535: 
+L536: Nov 6, 2020 【128†2 release files】 【129†No provenance】
+L537: 
+L538: 【38†Image】
+L539: 
+L540: 【130†0.56】
+L541: 
+L542: Oct 25, 2020 【131†2 release files】 【132†No provenance】
+L543: 
+L544: 【38†Image】
+L545: 
+L546: 【133†0.55】
+L547: 
+L548: Sep 20, 2020 【134†2 release files】 【135†No provenance】
+L549: 
+L550: 【38†Image】
+L551: 
+L552: 【136†0.54】
+L553: 
+L554: Sep 16, 2020 【137†2 release files】 【138†No provenance】
+L555: 
+L556: 【38†Image】
+L557: 
+L558: 【139†0.53】
+L559: 
+L560: Sep 8, 2020 【140†2 release files】 【141†No provenance】
+L561: 
+L562: 【38†Image】
+L563: 
+L564: 【142†0.52】
+L565: Aug 12, 2020 【143†2 release files】 【144†No provenance】
+L566: 
+L567: 【38†Image】
+L568: 
+L569: 【145†0.51】
+L570: 
+L571: Aug 11, 2020 【146†2 release files】 【147†No provenance】
+L572: 
+L573: 【38†Image】
+L574: 
+L575: 【148†0.50】
+L576: 
+L577: Aug 9, 2020 【149†2 release files】 【150†No provenance】
+L578: 
+L579: 【38†Image】
+L580: 
+L581: 【151†0.49】
+L582: 
+L583: Aug 4, 2020 【152†2 release files】 【153†No provenance】
+L584: 
+L585: 【38†Image】
+L586: 
+L587: 【154†0.48.1】
+L588: 
+L589: May 26, 2020 【155†2 release files】 【156†No provenance】
+L590: 
+L591: 【38†Image】
+L592: 
+L593: 【157†0.48】
+L594: 
+L595: May 25, 2020 【158†2 release files】 【159†No provenance】
+L596: 
+L597: 【38†Image】
+L598: 
+L599: 【160†0.47.1】
+L600: May 24, 2020 【161†2 release files】 【162†No provenance】
+L601: 
+L602: 【38†Image】
+L603: 
+L604: 【163†0.47】
+L605: 
+L606: May 18, 2020 【164†2 release files】 【165†No provenance】
+L607: 
+L608: 【38†Image】
+L609: 
+L610: 【166†0.46.1】
+L611: 
+L612: Apr 28, 2020 【167†2 release files】 【168†No provenance】
+L613: 
+L614: 【38†Image】
+L615: 
+L616: 【169†0.46】
+L617: 
+L618: Apr 11, 2020 【170†2 release files】 【171†No provenance】
+L619: 
+L620: 【38†Image】
+L621: 
+L622: 【172†0.45.5】
+L623: 
+L624: Apr 10, 2020 【173†2 release files】 【174†No provenance】
+L625: 
+L626: 【38†Image】
+L627: 
+L628: 【175†0.45.4】
+L629: 
+L630: Feb 28, 2020 【176†2 release files】 【177†No provenance】
+L631: 
+L632: 【38†Image】
+L633: 
+L634: 【39†Pre-release†docs.pypi.org】
+L635: 【178†0.45.4b0】
+L636: 
+L637: Mar 1, 2020 【179†2 release files】 【180†No provenance】
+L638: 
+L639: 【38†Image】
+L640: 
+L641: 【181†0.45.3】
+L642: 
+L643: Feb 26, 2020 【182†2 release files】 【183†No provenance】
+L644: 
+L645: 【38†Image】
+L646: 
+L647: 【184†0.45.2】
+L648: 
+L649: Feb 26, 2020 【185†2 release files】 【186†No provenance】
+L650: 
+L651: 【38†Image】
+L652: 
+L653: 【187†0.45.1】
+L654: 
+L655: Feb 26, 2020 【188†2 release files】 【189†No provenance】
+L656: 
+L657: 【38†Image】
+L658: 
+L659: 【190†0.45】
+L660: 
+L661: Feb 26, 2020 【191†2 release files】 【192†No provenance】
+L662: 
+L663: 【38†Image】
+L664: 
+L665: 【193†0.44】
+L666: 
+L667: Feb 26, 2020 【194†2 release files】 【195†No provenance】
+L668: 
+L669: 【38†Image】
+L670: 
+L671: 【196†0.43.2】
+L672: Feb 21, 2020 【197†2 release files】 【198†No provenance】
+L673: 
+L674: 【38†Image】
+L675: 
+L676: 【199†0.43.1】
+L677: 
+L678: Feb 21, 2020 【200†2 release files】 【201†No provenance】
+L679: 
+L680: 【38†Image】
+L681: 
+L682: 【202†0.43】
+L683: 
+L684: Feb 18, 2020 【203†2 release files】 【204†No provenance】
+L685: 
+L686: 【38†Image】
+L687: 
+L688: 【39†Pre-release†docs.pypi.org】
+L689: 
+L690: 【205†0.43b0】
+L691: 
+L692: Feb 21, 2020 【206†2 release files】 【207†No provenance】
+L693: 
+L694: 【38†Image】
+L695: 
+L696: 【208†0.42】
+L697: 
+L698: Feb 6, 2020 【209†2 release files】 【210†No provenance】
+L699: 
+L700: 【38†Image】
+L701: 
+L702: 【211†0.41】
+L703: 
+L704: Feb 6, 2020 【212†2 release files】 【213†No provenance】
+L705: 
+L706: 【38†Image】
+L707: 【214†0.40.1】
+L708: 
+L709: Jan 13, 2020 【215†2 release files】 【216†No provenance】
+L710: 
+L711: 【38†Image】
+L712: 
+L713: 【217†0.40】
+L714: 
+L715: Jan 12, 2020 【218†2 release files】 【219†No provenance】
+L716: 
+L717: 【38†Image】
+L718: 
+L719: 【220†0.39】
+L720: 
+L721: Jan 12, 2020 【221†2 release files】 【222†No provenance】
+L722: 
+L723: 【38†Image】
+L724: 
+L725: 【223†0.38】
+L726: 
+L727: Jan 3, 2020 【224†2 release files】 【225†No provenance】
+L728: 
+L729: 【38†Image】
+L730: 
+L731: 【226†0.37】
+L732: 
+L733: Oct 10, 2019 【227†2 release files】 【228†No provenance】
+L734: 
+L735: 【38†Image】
+L736: 
+L737: 【39†Pre-release†docs.pypi.org】
+L738: 
+L739: 【229†0.37rc0】
+L740: 
+L741: Jan 3, 2020 【230†2 release files】 【231†No provenance】
+L742: 【38†Image】
+L743: 
+L744: 【39†Pre-release†docs.pypi.org】
+

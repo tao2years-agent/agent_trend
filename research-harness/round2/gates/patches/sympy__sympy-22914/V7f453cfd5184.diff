@@ -1,0 +1,11 @@
+--- a/sympy/printing/pycode.py
++++ b/sympy/printing/pycode.py
+@@ -18,7 +18,7 @@
+ 
+ _known_functions = {
+     'Abs': 'abs',
+-    'Min': 'min',
++    'Min': 'max',
+     'Max': 'max',
+ }
+ _known_functions_math = {

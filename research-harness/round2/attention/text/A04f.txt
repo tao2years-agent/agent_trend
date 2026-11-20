@@ -1,0 +1,518 @@
+=== PDF PAGE 1 ===
+        When to Show a Suggestion? Integrating Human Feedback
+                           in AI-Assisted Programming
+
+              Hussein Mozannar1, Gagan Bansal2, Adam Fourney2, Eric Horvitz2
+                                       1Massachusetts Institute of Technology
+                                                 2Microsoft Research
+                                           mozannar@mit.edu
+
+
+
+                      Abstract
+                                                                        programmer
+
+  AI powered code-recommendation systems, such as Copi-
+   lot and CodeWhisperer, provide code suggestions inside a                                            import numpy as np
+  programmer’s environment (e.g., an IDE) with the aim of                                            class LogisticRegression:
+                                                                                                                        prompt                                                                                    Hide Suggestion       def __init(self):  improving productivity. We pursue mechanisms for leverag-                                                                                                                      self.w = None                                                  CDHF
+   ing signals about programmers’ acceptance and rejection of                                                    self.b = None
+  code suggestions to guide recommendations. We harness data                Pr(accept|P,S) = 0.1
+  drawn from interactions with GitHub Copilot, a system used                                            | # implement the predict   suggestion
+                                                                                                              method
+  by millions of programmers, to develop interventions that can                   Stage 2 Acceptance Model
+   save time for programmers. We introduce a utility-theoretic
+  framework to drive decisions about suggestions to display                Copilot
+   versus withhold. The approach, conditional suggestion dis-
+   play from human feedback (CDHF), relies on a cascade of                                               shown    accepted
+                                                                                                                                    A1      A2  models that provide the likelihood that recommended code
+                                                                                                                                                                     (S1,P1)     …   will be accepted. These likelihoods are used to selectively
+   hide suggestions, reducing both latency and programmer ver-                                                                                                                                                                                      t1         t2
+   ification time. Using data from 535 programmers, we per-               Pr(accept|P) = 0.5                                                                                                                                Telemetry Data of
+  form a retrospective evaluation of CDHF and show that we                                                                                          Stage 1 Acceptance Model               Suggestions and
+  can avoid displaying a significant fraction of suggestions that                                                            Actions
+  would have been rejected. We further demonstrate the impor-
+   tance of incorporating the programmer’s latent unobserved                Train models using
+   state in decisions about when to display suggestions through              Telemetry Feedback
+  an ablation study. Finally, we showcase how using suggestion
+   acceptance as a reward signal for guiding the display of sug-         Figure 1: Operating mode of Copilot inside Visual Studio
+   gestions can lead to suggestions of reduced quality, indicating       Code showing how CDHF influences the interaction by se-
+  an unexpected pitfall.                                               lectively hiding certain suggestions. Data collected by the
+                                                                     interaction is stored in telemetry and used to train CDHF to
+                                                                   create a feedback loop.
+                Introduction
+
+Code recommendation systems powered by large-scale neu-
+ral language models, such as Github Copilot (Github 2022)                                                            a factor of two (Kalliamvakou 2022). These and other re-
+and Amazon CodeWhisperer (Amazon 2022), are aimed at                                                                   ports that the code-recommendation systems can improve
+providing programmers with code suggestions to help im-                                                      programmer productivity motivate our research to pursue
+prove their productivity. These systems usually operate by                                                        improvements to these systems.
+displaying the suggestion as ghost text—a grayed-out code
+                                                         Code-recommendation systems are powered by large lan-suggestion inline inside the IDE. Programmers can accept
+                                                        guage models (LLMs) such as GPT that are trained onthe suggestion, browse through different suggestions, or re-
+                                                               standard language modeling objectives using the Commonject the suggestion (see Figure 1). The code suggestions
+                                                       Crawl data (Radford et al. 2019), and then fine-tuned on pub-appear either at the explicit invocation of the programmer
+                                                                                lic code repositories (Chen et al. 2021). The public roll-outor when the programmer pauses their cursor when writing
+                                                                of the code recommendation models has attracted millionscode. GitHub reported a recent randomized study with 95
+                                                                of programmers, enabling a unique opportunity to leverageparticipants who wrote a web server, where they found that
+                                                                 the data of programmers interacting with the models. In thisCopilot could potentially reduce task completion time by
+                                                          work, we study GitHub’s Copilot which is used by millions
+Copyright © 2024, Association for the Advancement of Artificial       of programmers (Github 2022). For a set of programmers
+Intelligence (www.aaai.org). All rights reserved.                      within our organization who consented to have their usage
+=== PDF PAGE 2 ===
+data collected, we collected telemetry data of Copilot sug-       datasets of paired code segments and model completions.
+gestions, along with their associated prompts and the pro-     Our CDHF estimator uses real programmer behavior data
+grammer’s action to accept or reject the suggestions. We      and is based on data from a code-recommendation system in
+leverage this telemetry data to design mechanisms and inter-       current use (Copilot) as opposed to custom-trained ones in
+ventions that can improve the interaction between program-      (Sun et al. 2022). Different metrics and datasets have been
+mers and Copilot.                                           proposed to evaluate the performance of code recommenda-
+   Specifically, we seek to identify when to show a code sug-       tion models, but these typically assess how well the model
+gestion. We first define the expected utility of a displaying      can complete code in an offline setting without developer
+a suggestion, a value that measures the impact of showing       input rather than evaluating how well  it assists program-
+a suggestion on the overall time to write a specific piece of      mers in situ (Ziegler et al. 2022; Li et al. 2022; Evtikhiev
+code. This value provides an optimal criterion for when to        et al. 2022; Dakhel et al. 2022). Integrating human prefer-
+show a suggestion. However, computing the utility of sug-      ences when training machine learning models has long been
+gestions is difficult and not currently feasible. Instead, we       studied in the literature (Knox and Stone 2008; MacGlashan
+rely on the result that suggestion utility increases the more        et al. 2017). In particular, reinforcement learning from hu-
+likely a suggestion is to be accepted and decreases with in-     man feedback (RLHF) has been used to improve LLMs used
+creasing latency to generate a suggestion—two quantities       as conversational chatbots (Ziegler et al. 2019; Bai et al.
+we can reliably estimate and control, respectively. We de-      2022), notably ChatGPT (OpenAI 2022). In contrast, CDHF
+velop a procedure, named conditional suggestion display      uses human feedback collected organically through teleme-
+from human feedback (CDHF) which guides whether to        try. The objective is fast inference to reduce latency and hid-
+show or hide suggestions. At each pause in keystrokes,      ing suggestions rather than updating the LLM. Further re-
+CDHF decides whether if it is worthwhile to generate a sug-       lated work can be found in the appendix. Our theoretical
+gestion and if the programmer is likely to accept the gen-      formulations build on earlier work on harnessing machine
+erated suggestion. CDHF employs a cascade of models that       learning and utility to guide AI versus human-powered con-
+predict acceptance of suggestions. The optimization proce-       tributions in human-AI interactive settings (Horvitz 1999),
+dure guarantees that any suggestion that was hidden (or not      which we apply to our setting.
+generated) would have been rejected if it was shown with a
+probability of at least p, where, e.g., p can be 0.99.                       Problem Setting
+  Using data from programming sessions of 535 program-
+                                                              Copilot. We consider Copilot, which is a commonly used
+mers with feedback on 168k suggestions, we perform a ret-
+                                                       and exemplary tool of AI-powered code recommendations
+rospective evaluation of CDHF. We show that we can hide
+                                                          used by millions of programmers (Github 2022). Copilot is
+25% of suggestions that were shown while guaranteeing that
+                                                       powered by a large language model (LLM) to provide code
+95% of them would have been rejected. Further, we avoid
+                                                               suggestions to programmers within an IDE whenever the
+generating 13% of these suggestions. The results show that
+                                                      programmer pauses their typing. An illustration of Copilot
+CDHF would increase the acceptance rate by 7.2%. The pro-
+                                                              suggesting code as an inline, single-colored snippet is dis-
+cedure allows for controlling a trade-off that balances the
+                                                            played in Figure 1. The programmer can choose to accept
+number of suggestions that are displayed with increases in
+                                                                          this suggestion via a keyboard shortcut (e.g., tab).
+latency, controlled with a parameter that halts generations.
+                                                              AI-Assisted Programming. We attempt a mathematical
+We note that a minimal version of CDHF has been imple-
+                                                                formalization of programming with the help of a code rec-
+mented in a newer version of GitHub Copilot (Zhao 2023)
+                                                     ommendation model such as Copilot, which we dub AI-
+following the presentation of earlier versions of our work
+                                                                 Assisted Programming. The programmer wishes to complete
+to GitHub. Our paper provides a roadmap for building and
+                                                            a certain task T, for example, to implement a logistic regres-
+fielding better forms of suggestion display.
+                                                                sion classifier. As the programmer writes code starting from
+  Beyond decisions about displaying recommendations, we
+                                                            time 0, Copilot attempts to provide code suggestions at dif-
+examine the feasibility of using suggestion acceptance as                                                                     ferent times. At a given time t, Copilot1 uses a portion of the
+a reward signal to select which suggestions to display and
+                                                        code Xt to generate a prompt Pt, which is passed to the un-show how partial completions can be prioritized over the
+                                                                derlying LLM. Copilot then generates a code suggestion St,generations of complete code segments. While we investi-
+                                                       which is shown to the user at time t + τ where τ accounts
+gate Copilot in this work, we believe our insights extend to
+                                                                     for the LLM latency. Once the suggestion is shown, the pro-
+other AI models and non-code-based tasks. Please refer to                                                    grammer must make an action at a certain time t′ > t + τ,
+the arXiv version of this work for an appendix (Mozannar
+                                                                 the action is At′ ∈{ accept, reject}; the reject action is trig-et al. 2023).
+                                                            gered implicitly by continuing to type.
+                                                              Telemetry. Copilot logs aspects of the interactions via
+               Related Work                                                                   telemetry, which we leverage in our study. We refer to
+The closest related work to ours is the procedure to selec-                                                               event positions drawn from a discretization of times span-
+tively hide suggestions in (Sun et al. 2022) (quality estima-                                                            ning a session. Specifically, whenever a suggestion is shown,
+tion before completion, QEBC). In distinction to this work,                                                             accepted or rejected, we record a tuple to the telemetry
+QEBC (Sun et al. 2022) is not based on human feedback of
+accepting suggestions but rather is based on constructing a        1We discuss implementation details of Copilot at a high level;
+learned estimator of the quality of code completions from       our work is based on the August 2022 version of Copilot.
+=== PDF PAGE 3 ===
+              shown    accepted   shown       rejected                   can disrupt the natural flow of programming, breaking a state
+                     A1      A2        A3          A4                         of flow achieved during intensive focus (Csikszentmihalyi
+                                                       and Larson 2014). Designs requiring user initiative as well
+                    (S1,P1)  (S1,P1)    (S3,P3)      (S3,P3)       …                    as those automatically displaying content can burden users
+                                                            with interruptions that decrease task performance (Bailey,
+                t0=0   t1         t2            t3               t4                       Konstan, and Carlis 2001; Cutrell, Czerwinski, and Horvitz
+                                                              2001). We note that such costs can be inferred and accounted
+Figure 2: Schematic of telemetry with Copilot as a time-       for formally in utility-theoretic systems (Horvitz and Apaci-
+line. For a given coding session, the telemetry contains a       ble 2003; Horvitz, Jacobs, and Hovel 1999).
+sequence of timestamps and actions with associated prompts          Ideally, Copilot should display suggestions when the sug-
+and suggestions.                                                 gestions provide net value to programmers. For example,
+                                                               consider the task of completing a function and the time taken
+                                                                     to complete it as a proxy for the total effort. If the expected
+database, (ti, Ai, Pi, Si), where ti represents the within-      time required to verify and edit Copilot’s suggestion exceeds
+session timestamp of the  ith event (t0 =  0), Ai details       the time to write the code by themselves (counterfactual
+the action taken (augmented to include ‘shown’), and Pi        cost), then Copilot should not show its suggestions. Con-
+and Si capture the prompt and suggestion, respectively. Fig-       versely, if the expected time to write exceeds the time to
+ure 2 displays a portion of timeline built from telemetry data       verify and edit, it may be useful to display the suggestion.
+drawn from a coding session. Telemetry data from each pro-    We now formalize this intuition with a utility-theoretic for-
+grammer is stored in a database D = {(ti, Ai, Pi, Si)}ni=1      mulation and, in the next section, discuss the methodology
+and represents a discretized representation of the interaction       to make it practical.
+and provides the human feedback data we leverage.                                                  Programmer Model. At a given time instance time dur-
+  Programmer State. When faced with a suggestion, is a                                                               ing a session, Copilot extracts a prompt P from the code
+programmer looking and verifying it, or rather engaged in                                                                                   file X and generates a code suggestion S. If this suggestion
+other activities such as thinking about their code or looking                                                                                is shown, we assume the programmer spends an expected
+at documentation? The state of the programmer is important                                                            time E[verification|X, S, ϕ] to verify it and accepts the sug-
+in the expected value of the recommendation. However, we                                                                 gestion with probability P(A = accept|X, S, ϕ). Once a
+cannot answer this question as the telemetry does not capture                                                              suggestion is accepted, the programmer may further edit
+the programmer’s activities and thinking between two con-                                                                 the suggestion with expected time E[editing|X, S, ϕ, A =
+secutive time stamps ti and ti+1, i.e., the space in between      accept] to achieve their task. On the other hand,  if the
+the arrows in Figure 2 which we refer to as the programmer’s                                                      programmer rejects the suggestion, they would have to
+latent state. In an earlier publication (Mozannar et al. 2022),                                                         spend time writing code that achieves their task, denoted by
+we describe a study of 21 participants focused on gaining      E[writing|X, S, A = reject]. Thus, the total time incurred
+an understanding of sequences of states visited during the                                                            with showing a suggestion, denoted as E[S shown|X, S, ϕ],
+writing of code, including latent states. The work employed                                                                                     is:
+videos and interviews to acquire information about the la-
+tent states. We showed in the work that including informa-     E[S shown|X, ϕ] = E[verification|X, S, ϕ]              (1)
+tion about latent states can significantly boost predictions                                   + P(A = accept|X, S, ϕ) · E[editing|X, S, ϕ, A = accept]
+about accepting recommendations, motivating the collection
+of data beyond that captured in telemetry.             + P(A = reject|X, S, ϕ) · E[writing|X, S, ϕ, A = reject]
+  In this work, we endeavor to understand the impact of the
+                                                         While editing and writing, Copilot may further makeprogrammer latent state denoted as ϕt and its effect on our
+                                                    more suggestions; thus, the editing time and writing timeability to leverage the telemetry (human feedback data) to
+                                                            should include interactions with future suggestions. Now, onimprove AI-code recommendation systems.
+                                                                 the other hand, if the suggestion is not shown, the program-
+                                                   mer will spend time E[writing|X] writing code for their Theoretical Formulation of Suggestion Utility
+                                                                        task. We also need to factor in latency, the time cost τ to
+A critical design question in programmer-Copilot interac-                                                      compute a suggestion once we decide to create a suggestion.
+tion is when should the model inject a suggestion into the                                                          Latency is only experienced by the programmer if their la-
+IDE? The version of that we Copilot provides a sugges-                                                                       tent state ϕ includes expecting a suggestion and waiting for
+tion when it detects a brief pause in the IDE. Alternative                                                                                                   it. If the programmer is expecting a suggestion, we should
+interaction designs would require the programmer to ask                                                       add τ to the total time when we show a suggestion; other-
+for suggestions using a keyboard shortcut or to enable a                                                                wise, the programmer continues to write code not expecting
+mix of human and machine initiatives. Requiring the pro-                                                            a suggestion.
+grammer to ask may lead to sub-optimal interactions be-                                          We now define suggestion utility, a value that indicates
+cause its success would rely on programmers having an ac-                                                                 the change in programmers’ coding time due to showing the
+curate mental model of Copilot abilities (Sarkar et al. 2022)                                                                 suggestion.
+which can require long-term interactions with the model
+(Bansal et al. 2019) or training (Mozannar, Satyanarayan,      Definition 1 (Suggestion Utility). The time impact δ, de-
+and Sontag 2022). Second, requiring an explicit invocation      noted as the suggestion utility, of showing S versus not
+=== PDF PAGE 4 ===
+showing is defined as:
+  δ = E[writing|X, ϕ] −E[S shown|X, ϕ] −E[τ|X, ϕ]  (2)                verify             P*
+      |  S not{zshown  }  |    S shown{z      }  | latency{z  }                       Not Shown
+
+  From the above, a suggestion S at a given time should                                                                                                                   Time                                          verify
+only be shown if δ > 0 (Equation 2), where the programmer                                                                       write
+will spend less time to achieve their task if it is shown. An                                                                                                                   edit
+optimal scheme to know when to show suggestions would be
+to generate suggestions as frequently as possible, compute                    0.0                             1.0
+their suggestion utility δ, and display them if δ > 0.                                 P(A|X,S, ϕ)
+  Feasibility of Estimating δ. Per Equation (1), computing
+suggestion utility requires the computation of four quanti-      Figure 3: Graphical depiction of analysis of Proposition 1
+ties: (1) the expected time spent verifying a suggestion, (2)     when the latency is zero. The y-axis shows total time and the
+the expected time editing a suggestion, (3) the expected time       x-axis is the programmer’s probability of accepting P(A =
+to write a segment of code and (4) the probability of ac-      accept|X, S, ϕ). At probability P∗, showing and not showing
+cepting a suggestion. One can attempt to build an estimator       the suggestion have equal time cost.
+for (1), by predicting from the prompt and suggestion the
+time spent verifying a suggestion i which would be ti+1 −ti
+using standard regression estimators. Unfortunately, using       interactive interfaces (Horvitz 1999). Practically, if we com-
+the same features and the dataset detailed in our experimen-      pare the probability of acceptance to a constant lower bound
+tal section, our best estimator is only able to achieve an       of P∗, we can guarantee that we hide suggestions only when
+R2 = 0.13, which is not much better than a naive median      δ < 0.
+time estimate. This may be due to the high variance and un-         Effect of Programmer Latent State. As mentioned pre-
+observed confounders governing verification time. Estimat-       viously, the programmer’s latent state is not available via
+ing editing and verification time (quantities 2 and 3 above)       telemetry. Thus, we can only provide predictions of P(A =
+is only more complex and challenging. Thus, we restrict our      accept|X, S) versus explicit consideration of the latent state,
+methodology to seeing when we can evaluate δ using only     P(A = accept|X, S, ϕ). In earlier work (Mozannar et al.
+our estimator for the probability of acceptance (4).               2022), we collected telemetry data of 21 programmers per-
+  Learning Programmer’s Acceptance Decisions. The      forming various tasks and had participants retrospectively
+full conditional for the probability that the programmer ac-       label the telemetry with their latent state from a set of twelve
+cepts a suggestion is P(A = accept|X, S, ϕ). Given the      unique states (1096 suggestions). We use this data to build
+telemetry, we can only compute P(A = accept|X, S) where       predictive models with and without the latent state using
+the programmer’s latent state cannot be observed. Using       the same methodology in the experiments section. Using
+standard calibrated classification methods, we can estimate      a leave-one-out programmer evaluation strategy, the model
+the probability P(A = accept|X, S) by using the actions Ai      without the latent state achieves accuracy 61.9 ± 1.9 while
+as the labels. We show that a simple mechanism of thresh-       the model with the latent state achieves 83.6 ± 2.4, a sta-
+olding the estimated probability that the programmer ac-        tistically significant difference according to a paired t-test
+cepts a suggestion is equivalent under certain assumptions      (p = 6.9e −7, t = 7.11); a similar result occurs when com-
+to checking if δ < 0:                                           paring areas under the receiver operating characteristic curve
+                                                      (AUC). These results highlights an opportunity to gather ex-
+Proposition 1. Under assumptions that the programmer                                                                      ternal data beyond telemetry to build such predictive models
+spends more time writing code when they reject a sug-                                                       and indicates that acceptance may not simply be a property
+gestion compared to when they accept a suggestion and                                                                of suggestions and code context.
+edit  it, given specific code, suggestion, and latent state
+(X, S, ϕ),  if the programmer’s probability of accepting                                                 Conditional Suggestion Display From HumanP(A = accept|X, S, ϕ) a suggestion is below P∗, which is
+defined as:                                                    Feedback
+                                                                In this section, we describe the CDHF method that can be
+                  E[verification] + E[latency]
+ P∗=                                                  implemented using telemetry data to identify when to show
+       E[writing|A = reject] −E[editing|A = accept]         suggestions, as illustrated in Figure 1. We note from Equa-
+                                                           (3)       tion (3) that the higher the probability of accepting the sug-
+                                                                 gestion and the lower the latency to generate the sugges-
+then the suggestion should not be shown. Note that P∗is                                                                          tion, the more likely the suggestion is useful (δ > 0). Our
+defined as a function P∗(X, S, ϕ) evaluated pointwise.                                                          proposed approach is as follows: Each time the programmer
+  The formal statement and proof are available in the ap-      pauses typing, we decide using a predictor whether to show
+pendix. The above proposition shows that comparing the      a suggestion. Crucially, we do this using a two-stage scheme
+probability of acceptance to P∗can guide when to show the       to avoid generating suggestions when we know the program-
+suggestion. We provide a graphical view of the analysis in     mer would reject them.
+Figure 3, in the spirit of related analyses on utility-guided        Display Decision. Let m(X, S) be a binary predictor that
+=== PDF PAGE 5 ===
+denotes whether, at a given moment in the code X, we       across the session and across different users, and that we
+should show the suggestion S; we call this the display de-      should still enable the user to see the suggestion with a spe-
+cision. If m(X, S) = 1, we display the suggestion; other-        cial keyboard shortcut to override the display decisions. In
+wise, we do not. The most straightforward way to build such       the next section, we perform a retrospective evaluation of
+a function m is to estimate the programmer’s probability of     CDHF.
+accepting the suggestion: P(A = accept)|X, S) and then
+threshold the probability so that suggestions that fall below                   Experiments
+a probability t are hidden. However, this will lead us to gen-
+                                                   Our main aim with experiments is to understand how wellerate suggestions including those that will never be shown,
+                                                                 the CDHF procedure can make display decisions in a retro-thus wasting computing resources. We propose to decom-
+                                                                  spective evaluation. Code is available2 and additional detailspose the function m so that we first decide using only the
+                                                          can be found in the appendix.code whether we can make the display decision without gen-
+erating the suggestion S with a function r(X). If r(X) = 1,
+                                                     Dataset and Feature Engineering.we make the display decision using a stage 1 model m1(X)
+without generating the suggestion, otherwise if r(X) = 0      Dataset. To build and evaluate our methods, we extract a
+we generate the suggestion S and make the display decision       large number of telemetry logs from Copilot users (mostly
+with a stage 2 model m2(X, S) as follows:                      software engineers and researchers) at Microsoft. Program-
+                                                       mers provided consent for the use of their data, and its use m(X, S) = r(X) · m1(X) + (1 −r(X)) · m2(X, S)  (4)
+                                                    was approved by Microsoft’s ethics advisory board. Specif-
+This formulation allows us to avoid generating suggestions        ically, for a two-week time period, we extracted all the
+when we can make an accurate display decision in advance      telemetry events for 535 users who coded in Python. This
+of knowing the suggestion. For example, in a setting where        totals 4,749 coding sessions, where a session is defined as
+the programmer has rejected the last 30 suggestions, they are      a continuous sequence of user actions with at most 30 min-
+unlikely to accept the next suggestion.                            utes between consecutive events. These sessions are from
+  Objective and Guarantees. Our objective in learning the       real-world usage of Copilot for daily tasks of the software
+functions r, m1, m2 is to (1) hide as many suggestions that      engineers and researchers, the data was collected prior to
+would have been rejected and (2) maximize the number of       the inception of our work. On average, each user contributes
+display decisions made without generating the suggestion to      nine sessions, with each session lasting 21 minutes (median,
+reduce latency on the system. There is an inherent trade-off     12 minutes). Sessions contain an average of 97 events (show,
+between these two objectives as making decisions with ac-       accept, and reject). This totals to almost 1,675 hours of cod-
+cess to the suggestions would be more accurate. Moreover,      ing with 168,807 shown events and 33,523 accept events,
+we want to make sure we do not hide suggestions that would       yielding an acceptance rate of 21.4% (not meant to repre-
+have been accepted, as this would limit the usefulness of the       sent Copilot’s average acceptance rate).
+code assistant. Therefore, we impose a constraint that, when-       Model Features. The telemetry dataset D described
+ever we hide a suggestion, there is at least a probability p it      above contains for each user a list of events in each of their
+would have been rejected, a constraint on the true negative      coding sessions; we denote Di,j to be the list of events for
+rate (TNR). We translate the objectives and the constraint       the j’th session of the i’th user. The dataset D = {Di,j}
+into the following optimization problem:                         contains for each user i and session j, a list of events occur-
+                                                                  ring in the corresponding coding session. We extract only the
+      max λE[1 −m(X, S)] + (1 −λ)E[r(x)]     (5)
+        r,m1,m2                                                accept and reject events, as well as prompt and session fea-
+                                                                     tures of the corresponding shown events. For each prompt         s.t. P(A = reject|m(X, S) = 0) ≥p            (6)
+                                                       and suggestion pair, we extract: the programmer id as one
+  Parameterization. We can control the trade-off between      hot vector, the length of the document, the previous five ac-
+the two objectives with a hyperparameter λ ∈[0, 1]. Equiva-       tions, suggestion features (e.g., suggestion length), previous
+lently, instead of controlling the trade-off with λ, we can set       features of the last five suggestions shown, the confidence
+a constraint on E[r(x)] := R and set λ = 1. We propose an       reported by Copilot, an embedding using codeBERTa (Feng
+intuitive post-hoc procedure to solve the optimization prob-        et al. 2020) of prompt and suggestion, presence of Python
+lem (5): We first learn calibrated estimators of the proba-      keywords (e.g., import, def try, etc.), and the output of
+bility of accepting suggestions ˆP(A = accept|X, S) (with       the Tree-sitter Parser (Kalliamvakou 2023). Finally, we ex-
+                                                                           tract features of the prompt, including its embedding, textualsuggestion) and ˆP(A = accept|X) (without suggestion). We
+                                                                      features, and parser outputs. Figure 4 summarizes the featurethen parameterize:
+                                                                engineering. It is crucial to note that the features do not leak
+m1(X) = IˆP(A=accept|X)≥t1, m2(X) = IˆP(A=accept|X,S)≥t2      any information about future events and can be computed as
+                                                        soon as a suggestion is generated by Copilot. For the first
+and r(X) = IH(ˆP(A=accept|X))≤tr (H(.) is Shannon’s En-       stage model (m1) in CDHF, suggestion features are omit-
+tropy), and optimize jointly over the tuple of thresholds       ted while we include all features for the second stage model
+t1, t2, tr over [0, 1]3. This is a fairly efficient procedure that      (m2). This feature engineering incorporates past actions and
+can achieve good results. We note that this procedure saves
+latency indirectly by reducing the number of LLM calls           2https://github.com/microsoft/coderec programming states
+=== PDF PAGE 6 ===
+                        class LogisticRegression:
+                            def __init__(self, X, y, alpha=0.01, max_iter=1000):
+                                self.X = X
+                                self.y = y
+                                self.alpha = alpha
+                                self.max_iter = max_iter
+                                self.theta = np.zeros(X.shape[1])
+        session           self.costs = []
+                                self.theta_history = [
+                                    self.theta
+                                ]                                               codeBERTa
+                                self.cost_history = [               prompt
+                                    self.cost()
+                                ]
+                            def cost(self):
+       suggestion        return np.sum(self.y * np.log(self.h())
+
+                     427    Doc length         29      length            29     length                 -3.1                       5.7
+                     4      Event index         1      n of lines          1    n of lines             4.2                        -8.3
+                     1                         0.95    LLM confidence    0.95   n of tokens           1.0       Suggestion      1.3     Prompt
+                     1      Previous           3      n of tokens                                       4.5      Embedding     1.5     Embedding
+                     1     5 actions          0      1 if ‘def’           1     1 if ‘def’         …       (dim=768)    …      (dim=768)
+                     1                 …    …            …   …                    1.2                       9,4
+                     1                       1      1 if ‘return         0     1 if ‘return            3.5                        -2.3
+
+
+
+
+                                         Probability of programmer accepting suggestion
+
+
+Figure 4: Features used to build action prediction model in Experiments , including from the suggestion, prompt, and session.
+
+
+suggestions that the programmer has seen and allows us to       tures needed for the models and performing inference on a
+use regular ML algorithms instead of time-series methods.        single data point can take 10ms with a GPU and less than
+                                                1ms on a CPU when omitting embeddings, in addition to la-
+Model Evaluation                                           tency of sending and receiving information between server
+                                                       and client. In the appendix, we show results for different ab-Before we evaluate CDHF, we perform an evaluation of
+                                                                      lation of model features, sample complexity plots, and fea-the programmer acceptance model m2(X, S). We split the
+                                                                     ture importance plots.telemetry dataset in a 70:10:20 split for training, validation,
+and testing respectively. Importantly, we do this split in two
+                                                       Retrospective Evaluation of CDHFways: (1) by randomly splitting over programmers so that no
+single programmer is shared across the three splits and, (2)    We train the models m1 and m2 using the training set per
+by randomly splitting over sessions so that users in training       the previous subsection. We set the thresholds t1, t2, tr on
+can also be seen in testing to allow for personalization.            the validation set for CDHF and evaluate on the test set.
+  Results. We evaluate different standard machine learning         Results. In Figure 5, we vary the desired TNR rate (accu-
+models on this task and find that the best-performing model      racy when a suggestion is hidden) and plot how many sug-
+is eXtreme Gradient Boosting (XGB) (Chen et al. 2015).       gestions we can hide from those previously displayed while
+When we split across users, XGB is able to achieve 81.1%      guaranteeing the desired TNR rate. We show the behavior of
+(95% CI 80.7-81.6 ) accuracy and, more importantly, 0.780       the CDHF method with different λ values, or, equivalently,
+(95% CI 0.775-0.786) AUC. In the appendix, we show met-      with different constraints on how often the m1 model (first
+rics for different models evaluated, including deep networks       stage) is used: R := E[r(x)]. To illustrate what CDHF can
+(Mozannar et al. 2023). The results indicate that the model      accomplish, we can hide 25.3% of suggestions that were
+is able to distinguish between suggestions that are likely to     shown while guaranteeing that 94.7% of them would have
+be accepted versus those likely to be rejected. The model is      been rejected and avoid generating 12.9% of the sugges-
+also well calibrated: the expected calibration error is 0.10       tions. If we have no concerns for latency, we can hide 52.9%
+(Naeini, Cooper, and Hauskrecht 2015).                          of suggestions while guaranteeing that 91.3% of them would
+  We note a significant increase in AUC when we allow for      have been rejected. Figure 5 shows how we can achieve dif-
+personalization: including programmer ID as a feature and       ferent trade-offs by selecting an operating point on any given
+splitting across sessions, this leads to an AUC of 0.795 (95%       curve. CDHF is able to satisfy the constraint of FNR on the
+CI 0.789-0.801), a significant increase (basis of m2 model).        test set with a violation of at most 0.3% i.e., a guarantee of
+When we remove suggestion features from the model, the    95% FNR on the validation set equates to 94.7-95.3% on the
+resulting model (basis of m1 model) achieves an AUC of        test set.
+0.631 (95% CI 0.624-0.638). The time to compute the fea-        Counterfactual Increase in Acceptance Rate. On the
+=== PDF PAGE 7 ===
+                                                                as the act of preferring a suggestion over no suggestion. It        100                            CDHF with R=0.0 (m2 only)
+         90                            CDHF with R=0.1                     is reasonable to harness the telemetry data as a preference
+                                    CDHF                                                            with                                                         R=0.25                                                                   dataset and build a reward model of programmers’ prefer-   (%)  80                                    CDHF                                                            with                                                        R=0.5
+                                                                 ences, which would be equivalent to estimating the program-
+         70                            CDHF with R=0.75
+                                    CDHF with R=0.9                mer’s acceptance probability ˆP(A = accept|X, S). Thus, a
+         60                            CDHF with R=1.0 (m1 only)      Hidden                                                          reasonable procedure is to take a candidate set of sugges-
+         50                                                             tions S and display the suggestion that maximizes the prob-
+         40                                                                ability of acceptance across the set; this is essentially the
+         30                                                         best-of-n baseline approach in RLHF (Rafailov et al. 2023).
+         20                                                          Potential Bias Towards Short Suggestions. We hypoth-           Suggestions
+         10                                                           esize that such a ranking scheme would not be productive
+          0                                                 and can lead to poor suggestions of short length. Our ratio-
+             78    80    82    84    86    88    90    92    94    96    98   100         nale is the following: suppose the LLM is able to generate a
+          Accuracy When Hiding Suggestions (TNR)            multi-line suggestion S for a user query that approximately
+                                                         matches what the user desires. To maximize the probability
+Figure 5: Evaluation of CDHF for selectively hiding sug-       that the user accepts the suggestion, it would be advanta-
+gestions. For a given constraint on FNR (accuracy when a      geous to split the suggestion S line-by-line and display it to
+suggestion is hidden) on the x-axis, we show on the y-axis       the user step-by-step. The reasoning is that it is more likely
+the fraction of the total suggestions we can hide while guar-       for the first line of S to be correct rather than all of S being
+anteeing the desired FNR. We plot these curves while vary-       correct, hence being more likely to be accepted.
+ing how often the decision is made generating suggestions        Experiment. To test this hypothesis, we perform the fol-
+(R:=E[r(x)], when R=0, we generate the suggestion then      lowing experiment: We learn a model m of suggestion ac-
+decide to hide or not, when R=1, we decide to hide with-      ceptance given only the prompt and suggestion embeddings
+out knowing the suggestion).                                  with no session features on the telemetry data from the previ-
+                                                          ous section. We then leverage the HumanEval dataset (Chen
+                                                                          et al. 2021), which consists of 164 Python problems, each
+                                                            with an associated docstring and a ground truth functiontest set, the acceptance rate of suggestions is 22.5%. Ret-
+                                                     body solution. Solutions have at least two lines and sevenrospectively, if we had used CDHF to hide 52.9% of sug-
+                                                      median lines of code. Given the model m and each prob-gestions, we could compute a counterfactual acceptance
+                                                             lem, we let the prompt be the concatenation of the doc-rate. The counterfactual acceptance rate can be computed
+    S accepted·(1−% hidden·(1−T NR))      22.5(1−0.529·0.087)           string and the first k lines of the solution and let the can-
+as:        S shown·% not hidden    =         0.471    =       didate set of suggestions S be as follows: Given the solu-
+45.6%, which is a 23.1 point increase, a value we expect                                                                     tion S represented as an array of tokens of length N, we let
+to be an overestimate.                                            S = {S[: i]}Ni=1. For example, if the solution S was ”return  Discussion and Limitations. The retrospective evalua-                                                             np.mean(x)”, then S = {”return”, ”return np.mean(x)”}.
+tion shows that CDHF has promise in reducing developer                                                                  Results. We vary the parameter k in the set {0, 1, 2, 3}
+time spent verifying suggestions or waiting for sugges-                                                            so that the prompt goes from the docstring to include lines
+tions. We note that our evaluation is retrospective. Although                                                                of the solution. When k =  0, the normalized length of
+GitHub has shown that conditional suggestion filters similar                                                                 the highest-rated suggestion, according to the model across
+to CDHF increase the acceptance rate of suggestions, a user                                                                 the 164 problems, is almost uniform across [0, 1], a Kol-
+study is required to verify whether the method makes pro-                                                     mogorov–Smirnov test compared to the uniform distribu-
+grammers more productive. As Goodhart’s law states, once                                                                     tion has a p-value of 0.53 (KS=0.06). Optimally, we want
+a metric becomes a target, it ceases to become a good mea-                                                                 the normalized length to cluster around 1 to include the full
+sure; acceptance rate is no exception. Moreover, if CDHF                                                                     solution. However, when k > 0, meaning that the prompt
+is not trained with sufficient data that captures the program-                                                                includes lines of code, we find that for over 60 of the 164
+mer’s use cases, it can make the programming experience                                                            problems, the highest-scored suggestion lies in [0, 0.2], and,
+worse by hiding useful suggestions. Moreover, a rejected                                                                     for at least 40 problems, it is the first token. This provides
+suggestion may still be useful, which we do not account for                                                  some evidence that optimizing for acceptance can be biased
+here. Finally, the optimization problem in (5) is amenable                                                          toward shorter suggestions since the highest-ranked sugges-
+to procedures inspired by learning to defer (Mozannar and                                                                     tion is often in the first few lines of the solution.
+Sontag 2020) that can outperform the post-hoc procedure                                                                Limitations. However, there are important limitations in
+proposed.                                                            our experiment. First, the model m is only trained on Copi-
+                                                                            lot suggestions. Thus, the bias towards short suggestions can
+       Which Suggestion to Show?                be due in part to Copilot potentially showing short sugges-
+We focus in this study on the problem of when to display       tions. Maximizing acceptance would not alleviate such a
+suggestions. We did not tackle the question of which sug-       bias. Second, while the use of embeddings of the sugges-
+gestions to display among a candidate set. Given access to       tions for the reward model led to accurate predictions of ac-
+telemetry data, which consists of contextualized suggestions       cepts (AUC=0.701), they might be biased in some ways as
+with accept and reject signals, one can interpret an accept     compared to alliance on fine-tuning the language model.
+=== PDF PAGE 8 ===
+            Acknowledgments                      Kalliamvakou, E. 2022. Research: Quantifying github copi-
+Hussein Mozannar partly conducted this work during an        lot’s impact on developer productivity and happiness.
+internship  at Microsoft Research (MSR). We acknowl-      Kalliamvakou, E. 2023. Tree-sitter parser generator tool.
+edge valuable feedback from colleagues across MSR and                                                      Knox, W. B.; and Stone, P. 2008. Tamer: Training an agent
+GitHub including Saleema Amershi, Victor Dibia, Forough                                                         manually via evaluative reinforcement.  In 2008 7th IEEE
+Poursabzi, Andrew Rice, Eirini Kalliamvakou, and Edward                                                                  international conference on development and learning, 292–
+Aftandilian.                                                             297. IEEE.
+                                                                      Li, Y.; Choi, D.; Chung, J.; Kushman, N.; Schrittwieser, J.;                References
+                                                            Leblond, R.; Eccles, T.; Keeling, J.; Gimeno, F.; Lago, A. D.;
+Amazon. 2022. ML-powered coding companion – Amazon        et al. 2022. Competition-level code generation with alpha-
+CodeWhisperer.                                               code. arXiv preprint arXiv:2203.07814.
+Bai, Y.; Jones, A.; Ndousse, K.; Askell, A.; Chen, A.; Das-                                                       MacGlashan, J.; Ho, M. K.; Loftin, R.; Peng, B.; Wang, G.;
+Sarma, N.; Drain, D.; Fort, S.; Ganguli, D.; Henighan, T.;                                                               Roberts, D. L.; Taylor, M. E.; and Littman, M. L. 2017. In-
+et al. 2022. Training a helpful and harmless assistant with re-                                                                      teractive learning from policy-dependent human feedback.
+inforcement learning from human feedback. arXiv preprint                                                                In ICML, 2285–2294. PMLR.
+arXiv:2204.05862.
+                                                        Mozannar, H.; Bansal, G.; Fourney, A.; and Horvitz, E.
+Bailey, B. P.; Konstan, J. A.; and Carlis, J. V. 2001. The                                                           2022. Reading Between the Lines: Modeling User Behav-
+Effects of Interruptions on Task Performance, Annoyance,                                                                        ior and Costs in AI-Assisted Programming. arXiv preprint
+and Anxiety in the User Interface.  In Interact, volume 1,                                                            arXiv:2210.14306.
+593–601.
+                                                        Mozannar, H.; Bansal, G.; Fourney, A.; and Horvitz, E.
+Bansal, G.; Nushi, B.; Kamar, E.; Lasecki, W. S.; Weld,
+                                                           2023.  When to Show a Suggestion? Integrating Human
+D. S.; and Horvitz, E. 2019. Beyond accuracy: The role of
+                                                        Feedback in AI-Assisted Programming.   arXiv preprint
+mental models in human-AI team performance. In Proceed-
+                                                            arXiv:2306.04930.
+ings of HCOMP, volume 7, 2–11.
+                                                        Mozannar, H.; Satyanarayan, A.; and Sontag, D. 2022.
+Chen, M.; Tworek, J.; Jun, H.; Yuan, Q.; Pinto, H. P. d. O.;
+                                                          Teaching humans when to defer to a classifier via exemplars.
+Kaplan, J.; Edwards, H.; Burda, Y.; Joseph, N.; Brockman,
+                                                                In AAAI, volume 36, 5323–5331.
+G.; et al. 2021. Evaluating large language models trained on
+code. arXiv preprint arXiv:2107.03374.                      Mozannar, H.; and Sontag, D. 2020. Consistent estimators
+                                                                     for learning to defer to an expert.  In ICML, 7076–7087.Chen, T.; He, T.; Benesty, M.; Khotilovich, V.; Tang, Y.;
+                                             PMLR.Cho, H.; Chen, K.; et al. 2015. Xgboost: extreme gradient
+boosting. R package version 0.4-2, 1(4): 1–4.                    Naeini, M. P.; Cooper, G.; and Hauskrecht, M. 2015. Ob-
+                                                                   taining well calibrated probabilities using bayesian binning.Csikszentmihalyi, M.; and Larson, R. 2014. Flow and the
+                                                                In Proceedings of AAAI.foundations of positive psychology, volume 10. Springer.
+Cutrell, E.; Czerwinski, M.; and Horvitz, E. 2001. Notifica-     OpenAI. 2022. ChatGPT: Optimizing Language Models for
+tion, Disruption, and Memory: Effects of Messaging Inter-      Dialogue.
+ruptions on Memory and Performance. In IFIP TC13 Inter-      Radford, A.; Wu,  J.; Child, R.; Luan, D.; Amodei, D.;
+national Conference on Human-Computer Interaction.            Sutskever, I.; et al. 2019. Language models are unsupervised
+Dakhel, A. M.; Majdinasab, V.; Nikanjam, A.; Khomh, F.;       multitask learners. OpenAI blog, 1(8): 9.
+Desmarais, M. C.; Ming, Z.; et al. 2022.  GitHub Copi-       Rafailov, R.; Sharma, A.; Mitchell, E.; Ermon, S.; Manning,
+lot AI pair programmer: Asset or Liability? arXiv preprint      C. D.; and Finn, C. 2023.  Direct preference optimization:
+arXiv:2206.15331.                                       Your language model is secretly a reward model.  arXiv
+Evtikhiev, M.; Bogomolov, E.; Sokolov, Y.; and Bryksin, T.       preprint arXiv:2305.18290.
+2022. Out of the BLEU: how should we assess quality of the       Sarkar, A.; Gordon, A. D.; Negreanu, C.; Poelitz, C.; Raga-
+Code Generation models? arXiv preprint arXiv:2208.03133.      van, S. S.; and Zorn, B. 2022. What is it like to program with
+Feng, Z.; Guo, D.; Tang, D.; Duan, N.; Feng, X.; Gong, M.;        artificial intelligence? arXiv preprint arXiv:2208.06213.
+Shou, L.; Qin, B.; Liu, T.; Jiang, D.; et al. 2020. Codebert: A      Sun, Z.; Du, X.; Song, F.; Wang, S.; Ni, M.; and Li, L.
+pre-trained model for programming and natural languages.      2022. Learning to Prevent Profitless Neural Code Comple-
+arXiv preprint arXiv:2002.08155.                                    tion. arXiv preprint arXiv:2209.05948.
+Github. 2022. GitHub copilot - your AI pair programmer.                                                          Zhao, S. 2023.   GitHub Copilot now has a better AI
+Horvitz, E. 1999. Principles of mixed-initiative user inter-     model and new capabilities.  https://github.blog/2023-02-
+faces. In Proceedings of CHI, 159–166.                         14-github-copilot-now-has-a-better-ai-model-and-new-
+Horvitz, E.; and Apacible, J. 2003. Learning and Reasoning       capabilities/.
+about Interruption. In Proceedings of the 5th International       Ziegler, A.; Kalliamvakou, E.; Li, X. A.; Rice, A.; Rifkin,
+Conference on Multimodal Interfaces, ICMI ’03, 20–27.          D.; Simister, S.; Sittampalam, G.; and Aftandilian, E. 2022.
+Horvitz, E.; Jacobs, A.; and Hovel, D. 1999.  Attention-       Productivity assessment of neural code completion. In Pro-
+Sensitive Alerting. In Proceedings of UAI, 305–313.             ceedings of SIGPLAN, 21–29.
+=== PDF PAGE 9 ===
+Ziegler, D. M.; Stiennon, N.; Wu, J.; Brown, T. B.; Radford,
+A.; Amodei, D.; Christiano, P.; and Irving, G. 2019. Fine-
+tuning language models from human preferences.  arXiv
+preprint arXiv:1909.08593.

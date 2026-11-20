@@ -1,0 +1,69 @@
+.............................FF.....F..............ssssssssss.......F... [ 61%]
+..................F.............s.......sssF.                            [100%]
+================================== FAILURES ===================================
+_____________________________ test_vector_simple ______________________________
+sympy\utilities\tests\test_lambdify.py:356: in test_vector_simple
+    f = lambdify((x, y, z), (z, y, x))
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-50>", line 2
+E       return [z, y, x,)
+E                       ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+__________________________ test_vector_discontinuous __________________________
+sympy\utilities\tests\test_lambdify.py:364: in test_vector_discontinuous
+    f = lambdify(x, (-1/x, 1/x))
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-51>", line 2
+E       return [-1/x, x**(-1.0),)
+E                               ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+_________________________________ test_matrix _________________________________
+sympy\utilities\tests\test_lambdify.py:413: in test_matrix
+    f = lambdify((x, y, z), (A, [A]), modules="sympy")
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-62>", line 2
+E       return [ImmutableDenseMatrix([[x, x*y], [sin(z) + 4, x**z]]), [ImmutableDenseMatrix([[x, x*y], [sin(z) + 4, x**z]])],)
+E                                                                                                                            ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+_____________________________ test_lambdify_imps ______________________________
+sympy\utilities\tests\test_lambdify.py:848: in test_lambdify_imps
+    lam = lambdify(x, (f(x), x))
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-120>", line 2
+E       return [f(x), x,)
+E                       ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+______________________________ test_issue_14941 _______________________________
+sympy\utilities\tests\test_lambdify.py:1195: in test_issue_14941
+    f2b = lambdify([], (1,))  # gh-23224
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-181>", line 2
+E       return [1,)
+E                 ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+______________________________ test_lambdify_cse ______________________________
+sympy\utilities\tests\test_lambdify.py:1568: in test_lambdify_cse
+    f = case.lambdify(cse=cse)
+sympy\utilities\tests\test_lambdify.py:1501: in lambdify
+    return lambdify(self.args, self.exprs, cse=cse)
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-221>", line 10
+E       return [_0, _1, _2, _3,)
+E                              ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23262\V0f81c0d0e786\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_vector_simple -   File "<...
+FAILED sympy/utilities/tests/test_lambdify.py::test_vector_discontinuous -   ...
+FAILED sympy/utilities/tests/test_lambdify.py::test_matrix -   File "<lambdif...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_imps -   File "<...
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_14941 -   File "<la...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_cse -   File "<l...
+6 failed, 97 passed, 14 skipped, 5 warnings in 3.12s

@@ -1,0 +1,368 @@
+{
+  "A-base": {
+    "basic": {
+      "specversion": "1.0",
+      "id": "projection-A-base",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:56:14.945235+00:00",
+      "subject": "/local/task/A-base",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-A-base",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:56:14.945235+00:00"
+        },
+        "subject": {
+          "id": "/local/task/A-base",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        }
+      }
+    },
+    "with_referenced_observation": {
+      "specversion": "1.0",
+      "id": "projection-A-base",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:56:14.945235+00:00",
+      "subject": "/local/task/A-base",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-A-base",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:56:14.945235+00:00"
+        },
+        "subject": {
+          "id": "/local/task/A-base",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        },
+        "customDataContentType": "application/json",
+        "customData": {
+          "fixture_record": "evidence/observations.json#/runs/14",
+          "observed_invocations": [
+            "insert",
+            "insert"
+          ],
+          "target_rows": 2,
+          "observed_target_versions": [
+            "v1",
+            "v1"
+          ]
+        }
+      }
+    }
+  },
+  "A-guarded": {
+    "basic": {
+      "specversion": "1.0",
+      "id": "projection-A-guarded",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:56:14.945235+00:00",
+      "subject": "/local/task/A-guarded",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-A-guarded",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:56:14.945235+00:00"
+        },
+        "subject": {
+          "id": "/local/task/A-guarded",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        }
+      }
+    },
+    "with_referenced_observation": {
+      "specversion": "1.0",
+      "id": "projection-A-guarded",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:56:14.945235+00:00",
+      "subject": "/local/task/A-guarded",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-A-guarded",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:56:14.945235+00:00"
+        },
+        "subject": {
+          "id": "/local/task/A-guarded",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        },
+        "customDataContentType": "application/json",
+        "customData": {
+          "fixture_record": "evidence/observations.json#/runs/15",
+          "observed_invocations": [
+            "insert",
+            "reuse"
+          ],
+          "target_rows": 1,
+          "observed_target_versions": [
+            "v1"
+          ]
+        }
+      }
+    }
+  },
+  "B-base": {
+    "basic": {
+      "specversion": "1.0",
+      "id": "projection-B-base",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:59:19.939589+00:00",
+      "subject": "/local/task/B-base",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-B-base",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:59:19.939589+00:00"
+        },
+        "subject": {
+          "id": "/local/task/B-base",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        }
+      }
+    },
+    "with_referenced_observation": {
+      "specversion": "1.0",
+      "id": "projection-B-base",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:59:19.939589+00:00",
+      "subject": "/local/task/B-base",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-B-base",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:59:19.939589+00:00"
+        },
+        "subject": {
+          "id": "/local/task/B-base",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        },
+        "customDataContentType": "application/json",
+        "customData": {
+          "fixture_record": "evidence/repeat/observations.json#/runs/14",
+          "observed_invocations": [
+            "insert",
+            "insert"
+          ],
+          "target_rows": 2,
+          "observed_target_versions": [
+            "v1",
+            "v1"
+          ]
+        }
+      }
+    }
+  },
+  "B-guarded": {
+    "basic": {
+      "specversion": "1.0",
+      "id": "projection-B-guarded",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:59:19.939589+00:00",
+      "subject": "/local/task/B-guarded",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-B-guarded",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:59:19.939589+00:00"
+        },
+        "subject": {
+          "id": "/local/task/B-guarded",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        }
+      }
+    },
+    "with_referenced_observation": {
+      "specversion": "1.0",
+      "id": "projection-B-guarded",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "time": "2026-11-20T03:59:19.939589+00:00",
+      "subject": "/local/task/B-guarded",
+      "datacontenttype": "application/json",
+      "data": {
+        "context": {
+          "specversion": "0.5.0",
+          "id": "projection-B-guarded",
+          "source": "urn:example:handoff-projection",
+          "type": "dev.cdevents.taskrun.finished.0.3.0",
+          "timestamp": "2026-11-20T03:59:19.939589+00:00"
+        },
+        "subject": {
+          "id": "/local/task/B-guarded",
+          "content": {
+            "taskName": "publish",
+            "outcome": "success"
+          }
+        },
+        "customDataContentType": "application/json",
+        "customData": {
+          "fixture_record": "evidence/repeat/observations.json#/runs/15",
+          "observed_invocations": [
+            "insert",
+            "reuse"
+          ],
+          "target_rows": 1,
+          "observed_target_versions": [
+            "v1"
+          ]
+        }
+      }
+    }
+  },
+  "review_without_approval": {
+    "specversion": "1.0",
+    "id": "review-demo",
+    "source": "urn:example:handoff-projection",
+    "type": "dev.cdevents.change.reviewed.0.3.0",
+    "time": "2026-11-20T00:00:00Z",
+    "subject": "/pr/8",
+    "datacontenttype": "application/json",
+    "data": {
+      "context": {
+        "specversion": "0.5.0",
+        "id": "review-demo",
+        "source": "urn:example:handoff-projection",
+        "type": "dev.cdevents.change.reviewed.0.3.0",
+        "timestamp": "2026-11-20T00:00:00Z"
+      },
+      "subject": {
+        "id": "/pr/8",
+        "content": {
+          "repository": {
+            "id": "repo-a"
+          }
+        }
+      }
+    }
+  },
+  "schema_only_nonnormative": {
+    "context": {
+      "specversion": "0.5.0",
+      "id": "projection-A-base",
+      "source": "urn:example:handoff-projection",
+      "type": "dev.cdevents.taskrun.finished.0.3.0",
+      "timestamp": "2026-11-20T03:56:14.945235+00:00"
+    },
+    "subject": {
+      "id": "/local/task/A-base",
+      "content": {
+        "taskName": "publish",
+        "outcome": "not-a-spec-outcome"
+      }
+    }
+  },
+  "same_chain_different_artifacts": [
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "id": "rollback-v1",
+        "source": "urn:example:handoff-projection",
+        "type": "dev.cdevents.service.rolledback.0.3.0",
+        "timestamp": "2026-11-20T00:00:00Z",
+        "chainId": "same-investigation"
+      },
+      "subject": {
+        "id": "/services/demo",
+        "content": {
+          "artifactId": "pkg:generic/demo@v1",
+          "environment": {
+            "id": "staging"
+          }
+        }
+      }
+    },
+    {
+      "context": {
+        "specversion": "0.5.0",
+        "id": "rollback-v2",
+        "source": "urn:example:handoff-projection",
+        "type": "dev.cdevents.service.rolledback.0.3.0",
+        "timestamp": "2026-11-20T00:00:00Z",
+        "chainId": "same-investigation"
+      },
+      "subject": {
+        "id": "/services/demo",
+        "content": {
+          "artifactId": "pkg:generic/demo@v2",
+          "environment": {
+            "id": "staging"
+          }
+        }
+      }
+    }
+  ],
+  "binding_mismatch_rejected_by_crosscheck_only": {
+    "specversion": "1.0",
+    "id": "different-from-inner",
+    "source": "urn:example:handoff-projection",
+    "type": "dev.cdevents.change.reviewed.0.3.0",
+    "time": "2026-11-20T00:00:00Z",
+    "subject": "/pr/8",
+    "datacontenttype": "application/json",
+    "data": {
+      "context": {
+        "specversion": "0.5.0",
+        "id": "review-demo",
+        "source": "urn:example:handoff-projection",
+        "type": "dev.cdevents.change.reviewed.0.3.0",
+        "timestamp": "2026-11-20T00:00:00Z"
+      },
+      "subject": {
+        "id": "/pr/8",
+        "content": {
+          "repository": {
+            "id": "repo-a"
+          }
+        }
+      }
+    }
+  }
+}

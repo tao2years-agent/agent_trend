@@ -1,0 +1,113 @@
+Exploring and Evaluating Proactive AI Programming
+• The CodeGhost condition constructed an AI agent that
+takes proactive actions, such as sending messages or writing
+code in the editor, to provide help based on user activity
+and timing principles. In this condition, the ablated system
+did not include any additional indicators of the AI agent’s
+presence, and did not support the localized, threaded, scope
+of interactions.
+• The Codellaborator condition utilized the same AI agent
+and proactivity features found in the CodeGhost condi-
+tion and additionally utilized the AI agent’s visual features
+and interacted with the user at different scopes of context.
+In this condition, the full system represented the AI via
+its autonomous cursor, caret, and intention signal bubble
+(Fig.2.b,d). Moreover, users were allowed to use breakouts to
+start localized threads of conversations at different parts of
+the code (Fig.2.a). Codellaborator also automatically grouped
+relevant messages and organized them into breakouts to
+manage interaction context (Fig.2.e).
+5.3
+Tasks
+Three programming tasks involving implementing a small-scale
+project in Python (full descriptions in Appendix B; Task 1: event
+scheduler, Task 2: word guessing game, Task 3: budget tracker)
+were used in the study. The tasks were derived from LeetCode
+[16–18] coding problems, which present adequate challenges for
+our participant pool within the scope of the study. The particular
+tasks are selected to reflect typical programming activities com-
+monly encountered by developers, including working with data
+structures, control flow, and basic algorithms. We adopted test-
+driven development by providing users with a unit test suite for
+each task, where they had to implement the specification to pass the
+test cases. The tasks were designed to balance practical relevance
+and study feasibility, allowing participants to showcase problem-
+solving skills and creative design choices within a constrained time
+frame. Although LeetCode problems are often designed with one or
+two optimized solutions, we modified the problems so users could
+take multiple approaches. For instance, one of our tasks involved
+implementing an event scheduler. While a brute-force approach
+could solve the problem, participants could also explore different
+data structures (e.g., priority queues, dictionaries) to optimize ef-
+ficiency, or modularize their solution to enhance readability and
+maintainability. This flexibility allowed us to observe variations
+in user decision-making. The tasks were intentionally open-ended
+and can be completed through various designs so that participants
+could not directly use task specification as LLM prompt to solve
+the problem deterministically. In an attempt to maintain consistent
+generation quality across participants, the backend GPT-4 model
+was set to 0 temperature to reduce randomness. Based on a pilot
+study with 6 users using the Codellaborator condition prototype,
+we found that participants were able to complete each task within
+20-30 minutes, thus showcasing similar task difficulties. During
+the study, the tasks were randomly assigned to each condition to
+reduce bias.
+---
+CHI ’25, April 26–May 01, 2025, Yokohama, Japan
+5.4
+Procedure
+After signing a consent form, participants completed each of the
+three coding tasks. Before each task, participants were shown a
+tutorial about the system condition they would use for the task.
+Participants were asked to discuss the task with the AI agent at the
+start of each task to calibrate participants’ expectations of the AI
+agent and to reduce biases from prior AI tool usage. Participants
+were given 30 minutes per task and were asked to adopt a think-
+aloud protocol. After each task, participants completed a Likert-
+scale survey (anchors: 1 strongly disagree to 7 strongly agree) about
+their experience in terms of the sense of disruption, awareness,
+control, etc. (Fig.6). After completing all three tasks, participants
+underwent a semi-structured interview for the remainder of the
+study. Each session was screen- and audio-recorded and lasted
+around 90 minutes.
+5.5
+Data Analysis
+We conduct in-depth qualitative and quantitative analysis on the col-
+lected data. Qualitatively, the semi-structured interview responses
+were individually coded by three researchers. Subsequently, the-
+matic analysis [30, 84] was employed by one researcher to distill
+participants’ key feedback on the dynamics of human-AI collabora-
+tion across different programming processes.
+Additionally, we conducted quantitative analysis on task-level
+and interaction-level statistics. We recorded the task duration and
+the number of test cases completed for all (3 X 18 = 54) task in-
+stances. We further logged and analyzed each human-AI interaction
+episode during the user study sessions. An episode starts when ei-
+ther the user or the AI sends a message, and ends when the user
+moves on from the interaction (e.g. starts writing code after read-
+ing AI comments, or writes a response message to initiate a new
+interaction). The interaction data was then labeled with the times-
+tamp, the duration, the expression time (e.g. the time lapsed to
+write a direct message to the AI agent), the interpretation time
+(e.g. the time lapsed for the user to read the AI agent’s response or
+code edit), the current programming process (e.g., design, imple-
+ment, or debug), and a description of the workflow between the
+human and the AI agent. This process resulted in 1004 human-AI
+interaction episodes for our analysis. Aggregating these interac-
+tion episodes, we recorded the number of disruptions, defined as
+instances when, during a system-initiated intervention, the user
+switched their context to process AI’s actions but found them un-
+helpful and interruptive, resulting in the dismissal or reversion of
+the AI actions. We further analyze the utility and the effectiveness
+of each design heuristic for the timing of AI assistance.
+6
+Results
+Among 54 task instances, participants successfully completed the
+programming task in 50 instances, passing all test cases. In 4 in-
+stances, the task was halted as participants did not pass all test
+cases within 30 minutes. The mean task completion time was 16
+minutes 46 seconds, with no significant differences across system
+conditions, task orders, or tasks. To understand the effects of proac-
+tivity on human-AI programming collaboration (RQ2), we first
+report participants’ user experience comparison between prompt-
+based AI tools (e.g. ChatGPT), their perceived effort of use, and the

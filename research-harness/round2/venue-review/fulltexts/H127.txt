@@ -1,0 +1,1221 @@
+                                         Evaluating the Impact of Explainable AI on Trust in
+                                         AI-Assisted Code Review
+                                         ZHENHAN GAO, Technical University of Munich, Germany
+                                         MARVIN MUÑOZ BARÓN, Technical University of Munich, Germany
+                                         UMM-E HABIBA, Technical University of Munich, Germany
+                                         DANIEL GRAZIOTIN, University of Hohenheim, Germany
+                                         STEFAN WAGNER, Technical University of Munich, Germany
+                                         Background: The use of large language models (LLMs) for automated code review has brought significant
+                                         change to a time-consuming part of software engineering. Prior work has shown that LLM-based code tools
+                                         can improve code quality and enable more robust software development processes. As the tools get more
+                                         powerful, the explanations behind their decisions remain hard to understand. Developers struggle to assess the
+                                         validity of LLM-generated code reviews, making it difficult to gauge how much trust they should place in them.
+                                         While the application of automated code review with LLMs has been extensively investigated, the inclusion of
+                                         Explainable AI (XAI) for transparency in code reviews and its impact on trust are yet to be explored.
+arXiv:2607.24601v1 [cs.SE] 27 Jul 2026
+
+
+
+
+                                         Objective: We aim to address this research gap by studying the influence of XAI on the trust of software
+                                         developers in AI-assisted code reviews.
+                                         Method: We conducted a within-subjects user study with 34 participants from diverse programming back-
+                                         grounds, comparing three experimental LLM-based automated code review systems with varying levels of
+                                         XAI support: Condition A (detailed explanation and review feedback), Condition B (review feedback only),
+                                         and Condition C (no explanations). Participants were shown a series of real-world code change requests along
+                                         with the AI-generated code reviews. During the study, we measured trust perceptions for each system using
+                                         a questionnaire, agreement with the AI recommendation, the reasoning for accepting or rejecting the code
+                                         change, and the time taken to review the code change.
+                                         Results: Our quantitative results show that the level of explanation significantly influences both the level
+                                         of trust of software developers and their agreement with AI recommendations, but in different ways. Full
+                                         explanations (Condition A) yield the highest perceived trust (M = 3.99/5) but not the highest agreement with
+                                         AI recommendations, whereas moderate explanations (Condition B) achieve the highest agreement with AI
+                                         (89.22%). This could suggest that more explanations prompt developers to question AI recommendations
+                                         more frequently. In contrast, providing no explanations (Condition C) results in the lowest levels of trust and
+                                         agreement. We also find that the level of explanation did not significantly impact the time taken to accept or
+                                         reject a code change. Across all conditions, the most commonly cited reasons for code change decisions were
+                                         changes in code readability and the correctness of the implementation.
+                                         Conclusion: Overall, these findings indicate that incorporating XAI into the code review process significantly
+                                         changes the trust perceptions and agreement with AI recommendations for software developers. These results
+                                         provide insights for the design and evaluation of trustworthy AI-based code review systems, and support
+                                         researchers in the design of studies on the human factors of AI-assisted software development.
+
+
+                                         Authors’ Contact Information: Zhenhan Gao, zhenhan.gao@tum.de, Technical University of Munich, Heilbronn, Germany;
+                                         Marvin Muñoz Barón, marvin.munoz-baron@tum.de, Technical University of Munich, Heilbronn, Germany; Umm-e Habiba,
+                                         umme.habiba@tum.de, Technical University of Munich, Heilbronn, Germany; Daniel Graziotin, University of Hohenheim,
+                                         Hohenheim, Germany, graziotin@uni-hohenheim.de; Stefan Wagner, stefan.wagner@tum.de, Technical University of
+                                         Munich, Heilbronn, Germany.
+
+
+
+
+                                         This work is licensed under a Creative Commons Attribution 4.0 International License.
+                                         © 2026 Copyright held by the owner/author(s).
+                                         ACM 2994-970X/2026/10-ARTISSTA093
+                                         https://doi.org/10.1145/3832184
+
+
+                                                                     Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:2                   Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+CCS Concepts: • Software and its engineering → Collaboration in software development; • Human-
+centered computing → Empirical studies in HCI; • Computing methodologies → Artificial intelligence.
+Additional Key Words and Phrases: explainable artificial intelligence, code review, developer trust, large
+language models, user study
+ACM Reference Format:
+Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner. 2026. Evaluating the
+Impact of Explainable AI on Trust in AI-Assisted Code Review. Proc. ACM Softw. Eng. 3, ISSTA, Article ISSTA093
+(October 2026), 23 pages. https://doi.org/10.1145/3832184
+
+1   Introduction
+Code reviews are a well-established standard in modern software engineering (SE). The most recent
+evolution of this process has been the augmentation of traditional reviews performed by humans
+with large language model (LLM) generated feedback [3, 28]. Developers use LLMs to review their
+code, identify bugs, and refactor code to improve its quality. In some cases, these AI (artificial
+intelligence) assistants are directly integrated into continuous integration and deployment (CI/CD)
+pipelines, where code changes are automatically reviewed before being integrated into the main
+code base [36]. Adding LLMs to the review pipeline may have positive impacts on the reviewing
+experience of developers, and AI-led code reviews may even be preferred to human-led ones [3].
+Automated code review has also been shown to improve software code quality [7].
+   While AI shows much promise for the code review process, it is not without its shortcomings. The
+tendency of LLMs to hallucinate additional content leads to faulty reviews, unnecessary corrections,
+and irrelevant comments [7]. A longstanding issue with AI based on machine learning is the lack
+of transparency into its decision-making [16]. As the adoption of AI becomes more ubiquitous, the
+lack of transparency becomes even more pronounced. Moreover, without an explanation, software
+engineers struggle to gauge the trustworthiness of an AI system or its output. In an ideal interaction
+between a human and an AI system, a user has warranted or calibrated trust [4, 18] in the system.
+They can clearly understand the AI system’s capabilities, shortcomings, and decision-making
+process. One approach to foster calibrated trust is Explainable AI (XAI). XAI aims to design systems
+that can “explain their rationale to a human user, characterize their strengths and weaknesses, and
+convey an understanding of how they will behave in the future” [14]. The concept of trust is at the
+forefront of technology adoption, acting as a mediating factor in the proliferation of new tools [41].
+The most prevalent reason individuals seek assistance from humans rather than AI is a lack of trust
+in the AI’s responses [34]. Calls for a stronger focus on investigating trust-related factors in AI
+adoption are common [21, 41]. Despite these frequent calls, trust is often overlooked in research on
+LLMs for SE, with a focus on improving model performance rather than increasing transparency [4].
+Addressing the trust gap in software engineering research, we explore XAI methods to promote
+calibrated trust in interactions with AI-supported software tools.
+   In this work, we aim to investigate the impact of XAI on AI-generated code reviews and how it
+relates to the acceptance behavior and trust perceptions by software engineers. Specifically, we
+conducted a user study to compare acceptance of code changes and software engineers’ trust ratings
+for AI-generated code reviews across varying levels of explanation. We compared three systems,
+resulting in three experimental conditions: Condition A, which provided an AI recommendation
+with full explanations; Condition B, which provided an AI recommendation with some explanations;
+and Condition C, which provided an AI recommendation with no explanations. This allowed us
+to see the difference between a system with XAI and one without XAI, and to inform the design
+process for future XAI-based systems regarding the length and depth of XAI explanations. Each
+participant was shown a series of code changes of varying complexity, along with the corresponding
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                 ISSTA093:3
+
+
+reviews generated by the three systems. They then indicated whether they would accept or reject
+the code change, their reasoning for doing so, and rated their level of trust in each system. Our
+research methodology was guided by the following research questions.
+
+   RQ1: How does the use of XAI methods influence the trust of software engineers in
+AI-assisted code reviews? AI-generated suggestions may appear reasonable while still being
+incorrect, and the increasing complexity of modern models makes their behavior difficult to
+interpret, complicating developers’ trust in AI-assisted tools. XAI methods may shed light on
+the reasoning behind AI suggestions and influence how developers form trust. RQ1, therefore,
+investigates how the presence of XAI influences software engineers’ trust in AI-assisted code
+reviews. To address this question, we analyze participants’ trust questionnaire responses collected
+under each experimental condition in the user study. Each condition corresponds to a set of
+experimental samples displayed with Condition A, B, or C. We formulate the following hypotheses
+for the analysis of RQ1:
+    • Null Hypothesis (𝐻 0 ): There is no difference in the mean trust scores of participants among
+      the three conditions.
+    • Alternative Hypothesis (𝐻 1 ): There is a significant difference in the mean trust scores of
+      participants among the three conditions.
+
+   RQ2: How does the level of explanation affect developers’ agreement with AI recommen-
+dations? While XAI may affect how developers perceive and trust AI-assisted tools, different
+levels of explanation may also shape their decision-making. Specifically, richer explanations can
+increase the persuasive power of AI recommendations, but they may also prompt deeper scrutiny
+and alternative interpretations, potentially leading to disagreement. Therefore, RQ2 focuses on
+how varying levels of explanation influence developers’ willingness to align with AI suggestions
+during code review. To address this question, we compare participants’ agreement with the AI’s
+recommendations across different conditions.
+   We formulate the following hypotheses for the analysis:
+    • Null Hypothesis (𝐻 0 ): There is no difference in agreement scores of participants among the
+      three conditions.
+    • Alternative Hypothesis (𝐻 1 ): There is a significant difference in agreement scores of partici-
+      pants among the three conditions.
+
+   RQ3: What is the impact of XAI on the time taken to complete the review tasks? RQ3
+examines whether different XAI formats influence how long developers need to complete AI-assisted
+code review tasks. By changing how much context and justification are provided, explanations may
+either streamline decision making or add extra cognitive effort that slows participants down.
+   We formulate the following hypotheses for the analysis:
+    • Null Hypothesis (𝐻 0 ): There is no difference in completion time of participants among the
+      three conditions.
+    • Alternative Hypothesis (𝐻 1 ): There is a significant difference in completion time of partici-
+      pants among the three conditions.
+
+  RQ4: What reasons do software engineers provide for accepting or rejecting AI code review?
+While RQ1, RQ2, and RQ3 indicate whether explanation formats affect trust and task outcomes, they
+do not reveal the underlying rationale behind participants’ decisions. We therefore also analyze the
+reasons participants provided for their acceptance or rejection decisions for the code changes. As
+RQ4 is exploratory, we do not formulate an explicit hypothesis.
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:4                   Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+   Results. The results indicate that the level of explanation for AI-generated code reviews signifi-
+cantly influences the trust perceptions of developers. Systems with more extensive explanations
+appear more trustworthy to developers. However, we did not find the same linear relationship
+regarding the acceptance of AI recommendations; more extensive explanations did not always
+lead to greater acceptance. In general, participants followed the AI recommendations most often
+when presented with a system with only some explanations (B) rather than full explanations (A).
+We found differences in the time taken to come to a decision on a code change, with the system
+with full explanations (A) requiring the most time to review. However, the time differences were
+not statistically significant. Finally, the results of the qualitative coding of participant responses
+show that the most common reason provided for all three systems was changes to code readabil-
+ity and the correctness of the results. The system with no explanations (C) was the only one in
+which participants never explicitly stated agreement with the AI, although they often followed its
+recommendations.
+
+   Paper Structure. The paper is structured as follows: Section 2 gives a brief overview of related
+studies and literature. Section 3 outlines the step-by-step methodology used to answer the research
+questions. In Section 4, we present the results of our research and discuss them in the context of the
+wider research area and their implications for research and industry. Section 5 provides a summary
+of the presented work, gives a short outlook for future work, and presents a final conclusion.
+
+2     Background
+2.1    AI for Code Review
+Since the introduction of the Transformer architecture [39], generative AI (GenAI) has achieved
+a strong performance in natural language and software development tasks [9], including code
+generation, testing, and repair. Recent models have been further specialized to support a wider
+range of code-related tasks. As AI-assisted code generation tools become increasingly integrated
+into software development workflows, the task of reviewing code is expected to play an even
+more important role for developers. Code review is a collaborative process in which developers
+evaluate code changes prior to integration to ensure quality, correctness, and maintainability. It
+typically involves one or more reviewers who examine the changes and provide feedback to improve
+the code’s reliability and overall quality. However, code review is time-consuming. According to
+Bosu and Carver, developers spend an average of more than 6 hours per week conducting code
+reviews [5].
+   Since code review is time-consuming and labor-intensive, prior work has explored automating
+it using Deep Learning (DL) techniques. Shi et al. [33] proposed DACE, which combines CNNs,
+LSTMs, and a Pairwise Autoencoder to model contextual and revision features of code changes,
+achieving strong performance across six open-source projects. Hellendoorn et al. [15] investigated
+predicting whether code diffs require review comments, showing that even this fundamental task
+remains challenging. Li et al. [24] introduced DeepReview, an end-to-end DL model that formulates
+code review as a multi-instance learning problem and predicts approval decisions based on raw
+code changes and descriptions.
+   With the emergence of Large Language Models (LLMs), recent studies have examined their
+potential for code review automation. Several studies analyze and compare the performance of
+various LLMs in code-review related tasks [3, 8, 40]. Cihan et al. [8] further compared GPT-4o
+and Gemini 2.0 Flash, showing that GPT-4o achieves higher accuracy in both review decision
+correctness and bug-fixing tasks. Pornprasit and Tantithamthavorn [28] compared the techniques
+of fine-tuning and prompt engineering to optimize LLMs for code review tasks. They generally
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                 ISSTA093:5
+
+
+recommend fine-tuning for best performance when sufficient training data is available and few-
+shot learning in other cases. In addition, Watanabe et al. [40] analyzed 229 review comments
+from 205 pull requests and found that reviewers often use suggestions generated by ChatGPT
+as supporting evidence during code review. They also observed that the majority of users have
+a positive attitude towards ChatGPT, with only 30.7% of reactions to its answers being negative.
+Aðalsteinsson et al. [3] conducted an industrial case study comparing two different LLM-assisted
+code review tools. They found that AI-led pull requests are generally preferred over those initiated
+by humans, with reviewers’ familiarity with the codebase and the severity of the pull request
+influencing this preference. In their field study, Sun et al. [36] tested an LLM-based system for
+automated code reviews in a large-scale industrial environment. They report a successful tool
+introduction, citing high adoption rates among developers. The current state of research focuses
+on improving the accuracy and performance of machine learning models for code review and on
+evaluating automated code review systems in practice. However, there is a distinct lack of research
+on increasing the transparency of AI-generated reviews and on designing trustworthy AI systems
+for automated code review.
+
+2.2   Explainable AI
+Trust is at the core of the many discussions surrounding AI, with many studies stressing its
+importance in human-AI interactions [21, 41]. In general, we aim to achieve an interaction with
+calibrated trust [4, 18], in which a user neither mistrusts a system without good reason (undertrust)
+nor places too much trust in a system (overtrust). Defining at what point an interaction can be
+considered to have occurred with calibrated trust remains elusive, as measuring human trust is a
+difficult endeavor. The most common direct indicator of trust is the perceived trustworthiness of a
+system, which is often measured by administering a questionnaire after a user has interacted with
+it [16]. Several scales have been proposed to measure users’ perceived trust when interacting with
+automated systems, such as the XAI scale by Hoffman et al. [16] and the trust scale for automated
+systems by Jian et al. [19]. While trust is important for the adoption of any software tool, it is
+especially important for those based on machine learning, notably LLMs. Despite their strong
+emergent capabilities, LLMs remain susceptible to systematic errors, commonly referred to as
+hallucinations, which can severely undermine trust, transparency, and accountability in high-stakes
+applications [1].
+   As a counterbalance to the black box nature of modern AI-based systems, explainable AI (XAI)
+has emerged as a key enabler of transparent and trustworthy AI systems, particularly in safety-
+critical settings [2, 17, 30]. Early XAI research primarily relied on explanations as reasoning
+mechanisms in expert systems or as symbolic abstractions of neural networks; however, the
+growing complexity of modern deep learning systems has significantly intensified the demand
+for effective explanation techniques [1]. With the increasing deployment of AI systems in critical
+domains [6], these explainability considerations naturally extend to LLMs. Recent surveys categorize
+LLM explainability techniques according to transformer architectures (encoder-only, decoder-
+only, and encoder–decoder models), examine evaluation protocols for explanation quality, and
+analyze how explanations are utilized in downstream applications [26]. Complementing this
+architectural perspective, Wu et al. [42] argue that traditional XAI paradigms are insufficient
+for LLMs and propose a shift toward usable XAI, where explanations not only expose model
+behavior but also actively improve LLM performance, productivity, and human–AI interaction.
+Their framework highlights bidirectional opportunities: using XAI to better understand and refine
+LLMs, and leveraging LLMs themselves to enhance explainability techniques.
+   Beyond general-purpose language understanding, LLM explainability has also been explored in
+application-specific contexts. In recommender systems, for instance, Said [31] provides a focused
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:6                   Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+review of how LLMs are employed to generate natural-language explanations for recommendations.
+Despite the growing popularity of LLMs, the review finds that only a small number of studies
+explicitly address explainable recommendation generation with LLMs, suggesting that this research
+direction remains nascent. Nevertheless, these early efforts demonstrate the potential of LLMs to
+produce more transparent, user-centric explanations, reinforcing the broader role of explainability
+in fostering trust and accountability across LLM-driven systems. In the code review domain, the
+use of XAI is particularly sparse. Existing work has primarily addressed isolated subtasks, such
+as toxicity detection [32] or comment quality classification [43], rather than the full code review
+process. This limited adoption is likely due to the composite nature of code review, which involves
+multiple intertwined subtasks, including bug detection, quality assessment, reasoning about code
+changes, and decision-making. As a result, existing XAI techniques do not readily transfer to
+end-to-end, generative code review scenarios.
+   Overall, prior work suggests that while XAI techniques are well established for classification tasks,
+their application to GenAI, especially for code review, remains underexplored [35], highlighting a
+clear gap that our work aims to address.
+
+3     Methodology
+The primary objective of this study is to examine how XAI affects software engineers’ trust and
+performance for code review. We conducted a controlled user study in which participants com-
+pleted the same set of code review tasks under three experimental conditions: Condition A, where
+participants see detailed inline explanations, the review comments, and the AI recommendation
+regarding acceptance or rejection of the code change. The inline explanations are short, localized ra-
+tionales embedded directly into the diff, highlighting the specific code fragments that most strongly
+influence the AI’s decision (i.e., which parts of the code play a critical role). The review comment
+is presented separately from the code as a list of feedback suggestions. The second is Condition
+B, in which participants see the review comments together with the binary AI recommendation.
+Condition C is the third condition, where only the binary AI recommendation is shown. To support
+the study, we implement a web-based code review platform and curate nine predefined real-world
+pull requests (PRs) from a Python repository as experimental materials. Across conditions, we
+record the participants’ decisions and completion time, and we measure trust via a questionnaire
+administered immediately after each condition. Based on the results, we provide insights into how
+different explanation levels influence users’ trust, and overall performance in AI-assisted code
+review. Each step is briefly illustrated in Figure 1. In the remaining section, we describe each of these
+steps in detail, first introducing the automated code review system used in the study in Section 3.1,
+followed by the details of the user study itself in Section 3.2.
+
+3.1    XAI System for Code Reviews
+3.1.1 Architecture. The generation of the code reviews follows a two-phase XAI pipeline. In Phase 1,
+an LLM receives the proposed code change, including the added and removed lines, along with a
+natural-language prompt instructing it to review the changes, provide a recommendation to accept
+or reject the change, and list reasons for the recommendation. Phase 2 builds on the Phase 1
+output. The LLM is prompted to further explain the generated feedback and highlight the code
+sections that are relevant to the individual feedback suggestions. This output is then presented as
+inline explanations and code highlighting, linking the review feedback to specific elements of the
+code change, such as function names, comments, and logic structures.
+   The three user study conditions correspond to cumulative levels of this pipeline rather than
+independently designed feedback formats. Condition C exposes only the Phase 1 recommendation.
+Condition B exposes the complete Phase 1 feedback, including both the recommendation and its
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                               ISSTA093:7
+
+
+
+
+                                            Searching for suitable code                         Creating the interface
+                                                   review tasks                                    (e.g., website)
+
+
+
+
+                                             Scrape pull requests from                          Conducting a pilot user
+                                                 python repository                                      study
+
+                                 9 PRs with 3 difficulties
+
+
+
+                                                                                                 Conducting the main
+                                           Creating and testing prompts
+                                                                                                     user study
+
+
+                          Modifying
+                          prompts to
+                           get the
+                                          Testing models for code review
+                            proper
+                           outputs
+                                           final: GPT-4o
+
+
+
+
+                                             Generating model outputs
+
+
+
+
+                                                             AI decision/feedback/explanation
+
+
+
+
+                                       Fig. 1. Overview of the research workflow
+
+
+reasons, but does not include any Phase 2 output. Condition A includes the same Phase 1 feedback
+as Condition B and additionally exposes the Phase 2 output through inline explanations and
+highlighted code sections. Thus, Condition A is not simply a more detailed version of Condition B.
+Rather, it supplements the Phase 1 recommendation and reasons with a distinct Phase 2 explanation
+layer that grounds individual feedback suggestions in the relevant code sections.
+   Models. Both steps were performed with ChatGPT using the GPT-4o model. When designing the
+system, we considered alternative models for generating the code reviews for our user study. We
+examined CodeReviewer, a publicly available model on HuggingFace [25], but decided against using
+it due to its limited output quality and limited customizability for our use case. We also considered
+more traditional XAI methods, such as SHAP or LIME, but these methods are mainly applicable
+to smaller, accessible models and produce outputs that are difficult for developers to interpret
+in code-review tasks. Since LLM-generated explanations may be post-hoc rationalizations, we
+prompted the model to provide feedback before giving its final recommendation. This encourages
+consistency between the explanation and the decision, but does not guarantee faithfulness.
+   In our final system, both the code review and explanations are generated with ChatGPT using
+the GPT-4o model. This choice is motivated by prior studies by Tufano et al. and Cihan et al. [8,
+38] that showed that, on code-related tasks, ChatGPT performs slightly better than specialized
+code review models and Gemini. GPT-4o produces a well-structured review that matches our
+prompt requirements, including clearly organized feedback with descriptive headings and a final
+accept/reject decision. During generation, we set the temperature to zero to reduce the variance in
+the generated output.
+  Prompts. The full prompts used in both steps are reported in the replication package. The prompts
+were manually designed through an iterative process of altering the prompt and evaluating the
+output. We randomly sampled code changes from the TheAlgorithms/Python repository [37],
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:8                   Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+which subsequently served as experimental samples in our user study. The rationale for selecting
+this repository is described in Section 3.2. To validate the output, we verified the presence of
+the requested review elements, i.e., accept/reject recommendations, reasons, explanations, and
+highlighted code sections, and we manually gauged the accuracy of the contents of those elements.
+Once the selected prompts passed validation without fail for at least 9 code changes, we considered
+them sufficiently performant to use for the final XAI system. Figure 2 shows the outputs for a single
+code change for the initial prompt in phase 1 and the follow-up prompt in phase 2.
+
+
+
+
+                     Fig. 2. Outputs generated by the XAI system for a single pull request.
+
+
+3.2   Experimental Setup
+3.2.1 Experimental Samples. As the experimental samples for our study, we selected a set of pull
+requests (PRs) from real-world projects. When selecting the PRs, we defined the following six
+criteria to ensure suitability for our user study:
+   (1) The code must be written in a widely used programming language.
+   (2) The changes must be non-trivial (e.g., not limited to documentation or formatting).
+   (3) Each PR must contain a clear code diff, showing which lines were added or removed.
+   (4) The final decision on the PR, whether it is accepted or rejected, must be available.
+   (5) The PR should be understandable based solely on its own context and basic programming
+       knowledge.
+   (6) The overall size of the PR should be manageable, allowing participants to complete the review
+       within a reasonable timeframe during the experiment.
+   We found that existing representative datasets for code review tasks are mainly designed for
+model training and often contain highly complex code. This makes them unsuitable for our study, as
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                 ISSTA093:9
+
+
+our tasks require a controlled level of complexity for participants. So we opt to construct a custom
+dataset by manually selecting PRs from open-source projects on GitHub. After reviewing the top
+100 most-starred Python repositories [23], we chose the repository TheAlgorithms/Python [37].
+Approximately 99% of the code is written in the widely used language Python, which satisfies
+criterion 1. PRs were collected via a Python-based crawler using the GitHub REST API [13]. We
+select PRs with diverse, non-trivial change types to satisfy criterion 2. For each PR, we extract
+metadata and change statistics, and use the merge outcome (accepted/rejected) as ground truth,
+satisfying criterion 4. All tasks are based on the raw diff files retrieved from GitHub, which explicitly
+include the modified code and line-level changes, satisfying criterion 3. To ensure independence
+and readability, we focus on PRs that modify basic algorithmic implementations, typically within a
+single class and without dependencies on additional files. We further restrict PRs to fewer than 55
+changed lines to keep tasks manageable, satisfying the criteria 5 and 6. Task difficulty is determined
+using both change size (as a coarse proxy) and a qualitative assessment of semantic complexity
+(e.g., typos/renaming vs. algorithmic logic changes). The final set of pull requests is summarized in
+Table 1 and is available in the replication package.
+
+                      Table 1. Selected PRs categorized by difficulty and merge decision
+
+                      PR ID      File name                            Difficulty    Decision
+                      10899      equilibrium_index_in_array.py        easy          accept
+                      11366      and_gate.py                          easy          reject
+                       4485      average_mean.py                      easy          accept
+                       1017      find_lcm.py                          medium        reject
+                       7429      factors.py                           medium        accept
+                       1011      naive_string_search.py               medium        reject
+                        435      bubble_sort.py                       hard          accept
+                       1084      decimal_to_binary.py                 hard          reject
+                       1063      radix_sort.py                        hard          reject
+
+
+3.2.2 Experimental Conditions & Task Assignment. Each of the nine experimental samples was
+then fed into our three AI code review systems, with each system implementing one of the three
+experimental conditions, resulting in 27 unique final samples. Table 2 summarizes the specific AI
+components included in each condition. More details about the two phases design in our system
+can be found in Section 3.1.
+
+                  Table 2. Overview of Elements included in Each Experimental Condition
+
+                Condition     AI Recommendation         Review Feedback       Detailed Explanation
+                   A                  ✓                        ✓                       ✓
+                   B                  ✓                        ✓
+                   C                  ✓
+
+
+   The study was conducted in a within-subjects setup, with each participant seeing all three
+conditions in a random order. For each condition, the participants received three samples, one
+of each difficulty level. Both the assignment of tasks to conditions and the task order were also
+randomized. In total, each participant saw all nine pull requests. We note that a flaw in the shuffling
+procedure led to an imbalance in how the task sets were paired with conditions which we describe
+and discuss in Section 4.7.
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:10                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+   Across the nine pull requests, the first-phase review feedback used in Condition A and B contained
+5 to 10 feedback items (M = 7.7) and ranged from 254 to 407 words (M = 320), each item pairing
+a short descriptive heading with a one- to three-sentence justification. The issues raised cover
+documentation, variable naming, code formatting, edge cases and testing, error handling, efficiency,
+redundant code, type annotations, and correctness. The second-phase detailed explanations used
+only in Condition A are longer, ranging from 391 to 589 words (M = 473) and follow a fixed structure
+for each feedback item, stating the code evidence the item derives from, the reasoning that links
+that evidence to the feedback, and the impact of the item on the final accept/reject decision. Figure 2
+illustrates both outputs for a single pull request, and the complete set of pull requests, prompts,
+and raw generated reviews is available in the replication package [12].
+3.2.3 Instrument & Measures. The experimental samples were presented to participants via a web
+application that embeds explanations directly into syntax-highlighted code changes, providing a
+realistic code-review environment for the user study. Figure 3 shows the task interface, with the
+code changes on the left, review comments on the right, and the highlighted detailed explanations,
+representing Condition A. In Conditions A and B, the feedback items are listed as review comments
+in a panel beside the code, in the order the model produced them. Condition A additionally highlights
+the code fragments each explanation refers to directly in the diff, with participants revealing the
+corresponding detailed second-phase explanation by hovering over a highlighted fragment, which
+keeps the justification anchored to the lines it concerns. Condition C shows neither a comment
+panel nor any highlighting, leaving only the binary accept/reject recommendation below the diff.
+
+
+
+
+                                        Fig. 3. Code Review Task Interface
+
+   Upon being presented with a code change, participants are instructed to review it, decide whether
+to accept or reject it by clicking a button, and provide a reason for their decision in a text box. We
+collect both their responses and the time taken to provide them in the web application for each
+code change. After the participant has seen all three code changes for an experimental condition,
+they are presented with a questionnaire about their trust perceptions of the condition that they
+just interacted with. We measured trust using the TXAI scale introduced by Hoffman et al. [16],
+excluding the sole reverse-coded item, “I am wary of the AI.” Perrig et al.’s psychometric validation
+found that removing this item improved the CFA model fit (e.g., CFI from .983 to .995 and RMSEA
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                               ISSTA093:11
+
+
+from .056 to .036) and thus recommended this revised version of the scale [27]. The seven TXAI
+items included in our trust questionnaire are reported verbatim, together with their item-level
+results, in Table 4. Additionally, we gathered demographic information, including age, education
+level, and job role, as well as two factors relevant to task performance: experience with AI tools
+and Python proficiency.
+3.2.4 Pilot User Study. Before launching the main study, we conducted a pilot study with five
+participants to assess interface usability, task duration, and task difficulty. The pilot included two
+XAI conditions (Condition A and Condition B) and revealed a large variability in completion
+times (M = 21 min 46 s, Md = 13 min 17 s, min = 4 min 33 s, max = 50 min 41 s). Some participants
+completed tasks very quickly, suggesting shallow review behavior. To address this, we added a
+mandatory reasoning field requiring participants to briefly justify their decisions. Based on the
+pilot, we also introduced a third condition (Condition C) that provides only the AI recommendation,
+without any explanations, to serve as a control condition.
+3.2.5 User Study. For our main user study, we determined the required sample size using a power
+analysis conducted with G*Power 3.1 [10, 11]. Following recommendations for within-subject
+repeated-measures ANOVA [22], we assume a medium effect size (f = 0.25), power = 0.8, and
+a nonsphericity correction of 𝜖 = 0.75. With three conditions per participant and an assumed
+correlation of 0.5 between repeated measures, the analysis indicates a required sample size of 34
+participants. Based on this result, we recruited participants via Prolific [29] in May 2025, offering a
+compensation rate of $7 per hour.
+   We apply three prescreen criteria during participant recruitment via the Prolific platform: (1)
+fluency in English, (2) experience with computer programming, and (3) familiarity with the Python
+programming language. These filters ensure a suitable participant pool for the study. In total, N =
+34 participants completed the user study as expected, and their data were successfully collected. We
+recruited exactly the 34 participants indicated by the a priori power analysis described above; no
+participants were excluded or filtered out, and all 34 are included in every analysis reported in this
+paper. The average age of participants is 31 years (Md = 29.5 years, SD = 10.76 years, min = 21 years,
+max = 67 years). The average completion time is approximately 37.9 min (Md = 35 min 32 s, SD =
+20 min 14 s, min = 4 min 10 s, max = 119 min 50 s). On average, participants report an AI experience
+level of 4.18 (min = 2, max = 5) and a Python programming proficiency of 3.18 (min = 1, max = 5),
+both on a 5-point scale. In terms of education, 20 participants hold a Bachelor’s degree, 8 a Master’s
+degree, 3 a PhD, and 3 report a high school degree as their highest qualification. The reported job
+roles are diverse, including professional software engineers (8), full-stack (5), frontend (2), and
+backend (1) developers, with the remaining participants being students (8) and participants who
+selected “Other” (9). Because averages can obscure the spread of individual responses, we report the
+full set of per-participant characteristics in the replication package [12]. All demographic measures
+are self-reported through our study questionnaire.
+
+3.3   Analysis Procedures
+We present the procedures used to analyze the experimental data for each research question.
+   RQ1: How does the use of XAI methods influence the trust of software engineers in AI-
+assisted code reviews? For each participant and condition, we compute a personal trust score
+by averaging responses across the seven TXAI items. We summarize trust per condition using
+descriptive statistics. To test whether trust differs across the three conditions in our within-subject
+design, we apply a repeated-measures ANOVA. We also conduct post hoc two-tailed paired t-tests
+for the three pairwise comparisons (A-B, A-C, B-C) and apply the Bonferroni correction for multiple
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:12                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+comparisons. In addition, we perform an item-level analysis by computing per-item mean scores
+for each condition and running separate repeated-measures ANOVAs for each TXAI item (Q1–Q7).
+Finally, we report partial eta squared (𝜂𝑝2 ) as an effect size measure.
+   RQ2: How does the level of explanation affect developers’ agreement with AI recommen-
+dations? To assess AI agreement across conditions, we compare each participant’s accept or
+reject decision for each pull request (PR) with the corresponding AI recommendation. For each
+condition, each participant completes three tasks. We compute an agreement score per participant
+and condition as the proportion of the three decisions that match the AI recommendation. To test
+whether agreement differs across the three conditions in our within-subject design, we apply a
+repeated-measures ANOVA to participants’ per-condition accuracy scores. We also conduct post
+hoc two-tailed paired t-tests for the three pairwise comparisons (A–B, A–C, B–C) and apply the
+Bonferroni correction for multiple comparisons.
+   RQ3: What is the impact of XAI on the time taken to complete the review tasks? As a
+performance metric, we measured the task duration for each review task. For each task, we recorded
+the duration from the moment the task page is loaded until the participant proceeds to the next page.
+For each participant and condition, we compute the average task completion time across the three
+tasks. To test whether completion time differs across the three conditions in our within-subject
+design, we applied a repeated-measures ANOVA on participants’ average completion times for
+each condition.
+   RQ4: What reasons do software engineers provide for accepting or rejecting AI code review?
+Each task includes a mandatory reasoning field requiring participants to briefly justify their accept
+or reject decisions. We employed qualitative coding to analyze the participant responses. Each
+sample was assigned one or multiple codes, each representing a unique reason for accepting or
+rejecting a code change. The coding process was performed by three coders, including two PhD
+students and one master’s student. Coding was completed in four rounds. Initially, a random sample
+of 10% of responses was chosen for an explorative open-coding round to build an initial codebook.
+Following the open-coding round, an initial codebook was drafted after discussing the independent
+coding results. Using the initial codebook, another round of coding was performed, with a new
+random sample of 10% of responses. This second round of coding did not yield reliable results, with
+inter-rater agreement (Krippendorff’s alpha [20]) being below 0.6. The codebook was subsequently
+refined, and a third round of coding, again with a different random sample of 10% of responses, was
+performed. This refined codebook resulted in a more reliable outcome with an inter-rater agreement
+of approximately 0.75. We therefore decided to code the remaining 90% of samples, including the
+samples from rounds 1 and 2, using this refined codebook. All three reviewers were involved in
+all four coding rounds. The final hierarchical code book can be found in the replication package.
+We compute Krippendorff’s alpha [20] on the 306 multi-label reasoning responses coded by three
+coders. Overall agreement is acceptable (𝛼 = 0.7564, tentative), indicating reasonable reliability but
+below the commonly used robustness threshold (≥ 0.80). Overall, Krippendorff’s alpha indicates
+acceptable agreement, suggesting that the multi-label coding was sufficiently reliable to address
+the exploratory research question.
+
+4     Results & Discussion
+4.1    RQ1: How Does the Use of XAI Methods Influence the Trust of Software Engineers
+       in AI-assisted Code Reviews?
+We report participants’ trust scores across the three experimental conditions with different expla-
+nation formats, measured using the TXAI scale [27].
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                               ISSTA093:13
+
+
+   Descriptive statistics. Recall that Condition A provided Phase 1 feedback (recommendation and
+reasons) together with Phase 2 inline explanations and code highlighting; Condition B provided only
+the Phase 1 feedback; and Condition C provided only the acceptance or rejection recommendation.
+The mean trust score is highest for Condition A (M = 3.99, Md = 4.0, SD = 0.57, min = 3.0, max =
+5.0), followed by Condition B (M = 3.77, Md = 3.93, SD = 0.8, min = 1.29, max = 5.0), and lowest
+for Condition C (M = 3.41, Md = 3.43, SD = 0.81, min = 1.86, max = 5.0), indicating that the format
+of XAI influences participants’ trust in the AI-assisted code review process. Condition A shows
+the least variance between trust ratings among participants, with no significant outliers and a
+narrow range between quartiles. Condition B shows a slightly more dispersed score, with a few
+lower outliers, suggesting that while the majority of participants trust the system, a few expressed
+significant skepticism. Condition C shows the lowest median and widest spread, including very
+low scores, suggesting greater variability in trust and lower overall trust in the system when no or
+limited XAI is provided.
+   Statistical test. A repeated-measures ANOVA reveals a significant effect of the condition on trust,
+𝐹 (2, 66) = 8.2497, 𝑝 = 0.0006 < 0.05. We therefore reject 𝐻 0 and conclude that there is a significant
+difference in the mean trust scores of the participants across the three conditions.
+   Post-hoc comparisons. Post-hoc two-tailed paired t-tests show that trust is higher in A than
+C, 𝑡 (33) = 4.65, 𝑝 = 0.0001, and B is slightly higher than C, 𝑡 (33) = 2.06, 𝑝 = 0.0475, while A
+and B do not differ, 𝑡 (33) = 1.73, 𝑝 = 0.0936. After Bonferroni correction for three comparisons
+(𝛼 = 0.017), only A–C remains significant (𝑝 corrected = 0.00015), A–B (0.2808) and B–C (0.1426) are
+not significant (Table 3). Overall, full explanations (Condition A) elicit significantly higher trust
+than no explanations (Condition C).
+
+                Table 3. Post-hoc pairwise t-tests on trust scores with Bonferroni correction
+
+              Comparison        Raw 𝑝-value       Corrected 𝑝-value        Significant (Bonferroni)
+                 A vs B            0.0936                0.2808                        No
+                 A vs C            0.0001               0.00015                        Yes
+                 B vs C            0.0475                0.1426                        No
+
+
+   Item-Level Trust Analysis. Across all seven items, mean scores are consistently highest for Condi-
+tion A, followed by Condition B and then Condition C. Item-level tests indicate that Q1 shows the
+strongest effect of condition, 𝐹 (2, 66) = 10.85, 𝑝 = 0.0001, followed by significant differences for Q3,
+𝐹 (2, 66) = 6.80, 𝑝 = 0.0021, Q6, 𝐹 (2, 66) = 6.33, 𝑝 = 0.0031, and Q7, 𝐹 (2, 66) = 4.79, 𝑝 = 0.0115. In
+contrast, Q2, Q4, and Q5 do not show statistically significant differences across the three conditions
+(𝑝 > 0.05). The item texts and detailed results for all items are reported in Table 4.
+    Effect size. After completing the descriptive statistics and the main statistical test, we further
+compute and report partial eta squared (𝜂𝑝2 ) as an effect-size measure. The analysis showed a
+significant effect of Condition on trust, 𝐹 (2, 66) = 8.25, 𝑝 = 0.0006, with a moderate-to-large effect
+(𝜂𝑝2 = 0.2).
+  Discussion. Our findings suggest that the format of XAI affects users’ trust in the AI-assisted
+code review system. Specifically, the significantly higher trust scores under Condition A indicate
+that full explanations, which directly align justifications with specific code changes, are perceived
+as more transparent and reliable. This may be because such explanations are embedded within
+the code itself, enabling users to quickly grasp which specific parts of the code influence the AI’s
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:14                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+                      Table 4. Effect of condition on individual TXAI trust items (Q1–Q7)
+
+  Item Text                                                                                   F(2,66)     𝑝      Sig.
+      Q1   I am confident in the [system X]. I feel that it works well.                        10.85    0.0001   Yes
+      Q2   The outputs of the [system X] are very predictable.                                 1.46     0.2387   No
+      Q3   The [system X] is very reliable. I can count on it to be correct all the time.      6.80     0.0021   Yes
+      Q4   I feel safe that when I rely on the [system X] I will get the right answers.        2.66     0.0772   No
+      Q5   The [system X] is efficient in that it works very quickly.                          2.30     0.1082   No
+      Q6   The [system X] can perform the task better than a novice human user.                6.33     0.0031   Yes
+      Q7   I like using the [system X] for decision making.                                    4.79     0.0115   Yes
+
+
+decision. In contrast, Condition B, which provided only some explanations via review comments,
+was less precise in mapping reasoning to specific lines of code. Another possible reasoning is that,
+in real-world scenarios, developers often encounter lengthy or unfocused AI responses that fail to
+highlight the most relevant information. Inline explanations with highlighting, by contrast, present
+model reasoning in a concise and context-aware way, making it easier for users to interpret the AI’s
+rationale directly within the code and increasing the overall transparency of the AI recommendation.
+In contrast, the lower and more variable trust scores in Condition C highlight the uncertainty and
+skepticism users experience when no explanation is provided. Condition B, which offered some
+explanations, also showed higher trust scores than Condition C, which provided no explanations,
+but the difference was not significant. This suggests that the placement and contextual integration
+of explanations may be critical factors. The significant differences in Q1, Q3, Q6, and Q7 suggest
+that the conditions mainly changed how positively participants viewed the AI. Depending on the
+condition, participants differed in how confident they felt in the AI, how reliable they thought it
+was, whether they believed it could perform better than a novice human reviewer, and whether
+they would like to use it in decision making. Overall, the explanations seemed to influence whether
+participants saw the AI as a capable and useful review partner.
+   RQ1 Summary.
+    • Trust is highest with full explanations (Condition A) and lowest with no explanations (Con-
+      dition C).
+    • Repeated Measures ANOVA reveals a significant difference in the mean trust scores across
+      the three conditions (𝑝 = 0.0006).
+    • Post-hoc tests show that Condition A results in significantly higher trust than Condi-
+      tion C, while differences between A and B, and B and C, are not significant after correction.
+    • Item-level analysis shows that trust scores for Q1, Q3, Q6, and Q7 vary significantly across
+      conditions.
+
+4.2    RQ2: How Does the Level of Explanation Affect Developers’ Agreement with AI
+       Recommendations?
+   Descriptive statistics. Condition B achieves the highest AI agreement (89.22%, 91/102), followed
+by Condition A (77.45%, 79/102) and Condition C (66.67%, 68/102). The results show that most
+participants in Condition B (25/34) agreed with the AI across all three tasks, whereas in Condition A,
+agreement was split between partial and full agreement, and in Condition C, the fewest participants
+(7/34) agreed with the AI recommendation across all three tasks.
+  Statistical test. A repeated-measures ANOVA reveals a significant main effect of condition on AI
+agreement, 𝐹 (2, 66) = 9.1042, 𝑝 = 0.0003 < 0.05.
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                               ISSTA093:15
+
+
+   Post-hoc comparisons. Post-hoc two-tailed paired t-tests (Table 5) show a significant difference
+between Condition B and Condition C, 𝑡 (33) = 4.49, 𝑝 = 0.00008, while the differences between
+Condition A and Condition B (𝑡 (33) = −2.43, 𝑝 = 0.0209) and between Condition A and Condition
+C (𝑡 (33) = 1.82, 𝑝 = 0.0778) are not statistically significant. After Bonferroni correction for three
+comparisons (𝛼 = 0.017), only B–C remains significant (𝑝 corrected = 0.00024 < 0.017), indicating
+that participants agree with the AI significantly more often in Condition B than in Condition
+C. The other comparisons do not meet the corrected threshold (𝑝 corrected = 0.0628 for A–B and
+𝑝 corrected = 0.2334 for A–C).
+
+               Table 5. Post-hoc pairwise t-tests on AI agreement with Bonferroni correction
+
+                               Comparison      Raw 𝑝     Corrected 𝑝      Significant?
+                                 A vs B        0.0209       0.0628            No
+                                 A vs C        0.0778       0.2334            No
+                                 B vs C        0.0001       0.0002            Yes
+
+
+   Discussion. These results indicate that the format and content of explanation can shape develop-
+ers’ willingness to agree with AI recommendations. In particular, the more minimal feedback in
+Condition B is associated with the highest AI agreement. One possible explanation is the review
+feedback provides just enough justification to make the recommendation seem reasonable, without
+directing attention to specific code fragments. In contrast, Condition A combines review feedback
+and detailed explanation, yet participants may focus on the more salient inline content and pay
+less attention to the review comments. It is important to note that greater agreement with AI
+recommendations is not necessarily a metric to optimize. For example, adding more explanations to
+the AI recommendation may allow the user to form an opinion with more calibrated trust, leading
+to a more informed decision. Users may overtrust Condition B, accepting its recommendations
+without sufficient validation. Condition C provides only the AI recommendation, resulting in the
+lowest agreement overall. Participants likely mistrust the system because it lacks a rationale and
+forces them to rely solely on their own judgment. Notably, the AI recommendation always matches
+the original outcome of the pull request in the original project. This means that lower agreement
+with AI recommendations also corresponds to lower accuracy in replicating the real-world outcome.
+However, because we did not include recommendations where the AI recommendation didn’t
+match the real-world outcome, we are unable to draw any conclusions about the match between
+AI recommendations and real-world outcomes. Deliberately introducing flawed recommendations
+to study whether the explanations help developers detect them is a natural extension of this work,
+which we outline as future work in Section 5.
+   The two trust signals we captured do not point in the same direction. Self-reported trust (TXAI,
+RQ1) was the highest for Condition A (full explanations), whereas agreement behavior (accept/reject,
+RQ2) was the highest for Condition B (review feedback only). We interpret this divergence as
+evidence of a gap between perceived and behavioral trust. The explanation format that partici-
+pants reported trusting the most (perception) was not the one that most influenced their actions
+(behavior). This distinction is easy to overlook when trust is reported through a single lens, and
+we discuss its design implications in Section 4.5. One possible explanation of this divergence is
+that more detailed explanations invite additional scrutiny by software engineers. Condition A
+exposed more of the model’s reasoning, giving participants more grounds on which to object
+to the recommendation. This is consistent with the pattern we observed in our qualitative data
+(Section 4.4), where participants most commonly articulate disagreement with or uncertainty about
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:16                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+the AI’s rationale in Condition A. Condition B may, in contrast, contain just enough justification to
+make the AI recommendation seem reasonable, without providing enough specific information for
+reviewers to contest it. We offer this as an interpretation consistent with our qualitative design
+rather than a causal claim tested by our design. Overall, the findings suggest a potential trade-off
+between trust and AI agreement that depends on the format and content of XAI support.
+
+   RQ2 Summary.
+      • AI agreement is highest in Condition B (89.22%), moderate in Condition A (77.45%), and lowest
+        in Condition C (66.67%), indicating that the format of explanation influences participants’
+        alignment with AI recommendations.
+      • Repeated Measures ANOVA reveals a significant difference in the AI agreement across the
+        three conditions.
+      • Post-hoc tests confirm that the AI agreement difference between Condition B and C is
+        significant.
+      • Findings suggest that a more detailed explanation does not necessarily yield higher agreement,
+        and concise feedback may support alignment better than an additional detailed explanation.
+
+4.3    RQ3: What Is the Impact of XAI on the Time Taken to Complete the Review Tasks?
+  Descriptive statistics. Condition A has an average time per task of 166.42 s (Md = 130 s, SD = 153 s,
+min = 12 s, max = 1157 s), Condition B 147.75 s (Md = 124 s, SD = 99 s, min = 13 s, max = 419 s),
+and Condition C 164.18 s (Md = 132 s, SD = 147 s, min = 11 s, max = 1143 s). Overall, participants
+complete tasks slightly faster in Condition B than in Conditions A and C.
+
+  Statistical test. A repeated-measures ANOVA indicates no significant difference in average
+completion time across conditions, 𝐹 (2, 66) = 0.5704, 𝑝 = 0.5681 > 0.05.
+
+   Discussion. The analysis of task completion time across conditions reveals a trade-off between
+trust and efficiency. Participants in Condition B spend the least amount of time on tasks, even
+though it does not yield the highest trust ratings. In contrast, Condition A, which results in the
+highest trust scores, also requires the most time to complete. The ANOVA test does not show
+a statistically significant difference in task duration across conditions. Furthermore, potential
+confounding factors for this metric include the length of the output and participants’ reading speed,
+as more explanations would require more reading. For example, without XAI support, participants
+only see an accept/reject recommendation, whereas with XAI, they must read additional feedback or
+justifications before making a decision. So while we did observe a nonsignificant difference between
+the conditions, we cannot come to a conclusion as to why this difference may have occurred.
+
+   RQ3 Summary.
+      • Participants spend the least time per task in Condition B (147.75 s), compared to Condition A
+        (166.42 s) and Condition C (164.18 s).
+      • ANOVA results indicate no significant effect of condition on time (𝑝 = 0.5681).
+      • The format of XAI support does not significantly impact task duration.
+
+4.4    RQ4: What Reasons Do Software Engineers Provide for Accepting or Rejecting AI
+       Code Review?
+We present our analysis based on the results of our qualitative coding process, as described in Sec-
+tion 3.3. In total, we coded 306 individual participant responses about why they accepted or
+rejected a code change. Using a hierarchical codebook with paired positive and inverse codes, the
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                                                                                      ISSTA093:17
+
+
+three coders achieved acceptable inter-rater agreement on all reasoning responses (Krippendorff’s
+𝛼 = 0.7564).
+   For the frequency distribution across all samples, we aggregated lower-level codes into higher-
+level groups. Participants’ reasons are largely related to maintainability, accounting for 55.37%
+of all coded reasons in this category. The most frequent subcategory is readability, cited both for
+accepting and rejecting changes, totaling 13.36% of all reasons. One Condition B response illustrates
+acceptance on these grounds: “The code is easily readable and the changes are solid, making the code
+more efficient.” Conversely, participants rejected changes perceived as harming readability, as in:
+“The code’s naming is very inconsistent therefore affecting readability and overall output of the code.”
+AI-related reasons made up 3.42% of responses; participants sometimes deferred explicitly to the
+AI’s explanation, as in: “The updated code looks more efficient, and I’d follow the argumentation and
+recommendation of the AI.” Figure 4 shows the frequency distribution of codes by accept/reject
+decision and condition. Readability is the most salient dimension in both directions: acceptance-
+driven readability gains ("2.4 Improved Code Readability," 23.94% overall) cluster most heavily in
+Condition A, while rejection-driven readability losses ("I2.4 Reduced Readability," 20.61% overall)
+cluster most heavily in Condition B. Notably, "6.1 Agree with AI" never appeared in Condition C,
+in either direction.
+
+                                                           Accept decisions                                                                  Reject decisions
+                                 23.9
+ % of all coded reasons
+
+
+
+
+                                                                                               Condition          21.8
+                                                                                                                         20.6
+                          20                                                                        A
+                                                                                                    B
+                                        12.7                                                        C                           13.3
+                                               11.3 10.6
+                                                           9.5
+                          10                                     7.4
+                                                                                                                                       8.5
+                                                                                                                                             7.3
+                                                                       5.6                                                                         6.1   6.1
+                                                                             4.9   4.6                                                                         4.2
+                                                                                         3.9                                                                         3.6   3.3    3.0
+                                                                                               2.8   2.8                                                                                2.1
+                           0
+                                   lit
+                                       y      y   s     n   s     g   n    rs ure lity u       it.   AI              ss ity  re    cy  ss on   rs on     ss      es   ity        AI
+                                bi          nc nes atio nes stin aso he             bi
+                                                                                              /                    ne bil ctu ien tne tati the eas ene ctic w/ ess
+                                         ie     t         t             t      ct         s w
+                                                                                                                 ct
+                              da ffic bus en rec
+                                                    t       Te     re  O tru ina nal es                                a   u   c     s      O    r   et pra ees ec
+                             a                        r          o        S      ta tio gre                   rre ead Str Effi bu       en     o   l
+                          Re      E
+                                         Ro cum Co             N                                                                 Ro cum       N mp st          r    N
+                                                                               n
+                                                                             ai un  c   A                  Co      R                                        Ag
+                                             Do                            M      F                                                Do           Co Be
+
+
+
+                                           Fig. 4. Frequency of codes assigned to responses, across the three conditions.
+
+
+
+   Discussion. When describing their reasoning, participants typically mention a bundle of improve-
+ments or regressions, as in this response from Condition A: “The changes significantly improve the
+code’s robustness by adding error handling for empty lists and enhance readability and maintainability
+through clearer naming, type hints, and integrated doctest examples.” Correctness is the second-most
+dominant factor and the reason most often cited for overriding the AI, with participants pointing
+out specific faults that contradict the AI’s recommendation.
+   Explicitly AI-related reasons are rare overall, but their distribution is informative. All coded
+references to the AI recommendation occur in the two conditions with explanations: 11 in Condition
+A, 9 in Condition B, and none in Condition C. When participants mention the AI, they frequently
+do so with reservations, as in “I am not entirely sure here, but kind of trust the AI in the end, in this
+situation, based mainly on a gut feeling. Although, I’d like to run the code and test it.” (Condition
+A). Every response coded as expressing disagreement or uncertainty with the AI’s rationale came
+from Condition A, the condition with the most detailed explanations. For example, one participant
+accepted a change the AI recommended rejecting: “I’m not sure, if I understand this one entirely. The
+argumentation seems plausible to me, but the final decision contradicts it. I’d stand by the proposed
+changes here.” Here, the explanation gave the participant enough of the model’s reasoning to notice
+
+                                                             Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:18                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+a discrepancy between the rationale and the recommendation, and they decided to act against the
+latter. A reverse of this pattern can be observed with Condition C, where responses were most often
+coded as giving no specific reason at all: 13 in Condition C, 9 in Condition B, and 8 in Condition A.
+   Together, these results suggest that readability and correctness drive the accept/reject decision
+itself, while the presence and depth of explanations shape whether participants engage with the
+AI’s reasoning at all.
+   RQ4 Summary.
+    • Readability is the most common reason, with Condition A leaning toward accepting for better
+      readability, Condition B rejecting for worse readability/efficiency, and Condition C rejecting
+      for incorrect implementation.
+    • AI-related reasons account for only 3.42% of all coded reasons.
+    • Agreement or disagreement with AI decisions was not mentioned for Condition C, where no
+      explanations were shown.
+
+4.5    Implications for Practice
+Based on our findings, we identify the following implications for software engineering practice:
+   • Include explanations to foster trust. AI-based code review tools should provide explana-
+     tions alongside recommendations. Condition C (no explanations) consistently showed the
+     lowest trust scores, and participants never explicitly mentioned its recommendations as part
+     of their reasoning, suggesting they may distrust or ignore unexplained recommendations.
+   • Connect explanations directly within the code. The inline explanations included in
+     Condition A, which highlight specific code fragments, resulted in higher trust scores than auto-
+     generated review comments alone. Designers of software tools should consider embedding
+     explanations directly in the code diff rather than showing them separately from the text.
+   • Be aware of the tradeoff between trust and agreement. Increased trust does not straight-
+     forwardly translate into greater agreement: more detailed explanations raised trust, but also
+     encouraged participants to scrutinize and ultimately override AI recommendations more
+     often, challenging the assumption that more explanation uniformly yields both. Rather than
+     indicating a negative outcome, such disagreement may reflect more calibrated trust and more
+     informed decision-making. Designers should explicitly consider whether to optimize for user
+     agreement or critical engagement.
+   • Tailor the depth of explanations to the use case. If the goal is rapid decision-making
+     with high AI alignment, concise review feedback (Condition B) may suffice. If the goal is to
+     support more deliberate, well-reasoned decisions, then richer explanations (Condition A) are
+     preferable.
+
+4.6    Implications for Research
+      • Report the level of explanation, not only performance. As noted in Section 2, work in
+        this area is still evaluated predominantly by output quality, such as recommendation accuracy,
+        while the transparency of those outputs remains underexplored [35]. Because the explanation
+        format alone shifted both trust and agreement, while recommendation quality/correctness
+        was held constant, performance-only evaluations omit a factor that measurably changes
+        developer behavior. We argue that the level of explanation belongs among the variables that
+        should be reported in studies evaluating AI recommendations.
+      • Toward a theory of explanation detail, trust, and agreement. We tentatively propose
+        that trust increases with the level of detail in an explanation, whereas agreement does not,
+        peaking instead at intermediate detail. We suggest scrutiny as the mechanism, since the
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                               ISSTA093:19
+
+
+       detail that makes a recommendation credible also exposes more reasoning for a developer to
+       contest (Section 4.4). As the differences between our two explained conditions did not reach
+       significance after correction, we frame this as a hypothesis for future testing rather than an
+       established relationship.
+
+4.7   Threats to Validity
+   External Validity: Although the code samples were drawn from a real-world repository, the study
+was conducted outside an actual project environment. Participants had no ownership of the code
+and faced no real consequences for accepting an incorrect recommendation. This may have affected
+both their trust ratings and accept/reject decisions, as developers may evaluate AI feedback more
+carefully when real project risks are involved. Therefore, our findings should be interpreted as
+evidence from a controlled study rather than as a direct representation of trust in professional
+practice. However, we expect this effect to influence all three treatments equally. The main objective
+of our study was to gain insights into the trust behavior of software developers when interacting
+with AI-assisted code reviews. Therefore, we did not focus on creating an optimal XAI system
+for code reviews, as the actual design process was limited to mostly altering prompts for existing
+LLMs. Interacting with a more sophisticated, purposefully designed XAI system may elicit different
+behaviors among software developers, thereby mitigating or amplifying the effects observed in this
+study.
+   We deliberately extracted all code change samples from a single repository (TheAlgorithms/Python)
+to minimize the influence of participants’ prior domain knowledge and to reduce cognitive load
+during the tasks. In addition, we examined only Python code and did not investigate whether the
+findings generalize to code written in other programming languages, which may differ in syntax,
+conventions, tooling, and typical development practices. This choice limits the generalizability
+of our findings. For instance, the application domain, such as banking software vs. e-commerce
+or internal tooling vs. consumer-facing software, may affect how AI explanations are generated
+and how developers perceive them. Our results should therefore be read as evidence from one
+project context, and we encourage replication across heterogeneous repositories and programming
+languages.
+   Internal Validity: During the analysis of the experimental data, we noticed an error in the
+algorithm used to assign task sets to treatments. Specifically, the task sets were shuffled by sorting
+them with a random comparator (Math.random() - 0.5). This shorthand implementation does not
+produce a uniform distribution over permutations, making some assignments more likely than
+others. A Fisher–Yates shuffle would have guaranteed equal probability across all permutations.
+This led to some sample treatment combinations occurring less often than expected. We cannot
+rule out the possibility that some of the observed between-condition differences reflect properties
+of the specific pull requests rather than the level of explanation alone. Nevertheless, the design’s
+core structure was preserved: each participant saw all three conditions, and within each condition,
+one easy, one medium, and one hard code change. The full task distribution is documented in
+the replication package [12], and we recommend that replications adopt a Fisher–Yates shuffle to
+ensure uniform assignment.
+   Construct Validity: When interpreting studies with proxy measures for mental constructs, one
+must always question whether the employed instruments accurately reflect the constructs. We em-
+ployed the trust questionnaire developed by Hoffman et al. [16] to measure participants’ perceived
+trust after using the systems during the experiment. Measuring trust levels this way is a common
+approach, but it captures only a specific aspect of trust at a single point in time. Hoffman et al.
+themselves recommend measuring trust at multiple points over a longer period of observation.
+
+                            Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:20                  Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+5   Conclusion
+In this work, we investigated the impact of explainable AI on the trust software engineers place in
+AI-assisted code reviews. Our goal was to address the lack of empirical evidence regarding XAI
+and code review, and to further analyze the relationship between XAI and human trust. To achieve
+these goals, we conducted an online experiment with 34 participants. Each participant was shown
+three conditions with varying levels of AI explanation and asked to accept or reject a code change.
+Our results show that higher levels of explanation increase the degree of trust software engineers
+place in AI-enabled code review tools. However, this trust did not correlate with their tendency to
+follow the AI’s recommendation to accept or reject a code change. Participants most often followed
+the AI recommendation for Condition B, which provided only moderate explanations. Condition A,
+which offered the most elaborate explanations and elicited the highest level of perceived trust, led to
+more rejections of the AI system’s recommendations, indicating a more complex relation between
+trust and agreement with AI decisions. We did not find any statistically significant differences
+between the systems regarding the time taken to accept or reject a code change. Code readability
+and correctness were the most commonly cited reasons for these decisions, and agreement with the
+AI recommendation was mentioned only in the conditions with explanations, never in Condition C.
+   Future work may expand upon this work and attempt to replicate its findings in a real-world
+case study. Case studies on AI-assisted code review have already been conducted [3, 7, 36], but do
+not include XAI or trust measurements in their methodology. We encourage future work to also
+shed light on and incorporate the effects that explainable AI could have in these cases. Another
+natural extension of this work would be to study how the level of explanation interacts with the
+accuracy of the AI recommendation. In the design of this study, we deliberately kept the quality
+of the recommendations constant by manually verifying their accuracy (see Section 3.1.1). This
+allowed us to isolate the effect of the explanation format on trust. Evaluating whether explanations
+help developers detect incorrect recommendations would require a different design, such as a 2×3
+factorial crossing explanation level (none, review feedback only, full explanations) with recommen-
+dation correctness (correct, flawed), together with a correspondingly larger sample to preserve
+statistical power. This direction could provide further insights towards mitigating overtrust in AI
+recommendations.
+   Our study captured trust in two ways: perceived trust via the self-reported TXAI scale and
+behavioral trust via participants’ decisions to accept or reject the AI recommendation. The measures
+were taken at a single point in time during an asynchronous online experiment. Trust as a concept,
+however, is multi-faceted and future work could incorporate additional behavioral and process
+measures that are harder to obtain in this setting, for example, using eye-tracking tools to gather
+gaze information on individual sections of explanations, running think-aloud studies to understand
+how developers critically interrogate feedback before deciding, or using long-term telemetry data
+on how developers interact with explanations over longer time periods. Such measures would allow
+a finer-grained calibration of the gap between perceived and behavioral trust observed in this study.
+   We compared participant subgroups by role, programming experience, and AI experience and
+found no consistent pattern indicating that particular explanation levels suit particular developer
+profiles. However, this is a null result in our sample, not evidence of no effect. Factors we did not
+control for, such as personality, domain familiarity, and project-level differences, may influence
+how explanations are perceived, and whether the level of explanation should be tailored to the
+developer or the project remains an open question worth dedicated study. Given the results of
+this work, we emphasize the need for XAI in future studies of AI-assisted code review. Making
+the reasoning behind AI suggestions transparent to software engineers serves both to verify their
+trustworthiness and to inform the design of new tools.
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                   ISSTA093:21
+
+
+6    Data Availability
+We share all data and scripts produced as part of the study in our replication package [12]. It
+includes the following artifacts:
+     • The code change samples used in the experiment, including the AI recommendations and
+       both levels of explanations.
+     • The instruments used to gather the experimental data, including the trust questionnaire
+       and other questions asked to the participants.
+     • The experimental data, including all provided responses by participants regarding demo-
+       graphics, accept/reject decisions, timing of responses, and trust ratings.
+     • The Python code used to analyze the data, run the statistical tests, and generate visualizations.
+     • The coding book used to code the responses, the individual codes assigned by each of the
+       three reviewers and the final agreed upon coding set for each individual participant response.
+     • The XML templates used to create the diagrams for the paper.
+    We omitted any personally identifiable information of the participants to protect their anonymity.
+
+References
+ [1] Shahin Atakishiyev, Housam KB Babiker, Jiayi Dai, Nawshad Farruque, Teruaki Hayashi, Nafisa Sadaf Hriti, Md Abed
+     Rahman, Iain Smith, Mi-Young Kim, Osmar R Zaïane, et al. 2025. Explainability of Large Language Models: Opportunities
+     and Challenges toward Generating Trustworthy Explanations. arXiv preprint arXiv:2510.17256 (2025). doi:10.48550/
+     arXiv.2510.17256
+ [2] Shahin Atakishiyev, Mohammad Salameh, Hengshuai Yao, and Randy Goebel. 2024. Explainable Artificial Intelligence
+     for Autonomous Driving: A Comprehensive Overview and Field Guide for Future Research Directions. IEEE Access 12
+     (01 2024), 101603–101625. doi:10.1109/ACCESS.2024.3431437
+ [3] Fannar Steinn Aðalsteinsson, Björn Borgar Magnússon, Mislav Milicevic, Adam Nirving Davidsson, and Chih-Hong
+     Cheng. 2025. Rethinking Code Review Workflows with LLM Assistance: An Empirical Study. In 2025 ACM/IEEE
+     International Symposium on Empirical Software Engineering and Measurement (ESEM). 488–497. doi:10.1109/ESEM64174.
+     2025.00013
+ [4] Sebastian Baltes, Timo Speith, Brenda Chiteri, Seyedmoein Mohsenimofidi, Shalini Chakraborty, and Daniel Buschek.
+     2026. On the Need to Rethink Trust in AI Assistants for Software Development: A Critical Review . IEEE Transactions
+     on Software Engineering 52, 04 (April 2026), 1265–1281. doi:10.1109/TSE.2026.3659804
+ [5] Amiangshu Bosu and Jeffrey C Carver. 2013. Impact of peer code review on peer impression formation: A survey.
+     In 2013 ACM/IEEE International Symposium on Empirical Software Engineering and Measurement. IEEE, 133–142.
+     doi:10.1109/ESEM.2013.23
+ [6] Yupeng Chang, Xu Wang, Jindong Wang, Yuan Wu, Linyi Yang, Kaijie Zhu, Hao Chen, Xiaoyuan Yi, Cunxiang Wang,
+     Yidong Wang, et al. 2024. A survey on evaluation of large language models. ACM transactions on intelligent systems
+     and technology 15, 3 (2024), 1–45. doi:10.1145/3641289
+ [7] Umut Cihan, Vahid Haratian, Arda İçöz, Mert Kaan Gül, Ömercan Devran, Emircan Furkan Bayendur, Baykal Mehmet
+     Uçar, and Eray Tüzün. 2025. Automated code review in practice. In 2025 IEEE/ACM 47th International Conference on
+     Software Engineering: Software Engineering in Practice (ICSE-SEIP). IEEE, 425–436. doi:10.1109/ICSE-SEIP66354.2025.
+     00043
+ [8] Umut Cihan, Arda İçöz, Vahid Haratian, and Eray Tüzün. 2025. Evaluating Large Language Models for Code Review.
+     arXiv preprint arXiv:2505.20206 (2025). doi:10.48550/arXiv.2505.20206
+ [9] Angela Fan, Beliz Gokkaya, Mark Harman, Mitya Lyubarskiy, Shubho Sengupta, Shin Yoo, and Jie M Zhang. 2023. Large
+     language models for software engineering: Survey and open problems. In 2023 IEEE/ACM International Conference on
+     Software Engineering: Future of Software Engineering (ICSE-FoSE). IEEE, 31–53. doi:10.1109/ICSE-FoSE59343.2023.00008
+[10] Franz Faul, Edgar Erdfelder, Axel Buchner, and Albert-Georg Lang. 2009. Statistical power analyses using G*Power 3.1:
+     Tests for correlation and regression analyses. Behavior Research Methods 41 (11 2009), 1149–1160. doi:10.3758/BRM.41.
+     4.1149
+[11] Franz Faul, Edgar Erdfelder, Albert-Georg Lang, and Axel Buchner. 2007. G* Power 3: A flexible statistical power
+     analysis program for the social, behavioral, and biomedical sciences. Behavior research methods 39, 2 (2007), 175–191.
+     doi:10.3758/BF03193146
+[12] Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner. 2026. Evaluating the Impact
+     of Explainable AI on Trust in AI-Assisted Code Review - Data, Code and Diagrams. doi:10.5281/zenodo.21457282
+
+
+                             Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+ISSTA093:22                   Zhenhan Gao, Marvin Muñoz Barón, Umm-e Habiba, Daniel Graziotin, and Stefan Wagner
+
+
+[13] GitHub. 2023. GitHub REST API documentation. https://docs.github.com/en/rest?apiVersion=2022-11-28.
+[14] David Gunning and David Aha. 2019. DARPA’s Explainable Artificial Intelligence (XAI) Program. AI Magazine 40 (06
+     2019), 44–58. doi:10.1609/aimag.v40i2.2850
+[15] Vincent J Hellendoorn, Jason Tsay, Manisha Mukherjee, and Martin Hirzel. 2021. Towards automating code review at
+     scale. In Proceedings of the 29th ACM Joint Meeting on European Software Engineering Conference and Symposium on the
+     Foundations of Software Engineering. 1479–1482. doi:10.1145/3468264.3473134
+[16] Robert R. Hoffman, Shane T. Mueller, Gary Klein, and Jordan Litman. 2023. Measures for explainable AI: Explanation
+     goodness, user satisfaction, mental models, curiosity, trust, and human-AI performance. Frontiers in Computer Science
+     Volume 5 - 2023 (2023). doi:10.3389/fcomp.2023.1096257
+[17] Md Imran Hossain, Ghada Zamzmi, Peter R Mouton, Md Sirajus Salekin, Yu Sun, and Dmitry Goldgof. 2025. Explainable
+     AI for medical data: Current methods, limitations, and future directions. Comput. Surveys 57, 6 (2025), 1–46. doi:10.
+     1145/3637487
+[18] Alon Jacovi, Ana Marasović, Tim Miller, and Yoav Goldberg. 2021. Formalizing trust in artificial intelligence: Prerequi-
+     sites, causes and goals of human trust in AI. In Proceedings of the 2021 ACM conference on fairness, accountability, and
+     transparency. 624–635. doi:10.1145/3442188.3445923
+[19] Jiun-Yin Jian, Ann Bisantz, and Colin Drury. 2000. Foundations for an Empirically Determined Scale of Trust in
+     Automated Systems. International Journal of Cognitive Ergonomics 4 (03 2000), 53–71. doi:10.1207/S15327566IJCE0401_04
+[20] Klaus Krippendorff. 2018. Content analysis: An introduction to its methodology. Sage publications.
+[21] Stefano Lambiase, Gemma Catolino, Fabio Palomba, Filomena Ferrucci, and Daniel Russo. 2025. Investigating the
+     role of cultural values in adopting large language models for software engineering. ACM Transactions on Software
+     Engineering and Methodology 35, 1 (2025), 1–43. doi:10.1145/3725529
+[22] Benedikt Langenberg, Markus Janczyk, Valentin Koob, Reinhold Kliegl, and Axel Mayer. 2023. A tutorial on using the
+     paired t test for power calculations in repeated measures ANOVA with interactions. Behavior Research Methods 55, 5
+     (2023), 2467–2484. doi:10.3758/s13428-022-01902-8
+[23] Evan Li. 2025. GitHub Ranking: Top 100 Python Repositories. https://github.com/EvanLi/Github-Ranking/blob/master/
+     Top100/Python.md.
+[24] Heng-Yi Li, Shu-Ting Shi, Ferdian Thung, Xuan Huo, Bowen Xu, Ming Li, and David Lo. 2019. Deepreview: automatic
+     code review using deep multi-instance learning. In Pacific-Asia Conference on Knowledge Discovery and Data Mining.
+     Springer, 318–330. doi:10.1007/978-3-030-16145-3_25
+[25] Microsoft. 2022. CodeReviewer. https://huggingface.co/microsoft/codereviewer.
+[26] Avash Palikhe, Zhenyu Yu, Zichong Wang, and Wenbin Zhang. 2025. Towards Transparent AI: A Survey on Explainable
+     Large Language Models. ArXiv abs/2506.21812 (2025). doi:10.48550/arXiv.2506.21812
+[27] Sebastian AC Perrig, Nicolas Scharowski, and Florian Brühlmann. 2023. Trust issues with trust scales: examining the
+     psychometric quality of trust measures in the context of AI. In Extended abstracts of the 2023 CHI Conference on human
+     factors in computing systems. 1–7. doi:10.1145/3544549.3585808
+[28] Chanathip Pornprasit and Chakkrit Tantithamthavorn. 2024. Fine-tuning and prompt engineering for large language
+     models-based code review automation. Inf. Softw. Technol. 175, C (Nov. 2024), 12 pages. doi:10.1016/j.infsof.2024.107523
+[29] Prolific. 2025. Prolific Participant Recruitment Platform. https://www.prolific.com/. Accessed: 2025-06-15.
+[30] Waddah Saeed and Christian Omlin. 2023. Explainable AI (XAI): A systematic meta-survey of current challenges and
+     future opportunities. Know.-Based Syst. 263, C (March 2023), 24 pages. doi:10.1016/j.knosys.2023.110273
+[31] Alan Said. 2025. On explaining recommendations with Large Language Models: a review. Frontiers in Big Data 7 (2025),
+     1505284. doi:10.3389/fdata.2024.1505284
+[32] Jaydeb Sarker, Sayma Sultana, Steven R Wilson, and Amiangshu Bosu. 2023. ToxiSpanSE: An explainable toxicity
+     detection in code review comments. In 2023 ACM/IEEE International Symposium on Empirical Software Engineering and
+     Measurement (ESEM). IEEE, 1–12. doi:10.1109/ESEM56168.2023.10304855
+[33] Shu-Ting Shi, Ming Li, David Lo, Ferdian Thung, and Xuan Huo. 2019. Automatic code review by learning the revision
+     of source code. In Proceedings of the AAAI Conference on Artificial Intelligence, Vol. 33. 4910–4917. doi:10.1609/aaai.
+     v33i01.33014910
+[34] Stack Overflow. 2025. 2025 Stack Overflow Developer Survey. https://survey.stackoverflow.co/2025. Accessed:
+     2026-01-26.
+[35] Jiao Sun, Q Vera Liao, Michael Muller, Mayank Agarwal, Stephanie Houde, Kartik Talamadupula, and Justin D Weisz.
+     2022. Investigating explainability of generative AI for code through scenario-based design. In Proceedings of the 27th
+     International Conference on Intelligent User Interfaces. 212–228. doi:10.1145/3490099.3511119
+[36] Tao Sun, Jian Xu, Yuanpeng Li, Zhao Yan, Ge Zhang, Lintao Xie, Lu Geng, Zheng Wang, Yueyan Chen, Qin Lin, et al.
+     2025. Bitsai-cr: Automated code review via llm in practice. In Proceedings of the 33rd ACM International Conference on
+     the Foundations of Software Engineering. 274–285. doi:10.1145/3696630.3728552
+[37] The Algorithms. 2025. TheAlgorithms/Python. https://github.com/TheAlgorithms/Python.
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+Evaluating the Impact of Explainable AI on Trust in AI-Assisted Code Review                                     ISSTA093:23
+
+
+[38] Rosalia Tufano, Ozren Dabić, Antonio Mastropaolo, Matteo Ciniselli, and Gabriele Bavota. 2024. Code review automa-
+     tion: strengths and weaknesses of the state of the art. IEEE Transactions on Software Engineering 50, 2 (2024), 338–353.
+     doi:10.1109/TSE.2023.3348172
+[39] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia
+     Polosukhin. 2017. Attention is all you need. In Proceedings of the 31st International Conference on Neural Information
+     Processing Systems (Long Beach, California, USA) (NIPS’17). Curran Associates Inc., Red Hook, NY, USA, 6000–6010.
+[40] Miku Watanabe, Yutaro Kashiwa, Bin Lin, Toshiki Hirao, Ken’Ichi Yamaguchi, and Hajimu Iida. 2024. On the use of
+     chatgpt for code review: Do developers like reviews by chatgpt?. In Proceedings of the 28th International Conference on
+     Evaluation and Assessment in Software Engineering. 375–380. doi:10.1145/3661167.3661183
+[41] David Gray Widder, Laura Dabbish, James D Herbsleb, Alexandra Holloway, and Scott Davidoff. 2021. Trust in
+     collaborative automation in high stakes software engineering work: A case study at NASA. In Proceedings of the 2021
+     CHI Conference on Human Factors in Computing Systems. 1–13. doi:10.1145/3411764.3445650
+[42] Xuansheng Wu, Haiyan Zhao, Yaochen Zhu, Yucheng Shi, Fan Yang, Lijie Hu, Tianming Liu, Xiaoming Zhai, Wenlin
+     Yao, Jundong Li, Mengnan Du, and Ninghao Liu. 2026. Usable XAI: 10 Strategies Towards Exploiting Explainability in
+     the LLM Era. ACM Trans. Knowl. Discov. Data 20, 6, Article 100 (July 2026), 57 pages. doi:10.1145/3816150
+[43] Lanxin Yang, Jinwei Xu, Yifan Zhang, He Zhang, and Alberto Bacchelli. 2023. Evacrc: Evaluating code review comments.
+     In Proceedings of the 31st ACM Joint European Software Engineering Conference and Symposium on the Foundations of
+     Software Engineering. 275–287. doi:10.1145/3611643.3616245
+
+
+
+
+                              Proc. ACM Softw. Eng., Vol. 3, No. ISSTA, Article ISSTA093. Publication date: October 2026.
+

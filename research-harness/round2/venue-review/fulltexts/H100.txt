@@ -1,0 +1,1249 @@
+                                                            On the Reliability of Code Comprehension Proxies
+                                                                            Erfan Arvan                                                             Nadeeshan De Silva
+                                                             New Jersey Institute of Technology                                                        William & Mary
+                                                                Newark, New Jersey, USA                                                          Williamsburg, Virginia, USA
+                                                                      ea442@njit.edu                                                                 kgdesilva@wm.edu
+
+                                                                        Oscar Chaparro                                                                 Martin Kellogg
+                                                                        William & Mary                                                       New Jersey Institute of Technology
+                                                                  Williamsburg, Virginia, USA                                                   Newark, New Jersey, USA
+                                                                       oscarch@wm.edu                                                            martin.kellogg@njit.edu
+arXiv:2605.23008v2 [cs.SE] 14 Sep 2026
+
+
+
+
+                                         Abstract                                                                                ACM Reference Format:
+                                         Prior work on code comprehension uses different comprehension                           Erfan Arvan, Nadeeshan De Silva, Oscar Chaparro, and Martin Kellogg. 2026.
+                                                                                                                                 On the Reliability of Code Comprehension Proxies. In Proceedings of the
+                                         proxies—for example, Likert-scale ratings or answers to input-output
+                                                                                                                                 41st IEEE/ACM International Conference on Automated Software Engineering
+                                         questions about program snippets, usually collected from students,                      (ASE ’26), October 12–16, 2026, Munich, Germany. ACM, New York, NY, USA,
+                                         to approximate whether code is comprehensible to software engi-                         18 pages. https://doi.org/10.1145/3832783.3834425
+                                         neers, but the relative reliability of these proxies is not known.
+                                             This paper investigates the relative reliability of a collection of
+                                         proxies common in the extant literature with a pair of human stud-
+                                         ies. First, we conducted an expert-consensus study with a panel                         1    Introduction
+                                         of five professional software engineers to establish a ground-truth                     Code comprehension—the process of understanding source code—
+                                         comprehensibility ranking of eight code snippets by adapting the                        is a fundamental software engineering activity, yet there is little
+                                         Delphi expert-consensus protocol. The Delphi protocol is widely                         agreement on how to measure it. Most maintenance tasks, including
+                                         used for expert consensus under conditions of uncertainty in other                      refactoring, debugging, and extending functionality, depend on a
+                                         domains such as medicine and national-security forecasting, but to                      developer’s ability to build an accurate mental model of the code.
+                                         our knowledge, this is its first application to code comprehension                      Prior studies estimate that developers spend between 58% and 70%
+                                         research. Second, we conducted a study with 44 student participants                     of their time on code comprehension [69, 89].
+                                         who completed comprehension tasks, allowing us to measure 14                               Comprehension is an internal cognitive process that cannot be
+                                         comprehension proxies derived from the literature on the same set                       directly observed, so most prior empirical studies rely on compre-
+                                         of eight code snippets. Finally, we conducted a correlation analysis                    hension proxies: observable measurements collected from humans
+                                         on the results, concluding that proxies 1) derived from input-output                    performing specific comprehension tasks. Examples of such tasks
+                                         questions and 2) that measure response time rather than accuracy                        include summarizing code [17, 20, 37, 38, 51, 54, 63, 68, 93] and
+                                         are especially reliable. We also found that proxies derived from ques-                  fixing bugs [37, 67, 95, 108]. Common measurements include sub-
+                                         tions about program syntax (rather than semantics) are especially                       jective ratings of code understandability [17, 27, 51, 68, 83, 93], the
+                                         unreliable, regardless of measurement strategy, which draws into                        time required to answer questions about the code [25, 38, 45, 48,
+                                         question the reliability of parts of the existing comprehensibility                     72, 77, 90, 101, 113], and the correctness of those answers [25, 38,
+                                         literature.                                                                             48, 64, 72, 77, 90, 101, 113]. These proxies are intended to capture
+                                                                                                                                 the difficulty of comprehension (i.e., “code comprehensibility”). For
+                                         CCS Concepts                                                                            example, longer response times are assumed to indicate that a code
+                                                                                                                                 snippet is harder for humans to understand. Comprehension proxies
+                                         • Human-centered computing → Empirical studies in HCI; •
+                                                                                                                                 have been used not only to investigate how different factors influ-
+                                         General and reference → Empirical studies; • Software and its
+                                                                                                                                 ence comprehensibility [17, 51, 76, 96, 100, 115] but also to develop
+                                         engineering → Maintaining software.
+                                                                                                                                 predictive models that help developers measure and control com-
+                                                                                                                                 prehension difficulty during software evolution [19, 30, 31, 62, 90].
+                                         Keywords                                                                                More recently, with advancements in large language models and au-
+                                         code comprehension, comprehensibility proxies, Delphi method,                           tomated AI-based tools, comprehension proxies have also been used
+                                         controlled human study                                                                  to evaluate whether such tools generate human-understandable
+                                                                                                                                 code (e.g., UTGen [32]).
+                                                                                                                                    While these proxies are widely used in code comprehensibility
+                                                                                                                                 studies, their reliability remains largely unexamined.
+                                                                                                                                    This creates a fundamental problem: it is unclear which prox-
+                                         This work is licensed under a Creative Commons Attribution 4.0 International License.   ies, if any, accurately capture the underlying construct of code
+                                         ASE ’26, Munich, Germany                                                                comprehension difficulty. Further complicating the problem, this
+                                         © 2026 Copyright held by the owner/author(s).
+                                         ACM ISBN 979-8-4007-2882-2/2026/10                                                      underlying construct is not well-defined, and various studies oper-
+                                         https://doi.org/10.1145/3832783.3834425                                                 ationalize it in different ways [115]. As a result, findings across the
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                    Arvan, De Silva, Chaparro, and Kellogg
+
+
+literature can be difficult to compare, and conclusions drawn from          • A correlation analysis comparing these proxies against expert-
+these proxies may be misleading.                                              consensus judgments, showing that time-based and input-output
+    In this work, we address this problem by defining code com-               proxies align more closely with expert assessments than other
+prehensibility in terms of expert agreement about comprehension               proxies (section 6).
+difficulty. In the absence of an objective definition, we argue that        • A discussion of the implications of our findings for interpreting
+consistent agreement among experienced software engineers pro-                prior code comprehension research (section 7).
+vides a practical and reliable approximation of the construct. Intu-
+itively, if experts consistently agree that certain code is easier or
+harder to understand, this agreement can serve as a reference point         2   Background and Related Work
+against which proxies can be evaluated.                                     Universal definition for code comprehensibility. Despite its
+    To operationalize this idea, we conducted two complementary             importance, the code comprehension construct still lacks a precise
+studies on eight shared code snippets. First, we carried out an ex-         definition that primary studies can rely on in their design, let alone
+pert study with five senior software engineers using the Delphi             a standardized measurement method or even consensus on which
+expert-consensus protocol [28, 29, 57], a structured method for             features to include in such measurements [22, 115]. As a conse-
+eliciting and refining expert judgment under uncertainty. Over mul-         quence, what is measured is often implicitly defined by the method
+tiple rounds, participants ranked the snippets by comprehension             of measurement itself (i.e., the comprehension proxy). A compre-
+difficulty and iteratively resolved disagreements through written           hension proxy has two parts: a task and a measure. Common tasks
+feedback and discussion. The Delphi protocol has been successfully          in the literature include reading code [53], answering comprehen-
+applied in medicine [42, 66, 84, 94], geopolitical forecasting [49, 107],   sion questions [4, 41, 73, 75], summarizing functionality [39, 53, 75],
+and other domains [11, 61, 65, 85]. Second, we conducted a student          or finding or fixing a bug [39, 71]. Common measures in the lit-
+study with 44 computer science (CS) undergraduates from two U.S.            erature are time [4, 5, 35, 53, 71, 73–75], accuracy [4, 5, 35, 39, 53,
+universities. The students completed a set of tasks derived from            71, 73–75, 82], eye movement [3, 4, 35, 39, 73, 75], or subjective
+commonly used comprehension proxies in the literature, includ-              ratings [4, 5, 14, 35, 74, 82]. The task and measure are inseparable
+ing time-based, accuracy-based, and subjective measures. We used            when interpreting proxy measurements. For example, accuracy may
+students for this part of the study because approximately 90% of            be meaningless if the task is poorly designed (e.g., due to vague
+studies in a recent survey of code comprehension research measured          or trivial questions), but it can be informative when paired with
+their proxies with student participants [115]. We then conducted            a well-designed task. Likewise, a meaningful task may yield little
+a correlation analysis where we analyzed how well each proxy                insight when paired with an uninformative measure.
+correlates with the expert-consensus ranking, treating the latter as            Generalization from students to developers. The problem is
+a ground-truth approximation of code comprehensibility.                     further complicated by participant selection. Based on data reported
+    Our results reveal three main findings. First, proxies based on         by Wyrich et al. [115], approximately 90% of code comprehensibility
+input-output reasoning about program behavior, including both               studies between 2010 and 2019 included students as participants [17,
+response time and answer correctness, show the strongest rela-              21, 36, 89, 90], and this trend has continued in more recent years [4,
+tionship with expert judgments. Second, time-based measures                 53, 71, 74, 82, 88]. These studies often recruit students because they
+consistently outperform direct correctness-based measures; the              are inexpensive and readily available, yet generalize the results
+time required to answer input-output questions was the single               to professional software engineers, who are the intended target
+best-performing proxy. These results imply that future studies of           population.
+code comprehensibility can confidently approximate comprehen-                   We regard the assumption that results obtained from students
+sibility with time measurements of input-output questions. Third,           can be unconditionally generalized to professionals as a method-
+several commonly used proxies, including subjective Likert-scale            ological flaw because code comprehension is a skill shaped by
+ratings and human-judged free-text code summaries, show                     professional experience. Moreover, multiple studies confirm that
+weak correlations with expert consensus. Notably, proxies based             professionals and novices differ substantially in how they approach
+on syntactic questions (e.g., identifying structural properties of          code comprehension [7, 18, 20, 64]. At the neurological level, the
+the code) exhibit near-zero or negative correlations, suggesting            two groups activate different brain regions when reading code [64],
+that they may misrepresent comprehension effort. As a result, we            suggesting that expertise fundamentally reshapes how the brain
+can reinterpret some results from the literature that solely rely on        processes code. These differences also manifest in reading behavior:
+syntax-derived proxies (e.g., [9, 105]).                                    eye-tracking data reveal that experts do not read code in the order
+    In summary, our contributions are:                                      it is written, instead navigating non-linearly toward semantically
+• A conceptualization of code comprehensibility based on expert             relevant regions, whereas novices tend to treat source code as a
+   agreement about comprehension difficulty, enabling the construc-         narrative, reading it sequentially [20]. Accordingly, experts concen-
+   tion of ground-truth data (section 3).                                   trate their attention on functional units and object interactions that
+• An expert study using the Delphi protocol to construct a consensus-       serve program goals, while novices focus on structural units and
+   based ground truth (section 4).                                          literal statements [18]. This targeted behavior is further reflected in
+• A student study that collects 14 comprehension proxies com-               visual attention patterns: experts efficiently direct their gaze toward
+   monly used in prior work (section 5).                                    information relevant to an area of interest, whereas novices are
+                                                                            more easily distracted by irrelevant content [7, 20]. These findings
+                                                                            motivate our study by suggesting that proxies derived from prior
+On the Reliability of Code Comprehension Proxies                                                                   ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+Table 1: Taxonomy of comprehension tasks based on Wyrich et                           Question categories (111)
+                                                                                      |-- Program Function (27)
+al. [115], with updated study counts through March 2026.                              |   (e.g., What does the identifier "ListLimit" signify?)
+                                                                                      |
+                                                                                      |-- Semantics (49)
+ Task Category           Task                                      # of Studies       |   |-- Program Analysis (15)
+                         Answer comprehension questions                37             |   |   (e.g., Does X affect Y?)
+                                                                                      |   |
+                         Determine output of a program                 30             |   `-- Simulated Execution (34)
+ Tc1: Provide
+                         Summarize code verbally or textually          25             |       |-- Conditional (7)
+ information about the
+                         Recall (parts of) the code                    7              |       |   (e.g., Is an error message printed?)
+ code                                                                                 |       |
+                         Match with diagram or similar code            3
+                         Determine code trace                          1              |       |-- Output (10)
+                                                                                      |       |   (e.g., What output is produced for a given input?)
+                         Rate code comprehensibility                   13             |       |
+                         Other subjective indications                  7              |       `-- Internal State (17)
+ Tc2: Provide personal   Rate task difficulty or task load             5              |           (e.g., State the final value of "X", given an input "Y"?)
+                                                                                      |
+ opinion                 Rate confidence in answer/understanding       5              |-- Syntax (30)
+                         Compare or rank code snippets                 5              |   |-- Global (18)
+                         Rate own code understanding                   2              |   |   (e.g., How many loops are there?)
+                                                                                      |   |
+                         Find a bug                                     9             |   `-- Local (12)
+ Tc3: Debug code
+                         Extend the code                                4             |       (e.g., Is variable "Z" initialized to zero?)
+                                                                                      |
+                         Fix a bug                                      4
+                                                                                      `-- Other (5)
+                         Cloze test on code                             3
+ Tc4: Maintain code
+                         Refactor code                                  3
+                         Determine if code is correct                   1         Figure 1: Simplified taxonomy of question categories derived from
+                                                                                  prior studies, with the number of instances per category and one
+                                                                                  representative example per leaf. The full categorization has more
+                                                                                  levels of detail and is available in our replication package [8].
+studies with students may not accurately capture the comprehen-
+sion processes of professionals, and so may not serve as reliable                 Table 2: Frequency of comprehension measure types based on the
+indicators of code comprehensibility.                                             taxonomy of Wyrich et al. [115], with updated study counts through
+                                                                                  March 2026.
+2.1     Comprehension Tasks in Prior Work
+Table 1 extends the taxonomy of comprehension tasks in Wyrich et                            Measure Type        Studies    Measure Type       Studies
+al.’s survey [115] with papers published on or before March 25,                             Correctness           80       Physiological         30
+2026 but after their literature search. While there is significant                          Time                  50       Aggregation           6
+diversity in tasks, the literature has a strong bias toward Tc1 and,                        Subjective rating     37       Others                6
+to a lesser extent, Tc2. The most common tasks in these categories
+are answering questions of various types, determining program
+output given some inputs, free-text summarization, and subjective
+                                                                                  35, 39, 53, 71, 73–75, 82]. Time captures how long a subject takes to
+ratings; together, these tasks dominate the literature.
+                                                                                  complete a task, regardless of answer correctness [4, 5, 35, 53, 71, 73–
+    Open coding for comprehensibility questions. The task “an-
+                                                                                  75]. Subjective ratings are self-reported perceptions, such as Likert-
+swer comprehension questions” is highly abstract: one can conceive
+                                                                                  scale responses to questions [4, 5, 14, 35, 71, 74, 82]. Physiological
+of questions targeting many different aspects of code—semantics,
+                                                                                  measurements capture responses of the human body or brain when
+syntax, functionality, and so on. So, we performed an open-coding
+                                                                                  performing code comprehensibility tasks. Eye-tracking [3, 4, 73, 75],
+analysis ourselves on the questions actually asked in the relevant
+                                                                                  fMRI [74] and EEG [14] are the most common measures in this cate-
+papers [6, 9, 10, 12, 13, 16, 20, 24, 27, 33, 34, 43, 46, 50, 52, 68, 70, 78,
+                                                                                  gory. Aggregation combines two or more other measures [5, 41, 82];
+80, 81, 83, 86, 87, 90–92, 101–105, 111, 112].
+                                                                                  for example, “time to correctly answer a question” aggregates cor-
+    We first extracted all the questions. Two authors then indepen-
+                                                                                  rectness and time measures. Other includes measures that do not
+dently performed open coding to categorize these questions. Fol-
+                                                                                  fit into the above categories, such as using code metrics to measure
+lowing this initial phase, the authors discussed their labels and
+                                                                                  comprehensibility [20, 71]. This taxonomy guided our choice of
+converged on a unified taxonomy of question categories. To assess
+                                                                                  measures in our study (section 5.3.2).
+inter-rater agreement, each author’s initial labels were mapped to
+the final taxonomy and Cohen’s kappa [23] was computed, yielding
+𝜅 = 0.89. The resulting taxonomy, simplified for space, appears                   3      Methodology Overview
+in fig. 1. It guided the choice of questions in our own study (sec-               Our goal is to evaluate whether proxies commonly used in prior
+tion 5.3.1). Our replication package has a full list of questions and             studies (typically measured with student participants) accurately
+their categorization [8].                                                         reflect how professional software engineers experience code com-
+                                                                                  prehension difficulty. This goal is important because students are
+2.2     Comprehension Measures in Prior Work                                      likely to remain a primary study population for practical reasons,
+Table 2 extends the comprehension measure survey data from                        such as cost and availability, and the reliability of these proxies is
+Wyrich et al. [115] with that from studies published before March 25,             unknown. Our research question is:
+2026. Correctness (also referred to as accuracy [15]) compares a study            RQ1 How well do common comprehension proxies from the liter-
+participant’s (i.e., a subject) answer to a known ground truth [4, 5,                 ature correlate with expert-determined ground truth?
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                               Arvan, De Silva, Chaparro, and Kellogg
+
+
+                                                                                          Our overall methodology, including participant recruitment pro-
+         ◎ Population-Level                          Ð Snippet Selection               cedures, questionnaires, comprehension tasks, and compensation
+                Comprehensibility
+                                                     - 8 self-contained Java methods   methods for both expert and student studies, was approved by the
+        - Comparative, idealized, unob-              (section 3.3)
+        servable construct (section 3.1)                                               ethics review boards of our respective institutions.
+
+                                                                                       3.1    Idealized Ground Truth
+                                                                                       Comprehension is an internal cognitive process and cannot be di-
+         ² Expert Study                               Student Study
+                                                                                       rectly observed or measured. Moreover, comprehensibility depends
+          Ô Methodology                                Ô Methodology                   not only on the code itself, but also on its human reader. In this
+                                                                                       section, we explain how we define the ground truth of comprehen-
+         - 5 senior SEs                               - 44 CS students
+         - 3-round Delphi protocol                    - 14 proxies                     sibility in the abstract and how we approximate it in practice.
+         - section 4                                  - section 5                         Prior work in psychology and program comprehension [59, 60,
+                                                                                       78, 98, 109] characterizes comprehension as the process of con-
+                                                                                       structing a coherent internal representation (or mental model) of
+                Expert Ranking                              Proxy Ranking
+                                                                                       the “material” (e.g., text or code), which can support tasks such as
+         - ground-truth ranking                       - one ranking per proxy          recall, reasoning, or modification. We adopt this view and define
+                                                                                       code comprehensibility in terms of how easily such a representa-
+                                                                                       tion can be constructed relative to a reference point: that is, one
+                                                                                       piece of code can be easier or harder to understand than another,
+                                                                                       but assigning a specific numerical value to “comprehensibility” is
+                               ¢ Correlation Analysis                                  not defined. At the level of an individual software engineer, we
+                              - Correlate rankings (section 3.5)                       can thus model comprehensibility as a comparison between two
+                              - Answer RQ1
+                                                                                       code snippets: either one is easier to understand than the other
+                                                                                       or they are equally understandable. This captures the intuition
+                 Figure 2: Overview of our methodology.
+                                                                                       that comprehension difficulty is better expressed comparatively
+                                                                                       than absolutely. This intuition aligns with the law of comparative
+                                                                                       judgment, which suggests greater consistency in relative than ab-
+                                                                                       solute judgments [106]. Empirical evidence shows that absolute
+With this RQ, we are particularly interested in proxies that correlate                 ratings suffer from heterogeneous scale interpretation, whereas
+very well (and are therefore good candidates for future studies) or                    comparative judgments yield more consistent and reliable measure-
+very poorly (and so prior work relying on them is suspect).                            ments [58]. Based on relative code comparisons, we can establish a
+    Figure 2 summarizes our overall methodology. We first define                       ranking of snippets by comprehensibility.
+an idealized notion of code comprehensibility (section 3.1) and                           Building on this, we introduce an idealized notion of population-
+then approximate it empirically via the Delphi expert-consensus                        level comprehensibility, which reflects how a broad population of
+protocol (section 3.2) on a set of carefully-selected code snippets                    software engineers would compare two snippets. This construct
+(section 3.3). We then collect a range of proxies, drawn from prior                    is not directly observable, but serves as a conceptual target: it
+work, on these same snippets, using a student population similar to                    represents the aggregate judgment we would obtain if we could
+many prior works (section 3.4). Finally, we analyze how well each                      study all relevant developers under consistent conditions.
+proxy collected from the student participants correlates with the                         Since such a population-level notion cannot be measured directly,
+expert-consensus judgments, treating the latter as an approximation                    we approximate it using a group of experienced software engineers.
+of ground-truth comprehension difficulty (section 3.5).                                We refer to this approximation as expert-determined comprehen-
+    Note that, in relying on expert judgments as this reference point                  sibility: a consensus-based ranking of code snippets produced by
+and collecting proxies from students, we are not claiming that ex-                     a panel of experts. While this approximation is imperfect, it pro-
+perts and novices comprehend code in the same way. Rather, our                         vides a practical and reliable reference point for evaluating proxies,
+goal is to evaluate whether proxies collected from student partici-                    particularly in the absence of an objective ground truth.
+pants, who are commonly used in the literature, approximate the
+comprehensibility judgments of professional software engineers,                        3.2    Establishing Expert Consensus
+the population such studies ultimately aim to generalize to.
+                                                                                       For reliable expert consensus, we need a clear definition of expertise
+    A tempting alternative approach to evaluate the proxies is to
+                                                                                       and a structured method for eliciting and refining judgments.
+conduct parallel studies with students and professionals and com-
+pare proxy values directly between the two groups. However, this                       3.2.1 Expert Definition. We operationalize “experts” as profes-
+approach assumes that at least one proxy is inherently valid—that                      sional software engineers with “senior-level expertise”, demon-
+is, that it can be trusted to measure the underlying construct. In our                 strated experience in real-world development projects, based on pro-
+setting, where no proxy has been independently validated, such                         fessional progression and mentoring experience. Our recruitment
+comparisons are inconclusive: agreement between groups on a                            criteria are proxies for sustained exposure to diverse codebases and
+proxy does not establish that the proxy itself is a reliable indicator                 for an ability to understand and assess how code is understood by
+of comprehension difficulty.                                                           others. More details on expert recruitment are in section 4.1.
+On the Reliability of Code Comprehension Proxies                                                            ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+3.2.2 Delphi Protocol. We employed the Delphi method [28, 29],                 snippets that implemented self-contained behavior. Applying these
+a structured approach for eliciting and refining expert judgments              criteria produced 21 candidate methods.
+in settings where objective ground truth is unavailable [11, 42, 49,
+                                                                               3.3.3 Redundancy Reduction. Thirteen of the 21 methods were
+61, 65, 66, 84, 85, 94, 107]. Our protocol consisted of three itera-
+                                                                               identical or near-identical implementations appearing in multi-
+tive rounds conducted on a custom web platform, designed based
+                                                                               ple locations within the same project (e.g., atan2, atan2Deg, and
+on guidance published by Delphi experts [57]. In each round, ex-
+                                                                               atan2Deg360 from libgdx [2]). We randomly retained one represen-
+perts evaluated the same set of code snippets by summarizing
+                                                                               tative from each such group, yielding a final set of eight methods.
+their functionality, assessing their comprehensibility, and rank-
+                                                                               These eight were used for both the expert and student studies.
+ing them relative to one another. After each round, participants
+received anonymized summaries of group responses, reflected on                 3.3.4 Code Presentation. To reduce presentation-related variation,
+disagreements and revised their assessments. Anonymity was main-               which could influence comprehension [79], all snippets were re-
+tained throughout to reduce bias. This process produced a stable,              formatted using Google Java Formatter [44] and displayed with a
+consensus-based ranking of snippet comprehensibility, which we                 standardized IntelliJ-style theme. Participants could choose either
+use as our approximation of ground truth. Further details are pro-             dark or light mode. We did not show Javadoc comments to partic-
+vided in section 4.2.                                                          ipants, to avoid revealing intended functionality [17, 47, 79]. We
+                                                                               also removed inline comments relevant to comprehension tasks,
+3.3     Snippet Selection                                                      since tasks like code summarization and behavior prediction can be
+A key methodological decision in code comprehension studies is the             biased by natural-language hints. At the same time, we preserved
+choice of code snippets. We use real-world code because our goal is            original identifier names, including method, parameter, and vari-
+to draw conclusions relevant to professional software practice. At             able names. We did so to maintain realism: in practice, developers
+the same time, the snippet set must support controlled comparison              only ever encounter code with naturally-occurring names. As a
+by limiting confounding factors such as project-specific background            result, identifier quality is part of the overall comprehensibility
+knowledge, code length, and code-formatting differences. Since                 signal rather than a separately controlled factor.
+the snippets from the prior studies did not meet these criteria,               3.3.5 Background Knowledge. Some snippets might require back-
+we decided to construct a new set of snippets for our study. We                ground knowledge beyond general Java familiarity. For example,
+constructed the snippet set in three stages: project filtering, method         the isValidProjectName snippet (fig. 3) does not require specialized
+filtering, and redundancy reduction. Figure 3 shows two example                knowledge, whereas the atan2 snippet may benefit from familiar-
+snippets; the other snippets are in our replication package [8].               ity with trigonometry and knowledge of floating-point behavior
+                                                                               around singularities. To identify such knowledge, the authors re-
+3.3.1 Project Filtering. We identified candidate open-source projects          viewed each snippet and enumerated domain concepts that could
+hosted in GitHub with SEART’s repository search infrastructure [26].           plausibly influence comprehension. For each such concept, our stu-
+To favor mature, active, and widely used open source projects, we              dent study included (1) a self-reported familiarity question on a
+required candidate repositories to satisfy the following criteria: (1)         5-point scale and (2) a multiple-choice knowledge question shown
+written in Java (because it is the most common language in prior               only when a participant reported at least some familiarity. We
+studies [115] and is popular in industry [99]), (2) at least 1,000 com-        analyzed whether prior knowledge was associated with proxy out-
+mits, (3) at least 1,000 pull requests, (4) at least 1,000 stars, and (5) at   comes (see section 6.1.2) and found it to be mildly predictive on
+least one recent commit within a three-week window after the data              proxies using accuracy metrics.
+collection date (February 2, 2025). These filters yielded 16 candidate
+projects (e.g., apache/kafka [1], libgdx/libgdx [2]). The full list of         3.4    Proxy Selection and Student Study
+projects is provided in our replication package [8].
+                                                                               It is not practical to evaluate every proxy reported in prior work.
+3.3.2 Method Filtering. Following prior work [115], we use individ-            Existing studies employ a wide variety of tasks and measures [115],
+ual methods as the unit of analysis. Method-level comprehension                some of which require expensive instrumentation (e.g., fMRI de-
+is common in practice, since developers often need to understand               vices) or extensive interaction with code (e.g., debugging, bug fix-
+specific methods in order to reuse, modify, or integrate them during           ing, or other maintenance tasks). We therefore focus on 14 proxies
+development and maintenance tasks. We used these inclusion crite-              that are both common in the literature and feasible in standard
+ria to select methods: 1) all types in the signature and body must             human-subject studies without specialized equipment. Our system-
+be from the JDK, 2) no annotations in signature, 3) static methods             atic approach for selecting these proxies is described in section 5.3.
+only, 4) must have a Javadoc comment, 5) must have at least one                    We then recruited 44 undergraduate computer science students
+parameter and return a value, and 6) must have 18-22 non-comment,              from our two corresponding universities. These participants pro-
+non-blank lines of code. Criteria 1, 2, and 3 ensure the snippets are          vided and allowed us to collect values for the 14 selected proxies on
+self-contained, so that participants do not require project-specific           the same eight code snippets evaluated in the expert study. Section 5
+knowledge. Criteria 4 and 5 are necessary for our experimental                 provides details on the design of this study.
+design: Javadoc comments are needed as ground-truth for free-text
+summary tasks, and input/output question tasks require at least                3.5    Correlation Analysis
+one input and at least one output. Criterion 6 controls for size but           Finally, we evaluated how well each proxy collected in the student
+keeps each task within a reasonable time budget while still using              study aligns with the final ranking from the expert study. For each
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                    Arvan, De Silva, Chaparro, and Kellogg
+
+
+public static boolean isValidProjectName(String name) {                   public static float atan2(float y, float x) {
+   if (name == null) return false;                                           float n = y / x;
+   if (name.startsWith(".")) return false;                                   if (n != n)
+   if ((name.length() < 1) || (name.length() >                                  n = (y == x ? 1f : -1f);
+        MAX_NAME_LENGTH)) {                                                  else if (n - n != n - n)
+      return false;                                                             x = 0f;
+   }                                                                         if (x > 0)
+   for (int i = 0; i < name.length(); i++) {                                    return atanUnchecked(n);
+      char c = name.charAt(i);                                               else if (x < 0) {
+      if (!Character.isLetterOrDigit(c) &&                                      if (y >= 0) return atanUnchecked(n) + PI;
+           !VALID_NAME_SET.contains(c)) {                                       return atanUnchecked(n) - PI;
+         return false;                                                       } else if (y > 0)
+      }                                                                         return x + HALF_PI;
+   }                                                                         else if (y < 0)
+   return true;                                                                 return x - HALF_PI;
+}                                                                            return x + y;
+                                                                          }
+
+
+                 Figure 3: Two example code snippets used in the study: isValidProjectName (Snippet #1) and atan2 (Snippet #8).
+
+proxy, we aggregated student responses at the snippet level by             substantial professional programming experience but did not re-
+averaging proxy values to rank the eight snippets from easiest to          port prior promotion or mentoring experience were not automat-
+hardest according to that proxy. We then compared the rank corre-          ically excluded. Instead, we evaluated them based on additional
+lation between each proxy-based ranking and the expert ranking             background information, including job title, total years of devel-
+using Kendall’s 𝜏𝑏 rank correlation coefficient [55]. Kendall’s            opment experience, and descriptions of the most complex systems
+𝜏𝑏 is well suited to our setting for three reasons. First, both ex-        they had worked on. Final inclusion decisions for such cases were
+pert and proxy outputs are ordinal rankings, making a rank-based           made through discussion and consensus among the authors. Using
+measure appropriate. Second, with a small number of items (eight           this process, we included one participant who had substantial pro-
+snippets), 𝜏𝑏 ’s pairwise comparison formulation provides a stable         gramming experience (10–14 years overall and 6–9 years in Java)
+and interpretable measure of agreement. Third, 𝜏𝑏 explicitly ac-           and mentoring experience in diverse software projects, but did not
+counts for ties in the rankings, which can arise in both expert and        explicitly report a promotion.
+proxy-derived rankings. Together, these properties make Kendall’s             We do not claim that these criteria capture all aspects of expertise.
+𝜏𝑏 an appropriate choice for quantifying how closely each proxy            Rather, they provide a practical way to identify participants with
+reflects expert-assessed comprehension difficulty.                         substantial, relevant experience in code comprehension.
+                                                                              We invited approximately 30 candidates to complete the eligi-
+                                                                           bility form. Of these, 6 met the inclusion criteria, and 5 ultimately
+4     Expert Study Design                                                  participated in the study after providing informed consent. Four
+                                                                           of these experts had between 10 and 20 years of professional soft-
+The goal of this study is to create an expert-determined ranking           ware development experience (6 to 14 years of Java experience),
+of snippets: the “ground truth” for evaluating the reliability of          three were currently working as senior software engineers and
+comprehension proxies. Five professional software engineers with           one as a non-senior engineer. The remaining expert had more than
+extensive Java experience ranked the eight code snippets from              20 years of experience in both general software development and
+section 3.3 based on their comprehension difficulty using a web-           Java, and was working as a Vice President of Engineering. Several
+based application that we developed. The study followed a multi-           participants have held technical leadership roles, including leading
+round structured process based on the Delphi method [28, 29, 57].          projects, mentoring engineers, and contributing to architectural
+                                                                           decisions in large-scale systems.
+                                                                              The participants had experience working in organizations of
+4.1     Participant Recruitment                                            varying sizes, including large-scale enterprise environments, and
+We recruited participants through our professional networks. We            have contributed to software systems deployed in real-world pro-
+contacted potential candidates via email and asked them to com-            duction settings with substantial user bases. Their work includes
+plete an eligibility form. To be included, participants had to self-       systems that require high reliability, performance, and maintainabil-
+report at least three years of experience in Java programming and          ity, such as backend services, distributed systems, and production-
+demonstrate senior-level software engineering expertise. We oper-          grade applications. The experts primarily worked on proprietary
+ationalized “senior-level expertise” as these two criteria: (i) prior      or commercial software (5 experts), with one expert also reporting
+promotion to a higher-level engineering role (for example, from            experience contributing to open-source projects. They reported
+entry level to senior roles), and (ii) experience mentoring junior         experience building diverse types of systems, including web ap-
+engineers in a professional setting. These criteria ensure that par-       plications (5 experts), AI based systems (4), mobile applications
+ticipants not only have substantial technical experience, but have         (2), libraries or frameworks (2), middleware (1), and desktop ap-
+also been entrusted with increased responsibility and technical            plications (1). They had worked across a broad range of domains,
+leadership within their organizations. Candidates who reported             including healthcare (3), government (3), finance or banking (2),
+On the Reliability of Code Comprehension Proxies                                                         ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+                                                                           Table 3: Final expert rankings of snippets after the last Delphi round.
+cloud and development tools (2), as well as game development, re-
+tail or legal services, transport or airline systems, education, energy,
+bioinformatics, or postal systems (1 each). We compensated each             Expert     Final Ranking (Easier → More difficult to understand)
+expert with a $50 USD Amazon gift card.                                     Expert A             (1 = 2) → 3 → (4 = 5) → (7 = 8) → 6
+                                                                            Expert B               1→2→5→4→7→3→8→6
+4.2     Snippet Ranking Procedure                                           Expert C               1→2→4→5→3→7→8→6
+                                                                            Expert D               1→2→5→4→3→7→8→6
+We employed a three-round Delphi-style process to elicit and it-
+                                                                            Expert E               1→2→4→5→7→3→6→8
+eratively refine expert judgments, with the goal of obtaining a
+stable consensus ranking of the snippets by comprehension diffi-
+                                                                           Table 4: Evolution of expert agreement across Delphi rounds. Dis-
+culty. Each round was assigned a nominal one-week completion               agreements indicate opposite pair orderings, while soft agreements
+window. However, we granted extensions upon request to accom-              capture ties versus strict ordering.
+modate participants’ professional schedules and ensure thoughtful,
+high-quality responses. Participants were also allowed to revise             Round     Agreements     Soft Agreements      Disagreements      Total
+and resubmit their responses before the deadline. All interactions
+                                                                             Round 1        13                2                   13            28
+were anonymized to reduce potential bias arising from factors such           Round 2        17                1                   10            28
+as seniority or personality. The stopping criteria were either: all          Round 3        21                3                   4             28
+experts converged to the same ranking; or after three completed
+rounds, following established recommendations that additional
+rounds typically yield diminishing returns [57].                           justifications from Round 2 to identify disagreement points. These
+                                                                           were grouped and presented to participants in the forum. Experts
+4.2.1 Round 1: Independent Ranking. In the first round, experts            first reviewed the rankings and justifications from the previous
+independently evaluated the snippets through the study website.            round, and then engaged in discussions with one another on each
+This round consisted of three phases:                                      group of related disagreement points. The forum allowed experts to
+• Phase 1 (Independent understanding): Experts were pre-                   tag one another to send email notifications about updates. During
+   sented with the eight snippets in randomized order. For each            this process, experts could revise their rankings at any time. The
+   snippet, they (i) described its primary functionality and (ii) ex-      moderator (the first author) facilitated the discussion by organizing
+   plained their assessment of its comprehension difficulty. Both          disagreement points, prompting participation when needed, and
+   tasks were completed using textual responses through the web            encouraging experts to clarify and reflect on their reasoning, while
+   interface. This phase ensured that experts engaged deeply with          avoiding commenting on the content of their judgments.
+   each snippet before ranking.
+• Phase 2 (Ranking): Experts ordered all snippets by comprehen-            4.3    Ranking Results
+   sion difficulty using a drag-and-drop interface with eight slots.
+                                                                           4.3.1 Final Individual Rankings. We encouraged but did not require
+   Participants were allowed to place multiple snippets in the same
+                                                                           the experts to reach consensus to avoid biasing their final rankings.
+   slot to indicate similar levels of comprehension difficulty.
+                                                                           Each expert’s individual final ranking is in table 3. While the experts
+• Phase 3 (Ranking justification): Experts provided written
+                                                                           did not reach full consensus, their final rankings are highly aligned.
+   justifications for their rankings, including cases where snippets
+                                                                           Specifically, there is strong agreement on several relative positions;
+   were ranked as having similar difficulty.
+                                                                           for example, snippets 1 and 2 are consistently ranked among the
+4.2.2 Round 2: Structured Feedback and Reranking. After the first          easiest, and snippets 6 and 8 among the most difficult. However,
+round, we analyzed the rankings to identify disagreements between          variability remains in the ordering of middle-ranked snippets and
+experts. We constructed a set of disagreement points, each capturing       in the use of ties (by Expert A).
+a specific conflict in the relative ordering of snippets, along with          For the main correlation analysis, we obtained a single expert
+the differing justifications provided by experts.                          ranking by averaging ranks across experts. We tested that our
+   In the second round, experts were presented with anonymized             results are robust under other aggregation methods (section 6.1.1).
+summaries of other participants’ assessments and the identified
+                                                                           4.3.2 Expert Agreement Across Rounds. To analyze how expert
+disagreement points. They then reviewed the rankings and justifi-
+                                                                           agreement evolved across rounds, we examined all pairwise com-
+cations of other experts from the previous round. For each disagree-
+                                                                           parisons between snippets (28 total pairs) and categorized them
+ment point, they examined the alternative perspectives and could
+                                                                           into three types based on how consistently the experts ordered
+revise their rankings and justifications. This structured feedback
+                                                                           them. For a snippet pair (𝑎, 𝑏), we define:
+phase encouraged reflection and convergence while preserving
+                                                                           • Agreement: all experts assign the same relation between 𝑎 and 𝑏,
+independent judgment. The reranking and revised justifications
+                                                                              either 𝑎 < 𝑏, 𝑏 < 𝑎, or 𝑎 = 𝑏.
+followed the same protocol and web interface as Phases 2 and 3
+                                                                           • Soft agreement: there is no direct conflict in ordering, but not
+(ranking and justification) from the first round.
+                                                                              all experts assign the same relation. In particular, some experts
+4.2.3 Round 3: Discussion and Reranking. The third round was                  assign a strict ordering (either 𝑎 < 𝑏 or 𝑏 < 𝑎, but all experts
+conducted as a moderated, anonymized discussion using a web                   agree on the same direction) while others assign a tie (𝑎 = 𝑏).
+forum interface, as recommended by modern guidance on conduct-             • Disagreement: there is a direct conflict in ordering, with some
+ing online Delphi panels [57]. We again analyzed the rankings and             experts assigning 𝑎 < 𝑏 and others assigning 𝑏 < 𝑎.
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                    Arvan, De Silva, Chaparro, and Kellogg
+
+
+Table 4 shows how experts converged towards more consistent,               randomized order. Once a participant advanced, they could not re-
+strict orderings in later rounds. Inter-expert agreement, measured         turn to previous questions or snippets, preventing answer revision
+using Kendall’s coefficient of concordance (𝑊 ) [56] computed using        and reducing potential carryover effects across tasks. The code re-
+the corresponding Friedman test formulation [40], shows a steady           mained visible while answering the questions to avoid introducing
+increase across rounds: 𝑊 = 0.7358 in Round 1, 𝑊 = 0.8472 in               memory-related confounds into our results.
+Round 2, and 𝑊 = 0.9338 in the final round. These results indicate            Participants were instructed not to use external resources (e.g.,
+that expert rankings became increasingly concordant after each             search engines or AI tools) so that the collected measures reflect
+round, as expected from the Delphi method.                                 their own comprehension effort. An on-screen timer timed all inter-
+    Overall, the results suggest that the Delphi process reduces con-      actions. Participants were instructed to pause the timer whenever
+flicts and leads to a largely consistent ordering with high agreement,     they were not actively working on the tasks, and to resume it when
+while retaining limited areas of ambiguity rather than enforcing           continuing. Researchers monitored sessions in-person to ensure
+complete consensus across all snippets.                                    compliance with these instructions and to assist with technical or
+                                                                           logistical issues. To reduce fatigue, the study system enforced short
+                                                                           breaks after every two snippets, during which participants could
+5     Student Study Design
+                                                                           resume the study after 30 to 60 seconds. A longer break was also
+The goal of this study is to collect well-established proxies like those   enforced at the midpoint of the session, with a duration ranging
+in prior comprehension studies, on the same set of code snippets           from one to seven minutes.
+used in the expert study. The study uses a within-subjects design:            After completing the comprehension tasks, participants com-
+each participant interacted with each code snippet. For each snippet,      pleted a post-study survey assessing their familiarity with the back-
+participants completed a set of comprehension tasks, with measures         ground concepts required for each snippet (section 3.3.5).
+including response time, answer correctness, and subjective ratings.
+                                                                           5.3    Comprehension Proxies
+5.1     Participant Recruitment                                            We wanted a broad set of common comprehension proxies from
+Participant recruitment targeted undergraduate Computer Science            the literature that are feasible for students in a single study session.
+(CS) students from our two universities. Using flyers, email an-           Recall that a comprehension proxy is a pair of a specific task (e.g.,
+nouncements, and in-class invitations, we recruited 44 students:           writing a summary) and a measure (e.g., time or correctness).
+37 from one institution and 7 from the other. Students were com-
+pensated with food after the study, and an entry into a raffle for         5.3.1 Comprehension Tasks. The taxonomy proposed by Wyrich et
+two $50 USD Amazon gift cards. Participants were required to be at         al. [115] organizes tasks into four categories: providing information
+least 18 years old, have prior experience programming in Java, and         about code (Tc1), providing subjective opinions (Tc2), debugging
+have completed or be enrolled in advanced programming courses.             (Tc3), and maintenance (Tc4) (see table 1). As discussed in sec-
+The participant pool consisted of 33 male, 10 female, and one non-         tion 2.1, prior work is heavily concentrated on Tc1 and Tc2 tasks,
+binary individual. On average, participants reported 3.1 years of          so we focus on those and exclude Tc3 and Tc4 tasks. Tc1 and Tc2
+Java programming experience. There were 16 4th-year students, 15           tasks are widely-used and low-cost to administer, unlike Tc3 and
+third-years, 11 second-years, and 2 first-years.                           Tc4 tasks. Tc1 tasks are much more common than Tc2 tasks in the
+                                                                           literature, so we include several Tc1 tasks and one Tc2 task. We
+                                                                           selected representative tasks within Tc1 via our open-coding analy-
+5.2     Experimental Procedure                                             sis of comprehension questions from prior studies (see section 2.1),
+Participants completed the study individually using their own lap-         which organizes questions into categories such as program func-
+tops via a dedicated study website we developed, in-person in a            tion, semantics, and syntax. To ensure conceptual coverage while
+controlled lab environment. Sessions lasted at most 90 minutes,            keeping the study feasible, we selected one representative task from
+consistent with prior comprehensibility research on sustained at-          each of these categories. Specifically, we included these tasks:
+tention [92, 97, 101], though most finished within 70 minutes.             • Tc1: Program function: describe what the code does.
+   Participants were first verbally introduced to the study and gave       • Tc1: Semantics: determine the code’s output for a given input.
+informed consent. They then completed a short demographic and              • Tc1: Syntax: identify syntactic elements in the code.
+programming background questionnaire, which asked about their              • Tc2: Subjective rating: rate comprehension and task difficulty.
+perceived programming experience relative to their classmates,
+their experience with Java and object-oriented programming gener-             Question Design. For the Program function and Subjective
+ally, and their overall programming experience; we analyze whether         rating tasks, all snippets share a fixed question format. For the pro-
+these factors impact the main results in section 6.1.2. Participants       gram function task, participants described the overall functionality
+then completed a brief practice task to familiarize them with the          of the method in their own words. The subjective task used two
+web interface and question format and reduce learning effects un-          5-point Likert scales to assess perceived comprehension and task
+related to code comprehension.                                             difficulty, ranging from “Very difficult” to “Very easy.”
+   Participants then completed the main study. The eight Java code            For the Semantics and Syntax tasks, we used a semi-structured
+snippets were presented in a different random order to each par-           design process informed by our open-coding analysis of prior stud-
+ticipant. For each snippet, participants first read the code and then      ies (section 2.1) to design unique questions for each snippet. We first
+answered four comprehension questions presented sequentially in            derived question templates from the literature: for the semantics
+On the Reliability of Code Comprehension Proxies                                                                         ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+Table 5: Comprehensibility proxies used in our study. Direction
+indicates whether higher values correspond to harder or easier com-
+                                                                                           questions, we used a 5-point ordinal scale (adapted from prior
+prehension difficulty. sec = seconds.                                                      work [108]) to assess the quality of free-response answers.
+                                                                                              Grades of 4 or 5 were considered “correct” for combined mea-
+ Proxy                   Description                                   Scale   Direction   sures. We used each method’s Javadoc to create the initial grading
+ Time-based                                                                                rubric. To ensure grading consistency, all authors first indepen-
+ readTime                Reading time before answering questions       sec     ↑ harder    dently graded a shared sample of responses and then discussed dis-
+ time_function           Time to write function summary                sec     ↑ harder
+ time_output             Time to predict output given an input         sec     ↑ harder    crepancies to finalize the rubric. Subsequently, each response was
+ time_syntaxBL           Time to answer syntax question                sec     ↑ harder    graded independently by two authors, and disagreements were re-
+ time_correct_function   Time to write summary graded 4 or 5           sec     ↑ harder
+ time_correct_output     Time for correct output predictions           sec     ↑ harder    solved through discussion. All grades, justifications, and discussion
+ time_correct_syntaxBL   Time for correct answers to syntax question   sec     ↑ harder    logs are in our artifact [8]. Inter-rater agreement for program func-
+ time_scaleSM            Time to decide snippet difficulty rating      sec     ↑ harder
+ time_scaleST            Time to decide task difficulty rating         sec     ↑ harder    tion grading, based on the 5-point ordinal scale for free-response
+ Correctness-based                                                                         function summaries, was Cohen’s 𝜅 = 0.57.
+ acc_function            Function summary grade                        1–5     ↑ easier
+ acc_output              Output prediction correctness                 0/1     ↑ easier    5.3.3 Summary of Proxies. The final set of proxies includes 14
+ acc_syntaxBL            Syntax question correctness                   0/1     ↑ easier
+                                                                                           combinations of the selected task types (program function, seman-
+ Rating-based
+ scaleSM                 Snippet difficulty rating                     1–5     ↑ harder    tics, syntax, subjective rating) and measures (time, correctness, and
+ scaleST                 Task difficulty rating                        1–5     ↑ harder    derived measures). For time-based and subjective-rating proxies,
+                                                                                           higher values indicate greater comprehension difficulty, whereas for
+                                                                                           correctness-based proxies, lower values indicate greater difficulty.
+                                                                                           Table 5 lists all proxies used in our study.
+task, the template required computing the return value for a specific
+input; for the syntax task, the template required identifying or locat-
+ing a syntactic element within a local code region (e.g., conditions,
+                                                                                           6     Results
+variable usage, or control structures). We then used ChatGPT to fill                       Figure 4 presents the results of the correlation analysis between
+in these templates to generate candidate questions for each snippet.                       proxies and the expert-determined ranking. Time-based semantic
+All generated questions were manually reviewed by the research                             proxies exhibit strong alignment with expert-defined comprehen-
+team to ensure correctness, clarity, and consistency across snippets.                      sibility, with time_output achieving a correlation of 0.86, followed
+We excluded questions that were ambiguous, misleading, or that                             by time_correct_output (0.79) and time_function (0.71). These val-
+revealed the intended functionality of the code. From the remaining                        ues indicate that these proxies approximate expert judgment well.
+candidates, we randomly selected one question per task category                            The five top proxies are statistically significant at 𝛼 = 0.05 (e.g.,
+for each snippet.                                                                          time_output, 𝑝 = 0.002). The remaining proxies do not reach sta-
+    Ground-truth answers for all questions were established by the                         tistical significance at this sample size, but their relative ordering
+research team and verified through manual inspection of the code                           remains stable across the secondary analyses in section 6.1 (alter-
+to support correctness-based measures used in our analysis.                                native aggregation strategies and individual-level data), increasing
+    As a concrete example, for the isValidProjectName snippet (fig. 3),                    confidence in the overall proxy-reliability pattern.
+participants were asked: (output) “What value does the method                                  In contrast, syntax-based proxies fail to capture expert judgments.
+return when called with input "a1_", given MAX_NAME_LENGTH                                 Measures such as acc_syntaxBL (−0.37) and time_syntaxBL (−0.21)
+= 10 and VALID_NAME_SET = {’_’, ’-’, ’.’}?”; (syntaxBL)                                    show weak or even negative correlations, suggesting that the syntax
+“Is MAX_NAME_LENGTH used in a conditional expression?”; (function)                         tasks reflect a different construct than expert-perceived comprehen-
+“What does this code snippet do? Briefly describe its main functional-                     sibility. More interestingly, proxies in the middle show moderate but
+ity.” ; and (scaleSM, scaleST ) “How easy or difficult was this snippet to                 consistent alignment. Perception-based measures such as scaleST
+understand?” and “How easy or difficult was this task?” (Very easy                         (0.64) and scaleSM (0.50), as well as general effort measures such
+– Very difficult). The full set of tasks and questions for all eight                       as readTime (0.50), exhibit meaningful correlations with expert
+snippets is available in our replication package [8].                                      rankings, though substantially weaker than semantic time-based
+                                                                                           proxies. These results suggest that while subjective ratings and gen-
+5.3.2 Comprehension Measures. We used three types of measures:                             eral reading effort capture some aspects of perceived difficulty, they
+• Time: reading time per snippet and time spent on each task.                              do not reflect the same depth of understanding as time spent solving
+• Correctness: correctness of responses to Tc1 questions.                                  semantic tasks. Similarly, time spent on task difficulty judgments
+• Subjective ratings: answers to Tc2 Likert-scale questions.                               (e.g., time_scaleST, 0.18) shows only weak alignment, indicating that
+These are the three most common measures in the literature (sec-                           deliberation about perceived difficulty is a less reliable signal. Over-
+tion 2.2). We excluded physiological measures as they require spe-                         all, these results demonstrate a clear gradient: semantic time-based
+cialized equipment and expertise, and are less common. We also                             proxies provide the strongest approximation of expert-defined com-
+included combined measures based on the time for correct answers                           prehensibility, perception-based and general effort measures pro-
+to questions, which have been used in prior work [46, 110].                                vide moderate signals, and syntax-based measures correlate poorly.
+   Correctness was determined differently depending on the ques-
+tion type. For the semantics and syntax questions, which were                              6.1    Secondary Analyses
+binary, we defined correctness based on predefined ground-truth                            This section details secondary analyses that we performed to en-
+answers validated by the research team. For program function                               sure that the result is stable, especially with respect to possible
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                 Arvan, De Silva, Chaparro, and Kellogg
+
+
+                                                                         for program function tasks; 𝛽 ≈ 0.45, 𝑝 = 0.023 for output tasks),
+                                                                         and Background Knowledge (for program function tasks, 𝛽 ≈ 0.35,
+                                                                         𝑝 = 0.010). In contrast, there are no consistent effects for syntax
+                                                                         tasks or for most general experience measures like Java Experience.
+                                                                            Time-based proxies show little systematic relationship with par-
+                                                                         ticipant characteristics, with effect sizes generally small and non-
+                                                                         significant across tasks. However, Fatigue (operationalized as task
+                                                                         order) has a strong and consistent effect on timing: participants
+                                                                         complete tasks more quickly as the study progresses (e.g., 𝛽 ≈ −7.9
+                                                                         for time_function, 𝑝 < 10−3 ; 𝛽 ≈ −15.6 for snippet_total_time,
+                                                                         𝑝 < 10−8 ). This effect is not accompanied by a corresponding de-
+                                                                         crease in accuracy (all 𝑝 > 0.05).
+                                                                            Taken together, these results suggest that while certain back-
+                                                                         ground factors are weakly associated with performance on spe-
+                                                                         cific comprehension tasks, overall comprehension outcomes are
+                                                                         not strongly driven by participant characteristics. The observed
+                                                                         changes in timing over the course of the study are more consistent
+                                                                         with adaptation or increasing familiarity with the task format than
+                                                                         with fatigue-related degradation in performance.
+
+                                                                         7 Discussion and Implications
+Figure 4: Correlation between proxies and expert-determined rank-
+ings, ordered by strength of correlation (strongest at the top). De-     7.1 Implications for Interpreting Prior Work
+scriptions of the proxies are in table 5 and section 5.3.                Our findings on proxy reliability have important implications for
+                                                                         how prior work on program comprehension should be interpreted.
+confounders and degrees of freedom in our experimental design.               Syntax-only proxies. A subset of prior studies relies on syn-
+More details on all of these analyses are in Appendix A in our           tax tasks like identifying structural properties or locating code ele-
+supplementary material.                                                  ments, typically with response time or accuracy measures. Although
+                                                                         some studies frame the construct as readability, they operationalize
+6.1.1 Aggregation Strategies. Our experts did not reach complete
+                                                                         it the same way as studies of program comprehension [115]. For
+agreement, so we aggregated their rankings into a single reference
+                                                                         example, Asenov et al. [9] aim to evaluate whether richer code visu-
+ordering by assigning each snippet its average rank across experts.
+                                                                         alizations improve comprehension, measuring how quickly and ac-
+To ensure that the results were stable, we also considered alter-
+                                                                         curately developers answer yes/no questions about code structure;
+native aggregation strategies: requiring full agreement, allowing
+                                                                         similarly, Tenny [105] investigates readability by assessing how
+ties without contradiction, and permitting a small number of in-
+                                                                         accurately participants answer questions about program properties
+consistencies. The overall pattern of which proxies are well- or
+                                                                         after reading the code. These task–measure combinations are syntax
+poorly-correlated with the expert-derived ranking remains stable
+                                                                         proxies (time_syntax and acc_syntax) that our results show are unre-
+across all aggregation strategies. We also confirmed that using indi-
+                                                                         liable signals of comprehensibility. The improvements these studies
+vidual experts’ rankings instead of an aggregated ranking leads to
+                                                                         report may reflect increased efficiency in detecting or extracting
+consistent results: the relative performance and ordering of proxies
+                                                                         structural features and not genuine improvements in understanding
+remain largely unchanged across experts.
+                                                                         program behavior, and so should be interpreted with caution.
+   Our correlations are also based on aggregated student data. We
+                                                                             Aggregated syntax-semantic proxies. Another group of stud-
+tested whether analyses using individual student data yield similar
+                                                                         ies [13, 17, 78, 114] uses a mix of syntax and semantics tasks, but
+patterns of correlations. They do: the relative ordering of prox-
+                                                                         aggregates performance across them into one correctness or time
+ies remains consistent. Per-student correlations do exhibit greater
+                                                                         measure. These studies include reliable tasks that ask about program
+variability and are lower, due to individual differences and noise.
+                                                                         behavior, but the aggregation implicitly treats all task–measure
+6.1.2 Student Characteristics and Fatigue. Differences in partici-       combinations as equally valid proxies of comprehensibility. Our
+pant background or task order could explain variation in the com-        findings indicate that this assumption does not hold, since proxies
+prehension proxies, and therefore potentially confound our main          vary a lot in their alignment with expert-determined comprehensi-
+results. To assess possible effects, we fit regression models relating   bility: syntax proxies provide weaker signals than semantic ones.
+participant characteristics and task position to each proxy. Overall,    Aggregating across heterogeneous proxies can obscure meaningful
+participant characteristics exhibit limited and task-specific associa-   differences, and so reported effects may reflect limitations of the
+tions with comprehension performance. There are a few statistically      measurement approach rather than the absence of an effect on
+significant relationships for accuracy on output and program func-       comprehensibility itself.
+tion tasks, particularly for Programming Experience Relative to Peers        Accuracy-only proxies. Some studies [37, 54, 63] employ tasks
+(𝛽 ≈ 0.33, 𝑝 = 0.024 for program function tasks; 𝛽 ≈ 0.36, 𝑝 = 0.045     that directly target program understanding, such as explaining
+for output tasks), Object-Oriented Experience (𝛽 ≈ 0.39, 𝑝 = 0.026       the purpose of code, but rely primarily on correctness as the sole
+On the Reliability of Code Comprehension Proxies                                                               ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+measure. These task–measure combinations are proxies similar to           studies. Although we followed a systematic procedure and achieved
+acc_function. While these tasks are well aligned with the construct       high inter-rater agreement (𝜅 = 0.89), the resulting categorization
+of comprehensibility, our findings show that accuracy alone pro-          may be subjective and may not capture every task in the literature.
+vides a weaker and less consistent signal compared to a time-based           Internal validity. Several factors may influence the observed
+measure of the same task (i.e., time_function). As a result, these        proxy values independent of comprehension. For example, partici-
+studies may detect whether participants reach a correct interpreta-       pant fatigue, learning effects, or familiarity with the study interface
+tion, but may underestimate differences in how difficult the code is      may affect response times, although our analysis in section 6.1.2
+to understand.                                                            suggests that time decreases are more consistent with adaptation
+   Semantic proxies. In contrast, some studies [25, 45, 48, 72, 77,       than degradation in performance. Noise may also arise from self-
+113] use tasks that require reasoning about program behavior, such        monitored timing (e.g., pausing the timer).
+as predicting outputs or determining intermediate values during              External validity. Our study uses just eight Java methods se-
+execution, measured via both response time and accuracy. These            lected under controlled criteria (e.g., size, use of standard libraries,
+task–measure combinations align closely with proxies that show            absence of project-specific context). To reduce required background
+strong and consistent agreement with expert-determined compre-            knowledge, we only included methods that exclusively use standard
+hensibility in our evaluation (e.g., time_output). This alignment indi-   Java types. To reduce dependence on external project context and
+cates that such proxies more effectively capture the cognitive effort     object state, and consequently enable more controlled comparisons
+required to understand program behavior. Therefore, findings from         across snippets, we focused on static methods. While these choices
+these studies are more likely to reflect genuine differences in com-      improve experimental control, they exclude methods that depend
+prehensibility rather than artifacts of the measurement approach.         on custom types, frameworks, or richer context, and thus may limit
+   Overall, these observations highlight that the validity of conclu-     generalizability. Similarly, although our expert panel consists of
+sions in program comprehension research depends on the alignment          experienced professional developers, the number of experts is lim-
+between the chosen task–measure combinations and the underly-             ited and may not fully represent the diversity of industry practices.
+ing construct of comprehensibility. Reliable and meaningful results       Nevertheless, we verified that, when correlating student-derived
+require careful selection and interpretation of proxies.                  proxies with individual expert rankings (rather than aggregated
+                                                                          rankings), the overall trends remain consistent. Finally, we did not
+7.2     Implications for Future Studies                                   evaluate all possible comprehension proxies, but instead focused
+                                                                          on a representative subset of frequently used task–measure combi-
+Our results suggest that future studies can approximate code com-
+                                                                          nations from prior work.
+prehensibility using simple and cost-effective proxies based on re-
+sponse time for input-output reasoning tasks. These proxies show
+strong and consistent alignment with expert judgments, indicating
+                                                                          8      Conclusion
+that they capture key aspects of the cognitive effort required to un-     We investigated the reliability of comprehension proxies from the
+derstand program behavior. Importantly, when using such reliable          literature with two complementary studies: a Delphi study of expert
+proxies, studies with student participants meaningfully approxi-          software engineers to establish ground truth, and a study of students
+mate professional engineers’ assessments of comprehensibility. So,        with common proxies on the same code snippets. We correlated the
+researchers can continue to use students as a practical and scalable      results of the two studies, and showed that time measures and tasks
+study population, as long as appropriate task–measure combina-            that require semantic reasoning are the most reliable, while syntax
+tions are selected—that is, (expensive) expert participants are not       tasks are unreliable. Future code comprehension studies should use
+necessary for reliable results. But, our findings caution against rely-   our results to guide their choices of proxies.
+ing on proxies that focus on syntax or use accuracy alone, as these
+provide weaker, less consistent signals of the underlying construct.      Acknowledgments
+                                                                          We thank the experts and students who participated in our study.
+7.3     Limitations and Threats to Validity                               This work was supported in part by National Science Foundation
+Construct validity. Our study operationalizes code comprehensi-           grants CCF-2239107, CCF-2414110, and CCF-2414111. The views
+                                                                          expressed herein are the authors’ own and do not necessarily reflect
+bility using expert-derived rankings as a proxy for ground truth.
+                                                                          those of our funders.
+While expert agreement provides a practical and principled approx-
+imation, it is not perfect. Different expert populations or elicitation
+procedures may yield different rankings, though the Delphi pro-           Data Availability Statement
+tocol mitigates the latter. Our selected proxies may miss aspects         Our replication package is publicly available [8].
+of comprehension, such as long-term retention or maintainability.
+Correctness for function summaries is based on human grading on           References
+a 5-point scale, which introduces subjectivity despite calibration            [1] 2025. Apache Kafka. https://github.com/apache/kafka.
+                                                                              [2] 2025. libGDX. https://github.com/libgdx/libgdx.
+and moderate inter-rater agreement (𝜅 = 0.57). Grading disagree-              [3] Amine Abbad-Andaloussi, Thierry Sorg, and Barbara Weber. 2022. Estimating
+ments were resolved through a rigorous protocol; however, only                    developers’ cognitive load at a fine-grained level using eye-tracking measures.
+acc_function and time_correct_function depend on these grades, and                In ICPC. 111–121.
+                                                                              [4] Youssef Abdelsalam, Norman Peitek, Annabelle Bergum, and Sven Apel. 2026.
+neither was among the top-performing proxies. Our taxonomy of                     The effect of comments on program comprehension: an eye-tracking study.
+comprehension tasks is based on an open-coding process over prior                 Empir. Softw. Eng. 31, 4 (2026), 94.
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                                           Arvan, De Silva, Chaparro, and Kellogg
+
+
+  [5] Tarek Alakmeh, David Reich, Lena Jäger, and Thomas Fritz. 2024. Predicting           [35] Yasmine Elfares, Gül Çalikli, and Mohamed Khamis. 2025. GazeCopilot: evalu-
+      code comprehension: a novel approach to align human gaze with code using                  ating novel gaze-informed prompting for AI-supported code comprehension
+      deep neural networks. Proc. ACM Softw. Eng. 1, FSE (2024), 1982–2004.                     and readability. arXiv (2025). arXiv:2511.08177 [cs.HC]
+  [6] Ahmed S. Alardawi and Agil M. Agil. 2015. Novice comprehension of object-            [36] Sarah Fakhoury, Yuzhan Ma, Venera Arnaoudova, and Olusola Adesope. 2018.
+      oriented OO programs: an empirical study. In WCITCA. 1–4.                                 The effect of poor source code lexicon and readability on developers’ cognitive
+  [7] Salwa D. Aljehane, Bonita Sharif, and Jonathan I. Maletic. 2023. Studying                 load. In ICPC. 286–296.
+      developer eye movements to measure cognitive workload and visual effort for          [37] Sarah Fakhoury, Devjeet Roy, Yuzhan Ma, Venera Arnaoudova, and Olusola
+      expertise assessment. Proc. ACM Hum.-Comput. Interact. 7, ETRA (2023), 1–18.              Adesope. 2020. Measuring the impact of lexical and structural inconsistencies
+  [8] Erfan Arvan, Nadeeshan De Silva, Oscar Chaparro, and Martin Kellogg. 2026.                on developers’ cognitive load during bug localization. Empir. Softw. Eng. (ESE)
+      Online Replication Package for “On the Reliability of Code Comprehension                  25 (2020), 2140–2178.
+      Proxies”. https://doi.org/10.5281/zenodo.21218362. Zenodo.                           [38] Janet Feigenspan, Christian Kästner, Jörg Liebig, Sven Apel, and Stefan Hanen-
+  [9] Dimitar Asenov, Otmar Hilliges, and Peter Müller. 2016. The effect of richer              berg. 2012. Measuring programming experience. In Proc. IEEE/ACM Int. Conf.
+      visualizations on code comprehension. In CHI. 5040–5045.                                  Program Comprehension (ICPC). 73–82.
+ [10] Ronald Baecker. 1988. Enhancing program readability and comprehensibility            [39] Samuel W. Flint, Robert Dyer, and Bonita Sharif. 2026. Do Developers Read
+      with tools for program visualization. In ICSE. 356–357.                                   Type Information? An Eye-Tracking Study on TypeScript. In Proc. IEEE/ACM
+ [11] Ann Barcomb, Klaas-Jan Stol, Brian Fitzgerald, and Dirk Riehle. 2022. Managing            Int. Conf. Program Comprehension (ICPC). 73–84.
+      Episodic Volunteers in Free/Libre/Open Source Software Communities. IEEE             [40] Milton Friedman. 1937. The use of ranks to avoid the assumption of normality
+      Trans. Softw. Eng. (TSE) 48, 1 (2022), 260–277. doi:10.1109/TSE.2020.2985093              implicit in the analysis of variance. J. Am. Stat. Assoc. 32, 200 (1937), 675–701.
+ [12] Gabriele Bavota, Abdallah Qusef, Rocco Oliveto, Andrea De Lucia, and Dave            [41] Hao Gao, Haytham Hijazi, Júlio Medeiros, João Durães, Chan Tong Lam, Paulo de
+      Binkley. 2015. Are test smells really harmful? an empirical study. Empir. Softw.          Carvalho, and Henrique Madeira. 2025. NRevisit: a cognitive behavioral metric
+      Eng. 20 (2015), 1052–1094.                                                                for code understandability assessment. In Proc. Int. Conf. Evaluation Assessment
+ [13] Roman Bednarik, Carsten Schulte, Lea Budde, Birte Heinemann, and Hana Vrza-               Softw. Eng. (EASE). 908–918.
+      kova. 2018. Eye-movement modeling examples in source code comprehension:             [42] Ileana Gefaell Larrondo et al. 2026. Strengthening Primary Health Care in
+      a classroom study. In Koli Calling. 1–8.                                                  Europe: A Delphi study towards accessibility, equity and continuity of care. Eur.
+ [14] Annabelle Bergum, Norman Peitek, Maurice Rekrut, Janet Siegmund, and Sven                 J. Gen. Pract. 32, 1 (2026), 2619226.
+      Apel. 2026. On the influence of the baseline in neuroimaging experiments on          [43] David J. Gilmore and Thomas R. G. Green. 1984. Comprehension and recall of
+      program comprehension. ACM Trans. Softw. Eng. Methodol. (TOSEM) 35, 3 (2026),             miniature programs. Int. J. Man-Mach. Stud. 21, 1 (1984), 31–48.
+      1–27.                                                                                [44] Google. 2024. Google Java Formatter. https://github.com/google/google-java-
+ [15] Dave Binkley, Marcia Davis, Dawn Lawrie, Jonathan I. Maletic, Christopher                 format. Accessed: 2024-11-20.
+      Morrell, and Bonita Sharif. 2013. The impact of identifier style on effort and       [45] Michael Hansen, Andrew Lumsdaine, and Richard L. Goldstone. 2013. An
+      comprehension. Empir. Softw. Eng. 18, 2 (2013), 219–276.                                  experiment on the cognitive complexity of code. In Proc. Annu. Conf. Cogn. Sci.
+ [16] Scott Blinman and Andy Cockburn. 2005. Program comprehension: investigating               Soc. (CogSci).
+      the effects of naming style and documentation. In AUIC. 73–78.                       [46] Dean Hendrix, James H. Cross, and Saeed Maghsoodloo. 2002. The effectiveness
+ [17] Jürgen Börstler and Barbara Paech. 2016. The role of method chains and com-               of control structure diagrams in source code comprehension activities. IEEE
+      ments in software readability and comprehension: an experiment. IEEE Trans.               Trans. Softw. Eng. (TSE) 28, 5 (2002), 463–477.
+      Softw. Eng. (TSE) 42, 9 (2016), 886–898.                                             [47] Johannes C. Hofmeister, Janet Siegmund, and Daniel V. Holt. 2019. Shorter
+ [18] Jean-Marie Burkhardt, Françoise Détienne, and Susan Wiedenbeck. 2002. Object-             identifier names take longer to comprehend. Empir. Softw. Eng. 24 (2019), 417–
+      oriented program comprehension: effect of expertise, task, and phase. Empir.              443.
+      Softw. Eng. 7, 2 (2002), 115–156.                                                    [48] Errol R. Iselin. 1988. Conditional statements, looping constructs, and program
+ [19] Raymond P. L. Buse and Westley R. Weimer. 2009. Learning a metric for code                comprehension: an experimental study. Int. J. Man-Mach. Stud. 28, 1 (1988),
+      readability. IEEE Trans. Softw. Eng. (TSE) 36, 4 (2009), 546–558.                         45–66.
+ [20] Teresa Busjahn, Roman Bednarik, Andrew Begel, Martha Crosby, James H. Pa-            [49] Oleksandra Ishchenko et al. 2025. Barriers and opportunities for Demand
+      terson, Carsten Schulte, Bonita Sharif, and Sascha Tamm. 2015. Eye movements              Response Aggregation in Ukraine and Norway: A Delphi-based study. Energy
+      in code reading: relaxing the linear order. In ICPC. 255–265.                             328 (2025), 136296.
+ [21] Celia Chen, Reem Alfayez, Kamonphop Srisopha, Lin Shi, and Barry Boehm.              [50] Toyomi Ishida and Hidetake Uwano. 2019. Synchronized analysis of eye move-
+      2017. Evaluating human-assessed software maintainability metrics. In NASAC.               ment and EEG during program comprehension. In EMIP. 26–32.
+      120–132.                                                                             [51] Ahmad Jbara and Dror G. Feitelson. 2017. How programmers read regular
+ [22] Kyle D. Chin and Reid Holmes. 2026. Put the “Code” Back in “Code Comprehen-               code: a controlled experiment using eye tracking. Empir. Softw. Eng. 22 (2017),
+      sion Study”. In Proc. 34th IEEE/ACM Int. Conf. Program Comprehension (ICPC).              1440–1477.
+      146–158. doi:10.1145/3794763.3794806                                                 [52] John Johnson, Sergio Lubo, Nishitha Yedla, Jairo Aponte, and Bonita Sharif.
+ [23] Jacob Cohen. 1988. Statistical Power Analysis for the Behavioral Sciences (2 ed.).        2019. An empirical study assessing source code readability in comprehension.
+      Routledge. doi:10.4324/9780203771587                                                      In ICSME. 513–523.
+ [24] Ricardo Couceiro, Raul Barbosa, João Duráes, Gonçalo Duarte, João Castelhano,        [53] Zachary Karas, Aakash Bansal, Yifan Zhang, Toby Li, Collin McMillan, and Yu
+      Catarina Duarte, Cesar Teixeira, Nuno Laranjeiro, Júlio Medeiros, and Paulo Car-          Huang. 2024. A tale of two comprehensions? analyzing student programmer
+      valho. 2019. Spotting problematic code lines using nonintrusive programmers’              attention during code summarization. ACM Trans. Softw. Eng. Methodol. (TOSEM)
+      biofeedback. In ISSRE. 93–103.                                                            33, 7 (2024), 1–37.
+ [25] Igor Crk, Timothy Kluthe, and Andreas Stefik. 2015. Understanding program-           [54] Nadia Kasto and Jacqueline Whalley. 2013. Measuring the difficulty of code
+      ming expertise: an empirical study of phasic brain wave changes. ACM Trans.               comprehension tasks using software metrics. In Proc. Australas. Comput. Educ.
+      Comput.-Hum. Interact. (TOCHI) 23, 1 (2015), 1–29.                                        Conf. (ACE). 59–65.
+ [26] Ozren Dabic, Emad Aghajani, and Gabriele Bavota. 2021. Sampling projects in          [55] Maurice G. Kendall. 1945. The treatment of ties in ranking problems. Biometrika
+      GitHub for MSR studies. In MSR. 560–564.                                                  33, 3 (1945), 239–251.
+ [27] Ermira Daka, José Campos, Gordon Fraser, Jonathan Dorn, and Westley Weimer.          [56] Maurice G. Kendall, Sheila F. H. Kendall, and B. Babington Smith. 1939. The
+      2015. Modeling readability to improve unit tests. In ESEC/FSE. 107–118.                   distribution of Spearman’s coefficient of rank correlation in a universe in which
+ [28] Norman Dalkey and Olaf Helmer. 1963. An experimental application of the                   all rankings occur an equal number of times. Biometrika (1939), 251–273.
+      Delphi method to the use of experts. Manage. Sci. 9, 3 (1963), 458–467.              [57] Dmitry Khodyakov, Sean Grant, Jack Kroger, and Melissa Bauman. 2023. RAND
+ [29] Norman C. Dalkey. 1969. The Delphi method: an experimental study of group                 methodological guidance for conducting and critically appraising Delphi panels.
+      opinion. RAND Corp., Santa Monica, CA. doi:10.7249/RM5888                                 RAND Corp., Santa Monica, CA. doi:10.7249/TLA3082-1
+ [30] Nadeeshan De Silva, Martin Kellogg, and Oscar Chaparro. 2025. Relative code          [58] George Kinnear, Ian Jones, and Ben Davies. 2025. Comparative judgement as a
+      comprehensibility prediction. arXiv (2025). arXiv:2510.03474                              research tool: A meta-analysis of application and reliability. Behavior Research
+ [31] Nadeeshan De Silva, Martin Kellogg, and Oscar Chaparro. 2026. Verifier Warn-              Methods 57 (2025), 222.
+      ings Do Not Improve Comprehensibility Prediction. In EASE’26. to appear.             [59] Walter Kintsch. 1988. The role of knowledge in discourse comprehension: a
+ [32] Amirhossein Deljouyi, Roham Koohestani, Maliheh Izadi, and Andy Zaidman.                  construction-integration model. Psychol. Rev. 95, 2 (1988), 163–182.
+      2025. Leveraging Large Language Models for Enhancing the Understandability           [60] Walter Kintsch and Teun A. Van Dijk. 1978. Toward a model of text comprehen-
+      of Generated Unit Tests. In ICSE. 1449–1461. doi:10.1109/ICSE55347.2025.00032             sion and production. Psychol. Rev. 85, 5 (1978), 363–394.
+ [33] Bart Du Bois, Serge Demeyer, and Jan Verelst. 2005. Does the “refactor to            [61] Martin F Krafft, Klaas-Jan Stol, and Brian Fitzgerald. 2016. How do free/open
+      understand” reverse engineering pattern improve program comprehension?. In                source developers pick their tools? A Delphi study of the Debian project. In Pro-
+      CSMR. 334–343.                                                                            ceedings of the 38th International Conference on Software Engineering Companion.
+ [34] Aruna Duraisingam, Ramaswamy Palaniappan, and Samraj Andrews. 2017.
+      Cognitive task difficulty analysis using EEG and data mining. In ICEDSS. 52–57.
+On the Reliability of Code Comprehension Proxies                                                                              ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+      232–241.                                                                                  564–575.
+ [62] Luigi Lavazza, Sandro Morasca, and Marco Gatto. 2023. An empirical study on          [88] Isabel Braga Sampaio and Alberto Sampaio. 2024. Replication of a study about
+      software understandability and its dependence on code characteristics. Empir.             the impact of method chaining and comments on readability and comprehension.
+      Softw. Eng. 28, 6 (2023), 155.                                                            In ICCQ. 35–52.
+ [63] Dawn Lawrie, Christopher Morrell, Henry Feild, and David Binkley. 2007. Ef-          [89] Simone Scalabrino, Gabriele Bavota, Christopher Vendome, Mario Linares-
+      fective identifier names for comprehension and memory. Innov. Syst. Softw. Eng.           Vásquez, Denys Poshyvanyk, and Rocco Oliveto. 2017. Automatically assessing
+      3, 4 (2007), 303–318.                                                                     code understandability: how far are we?. In ASE. 417–427.
+ [64] SeolHwa Lee, Andrew Matteson, Danial Hooshyar, SongHyun Kim, JaeBum                  [90] Simone Scalabrino, Gabriele Bavota, Christopher Vendome, Mario Linares-
+      Jung, GiChun Nam, and HeuiSeok Lim. 2016. Comparing programming language                  Vásquez, Denys Poshyvanyk, and Rocco Oliveto. 2019. Automatically assessing
+      comprehension between novice and expert programmers using EEG analysis.                   code understandability. IEEE Trans. Softw. Eng. (TSE) 47, 3 (2019), 595–613.
+      In BIBE. 350–355.                                                                    [91] David A. Scanlan. 1989. Structured flowcharts outperform pseudocode: an
+ [65] Brady D Lund. 2020. Review of the Delphi method in library and information                experimental comparison. IEEE Softw. 6, 5 (1989), 28–36.
+      science research. J. Doc. 76, 4 (2020), 929–960. doi:10.1108/JD-09-2019-0178         [92] Sandro Schulze, Jörg Liebig, Janet Siegmund, and Sven Apel. 2013. Does the
+ [66] Sarah B Maness, Stacey B Griner, and Erika L Thompson. 2025. Expert Consensus             discipline of preprocessor annotations matter? a controlled experiment. In GPCE.
+      on Indicators of Social Determinants of Health: A Modified Delphi Study. J.               65–74.
+      Prim. Care Community Health 16 (2025).                                               [93] Todd Sedano. 2016. Code readability testing: an empirical study. In CSEET.
+ [67] Jean Melo, Fabricio Batista Narcizo, Dan Witzner Hansen, Claus Brabrand, and              111–117.
+      Andrzej Wasowski. 2017. Variability through the eyes of the programmer. In           [94] Zhida Shang. 2023. Use of Delphi in health sciences research: a narrative review.
+      Proc. IEEE/ACM Int. Conf. Program Comprehension (ICPC). 34–44.                            Medicine 102, 7 (2023), e32829.
+ [68] Richard J. Miara, Joyce A. Musselman, Juan A. Navarro, and Ben Shneiderman.          [95] Bonita Sharif, Michael Falcone, and Jonathan I. Maletic. 2012. An eye-tracking
+      1983. Program indentation and comprehensibility. Commun. ACM 26, 11 (1983),               study on the role of scan time in finding source code defects. In Proc. Symp. Eye
+      861–867.                                                                                  Tracking Res. Appl. (ETRA). 381–384.
+ [69] Roberto Minelli, Andrea Mocci, and Michele Lanza. 2015. I know what you              [96] Janet Siegmund, Christian Kästner, Sven Apel, Chris Parnin, Anja Bethmann,
+      did last summer: an investigation of how developers spend their time. In ICPC.            Thomas Leich, Gunter Saake, and André Brechmann. 2014. Understanding
+      25–35.                                                                                    understanding source code with functional magnetic resonance imaging. In
+ [70] Russell Mosemann and Susan Wiedenbeck. 2001. Navigation and comprehension                 ICSE. 378–389.
+      of programs by novice programmers. In IWPC. 79–88.                                   [97] Janet Siegmund and Jana Schumann. 2015. Confounding parameters on program
+ [71] Sebastian Nielebock, Dariusz Krolikowski, Jacob Krüger, Thomas Leich, and                 comprehension: a literature survey. EMSE 20 (2015), 1159–1192.
+      Frank Ortmeier. 2019. Commenting source code: is it worth it for small pro-          [98] Catherine Snow. 2002. Reading for understanding: toward an R&D program in
+      gramming tasks? Empir. Softw. Eng. 24, 3 (2019), 1418–1457.                               reading comprehension. RAND Corp.
+ [72] Pavel A. Orlov and Roman Bednarik. 2017. The role of extrafoveal vision in           [99] TIOBE Software. 2026. TIOBE index. https://www.tiobe.com/tiobe-index/.
+      source code comprehension. Perception 46, 5 (2017), 541–565.                        [100] Sean Stapleton, Yashmeet Gambhir, Alexander LeClair, Zachary Eberhart, West-
+ [73] Kang-il Park, Jack Johnson, Cole S. Peterson, Nishitha Yedla, Isaac Baysinger,            ley Weimer, Kevin Leach, and Yu Huang. 2020. A human study of comprehension
+      Jairo Aponte, and Bonita Sharif. 2024. An eye tracking study assessing source             and code summarization. In ICPC. 2–13.
+      code readability rules for program comprehension. EMSE 29, 6 (2024), 160.           [101] Andreas Stefik, Christopher Hundhausen, and Robert Patterson. 2011. An
+ [74] Norman Peitek, Sven Apel, Chris Parnin, André Brechmann, and Janet Siegmund.              empirical investigation into the design of auditory cues to enhance computer
+      2021. Program comprehension and code complexity metrics: an fMRI study. In                program comprehension. Int. J. Hum.-Comput. Stud. 69, 12 (2011), 820–838.
+      ICSE. 524–536.                                                                      [102] Armstrong A. Takang, Penny A. Grubb, and Robert D. Macredie. 1996. The
+ [75] Norman Peitek, Janet Siegmund, and Sven Apel. 2020. What drives the reading               effects of comments and identifier names on program comprehensibility: an
+      order of programmers? an eye tracking study. In ICPC. 342–353.                            experimental investigation. J. Program. Lang. 4, 3 (1996), 143–167.
+ [76] Norman Peitek, Janet Siegmund, Sven Apel, Christian Kästner, Chris Parnin,          [103] Barbee E. Teasley. 1994. The effects of naming style and expertise on program
+      Anja Bethmann, Thomas Leich, Gunter Saake, and André Brechmann. 2018.                     comprehension. Int. J. Hum.-Comput. Stud. 40, 5 (1994), 757–770.
+      A look into programmers’ heads. IEEE Trans. Softw. Eng. (TSE) 46, 4 (2018),         [104] Ted Tenny. 1985. Procedures and comments vs. the banker’s algorithm. ACM
+      442–462.                                                                                  SIGCSE Bull. 17, 3 (1985), 44–53.
+ [77] Norman Peitek, Janet Siegmund, Chris Parnin, Sven Apel, and André Brechmann.        [105] Ted Tenny. 1988. Program readability: procedures versus comments. IEEE Trans.
+      2018. Beyond gaze: preliminary analysis of pupil dilation and blink rates in              Softw. Eng. (TSE) 14, 9 (1988), 1271–1279.
+      an fMRI study of program comprehension. In Proc. Workshop Eye Movements             [106] Louis L. Thurstone. 2017. A law of comparative judgment. In Scaling. Routledge,
+      Program. (EMIP). 1–5.                                                                     81–92.
+ [78] Nancy Pennington. 1987. Stimulus structures and mental representations in           [107] Abbie Tingstad et al. 2025. Divergent trajectories of Arctic change: Implications
+      expert comprehension of computer programs. Cogn. Psychol. 19, 3 (1987), 295–              for future socio-economic patterns. Ambio 54, 2 (2025), 239–255. doi:10.1007/
+      341.                                                                                      s13280-024-02080-x
+ [79] Daryl Posnett, Abram Hindle, and Premkumar Devanbu. 2011. A simpler model           [108] Rachel Turner, Michael Falcone, Bonita Sharif, and Alina Lazar. 2014. An eye-
+      of software readability. In MSR. 73–82.                                                   tracking study assessing the comprehension of C++ and Python source code. In
+ [80] Vennila Ramalingam and Susan Wiedenbeck. 1997. An empirical study of novice               Proc. Symp. Eye Tracking Res. Appl. (ETRA). 231–234.
+      program comprehension in the imperative and object-oriented styles. In Empir.       [109] Anneliese von Mayrhauser and A. Marie Vans. 1995. Program comprehension
+      Stud. Programmers. 124–139.                                                               during software maintenance and evolution. Computer 28, 8 (1995), 44–55.
+ [81] Gerard K. Rambally. 1986. The influence of color on program readability and         [110] Anneliese von Mayrhauser and A. Marie Vans. 1995. Program understanding:
+      comprehensibility. In SIGCSE. 173–181.                                                    models and experiments. In Adv. Comput. Vol. 40. 1–38.
+ [82] Talita Vieira Ribeiro, Paulo Sérgio Medeiros dos Santos, and Guilherme Horta        [111] Jacqueline Whalley, Raymond Lister, Errol Thompson, Tony Clear, Phil Robbins,
+      Travassos. 2023. On the investigation of empirical contradictions: aggregated             P. K. Ajith Kumar, and Christine Prasad. 2006. An Australasian study of reading
+      results of local studies on readability and comprehensibility of source code.             and comprehension skills in novice programmers, using the Bloom and SOLO
+      Empir. Softw. Eng. 28, 6 (2023), 148.                                                     taxonomies. Australas. Comput. Soc. (2006).
+ [83] Talita Vieira Ribeiro and Guilherme Horta Travassos. 2018. Attributes influenc-     [112] Susan Wiedenbeck, Vennila Ramalingam, Suseela Sarasamma, and Cynthia L.
+      ing the reading and comprehension of source code: discussing contradictory                Corritore. 1999. A comparison of the comprehension of object-oriented and
+      evidence. CLEI Electron. J. 21, 1 (2018), 5–1.                                            procedural programs by novice programmers. Interact. Comput. 11, 3 (1999),
+ [84] Jennifer Roggenbuck, Breda HF Eubank, Joshua Wright, Matthew B Harms,                     255–282.
+      Stephen J Kolb, and the ALS Genetic Testing and Counseling Guidelines Expert        [113] Eliane S. Wiese, Anna N. Rafferty, and Armando Fox. 2019. Linking code
+      Panel. 2023. Evidence-based consensus guidelines for ALS genetic testing and              readability, structure, and comprehension among novices: it’s complicated. In
+      counseling. Ann. Clin. Transl. Neurol. 10, 11 (2023), 2074–2091.                          ICSE-SEET. 84–94.
+ [85] Daniel Russo, Paolo Ciancarini, Tommaso Falasconi, and Massimo Tomasi. 2017.        [114] Andreas Wulff-Jensen, Kevin Ruder, Evangelia Triantafyllou, and Luis Emilio
+      Software quality concerns in the Italian bank sector: the emergence of a meta-            Bruni. 2018. Gaze strategies can reveal the impact of source code features on
+      quality dimension. In 2017 IEEE/ACM 39th International Conference on Software             the cognitive load of novice programmers. In Proc. Int. Conf. Appl. Hum. Factors
+      Engineering: Software Engineering in Practice Track (ICSE-SEIP). IEEE, 63–72.             Ergon. (AHFE). 91–100.
+ [86] Jonathan A. Saddler, Cole S. Peterson, Patrick Peachock, and Bonita Sharif. 2019.   [115] Marvin Wyrich, Justus Bogner, and Stefan Wagner. 2023. 40 years of designing
+      Reading behavior and comprehension of C++ source code: a classroom study.                 code comprehension experiments: a systematic mapping study. ACM Comput.
+      In Augmented Cognition (AC). 597–616.                                                     Surv. 56, 4 (2023), 1–42.
+ [87] Guido Salvaneschi, Sven Amann, Sebastian Proksch, and Mira Mezini. 2014. An
+      empirical study on program comprehension with reactive programming. In FSE.
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                                                            Arvan, De Silva, Chaparro, and Kellogg
+
+
+ Strategy               # Rankings       Representative Rankings                                                 This is the strongest notion of consensus and typically yields short
+ Strict                      4           { [1, 4, 7, 6], [1, 5, 7, 6], [2, 4, 7, 6], [2, 5, 7, 6] }              rankings.
+ Unanimous up to ties        6           { [1, 2, 4, 7, 6], [1, 2, 4, 7, 8], [1, 2, 5, 3, 6], . . . }
+ 1 violation                14           { [1, 2, 4, 5, 7, 6], [1, 2, 4, 5, 7, 8], [1, 2, 4, 7, 6, 8], . . . }     Strategy 2: Unanimous Agreement up to Ties. A ranking 𝑅 satisfies
+ Majority/mean               1           { [1, 2, 5, 4, 3, 7, 8, 6] }
+                                                                                                                 unanimous agreement up to ties if for every induced pair (𝑎, 𝑏) ∈≺𝑅 ,
+Table 6: Partial rankings derived from different expert aggregation
+strategies. The table reports the number of valid rankings per strat-                                                                   ∀𝑒 ∈ 𝐸 :        ¬(𝑏 ≺𝑒 𝑎).
+egy and representative examples; full sets are used in the analysis.
+                                                                                                                    Experts may either agree that 𝑎 is easier than 𝑏 or consider
+                                                                                                                 them tied, but no expert may express the opposite preference. This
+A More Details on Secondary Analyses                                                                             strategy relaxes strategy 1 by allowing ties while still excluding
+                                                                                                                 contradictions.
+A.1 Aggregation Strategies for Expert Rankings
+                                                                                                                    Strategy 3: Unanimous up to Ties with One Global Violation. A
+To account for residual variability across expert judgments, we con-
+                                                                                                                 ranking 𝑅 satisfies strategy 3 if it violates the strategy 2 condition
+struct multiple partial rankings using different aggregation strate-
+                                                                                                                 for at most one unordered pair {𝑎, 𝑏} ⊆ 𝑅. Formally, there exists at
+gies, as summarized in Table 6. These strategies capture varying
+                                                                                                                 most one pair such that
+levels of consensus, ranging from strict agreement to more relaxed
+formulations that allow ties or limited violations.                                                                                          ∃𝑒 ∈ 𝐸 :    𝑏 ≺𝑒 𝑎,
+   The number of resulting rankings differs substantially across                                                 while all other pairs satisfy the strategy 2 constraint.
+strategies, reflecting the degree of flexibility each approach permits.                                            This strategy captures rankings that are nearly unanimous while
+Together, these aggregated rankings provide a principled way to                                                  permitting a single global inconsistency, enabling longer rankings.
+model expert uncertainty and are used as alternative ground truths
+in our subsequent analysis.                                                                                         Strategy 4: Pure Majority Aggregation. For any pair (𝑎, 𝑏), define
+                                                                                                                 the majority preference relation:
+A.1.1    Expert Ranking Aggregation and Correlation Analysis.
+                                                                                                                           𝑎 ≺maj 𝑏    iff    |{𝑒 | 𝑎 ≺𝑒 𝑏}| > |{𝑒 | 𝑏 ≺𝑒 𝑎}|.
+   Expert Rankings. Let
+                                                                                                                    A ranking 𝑅 is valid under pure majority aggregation if all its
+                                   𝑆 = {1, 2, . . . , 8}                                                         induced pairs are consistent with ≺maj . This approach allows dis-
+denote the set of code snippets used in the study.                                                               agreement among experts and corresponds to classical majority
+   Each expert provides a ranking over the snippets, allowing for                                                voting. Because majority relations may contain cycles, not all snip-
+ties. We model an expert’s judgment as a binary preference relation                                              pets can necessarily be included.
+                                     ≺𝑒 ⊆ 𝑆 × 𝑆,                                                                    Strategy 5: Mean-Rank (Borda-Style) Aggregation. Let rank𝑒 (𝑎)
+                                                                                                                 be the numeric rank assigned to snippet 𝑎 by expert 𝑒, with tied
+where 𝑎 ≺𝑒 𝑏 means that expert 𝑒 considers snippet 𝑎 easier to
+                                                                                                                 snippets receiving equal ranks. The mean rank of snippet 𝑎 is
+understand than snippet 𝑏. If an expert judges two snippets to be
+equally difficult, neither ordering is included.                                                                                                1 ∑︁
+                                                                                                                                    rank(𝑎) =           rank𝑒 (𝑎).
+  Given a candidate aggregated ranking                                                                                                         |𝐸| 𝑒 ∈𝐸
+                                 𝑅 = (𝑟 1, 𝑟 2, . . . , 𝑟𝑘 ),                                                       The aggregated ranking is obtained by sorting snippets in in-
+we say that 𝑅 induces the pairwise relation                                                                      creasing order of rank(𝑎). This method produces a single total order
+                                                                                                                 over all snippets and serves as a baseline aggregation strategy.
+                             𝑟𝑖 ≺𝑅 𝑟 𝑗         iff 𝑖 < 𝑗 .
+                                                                                                                 A.1.3 Selection of Expert Rankings for Analysis. For each aggrega-
+   Our goal is to construct aggregated expert rankings under differ-
+                                                                                                                 tion strategy, we enumerated all valid rankings and selected those
+ent consistency assumptions and then correlate them with rankings
+                                                                                                                 with maximum length (i.e., containing the largest number of snip-
+derived from student data. In our setting, the rankings produced by
+                                                                                                                 pets). These longest rankings were used for correlation analysis, as
+Strategy 4 (pure majority aggregation) and Strategy 5 (mean-rank
+                                                                                                                 they maximize comparability with student-derived rankings while
+aggregation) are identical. Therefore, we report their results jointly
+                                                                                                                 respecting the defining constraints of each strategy.
+under the label majority/mean.
+                                                                                                                 A.1.4 Results. Figures 5 and 6 show results across different ex-
+A.1.2 Aggregation Strategies for Expert Rankings. We consider five
+                                                                                                                 pert aggregation strategies. While absolute correlation values vary,
+aggregation strategies, each imposing different constraints on how
+                                                                                                                 the relative ranking of proxies remains stable across aggregation
+expert preferences must align with the aggregated ranking.
+                                                                                                                 methods.
+   Strategy 1: Strict Unanimous Agreement. A ranking 𝑅 satisfies
+strict unanimous agreement if for every induced pair (𝑎, 𝑏) ∈≺𝑅 ,                                                A.2    No Aggregation in Expert Side
+                                 ∀𝑒 ∈ 𝐸 :          𝑎 ≺𝑒 𝑏.                                                       Figures 7 and 8 compare aggregated student proxies against indi-
+                                                                                                                 vidual experts. The overall trends remain consistent, indicating that
+  That is, all experts must strictly agree on the ordering of every
+                                                                                                                 the results are not driven by a specific expert.
+pair in 𝑅. Ties are not permitted for any included comparison.
+On the Reliability of Code Comprehension Proxies                                                   ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+
+
+                                                                      Figure 6: Distribution of correlations between aggregated student
+                                                                      proxies and expert rankings across aggregation strategies (Kendall).
+
+
+
+Figure 9: Correlation between per-student proxy rankings and ag-
+gregated expert rankings (Kendall).
+
+
+
+
+Figure 10: Distribution of correlations between per-student proxy
+rankings and aggregated expert rankings (Kendall).
+
+                                                                      Figure 7: Correlation between aggregated student proxies and indi-
+                                                                      vidual expert rankings (Kendall).
+
+
+
+
+                                                                      Figure 8: Distribution of correlations between aggregated student
+                                                                      proxies and individual expert rankings (Kendall).
+
+                                                                      A.3    No Aggregation in Student Side (vs
+Figure 11: Correlation between per-student proxy rankings and in-            Aggregated Experts)
+dividual expert rankings (Kendall).
+                                                                      Figures 9 and 10 show results without aggregating student data.
+                                                                      The distributions exhibit higher variability, reflecting noise at the
+                                                                      individual level.
+
+                                                                      A.4    No Aggregation in Both Sides
+                                                                      Figures 11 and 12 present the fully unaggregated setting. Correla-
+                                                                      tions are more dispersed, but the overall ordering of proxies remains
+                                                                      consistent.
+
+                                                                      A.5    Impact of Student Characteristics and
+                                                                             Fatigue on Code Comprehension
+                                                                             Performance
+                                                                      A.5.1 Overview. We analyze whether student background charac-
+Figure 5: Correlation between aggregated student proxies and expert   teristics and task order influence code comprehension performance
+rankings across different expert aggregation strategies (Kendall).
+ASE ’26, October 12–16, 2026, Munich, Germany                                                                Arvan, De Silva, Chaparro, and Kellogg
+
+
+                                                                        • Programming Experience Relative to Peers: A self-reported
+                                                                           measure of programming ability compared to classmates.
+                                                                        • Java Experience (Years)
+                                                                        • Object-Oriented Experience: Self-rated experience with object-
+                                                                           oriented programming.
+                                                                        • Programming Experience Score
+                                                                        • Background Knowledge: A knowledge score derived from re-
+                                                                           sponses to eleven multiple-choice familiarity questions about
+Figure 12: Distribution of correlations between per-student proxy          snippets.
+rankings and individual expert rankings (Kendall).                      • Fatigue: The position of the snippet in the experiment (1–8),
+                                                                           representing task order.
+in our study. Specifically, we investigate whether self-reported pro-      All participant-level background predictors were standardized
+gramming experience, object-oriented programming knowledge,             to 𝑧-scores prior to modeling. Fatigue was operationalized directly
+background knowledge, and fatigue affect multiple comprehension         as snippet position.
+proxies. Rather than aggregating across question types, we analyze
+accuracy and time separately for the function, output, and syntax       A.5.5 Statistical Models. Because participants completed multiple
+tasks. We also analyze snippet reading time and total time spent        tasks, observations are not independent. We therefore use statistical
+on each snippet.                                                        models that account for repeated measurements.
+   Participants solved eight code comprehension tasks presented            Accuracy Models. Accuracy is measured at the question level and
+in randomized order. For each task, participants first read a code      is a binary variable indicating whether a comprehension question
+snippet and then answered three comprehension questions: one            was answered correctly. We analyze each accuracy proxy separately
+function question, one output question, and one syntax question.        using logistic regression estimated with clustered standard errors:
+The dataset therefore contains repeated measurements for each
+participant across multiple snippets and question types.                                 accuracy𝑖,𝑗,𝑘 ∼ 𝛽 0 + 𝛽 1 predictor𝑖 + 𝛾 𝑗
+A.5.2 Data Structure. The dataset contains repeated observations             where 𝑖 indexes participants, 𝑗 indexes snippets, and 𝑘 indexes
+for each participant. Each participant solved eight code comprehen-     question type. The model includes fixed effects for snippet identity
+sion tasks, and each task includes three comprehension questions.       (𝛾 𝑗 ) to control for differences in snippet difficulty, and standard
+Therefore, the data can be represented at two levels relevant to the    errors are clustered by participant to account for repeated observa-
+present analysis:                                                       tions.
+• Question level: Each observation corresponds to a single com-            Time Models. Question-level time proxies, snippet reading time,
+   prehension question (function, output, or syntax). This dataset      and snippet total time are continuous outcomes. We analyze them
+   contains up to 44 × 8 × 3 = 1056 observations.                       using linear mixed-effects models:
+• Snippet level: Each observation corresponds to a participant–
+   snippet pair. This dataset contains up to 44×8 = 352 observations.                  time𝑖,𝑗,𝑘 ∼ 𝛽 0 + 𝛽 1 predictor𝑖 + 𝛾 𝑗 + 𝑢𝑖
+   Different statistical models are applied depending on the level at
+                                                                           where 𝑢𝑖 is a random intercept for participant 𝑖, capturing indi-
+which the outcome variable is defined.
+                                                                        vidual differences in baseline speed.
+A.5.3 Measured Outcomes. We consider the following outcome
+                                                                        A.5.6 Results and Interpretation. Table 7 summarizes the estimated
+variables:
+                                                                        coefficients, standard errors, p-values, and 95% confidence intervals.
+• acc_function, acc_output, and acc_syntaxBL: Binary vari-              Each row in table 7 corresponds to a separate regression model
+  ables indicating whether the corresponding question was an-           estimating the effect of a single predictor variable on one compre-
+  swered correctly. For function questions, correctness is defined      hension proxy.
+  using the grading threshold adopted in our study; output and             For example, the row Programming Experience Relative to Peers
+  syntax questions use their existing binary correctness labels.        – acc_function estimates the effect of peer-relative programming
+• time_function, time_output, and time_syntaxBL: Raw time               experience on function-question accuracy, while the row Fatigue –
+  spent answering each question type.                                   time_output estimates the effect of snippet order on the time spent
+• time_correct_function, time_correct_output, and                       answering output questions.
+  time_correct_syntaxBL: Raw time spent answering a question,
+  restricted to cases in which the answer was correct.                     Programming Experience Relative to Peers. Programming expe-
+• readTime: The time spent reading a snippet before answering           rience relative to peers shows a significant positive association
+  questions.                                                            with acc_function and acc_output. Participants who perceive them-
+• snippet_total_time: The total time spent on a snippet, defined        selves as stronger programmers relative to their peers are more
+  as the sum of the reading time and the times spent answering          likely to answer function and output questions correctly. In con-
+  the three comprehension questions.                                    trast, this predictor does not show a significant relationship with
+                                                                        acc_syntaxBL or with any of the time-based proxies.
+A.5.4 Predictor Variables. We analyze the following participant-
+level predictors:
+On the Reliability of Code Comprehension Proxies                                                                            ASE ’26, October 12–16, 2026, Munich, Germany
+
+
+Table 7: Impact of participant characteristics and fatigue on compre-
+hension proxies. The table reports results for all estimated models.
+                                                                                              reported in table 7. The coefficient for acc_syntaxBL is negative and
+Coefficients are reported with 95% confidence intervals. Significant                          marginal, but it does not reach conventional significance levels. We
+results (𝑝 < 0.05) are shown in bold.                                                         therefore do not find evidence that the amount of Java experience,
+                                                                                              as self-reported by participants, reliably predicts comprehension
+ Analysis   Outcome                 Predictor   𝛽         SE         𝑝                  CI    performance in this study.
+ PRP
+ PRP        acc_function            PRP         0.33     0.15    0.024        [0.04, 0.61]       Object-Oriented Experience. Object-oriented programming expe-
+ PRP        acc_output              PRP         0.36     0.18    0.045        [0.01, 0.71]    rience shows a statistically significant positive relationship with
+ PRP        acc_syntaxBL            PRP         -0.04    0.18      0.83      [-0.39, 0.31]
+ PRP        time_function           PRP         5.99     9.60      0.53   [-12.83, 24.82]     both acc_function and acc_output. Participants with stronger self-
+ PRP        time_output             PRP         -2.04    6.11      0.74    [-14.02, 9.94]     reported object-oriented experience tend to perform better on these
+ PRP        time_syntaxBL           PRP         -1.05    0.76      0.16      [-2.53, 0.43]
+ PRP        time_correct_function   PRP         2.92     7.69      0.70   [-12.15, 17.99]     two semantically oriented comprehension tasks. No significant re-
+ PRP        time_correct_output     PRP         -5.43    6.84      0.43    [-18.84, 7.97]
+ PRP        time_correct_syntaxBL   PRP         -1.32    0.72      0.07      [-2.73, 0.10]
+                                                                                              lationship is observed for acc_syntaxBL.
+ PRP        readTime                PRP         -3.13    6.75      0.64   [-16.36, 10.11]
+                                                                                                 Programming Experience Score. Programming experience score
+ JavaExp
+ JavaExp    acc_function            JavaExp     -0.12    0.18     0.51       [-0.47, 0.24]    does not show a statistically significant relationship with any of the
+ JavaExp    acc_output              JavaExp     -0.10    0.16     0.54       [-0.42, 0.22]    reported accuracy proxies. The coefficient for acc_output is positive
+ JavaExp    acc_syntaxBL            JavaExp     -0.43    0.25     0.09       [-0.91, 0.06]
+ JavaExp    time_function           JavaExp     11.82    9.48     0.21     [-6.76, 30.39]     and close to significance, but the evidence is not strong enough to
+ JavaExp    time_output             JavaExp     7.03     6.12     0.25     [-4.97, 19.03]
+ JavaExp    time_syntaxBL           JavaExp     0.32     0.77     0.68       [-1.20, 1.83]
+                                                                                              support a reliable effect.
+ JavaExp    time_correct_function   JavaExp     7.20     8.28     0.38     [-9.03, 23.43]
+ JavaExp    time_correct_output     JavaExp     4.58     7.07     0.52     [-9.27, 18.43]        Background Knowledge. Background Knowledge shows a statis-
+ JavaExp    time_correct_syntaxBL   JavaExp     0.17     0.85     0.84       [-1.50, 1.84]
+ JavaExp    readTime                JavaExp     -2.35    6.76     0.73    [-15.60, 10.90]
+                                                                                              tically significant positive association with acc_function, indicating
+ OOP
+                                                                                              that participants with stronger background knowledge are more
+ OOP        acc_function            OOP         0.39     0.18    0.026        [0.05, 0.74]    likely to answer function questions correctly. No significant rela-
+ OOP        acc_output              OOP         0.45     0.20    0.023        [0.06, 0.84]
+ OOP        acc_syntaxBL            OOP         0.03     0.20      0.89      [-0.37, 0.42]
+                                                                                              tionship is observed for acc_output or acc_syntaxBL, although the
+ OOP        time_function           OOP         1.50     9.65      0.88   [-17.41, 20.40]     coefficient for acc_output is positive and marginal.
+ OOP        time_output             OOP         -4.06    6.11      0.51    [-16.04, 7.92]
+ OOP        time_syntaxBL           OOP         -1.00    0.76      0.19      [-2.49, 0.48]
+ OOP        time_correct_function   OOP         -2.81    7.83      0.72   [-18.16, 12.55]
+                                                                                                 Fatigue Effects. Fatigue, operationalized as snippet position, does
+ OOP        time_correct_output     OOP         -7.37    7.14      0.30    [-21.37, 6.63]     not show statistically significant effects on the accuracy prox-
+ OOP        time_correct_syntaxBL   OOP         -1.42    0.86      0.10      [-3.09, 0.26]
+ OOP        readTime                OOP         -2.11    6.76      0.76   [-15.36, 11.15]     ies reported in table 7. In contrast, fatigue shows strong nega-
+ PE
+                                                                                              tive associations with several time-based proxies. Later snippets
+ PE         acc_function            PE          0.20     0.13     0.11       [-0.05, 0.45]    are associated with lower time_function, lower time_output, lower
+ PE         acc_output              PE          0.28     0.15     0.06       [-0.02, 0.58]
+ PE         acc_syntaxBL            PE          0.04     0.14     0.75       [-0.23, 0.32]    time_correct_output, lower time_correct_syntaxBL, lower readTime,
+ PE         time_function           PE          -3.21    9.64     0.74    [-22.09, 15.68]     and lower snippet_total_time.
+ PE         time_output             PE          -3.48    6.11     0.57     [-15.47, 8.50]
+ PE         time_syntaxBL           PE          -0.63    0.77     0.42       [-2.13, 0.88]       These results indicate that participants become faster as the
+ PE         time_correct_function   PE          -1.85    7.54     0.81    [-16.62, 12.92]     study progresses, while their accuracy remains relatively stable.
+ PE         time_correct_output     PE          -0.94    6.95     0.89    [-14.56, 12.67]
+ PE         time_correct_syntaxBL   PE          -0.50    0.85     0.56       [-2.17, 1.17]    This pattern is more consistent with learning, adaptation, or in-
+ PE         readTime                PE          -2.10    6.76     0.76    [-15.35, 11.15]
+                                                                                              creased familiarity with the study format than with deterioration
+ BK
+ BK         acc_function            BK          0.35     0.14    0.010        [0.09, 0.62]
+                                                                                              in comprehension performance over time.
+ BK         acc_output              BK          0.38     0.23      0.09      [-0.06, 0.83]
+ BK
+ BK
+            acc_syntaxBL
+            time_function
+                                    BK
+                                    BK
+                                                0.03
+                                                -10.93
+                                                         0.14
+                                                         9.50
+                                                                   0.86
+                                                                   0.25
+                                                                             [-0.25, 0.30]
+                                                                           [-29.55, 7.69]
+                                                                                              A.6     Cross-Institutional Consistency Analysis
+ BK         time_output             BK          -11.48   6.14      0.06    [-23.51, 0.56]
+ BK         time_syntaxBL           BK          -1.02    0.76      0.18      [-2.50, 0.46]
+                                                                                              To assess whether our findings generalize across populations, we
+ BK         time_correct_function   BK          -3.39    7.59      0.66   [-18.26, 11.49]     compare correlation results obtained from students at University 1
+ BK         time_correct_output     BK          -11.30   6.87      0.10    [-24.77, 2.17]
+ BK         time_correct_syntaxBL   BK          -0.91    0.74      0.22      [-2.35, 0.54]    (𝑛 = 37) and University 2 (𝑛 = 7). Our goal is not to compare indi-
+ BK         readTime                BK          -10.21   6.58      0.12    [-23.11, 2.70]     vidual correlation values in isolation, but to determine whether the
+ Fatigue                                                                                      overall pattern of proxy effectiveness is consistent across institutions.
+ Fatigue    acc_function            Fatigue     0.00     0.05      0.99       [-0.09, 0.09]
+ Fatigue    acc_output              Fatigue     -0.09    0.05      0.08       [-0.20, 0.01]      For each aggregation configuration (i.e., no aggregation/per-
+ Fatigue    acc_syntaxBL            Fatigue     0.10     0.09      0.28       [-0.08, 0.27]   student and mean), we construct a vector of correlation values for
+ Fatigue    time_function           Fatigue     -7.95    2.04   0.0001     [-11.95, -3.95]
+ Fatigue    time_output             Fatigue     -7.45    1.88   0.0001     [-11.14, -3.76]    University 1 and University 2, where each element corresponds to
+ Fatigue    time_syntaxBL           Fatigue     -0.22    0.26      0.40       [-0.74, 0.30]   a specific configuration (i.e., a combination of expert aggregation
+ Fatigue    time_correct_function   Fatigue     -2.90    2.25      0.20       [-7.31, 1.51]
+ Fatigue    time_correct_output     Fatigue     -5.29    2.30    0.021       [-9.79, -0.79]   strategies, expert ranking, and proxy). We then measure cross-
+ Fatigue    time_correct_syntaxBL   Fatigue     -0.50    0.25    0.043       [-0.98, -0.02]
+ Fatigue    readTime                Fatigue     -5.04    1.17   <0.001       [-7.34, -2.75]
+                                                                                              institutional agreement by computing the Spearman correlation
+ Fatigue    snippet_total_time      Fatigue     -15.62   2.67   <0.001    [-20.86, -10.37]    between these vectors. This captures whether proxies that per-
+                                                                                              form well (or poorly) under one population exhibit similar relative
+   This pattern suggests that self-perceived programming ability is                           performance under the other.
+more closely related to semantic comprehension performance than                                  The results show strong agreement across institutions. In particu-
+to syntax-focused comprehension or response speed.                                            lar, the per-student aggregation yields a high correlation (𝜌 = 0.78),
+                                                                                              indicating that the relative ordering of proxies is largely preserved
+   Java Experience (Years). Java experience does not show a statisti-                         between University 1 and University 2. Mean aggregation exhibits
+cally significant relationship with any of the three accuracy proxies                         slightly lower but still substantial agreement (𝜌 = 0.68). These
+ASE ’26, October 12–16, 2026, Munich, Germany                                                               Arvan, De Silva, Chaparro, and Kellogg
+
+
+Table 8: Cross-institution consistency between University 1 (𝑛 = 37)
+and University 2 (𝑛 = 7). We report the Spearman correlation between
+                                                                       observed differences are moderate, ranging from Δ𝜌 ≈ 0.18 (per-
+correlation vectors (𝜌), capturing agreement in proxy rankings, and    student) to Δ𝜌 ≈ 0.25 (mean), with median differences around
+the mean/median absolute differences (|Δ𝜌 |), capturing magnitude      0.17–0.20. This indicates that while individual correlation values
+of variation.                                                          may vary due to sampling variability (especially given the smaller
+                                                                       University 2 cohort), these variations do not substantially alter the
+     Aggregation        𝜌 (vector)      Mean |Δ𝜌 |   Median |Δ𝜌 |      relative behavior of proxies.
+                                                                          Overall, the high vector-level correlations, combined with mod-
+     Per-student            0.78            0.18         0.17
+                                                                       erate absolute differences, demonstrate that our findings are robust
+     Mean                   0.68            0.25         0.20
+                                                                       across institutions. In particular, the per-student aggregation pro-
+                                                                       vides the most stable cross-institutional signal, suggesting it is less
+results suggest that the choice of proxy leads to comparable con-
+                                                                       sensitive to sample size differences and better captures consistent
+clusions across both populations.
+                                                                       trends in proxy effectiveness.
+   To quantify the magnitude of differences, we compute the mean
+absolute difference between corresponding correlation values. The
+

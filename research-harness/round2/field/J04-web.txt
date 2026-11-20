@@ -1,0 +1,191 @@
+Accelerating code migrations with AI (https://research.google/blog/accelerating-code-migrations-with-ai/)
+citeturn100view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://research.google/blog/accelerating-code-migrations-with-ai/","lineno":null}); Total lines: 188
+L0: 【0†iframe†www.googletagmanager.com】
+L1: ## Explore our many areas of focus
+L2: 
+L3: 【1†Explore all research areas】
+L4: 
+L5: Applied AI & sciences
+L6: 
+L7: 【2†Earth AI】 【3†Health AI】 【4†Science AI】 【5†Sustainability & crisis resilience】
+L8: 
+L9: Foundational ML & algorithms
+L10: 
+L11: 【6†Algorithms & theory】 【7†Information retrieval】 【8†Machine intelligence】 【9†Machine perception】 【10†Natural language processing】
+L12: 
+L13: People, systems & quantum AI
+L14: 【11†Human-computer interaction and visualization】 【12†Networking】 【13†Quantum AI】 【14†Responsible AI】 【15†Anti abuse】 【16†Software engineering】 【17†Software systems】
+L15: 
+L16: Learn More
+L17: 
+L18: 【18†Publications】 【19†Projects】
+L19: ## Building a collaborative ecosystem
+L20: 
+L21: 【20†Datasets Access high-quality datasets to accelerate your research.】 【21†Tools & services Explore our latest AI models and products.】
+L22: 
+L23: 【22†Open source Discover open-source code and collaborate with the community.】 【23†Try Deep Review Get detailed AI feedback on complex documents】
+L24: ## Shaping the future together
+L25: 
+L26: 【24†See all programs】
+L27: 
+L28: 【25†Faculty programs Participating in the academic research community through meaningful engagement with university faculty.】 【26†Student programs Supporting the next generation of researchers through a wide range of programming.】
+L29: 
+L30: 【27†R&D programs Collaborating with industry and academic experts to support foundational science and innovation.】 【28†Locations Find your place in our global offices and research labs.】
+L31: ## Translating discovery into real-world impact
+L32: 
+L33: 【29†People Our researchers drive advancements in computer science through both fundamental and applied research.】
+L34: 
+L35: 【30†Teams Collaborative groups tackling the world's most challenging AI problems.】
+L36: 
+L37: Research
+L38: ## Explore our many areas of focus
+L39: 
+L40: 【1†Explore all research areas】
+L41: 
+L42: Applied AI & sciences
+L43: 
+L44: 【2†Earth AI】 【3†Health AI】 【4†Science AI】 【5†Sustainability & crisis resilience】
+L45: 
+L46: Foundational ML & algorithms
+L47: 
+L48: 【6†Algorithms & theory】 【7†Information retrieval】 【8†Machine intelligence】 【9†Machine perception】 【10†Natural language processing】
+L49: 
+L50: People, systems & quantum AI
+L51: 【11†Human-computer interaction and visualization】 【12†Networking】 【13†Quantum AI】 【14†Responsible AI】 【15†Anti abuse】 【16†Software engineering】 【17†Software systems】
+L52: 
+L53: Learn More
+L54: 
+L55: 【18†Publications】 【19†Projects】
+L56: 
+L57: Resources
+L58: ## Building a collaborative ecosystem
+L59: 
+L60: 【20†Datasets Access high-quality datasets to accelerate your research.】 【21†Tools & services Explore our latest AI models and products.】 【22†Open source Discover open-source code and collaborate with the community.】 【23†Try Deep Review Get detailed AI feedback on complex documents】
+L61: 
+L62: 【31†Conferences & events】
+L63: 
+L64: Careers
+L65: ## Shaping the future together
+L66: 
+L67: 【24†See all programs】
+L68: 
+L69: 【25†Faculty programs Participating in the academic research community through meaningful engagement with university faculty.】 【26†Student programs Supporting the next generation of researchers through a wide range of programming.】 【27†R&D programs Collaborating with industry and academic experts to support foundational science and innovation.】 【28†Locations Find your place in our global offices and research labs.】
+L70: 
+L71: 【32†Blog】
+L72: 
+L73: About
+L74: ## Translating discovery into real-world impact
+L75: 
+L76: 【29†People Our researchers drive advancements in computer science through both fundamental and applied research.】 【30†Teams Collaborative groups tackling the world's most challenging AI problems.】
+L77: 
+L78: 【33†Google Research】
+L79: 
+L80: 【34†Google AI Learn about all our AI†ai.google】 【35†Google DeepMind Explore the frontier of AI†deepmind.google】 【36†Google Labs Try our AI experiments†labs.google】
+L81: 
+L82: [Button: Research ]
+L83: 
+L84: [Button: Resources ]
+L85: 
+L86: 【31†Conferences & events】
+L87: [Button: Careers ]
+L88: 
+L89: 【32†Blog】
+L90: 
+L91: [Button: About ]
+L92: 
+L93: [Input: Search]
+L94: 
+L95: Search
+L96: 
+L97: play silent looping video pause silent looping video
+L98: 
+L99: unmute video mute video
+L100: # Accelerating code migrations with AI
+L101: 
+L102: July 18, 2024
+L103: 
+L104: Stoyan Nikolov, Senior Staff Software Engineer, Google Core, and Siddharth Taneja, Senior Engineering Manager, Google Ads
+L105: 
+L106: Generative AI-powered workflows allow Google to migrate code faster and maintain its codebase more effectively
+L107: ## Quick links
+L108: 
+L109: In the past decades, source code bases have grown exponentially. Google's monorepo is an example of large code datasets, which includes 【37†billions】 of lines of code. Keeping up with the code transformations (called “migrations”) to accommodate new language versions, framework updates, changing APIs and data types across this vast codebase is challenging, to say the least.
+L110: For years, Google has employed special 【38†infrastructure†abseil.io】 for large scale changes to execute complex code migrations. The infrastructure uses static analysis and tools like 【39†Kythe†kythe.io】 and 【40†Code Search†abseil.io】 to discover which locations need to be changed along with their dependencies. Tools like 【41†ClangMR†clang.llvm.org】 are then employed to make the changes.
+L111: This approach works well for changes that are uniform in their structure and have a limited set of edge cases. Yet static analysis and simple migration scripts run into limitations when migrating code that has a complex structure — for example changing interfaces and their usages across multiple components and their dependencies or updating their tests.
+L112: In this post, we describe our internal approach to combine multiple AI-driven tasks within a new tool for Google developers that assists them in the process of code migrations at scale. The goal is to assist the engineer and let them focus on the complex aspects of the migration without isolating them from the process. Our case study demonstrates that our approach can successfully generate the majority of new code necessary for migrations and significantly reduce the human toil of the work.
+L113: ## Change creation workflow
+L114: 
+L115: For code migrations, we have built a new, complementary toolkit to address changes that would be difficult for the standard tooling and would benefit from the ability of machine learning (ML) models to adapt to the surrounding code.
+L116: 
+L117: We conceptually split the process of the migration into three stages:
+L118: 
+L119:   1. Targeting the locations in the codebase that needed modifications
+L120:   2. Edit generation and validation
+L121:   3. Change review and rollout
+L122: While each of these stages benefits from AI, we focus on #2.
+L123: 
+L124: To generate and validate the code changes we leverage a version of the 【42†Gemini†gemini.google.com】 model that we fine-tuned on internal Google code and data.
+L125: 
+L126: Each migration requires as input:
+L127: 
+L128:   * A set of files and the locations of expected changes: path + line number in the file
+L129:   * One or two prompts that describe the change
+L130:   * [Optional] Few-shot examples to decide if a file actually needs migration
+L131: play silent looping video pause silent looping video
+L132: 
+L133: unmute video mute video
+L134: 
+L135: Example execution of the multi-stage code migration process.
+L136: 
+L137: The file locations provided by the user are collected through a combination of pre-existing static tools and human input. Our migration toolkit automatically expands this set with additional relevant files that can include: test files, interface files, and other dependencies. This step is not yet AI-driven, but uses symbol cross-reference information.
+L138: In many cases the set of files to migrate provided by the user is not perfect. Because filtering the list of input can be onerous, it’s not unusual for some files to have already been partially or completely migrated. Thus, to avoid redundant changes or confusing the model during edit generation we provide the model with few-shot examples and ask it to predict if a file needs to be migrated.
+L139: The edit generation and validation step is where we have found the most benefit from an automated system. Our model was trained following the 【43†DIDACT methodology】 on data from Google’s 【44†monorepo†en.wikipedia.org】 and processes. At inference time, we annotate each line where we expect a change is needed with a natural language instruction as well as a general instruction for the model. In each model query, the input context can contain one or multiple files related to each other.
+L140: The model then predicts differences between the files (【45†diffs†en.wikipedia.org】) where changes are needed and can also change related sections so that the final code is correct.
+L141: This last capability is critical to increase migration velocity, because the generated changes might not be aligned with the initial locations requested, but they will solve the intent. This reduces the need to manually find the full set of lines where changes are needed and is a big step forward compared to purely deterministic change generation based on abstract syntax tree modifications.
+L142: 
+L143: play silent looping video pause silent looping video
+L144: 
+L145: unmute video mute video
+L146: In the example above we prompt the model to only update the 【46†constructor†docs.oracle.com】 of the class where the type has to change. In the predicted 【47†unified diff†www.gnu.org】, the model correctly also fixes the private field and usages within the class.
+L147: Different combinations of prompts yield different results depending on the input context. In some cases providing too many locations where one might expect a change results in worse performance than specifying a change in just one place in the file and prompting the model to apply the change to the file globally.
+L148: As we apply changes across dozens and potentially hundreds of files, we implement a mechanism that generates prompt combinations that are tried in parallel for each file group. This is similar to a 【48†pass@k†arxiv.org】 strategy where instead of 【49†inference temperature†www.iguazio.com】 we modify the prompting strategy.
+L149: We validate the resulting changes automatically. The validations are configurable and often depend on the migration. The two most common validations are compiling the changed files and running their unit tests. Each of the failed validation steps can optionally run an ML-powered “repair”. The model has also been trained on a large set of failed builds and tests paired with the diffs that then fixed them.
+L150: For each of the build/test failures that we encounter, we prompt the model with the changed files, the build/test error and a prompt that requests a fix. With this approach, we observe that in a significant number of cases the model is able to fix the code.
+L151: As we generate multiple changes for each file group, we score them based on the validations and at the end decide which set of changes to propagate back to the final change list (similar to a pull request in 【50†Git†en.wikipedia.org】).
+L152: ## Case study: Migrating integers from 32-bit to 64-bit
+L153: 
+L154: As Google’s codebase and its products evolve, assumptions made in the past (sometimes over a decade ago) no longer hold. For example, Google Ads has dozens of numerical unique “ID” types used as handles — for users, merchants, campaigns, etc. — and these IDs were originally defined as 32-bit integers. But with the current growth in the number of IDs, we expect them to overflow the 32-bit capacity much sooner than expected.
+L155: This realization led to a significant effort to port these IDs to 64-bit integers. The project is difficult for multiple reasons:
+L156:   * There are tens of thousands of locations across thousands of files where these IDs are used.
+L157:   * Tracking the changes across all the involved teams would be very difficult if each team were to handle the migration in their data themselves.
+L158:   * The IDs are often defined as generic numbers (`int32_t` in C++ or `Integer` in Java) and are not of a unique, easily searchable type, which makes the process of finding them through static tooling non-trivial.
+L159:   * Changes in the class interfaces need to be taken into account across multiple files.
+L160:   * Tests need to be updated to verify that the 64-bit IDs are handled correctly.
+L161: The full effort, if done manually was expected to require many, many software engineering years.
+L162: 
+L163: To accelerate the work, we employed our AI migration tooling and devised the following workflow:
+L164:   1. An expert engineer identifies the ID they want to migrate and, using a combination of Code Search, Kythe, and custom scripts, identifies a (relatively tight) superset of files and locations to migrate.
+L165:   2. The migration toolkit runs autonomously and produces verified changes that only contain code that passes 【51†unit tests†en.wikipedia.org】. Some tests are themselves updated to reflect the new reality.
+L166:   3. The engineer quickly checks the change and potentially updates files where the model failed or made a mistake. The changes are then 【52†sharded†en.wikipedia.org】 and sent to multiple reviewers who own the part of the codebase affected by the change.
+L167: Note that the IDs used in the internal code base have appropriate privacy protections already applied. While the model migrates them to a new type, it does not alter or surface them, so all privacy protections will remain intact.
+L168: For this workstream we found that 80% of the code modifications in the landed CLs were AI-authored, the rest were human-authored. The total time spent on the migration was reduced by an estimated 50% as reported by the engineers doing the migration. There was significant reduction in communication overhead as a single engineer could generate all necessary changes. Engineers still needed to spend time on the analysis of the files that needed changes and on their review.
+L169: We found that in Java files our model predicted the need to edit a file with 91% accuracy.
+L170: The toolkit has already been used to create hundreds of change lists in this and other migrations. On average we achieve >75% of the AI-generated character changes successfully landing in the monorepo.
+L171: ## Future directions
+L172: 
+L173: The next step is addressing more complex migrations that impact multiple components exchanging data or requiring system architecture changes. We have already had success when migrating from deprecated types that require non-trivial refactorings, as well as moving away from older testing frameworks.
+L174: We are researching how to apply AI in the other parts of the development journey, specifically to help with targeting the changes and better filtering those that are unnecessary. Another interesting area is to improve the migration user experience in the IDE so that it gives greater control and freedom to the change operator to mix-and-match the existing tooling.
+L175: Overall we see a wide potential application of this work, likely beyond the strict space of code migration and possibly also applied to error correction and general code maintenance at scale.
+L176: ## Acknowledgements
+L177: This work is the result of a collaboration between the Google Core Developer, Google Ads and Google DeepMind teams. We would like to thank key contributors Daniele Codecasa, Anna Sjövall, Ayoub Kachkach, Celal Ziftci, Max Kim, Jonathan Binghan, Ballie Sandhu, and Christoph Grotz.
+L178: We would also like to thank our colleagues Alexander Frömmgen, Lera Kharatyan, Maxim Tabachnyk, Shardul Natu, Bar Karapetov, Kashmira Phalak, Andrew Villadsen, Maia Deutsch, AK Kulkarni, Satish Chandra, Danny Tarlow, Aditya Kini, Marc Brockschmidt, Yurun Shen, Milad Hashemi, Chris Gorgolewski, Don Schwarz, Chris Kennely, Sarah Drasner, Niranjan Tulpule, Madhura Dudhgaonkar and the developers of the 【43†DIDACT】 effort.
+L179:   * Labels:
+L180:   * 【53†Generative AI】
+L181: 
+L182:   * 【54†Machine Intelligence】
+L183: 
+L184:   * 【55†Software Systems & Engineering】
+L185: ## Quick links
+L186: 
+L187: ×
+

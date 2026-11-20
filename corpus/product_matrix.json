@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-11-16",
+  "products": [
+    {
+      "id": "workbuddy",
+      "name": "Tencent WorkBuddy",
+      "position": "覆盖办公、开发与创意的 Agent 工作台；从个人执行延展到项目空间和多 Agent 团队",
+      "collaboration_unit": "项目空间、专家/Skill/连接器、统一交付物",
+      "agent_identity": "预置/自定义领域专家；企业版 Managed Agents 的公开细节仍需深入核验",
+      "shared_context": "项目空间中的知识、流程与文件；多 Agent 在任务中共享信息",
+      "automation": "云端助理与多 Agent 并行；关闭客户端后云任务可继续",
+      "governance": "公开产品页提到统一知识库、权限边界和团队复用；细粒度控制公开证据不足",
+      "cross_org": "未找到面向两个独立组织的原生协作、联邦身份或跨租户授权证据",
+      "evidence": ["src-tencent-workbuddy-product", "src-tencent-workbuddy-team", "src-workbuddy-enterprise"]
+    },
+    {
+      "id": "qwenwork",
+      "name": "千问办公 2.0",
+      "position": "面向个人与组织的 Team Agent；把群聊、资料、任务、数字员工和共创成果接成闭环",
+      "collaboration_unit": "企业内协作空间、数字员工、空间记忆、待办、定时任务、资料空间",
+      "agent_identity": "空间数字员工可配置名称、头像、技能与回复规则；积分可单独设限",
+      "shared_context": "关联钉钉群聊、听记、文档、表格等；空间记忆可查看、纠正和停用",
+      "automation": "消息/事件触发与定时任务；纯云端任务可在电脑关闭后运行",
+      "governance": "个人/企业数据隔离、组织成员与管理员角色、用量限额、日志审计、SSO/开放平台",
+      "cross_org": "协作空间按单一企业组织使用，创建时从当前企业选协作者；未见跨企业空间证据",
+      "evidence": ["src-qwen-intro", "src-qwen-team-agent", "src-qwen-collaboration", "src-qwen-security", "src-qwen-admin-roles"]
+    },
+    {
+      "id": "openai_work_codex",
+      "name": "ChatGPT Work / Codex",
+      "position": "以可审阅任务、团队自动化、共享产物与代码执行环境构成多表面协作系统",
+      "collaboration_unit": "ChatGPT Teams/Team Tasks、Space 页面/幻灯片、Slack/Teams surface、Codex agent threads",
+      "agent_identity": "团队任务使用团队服务账号与共享连接；Codex/Work 也可按发起用户执行；两者必须区分",
+      "shared_context": "团队、当前会话、Space、已授权连接、Slack/Teams 对话上下文；私人记忆并非默认共享",
+      "automation": "定时/事件触发 Team Tasks、Workspace Agents API、Work/Codex 多步任务与 subagents",
+      "governance": "工作区 RBAC、共享连接、插件/动作控制、Agent Security、托管配置、合规与分析日志",
+      "cross_org": "官方材料主要以一个 ChatGPT workspace 与一个 Slack workspace/Teams tenant 为配置边界；未证实原生跨租户团队",
+      "evidence": ["src-openai-agents", "src-openai-teams", "src-openai-work-admin", "src-openai-subagents", "src-openai-space", "src-openai-slack-teams"]
+    },
+    {
+      "id": "claude_code",
+      "name": "Claude / Claude Code",
+      "position": "从开发者终端扩展到 repo 级团队配置、云会话、多 Agent，以及 Slack 中的多人 Claude",
+      "collaboration_unit": "代码仓库、共享项目设置、Agent team/session、Slack channel 中的 Claude Tag",
+      "agent_identity": "Claude Tag 在频道内表现为一个共享成员；Claude Code agent team 更接近单用户编排的多个会话",
+      "shared_context": "仓库中的 CLAUDE.md/共享设置、代码与会话；Claude Tag 从被授权频道积累相关上下文",
+      "automation": "Agent teams、后台/云会话与 Slack 任务；具体可用性随版本和计划变化",
+      "governance": "Team/Enterprise 席位、managed settings、Compliance API、用量与审计控制",
+      "cross_org": "未找到 Claude Tag 或 Claude Code 原生跨组织信任域协作的官方证据",
+      "evidence": ["src-anthropic-tag", "src-anthropic-settings", "src-anthropic-enterprise"]
+    },
+    {
+      "id": "m365_copilot",
+      "name": "Microsoft 365 Copilot Agents",
+      "position": "把 Agent 当作可创建、共享、共同拥有、审批和上架的租户应用资产",
+      "collaboration_unit": "Agent Builder/Copilot Studio、组织目录、Microsoft 365/Teams 表面",
+      "agent_identity": "Agent 是可管理应用资产；支持多 owner 与使用者角色",
+      "shared_context": "Microsoft 365 数据与连接器，继承平台权限与合规边界",
+      "automation": "由 Copilot Studio 和平台工作流承接；本轮未深入逐项验证",
+      "governance": "租户策略、agent inventory、批准/发布/部署/阻止、Purview 审计与 eDiscovery",
+      "cross_org": "本轮官方证据聚焦租户内分发；跨租户共享不是默认已证实能力",
+      "evidence": ["src-microsoft-agent-governance", "src-microsoft-agent-sharing"]
+    },
+    {
+      "id": "gemini_enterprise",
+      "name": "Gemini Enterprise / Agent Platform",
+      "position": "从员工低代码 Agent 到注册表、Agent Identity、Gateway、IAM 和可观测性的完整平台",
+      "collaboration_unit": "团队 Agent gallery、Workflow/Agent Designer、Agent Registry、A2A 与 Cloud IAM",
+      "agent_identity": "Agent Identity 使用独立 SPIFFE 形式身份；可与用户委托访问结合",
+      "shared_context": "连接器、附加文件和企业数据；共享 Agent 可能让使用者间接访问其关联数据",
+      "automation": "多步/子 Agent 工作流和计划执行",
+      "governance": "Agent Gateway、策略执行、注册表、生命周期状态、日志/指标/trace、ownership transfer",
+      "cross_org": "Cloud IAM/A2A 提供跨系统基础，但办公端开箱共享仍主要面向同一组织；跨组织方案需自行治理",
+      "evidence": ["src-google-agent-designer", "src-google-agent-platform"]
+    },
+    {
+      "id": "notion",
+      "name": "Notion Agent / Custom Agents",
+      "position": "把个人 Agent 与拥有独立权限、触发器和预算的团队 Agent 明确分型",
+      "collaboration_unit": "Notion workspace、页面、数据库、任务、Agent Directory",
+      "agent_identity": "个人 Agent 按用户权限行动；Custom Agent 是具有自身权限的专门团队成员",
+      "shared_context": "工作区内容、连接器以及显式共享给 Agent 的资源",
+      "automation": "Custom Agent 可后台自动运行并使用触发器",
+      "governance": "创建控制、Agent Directory、owner、活动日志、权限、模型和信用额度",
+      "cross_org": "公开材料以 workspace 内协作为主；自定义 Agent 可跨内部权限边界，但不等于跨公司",
+      "evidence": ["src-notion-agent", "src-notion-custom-agents"]
+    }
+  ]
+}

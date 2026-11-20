@@ -1,0 +1,116 @@
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study
+completing these five active days. Participants received a reminder
+midway through the study and a final survey prompt at the end of
+the participation window. This design provided flexibility for par-
+ticipants while maintaining structured, consistent data collection.
+Supplementary materials [34] provide detailed texts used for that.
+4.2.1
+Capturing in-the-wild usage and daily surveys. During the
+study, participants engaged in self-directed programming tasks
+representative of their routine professional activities (i.e. “worked
+as usual”). There were no constraints on programming languages,
+frameworks, or project types for this reason. With participants’
+informed consent, we collected anonymous IDE usage statistics as
+telemetry data. Importantly, we did not collect personal data, source
+code, file names, or full inputs and outputs exchanged between
+the IDE and LLMs. To prevent fraudulent participation, in-IDE
+notifications prompted participants to complete short daily surveys.
+These surveys appeared five minutes after interactions with any
+proactive feature, limited to once per IDE session. Surveys captured
+the specific proactive feature used, the relevant development task,
+and perceptions of feature behavior, along with an open-ended
+question for additional feedback. Daily surveys also helped track
+participation, as telemetry data were anonymous and thus not
+linked to individual participants.
+4.2.2
+Post-study survey. After completing at least five active days
+and corresponding daily surveys, participants filled out a post-study
+survey. This survey included Likert-scale items from the System
+Usability Scale (SUS) [36]. Additional questions evaluated partic-
+ipants’ perceptions of the assistant’s reliability, intent alignment,
+intrusiveness, and impact on efficiency. Two open-ended questions
+encouraged participants to describe specific effects on code quality
+and suggest improvements to better support their workflow.
+4.3
+Data Analysis
+We applied both quantitative and qualitative analysis methods to
+address our research questions. To examine developer interac-
+tions with the proactive feature of AI assistant across workflow
+stages 3.1 (RQ1), we analyzed 5,732 data points and 229 interven-
+tions in telemetry logs. Specifically, we focused on three interaction
+types for each AI intervention: engage (user opted for viewing
+the suggestions in chat), dismiss (user actively closed the notifi-
+cation), or ignore (no user response). We processed raw teleme-
+try events by filtering for proactive intervention triggers, then
+categorized subsequent user actions following each intervention.
+Descriptive statistics, including engagement patterns and tempo-
+ral patterns across the five-day study period, were computed to
+characterize interaction behaviors for each intervention type (am-
+biguous prompt, declined AI edit, commit changes). To evaluate
+developer perceptions of the assistant (RQ2) and its perceived
+impact (RQ3), we mainly analyzed post-study survey responses.
+This included quantitative data summarized through frequency
+distributions for Likert-scale items, and qualitative insights from
+open-ended questions. Moreover, we employed a Wilcoxon signed-
+rank test [56] to compare interpretation times (from the moment
+a suggested snippet appeared in the chat interface until the user’s
+first response to it) between proactive and reactive chat sessions.
+Given the moderate sample sizes and the observed distributional
+---
+IUI ’26, March 23–26, 2026, Paphos, Cyprus
+skewness inconsistent with normality assumptions in both con-
+ditions, the Wilcoxon signed-rank test provided robust inference
+without requiring the parametric assumptions necessary for t-tests.
+We combine the telemetry and survey data to derive contextualized
+insights into the usability and perceived usefulness of ProAIDE.5
+5
+Results
+Our analysis combines in-IDE telemetry (N=18 machines, with
+active usage declining to 8 machines by day five) and a post-study
+questionnaire with open-ended feedback (N=15).
+5.1
+RQ1: Interaction Patterns Across Workflow
+To answer the RQ1, we analyzed 229 interactions (Figure 4) across
+three workflow-triggered intervention types: (1) Ambiguous Prompt,
+(2) Declined AI Edit, and (3) Commit Changes over the study period
+of five days. Each intervention provided developers with options
+to either engage with the AI for code improvement suggestions,
+dismiss the notification, or ignore it entirely.
+• Ambiguous Prompt interventions (N=35) saw moderate en-
+gagement (46%), with 23% dismissals and 31% ignores. This
+balanced distribution may reflect a mix of situations: in some
+cases, developers appeared to be in an exploratory mode,
+open to proactive suggestions. In others, they seemed to have
+a clear intent in mind but preferred efficiency over detail,
+being surprised that “simplify was insufficient context for the
+AI to act upon” [P1].
+• Declined AI Edit interventions (N=39) achieved the lowest
+engagement rates at 31% and highest dismissal rates at 62%.
+Despite signaling unmet needs, these interventions appear
+to feel “like advertisement” [P3], indicating unnecessary in-
+trusion when developers have already formulated specific
+task intentions. Moreover, context-switching between differ-
+ent AI interaction modalities appears to be causing cogni-
+tive overload, with participants expressing confusion about
+“when to use inline AI and chat” [P15].
+• Commit Changes interventions (N=155) achieved highest
+engagement rates (52%). This timing is based on natural
+workflow boundary points when developers complete logi-
+cal units of work and are “still in the mindset of wanting to
+submit good code” [P5]. This suggests that developers, hav-
+ing finished writing code and entered an evaluative mindset,
+experience reduced cognitive switching costs and thus are
+more receptive to proactive AI.
+An analysis of interaction patterns over the study period re-
+vealed stability across all intervention types (See Fig. 4). For Commit
+Changes interventions, the consistent engagement rates throughout
+the study period indicate that the utility of boundary-point inter-
+ventions is not diminished by repeated exposure. The daily survey
+feedback confirmed that having AI review changes after commits
+remains helpful, with users expressing a desire to “continue using it
+once the feature becomes available” [P5]. In contrast, engagement
+rates for Declined AI Edit interventions remained consistently low,
+suggesting that the poor reception was not necessarily due to an
+5Survey data supporting the findings of this study may be shared upon reasonable
+request. Due to privacy and confidentiality concerns, telemetry data collected from
+in-IDE usage cannot be made publicly available.

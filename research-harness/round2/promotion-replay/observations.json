@@ -1,0 +1,1605 @@
+{
+  "method": "official mlflow.genai Python API, local SQLite registry, no network connections allowed in SDK worker",
+  "name": "ordinary-notice",
+  "metadata": {
+    "ready": true,
+    "mlflow": "3.18.0",
+    "alias_default_ttl_s": 60
+  },
+  "fixture_clock": 100,
+  "observed_utc": "2026-11-20T05:16:06.476149+00:00",
+  "cache_check_elapsed_seconds": 61.015,
+  "sqlite_file_sha256": "617d7da72933e985f4a2c06f4cd02c249b687b90926e95c58e5f89de4bba5df1",
+  "events": [
+    {
+      "step": 1,
+      "label": "register-v1",
+      "role": "writer",
+      "op": "register",
+      "args": {
+        "text": "Agenda: {{topic}}."
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 3.844
+    },
+    {
+      "step": 2,
+      "label": "register-v2",
+      "role": "writer",
+      "op": "register",
+      "args": {
+        "text": "Next meeting: {{topic}}."
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 3.891
+    },
+    {
+      "step": 3,
+      "label": "register-v3",
+      "role": "writer",
+      "op": "register",
+      "args": {
+        "text": "Reminder: {{topic}}."
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 3,
+          "template": "Reminder: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "6aa79d04226766a2c2312a26dea3d53382b81fddb075e753d4e7a08ca5edc19e",
+          "release_content_sha256": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+          "rendered": "Reminder: Friday planning."
+        }
+      },
+      "monotonic_s": 3.906
+    },
+    {
+      "step": 4,
+      "label": "initialize-production",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 3.922
+    },
+    {
+      "step": 5,
+      "label": "initialize-candidate",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "candidate",
+        "version": 2
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 3.938
+    },
+    {
+      "step": 6,
+      "label": "baseline-live",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 3.953
+    },
+    {
+      "step": 7,
+      "label": "approved-candidate",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "candidate",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 3.969
+    },
+    {
+      "step": 8,
+      "label": "candidate-alias-retargeted",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "candidate",
+        "version": 3
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 3.984
+    },
+    {
+      "step": 9,
+      "label": "candidate-now-v3",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "candidate",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 3,
+          "template": "Reminder: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "6aa79d04226766a2c2312a26dea3d53382b81fddb075e753d4e7a08ca5edc19e",
+          "release_content_sha256": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+          "rendered": "Reminder: Friday planning."
+        }
+      },
+      "monotonic_s": 4.0
+    },
+    {
+      "step": 10,
+      "label": "alias-only-workflow-promotes-unapproved-v3",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 3
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 4.016
+    },
+    {
+      "step": 11,
+      "label": "audit-wrong-version",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 3,
+          "template": "Reminder: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "6aa79d04226766a2c2312a26dea3d53382b81fddb075e753d4e7a08ca5edc19e",
+          "release_content_sha256": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+          "rendered": "Reminder: Friday planning."
+        }
+      },
+      "monotonic_s": 4.016
+    },
+    {
+      "step": 12,
+      "label": "rollback-to-v1",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 4.031
+    },
+    {
+      "step": 13,
+      "label": "rollback-visible-uncached",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 4.047
+    },
+    {
+      "step": 14,
+      "label": "old-v3-still-addressable",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": 3,
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 3,
+          "template": "Reminder: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "6aa79d04226766a2c2312a26dea3d53382b81fddb075e753d4e7a08ca5edc19e",
+          "release_content_sha256": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+          "rendered": "Reminder: Friday planning."
+        }
+      },
+      "monotonic_s": 4.047
+    },
+    {
+      "step": 15,
+      "label": "native-set-permitted-without-naming-receipt",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 2
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 4.063
+    },
+    {
+      "step": 16,
+      "label": "after-expired-receipt-fixture",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 4.078
+    },
+    {
+      "step": 17,
+      "label": "reset-for-cache",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 4.109
+    },
+    {
+      "step": 18,
+      "label": "reader-primes-default-and-holds",
+      "role": "reader",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "hold": "inflight"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 4.766
+    },
+    {
+      "step": 19,
+      "label": "writer-promotes-to-v2",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 2
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 4.781
+    },
+    {
+      "step": 20,
+      "label": "writer-cache-invalidated",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 4.781
+    },
+    {
+      "step": 21,
+      "label": "reader-default-immediately-after-write",
+      "role": "reader",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 4.781
+    },
+    {
+      "step": 22,
+      "label": "reader-bypass-sees-new",
+      "role": "reader",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 4.797
+    },
+    {
+      "step": 23,
+      "label": "bypass-does-not-refresh-existing-default-entry",
+      "role": "reader",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 4.797
+    },
+    {
+      "step": 24,
+      "label": "already-loaded-inflight-stays-v1",
+      "role": "reader",
+      "op": "held",
+      "args": {
+        "handle": "inflight"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 4.797
+    },
+    {
+      "step": 25,
+      "label": "new-process-default",
+      "role": "fresh-process",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 7.172
+    },
+    {
+      "step": 26,
+      "label": "change-v2-config-without-registering-v4",
+      "role": "writer",
+      "op": "config",
+      "args": {
+        "version": 2,
+        "temperature": 0.8
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 7.188
+    },
+    {
+      "step": 27,
+      "label": "same-v2-new-config",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": 2,
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 7.188
+    },
+    {
+      "step": 28,
+      "label": "production-still-v2-after-config-change",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 7.203
+    },
+    {
+      "step": 29,
+      "label": "reject-nonexistent-version",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 999
+      },
+      "response": {
+        "ok": false,
+        "type": "MlflowException",
+        "message": "Prompt 'ordinary-notice' version 999 does not exist.",
+        "error_code": "RESOURCE_DOES_NOT_EXIST"
+      },
+      "monotonic_s": 7.219
+    },
+    {
+      "step": 30,
+      "label": "invalid-target-left-production-intact",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 7.219
+    },
+    {
+      "step": 31,
+      "label": "reader-default-after-real-ttl",
+      "role": "reader",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 65.781
+    },
+    {
+      "step": 32,
+      "label": "inflight-object-even-after-expiry",
+      "role": "reader",
+      "op": "held",
+      "args": {
+        "handle": "inflight"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 65.781
+    },
+    {
+      "step": 33,
+      "label": "reset-before-interleaving",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.797
+    },
+    {
+      "step": 34,
+      "label": "first-decider-sees-one",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 65.813
+    },
+    {
+      "step": 35,
+      "label": "second-decider-sees-one",
+      "role": "fresh-process",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 65.828
+    },
+    {
+      "step": 36,
+      "label": "B-writes-v3",
+      "role": "fresh-process",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 3
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.844
+    },
+    {
+      "step": 37,
+      "label": "A-sees-newer-B-on-explicit-recheck",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 3,
+          "template": "Reminder: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "6aa79d04226766a2c2312a26dea3d53382b81fddb075e753d4e7a08ca5edc19e",
+          "release_content_sha256": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+          "rendered": "Reminder: Friday planning."
+        }
+      },
+      "monotonic_s": 65.859
+    },
+    {
+      "step": 38,
+      "label": "stale-A-native-write-overwrites-B",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 2
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.875
+    },
+    {
+      "step": 39,
+      "label": "last-write-is-v2",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 65.891
+    },
+    {
+      "step": 40,
+      "label": "rollback-return-to-v1",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.906
+    },
+    {
+      "step": 41,
+      "label": "returned-to-original-predecessor",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 65.922
+    },
+    {
+      "step": 42,
+      "label": "valid-explicit-v2-promote",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 2
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.938
+    },
+    {
+      "step": 43,
+      "label": "final-approved-target",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 65.953
+    },
+    {
+      "step": 44,
+      "label": "reader-primes-and-takes-v2-before-rollback",
+      "role": "fresh-process",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "hold": "before-rollback"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 65.969
+    },
+    {
+      "step": 45,
+      "label": "final-rollback",
+      "role": "writer",
+      "op": "set_alias",
+      "args": {
+        "alias": "production",
+        "version": 1
+      },
+      "response": {
+        "ok": true,
+        "value": null
+      },
+      "monotonic_s": 65.984
+    },
+    {
+      "step": 46,
+      "label": "final-production",
+      "role": "writer",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 65.984
+    },
+    {
+      "step": 47,
+      "label": "other-reader-default-immediately-after-rollback",
+      "role": "fresh-process",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 65.984
+    },
+    {
+      "step": 48,
+      "label": "other-reader-no-cache-after-rollback",
+      "role": "fresh-process",
+      "op": "load",
+      "args": {
+        "ref": "production",
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 66.0
+    },
+    {
+      "step": 49,
+      "label": "inflight-v2-remains-usable-after-rollback",
+      "role": "fresh-process",
+      "op": "held",
+      "args": {
+        "handle": "before-rollback"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 66.0
+    },
+    {
+      "step": 50,
+      "label": "restarted-process-uses-persisted-production",
+      "role": "after-all-workers-stopped",
+      "op": "load",
+      "args": {
+        "ref": "production"
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 1,
+          "template": "Agenda: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "template_sha256": "5c9885e6b7627bc2805c044d7872657bad4390d7cb24082515cb35dbeb515194",
+          "release_content_sha256": "59ba566abfa70336e1ba355756b79379e09ad8bc6e00cafb45d8d070a8824ed7",
+          "rendered": "Agenda: Friday planning."
+        }
+      },
+      "monotonic_s": 69.391
+    },
+    {
+      "step": 51,
+      "label": "restarted-process-can-restore-v2",
+      "role": "after-all-workers-stopped",
+      "op": "load",
+      "args": {
+        "ref": 2,
+        "ttl": 0
+      },
+      "response": {
+        "ok": true,
+        "value": {
+          "name": "ordinary-notice",
+          "version": 2,
+          "template": "Next meeting: {{topic}}.",
+          "model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "template_sha256": "763b87c58cdee9c73b80a176fd8c99f97e5acb693a33f8db19fd3a3903f3d978",
+          "release_content_sha256": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+          "rendered": "Next meeting: Friday planning."
+        }
+      },
+      "monotonic_s": 69.391
+    }
+  ],
+  "fixture_approvals": [
+    {
+      "label": "alias_drift_blocked_by_fixture",
+      "receipt": {
+        "serial": "grant-0",
+        "approved": 2,
+        "release_digest": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 3,
+      "production_seen": 1,
+      "reasons": [
+        "candidate_version_drift",
+        "release_content_drift"
+      ],
+      "passes_fixture_checks": false
+    },
+    {
+      "label": "expired_receipt_blocked_by_fixture",
+      "receipt": {
+        "serial": "grant-1",
+        "approved": 2,
+        "release_digest": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 99
+      },
+      "candidate_seen": 2,
+      "production_seen": 1,
+      "reasons": [
+        "expired"
+      ],
+      "passes_fixture_checks": false
+    },
+    {
+      "label": "version_and_template_unchanged_config_changed",
+      "receipt": {
+        "serial": "grant-2",
+        "approved": 2,
+        "release_digest": "9e2e2976f938d7192948a65d6f0646e12623daaebb4325697c51283154955e92",
+        "expected_live": 2,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 2,
+      "reasons": [
+        "release_content_drift"
+      ],
+      "passes_fixture_checks": false
+    },
+    {
+      "label": "decision-A-read-only-validated",
+      "receipt": {
+        "serial": "grant-3",
+        "approved": 2,
+        "release_digest": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 1,
+      "reasons": [],
+      "passes_fixture_checks": true
+    },
+    {
+      "label": "decision-B-read-only-validated",
+      "receipt": {
+        "serial": "separate-B",
+        "approved": 3,
+        "release_digest": "e72c810a5bdd718b8f93d9daf356c694415b2e9fa890bc083aa79954c03aabfc",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 3,
+      "production_seen": 1,
+      "reasons": [],
+      "passes_fixture_checks": true
+    },
+    {
+      "label": "fresh-expected-live-rejects-stale-A",
+      "receipt": {
+        "serial": "grant-3",
+        "approved": 2,
+        "release_digest": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 3,
+      "reasons": [
+        "production_predecessor_drift"
+      ],
+      "passes_fixture_checks": false
+    },
+    {
+      "label": "ABA-matches-version-and-digest-after-rollback",
+      "receipt": {
+        "serial": "grant-3",
+        "approved": 2,
+        "release_digest": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 1,
+      "reasons": [],
+      "passes_fixture_checks": true
+    },
+    {
+      "label": "single-use-harness-rejects-ABA",
+      "receipt": {
+        "serial": "grant-3",
+        "approved": 2,
+        "release_digest": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 1,
+      "reasons": [
+        "already_spent"
+      ],
+      "passes_fixture_checks": false
+    },
+    {
+      "label": "valid-new-receipt",
+      "receipt": {
+        "serial": "grant-8",
+        "approved": 2,
+        "release_digest": "772d3bd3236a76df67c5619e5c0568c58cec8469f968173313869fee40f5565f",
+        "expected_live": 1,
+        "expires_at_fixture_tick": 200
+      },
+      "candidate_seen": 2,
+      "production_seen": 1,
+      "reasons": [],
+      "passes_fixture_checks": true
+    }
+  ],
+  "sqlite_snapshots": [
+    {
+      "label": "initialized",
+      "aliases": {
+        "candidate": 2,
+        "production": 1
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    },
+    {
+      "label": "alias-drift",
+      "aliases": {
+        "candidate": 3,
+        "production": 3
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    },
+    {
+      "label": "native-no-grant-argument",
+      "aliases": {
+        "candidate": 3,
+        "production": 2
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    },
+    {
+      "label": "during-cache-test",
+      "aliases": {
+        "candidate": 3,
+        "production": 2
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    },
+    {
+      "label": "stale-writer-overwrite",
+      "aliases": {
+        "candidate": 3,
+        "production": 2
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    },
+    {
+      "label": "final",
+      "aliases": {
+        "candidate": 3,
+        "production": 1
+      },
+      "versions": [
+        1,
+        2,
+        3
+      ],
+      "alias_table_columns": [
+        "alias",
+        "version",
+        "name",
+        "workspace"
+      ],
+      "alias_primary_key": [
+        "workspace",
+        "name",
+        "alias"
+      ],
+      "selected_version_fields": {
+        "1": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Agenda: {{topic}}."
+        },
+        "2": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.8
+          },
+          "mlflow.prompt.text": "Next meeting: {{topic}}."
+        },
+        "3": {
+          "_mlflow_prompt_model_config": {
+            "model_name": "synthetic-local",
+            "temperature": 0.1
+          },
+          "mlflow.prompt.text": "Reminder: {{topic}}."
+        }
+      }
+    }
+  ],
+  "worker_exit": [
+    {
+      "role": "writer",
+      "closed": {
+        "ok": true,
+        "socket_connect_denied": 0
+      },
+      "process_exit": 0
+    },
+    {
+      "role": "reader",
+      "closed": {
+        "ok": true,
+        "socket_connect_denied": 0
+      },
+      "process_exit": 0
+    },
+    {
+      "role": "fresh-process",
+      "closed": {
+        "ok": true,
+        "socket_connect_denied": 0
+      },
+      "process_exit": 0
+    },
+    {
+      "role": "after-all-workers-stopped",
+      "closed": {
+        "ok": true,
+        "socket_connect_denied": 0
+      },
+      "process_exit": 0
+    }
+  ]
+}

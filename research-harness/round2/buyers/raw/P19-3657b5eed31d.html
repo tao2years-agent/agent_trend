@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <!-- v28239 -->
+
+
+  <title>FAQ: Guarded rollouts &ndash; LaunchDarkly</title>
+
+  
+
+  <meta name="description" content="OverviewFrequently asked questions (FAQs) for guarded rollouts. Topics: Availability and access Setup and configuration Metrics Updates..." /><meta property="og:image" content="https://support.launchdarkly.com/hc/theming_assets/01JZ5V3GDEB06RJDZQX04NZD1S" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="LaunchDarkly" />
+<meta property="og:title" content="FAQ: Guarded rollouts" />
+<meta property="og:description" content="OverviewFrequently asked questions (FAQs) for guarded rollouts. Topics:
+Availability and access
+Setup and configuration
+Metrics
+Updates and resources
+FAQsAvailability and accessDo I need to be on a..." />
+<meta property="og:url" content="https://support.launchdarkly.com/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts" />
+<link rel="canonical" href="https://support.launchdarkly.com/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts">
+<link rel="alternate" hreflang="en-us" href="https://support.launchdarkly.com/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts">
+<link rel="alternate" hreflang="x-default" href="https://support.launchdarkly.com/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts">
+
+  <link rel="stylesheet" href="//static.zdassets.com/hc/assets/application-bb4463c65634cf19f082a9fd1169b8ce.css" media="all" id="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/hc/theming_assets/1470984/4196727/style.css?digest=57005846645275">
+
+  <link rel="icon" type="image/x-icon" href="/hc/theming_assets/01J4PHQFBAV4X8XZKACSBC47SM">
+
+    
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-K5HQF4Q');</script>
+<!-- End Google Tag Manager -->
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B5CZ6G6WE6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-B5CZ6G6WE6');
+</script>
+
+<!-- Segment Analytics -->
+<script>
+  !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="P8y3n2yBDrMHteAexddbzC3h1IW38sIE";;analytics.SNIPPET_VERSION="5.2.0";
+  analytics.load("P8y3n2yBDrMHteAexddbzC3h1IW38sIE");
+  analytics.page();
+  }}();
+</script>
+
+<!-- LaunchDarkly -->
+<script src="https://unpkg.com/launchdarkly-js-client-sdk@3"></script>
+<!-- Baked observability plugin (TSS-1844); built via npm run build -->
+<script src="/hc/theming_assets/01KQG5705V82A98YGP2C7R9FJP"></script>
+  
+</head>
+<body class="">
+  
+  
+  
+
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K5HQF4Q" height="0" width="0"
+    style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<a class="skip-navigation" tabindex="1" href="#main-content">Skip to main content</a>
+
+<header class="header">
+  <div class="nav-container">
+     <nav class="nav-wrapper" aria-label="Main navigation">
+       <div class= "nav-left">
+    <div class="logo">
+  <a title="Home" href="/hc/en-us">
+      
+      <img src="/hc/theming_assets/01JZ5V3GDEB06RJDZQX04NZD1S" alt="LaunchDarkly Help Center home page" class="logo-img-full" />
+      <img src="/hc/theming_assets/01KZVR5BG4T8G318W6ZDXJ4JEZ" alt="" aria-hidden="true" class="logo-img-mark" />
+      </a>
+</a>
+   
+   
+         <div class="helpcenter">Help Center</div>
+       </div>
+ </div>
+       <div class="nav-right">
+
+      
+        <a class="sign-in btn-sign-in" rel="nofollow" data-auth-action="signin" title="Opens a dialog" role="button" href="/hc/en-us/signin?return_to=https%3A%2F%2Fsupport.launchdarkly.com%2Fhc%2Fen-us%2Farticles%2F55384223785115-FAQ-Guarded-rollouts">
+          <span class="btn-sign-in-label">Sign in</span>
+        </a>
+      
+
+    <div class="nav-menu dropdown">
+      <button class="dropdown-toggle nav-hamburger" aria-haspopup="true" aria-expanded="false" aria-label="Menu">
+        <svg class="nav-hamburger-open" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 6h16M3 11h16M3 16h16" stroke="#FFF" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+        <svg class="nav-hamburger-close" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M5 5l12 12M17 5L5 17" stroke="#FFF" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="dropdown-menu nav-menu-dropdown" role="menu">
+        
+        <span class="nav-menu-label nav-menu-label-help">Help</span>
+        <form role="search" class="search search-bar-header" data-search="" action="/hc/en-us/search" accept-charset="UTF-8" method="get"><input type="hidden" name="utf8" value="&#x2713;" autocomplete="off" /><input type="search" name="query" id="query" placeholder="Search help center" aria-label="Search help center" />
+<input type="submit" name="commit" value="Search" /></form>
+        <div class="contact-support">
+          <a href="https://support.launchdarkly.com/hc/en-us/requests/new" title="Contact support"
+            class="button--primary" id="contactsupport-button">Contact support</a>
+        </div>
+        
+      </div>
+    </div>
+
+  </div>
+        </nav>
+  </div>
+</header>
+
+
+  <main role="main">
+    <div class="container-divider" id="container-article-page"> </div>
+<div class="container article-main-container">
+
+  <div class="article-container" id="article-container">
+    <div class="back-breadcrumb">
+        <div class="go-back-section">
+          
+            <a href=/hc/en-us/sections/12725106372635-Feature-Flags id="breadcrumb-2">Feature Flags</a>
+          
+        </div>
+      </div>
+<!--     <aside class="article-sidebar" aria-labelledby="section-articles-title" id="article-sidebar"> 
+      
+       
+    </aside> -->
+ 
+    <article id="main-content" class="article" id="article-page">
+      <header class="article-header article-page">
+        <h1 title="FAQ: Guarded rollouts" class="article-title">
+          FAQ: Guarded rollouts
+          
+        </h1>
+
+        <div class="article-author">
+          
+          <div class="article-meta">
+            
+
+            <ul class="meta-group">
+            </ul>
+          </div>
+        </div>
+
+        
+      </header>
+
+      <section class="article-info">
+        <div class="article-content">
+          <div class="article-body"><h2 id="h_01K4GR0V1QOVERVIEWGRFAQ001">Overview</h2><p>Frequently asked questions (FAQs) for guarded rollouts. Topics:</p><ul>
+<li data-list-item-id="e45fbc315029e8c5ff5ee49517c873339"><a href="#h_01K4GR0V1QAVAILABILITY0001">Availability and access</a></li>
+<li data-list-item-id="e28d396d32e3ec55e7dd14e9395f1f495"><a href="#h_01K4GR0V1QSETUP000000001">Setup and configuration</a></li>
+<li data-list-item-id="eefe3c139dc0b390f8f2759dbc78de1c5"><a href="#h_01K4GR0V1QMETRICS00000001">Metrics</a></li>
+<li data-list-item-id="eca3dc694f77bf34bd32b0c74808d318a"><a href="#h_01K4GR0V1QUPDATES00000001">Updates and resources</a></li>
+</ul><h2 id="h_01K4GR0V1QFAQS0000000001">FAQs</h2><h3 id="h_01K4GR0V1QAVAILABILITY0001">Availability and access</h3><div class="accordion"><p><span style="color: #000000;"><strong>Do I need to be on a specific plan to create a guarded rollout?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">All LaunchDarkly accounts include a limited trial of guarded rollouts; however, full access to guarded rollouts is available to customers on the Enterprise plan with the Guardian add-on. To learn more, read </span><a href="https://launchdarkly.com/pricing/" target="_blank" rel="noopener noreferrer" title="LaunchDarkly pricing"><span style="color: #000000;">Pricing</span></a><span style="color: #000000;">.</span></p></div><div class="accordion"><p><span style="color: #000000;"><strong>Is this feature available for Federal customers?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">Yes, it is. Read </span><a href="https://launchdarkly.com/docs/fed-docs/home/releases/guarded-rollouts" target="_blank" rel="noopener noreferrer" title="Guarded rollouts (federal)"><span style="color: #000000;">Guarded rollouts</span></a><span style="color: #000000;"> to learn how to get started.</span></p></div><div class="accordion"><p><span style="color: #000000;"><strong>Is there an Academy class to learn more about getting started?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">Yes. You can take the </span><a href="https://academy.launchdarkly.com/path/introduction-to-guarded-releases-2026" target="_blank" rel="noopener noreferrer" title="Introduction to guarded releases"><span style="color: #000000;">Introduction to guarded releases</span></a><span style="color: #000000;"> learning path on LaunchDarkly Academy to help get started with guarded releases.</span></p></div><h3 id="h_01K4GR0V1QSETUP000000001">Setup and configuration</h3><div class="accordion"><p><span style="color: #000000;"><strong>What's the best way to ensure that the guarded rollout is set up correctly?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">You can use <strong>health checks</strong>. Health checks validate that your system is sending the appropriate signals for a guarded rollout and help detect configuration issues throughout the rollout. To learn more, read </span><a href="https://launchdarkly.com/docs/home/releases/health-checks" target="_blank" rel="noopener noreferrer" title="Health checks for releases"><span style="color: #000000;">Health checks for releases</span></a><span style="color: #000000;">.</span></p></div><div class="accordion"><p><span style="color: #000000;"><strong>Can you change the percentages of a guarded rollout during the rollout period?</strong></span></p></div><div class="panel">
+<p><span style="color: #000000;">No, you cannot adjust the rollout percentages while a guarded rollout is in progress.</span></p>
+<p><span style="color: #000000;">However, when creating a guarded rollout, you can either:</span></p>
+<ul>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="ea4572eebfb636827d176d936c5ecd94a"><span style="color: #000000;">Use the <strong>default duration</strong>, where LaunchDarkly automatically increases the percentage of contexts receiving the new variation.</span></li>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="e52dbf9b2e76d7547c57dc1da26989c5f"><span style="color: #000000;"><strong>Set a custom schedule</strong>, which lets you define how the rollout percentage changes at different points throughout the rollout.</span></li>
+</ul>
+<p><span style="color: #000000;">Regardless of which option you choose, no individual rollout step can exceed <strong>50%</strong> of traffic. To learn more, read </span><a href="https://launchdarkly.com/docs/home/releases/creating-guarded-rollouts#create-a-guarded-rollout-on-a-rule" target="_blank" rel="noopener noreferrer" title="Create a guarded rollout on a rule"><span style="color: #000000;">Create a guarded rollout on a rule</span></a><span style="color: #000000;">.</span></p>
+</div><div class="accordion"><p><span style="color: #000000;"><strong>Can a guarded rollout be created if there's an active experiment running?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">No. If a flag already has an active experiment, you'll need to stop that experiment before creating a guarded rollout for the flag.</span></p></div><div class="accordion"><p><span style="color: #000000;"><strong>Is it possible to pause a guarded rollout?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">No. If a regression is detected during a guarded rollout, the default behavior is to roll back the rollout rather than pause it. To learn more, read </span><a href="https://launchdarkly.com/docs/home/releases/regression-detection" target="_blank" rel="noopener noreferrer" title="Regression detection"><span style="color: #000000;">Regression detection</span></a><span style="color: #000000;">.</span></p></div><h3 id="h_01K4GR0V1QMETRICS00000001">Metrics</h3><div class="accordion"><p><span style="color: #000000;"><strong>How can you input metrics to LaunchDarkly and use them for a guarded rollout?</strong></span></p></div><div class="panel">
+<p><span style="color: #000000;">You can connect metrics to LaunchDarkly using any of the following methods:</span></p>
+<ul>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="e617102a3f62fdceb2c93df5bd6ba277c"><span style="color: #000000;">Use one of our <strong>metrics integrations</strong>.</span></li>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="edf6ab111269db26c0d765dafe51e57aa"><span style="color: #000000;">Call the <strong>metric import API</strong>.</span></li>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="eaeb4ef60463fd70ed75b870e771f3c2f"><span style="color: #000000;">Use a <strong>LaunchDarkly SDK</strong> to send custom events, and connect them to metrics.</span></li>
+<li class="wysiwyg-list-color" style="--wysiwyg-list-marker-color: #000000;" data-list-item-id="e3a9fd1308aeecc06db4bcc0c9d965610"><span style="color: #000000;">Enable <strong>OpenTelemetry</strong> in a LaunchDarkly SDK and send the OpenTelemetry traces to LaunchDarkly to autogenerate metrics.</span></li>
+</ul>
+<p><span style="color: #000000;">To learn more, read </span><a href="https://launchdarkly.com/docs/home/releases/guarded-rollouts#metrics-and-guarded-rollouts" target="_blank" rel="noopener noreferrer" title="Metrics and guarded rollouts"><span style="color: #000000;">Metrics and guarded rollouts</span></a><span style="color: #000000;">.</span></p>
+</div><div class="accordion"><p><span style="color: #000000;"><strong>Can guarded rollouts use Snowflake metrics?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">No, you cannot use metrics that receive events from Snowflake with a guarded rollout. This is because warehouse native metrics are not supported with guarded rollouts.</span></p></div><h3 id="h_01K4GR0V1QUPDATES00000001">Updates and resources</h3><div class="accordion"><p><span style="color: #000000;"><strong>What's the best way to learn about new updates?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">Check out our </span><a href="https://whatsnew.launchdarkly.com/en" target="_blank" rel="noopener noreferrer" title="What's new at LaunchDarkly"><span style="color: #000000;">What's new</span></a><span style="color: #000000;"> page, where you can also subscribe to updates.</span></p></div><div class="accordion"><p><span style="color: #000000;"><strong>Have a question that isn't covered on this page?</strong></span></p></div><div class="panel"><p><span style="color: #000000;">Please&nbsp;</span><a href="https://support.launchdarkly.com/hc/en-us/requests/new" target="_blank" rel="noopener noreferrer" title="LaunchDarkly Support"><span style="color: #000000;">contact LaunchDarkly support</span></a><span style="color: #000000;"> for assistance.</span></p></div></div>
+          
+        </div>
+      </section>
+
+      
+
+      <div class="article-relatives">
+        
+        
+          
+  <section class="related-articles">
+    
+      <h2 class="related-articles-title">Related articles</h2>
+    
+    <ul>
+      
+        <li>
+          <a href="/hc/en-us/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCBsFup%2FCDDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJsg%2FCRfMjoLbG9jYWxlSSIKZW4tdXMGOgZFVDoIdXJsSSJaL2hjL2VuLXVzL2FydGljbGVzLzE0MDMwMDQyOTU3MDgzLUZsYWctcmVtb3ZlZC1mcm9tLWNvZGUtaXMtc3RpbGwtc2hvd2luZy1ldmFsdWF0aW9ucwY7CFQ6CXJhbmtpBg%3D%3D--e20930bfa5c8e5a81006e53f7ce8c433c48d6af9" rel="nofollow">Flag removed from code is still showing evaluations</a>
+        </li>
+      
+        <li>
+          <a href="/hc/en-us/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCJsN9gIuLDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJsg%2FCRfMjoLbG9jYWxlSSIKZW4tdXMGOgZFVDoIdXJsSSJPL2hjL2VuLXVzL2FydGljbGVzLzQ4NTc2MTI5Nzk3NTMxLUVycm9yLTQwMy1Gb3JiaWRkZW4td2l0aC1Db2RlLVJlZmVyZW5jZXMGOwhUOglyYW5raQc%3D--259969aab7c2219ffe29cea30cb1c617b5aac0e5" rel="nofollow">Error: &quot;403 Forbidden&quot; with Code References</a>
+        </li>
+      
+        <li>
+          <a href="/hc/en-us/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCJsQa9p0DDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJsg%2FCRfMjoLbG9jYWxlSSIKZW4tdXMGOgZFVDoIdXJsSSJoL2hjL2VuLXVzL2FydGljbGVzLzEzNjk2MDIwMTg5MzM5LUhvdy10by1pbXByb3ZlLWltcGxlbWVudGF0aW9uLXRvLWJlLXJlc2lsaWVudC10by1uZXR3b3JrLWZhaWx1cmVzBjsIVDoJcmFua2kI--43df4d62ef50596e3deb29eab4b6da1badf9b0da" rel="nofollow">How to improve implementation to be resilient to network failures</a>
+        </li>
+      
+        <li>
+          <a href="/hc/en-us/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCBudpoIjIjoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJsg%2FCRfMjoLbG9jYWxlSSIKZW4tdXMGOgZFVDoIdXJsSSJuL2hjL2VuLXVzL2FydGljbGVzLzM3NTM1OTExMTU3MDE5LUhvdy10by1idWxrLWNvbnZlcnQtbnVtZXJpYy10YXJnZXRpbmctdmFsdWVzLXRvLXN0cmluZ3MtaW4tY3VzdG9tLXJ1bGVzBjsIVDoJcmFua2kJ--5185adeb657c31f7f6d133fe46a36ff01d4f27c2" rel="nofollow">How to bulk convert numeric targeting values to strings in custom rules</a>
+        </li>
+      
+        <li>
+          <a href="/hc/en-us/related/click?data=BAh7CjobZGVzdGluYXRpb25fYXJ0aWNsZV9pZGwrCBsOepOFLDoYcmVmZXJyZXJfYXJ0aWNsZV9pZGwrCJsg%2FCRfMjoLbG9jYWxlSSIKZW4tdXMGOgZFVDoIdXJsSSJgL2hjL2VuLXVzL2FydGljbGVzLzQ4OTUyMjE2NTIyMjY3LUhvdy10by1kaWFnbm9zZS1DbGllbnQtc2lkZS1TREstTW9udGhseS1BY3RpdmUtVXNlcnMtY01BVQY7CFQ6CXJhbmtpCg%3D%3D--8d9be129e6fb444f37ca097b68bfff05281e6442" rel="nofollow">How to diagnose Client-side SDK Monthly Active Users (cMAU)</a>
+        </li>
+      
+    </ul>
+  </section>
+
+
+
+        
+      </div>
+      
+    	
+   	 
+    	<div class="article-votes">
+     	 <span class="article-votes-question">Was this article helpful?</span>
+     	 <div class="article-votes-controls" role='radiogroup'>
+      	  <button type="button" class="button article-vote article-vote-up" data-auth-action="signin" aria-label="This article was helpful" aria-pressed="false">Yes</button>
+      	  <button type="button" class="button article-vote article-vote-down" data-auth-action="signin" aria-label="This article was not helpful" aria-pressed="false">No</button>
+    	  </div>
+     	 <small class="article-votes-count">
+     	   <span class="article-vote-label">0 out of 0 found this helpful</span>
+    	  </small>
+   	 </div>
+    
+
+    </article>
+  </div>
+</div>
+
+<section data-section="resources" class="resources-section">
+  <div class="hp-section-wrap">
+    <h2 class="resources-heading">Resources to get started.</h2>
+
+    <div class="resources-grid">
+
+      <a class="resource-card" id="CSAT-contact-support" href="/hc/en-us/requests/new">
+        <div class="resource-card-image">
+          <img src="/hc/theming_assets/01KZVR5BED7FS1QX1GRSBJPE62" alt="Contact support illustration" class="resource-card-img" />
+          <div class="resource-card-cutout">
+            <div class="resource-card-pill"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#F8F8F8"/></svg></div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-card-title">Contact support.</span>
+          <p class="resource-card-desc">Get in touch with us so we can answer your specific questions directly.</p>
+        </div>
+      </a>
+
+      <a class="resource-card" href="/hc/en-us/requests">
+        <div class="resource-card-image">
+          <img src="/hc/theming_assets/01KZVR5AJJ6CV60V0HCEQBK9YV" alt="Support tickets illustration" class="resource-card-img" />
+          <div class="resource-card-cutout">
+            <div class="resource-card-pill"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#F8F8F8"/></svg></div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-card-title">See your tickets.</span>
+          <p class="resource-card-desc">Check the status of all the support tickets you've filed.</p>
+        </div>
+      </a>
+
+      <a class="resource-card" href="https://launchdarkly.com/docs/home">
+        <div class="resource-card-image">
+          <img src="/hc/theming_assets/01KZVR5A8E1BSVA2QS4KV0X5GQ" alt="Documentation illustration" class="resource-card-img" />
+          <div class="resource-card-cutout">
+            <div class="resource-card-pill"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#F8F8F8"/></svg></div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-card-title">Explore the docs.</span>
+          <p class="resource-card-desc">Learn about feature flagging, experimentation, and more in our documentation.</p>
+        </div>
+      </a>
+
+      <a class="resource-card" href="https://discord.gg/launchdarklycommunity">
+        <div class="resource-card-image">
+          <img src="/hc/theming_assets/01KZVR5B0W976EG5DBZX2AGEY0" alt="Community illustration" class="resource-card-img" />
+          <div class="resource-card-cutout">
+            <div class="resource-card-pill"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#F8F8F8"/></svg></div>
+          </div>
+        </div>
+        <div class="resource-card-body">
+          <span class="resource-card-title">Join our community.</span>
+          <p class="resource-card-desc">Connect with other developers and the LaunchDarkly team on Discord.</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+  </main>
+
+  <script src="//app-sj31.marketo.com/js/forms2/js/forms2.min.js"></script>
+
+<footer class="footer">
+  <div class="footer-inner">
+
+    <div class="footer-upper">
+
+      <!-- Top row: logo + CTA cards -->
+      <div class="footer-top-row">
+        <div class="footer-logo-mark">
+          <a href="https://launchdarkly.com/" target="_blank" rel="noopener noreferrer">
+          <img src="/hc/theming_assets/01KZVR5BG4T8G318W6ZDXJ4JEZ" alt="LaunchDarkly" class="footer-logo-img" />
+          </a>
+        </div>
+        <div class="footer-cta-row">
+          <a href="https://launchdarkly.com/request-demo/" class="footer-card">
+            <div class="footer-card-top">
+              <span class="footer-card-btn footer-card-btn--lime"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#101010"/></svg></span>
+              <span class="footer-card-label">Get a demo</span>
+            </div>
+            <div class="footer-card-asset">
+              <img src="/hc/theming_assets/01KZVR5A9XV7P4BQRPNFQX75DD" alt="" class="footer-card-img" />
+            </div>
+          </a>
+          <a href="https://app.launchdarkly.com/signup" class="footer-card">
+            <div class="footer-card-top">
+              <span class="footer-card-btn footer-card-btn--purple"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#101010"/></svg></span>
+              <span class="footer-card-label">Free trial</span>
+            </div>
+            <div class="footer-card-asset">
+              <img src="/hc/theming_assets/01KZVR5B1Z56G7EMG6NCZDY49Z" alt="" class="footer-card-img" />
+            </div>
+          </a>
+          <a href="https://launchdarkly.com/product/code-control/" class="footer-card">
+            <div class="footer-card-top">
+              <span class="footer-card-btn footer-card-btn--orange"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#101010"/></svg></span>
+              <span class="footer-card-label">CodeControl</span>
+            </div>
+            <div class="footer-card-asset">
+              <img src="/hc/theming_assets/01KZVR5AK5CSSC3DS2F616BBYX" alt="" class="footer-card-img" />
+            </div>
+          </a>
+          <a href="https://launchdarkly.com/product/agent-control/" class="footer-card">
+            <div class="footer-card-top">
+              <span class="footer-card-btn footer-card-btn--cyan"><svg width="16" height="12" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.66838 9C8.77635 6.68852 10.072 5.31148 12 5.13115L12 3.85246C10.072 3.67213 8.77635 2.31148 8.66838 0L7.23393 0.327869C7.31105 1.16393 7.58869 1.90164 8.05141 2.57377C8.52956 3.22951 9.06941 3.65574 9.68638 3.85246L1.48886e-06 3.85246L1.98304e-06 5.13115L9.68638 5.13115C9.06941 5.32787 8.52956 5.7541 8.05142 6.42623C7.58869 7.09836 7.31105 7.83607 7.23393 8.65574L8.66838 9Z" fill="#101010"/></svg></span>
+              <span class="footer-card-label">AgentControl</span>
+            </div>
+            <div class="footer-card-asset">
+              <img src="/hc/theming_assets/01KZVR5AJFDDPN8WG7GE1VT5XW" alt="" class="footer-card-img" />
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Newsletter + Links (1064px, right-aligned) -->
+      <div class="footer-main">
+
+        <div class="footer-newsletter">
+          <div class="footer-newsletter-text">
+            <p class="footer-newsletter-heading">Inboxes love LaunchDarkly.</p>
+            <p class="footer-newsletter-body">Subscribe to the newsletter for expert insights, security tips, and industry news. Join our community of security-conscious professionals today.</p>
+          </div>
+          <div class="footer-email-input marketo-form-container">
+            <form id="mktoForm_2272"></form>
+          </div>
+          <div class="footer-social">
+            <a href="https://twitter.com/launchdarkly" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <img src="/hc/theming_assets/01KZVR5BECC4ZA19MR6EQ633CN" alt="X logo" class="footer-social-icon" />
+            </a>
+            <a href="https://discord.gg/launchdarklycommunity" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              <img src="/hc/theming_assets/01KZVR5B0YG3Q39X35PCRANWSC" alt="Discord logo" class="footer-social-icon" />
+            </a>
+            <a href="https://www.linkedin.com/company/launchdarkly/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <img src="/hc/theming_assets/01KZVR5B1WWXWB08YCB3P2QYJF" alt="LinkedIn logo" class="footer-social-icon" />
+            </a>
+            <a href="https://www.youtube.com/channel/UCyVjMONrMfeY9tsWZtUFtFw/videos" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <img src="/hc/theming_assets/01KZVR5BPGW9BR5C64VQT2GFEF" alt="YouTube logo" class="footer-social-icon" />
+            </a>
+            <a href="https://www.instagram.com/launchdarkly/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <img src="/hc/theming_assets/01KZVR5BG4E0RJ3SE0M97G9HE9" alt="Instagram logo" class="footer-social-icon" />
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links-row">
+          <div class="footer-link-col">
+            <p class="footer-col-heading">Company</p>
+            <ul class="footer-col-links">
+              <li><a href="https://launchdarkly.com/about-us/">About us</a></li>
+              <li><a href="https://launchdarkly.com/careers/">Careers</a></li>
+              <li><a href="https://launchdarkly.com/press-and-analysts/">Media &amp; analysts</a></li>
+              <li><a href="https://launchdarkly.com/partner-program/">Partner program</a></li>
+              <li><a href="https://launchdarkly.com/policies/subscription-terms/">Terms &amp; policies</a></li>
+              <li><a href="https://launchdarkly.com/contact-us/">Contact us</a></li>
+              <li><a href="https://launchdarkly.com/community/">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-link-col">
+            <p class="footer-col-heading">Support</p>
+            <ul class="footer-col-links">
+              <li><a href="/hc/en-us/">Support home</a></li>
+              <li><a id="footer-request-support" href="/hc/en-us/requests/new">Request Support</a> </li>
+              <li><a href="https://academy.launchdarkly.com/">Academy</a></li>
+              <li><a href="https://launchdarkly.com/services/">Professional services</a></li>
+              <li><a href="https://launchdarkly.com/docs/home">Documentation</a></li>
+              <li><a href="https://status.launchdarkly.com/">Status</a></li>
+            </ul>
+          </div>
+          <div class="footer-link-col">
+            <p class="footer-col-heading">Why Us</p>
+            <ul class="footer-col-links">
+              <li><a href="https://launchdarkly.com/guides/forrester-tei-report-2026/">Economic impact of LaunchDarkly</a></li>
+              <li><a href="https://launchdarkly.com/how-it-works/platform/">How LaunchDarkly works</a></li>
+              <li><a href="https://launchdarkly.com/security/">Trust &amp; security</a></li>
+              <li><a href="https://launchdarkly.com/compare/">LaunchDarkly vs. competitors</a></li>
+              <li><a href="https://launchdarkly.com/solutions/launchdarkly-aws/">LaunchDarkly on AWS</a></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="https://launchdarkly.com/policies/subscription-terms/">Terms &amp; Conditions</a>
+        <a href="https://launchdarkly.com/policies/privacy/">Privacy Policy</a>
+        <span>©2026 Catamorphic Co.</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  MktoForms2.loadForm("//app-sj31.marketo.com", "850-KKH-319", 2272, (form) => {
+    form.onSuccess((val, followUpUrl) => {
+      // Swap the form for a thank-you message and stay on the page.
+      var newsletter = document.querySelector(".footer-newsletter");
+      if (newsletter) {
+        var body = newsletter.querySelector(".footer-newsletter-body");
+        if (body) {
+          body.textContent =
+            "Welcome to the club! Keep an eye on your inbox for the latest from LaunchDarkly.";
+        }
+        var formWrap = newsletter.querySelector(".marketo-form-container");
+        if (formWrap) formWrap.style.display = "none";
+      }
+      return false; // prevent the default follow-up redirect
+    });
+  });
+</script>
+
+
+
+  <!-- / -->
+
+  
+  <script src="//static.zdassets.com/hc/assets/en-us.5357a97777d7f77bdf0a.js"></script>
+  
+
+  <script type="text/javascript">
+  /*
+
+    Greetings sourcecode lurker!
+
+    This is for internal Zendesk and legacy usage,
+    we don't support or guarantee any of these values
+    so please don't build stuff on top of them.
+
+  */
+
+  HelpCenter = {};
+  HelpCenter.account = {"subdomain":"launchdarklysupport","environment":"production","name":"LaunchDarkly Support"};
+  HelpCenter.user = {"identifier":"da39a3ee5e6b4b0d3255bfef95601890afd80709","email":null,"name":"","role":"anonymous","avatar_url":"https://assets.zendesk.com/hc/assets/default_avatar.png","is_admin":false,"external_id":null,"organizations":[],"groups":[]};
+  HelpCenter.internal = {"asset_url":"//static.zdassets.com/hc/assets/","web_widget_asset_composer_url":"https://static.zdassets.com/ekr/snippet.js","current_session":{"locale":"en-us","csrf_token":null,"shared_csrf_token":null},"usage_tracking":{"event":"article_viewed","data":"BAh7CDoLbG9jYWxlSSIKZW4tdXMGOgZFVDoPYXJ0aWNsZV9pZGwrCJsg/CRfMjoKX21ldGF7DDoPYWNjb3VudF9pZGkDCHIWOhNoZWxwX2NlbnRlcl9pZGwrCJN8icYaADoNYnJhbmRfaWRpA3cJQDoMdXNlcl9pZDA6E3VzZXJfcm9sZV9uYW1lSSIOQU5PTllNT1VTBjsGVDsASSIKZW4tdXMGOwZUOhphbm9ueW1vdXNfdHJhY2tpbmdfaWQw--75c722b806703315f76eff929fda47ac56793b54","url":"https://support.launchdarkly.com/hc/activity"},"current_record_id":"55384223785115","current_record_url":"/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts","current_record_title":"FAQ: Guarded rollouts","current_text_direction":"ltr","current_brand_id":4196727,"current_brand_name":"LaunchDarkly Support","current_brand_url":"https://launchdarklysupport.zendesk.com","current_brand_active":true,"current_path":"/hc/en-us/articles/55384223785115-FAQ-Guarded-rollouts","show_autocomplete_breadcrumbs":true,"user_info_changing_enabled":false,"has_user_profiles_enabled":true,"has_end_user_attachments":true,"user_aliases_enabled":true,"has_anonymous_kb_voting":false,"has_multi_language_help_center":true,"show_at_mentions":false,"embeddables_config":{"embeddables_web_widget":false,"embeddables_help_center_auth_enabled":false,"embeddables_connect_ipms":false},"answer_bot_subdomain":"static","gather_plan_state":"subscribed","has_article_verification":true,"has_gather":true,"has_ckeditor":false,"has_community_enabled":false,"has_community_badges":true,"has_community_post_content_tagging":false,"has_gather_content_tags":true,"has_guide_content_tags":true,"has_user_segments":true,"has_answer_bot_web_form_enabled":false,"has_garden_modals":false,"has_auth_email_less_sso":false,"theming_cookie_key":"hc-da39a3ee5e6b4b0d3255bfef95601890afd80709-2-preview","is_preview":false,"has_search_settings_in_plan":true,"theming_api_version":2,"theming_settings":{"brand_color":"rgba(64, 91, 255, 1)","brand_text_color":"#FFFFFF","text_color":"rgba(0, 0, 0, 1)","link_color":"rgba(64, 91, 255, 1)","visited_link_color":"rgba(64, 91, 255, 1)","background_color":"rgba(255, 255, 255, 1)","heading_font":"-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif","text_font":"-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif","logo":"/hc/theming_assets/01JZ5V3GDEB06RJDZQX04NZD1S","show_brand_name":false,"favicon":"/hc/theming_assets/01J4PHQFBAV4X8XZKACSBC47SM","homepage_background_image":"/hc/theming_assets/01JZ5V3GWQF9CY94FJ9C5K4GA0","community_background_image":"/hc/theming_assets/01J4PHQG47HQVGK689D1J8DEW8","community_image":"/hc/theming_assets/01J4PHQGKD28JWP1YSEQDZ6WP0","instant_search":true,"scoped_kb_search":true,"scoped_community_search":true,"show_recent_activity":false,"show_articles_in_section":false,"show_article_author":false,"show_article_comments":false,"show_follow_article":false,"show_recently_viewed_articles":false,"show_related_articles":true,"show_article_sharing":false,"show_follow_section":false,"show_follow_post":false,"show_post_sharing":false,"show_follow_topic":false},"has_pci_credit_card_custom_field":true,"help_center_restricted":false,"is_assuming_someone_else":false,"flash_messages":[],"user_photo_editing_enabled":true,"user_preferred_locale":"en-us","base_locale":"en-us","login_url":"https://launchdarklysupport.zendesk.com/access?locale=en-us\u0026brand_id=4196727\u0026return_to=https%3A%2F%2Fsupport.launchdarkly.com%2Fhc%2Fen-us%2Farticles%2F55384223785115-FAQ-Guarded-rollouts","has_alternate_templates":true,"has_custom_statuses_enabled":true,"has_hc_generative_answers_setting_enabled":true,"has_suggested_initial_questions_enabled":false,"has_contentful_eap":false,"has_contentful_eap_eligible":false,"has_pdf_ingestion_eap":true,"has_pdf_ingestion_eap_eligible":true,"has_saas_management":true,"has_knowledge_category_translation_modal":false,"has_guide_service_catalog":true,"has_csat_reverse_2_scale_in_mobile":false,"has_knowledge_locale_display_names":true,"has_csat_bet365_branding":false,"has_csat_flora":false,"has_csat_theming_integration_phase_1":false,"has_help_center_gen_search_follow_up_conversation":true,"chat_page_renderable":false,"version":"v28239","dev_mode":false};
+</script>
+
+  
+  
+  <script src="//static.zdassets.com/hc/assets/hc_enduser-f4a04b6285ef8d4fd369deeaf227bdc0.js"></script>
+  <script type="text/javascript" src="/hc/theming_assets/1470984/4196727/script.js?digest=57005846645275"></script>
+  
+</body>
+</html>

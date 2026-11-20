@@ -1,0 +1,522 @@
+DevOps Agent IAM permissions - AWS DevOps Agent (https://docs.aws.amazon.com/devopsagent/latest/userguide/aws-devops-agent-security-devops-agent-iam-permissions.html)
+citeturn122view0 [wordlim: 200] Crawled: 3 days ago; Content type: text/html; Source: open({"ref_id":"https://docs.aws.amazon.com/devopsagent/latest/userguide/aws-devops-agent-security-devops-agent-iam-permissions.html","lineno":null}); Total lines: 1589
+L0: 【0†View a markdown version of this page】
+L1: 
+L2: DevOps Agent IAM permissions - AWS DevOps Agent
+L3: 【1†Agent Space management actions】【2†Investigation and execution actions】【3†Chat management actions】【4†Topology and discovery actions】【5†Prevention and recommendation actions】【6†Backlog task management actions】【7†Asset management actions】【8†Catalog actions】【9†Trigger management actions】【10†AWS Support integration actions】【11†Access token management actions】【12†Usage and monitoring actions】【13†Common IAM policy examples】【14†Using service-linked roles for AWS DevOps Agent】【15†AWS Managed policies for AWS DevOps Agent】
+L4: # DevOps Agent IAM permissions
+L5: 
+L6: AWS DevOps Agent uses service-specific AWS Identity and Access Management (IAM) actions to control access to its features and capabilities. These actions determine what users can do within the AWS DevOps Agent console and Operator Web App. This is separate from the AWS service API permissions that the agent itself uses to investigate your resources.
+L7: 
+L8: For more information about limiting agent access, see 【16†Limiting Agent Access in an AWS Account】.
+L9: To let the agent perform directed actions in your AWS accounts, register an elevated IAM role on the account association. For example, you might use an elevated role to remediate an issue after operator approval. For more information about directed actions and registering an elevated IAM role, see 【17†Working with directed actions】.
+L10: ## Agent Space management actions
+L11: 
+L12: These actions control access to Agent Space configuration and management:
+L13: 
+L14:   * aidevops:GetAgentSpace – Allows users to view details about an Agent Space, including its configuration, status, and associated accounts. Users need this permission to access an Agent Space in the AWS Management Console.
+L15: 
+L16:   * aidevops:GetAssociation – Allows users to view details about a specific account association, including the IAM role configuration and connection status.
+L17:   * aidevops:ListAssociations – Allows users to list all AWS account associations configured for an Agent Space, including both primary and secondary accounts.
+L18: 
+L19:   * aidevops:AssociateService – Allows users to add a service association, such as an AWS account or a third-party tool, to an Agent Space.
+L20: 
+L21:   * aidevops:UpdateAssociation – Allows users to change the configuration of an existing association, such as its IAM role or credentials.
+L22:   * aidevops:DisassociateService – Allows users to remove an association from an Agent Space.
+L23: 
+L24:   * aidevops:ValidateAwsAssociations – Allows users to check that the AWS account associations of an Agent Space are configured correctly.
+L25: 
+L26:   * aidevops:ListWebhooks – Allows users to list the webhooks that belong to an association.
+L27: 
+L28: Resource-level permissions for association actions
+L29: Association actions authorize against the Agent Space, and some also authorize against the association itself. Use the request to determine which resources an action checks:
+L30:   * An action that targets one association, identified by an association ID in the request (for example, GetAssociation), authorizes against two resources: the association ARN, `arn:aws:aidevops:region:account-id:agentspace/agent-space-id/association/association-id`, and the Agent Space ARN. A statement that allows such an action must cover both ARNs.
+L31:   * An action that targets the associations of an Agent Space as a group, without an association ID in the request (for example, ListAssociations), authorizes against the Agent Space ARN, `arn:aws:aidevops:region:account-id:agentspace/agent-space-id`.
+L32: Granting an action on `arn:aws:aidevops:region:account-id:agentspace/*` covers both cases, because the pattern matches the Agent Space ARN and the association ARNs under it. A statement scoped only to an association ARN does not grant access to an action that targets one association, because it does not cover the Agent Space ARN.
+L33: 
+L34: Tag conditions apply to the Agent Space, because associations do not carry tags.
+L35: 
+L36: To restrict association actions by Agent Space tag, use two statements:
+L37:   * One statement without a condition, scoped to the association ARN.
+L38:   * One statement with the tag condition, scoped to the Agent Space ARN.
+L39: 
+L40:     `{
+L41:       "Version": "2012-10-17",
+L42:       "Statement": [
+L43:         {
+L44:           "Effect": "Allow",
+L45:           "Action": [
+L46:             "aidevops:GetAssociation",
+L47:             "aidevops:UpdateAssociation",
+L48:             "aidevops:DisassociateService",
+L49:             "aidevops:ListWebhooks"
+L50:           ],
+L51:           "Resource": "arn:aws:aidevops:us-east-1:111122223333:agentspace/*/association/*"
+L52:         },
+L53:         {
+L54:           "Effect": "Allow",
+L55:           "Action": [
+L56:             "aidevops:GetAssociation",
+L57:             "aidevops:UpdateAssociation",
+L58:             "aidevops:DisassociateService",
+L59:             "aidevops:ListWebhooks"
+L60:           ],
+L61:           "Resource": "arn:aws:aidevops:us-east-1:111122223333:agentspace/*",
+L62:           "Condition": {
+L63:             "StringEquals": {
+L64:               "aws:ResourceTag/team": "platform"
+L65:             }
+L66:           }
+L67:         }
+L68:       ]
+L69:     }`
+L70: ## Investigation and execution actions
+L71: 
+L72: These actions control access to incident investigation features:
+L73: 
+L74:   * aidevops:ListExecutions – Allows you to view execution metadata, including ID, status, and more, for investigations, mitigations, evaluations, and chat conversations associated with a task.
+L75:   * aidevops:ListJournalRecords – Allows users to access detailed logs that show the agent's reasoning steps, actions taken, and data sources consulted during an investigation, mitigation, evaluation, and chat conversation. This is useful for understanding how the agent reached its conclusions.
+L76: ## Chat management actions
+L77: 
+L78: Chat requires the following IAM permissions to function:
+L79: 
+L80:   * aidevops:ListChats – Allows users to list and access chat conversation history.
+L81: 
+L82:   * aidevops:CreateChat – Allows users to create new chat conversations.
+L83: 
+L84:   * aidevops:SendMessage – Allows users to submit queries and receive streaming responses.
+L85: 
+L86:   * aidevops:GetChat – Allows users to retrieve a chat conversation and its metadata, including the current title and archive status.
+L87:   * aidevops:UpdateChat – Allows users to rename or archive a chat conversation. This permission is required for both rename and archive actions in the web app.
+L88: ## Topology and discovery actions
+L89: 
+L90: These actions control access to application resource mapping features:
+L91: 
+L92:   * aidevops:DiscoverTopology – Allows users to trigger topology discovery and mapping for an Agent Space. This action initiates the process of scanning AWS accounts and building the application resource topology.
+L93: ## Prevention and recommendation actions
+L94: 
+L95: These actions control access to the Prevention feature:
+L96: 
+L97:   * aidevops:ListGoals – Allows users to view prevention goals and objectives that the agent is working toward based on recent incident patterns.
+L98: 
+L99:   * aidevops:ListRecommendations – Allows users to view all recommendations generated by the Prevention feature, including their priority and category.
+L100:   * aidevops:GetRecommendation – Allows users to view detailed information about a specific recommendation, including the incidents it would have prevented and implementation guidance.
+L101: ## Backlog task management actions
+L102: 
+L103: These actions control the ability to manage recommendations as backlog tasks:
+L104: 
+L105:   * aidevops:CreateBacklogTask – Allows users to create an incident investigation or prevention evaluation task. Users also need this permission to run a custom agent on demand.
+L106: 
+L107:   * aidevops:UpdateBacklogTask – Allows users to approve a mitigation plan or cancel an active investigation or evaluation.
+L108: 
+L109:   * aidevops:GetBacklogTask – Allows users to retrieve details about a specific task.
+L110:   * aidevops:ListBacklogTasks – Allows users to list tasks for an Agent Space, filtered by task type, status, priority, or creation time.
+L111: ## Asset management actions
+L112: 
+L113: These actions control the ability to add and manage assets in an Agent Space, including skills, AGENTS.md files, attachments, custom agents, test profiles, and feedback. For details on the Asset API, see 【18†Managing assets】.
+L114: 
+L115:   * aidevops:CreateAsset – Allows users to create a new asset in an Agent Space, including skills, AGENTS.md files, attachments, custom agents, test profiles, and feedback.
+L116:   * aidevops:GetAsset – Allows users to retrieve an asset's metadata and version information.
+L117: 
+L118:   * aidevops:UpdateAsset – Allows users to update the metadata or content of an existing asset.
+L119: 
+L120:   * aidevops:DeleteAsset – Allows users to delete an asset and all of its files from an Agent Space.
+L121: 
+L122:   * aidevops:ListAssets – Allows users to list assets in an Agent Space, with optional filtering by asset type.
+L123: 
+L124:   * aidevops:ListAssetVersions – Allows users to list the historical versions of an asset.
+L125:   * aidevops:GetAssetContent – Allows users to download an asset's full content as a zip bundle.
+L126: 
+L127:   * aidevops:CreateAssetFile – Allows users to add a new file to an existing asset.
+L128: 
+L129:   * aidevops:GetAssetFile – Allows users to retrieve a single file from an asset by its path.
+L130: 
+L131:   * aidevops:UpdateAssetFile – Allows users to replace the content or metadata of an existing file in an asset.
+L132: 
+L133:   * aidevops:DeleteAssetFile – Allows users to remove a single file from an asset.
+L134:   * aidevops:ListAssetFiles – Allows users to list the files within an asset.
+L135: 
+L136:   * aidevops:ListAssetTypes – Allows users to list the asset types supported by AWS DevOps Agent. This action is not scoped to a specific Agent Space and requires `Resource: "*"`.
+L137: ## Catalog actions
+L138: These actions control access to the AWS DevOps Agent Skills Catalog. In these action names, a capability is an item in the catalog, such as a skill. The Skills Catalog uses `aidevops:ListCatalogCapabilities`, `aidevops:GetCatalogCapability`, and `aidevops:ListCatalogCapabilityFiles`, but not `aidevops:ListCatalogCapabilityTypes`. The actions aren't scoped to a specific Agent Space and require `Resource: "*"`.
+L139: To add skills from the Skills Catalog to an Agent Space, you also need `aidevops:CreateAsset`, and to sync them, `aidevops:UpdateAsset`. For more information, see 【19†Skills Catalog】.
+L140:   * aidevops:GetCatalogCapability – Allows users to retrieve a capability and its files from the catalog.
+L141: 
+L142:   * aidevops:ListCatalogCapabilities – Allows users to list the capabilities in the catalog.
+L143: 
+L144:   * aidevops:ListCatalogCapabilityFiles – Allows users to list the files in a capability from the catalog.
+L145: 
+L146:   * aidevops:ListCatalogCapabilityTypes – Allows users to list the capability types in the catalog.
+L147: ## Trigger management actions
+L148: 
+L149: These actions control the ability to manage triggers that run custom agents automatically, on a schedule or when an event arrives. For details on triggers, see 【20†Executing custom agents】.
+L150: 
+L151:   * aidevops:CreateTrigger – Allows users to create a trigger for a custom agent in an Agent Space.
+L152: 
+L153:   * aidevops:GetTrigger – Allows users to retrieve the details of a specific trigger.
+L154: 
+L155:   * aidevops:UpdateTrigger – Allows users to update the configuration of an existing trigger.
+L156:   * aidevops:DeleteTrigger – Allows users to delete a trigger from an Agent Space.
+L157: 
+L158:   * aidevops:ListTriggers – Allows users to list the triggers in an Agent Space.
+L159: ## AWS Support integration actions
+L160: 
+L161: These actions control integration with AWS Support cases:
+L162: 
+L163:   * aidevops:InitiateChatForCase – Allows users to start a chat session with AWS Support directly from an investigation, automatically providing context about the incident.
+L164: 
+L165:   * aidevops:EndChatForCase – Allows users to end an active AWS Support case chat session.
+L166: 
+L167:   * aidevops:DescribeSupportLevel – Allows users to check the AWS Support plan level for the account to determine available support options.
+L168: ## Access token management actions
+L169: 
+L170: These actions control access to access token operations for remote MCP and A2A server authentication:
+L171: 
+L172:   * aidevops:CreateAccessToken – Allows users to create access tokens for an Agent Space.
+L173: 
+L174:   * aidevops:GetAccessToken – Allows users to view access token details.
+L175: 
+L176:   * aidevops:ListAccessTokens – Allows users to list access tokens in an Agent Space.
+L177:   * aidevops:RotateAccessToken – Allows users to rotate an access token, generating a new value while preserving configuration.
+L178: 
+L179:   * aidevops:RevokeAccessToken – Allows users to revoke an access token, permanently disabling it.
+L180: ## Usage and monitoring actions
+L181: 
+L182: These actions control access to usage information:
+L183: 
+L184:   * aidevops:GetAccountUsage – Allows users to view the AWS DevOps Agent monthly quota for investigation hours, prevention evaluation hours, and chat requests, as well as the current month's usage.
+L185: 
+L186: ## Common IAM policy examples
+L187: ### Administrator policy
+L188: 
+L189: This policy grants full access to all AWS DevOps Agent features:
+L190: 
+L191:     `{
+L192:       "Version": "2012-10-17",
+L193:       "Statement": [
+L194:         {
+L195:           "Effect": "Allow",
+L196:           "Action": "aidevops:*",
+L197:           "Resource": "*"
+L198:         }
+L199:       ]
+L200:     }`
+L201: ### Operator policy
+L202: This policy grants access to investigation and prevention features without administrative capabilities:
+L203: 
+L204:     `{
+L205:       "Version": "2012-10-17",
+L206:       "Statement": [
+L207:         {
+L208:           "Effect": "Allow",
+L209:           "Action": [
+L210:             "aidevops:GetAgentSpace",
+L211:             "aidevops:ListExecutions",
+L212:             "aidevops:ListJournalRecords",
+L213:             "aidevops:ListAssociations",
+L214:             "aidevops:GetAssociation",
+L215:             "aidevops:DiscoverTopology",
+L216:             "aidevops:ListRecommendations",
+L217:             "aidevops:GetRecommendation",
+L218:             "aidevops:CreateBacklogTask",
+L219:             "aidevops:UpdateBacklogTask",
+L220:             "aidevops:GetBacklogTask",
+L221:             "aidevops:ListBacklogTasks",
+L222:             "aidevops:ListAssets",
+L223:             "aidevops:ListAssetVersions",
+L224:             "aidevops:ListAssetFiles",
+L225:             "aidevops:ListAssetTypes",
+L226:             "aidevops:GetAsset",
+L227:             "aidevops:GetAssetContent",
+L228:             "aidevops:GetAssetFile",
+L229:             "aidevops:InitiateChatForCase",
+L230:             "aidevops:EndChatForCase",
+L231:             "aidevops:ListChats",
+L232:             "aidevops:CreateChat",
+L233:             "aidevops:SendMessage",
+L234:             "aidevops:GetChat",
+L235:             "aidevops:UpdateChat",
+L236:             "aidevops:ListGoals",
+L237:             "aidevops:CreateAsset",
+L238:             "aidevops:CreateAssetFile",
+L239:             "aidevops:UpdateAsset",
+L240:             "aidevops:UpdateAssetFile",
+L241:             "aidevops:ListCatalogCapabilities",
+L242:             "aidevops:GetCatalogCapability",
+L243:             "aidevops:ListCatalogCapabilityFiles",
+L244:             "aidevops:ListCatalogCapabilityTypes",
+L245:             "aidevops:CreateTrigger",
+L246:             "aidevops:GetTrigger",
+L247:             "aidevops:UpdateTrigger",
+L248:             "aidevops:DeleteTrigger",
+L249:             "aidevops:ListTriggers",
+L250:             "aidevops:DescribeSupportLevel",
+L251:             "aidevops:ListPendingMessages"
+L252:           ],
+L253:           "Resource": "*"
+L254:         }
+L255:       ]
+L256:     }`
+L257: ### Read-only policy
+L258: This policy grants view-only access to investigations and recommendations:
+L259: 
+L260:     `{
+L261:       "Version": "2012-10-17",
+L262:       "Statement": [
+L263:         {
+L264:           "Effect": "Allow",
+L265:           "Action": [
+L266:             "aidevops:GetAgentSpace",
+L267:             "aidevops:ListAssociations",
+L268:             "aidevops:GetAssociation",
+L269:             "aidevops:ListExecutions",
+L270:             "aidevops:ListJournalRecords",
+L271:             "aidevops:ListRecommendations",
+L272:             "aidevops:GetRecommendation",
+L273:             "aidevops:ListBacklogTasks",
+L274:             "aidevops:GetBacklogTask",
+L275:             "aidevops:ListAssets",
+L276:             "aidevops:ListAssetVersions",
+L277:             "aidevops:ListAssetFiles",
+L278:             "aidevops:ListAssetTypes",
+L279:             "aidevops:GetAsset",
+L280:             "aidevops:GetAssetContent",
+L281:             "aidevops:GetAssetFile",
+L282:             "aidevops:ListCatalogCapabilities",
+L283:             "aidevops:GetCatalogCapability",
+L284:             "aidevops:ListCatalogCapabilityFiles",
+L285:             "aidevops:ListCatalogCapabilityTypes",
+L286:             "aidevops:GetTrigger",
+L287:             "aidevops:ListTriggers",
+L288:             "aidevops:GetAccountUsage"
+L289:           ],
+L290:           "Resource": "*"
+L291:         }
+L292:       ]
+L293:     }`
+L294: ## Using service-linked roles for AWS DevOps Agent
+L295: 
+L296: AWS DevOps Agent uses AWS Identity and Access Management (IAM) 【21†service-linked roles】. A service-linked role is a unique type of IAM role that is linked directly to AWS DevOps Agent. Service-linked roles are predefined by AWS DevOps Agent and include all the permissions that the service requires to call other AWS services on your behalf.
+L297: ### Service-linked role permissions
+L298: 
+L299: The `AWSServiceRoleForAIDevOps` service-linked role trusts the `aidevops.amazonaws.com` service principal to assume the role.
+L300: 
+L301: The role uses the managed policy `AWSServiceRoleForAIDevOpsPolicy` with the following permissions:
+L302: 
+L303:   * `cloudwatch:PutMetricData` – Publish usage metrics to the `AWS/AIDevOps` CloudWatch namespace. Scoped by a `cloudwatch:namespace` condition to only allow the `AWS/AIDevOps` namespace.
+L304:   * `cloudwatch:GetMetricData` – Read usage metrics from the `AWS/AIDevOps` CloudWatch namespace. This read-only action applies to all resources because the CloudWatch API does not support resource-level permissions or the `cloudwatch:namespace` condition for `GetMetricData`.
+L305:   * `vpc-lattice:CreateResourceGateway` – Create VPC Lattice resource gateways for private connections. Scoped by an `aws:RequestTag/AWSAIDevOpsManaged` condition so the service can only create resource gateways that carry the `AWSAIDevOpsManaged` tag.
+L306: 
+L307:   * `vpc-lattice:TagResource` – Tag VPC Lattice resource gateways. Scoped by an `aws:RequestTag/AWSAIDevOpsManaged` condition.
+L308:   * `vpc-lattice:DeleteResourceGateway` – Delete VPC Lattice resource gateways. Scoped by an `aws:ResourceTag/AWSAIDevOpsManaged` condition so the service can only delete resource gateways it created.
+L309: 
+L310:   * `vpc-lattice:GetResourceGateway` – Retrieve information about VPC Lattice resource gateways. Scoped by an `aws:ResourceTag/AWSAIDevOpsManaged` condition so the service can only read resource gateways it created.
+L311:   * `ec2:DescribeVpcs`, `ec2:DescribeSubnets`, `ec2:DescribeSecurityGroups` – Retrieve information about VPC networking resources required to configure resource gateways. These read-only actions apply to all VPC resources because the EC2 API does not support resource-level permissions for Describe calls.
+L312:   * `iam:CreateServiceLinkedRole` – Create the VPC Lattice service-linked role required for resource gateway operations. This permission is scoped to the `vpc-lattice.amazonaws.com` service principal only and cannot be used to create service-linked roles for any other service.
+L313: ### Creating the service-linked role
+L314: 
+L315: You don't need to manually create the `AWSServiceRoleForAIDevOps` service-linked role. When you start using AWS DevOps Agent, the service creates the service-linked role for you.
+L316: To allow the service to create the role on your behalf, you must have the `iam:CreateServiceLinkedRole` permission. We recommend scoping this permission with an `iam:AWSServiceName` condition for `aidevops.amazonaws.com` to follow the principle of least privilege. For more information, see 【22†Service-linked role permissions】.
+L317: ### Editing the service-linked role
+L318: 
+L319: You cannot edit the `AWSServiceRoleForAIDevOps` service-linked role. After the role is created, you cannot change the name of the role because various entities might reference the role by name. However, you can edit the description of the role using IAM. For more information, see 【23†Editing a service-linked role】.
+L320: ### Deleting the service-linked role
+L321: If you no longer need to use AWS DevOps Agent, we recommend that you delete the `AWSServiceRoleForAIDevOps` service-linked role. Before you can delete the role, you must first remove any private connections configured in your Agent Space. Deleting the service-linked role does not automatically remove VPC Lattice resource gateways tagged with `AWSAIDevOpsManaged` that were previously created by the service. You should delete these resource gateways manually if they are no longer needed.
+L322: For more information, see 【24†Deleting a service-linked role】.
+L323: ## AWS Managed policies for AWS DevOps Agent
+L324: 
+L325: AWS addresses many common use cases by providing standalone IAM policies that are created and administered by AWS. These AWS managed policies grant necessary permissions for common use cases so that you can avoid having to investigate what permissions are needed. For more information, see 【25†AWS managed policies】 in the _IAM User Guide_.
+L326: 
+L327: The following AWS managed policies, which you can attach to users in your account, are specific to AWS DevOps Agent.
+L328: ### AIDevOpsAgentReadOnlyAccess
+L329: Provides read only access to Amazon DevOps Agent via the AWS Management Console
+L330: 
+L331:     `{
+L332:       "Version": "2012-10-17",
+L333:       "Statement": [
+L334:         {
+L335:           "Sid": "AIDevOpsAgentReadOnlyAccess",
+L336:           "Effect": "Allow",
+L337:           "Action": [
+L338:             "aidevops:DescribePrivateConnection",
+L339:             "aidevops:DescribeServices",
+L340:             "aidevops:Get*",
+L341:             "aidevops:List*",
+L342:             "aidevops:SearchServiceAccessibleResource"
+L343:           ],
+L344:           "Resource": "*"
+L345:         }
+L346:       ]
+L347:     }`
+L348: ### AIDevOpsAgentFullAccess
+L349: Provides full access to Amazon DevOps Agent via the AWS Management Console
+L350: 
+L351:     `{
+L352:       "Version": "2012-10-17",
+L353:       "Statement": [
+L354:         {
+L355:           "Sid": "AIDevOpsAgentAccess",
+L356:           "Effect": "Allow",
+L357:           "Action": [
+L358:             "aidevops:AllowVendedLogDeliveryForResource",
+L359:             "aidevops:AssociateService",
+L360:             "aidevops:CreateAccessToken",
+L361:             "aidevops:CreateAgentSpace",
+L362:             "aidevops:CreateAsset",
+L363:             "aidevops:CreateAssetFile",
+L364:             "aidevops:CreateBacklogTask",
+L365:             "aidevops:CreateChat",
+L366:             "aidevops:CreateKnowledgeItem",
+L367:             "aidevops:CreateOneTimeLoginSession",
+L368:             "aidevops:CreatePrivateConnection",
+L369:             "aidevops:CreateTrigger",
+L370:             "aidevops:DeleteAgentSpace",
+L371:             "aidevops:DeleteAsset",
+L372:             "aidevops:DeleteAssetFile",
+L373:             "aidevops:DeleteKnowledgeItem",
+L374:             "aidevops:DeletePrivateConnection",
+L375:             "aidevops:DeleteTrigger",
+L376:             "aidevops:DeregisterService",
+L377:             "aidevops:DescribePrivateConnection",
+L378:             "aidevops:DescribeServices",
+L379:             "aidevops:DescribeSupportLevel",
+L380:             "aidevops:DisableOperatorApp",
+L381:             "aidevops:DisassociateService",
+L382:             "aidevops:DiscoverTopology",
+L383:             "aidevops:EnableOperatorApp",
+L384:             "aidevops:EndChatForCase",
+L385:             "aidevops:GetAccessToken",
+L386:             "aidevops:GetAccountUsage",
+L387:             "aidevops:GetAgentSpace",
+L388:             "aidevops:GetAsset",
+L389:             "aidevops:GetAssetContent",
+L390:             "aidevops:GetAssetFile",
+L391:             "aidevops:GetAssociation",
+L392:             "aidevops:GetBacklogTask",
+L393:             "aidevops:GetKnowledgeItem",
+L394:             "aidevops:GetOperatorApp",
+L395:             "aidevops:GetRecommendation",
+L396:             "aidevops:GetService",
+L397:             "aidevops:GetTrigger",
+L398:             "aidevops:InitiateChatForCase",
+L399:             "aidevops:ListAccessTokens",
+L400:             "aidevops:ListAgentSpaces",
+L401:             "aidevops:ListAssetFiles",
+L402:             "aidevops:ListAssets",
+L403:             "aidevops:ListAssetTypes",
+L404:             "aidevops:ListAssetVersions",
+L405:             "aidevops:ListAssociations",
+L406:             "aidevops:ListBacklogTasks",
+L407:             "aidevops:ListChats",
+L408:             "aidevops:ListExecutions",
+L409:             "aidevops:ListGoals",
+L410:             "aidevops:ListJournalRecords",
+L411:             "aidevops:ListKnowledgeItems",
+L412:             "aidevops:ListKnowledgeItemVersions",
+L413:             "aidevops:ListPendingMessages",
+L414:             "aidevops:ListPrivateConnections",
+L415:             "aidevops:ListRecommendations",
+L416:             "aidevops:ListServices",
+L417:             "aidevops:ListTagsForResource",
+L418:             "aidevops:ListTriggers",
+L419:             "aidevops:ListWebhooks",
+L420:             "aidevops:RegisterService",
+L421:             "aidevops:RevokeAccessToken",
+L422:             "aidevops:RotateAccessToken",
+L423:             "aidevops:SearchServiceAccessibleResource",
+L424:             "aidevops:SendMessage",
+L425:             "aidevops:TagResource",
+L426:             "aidevops:UntagResource",
+L427:             "aidevops:UpdateAgentSpace",
+L428:             "aidevops:UpdateApprovalAction",
+L429:             "aidevops:UpdateAsset",
+L430:             "aidevops:UpdateAssetFile",
+L431:             "aidevops:UpdateAssociation",
+L432:             "aidevops:UpdateBacklogTask",
+L433:             "aidevops:UpdateGoal",
+L434:             "aidevops:UpdateKnowledgeItem",
+L435:             "aidevops:UpdateOperatorAppIdpConfig",
+L436:             "aidevops:UpdatePrivateConnectionCertificate",
+L437:             "aidevops:UpdateRecommendation",
+L438:             "aidevops:UpdateTrigger",
+L439:             "aidevops:ValidateAwsAssociations"
+L440:           ],
+L441:           "Resource": "*"
+L442:         }
+L443:       ]
+L444:     }`
+L445: ### AIDevOpsOperatorAppAccessPolicy
+L446: Provides access to use the AWS DevOps operator web app for an Agent Space.
+L447: 
+L448:     `{
+L449:       "Version": "2012-10-17",
+L450:       "Statement": [
+L451:         {
+L452:           "Sid": "AllowOperatorAgentSpaceActions",
+L453:           "Effect": "Allow",
+L454:           "Action": [
+L455:             "aidevops:CreateAccessToken",
+L456:             "aidevops:CreateAsset",
+L457:             "aidevops:CreateAssetFile",
+L458:             "aidevops:CreateBacklogTask",
+L459:             "aidevops:CreateChat",
+L460:             "aidevops:CreateKnowledgeItem",
+L461:             "aidevops:CreateTrigger",
+L462:             "aidevops:DeleteAsset",
+L463:             "aidevops:DeleteAssetFile",
+L464:             "aidevops:DeleteKnowledgeItem",
+L465:             "aidevops:DeleteTrigger",
+L466:             "aidevops:DescribeServices",
+L467:             "aidevops:DescribeSupportLevel",
+L468:             "aidevops:DiscoverTopology",
+L469:             "aidevops:EndChatForCase",
+L470:             "aidevops:GetAccessToken",
+L471:             "aidevops:GetAgentSpace",
+L472:             "aidevops:GetAsset",
+L473:             "aidevops:GetAssetContent",
+L474:             "aidevops:GetAssetFile",
+L475:             "aidevops:GetAssociation",
+L476:             "aidevops:GetBacklogTask",
+L477:             "aidevops:GetChat",
+L478:             "aidevops:GetKnowledgeGraph",
+L479:             "aidevops:GetKnowledgeItem",
+L480:             "aidevops:GetPlan",
+L481:             "aidevops:GetRecommendation",
+L482:             "aidevops:GetTrigger",
+L483:             "aidevops:InitiateChatForCase",
+L484:             "aidevops:ListAccessTokens",
+L485:             "aidevops:ListAgentSpaceMetrics",
+L486:             "aidevops:ListAssetChanges",
+L487:             "aidevops:ListAssetFiles",
+L488:             "aidevops:ListAssets",
+L489:             "aidevops:ListAssetTypes",
+L490:             "aidevops:ListAssetVersions",
+L491:             "aidevops:ListAssociations",
+L492:             "aidevops:ListBacklogTasks",
+L493:             "aidevops:ListChats",
+L494:             "aidevops:ListExecutions",
+L495:             "aidevops:ListGoals",
+L496:             "aidevops:ListJournalRecords",
+L497:             "aidevops:ListKnowledgeItems",
+L498:             "aidevops:ListKnowledgeItemVersions",
+L499:             "aidevops:ListPendingMessages",
+L500:             "aidevops:ListRecommendations",
+L501:             "aidevops:ListTriggers",
+L502:             "aidevops:ListWebhooks",
+L503:             "aidevops:RevokeAccessToken",
+L504:             "aidevops:RotateAccessToken",
+L505:             "aidevops:SearchAssets",
+L506:             "aidevops:SendMessage",
+L507:             "aidevops:StopPlan",
+L508:             "aidevops:UpdateApprovalAction",
+L509:             "aidevops:UpdateAsset",
+L510:             "aidevops:UpdateAssetFile",
+L511:             "aidevops:UpdateBacklogTask",
+L512:             "aidevops:UpdateChat",
+L513:             "aidevops:UpdateGoal",
+L514:             "aidevops:UpdateKnowledgeItem",
+L515:             "aidevops:UpdateRecommendation",
+L516:             "aidevops:UpdateTrigger"
+L517:           ],
+L518:           "Resource": [
+

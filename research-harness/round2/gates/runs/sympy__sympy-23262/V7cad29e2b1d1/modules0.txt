@@ -1,0 +1,109 @@
+...F...F..................F....FFF..F..............ssssssssss.......F... [ 61%]
+..................F.............s.......sssF.                            [100%]
+================================== FAILURES ===================================
+______________________________ test_nested_args _______________________________
+sympy\utilities\tests\test_lambdify.py:88: in test_nested_args
+    f1 = lambdify([[w, x]], [w, x])
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-4>", line 3
+E       return (w, x]
+E                   ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+_______________________________ test_own_module _______________________________
+sympy\utilities\tests\test_lambdify.py:129: in test_own_module
+    f = lambdify([p, q, r], [ae, ae], modules=math)
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-9>", line 2
+E       return (exp(p + (q + r)), exp(p + (q + r))]
+E                                                 ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+__________________________________ test_trig __________________________________
+sympy\utilities\tests\test_lambdify.py:326: in test_trig
+    f = lambdify([x], [cos(x), sin(x)], 'math')
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-45>", line 2
+E       return (cos(x), sin(x)]
+E                             ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+_____________________________ test_trig_symbolic ______________________________
+sympy\utilities\tests\test_lambdify.py:372: in test_trig_symbolic
+    f = lambdify([x], [cos(x), sin(x)], 'math')
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-50>", line 2
+E       return (cos(x), sin(x)]
+E                             ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+_______________________________ test_trig_float _______________________________
+sympy\utilities\tests\test_lambdify.py:379: in test_trig_float
+    f = lambdify([x], [cos(x), sin(x)])
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-51>", line 2
+E       return (cos(x), sin(x)]
+E                             ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+__________________________________ test_docs __________________________________
+sympy\utilities\tests\test_lambdify.py:388: in test_docs
+    f = lambdify([x, y, z], [z, y, x])
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-53>", line 2
+E       return (z, y, x]
+E                      ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+_________________________________ test_matrix _________________________________
+sympy\utilities\tests\test_lambdify.py:413: in test_matrix
+    f = lambdify((x, y, z), (A, [A]), modules="sympy")
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-58>", line 2
+E       return (ImmutableDenseMatrix([[x, x*y], [sin(z) + 4, x**z]]), (ImmutableDenseMatrix([[x, x*y], [sin(z) + 4, x**z]])],)
+E                                                                                                                          ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+_____________________________ test_lambdify_imps ______________________________
+sympy\utilities\tests\test_lambdify.py:850: in test_lambdify_imps
+    lam = lambdify(x, [f(x), x])
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-117>", line 2
+E       return (f(x), x]
+E                      ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+______________________________ test_issue_14941 _______________________________
+sympy\utilities\tests\test_lambdify.py:1199: in test_issue_14941
+    f3 = lambdify([x, y], [y, x], 'sympy')
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-179>", line 2
+E       return (_Dummy_58, _Dummy_59]
+E                                   ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+______________________________ test_lambdify_cse ______________________________
+sympy\utilities\tests\test_lambdify.py:1568: in test_lambdify_cse
+    f = case.lambdify(cse=cse)
+sympy\utilities\tests\test_lambdify.py:1501: in lambdify
+    return lambdify(self.args, self.exprs, cse=cse)
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-217>", line 2
+E       return (x + y + z, x + y - z, 2*x + 2*y - z, (x + y)**2 + (y + z)**2]
+E                                                                           ^
+E   SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23262\V7cad29e2b1d1\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_nested_args -   File "<la...
+FAILED sympy/utilities/tests/test_lambdify.py::test_own_module -   File "<lam...
+FAILED sympy/utilities/tests/test_lambdify.py::test_trig -   File "<lambdifyg...
+FAILED sympy/utilities/tests/test_lambdify.py::test_trig_symbolic -   File "<...
+FAILED sympy/utilities/tests/test_lambdify.py::test_trig_float -   File "<lam...
+FAILED sympy/utilities/tests/test_lambdify.py::test_docs -   File "<lambdifyg...
+FAILED sympy/utilities/tests/test_lambdify.py::test_matrix -   File "<lambdif...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_imps -   File "<...
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_14941 -   File "<la...
+FAILED sympy/utilities/tests/test_lambdify.py::test_lambdify_cse -   File "<l...
+10 failed, 93 passed, 14 skipped, 5 warnings in 3.10s

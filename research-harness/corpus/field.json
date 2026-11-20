@@ -1,0 +1,376 @@
+[
+  {
+    "id": "I01",
+    "title": "OpenAI 的 agent-first 仓库",
+    "location": "每个 worktree 的可观测性与仓库约束",
+    "fact": "团队把应用按工作树独立启动，给 agent 提供浏览器、指标与日志；维护者把架构约束编成能反复执行的检查。这让开发者可以指定某次冷启动或用户路径的目标。",
+    "boundary": "为特定内部项目有意重建基础设施；文中的时间倍数是团队估计，没有同期对照。",
+    "sources": [
+      {
+        "entity": "I01",
+        "url": "https://openai.com/index/harness-engineering/",
+        "path": "raw/2026-11-20/I01.html",
+        "detail": "每个 worktree 的可观测性与仓库约束",
+        "date": "",
+        "sha256": "8467dd9bc36eba41e92e44eca3512edc88a7577effbaf8efe0da9e080f645454"
+      }
+    ]
+  },
+  {
+    "id": "I02",
+    "title": "Stripe Minions",
+    "location": "Blueprints、Linting and CI；原文行 49–85",
+    "fact": "蓝图混合确定性步骤和由模型决定的步骤。跑 lint、push 是确定性节点；CI 失败才把证据发回修复节点，第二轮 CI 后交回人。合并前有人工审查。",
+    "boundary": "厂商给出的每周超过 1,300 个已合并 PR 是量，不是每个 PR 的成本、价值或事故率。QA devbox 和既有测试平台是前提。",
+    "sources": [
+      {
+        "entity": "I02",
+        "url": "https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2",
+        "path": "raw/web/I02-view.txt",
+        "detail": "Blueprints、Linting and CI；原文行 49–85",
+        "date": "",
+        "sha256": "22895b3c16baf9e36d18bbca04db749a4572987e8f7afcaf0956d24105f7eace"
+      }
+    ]
+  },
+  {
+    "id": "I03",
+    "title": "Anthropic 跨会话长任务",
+    "location": "初始化、进度文件、功能列表",
+    "fact": "初始化 agent 建立环境和工作清单，后续会话增量工作，读进度文件与 Git 状态再继续。每个会话能重新找到验收目标。",
+    "boundary": "适用于可拆分和持久化的工作；错误验收清单同样会跨会话延续。",
+    "sources": [
+      {
+        "entity": "I03",
+        "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+        "path": "raw/2026-11-20/I03.html",
+        "detail": "初始化、进度文件、功能列表",
+        "date": "",
+        "sha256": "19a2fe865aa69c9cc93ff4adc0707a40e19091326f256104228f2ef47b9f649e"
+      }
+    ]
+  },
+  {
+    "id": "I04",
+    "title": "Cursor Automations",
+    "location": "2026-03-05 发布说明",
+    "fact": "日程、Slack、Linear、GitHub、PagerDuty 或 webhook 等事件可在云沙箱启动任务，使用配置的 MCP、模型与记忆工具。",
+    "boundary": "厂商说明触发与执行方式，未提供治理成本或审查节省的有对照实测。",
+    "sources": [
+      {
+        "entity": "I04",
+        "url": "https://cursor.com/changelog/03-05-26",
+        "path": "raw/2026-11-20/I04.html",
+        "detail": "2026-03-05 发布说明",
+        "date": "",
+        "sha256": "3902937c6f6ff7d8ef212c8e687380b1cba83e7d9ce3c3b885c5dd392a81ccfb"
+      }
+    ]
+  },
+  {
+    "id": "I05",
+    "title": "Cursor Automations 多仓扩展",
+    "location": "2026-05-20 版本 3.5",
+    "fact": "增设 Agents Window 管理入口，一次自动化可附多个仓库，也可不附代码仓库。跨仓和从工具事件起步成为明确的配置选项。",
+    "boundary": "可读写多个仓库不等于跨仓原子提交、连带回滚或一致的发布验收。",
+    "sources": [
+      {
+        "entity": "I05",
+        "url": "https://cursor.com/changelog/05-20-26",
+        "path": "raw/2026-11-20/I05.html",
+        "detail": "2026-05-20 版本 3.5",
+        "date": "",
+        "sha256": "7536cbcba7cc7e893dca871968043d8eb9cbede856b663dee3e8cfc245b4a759"
+      }
+    ]
+  },
+  {
+    "id": "I06",
+    "title": "GitHub Copilot cloud agent 自动化",
+    "location": "自动化配置、仓库与套餐条件",
+    "fact": "可用日程、仓库事件或 API 从仓库 Agents 页触发；可产生 issue 标签或 PR。该文限定在启用功能且满足计划条件的 private/internal 仓库，列出管理员与托管账户限制。",
+    "boundary": "适用性取决于仓库、账户和策略；此产品与 GitHub Agentic Workflows 是不同机制。",
+    "sources": [
+      {
+        "entity": "I06",
+        "url": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-automations",
+        "path": "raw/2026-11-20/I06.html",
+        "detail": "自动化配置、仓库与套餐条件",
+        "date": "",
+        "sha256": "be3faf86cee521af90eba765b09993a87dee80df32db7382148665a021974d0f"
+      }
+    ]
+  },
+  {
+    "id": "I07",
+    "title": "GitHub 云端代理的责任边界",
+    "location": "PR 审批和 workflow 执行",
+    "fact": "文档区分提出变更、运行 workflow、批准和合并。云代理不能批准或合并自己的 PR；默认路径中的特定 workflow 需要有写权限的人确认，部分行为可配置。",
+    "boundary": "触发人、自动化所有者和 app 身份不同，不能假定每份结果对应相同的审批规则。",
+    "sources": [
+      {
+        "entity": "I07",
+        "url": "https://docs.github.com/en/enterprise-cloud@latest/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations",
+        "path": "raw/2026-11-20/I07.html",
+        "detail": "PR 审批和 workflow 执行",
+        "date": "",
+        "sha256": "e37096f8bca82ae52fa6911d0c58d23b97a92fd973b715ea5b5994997a0aaf94"
+      }
+    ]
+  },
+  {
+    "id": "I08",
+    "title": "METR 随机任务试验",
+    "location": "PDF pp.1–2、6–8",
+    "fact": "16 位熟悉所维护项目的开源开发者做 246 个任务，任务被随机分配允许或禁止当时的 AI 工具。允许 AI 的实现用时估计增加 19%，作者给出的区间为 2%–39%。",
+    "boundary": "研究覆盖 2025 年初的工具与熟悉仓库的开发者，不能把结论外推为 2026 年企业 agent 的效果。",
+    "sources": [
+      {
+        "entity": "I08",
+        "url": "https://metr.org/Early_2025_AI_Experienced_OS_Devs_Study-paper.pdf",
+        "path": "raw/2026-11-20/I08.pdf",
+        "detail": "PDF pp.1–2、6–8",
+        "date": "",
+        "sha256": "b6d4a8e7d8aeed20cc9a4545e485fdc5496b5cc48470338d2d7662b1953e5765"
+      }
+    ]
+  },
+  {
+    "id": "I09",
+    "title": "METR 修订实验设计",
+    "location": "2026-02-24；选择与计时",
+    "fact": "后续招募遇到不愿放弃 AI 的人不参试、部分任务不提交、报酬变化及并行工作工时难归属。作者判断新数据对当前效果大小的指示很弱。",
+    "boundary": "需要同时保存拒绝和未纳入的任务，区分墙钟、主动人时及多任务重叠。",
+    "sources": [
+      {
+        "entity": "I09",
+        "url": "https://metr.org/blog/2026-02-24-uplift-update/",
+        "path": "raw/2026-11-20/I09.html",
+        "detail": "2026-02-24；选择与计时",
+        "date": "",
+        "sha256": "c8b44a54a0338d34e0c2d80025d111f2ef6727cd8165c754670abcd3f5033e03"
+      }
+    ]
+  },
+  {
+    "id": "I10",
+    "title": "DORA 2025",
+    "location": "报告概览与 AI Capabilities Model",
+    "fact": "报告将 AI 看作组织已有能力与弱点的放大因素，强调平台、工作方式和组织条件。",
+    "boundary": "群体研究和作者综合解释适合提出分层变量；不能据此预测单企业节省金额。",
+    "sources": [
+      {
+        "entity": "I10",
+        "url": "https://dora.dev/research/2025/dora-report/",
+        "path": "raw/2026-11-20/I10.html",
+        "detail": "报告概览与 AI Capabilities Model",
+        "date": "",
+        "sha256": "6bb53c243fc615849727e65b6a9aa33dbd6b0d5c4e63af5ce68137db0924b4d9"
+      }
+    ]
+  },
+  {
+    "id": "I11",
+    "title": "DORA 2025 勘误",
+    "location": "v.2025.2，报告 p.71",
+    "fact": "勘误把一处 stability 改为 instability，两者对绩效与风险补偿的解读相反。",
+    "boundary": "引用图表和报告要记版本，提速与失稳应分开跟踪。",
+    "sources": [
+      {
+        "entity": "I11",
+        "url": "https://dora.dev/research/2025/errata/",
+        "path": "raw/2026-11-20/I11.html",
+        "detail": "v.2025.2，报告 p.71",
+        "date": "",
+        "sha256": "516829874e73ec724bd04560a46d351a943626d67e3e3f86bb21d36e419aa12f"
+      }
+    ]
+  },
+  {
+    "id": "I12",
+    "title": "OpenAI 对 SWE-bench Verified 的审计",
+    "location": "不合理测试与污染分析",
+    "fact": "评测作者区分测试额外要求、公开材料泄漏等误差来源；部分题要求 issue 未明说的专有名字，向模型提供评测反馈还可能暴露答案。",
+    "boundary": "厂商审计本身有采样与检测限制；对某个分数的质疑不能代表所有任务都失效。",
+    "sources": [
+      {
+        "entity": "I12",
+        "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+        "path": "raw/2026-11-20/I12.html",
+        "detail": "不合理测试与污染分析",
+        "date": "",
+        "sha256": "f3544b9afdf0b6a3a9d961ba87bc3f8846b1c4c22cefde90660254814a9c2933"
+      }
+    ]
+  },
+  {
+    "id": "I13",
+    "title": "CCF 软件工程/系统软件/程序设计语言目录",
+    "location": "国际会议 A 类表",
+    "fact": "本期所用分类把 FSE、ASE、ICSE、ISSTA 列在 A 类。期刊、行业轨、workshop 和其他领域会议在本报告分开标注。",
+    "boundary": "目录只核定系列与类别，论文发表轨道需另查。",
+    "sources": [
+      {
+        "entity": "I13",
+        "url": "https://www.ccf.org.cn/Academic_Evaluation/TCSE_SS_PDL/",
+        "path": "raw/2026-11-20/I13.html",
+        "detail": "国际会议 A 类表",
+        "date": "",
+        "sha256": "75285929708d9bb52d489af99629c6a244bb0da34fd4411a8fea0a70297ad4d3"
+      }
+    ]
+  },
+  {
+    "id": "I14",
+    "title": "Anthropic 分离生成与评估",
+    "location": "2026-03-24；实验与迭代",
+    "fact": "工程实验先给视觉设计明确评价维度，再让评估 agent 通过浏览器操作、截图并反馈给生成器。作者还观察到仅改评价标准的描述也能改变生成结果。",
+    "boundary": "生成器与评估器同时改动会混淆归因，审美偏好也需要目标用户校准。",
+    "sources": [
+      {
+        "entity": "I14",
+        "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+        "path": "raw/2026-11-20/I14.html",
+        "detail": "2026-03-24；实验与迭代",
+        "date": "",
+        "sha256": "85ed16bcbee1872fa7253af716d353eac18f8f51843764c94cca8710bd86b0bb"
+      }
+    ]
+  },
+  {
+    "id": "I15",
+    "title": "Devin Playbooks",
+    "location": "组织及 Enterprise Playbooks、编写建议",
+    "fact": "可把重复任务说明存于组织库、跨会话使用。官方建议并行运行实例暴露歧义，针对需要人工帮助的位置修订 playbook。",
+    "boundary": "重用提示与强制执行规则不同，重要前置条件还要有独立检查。",
+    "sources": [
+      {
+        "entity": "I15",
+        "url": "https://docs.devin.ai/product-guides/creating-playbooks",
+        "path": "raw/2026-11-20/I15.html",
+        "detail": "组织及 Enterprise Playbooks、编写建议",
+        "date": "",
+        "sha256": "7af88b4f63909b22f617b5b13dece7c283e28467c31c349b17b34095560b7a2c"
+      }
+    ]
+  },
+  {
+    "id": "I16",
+    "title": "OpenAI Performance Factory",
+    "location": "2026-11-18；Regression Workflow、评测",
+    "fact": "性能告警开工单，agent 诊断并写入同一任务、提出供工程师审查的修复；部署后另一个 agent 核对指标是否回基线。团队另行评估诊断能力和人能否读懂摘要。",
+    "boundary": "厂商现场报告；依赖组织已有的追踪、指标、剖析与发布数据。未取得该团队原始数据。",
+    "sources": [
+      {
+        "entity": "I16",
+        "url": "https://openai.com/index/how-openai-performance-factory-keeps-chatgpt-fast/",
+        "path": "raw/2026-11-20/I16.html",
+        "detail": "2026-11-18；Regression Workflow、评测",
+        "date": "",
+        "sha256": "d646ba580f8e2f355a490bff45c0a3686f1fd2995eb0888d0cb8b4562cf985da"
+      }
+    ]
+  },
+  {
+    "id": "I17",
+    "title": "OpenAI Symphony",
+    "location": "2026-04-27；任务状态机",
+    "fact": "Linear 工单成为控制对象，每个活跃任务对应工作区，系统持续轮询、处理停滞和新任务；一次工单可以产生多个 PR，也可以只交付调查。",
+    "boundary": "一些团队 landed PR 增长只是其观察量，不能解释团队净产出变化。",
+    "sources": [
+      {
+        "entity": "I17",
+        "url": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "path": "raw/web/I17-view.txt",
+        "detail": "2026-04-27；任务状态机",
+        "date": "",
+        "sha256": "daf1c4576ceeada3a436b6422e925c666eb26c487bb17299163537841eeb3d6a"
+      }
+    ]
+  },
+  {
+    "id": "I18",
+    "title": "GitHub Agentic Workflows",
+    "location": "2026-10-28 GA 发布记录",
+    "fact": "将 Markdown 工作流编译成 Actions YAML，复用 runner 与已有策略；默认只读，后续允许写入的操作经 safe outputs 处理。",
+    "boundary": "GA 是该功能的发布状态，个别客户的效率数字不能作为所有客户基线。",
+    "sources": [
+      {
+        "entity": "I18",
+        "url": "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/",
+        "path": "raw/web/I18-view.txt",
+        "detail": "2026-10-28 GA 发布记录",
+        "date": "",
+        "sha256": "bbee7fe7c2db6dbf2f073a3e0a578610d27dd3eace11daa6dcb7cf04e767164d"
+      }
+    ]
+  },
+  {
+    "id": "I21",
+    "title": "METR 评估 Anthropic 内部 AI 研发",
+    "location": "2026-11-05；研究访问范围与删节披露",
+    "fact": "METR 获得内部指标和访谈，判断 Anthropic 在明确任务上的模型能力进展较历史阶段可能显著加快，约为历史速率的两倍；对幅度和归因均保留较大不确定性。",
+    "boundary": "AI 研发组织的能力进展率与普通产品团队的工单用时是不同结果。作者称最有信息量的证据多数被删节，外部无法完整复核。",
+    "sources": [
+      {
+        "entity": "I21",
+        "url": "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/",
+        "path": "raw/web/I21-view.txt",
+        "detail": "2026-11-05；研究访问范围与删节披露",
+        "date": "",
+        "sha256": "78c5327eb8eb2895f944ce708dfaeabc7dde361d4c407694cf46e7400ad53b6c"
+      }
+    ]
+  },
+  {
+    "id": "I22",
+    "title": "Endsley 与 Kiris 的人工接管研究",
+    "location": "Human Factors 1995，作者摘要",
+    "fact": "在导航专家系统实验中，较低的态势感知伴随自动化失败后较差的决策响应。",
+    "boundary": "跨领域人因证据，只能作为研发现场的待验证假设，不能声称已有软件团队接管延时的同幅度测量。",
+    "sources": [
+      {
+        "entity": "I22",
+        "url": "https://journals.sagepub.com/doi/10.1518/001872095779064555",
+        "path": "raw/web/discovery-human.txt",
+        "detail": "Human Factors 1995，作者摘要",
+        "date": "",
+        "sha256": "c68eab56b0ad04c78db33814d8d6cd839bf7bf746f2588da42bed068b70b5acb"
+      }
+    ]
+  },
+  {
+    "id": "I23",
+    "title": "SPACE 开发者生产率框架",
+    "location": "Microsoft Research，2021",
+    "fact": "以满意度与福祉、绩效、活动、沟通协作、效率与流动等维度观察开发工作，反对用单项活动计数统一衡量生产力。",
+    "boundary": "是测量框架，不能给 agent 使用规定一个跨公司的收益阈值。",
+    "sources": [
+      {
+        "entity": "I23",
+        "url": "https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/",
+        "path": "raw/web/I23-view.txt",
+        "detail": "Microsoft Research，2021",
+        "date": "",
+        "sha256": "bca7237e63e87e28ff44233bbbd0b3bdf335e848b71481d2e29e7174fda2218b"
+      }
+    ]
+  },
+  {
+    "id": "I24",
+    "title": "Google SRE 金丝雀实践",
+    "location": "Canarying Releases；control、canary 与判断",
+    "fact": "将待发布版本暴露给有限流量，在限定时间窗内与并行对照比较，决定是否扩大流量。",
+    "boundary": "对照可比性、流量构成和波动会左右判断；单纯通过预发布测试不能替代生产信号。",
+    "sources": [
+      {
+        "entity": "I24",
+        "url": "https://sre.google/workbook/canarying-releases/",
+        "path": "raw/web/I24-view.txt",
+        "detail": "Canarying Releases；control、canary 与判断",
+        "date": "",
+        "sha256": "68d130ae7c5ee81b7d6318bae0ef004ab7a8a2b846913ba12f6dc765bfc49b90"
+      }
+    ]
+  }
+]

@@ -1,0 +1,321 @@
+检索参数 {"search_query":[{"q":"Sourcegraph search contexts revisions repository Backstage catalog owner Pact Broker can-i-deploy Nx affected official docs"}],"response_length":"medium"}
+Search Contexts - Sourcegraph docs (https://sourcegraph.com/docs/code-search/working/search-contexts)
+citeturn23search0 [wordlim: 200] Crawled: 3 weeks ago; A search context represents a set of repositories at specific revisions on a Sourcegraph instance that will be targeted by search queries by default. ... Administrators can set a default search context for all users on the Sourcegraph instance. ...     * Private contexts can only be viewed by their owner, or in the case being globally owned, by administrators.
+
+# Search Contexts
+
+Search Contexts help you search the code you care about on Sourcegraph.
+
+A search context represents a set of repositories at specific revisions on a Sourcegraph instance that will be targeted by search queries by default.
+
+Every search on Sourcegraph uses a search context. Search contexts can be defined with the contexts selector shown in the search input, or entered directly in a search query.
+
+## Available contexts
+
+  * Contexts owned by a user, such as `context:@username/context-name`, which can be private to the user or public to all users on the Sourcegraph instance.
+  * Contexts at the global level, such as `context:example-context`, which can be private to administrators or public to all users on the Sourcegraph instance.
+  * The global context, `context:global`, which includes all repositories on the Sourcegraph instance.
+
+## Using search contexts
+
+The search context is selected via the `context:` predicate in the search input. All search queries will target the currently selected search context.
+
+Type `context:` to begin defining the context as part of the search query.
+
+You can also search across multiple contexts at once using the `OR` boolean operator. For example:
+
+`(context:release1 OR context:release2 OR context:release3) someTerribleBug`
+
+## Organizing search contexts
+
+To organize your search contexts better, you can use a specific context as your default and star any number of contexts. This affects what context is selected by default, and how the list of contexts is sorted.
+
+### Default search context
+
+#### For users
+
+Any user can use a search context as their default. To set a default, go to the search context management page, open the "..." menu for a context, and click on "Use as default". If the user doesn't have a default, `global` will be used.
+
+If a user ever loses access to their default search context (eg. the search context is made private), they will see a warning at the top of the search contexts dropdown menu list and `global` will be used. If a user's default search context is deleted, `global` will immediately be set as their default.
+
+The default search context is always selected when loading the Sourcegraph webapp. The one exception is when opening a link to a search query that does not contain a `context:` filter, in which case the `global` context will be used.
+
+#### For administrators
+
+Administrators can set a default search context for all users on the Sourcegraph instance. This helps teams improve onboarding and search quality by focusing searches on the most relevant parts of the codebase rather than the entire indexed set of repositories.
+
+An admin can set a default search context via:
+
+  * Click the More button from the menu of the Sourcegraph web app
+  * Next, go to Search Contexts
+  * For the existing context list, click on the ... menu and select [Administrator only] Set as default for all users
+  * Alternatively, you can create a new context and then set it for all users via the same option
+
+Image: admin-level-default-context
+
+Here are a few considerations:
+
+  * If a user already has a personal default search context set, it will not be overridden
+  * The admin-set default will apply automatically if a user only uses the global context
+  * Individual users can see the instance-wide default and override it with their own default if they choose
+
+### Starred contexts
+
+Any user can star a search context. To star a context, click on the star icon in the search context management page. This will cause the context to appear near the top of their search contexts list. The `global` context cannot be starred.
+
+### Sort order
+
+The order of search contexts in the search results dropdown menu list and in the search context management page is always the following:
+
+  * The `global` context first
+  * The user's default context, if set
+  * All of the user's starred contexts
+  * Any remaining contexts available
+
+## Creating search contexts
+
+A search context consists of a name, description, and a set of repositories at one or many revisions.
+
+Contexts can be owned by a user, and can be private to the user or public to all users on the Sourcegraph instance.
+
+Contexts can also be at the global instance level, and can be private to administrators or public to all users on the Sourcegraph instance.
+
+  * Go to More > Search contexts in the navigation bar.
+  * Press the + Create search context button.
+  * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. Note: At present, the owner of a search context cannot be changed after being created.
+  * In the Context name field, type in a short, semantic name for the context. The name can be 32 characters max, and contain alphanumeric and `.` `_` `/` `-` characters.
+  * Optionally, enter a Description for the context. Markdown is supported.
+  * Choose the Visibility of this context.
+    * Public contexts are available to everyone on the Sourcegraph instance. Note that private repositories will only be visible to users that have permission to view the repository via the code host.
+    * Private contexts can only be viewed by their owner, or in the case being globally owned, by administrators.
+  * In the Repositories and revisions configuration, define which repositories and revisions should be included in the search context. Press Add repository to quickly add a template to the configuration.
+    * Define repositories with valid URLs.
+    * Define revisions as strings in an array. To specify a default branch, use `"HEAD"`.
+
+For example:
+    
+    JSON
+    
+    `[
+    	{
+    		"repository": "github.com/sourcegraph/sourcegraph",
+    		"revisions": ["3.15"]
+    	},
+    	{
+    		"repository": "github.com/sourcegraph/src-cli",
+    		"revisions": ["3.11.2"]
+    	}
+    ]`
+
+  * Press Test configuration to validate the repositories and revisions.
+  * Press Create search context to finish creating your search context.
+
+You will be returned to the list of search contexts. Your new search context will appear in the search contexts selector in the search input, and can be used immediately.
+
+## Query-based search contexts
+
+Search contexts can be defined with a restricted search query as an alternative to a specific list of repositories and revisions. Allowed filters are: `repo`, `rev`, `file`, `lang`, `case`, `fork`, and `visibility`. `OR` and `AND` expressions are also allowed.
+
+Currently, repo built in predicates for example `repo:has.file`, `repo:has.content` etc, aren't currently supported in search contexts.
+
+You can also create a query-based search context from the search results page, using the Create context button above the results.
+
+To index the revisions matched by a query-based search context for faster searching, see Multi-branch indexing.--------------------------------------------------------------------------------
+sourcegraph/doc/code_search/how-to/search_contexts.md at main · onecommons/sourcegraph · GitHub (https://github.com/onecommons/sourcegraph/blob/main/doc/code_search/how-to/search_contexts.md)
+citeturn23search1 [wordlim: 200] Crawled: last month; When search contexts are enabled on your private Sourcegraph instance, you can create your own search contexts. ...   * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. ...             "repository": "github.com/sourcegraph/sourcegraph", ... As of release 3.36, search contexts can be defined with a restricted search query as an alternative to a specific list of repositories and revisions.
+
+# Search contexts
+
+Search contexts help you search the code you care about on Sourcegraph. A search context represents a set of repositories at specific revisions on a Sourcegraph instance that will be targeted by search queries by default.
+
+Every search on Sourcegraph uses a search context. Search contexts can be defined with the contexts selector shown in the search input, or entered directly in a search query.
+
+If no search context is specified, `context:global` is used.
+
+## Using search contexts
+
+The search contexts selector is shown in the search input. All search queries will target the currently selected search context.
+
+To change the current search context, press the contexts selector. All of your search contexts will be shown in the search contexts dropdown. Select or use the filter to narrow down to a specific search context. Selecting a different context will immediately re-run your current search query using the currently selected search context.
+
+Search contexts can also be used in the search query itself. Type `context:` to begin defining the context as part of the search query. When a context is defined in the search query itself, it overrides the context shown in the context selector.
+
+You can also search across multiple contexts at once using the `OR` boolean operator. For example:
+
+`(context:release1 OR context:release2 OR context:release3) someTerribleBug`
+
+## Creating search contexts
+
+When search contexts are enabled on your private Sourcegraph instance, you can create your own search contexts.
+
+A search context consists of a name, description, and a set of repositories at one or many revisions.
+
+Contexts can be owned by a user, and can be private to the user or public to all users on the Sourcegraph instance.
+
+Contexts can also be at the global instance level, and can be private to site admins or public to all users on the Sourcegraph instance.\
+
+### Creating search contexts from header navigation
+
+  * Go to User menu > Search contexts in the top navigation bar.
+  * Press the + Create search context button.
+  * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. Note: At present, the owner of a search context cannot be changed after being created.
+  * In the Context name field, type in a short, semantic name for the context. The name can be 32 characters max, and contain alphanumeric and `.` `_` `/` `-` characters.
+  * Optionally, enter a Description for the context. Markdown is supported.
+  * Choose the Visibility of this context.
+    * Public contexts are available to everyone on the Sourcegraph instance. Note that private repositories will only be visible to users that have permission to view the repository via the code host.
+    * Private contexts can only be viewed by their owner, or in the case being globally owned, by site admins.
+  * In the Repositories and revisions configuration, define which repositories and revisions should be included in the search context. Press Add repository to quickly add a template to the configuration.
+    * Define repositories with valid URLs.
+    * Define revisions as strings in an array. To specify a default branch, use `"HEAD"`.
+
+For example:
+    
+        [
+          {
+            "repository": "github.com/sourcegraph/sourcegraph",
+            "revisions": [
+              "3.15"
+            ]
+          }, {
+            "repository": "github.com/sourcegraph/src-cli",
+            "revisions": [
+              "3.11.2"
+            ]
+          }
+        ]
+
+  * Press Test configuration to validate the repositories and revisions.
+  * Press Create search context to finish creating your search context.
+
+You will be returned to the list of search contexts. Your new search context will appear in the search contexts selector in the search input, and can be used immediately.
+
+## Beta: Query-based search contexts
+
+As of release 3.36, search contexts can be defined with a restricted search query as an alternative to a specific list of repositories and revisions. This feature is in beta and may change in following releases. Allowed filters are: `repo`, `rev`, `file`, `lang`, `case`, `fork`, and `visibility`. --------------------------------------------------------------------------------
+Search Contexts - Sourcegraph docs (https://7.6.sourcegraph.com/code-search/working/search-contexts)
+citeturn23search2 [wordlim: 200] Crawled: last month; This page provides docs about Search Contexts in Sourcegraph's Code Search. ... Site admins can set a default search context for all users on the Sourcegraph instance. ...     * Private contexts can only be viewed by their owner, or in the case being globally owned, by site admins. ...     		"repository": "github.com/sourcegraph/sourcegraph",
+
+A search context consists of a name, description, and a set of repositories at one or many revisions.
+
+Contexts can be owned by a user, and can be private to the user or public to all users on the Sourcegraph instance.
+
+Contexts can also be at the global instance level, and can be private to site admins or public to all users on the Sourcegraph instance.
+
+### Creating search contexts from header navigation
+
+  * Go to User menu > Search contexts in the top navigation bar.
+  * Press the + Create search context button.
+  * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. Note: At present, the owner of a search context cannot be changed after being created.
+  * In the Context name field, type in a short, semantic name for the context. The name can be 32 characters max, and contain alphanumeric and `.` `_` `/` `-` characters.
+  * Optionally, enter a Description for the context. Markdown is supported.
+  * Choose the Visibility of this context.
+--------------------------------------------------------------------------------
+Search configuration - Sourcegraph docs (https://sourcegraph.com/docs/admin/search)
+citeturn23search3 [wordlim: 200] Crawled: today; You can exclude files and directories from search by adding the file `.sourcegraph/ignore` to the root directory of your repository. ... To speed up search for those branches, Sourcegraph can be configured to index up to 64 branches per repository. ... To also index the revisions matched by query-based search contexts, set `search.index.query.contexts`: ...   * The amount of disk i/o resources that you have available in your environment
+  * The impact on search performance that you find acceptable
+Some organizations have other branches that are regularly searched. To speed up search for those branches, Sourcegraph can be configured to index up to 64 branches per repository.
+
+Configure the extra branches per repository with `search.index.branches`. To also index the revisions matched by query-based search contexts, set `search.index.query.contexts`:
+    
+    JSON
+    
+    `{
+    	"experimentalFeatures": {
+    		"search.index.branches": {
+    			"github.com/sourcegraph/sourcegraph": ["3.15", "develop"],
+    			"github.com/sourcegraph/src-cli": ["next"]
+    		},
+    		"search.index.query.contexts": true
+    	}
+    }`
+
+The indexer deduplicates documents between branches, so the size of your index will grow with the number of unique documents. Indexing multiple branches will increase CPU and memory requirements.
+
+### Scaling considerations
+
+Zoekt is Sourcegraph's indexing engine. When processing a repository, Zoekt splits the index it creates across one or more files on disk. These files are called "shards."
+--------------------------------------------------------------------------------
+Code Search Capabilities - Sourcegraph docs (https://sourcegraph.com/docs/code-search/features)
+citeturn23search4 [wordlim: 200] Crawled: last month; A search context represents a set of repositories at specific revisions on a Sourcegraph instance that will be targeted by search queries by default. ... Search contexts can be defined with the contexts selector shown in the search input, or entered directly in a search query. ... You can exclude files and directories from search by adding the file `.sourcegraph/ignore` to the root directory of your repository.
+
+## Search contexts
+
+Search contexts help you search the code you care about on Sourcegraph. A search context represents a set of repositories at specific revisions on a Sourcegraph instance that will be targeted by search queries by default.
+
+Every search on Sourcegraph uses a search context. Search contexts can be defined with the contexts selector shown in the search input, or entered directly in a search query.
+
+See the search contexts documentation to learn how to use and create search contexts.
+
+## Multi-branch indexing
+
+The most common branch to search is your default branch. To speed up this common operation, Sourcegraph maintains an index of the source code on your default branch. Some organizations have other branches that are regularly searched. To speed up search for those branches, Sourcegraph can be configured to index up to 64 branches per repository. Your administrator can configure multi-branch indexing through advanced configuration.
+
+## Exclude files and directories
+--------------------------------------------------------------------------------
+sourcegraph/doc/code_search/how-to/search_contexts.md at main · eraserlabs/sourcegraph · GitHub (https://github.com/eraserlabs/sourcegraph/blob/main/doc/code_search/how-to/search_contexts.md)
+citeturn23search5 [wordlim: 200] Crawled: 4 weeks ago; When search contexts are enabled on your private Sourcegraph instance, you can create your own search contexts. ...   * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. ... As of release 3.36, search contexts can be defined with a restricted search query as an alternative to a specific list of repositories and revisions.
+
+## Creating search contexts
+
+When search contexts are enabled on your private Sourcegraph instance, you can create your own search contexts.
+
+A search context consists of a name, description, and a set of repositories at one or many revisions.
+
+Contexts can be owned by a user, and can be private to the user or public to all users on the Sourcegraph instance.
+
+Contexts can also be at the global instance level, and can be private to site admins or public to all users on the Sourcegraph instance.
+
+### Creating search contexts from header navigation
+
+  * Go to User menu > Search contexts in the top navigation bar.
+  * Press the + Create search context button.
+  * In the Owner field, choose whether you will own the context or if it will be global to the Sourcegraph instance. Note: At present, the owner of a search context cannot be changed after being created.
+  * In the Context name field, type in a short, semantic name for the context. The name can be 32 characters max, and contain alphanumeric and `.` `_` `/` `-` characters.
+--------------------------------------------------------------------------------
+Getting Started - Sourcegraph docs (https://sourcegraph.com/docs/getting-started)
+citeturn23search6 [wordlim: 200] Crawled: 3 weeks ago; ## Why do I need Code Search? ...   * Determine the impact of changes ...   * Code Insights: reveal high-level information about your codebase at its current state and over time to track migrations, version usage, vulnerability remediation, ownership, and anything else you can search in Sourcegraph ...   * MCP Server: Connect AI tools and IDEs to Sourcegraph's code intelligence capabilities through the Model Context Protocol ... Deploy and Configure Sourcegraph inside your organization on your internal code if nobody else has yet ...   * Search contexts to search across a set of repositories at specific revisions ... Sourcegraph gives your development team cross-repository IDE-like features on your code:
+--------------------------------------------------------------------------------
+sourcegraph/doc/code_search/how-to/convert_repository_groups_to_search_contexts.md at main · mrndrew/sourcegraph · GitHub (https://github.com/mrndrew/sourcegraph/blob/main/doc/code_search/how-to/convert_repository_groups_to_search_contexts.md)
+citeturn23search7 [wordlim: 200] Crawled: 2 months ago; This guide will provide steps for migrating from repository groups to search contexts on your Sourcegraph instance. ...      * Enter the repository group name as the context name ...      * Keep a single `HEAD` revision if you only want to search the latest code on the main branch ... Converted search contexts can be used immediately by users on the Sourcegraph instance.
+--------------------------------------------------------------------------------
+Deep Search - Sourcegraph docs (https://sourcegraph.com/docs/deep-search)
+citeturn23search8 [wordlim: 200] Crawled: today; You can reuse the same search contexts you already use in Code Search when creating a new Deep Search query. ...   * Search and source file operations are read-only and use Sourcegraph's existing APIs and repository permissions. ... Only the script's return value, supporting sources, and generated file metadata are returned to Deep Search and added to the LLM context.
+--------------------------------------------------------------------------------
+Search Query Syntax - Sourcegraph docs (https://sourcegraph.com/docs/code-search/queries)
+citeturn23search9 [wordlim: 200] Crawled: today; alias: revision  | Search a revision instead of the default branch. `rev:` can only be used in conjunction with `repo:` and may not be used more than once. ... Results in repository forks are excluded by default  | `fork:yes repo:sourcegraph` ... See code ownership documentation for more  | `file:has.owner(alice@sourcegraph.com) Sourcegraph`
+--------------------------------------------------------------------------------
+sourcegraph/doc/code_search/explanations/features.md at main · kopancek/sourcegraph · GitHub (https://github.com/kopancek/sourcegraph/blob/main/doc/code_search/explanations/features.md)
+citeturn23search10 [wordlim: 200] Crawled: 2 months ago; To speed up search for those branches Sourcegraph can be configured to index up to 64 branches per repository. ...   * Contexts owned by a user, such as `context:@username/context-name`, which can be private to the user or public to all users on the Sourcegraph instance.
+--------------------------------------------------------------------------------
+Code Search - Sourcegraph docs (https://sourcegraph.com/docs/code-search)
+citeturn23search11 [wordlim: 200] Crawled: yesterday; Sourcegraph's Code Search empowers you to: ...   * Narrow your search by repository and file pattern
+  * Use search contexts to search across a set of repositories at specific revisions
+--------------------------------------------------------------------------------
+Sourcegraph vs GitHub Code Search (https://storage.googleapis.com/sourcegraph-assets/docs/PDFs/Sourcegraph%20vs%20GitHub%20Code%20Search%201022%3A10%3A27.pdf)
+citeturn23search12 [wordlim: 200] Crawled: 4 days ago; # Sourcegraph vs GitHub Code Search ... <td>🟡<br>All repositories and forks can be searched, but there are limitations on the code that is indexed. ... <td>Scope search to repository groups with search contexts</td>
+--------------------------------------------------------------------------------
+# Sourcegraph (https://storage.googleapis.com/sourcegraph-assets/docs/PDFs/Sourcegraph%20vs.%20GitHub%20code%20search%20chart.pdf)
+citeturn23search13 [wordlim: 200] Crawled: 4 days ago; <td>🟡 Repositories and forks can be searched, but only the default branch can be searched</td> ... <td>Scope search to repository groups with search contexts</td> ... **Note:** The information above was sourced from Sourcegraph docs and GitHub Code Search’s FAQs, webpage, and blog.
+--------------------------------------------------------------------------------
+Microsoft Word - STAGING - Terms of Service for Sourcegraph Cloud.docx (https://s3.amazonaws.com/EULA/5859812e-6874-494c-92ba-2c30f38e65b4-eula.pdf)
+citeturn23search14 [wordlim: 200] Crawled: 4 days ago; You grant to Sourcegraph a royalty-free, sublicensable, transferable, perpetual, irrevocable, non-exclusive, worldwide license to your User Content for the limited purposes of: (i) providing and improving the Services; (ii) protecting the Services to prevent abuse; and (iii) tailoring the Services to you. ... If we are compelled by law to disclose the contents of your private repositories, we will provide notice regarding our access to private repository content to the extent permitted by law. ... The Services are owned and operated by Sourcegraph.
+--------------------------------------------------------------------------------
+Remote software (https://info.sourcegraph.com/hubfs/CTA%20assets/Sourcegraph-remote-software-development-made-easier.pdf)
+citeturn23search15 [wordlim: 200] Published: 1.4 years ago; Writing code changes — especially for new employees — can be a daunting task because you ... Sourcegraph’s powerful search engine lets you start by searching broadly for what you are ... search the repository’s entire git history to see if others have made similar changes in the
+--------------------------------------------------------------------------------
+Example:
+
+Sourcegraph
+
+Sourcegraph makes its codeb (https://info.sourcegraph.com/hubfs/PDFs/Sourcegraph_Dev-onboarding_What-makes-it-unique-Ebook.pdf)
+citeturn23search16 [wordlim: 200] Published: 4.6 years ago; - New developers at Sourcegraph can use code search to find answers to their questions in our codebase, rather than monopolizing the time of senior developers with repetitive questions. ... - Experienced developers can use Notebooks to document actionable, shareable codebase searches. ... 2) repo:^github\.com/sourcegraph/sourcegraph$ lang:Go actor.FromContext(...) -f:mock|_test patternType:structural
+--------------------------------------------------------------------------------
+SOURCE CODE (https://tag-security.cncf.io/community/working-groups/supply-chain-security/supply-chain-security-paper-v2/Software_Supply_Chain_Practices_whitepaper_v2.pdf)
+citeturn23search17 [wordlim: 200] Published: 1.7 years ago; “Integrity” in this context means that the source code and tags found in the repository have not changed or been altered from when the code was created by the developer. ... These pipelines must be properly configured to access source code on-demand in order to build, deploy, and release artifacts at the cadence the organization needs. ... The repository responsible for storing source code and tracking changes must also include a policy that indicates which parts of the repository are protected and who can make changes to them.
+--------------------------------------------------------------------------------
+Wrangling 2000 Git Repos at Reddit (https://www.reddit.com/r/RedditEng/comments/1bdtrjq)
+citeturn23reddit18 [wordlim: 200] Published: 2.7 years ago; Crawled: 1.6 years ago; Our repository host provides some basic search capabilities, but it doesn’t do a great job of surfacing relevant results. If I know where to start looking, I can clone the repo and search it locally with tools like grep (or ripgrep for those of culture). But at Reddit I can also open up Sourcegraph. ... If we click into one of the results, we can read the full context of the usage in an IDE-like file browser. ... If I hover over symbols in the file, I’ll see tooltips with docs and the ability to jump to other references: ... We currently need to rely on the Sourcegraph CLI to actually run the spec, which will download code and run the script locally. ... Our Release Infrastructure team has been going through the process of moving deployments off of Spinnaker, our legacy deployment tool. ... Sourcegraph can’t coerce our developers into merging these changes, teams are ultimately still responsible for their own codebases, but the burndown gives us a quick overview of how the change is being adopted.
+--------------------------------------------------------------------------------
+Sourcegraph (https://en.wikipedia.org/wiki/Sourcegraph)
+citeturn23search19 [wordlim: 200] Crawled: 3 months ago; Sourcegraph Inc. is a company developing code search and code intelligence tools that semantically index and analyze large codebases so that they can be searched across commercial, open-source, local, and cloud-based repositories. ... * Model Context Protocol ... Sourcegraph official website. ... *  "Sourcegraph makes core repository private, co-founder complains open source means 'extra work and risk'". ... *  "Owner's Manual - Amp".
+

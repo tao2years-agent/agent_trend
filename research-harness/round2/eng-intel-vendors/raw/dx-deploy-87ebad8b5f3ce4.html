@@ -1,0 +1,1923 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- 1 charset/viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 2 title -->
+    <title>Deployment options</title>
+
+    <base href="/deployment-options/">
+
+    <!-- 3 synchronous js -->
+    <script type="module">
+  import("/pagefind/pagefind.js").then(pagefind => {
+    window.pagefind = pagefind;
+  });
+</script>
+
+
+    <!-- 4 CSS -->
+    
+  <!-- Inlined CSS (fastest site performance in production) -->
+  <style>
+    /*! tailwindcss v4.1.6 | MIT License | https://tailwindcss.com */@layer properties;@layer theme, base, components, utilities;@layer theme{:host,:root{--font-sans:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";--font-mono:"Fira Code","Fira Mono","Courier New",monospace;--color-amber-50:oklch(98.7% 0.022 95.277);--color-amber-200:oklch(92.4% 0.12 95.746);--color-amber-800:oklch(47.3% 0.137 46.201);--color-emerald-600:oklch(59.6% 0.145 163.225);--color-blue-50:#e9f2fe;--color-blue-100:#cfe1fd;--color-blue-600:#1558bc;--color-gray-50:oklch(98.5% 0.002 247.839);--color-gray-100:#fafafa;--color-gray-200:#f0f0f0;--color-gray-300:#e5e5e5;--color-gray-400:#d4d4d4;--color-gray-500:#a3a3a3;--color-gray-600:#737373;--color-gray-700:#666;--color-gray-800:#404040;--color-gray-900:#121212;--color-gray-950:oklch(13% 0.028 261.692);--color-neutral-50:oklch(98.5% 0 0);--color-black:#000;--color-white:#fff;--spacing:0.25rem;--container-xs:20rem;--container-md:28rem;--container-lg:32rem;--container-xl:36rem;--container-2xl:42rem;--container-3xl:48rem;--container-4xl:56rem;--container-5xl:64rem;--container-7xl:80rem;--text-xs:0.75rem;--text-xs--line-height:1.33333;--text-sm:0.875rem;--text-sm--line-height:1.42857;--text-base:0.9375rem;--text-base--line-height:1.5;--text-lg:1.125rem;--text-lg--line-height:1.55556;--text-xl:1.25rem;--text-xl--line-height:1.4;--text-2xl:1.5rem;--text-2xl--line-height:1.33333;--text-3xl:1.875rem;--text-3xl--line-height:1.2;--text-4xl:2.25rem;--text-4xl--line-height:1.11111;--text-5xl:2.5rem;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--tracking-wide:0.025em;--leading-normal:1.5;--leading-relaxed:1.625;--radius-xs:0.125rem;--radius-sm:0.25rem;--radius-md:0.375rem;--radius-lg:0.5rem;--ease-in:cubic-bezier(0.4,0,1,1);--ease-out:cubic-bezier(0,0,0.2,1);--ease-in-out:cubic-bezier(0.4,0,0.2,1);--animate-pulse:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;--default-transition-duration:150ms;--default-transition-timing-function:cubic-bezier(0.4,0,0.2,1);--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono);--breakpoint-max:90.5rem;--mask-visible:#000;--mask-ease:rgba(0,0,0,.2);--mask-invisible:transparent;--scrollable-shadow-size:24px;--dx-font:"dx-sans",-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;--stroke:1px solid var(--color-gray-300);--dx-transition:0.2s ease;--dx-shadow-modal:0 9px 48px 0 rgba(17,24,39,.09),0 6px 24px 0 rgba(17,24,39,.1),0 1px 1px 0 rgba(17,24,39,.045);--color-blue:#1868db;--text-tiny:0.75rem}}@layer base{*,::backdrop,::file-selector-button,:after,:before{border:0 solid;box-sizing:border-box;margin:0;padding:0}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:var(--default-font-family,ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent}hr{border-top-width:1px;color:inherit;height:0}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:var(--default-mono-font-family,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-size:1em;font-variation-settings:var(--default-mono-font-variation-settings,normal)}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{border-collapse:collapse;border-color:inherit;text-indent:0}:-moz-focusring{outline:auto}progress{vertical-align:baseline}summary{display:list-item}menu,ol,ul{list-style:none}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{height:auto;max-width:100%}::file-selector-button,button,input,optgroup,select,textarea{background-color:transparent;border-radius:0;color:inherit;font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;opacity:1}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::-moz-placeholder{opacity:1}::placeholder{opacity:1}@supports (not (-webkit-appearance:-apple-pay-button)) or (contain-intrinsic-size:1px){::-moz-placeholder{color:currentcolor;@supports (color:color-mix(in lab,red,red)){color:color-mix(in oklab,currentcolor 50%,transparent)}}::placeholder{color:currentcolor;@supports (color:color-mix(in lab,red,red)){color:color-mix(in oklab,currentcolor 50%,transparent)}}}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-meridiem-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-year-field{padding-block:0}:-moz-ui-invalid{box-shadow:none}::file-selector-button,button,input:where([type=button],[type=reset],[type=submit]){-webkit-appearance:button;-moz-appearance:button;appearance:button}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer utilities{.collapse{visibility:collapse}.invisible{visibility:hidden}.visible{visibility:visible}.sr-only{height:1px;margin:-1px;overflow:hidden;padding:0;width:1px;clip:rect(0,0,0,0);border-width:0;white-space:nowrap}.absolute,.sr-only{position:absolute}.fixed{position:fixed}.relative{position:relative}.static{position:static}.sticky{position:sticky}.inset-0{inset:calc(var(--spacing)*0)}.top-0{top:calc(var(--spacing)*0)}.top-3\.5{top:calc(var(--spacing)*3.5)}.top-\[15\%\]{top:15%}.right-3{right:calc(var(--spacing)*3)}.left-1\/2{left:50%}.z-10{z-index:10}.z-30{z-index:30}.z-50{z-index:50}.container{width:100%;@media (width >= 40rem){max-width:40rem}@media (width >= 48rem){max-width:48rem}@media (width >= 60rem){max-width:60rem}@media (width >= 80rem){max-width:80rem}@media (width >= 90.5rem){max-width:90.5rem}@media (width >= 96rem){max-width:96rem}}.m-0{margin:calc(var(--spacing)*0)}.m-6{margin:calc(var(--spacing)*6)}.-mx-2{margin-inline:calc(var(--spacing)*-2)}.-mx-3{margin-inline:calc(var(--spacing)*-3)}.-mx-4{margin-inline:calc(var(--spacing)*-4)}.-mx-6{margin-inline:calc(var(--spacing)*-6)}.mx-auto{margin-inline:auto}.-my-3{margin-block:calc(var(--spacing)*-3)}.my-8{margin-block:calc(var(--spacing)*8)}.-mt-6{margin-top:calc(var(--spacing)*-6)}.mt-0\.5{margin-top:calc(var(--spacing)*.5)}.mt-1{margin-top:calc(var(--spacing)*1)}.mt-4{margin-top:calc(var(--spacing)*4)}.mt-12{margin-top:calc(var(--spacing)*12)}.mt-24{margin-top:calc(var(--spacing)*24)}.mt-36{margin-top:calc(var(--spacing)*36)}.mr-3{margin-right:calc(var(--spacing)*3)}.mb-1\.5{margin-bottom:calc(var(--spacing)*1.5)}.mb-2{margin-bottom:calc(var(--spacing)*2)}.mb-3{margin-bottom:calc(var(--spacing)*3)}.mb-3\.5{margin-bottom:calc(var(--spacing)*3.5)}.mb-4{margin-bottom:calc(var(--spacing)*4)}.mb-5{margin-bottom:calc(var(--spacing)*5)}.mb-6{margin-bottom:calc(var(--spacing)*6)}.mb-8{margin-bottom:calc(var(--spacing)*8)}.mb-12{margin-bottom:calc(var(--spacing)*12)}.-ml-1\.5{margin-left:calc(var(--spacing)*-1.5)}.ml-2{margin-left:calc(var(--spacing)*2)}.line-clamp-3{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3}.block{display:block}.contents{display:contents}.flex{display:flex}.grid{display:grid}.hidden{display:none}.inline{display:inline}.inline-flex{display:inline-flex}.table{display:table}.size-4{height:calc(var(--spacing)*4);width:calc(var(--spacing)*4)}.size-5{height:calc(var(--spacing)*5);width:calc(var(--spacing)*5)}.size-8{height:calc(var(--spacing)*8);width:calc(var(--spacing)*8)}.h-5{height:calc(var(--spacing)*5)}.h-6{height:calc(var(--spacing)*6)}.h-16{height:calc(var(--spacing)*16)}.max-h-\[min\(73vh\,580px\)\]{max-height:min(73vh,580px)}.max-h-svh{max-height:100svh}.min-h-0{min-height:calc(var(--spacing)*0)}.min-h-full{min-height:100%}.w-1\/3{width:33.33333%}.w-1\/4{width:25%}.w-5{width:calc(var(--spacing)*5)}.w-\[90vw\]{width:90vw}.w-full{width:100%}.max-w-2xl{max-width:var(--container-2xl)}.max-w-3xl{max-width:var(--container-3xl)}.max-w-4xl{max-width:var(--container-4xl)}.max-w-5xl{max-width:var(--container-5xl)}.max-w-7xl{max-width:var(--container-7xl)}.max-w-lg{max-width:var(--container-lg)}.max-w-md{max-width:var(--container-md)}.max-w-none{max-width:none}.max-w-xl{max-width:var(--container-xl)}.max-w-xs{max-width:var(--container-xs)}.min-w-0{min-width:calc(var(--spacing)*0)}.min-w-32{min-width:calc(var(--spacing)*32)}.flex-1{flex:1}.flex-shrink-0,.shrink-0{flex-shrink:0}.grow{flex-grow:1}.-translate-x-1\/2{--tw-translate-x:-50%}.-translate-x-1\/2,.translate-y-0{translate:var(--tw-translate-x) var(--tw-translate-y)}.translate-y-0{--tw-translate-y:calc(var(--spacing)*0)}.translate-y-1{--tw-translate-y:calc(var(--spacing)*1)}.translate-y-1,.translate-y-2{translate:var(--tw-translate-x) var(--tw-translate-y)}.translate-y-2{--tw-translate-y:calc(var(--spacing)*2)}.rotate-90{rotate:90deg}.rotate-270{rotate:270deg}.transform{transform:var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,)}.animate-pulse{animation:var(--animate-pulse)}.cursor-text{cursor:text}.scroll-mt-40{scroll-margin-top:calc(var(--spacing)*40)}.list-none{list-style-type:none}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.place-items-center{place-items:center}.items-center{align-items:center}.items-start{align-items:flex-start}.justify-between{justify-content:space-between}.justify-center{justify-content:center}.gap-0{gap:calc(var(--spacing)*0)}.gap-1{gap:calc(var(--spacing)*1)}.gap-2{gap:calc(var(--spacing)*2)}.gap-2\.5{gap:calc(var(--spacing)*2.5)}.gap-3{gap:calc(var(--spacing)*3)}.gap-4{gap:calc(var(--spacing)*4)}.gap-6{gap:calc(var(--spacing)*6)}.space-y-1{:where(&>:not(:last-child)){--tw-space-y-reverse:0;margin-block-end:calc(var(--spacing)*1*(1 - var(--tw-space-y-reverse)));margin-block-start:calc(var(--spacing)*1*var(--tw-space-y-reverse))}}.space-y-3{:where(&>:not(:last-child)){--tw-space-y-reverse:0;margin-block-end:calc(var(--spacing)*3*(1 - var(--tw-space-y-reverse)));margin-block-start:calc(var(--spacing)*3*var(--tw-space-y-reverse))}}.space-y-4{:where(&>:not(:last-child)){--tw-space-y-reverse:0;margin-block-end:calc(var(--spacing)*4*(1 - var(--tw-space-y-reverse)));margin-block-start:calc(var(--spacing)*4*var(--tw-space-y-reverse))}}.space-y-6{:where(&>:not(:last-child)){--tw-space-y-reverse:0;margin-block-end:calc(var(--spacing)*6*(1 - var(--tw-space-y-reverse)));margin-block-start:calc(var(--spacing)*6*var(--tw-space-y-reverse))}}.gap-x-6{-moz-column-gap:calc(var(--spacing)*6);column-gap:calc(var(--spacing)*6)}.space-x-3{:where(&>:not(:last-child)){--tw-space-x-reverse:0;margin-inline-end:calc(var(--spacing)*3*(1 - var(--tw-space-x-reverse)));margin-inline-start:calc(var(--spacing)*3*var(--tw-space-x-reverse))}}.divide-y{:where(&>:not(:last-child)){--tw-divide-y-reverse:0;border-bottom-style:var(--tw-border-style);border-bottom-width:calc(1px*(1 - var(--tw-divide-y-reverse)));border-top-style:var(--tw-border-style);border-top-width:calc(1px*var(--tw-divide-y-reverse))}}.divide-gray-200{:where(&>:not(:last-child)){border-color:var(--color-gray-200)}}.divide-gray-300{:where(&>:not(:last-child)){border-color:var(--color-gray-300)}}.truncate{text-overflow:ellipsis;white-space:nowrap}.overflow-hidden,.truncate{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overscroll-contain{overscroll-behavior:contain}.rounded{border-radius:.25rem}.rounded-full{border-radius:calc(infinity*1px)}.rounded-lg{border-radius:var(--radius-lg)}.rounded-md{border-radius:var(--radius-md)}.rounded-sm{border-radius:var(--radius-sm)}.border{border-style:var(--tw-border-style);border-width:1px}.border-t{border-top-style:var(--tw-border-style);border-top-width:1px}.border-b{border-bottom-style:var(--tw-border-style);border-bottom-width:1px}.border-none{--tw-border-style:none;border-style:none}.border-amber-200{border-color:var(--color-amber-200)}.border-gray-200{border-color:var(--color-gray-200)}.border-gray-300{border-color:var(--color-gray-300)}.border-gray-400{border-color:var(--color-gray-400)}.bg-amber-50{background-color:var(--color-amber-50)}.bg-blue-50{background-color:var(--color-blue-50)}.bg-emerald-600{background-color:var(--color-emerald-600)}.bg-gray-50{background-color:var(--color-gray-50)}.bg-gray-100{background-color:var(--color-gray-100)}.bg-gray-200{background-color:var(--color-gray-200)}.bg-gray-300{background-color:var(--color-gray-300)}.bg-neutral-50{background-color:var(--color-neutral-50)}.bg-transparent{background-color:transparent}.bg-white{background-color:var(--color-white)}.bg-white\/60{background-color:color-mix(in srgb,#fff 60%,transparent);@supports (color:color-mix(in lab,red,red)){background-color:color-mix(in oklab,var(--color-white) 60%,transparent)}}.p-0{padding:calc(var(--spacing)*0)}.p-1\.5{padding:calc(var(--spacing)*1.5)}.p-2{padding:calc(var(--spacing)*2)}.p-3{padding:calc(var(--spacing)*3)}.p-4{padding:calc(var(--spacing)*4)}.p-6{padding:calc(var(--spacing)*6)}.px-0{padding-inline:calc(var(--spacing)*0)}.px-2{padding-inline:calc(var(--spacing)*2)}.px-3{padding-inline:calc(var(--spacing)*3)}.px-3\.5{padding-inline:calc(var(--spacing)*3.5)}.px-4{padding-inline:calc(var(--spacing)*4)}.px-6{padding-inline:calc(var(--spacing)*6)}.py-0\.5{padding-block:calc(var(--spacing)*.5)}.py-1{padding-block:calc(var(--spacing)*1)}.py-1\.5{padding-block:calc(var(--spacing)*1.5)}.py-2{padding-block:calc(var(--spacing)*2)}.py-2\.5{padding-block:calc(var(--spacing)*2.5)}.py-3{padding-block:calc(var(--spacing)*3)}.py-5{padding-block:calc(var(--spacing)*5)}.py-6{padding-block:calc(var(--spacing)*6)}.py-12{padding-block:calc(var(--spacing)*12)}.pt-1{padding-top:calc(var(--spacing)*1)}.pt-2\.5{padding-top:calc(var(--spacing)*2.5)}.pt-4{padding-top:calc(var(--spacing)*4)}.pt-5{padding-top:calc(var(--spacing)*5)}.pr-10{padding-right:calc(var(--spacing)*10)}.pb-3{padding-bottom:calc(var(--spacing)*3)}.pb-5{padding-bottom:calc(var(--spacing)*5)}.pl-2{padding-left:calc(var(--spacing)*2)}.pl-4{padding-left:calc(var(--spacing)*4)}.text-center{text-align:center}.text-left{text-align:left}.align-middle{vertical-align:middle}.font-mono{font-family:var(--font-mono)}.text-2xl{font-size:var(--text-2xl);line-height:var(--tw-leading,var(--text-2xl--line-height))}.text-3xl{font-size:var(--text-3xl);line-height:var(--tw-leading,var(--text-3xl--line-height))}.text-base{font-size:var(--text-base);line-height:var(--tw-leading,var(--text-base--line-height))}.text-lg{font-size:var(--text-lg);line-height:var(--tw-leading,var(--text-lg--line-height))}.text-sm{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}.text-xl{font-size:var(--text-xl);line-height:var(--tw-leading,var(--text-xl--line-height))}.text-xs{font-size:var(--text-xs);line-height:var(--tw-leading,var(--text-xs--line-height))}.font-bold{--tw-font-weight:var(--font-weight-bold);font-weight:var(--font-weight-bold)}.font-medium{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}.font-semibold{--tw-font-weight:var(--font-weight-semibold);font-weight:var(--font-weight-semibold)}.tracking-wide{--tw-tracking:var(--tracking-wide);letter-spacing:var(--tracking-wide)}.\[overflow-wrap\:anywhere\]{overflow-wrap:anywhere}.whitespace-nowrap{white-space:nowrap}.text-amber-800{color:var(--color-amber-800)}.text-blue{color:var(--color-blue)}.text-blue-600{color:var(--color-blue-600)}.text-gray-400{color:var(--color-gray-400)}.text-gray-500{color:var(--color-gray-500)}.text-gray-600{color:var(--color-gray-600)}.text-gray-700{color:var(--color-gray-700)}.text-gray-800{color:var(--color-gray-800)}.text-gray-900{color:var(--color-gray-900)}.text-white{color:var(--color-white)}.capitalize{text-transform:capitalize}.lowercase{text-transform:lowercase}.uppercase{text-transform:uppercase}.no-underline{text-decoration-line:none}.underline{text-decoration-line:underline}.opacity-0{opacity:0}.opacity-50{opacity:50%}.opacity-100{opacity:100%}.shadow-\[var\(--dx-shadow-modal\)\]{--tw-shadow:var(--dx-shadow-modal)}.shadow-\[var\(--dx-shadow-modal\)\],.shadow-sm{box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 3px 0 var(--tw-shadow-color,rgba(0,0,0,.1)),0 1px 2px -1px var(--tw-shadow-color,rgba(0,0,0,.1))}.outline{outline-style:var(--tw-outline-style);outline-width:1px}.filter{filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}.backdrop-blur-\[1px\]{--tw-backdrop-blur:blur(1px);backdrop-filter:var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,)}.transition{transition-duration:var(--tw-duration,var(--default-transition-duration));transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,opacity,box-shadow,transform,translate,scale,rotate,filter,backdrop-filter,display,visibility,content-visibility,overlay,pointer-events;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function))}.transition-all{transition-duration:var(--tw-duration,var(--default-transition-duration));transition-property:all;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function))}.transition-colors{transition-duration:var(--tw-duration,var(--default-transition-duration));transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function))}.duration-150{--tw-duration:150ms;transition-duration:.15s}.duration-200{--tw-duration:200ms;transition-duration:.2s}.duration-300{--tw-duration:300ms;transition-duration:.3s}.ease-in{--tw-ease:var(--ease-in);transition-timing-function:var(--ease-in)}.ease-in-out{--tw-ease:var(--ease-in-out);transition-timing-function:var(--ease-in-out)}.ease-out{--tw-ease:var(--ease-out);transition-timing-function:var(--ease-out)}.outline-none{--tw-outline-style:none;outline-style:none}.placeholder\:text-gray-700{&::-moz-placeholder{color:var(--color-gray-700)}&::placeholder{color:var(--color-gray-700)}}.before\:absolute{&:before{content:var(--tw-content);position:absolute}}.before\:top-2{&:before{content:var(--tw-content);top:calc(var(--spacing)*2)}}.before\:bottom-2{&:before{bottom:calc(var(--spacing)*2);content:var(--tw-content)}}.before\:left-0{&:before{content:var(--tw-content);left:calc(var(--spacing)*0)}}.before\:mx-1\.5{&:before{content:var(--tw-content);margin-inline:calc(var(--spacing)*1.5)}}.before\:w-\[1px\]{&:before{content:var(--tw-content);width:1px}}.before\:-rotate-5{&:before{content:var(--tw-content);rotate:-5deg}}.before\:bg-\[var\(--color-gray-200\)\]{&:before{background-color:var(--color-gray-200);content:var(--tw-content)}}.before\:text-gray-400{&:before{color:var(--color-gray-400);content:var(--tw-content)}}.before\:content-\[\'\'\]{&:before{--tw-content:"";content:var(--tw-content)}}.before\:content-\[\'\/\'\]{&:before{--tw-content:"/";content:var(--tw-content)}}.first\:before\:content-none{&:first-child{&:before{content:var(--tw-content);--tw-content:none;content:none}}}.last\:mb-2{&:last-child{margin-bottom:calc(var(--spacing)*2)}}.last\:border-b-0{&:last-child{border-bottom-style:var(--tw-border-style);border-bottom-width:0}}.focus-within\:bg-gray-100{&:focus-within{background-color:var(--color-gray-100)}}.hover\:border-gray-400{&:hover{@media (hover:hover){border-color:var(--color-gray-400)}}}.hover\:bg-gray-200{&:hover{@media (hover:hover){background-color:var(--color-gray-200)}}}.hover\:text-gray-700{&:hover{@media (hover:hover){color:var(--color-gray-700)}}}.hover\:text-gray-900{&:hover{@media (hover:hover){color:var(--color-gray-900)}}}.hover\:underline{&:hover{@media (hover:hover){text-decoration-line:underline}}}.hover\:shadow-md{&:hover{@media (hover:hover){--tw-shadow:0 4px 6px -1px var(--tw-shadow-color,rgba(0,0,0,.1)),0 2px 4px -2px var(--tw-shadow-color,rgba(0,0,0,.1));box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}}}.hover\:shadow-sm{&:hover{@media (hover:hover){--tw-shadow:0 1px 3px 0 var(--tw-shadow-color,rgba(0,0,0,.1)),0 1px 2px -1px var(--tw-shadow-color,rgba(0,0,0,.1));box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}}}.focus\:outline-none{&:focus{--tw-outline-style:none;outline-style:none}}.focus-visible\:ring-2{&:focus-visible{--tw-ring-shadow:var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color,currentcolor);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}}.focus-visible\:ring-blue{&:focus-visible{--tw-ring-color:var(--color-blue)}}.focus-visible\:ring-offset-2{&:focus-visible{--tw-ring-offset-width:2px;--tw-ring-offset-shadow:var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)}}.sm\:grid-cols-2{@media (width >= 40rem){grid-template-columns:repeat(2,minmax(0,1fr))}}.sm\:grid-cols-3{@media (width >= 40rem){grid-template-columns:repeat(3,minmax(0,1fr))}}.sm\:p-0{@media (width >= 40rem){padding:calc(var(--spacing)*0)}}.md\:sticky{@media (width >= 48rem){position:sticky}}.md\:top-0{@media (width >= 48rem){top:calc(var(--spacing)*0)}}.md\:left-0{@media (width >= 48rem){left:calc(var(--spacing)*0)}}.md\:-mx-6{@media (width >= 48rem){margin-inline:calc(var(--spacing)*-6)}}.md\:-my-5{@media (width >= 48rem){margin-block:calc(var(--spacing)*-5)}}.md\:my-12{@media (width >= 48rem){margin-block:calc(var(--spacing)*12)}}.md\:-mt-8{@media (width >= 48rem){margin-top:calc(var(--spacing)*-8)}}.md\:mb-0{@media (width >= 48rem){margin-bottom:calc(var(--spacing)*0)}}.md\:mb-3{@media (width >= 48rem){margin-bottom:calc(var(--spacing)*3)}}.md\:\!block{@media (width >= 48rem){display:block!important}}.md\:block{@media (width >= 48rem){display:block}}.md\:flex{@media (width >= 48rem){display:flex}}.md\:grid{@media (width >= 48rem){display:grid}}.md\:hidden{@media (width >= 48rem){display:none}}.md\:h-full{@media (width >= 48rem){height:100%}}.md\:h-svh{@media (width >= 48rem){height:100svh}}.md\:w-full{@media (width >= 48rem){width:100%}}.md\:scroll-mt-20{@media (width >= 48rem){scroll-margin-top:calc(var(--spacing)*20)}}.md\:grid-cols-1{@media (width >= 48rem){grid-template-columns:repeat(1,minmax(0,1fr))}}.md\:grid-cols-2{@media (width >= 48rem){grid-template-columns:repeat(2,minmax(0,1fr))}}.md\:grid-cols-3{@media (width >= 48rem){grid-template-columns:repeat(3,minmax(0,1fr))}}.md\:grid-cols-\[250px_1fr\]{@media (width >= 48rem){grid-template-columns:250px 1fr}}.md\:grid-cols-\[280px\]{@media (width >= 48rem){grid-template-columns:280px}}.md\:grid-cols-\[max-content_auto\]{@media (width >= 48rem){grid-template-columns:max-content auto}}.md\:items-center{@media (width >= 48rem){align-items:center}}.md\:justify-center{@media (width >= 48rem){justify-content:center}}.md\:gap-3{@media (width >= 48rem){gap:calc(var(--spacing)*3)}}.md\:border-r{@media (width >= 48rem){border-right-style:var(--tw-border-style);border-right-width:1px}}.md\:px-0{@media (width >= 48rem){padding-inline:calc(var(--spacing)*0)}}.md\:px-10{@media (width >= 48rem){padding-inline:calc(var(--spacing)*10)}}.md\:py-4{@media (width >= 48rem){padding-block:calc(var(--spacing)*4)}}.md\:pr-16{@media (width >= 48rem){padding-right:calc(var(--spacing)*16)}}.md\:pb-0{@media (width >= 48rem){padding-bottom:calc(var(--spacing)*0)}}.md\:pb-3{@media (width >= 48rem){padding-bottom:calc(var(--spacing)*3)}}.md\:text-4xl{@media (width >= 48rem){font-size:var(--text-4xl);line-height:var(--tw-leading,var(--text-4xl--line-height))}}.lg\:sticky{@media (width >= 60rem){position:sticky}}.lg\:top-20{@media (width >= 60rem){top:calc(var(--spacing)*20)}}.lg\:block{@media (width >= 60rem){display:block}}.lg\:flex{@media (width >= 60rem){display:flex}}.lg\:hidden{@media (width >= 60rem){display:none}}.lg\:max-h-\[calc\(100vh-5rem\)\]{@media (width >= 60rem){max-height:calc(100vh - 5rem)}}.lg\:w-\[240px\]{@media (width >= 60rem){width:240px}}.lg\:grid-cols-2{@media (width >= 60rem){grid-template-columns:repeat(2,minmax(0,1fr))}}.lg\:grid-cols-3{@media (width >= 60rem){grid-template-columns:repeat(3,minmax(0,1fr))}}.lg\:grid-cols-\[auto_max-content\]{@media (width >= 60rem){grid-template-columns:auto max-content}}.lg\:flex-col{@media (width >= 60rem){flex-direction:column}}.lg\:self-start{@media (width >= 60rem){align-self:flex-start}}.lg\:px-12{@media (width >= 60rem){padding-inline:calc(var(--spacing)*12)}}.xl\:grid-cols-3{@media (width >= 80rem){grid-template-columns:repeat(3,minmax(0,1fr))}}.xl\:px-12{@media (width >= 80rem){padding-inline:calc(var(--spacing)*12)}}.xl\:px-14{@media (width >= 80rem){padding-inline:calc(var(--spacing)*14)}}}@layer base{*,::backdrop,::file-selector-button,:after,:before{border-color:var(--color-gray-200,currentcolor)}[x-cloak]{display:none}*{scrollbar-color:var(--color-gray-300) transparent;scrollbar-width:thin}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--color-gray-300);border-radius:20px;width:6px}::-moz-selection{background-color:var(--color-blue-100);color:var(--color-gray-900);text-shadow:none}::selection{background-color:var(--color-blue-100);color:var(--color-gray-900);text-shadow:none}:focus{outline:none}:focus-visible{outline:2px solid var(--focus-color,var(--color-blue));outline-offset:var(--focus-offset,.3ch)}:target{scroll-margin-block-start:4.7rem}.skip-link{clip:rect(1px,1px,1px,1px);block-size:1px;display:block;inline-size:1px;left:1rem;overflow:hidden;position:absolute;top:1rem;z-index:999}.skip-link:focus{clip:auto;background-color:var(--color-gray-900);block-size:auto;border-radius:var(--radius-sm);color:var(--color-gray-50);inline-size:auto;line-height:1;overflow:visible;padding:calc(var(--spacing)*2) calc(var(--spacing)*6)}.skip-link:not(:focus){border:0;clip:rect(0 0 0 0);block-size:auto;inline-size:1px;margin:0;overflow:hidden;padding:0;position:absolute;white-space:nowrap}input[type=search]::-webkit-search-decoration,input[type=search]::-webkit-search-results-button,input[type=search]::-webkit-search-results-decoration{display:none}}@layer base{@font-face{font-display:swap;font-family:dx-sans;font-style:normal;font-weight:600 700;src:local(""),url(/assets/fonts/dx-sans-semibold.woff2) format("woff2")}@font-face{font-display:swap;font-family:dx-sans;font-style:normal;font-weight:500;src:local(""),url(/assets/fonts/dx-sans-medium.woff2) format("woff2")}@font-face{font-display:swap;font-family:dx-sans;font-style:normal;font-weight:400;src:local(""),url(/assets/fonts/dx-sans-regular.woff2) format("woff2")}@font-face{font-display:swap;font-family:Fira Code;font-style:normal;font-weight:400;src:local(""),url(/assets/fonts/fira-code-regular.woff2) format("woff2")}@font-face{font-display:swap;font-family:Fira Code;font-style:normal;font-weight:500;src:local(""),url(/assets/fonts/fira-code-medium.woff2) format("woff2")}}@layer base{body{background-color:var(--color-white);color:var(--color-gray-900);font-family:var(--dx-font);font-size:var(--text-base);line-height:var(--leading-normal);min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}body,html{height:100%;overflow:hidden}:is(a,button){cursor:pointer;transition:var(--dx-transition)}}@layer base{.flow>*+*{margin-block-start:var(--flow-space,1em)}.prose{--flow-space:calc(var(--spacing)*6)}}@layer base{.prose :is(img,video){border:var(--stroke);border-radius:var(--radius-sm)}.prose figcaption{color:var(--color-gray-700);font-size:var(--text-sm);margin-block-start:calc(var(--spacing)*2);padding-block-end:calc(var(--spacing)*1);text-align:center}.prose :is(p,li){color:var(--color-gray-900);font-size:var(--text-base);line-height:1.75}.prose .breadcrumb :is(p,li){font-size:var(--text-sm)}.prose h1{color:var(--color-gray-900);font-size:var(--text-5xl);letter-spacing:-.03em;line-height:1.2;margin-block-end:calc(var(--spacing)*8)}.prose :is(h2,h3,h4):not(summary *){color:var(--color-gray-900);font-weight:var(--font-weight-medium);hyphens:auto;overflow-wrap:anywhere}.prose h2:not(summary *){--flow-space:calc(var(--spacing)*8);font-size:1.75rem;line-height:1.3;margin-block-end:calc(var(--spacing)*4)}.prose h3:not(summary *){--flow-space:calc(var(--spacing)*10);font-size:var(--text-xl);line-height:1.3;margin-block-end:calc(var(--spacing)*3)}.prose h4:not(summary *){--flow-space:calc(var(--spacing)*8);font-size:1.125rem;line-height:1.3;margin-block-end:calc(var(--spacing)*2)}.prose h1+:not([class]):not(figure){--flow-space:calc(var(--spacing)*2)}.prose :is(pre,pre+*,figure,picture,p:has(>figure),p:has(>picture),){--flow-space:calc(var(--spacing)*6)}.prose :is(figure+*,picture+*,p:has(>figure)+*,p:has(>picture)+*,){--flow-space:calc(var(--spacing)*10)}.prose :is(picture+:is(picture,p:has(>picture)),p:has(>picture)+:is(picture,p:has(>picture))){--flow-space:calc(var(--spacing)*4)}.prose :is(p,li,dl,blockquote){overflow-wrap:anywhere;text-wrap:pretty}.prose :is(p,li,dl,blockquote) code{white-space:normal}.prose :is(ul,ol):not([class]):not([role=tablist]) li+li,.prose :is(ul,ol):not([class]):not([role=tablist]) li>:is(ol,ul){padding-block-start:calc(var(--spacing)*2)}.prose a:not([class]):not([id]){color:var(--color-gray-900);text-decoration:underline;text-underline-offset:3px}.prose a:not([class]):not([id]):hover{color:var(--color-gray-600)}.prose ul:not([class]){--flow-space:calc(var(--spacing)*6);list-style:disc;margin-inline-start:.5rem;padding-inline-start:1.5rem}.prose :is(ol:not([class]):not([role=tablist])){--flow-space:calc(var(--spacing)*6);list-style:decimal;margin-inline-start:.5rem;padding-inline-start:1.5rem}.prose blockquote{border-inline-start:.1rem solid var(--color-blue);padding-inline:calc(var(--spacing)*4)}.prose blockquote p{color:var(--color-gray-700)}.prose blockquote>*+*{margin-block-start:calc(var(--spacing)*2)}.prose blockquote :last-child{font-size:var(--text-sm);font-style:normal}.heading-anchor{color:inherit;cursor:pointer;position:relative;text-decoration:none}.heading-anchor:after{background-image:url(/assets/images/template/link.svg);background-position:50%;background-repeat:no-repeat;background-size:contain;content:"";height:.75rem;opacity:0;position:absolute;right:-1.2rem;top:50%;transform:translateY(-50%);transition:opacity var(--dx-transition);width:.75rem}.heading-anchor:hover:after{opacity:1}.heading-anchor.copied:after{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");opacity:1;transition:opacity var(--dx-transition),background-image .2s ease}}@layer components{.aside{background-color:var(--color-gray-100);border:1px solid var(--color-gray-200);border-radius:var(--radius-sm);color:var(--color-gray-800);padding-block:calc(var(--spacing)*3);padding-inline:calc(var(--spacing)*4)}.aside:is(.info){padding-inline-start:calc(var(--spacing)*12);position:relative}.aside:is(.info):before{--size:calc(var(--spacing)*5);background-color:var(--color-gray-50);background-position:50%;background-repeat:no-repeat;background-size:90% auto;block-size:var(--size);border-radius:100%;content:"";display:flex;inline-size:var(--size);inset-block-start:calc(var(--spacing)*3);inset-inline-start:calc(var(--spacing)*4);line-height:1;position:absolute}.aside.info:before{background-image:url(/assets/images/template/info.svg)}.btn{align-items:center;border-radius:var(--radius-sm);display:inline-flex;gap:calc(var(--spacing)*2);justify-content:center;text-decoration:none;transition:opacity var(--dx-transition),background-color var(--dx-transition),color var(--dx-transition);text-box-trim:trim-both;text-box-edge:cap alphabetic}.btn-full{inline-size:100%;white-space:nowrap}.btn-left{justify-content:flex-start}.btn-base{font-size:var(--text-base);padding:calc(var(--spacing)*1) calc(var(--spacing)*4)}.btn-lg{font-size:var(--text-lg);padding:calc(var(--spacing)*2) calc(var(--spacing)*4)}.btn-small{font-size:var(--text-tiny);padding:calc(var(--spacing)*1.5) calc(var(--spacing)*3)}.btn:hover{opacity:.9}.btn-black{background-color:var(--color-gray-900);color:var(--color-gray-50)}.btn-primary{background-color:var(--color-blue);color:var(--color-blue-50)}.btn-outline{border:1px solid var(--color-gray-300);color:var(--color-gray-900)}.btn-outline:hover{border:1px solid var(--color-gray-400);opacity:1}.btn-inverted{background-color:var(--color-gray-50);border:1px solid var(--color-gray-50);color:var(--color-gray-900)}.btn-inverted:hover{background-color:var(--color-gray-100)}}@layer components{}@layer components{@media print{code[class*=language-],pre[class*=language-]{text-shadow:none}}:root{--color-code-indigo:#5f59ee;--color-code-blue:#0b50da;--color-code-pink:#ec135b;--color-code-red:#df2020;--color-code-gray:var(--color-gray-800);--color-code-gray-light:var(--color-gray-600)}code,kbd,pre{background-color:var(--color-gray-100);color:var(--color-gray-950);font-family:var(--font-mono);font-size:var(--text-sm);font-weight:400}code{border-radius:var(--radius-xs)}pre{overflow-x:auto;padding-block:calc(var(--spacing)*2);padding-inline:calc(var(--spacing)*4)}kbd{border:var(--stroke);border-radius:var(--radius-xs);display:inline-block;font-family:var(--font-dx);font-weight:var(--font-medium);line-height:1;margin:0 1px;padding:calc(var(--spacing)*1) calc(var(--spacing)*2);text-align:center;text-box-trim:trim-both;text-box-edge:cap alphabetic}:where(:not(pre))>code{background-color:var(--color-gray-200);padding:.1em .25em;position:relative;top:-.05em}code[class*=language-],pre[class*=language-]{white-space:pre;word-break:normal;word-spacing:normal;word-wrap:normal;hyphens:none}pre[class*=language-]{position:relative}[class*=language-] .namespace{opacity:.7}.token.atrule,.token.boolean,.token.constant,.token.entity,.token.function,.token.id,.token.important,.token.keyword,.token.selector,.token.symbol,.token.tag,.token.unit,.token.url,.token.variable{color:var(--color-code-pink)}.token.attr-name,.token.builtin,.token.cdata,.token.char,.token.class,.token.class-name,.token.color,.token.doctype,.token.hexcode,.token.inserted,.token.prolog,.token.property,.token.regex{color:var(--color-code-indigo)}.token.attr-value,.token.number,.token.string{color:var(--color-code-gray-light)}.token.attribute,.token.pseudo-class,.token.pseudo-element{color:var(--color-code-blue)}.token.comment,.token.operator,.token.punctuation{color:var(--color-code-gray)}.token.deleted{color:var(--color-code-red)}.code-block-wrapper{position:relative}.code-block-wrapper pre{padding-inline-end:calc(var(--spacing)*12)}.code-block-header{display:flex;justify-content:flex-end}.copy-button{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-color:var(--color-gray-100);block-size:1.75rem;border:var(--stroke);border-radius:var(--radius-sm);color:var(--color-gray-700);cursor:pointer;display:grid;inline-size:1.75rem;inset-block-start:50%;inset-inline-end:calc(var(--spacing)*1);line-height:1;padding:0;place-items:center;position:absolute;transition:color var(--dx-transition),background-color var(--dx-transition),border-color var(--dx-transition);translate:0 -50%;z-index:10}.copy-button:hover{background-color:var(--color-gray-200);border-color:var(--color-gray-400);color:var(--color-black)}}@layer components{.copy-button:focus-visible{--focus-color:var(--color-black);--focus-offset:2px}.copy-button.copied{background-color:var(--color-gray-900);border-color:var(--color-gray-900);color:var(--color-white)}.check-icon,.copy-icon{height:16px;width:16px}.check-icon,.copied .copy-icon{display:none}.copied .check-icon{display:block}}@layer components{details{background:var(--color-gray-50);border:var(--stroke);border-radius:var(--radius-md);opacity:.8;padding:calc(var(--spacing)*2) calc(var(--spacing)*4);transition:var(--dx-transition);&:hover,&[open]{opacity:1}::marker{color:var(--color-gray-700);-webkit-user-select:none;-moz-user-select:none;user-select:none}}summary{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none}details[open] summary{border-bottom:var(--stroke);margin:calc(var(--spacing)*-2) calc(var(--spacing)*-4);margin-bottom:calc(var(--spacing)*1);padding:calc(var(--spacing)*2) calc(var(--spacing)*4)}.expandable-content,.expandable-item{overflow:hidden}.expandable-content{max-height:0;transition:max-height .3s cubic-bezier(.4,0,.2,1)}.expandable-content.expanded{max-height:10000px}.expandable-content-inner{opacity:0;padding-bottom:1rem;padding-left:2rem;transform:translateY(-8px);transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s cubic-bezier(.4,0,.2,1)}.expandable-content.expanded .expandable-content-inner{opacity:1;transform:translateY(0)}.expandable-chevron{transition:transform .3s cubic-bezier(.4,0,.2,1)}.expandable-chevron.expanded{transform:rotate(90deg)}.schema-topbar{align-items:center;background:var(--color-white);border-block-end:var(--stroke);display:flex;gap:calc(var(--spacing)*6);justify-content:space-between;margin-block-start:calc(var(--spacing)*16);min-height:calc(var(--spacing)*16);padding:calc(var(--spacing)*3) calc(var(--spacing)*6);position:sticky;top:calc(var(--spacing)*16);z-index:30}.schema-detail{min-width:0;padding:calc(var(--spacing)*8) calc(var(--spacing)*6) calc(var(--spacing)*12)}.schema-detail h1{font-family:var(--font-mono);font-size:var(--text-3xl);font-weight:var(--font-weight-medium);letter-spacing:-.03em;line-height:1.2;overflow-wrap:anywhere}.schema-description{color:var(--color-gray-700);line-height:var(--leading-relaxed);margin-block:calc(var(--spacing)*5) calc(var(--spacing)*8)}.schema-table-frame{border:var(--stroke);border-radius:var(--radius-lg);overflow:hidden;--table-saw-ratio:minmax(0,1fr)}.schema-table{color:var(--color-gray-700);table-layout:fixed}}@layer components{}@layer components{.schema-table :is(th,td){border-block:0;border-inline:0;line-height:var(--leading-relaxed);overflow-wrap:anywhere;padding:calc(var(--spacing)*4);vertical-align:top}.schema-table thead{background:var(--color-gray-100);border-block-end:var(--stroke)}.schema-table th[scope=row]{border-inline-end:0}.schema-table thead th{color:var(--color-gray-600);font-size:var(--text-tiny);font-weight:var(--font-weight-medium);letter-spacing:var(--tracking-wide);text-transform:uppercase}.schema-table thead th:first-child{width:31%}.schema-table thead th:nth-child(2){width:calc(var(--spacing)*28)}.schema-column{align-items:flex-start;display:flex;flex-direction:column;gap:calc(var(--spacing)*2)}.schema-column-name{color:var(--color-gray-900);font-size:var(--text-sm);font-weight:var(--font-weight-medium)}.schema-column-name,.schema-type{font-family:var(--font-mono)}.schema-type{background:var(--color-gray-100);border:var(--stroke);border-radius:var(--radius-sm);color:var(--color-gray-700);display:inline-block;font-size:var(--text-tiny);padding:calc(var(--spacing)*.5) calc(var(--spacing)*2)}.schema-key{align-items:center;border:1px solid color-mix(in srgb,#1868db 20%,#fff);display:inline-flex;max-width:100%;padding:calc(var(--spacing)*.5) calc(var(--spacing)*2.5);@supports (color:color-mix(in lab,red,red)){border-bottom-color:color-mix(in srgb,var(--color-blue) 20%,var(--color-white));border-bottom-style:solid;border-bottom-width:1px;border-left-color:color-mix(in srgb,var(--color-blue) 20%,var(--color-white));border-left-style:solid;border-left-width:1px;border-right-color:color-mix(in srgb,var(--color-blue) 20%,var(--color-white));border-right-style:solid;border-right-width:1px;border-top-color:color-mix(in srgb,var(--color-blue) 20%,var(--color-white));border-top-style:solid;border-top-width:1px}background:color-mix(in srgb,#1868db 10%,#fff);border-radius:9999px;@supports (color:color-mix(in lab,red,red)){background:color-mix(in srgb,var(--color-blue) 10%,var(--color-white))}color:var(--color-blue);font-size:var(--text-tiny);font-weight:var(--font-weight-medium);line-height:var(--leading-normal)}.schema-key-primary{background:var(--color-amber-50);border-color:var(--color-amber-200);color:var(--color-amber-800)}.schema-key-internal{background:var(--color-gray-100);border-color:var(--color-gray-300);color:var(--color-gray-600)}.schema-table .schema-relationship{--schema-reference-color:color-mix(in srgb,#1868db 50%,#666);@supports (color:color-mix(in lab,red,red)){--schema-reference-color:color-mix(in srgb,var(--color-blue) 50%,var(--color-gray-700))}background:none;color:var(--color-gray-600);padding:0}.schema-table .schema-relationship li,.schema-table p.schema-relationship{padding-inline-start:calc(var(--spacing)*5);position:relative}.schema-table .schema-relationship li:before,.schema-table p.schema-relationship:before{background:var(--color-gray-600);content:"";height:calc(var(--spacing)*3.5);inset-inline-start:0;-webkit-mask:url(/assets/images/template/link-horizontal.svg) center/contain no-repeat;mask:url(/assets/images/template/link-horizontal.svg) center/contain no-repeat;position:absolute;top:.3em;width:calc(var(--spacing)*3.5)}.schema-table .schema-relationship a{color:var(--schema-reference-color);text-decoration:none}.schema-table .schema-relationship a:after{background:currentColor;content:"";display:inline-block;height:calc(var(--spacing)*3);margin-inline-start:calc(var(--spacing)*1);-webkit-mask:url(/assets/images/template/arrow-up-right.svg) center/contain no-repeat;mask:url(/assets/images/template/arrow-up-right.svg) center/contain no-repeat;width:calc(var(--spacing)*3)}.schema-table .schema-relationship a:hover{color:var(--color-gray-900)}@media (max-width:59.999rem){.schema-table,.schema-table tbody{display:block}.schema-table thead{clip-path:inset(50%);height:1px;overflow:hidden;position:absolute;width:1px}.schema-table tbody tr{display:block;margin-bottom:0;padding-block:calc(var(--spacing)*2)}.schema-table tbody :is(th,td){border:0;display:grid;gap:calc(var(--spacing)*1);grid-template-columns:minmax(0,1fr);padding:calc(var(--spacing)*2) calc(var(--spacing)*4)}.schema-table tbody :is(th,td):before{color:var(--color-gray-600);content:attr(data-label);font-family:var(--dx-font);font-size:var(--text-tiny);font-weight:var(--font-weight-medium);letter-spacing:var(--tracking-wide);text-transform:uppercase}.schema-type{justify-self:start}}@media (min-width:48rem){.schema-topbar{margin-block-start:0;padding-inline:calc(var(--spacing)*8);top:0}.schema-detail{padding:calc(var(--spacing)*10) calc(var(--spacing)*8) calc(var(--spacing)*12)}}}@layer components{.schema-relationship{background-color:var(--color-gray-200);border-radius:var(--radius-sm);margin-block-start:calc(var(--spacing)*2);max-width:100%;overflow-wrap:anywhere;padding:calc(var(--spacing)*2) calc(var(--spacing)*3);width:-moz-fit-content;width:fit-content}.schema-relationship,.schema-relationship :is(li,code,a){color:inherit;font:inherit}.schema-relationship code{background-color:transparent;font-family:var(--font-mono);padding:0;position:static}.schema-relationship li+li{margin-block-start:calc(var(--spacing)*1)}.search-results mark{background-color:var(--color-bg);color:var(--color-gray-700);font-weight:500}.search-results li+li{padding-block-start:calc(var(--spacing)*3)}seven-minute-tabs{background-color:var(--color-gray-100);border:var(--stroke);border-radius:var(--radius-md);display:block;overflow:hidden;scroll-margin-top:6rem}seven-minute-tabs [role=tablist]{background-color:var(--color-gray-100);border-block-end:var(--stroke);display:flex;gap:0;margin:0;overflow-x:auto;overflow-y:hidden;padding-inline:calc(var(--spacing)*2)}seven-minute-tabs [role=tab]{align-items:center;border-block-end:2px solid transparent;color:var(--color-gray-700);display:flex;flex-basis:auto;flex-grow:0;font-weight:500;margin:0 0 -1px;min-width:-moz-min-content;min-width:min-content;padding:calc(var(--spacing)*2) calc(var(--spacing)*3);text-decoration:none;text-indent:0;transition:color var(--dx-transition),background-color var(--dx-transition),border-color var(--dx-transition);white-space:nowrap}seven-minute-tabs [role=tab][aria-selected=true]{background-color:var(--color-gray-100);border-block-end-color:var(--color-black);color:var(--color-gray-900)}}@layer components{}@layer components{seven-minute-tabs [role=tab]:not([aria-selected=true]):is(:hover,:focus){background-color:var(--color-gray-200);color:var(--color-gray-900)}seven-minute-tabs [role=tab]:focus-visible,seven-minute-tabs [role=tabpanel]:focus-visible{outline:2px solid var(--color-black);outline-offset:-2px}@media (max-width:24em){seven-minute-tabs [role=tab]{font-size:.8125em;padding-inline:calc(var(--spacing)*3)}}seven-minute-tabs [role=tabpanel]{background-color:var(--color-gray-100);margin-block-start:0;padding:calc(var(--spacing)*4)}seven-minute-tabs [role=tabpanel] pre{border:var(--stroke);border-radius:var(--radius-sm)}seven-minute-tabs [role=tabpanel] :is(pre,pre code){background-color:var(--color-white)}}@layer components{.sidebar{grid-template-rows:max-content auto max-content;scroll-behavior:smooth}@media (min-width:48rem){.sidebar.sidebar-schema{grid-template-rows:max-content max-content auto max-content}}.sidebar :is(a:hover,button:hover,[aria-current=page]){color:var(--color-gray-900)}.sidebar-menu [aria-current=page]{font-weight:500}.sidebar-menu{font-size:var(--text-sm);font-weight:400;-webkit-mask-image:linear-gradient(to bottom,var(--mask-invisible) 0,var(--mask-ease) calc(var(--scrollable-shadow-size)/2),var(--mask-visible) var(--scrollable-shadow-size),var(--mask-visible) calc(100% - var(--scrollable-shadow-size)),var(--mask-ease) calc(100% - var(--scrollable-shadow-size)/2),var(--mask-invisible) 100%);mask-image:linear-gradient(to bottom,var(--mask-invisible) 0,var(--mask-ease) calc(var(--scrollable-shadow-size)/2),var(--mask-visible) var(--scrollable-shadow-size),var(--mask-visible) calc(100% - var(--scrollable-shadow-size)),var(--mask-ease) calc(100% - var(--scrollable-shadow-size)/2),var(--mask-invisible) 100%);padding-block:var(--scrollable-shadow-size);scroll-padding-block:var(--scrollable-shadow-size);scrollbar-gutter:stable}.sidebar-menu.exit{filter:blur(4px);opacity:.5;pointer-events:none;transition:filter .2s ease,opacity .2s ease}.sidebar-menu a{display:block;inline-size:100%;padding-block:.375rem;transition:color var(--dx-transition)}.sidebar-menu ul ul>li:has(>a[aria-current=page]){border-end-end-radius:var(--radius-sm);border-start-end-radius:var(--radius-sm);font-weight:500}.sidebar-menu li:has([aria-current=page]) li{color:var(--color-gray-700)}.sidebar-menu ul ul li:has(>[aria-current=page]):before{background-color:var(--color-gray-700);content:"";inset-block:0;inset-inline-start:0;position:absolute;width:1px}.sidebar-menu .schema a{padding-block:.1rem}.sidebar-menu .schema a:hover{background:var(--color-gray-200)}.sidebar-menu .schema [aria-current=page]{background:var(--color-blue-100)}table-saw[breakpoint]{display:contents}}@layer components{@media (max-width:30em){table-saw[breakpoint]>table{table-layout:auto!important;width:100%!important}table-saw[breakpoint] td,table-saw[breakpoint] th{white-space:normal;width:auto!important}}table{border-collapse:collapse;color:var(--color-gray-800);width:100%}.table-args-overflow{max-width:100%;overflow-x:auto}table.table-args-scroll{table-layout:auto}table.table-args-scroll :is(th,td):nth-child(-n+2){width:1%!important}table.table-args-scroll :is(th,td):nth-child(3){width:auto!important}table.table-args-scroll :is(th,td):nth-child(-n+2) code{white-space:nowrap}table.table-args-scroll :is(th,td):nth-child(3) code{overflow-wrap:anywhere;white-space:normal}@media (min-width:81rem){table.table-args:not(.table-args-scroll){table-layout:fixed}}th{font-weight:var(--font-weight-medium);line-height:1.6;text-align:left}td,th{padding-block:calc(var(--spacing)*2);vertical-align:baseline}th:not(:only-of-type){border-block-end:1px solid var(--color-gray-300)}th:only-of-type{border-inline-end:1px solid var(--color-gray-300)}tr:not(:first-of-type){border-block-start:1px solid var(--color-gray-200)}@media (min-width:30em){:is(th,td)~:is(th,td){padding-inline-start:calc(var(--spacing)*6)}tr+tr :is(th,td){border-block-start:1px solid var(--color-gray-200)}}.sticky-header{border-collapse:separate;border-spacing:0}.sticky-header thead th{background-color:var(--color-white);border-block-end:1px solid var(--color-gray-300);position:sticky;top:4rem;z-index:1}.small-text-table,.small-text-table code,.temp-compact-table,.temp-compact-table code{font-size:var(--text-xs)}.toc ul:before{background-color:var(--color-gray-200);inset-block:calc(var(--spacing)*2);z-index:0}.toc ul:after,.toc ul:before{content:"";inline-size:2px;inset-inline-start:0;position:absolute}.toc ul:after{background-color:var(--color-black);height:var(--toc-indicator-size,0);top:var(--toc-indicator-start,0);transition:none;z-index:10}.toc ul:not([data-initial-load=true]):after{transition:top .15s ease,height .15s ease}.toc li:before{background-color:transparent;content:"";inline-size:2px;inset-block:calc(var(--spacing)*2);inset-inline-start:0;position:absolute;z-index:0}}@layer components{.toc li:has(a[data-active=true]):before{background-color:transparent;z-index:10}.toc a{color:var(--color-gray-700);display:block;font-size:var(--text-sm);padding-block:.2rem;padding-inline-start:calc(var(--spacing)*2);position:relative;text-decoration:none;transition:color .2s ease;z-index:10}.toc .level-3 a{padding-inline-start:calc(var(--spacing)*4)}.toc a:hover,.toc a[data-active=true]{color:var(--color-gray-900)}aside[class*="lg:sticky"]{align-self:start;backface-visibility:hidden;contain:layout;max-height:calc(100vh - 5rem);overflow-y:auto;perspective:1000px;position:sticky;top:5rem;transform:translateZ(0);will-change:transform}}@property --tw-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-z{syntax:"*";inherits:false;initial-value:0}@property --tw-rotate-x{syntax:"*";inherits:false}@property --tw-rotate-y{syntax:"*";inherits:false}@property --tw-rotate-z{syntax:"*";inherits:false}@property --tw-skew-x{syntax:"*";inherits:false}@property --tw-skew-y{syntax:"*";inherits:false}@property --tw-space-y-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-space-x-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-divide-y-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-tracking{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-outline-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-drop-shadow-color{syntax:"*";inherits:false}@property --tw-drop-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-drop-shadow-size{syntax:"*";inherits:false}@property --tw-backdrop-blur{syntax:"*";inherits:false}@property --tw-backdrop-brightness{syntax:"*";inherits:false}@property --tw-backdrop-contrast{syntax:"*";inherits:false}@property --tw-backdrop-grayscale{syntax:"*";inherits:false}@property --tw-backdrop-hue-rotate{syntax:"*";inherits:false}@property --tw-backdrop-invert{syntax:"*";inherits:false}@property --tw-backdrop-opacity{syntax:"*";inherits:false}@property --tw-backdrop-saturate{syntax:"*";inherits:false}@property --tw-backdrop-sepia{syntax:"*";inherits:false}@property --tw-duration{syntax:"*";inherits:false}@property --tw-ease{syntax:"*";inherits:false}@property --tw-content{syntax:"*";initial-value:"";inherits:false}@keyframes pulse{50%{opacity:.5}}@layer properties{@supports ((-webkit-hyphens:none) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,::backdrop,:after,:before{--tw-translate-x:0;--tw-translate-y:0;--tw-translate-z:0;--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-space-y-reverse:0;--tw-space-x-reverse:0;--tw-divide-y-reverse:0;--tw-border-style:solid;--tw-font-weight:initial;--tw-tracking:initial;--tw-shadow:0 0 #0000;--tw-shadow-color:initial;--tw-shadow-alpha:100%;--tw-inset-shadow:0 0 #0000;--tw-inset-shadow-color:initial;--tw-inset-shadow-alpha:100%;--tw-ring-color:initial;--tw-ring-shadow:0 0 #0000;--tw-inset-ring-color:initial;--tw-inset-ring-shadow:0 0 #0000;--tw-ring-inset:initial;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-offset-shadow:0 0 #0000;--tw-outline-style:solid;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial;--tw-backdrop-blur:initial;--tw-backdrop-brightness:initial;--tw-backdrop-contrast:initial;--tw-backdrop-grayscale:initial;--tw-backdrop-hue-rotate:initial;--tw-backdrop-invert:initial;--tw-backdrop-opacity:initial;--tw-backdrop-saturate:initial;--tw-backdrop-sepia:initial;--tw-duration:initial;--tw-ease:initial;--tw-content:""}}}
+  </style>
+
+
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- 5 preloads -->
+    <link rel="preload" href="/assets/fonts/dx-sans-regular.woff2" as="font" type="font/woff2" crossorigin="">
+
+<link rel="preload" href="/assets/fonts/dx-sans-semibold.woff2" as="font" type="font/woff2" crossorigin="">
+
+<!-- preloads in page data -->
+
+
+    <!-- 6 JS defer / modules -->
+    <script src="/assets/scripts/app.js?9c20-a881-21b1&v=4812faefb394" type="module"></script>
+
+    
+
+    <!-- 78 meta tags, icons, open graph etc. -->
+    <meta name="theme-color" content="#ffffff">
+
+<meta name="robots" content="index,follow">
+<meta name="googlebot" content="index,follow">
+
+<meta name="generator" content="Eleventy v3.1.2">
+<meta name="format-detection" content="telephone=no">
+<meta name="color-scheme" content="light">
+<meta name="view-transition" content="same-origin">
+<link rel="canonical" href="https://docs.getdx.com/deployment-options/">
+
+
+<link rel="alternate" type="text/markdown" href="https://docs.getdx.com/deployment-options.md">
+
+
+<!-- Open Graph meta -->
+<meta property="og:url" content="https://docs.getdx.com/deployment-options/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="
+    
+    Deployment options
+    
+  ">
+<meta property="og:image" content="
+    
+    https://docs.getdx.com
+    
+  ">
+<meta property="og:image:alt" content="Deployment options">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:description" content="">
+<meta property="og:site_name" content="DX Documentation">
+<meta property="og:locale" content="en">
+
+<!-- Favicon: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs -->
+<link rel="icon" href="/favicon.ico?v=24b039a43b3f" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=8d2b28ae043b">
+<link rel="manifest" href="/site.webmanifest">
+
+
+    <!-- 8 schema settings -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "#website",
+        "url": "",
+        "name": "",
+        "description": "",
+        "inLanguage": ""
+      }
+    ]
+  }
+</script>
+
+
+
+
+
+    <!-- 9 Google Analytics -->
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TQ8W667W');</script>
+<!-- End Google Tag Manager -->
+  </head>
+
+  <body class="docs-single" hx-boost="true" hx-target="#htmx-wrapper" hx-select="#htmx-content" hx-swap="innerHTML" hx-push-url="true" hx-exclude=".heading-anchor" x-data="{}" x-bind:class="{ 'fixed inset-0 overflow-hidden': $store.nav.open }" data-pagefind-filter="section:docs">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQ8W667W" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    
+    
+
+    <main class="grid md:grid-cols-[max-content_auto]"><div class="
+    sidebar 
+    overflow-y-auto max-h-svh
+    fixed z-50
+    grid bg-white
+    md:sticky md:top-0 md:left-0 md:h-svh md:grid
+    md:grid-cols-[280px]
+    md:border-r md:px-0
+  " :class="{ 'inset-0': $store.nav.open, 'w-full': !$store.nav.open }" :data-open="$store.nav.open.toString()">
+  <header class="px-6 py-2.5 border-b flex items-center justify-between h-16">
+  
+    <div class="flex justify-between items-center gap-2 w-full">
+      <a href="/" class="logo flex items-center gap-2 md:gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 42 24" aria-hidden="true" class="size-8"><path d="m34.856 15.301 6.058 8.7H35.01c-.64-.716-1.261-1.577-1.812-2.372-.844-1.219-.842-2.893.03-4.092zM25.846 8.7 19.788 0h5.903c.64.715 1.26 1.576 1.811 2.37.844 1.22.842 2.894-.03 4.093zM34.467 1.476C35.09.466 35.787.078 36.875.078L41.691 0 26.025 23.12a1.82 1.82 0 0 1-1.506.802h-5.255C24.288 16.423 29.607 9.08 34.467 1.476M0 23.923h8.517c7.615 0 12.257-4.651 12.257-11.926S16.132.07 8.517.07H0l5.282 4.684H3.107A3.107 3.107 0 0 0 0 7.86v16.062m5.444-4.684V4.754h3.04c4.341 0 6.78 2.856 6.78 7.241 0 4.386-2.439 7.242-6.747 7.242z"></path></svg>
+        <span class="text-gray-600"> Documentation </span>
+      </a>
+      <div class="hidden md:block -mx-2"><div x-data="" @keydown.window.ctrl.k.prevent="$store.search.openDialog()" @keydown.window.meta.k.prevent="$store.search.openDialog()" @keydown.window="$event.key === '/' && !$event.shiftKey && !$event.ctrlKey && !$event.metaKey && !$event.altKey && !($event.target.closest('input, textarea, [contenteditable=true]') || $event.target.isContentEditable) && ($event.preventDefault(), $store.search.openDialog())">
+  <button x-ref="searchButton" type="button" @click="$store.search.openDialog()" class="p-1.5 grid place-items-center border border-gray-300 rounded-md">
+    <i class="bx bx-search bx-xs text-gray-700"></i>
+    <span class="sr-only">Search</span>
+  </button>
+</div>
+</div>
+    </div>
+  
+
+  <div x-data="" class="flex items-center gap-2"><div class="md:hidden"><div x-data="" @keydown.window.ctrl.k.prevent="$store.search.openDialog()" @keydown.window.meta.k.prevent="$store.search.openDialog()" @keydown.window="$event.key === '/' && !$event.shiftKey && !$event.ctrlKey && !$event.metaKey && !$event.altKey && !($event.target.closest('input, textarea, [contenteditable=true]') || $event.target.isContentEditable) && ($event.preventDefault(), $store.search.openDialog())">
+  <button x-ref="searchButton" type="button" @click="$store.search.openDialog()" class="p-1.5 grid place-items-center border border-gray-300 rounded-md">
+    <i class="bx bx-search bx-xs text-gray-700"></i>
+    <span class="sr-only">Search</span>
+  </button>
+</div>
+</div><button class="md:hidden grid place-items-center" @click="$store.nav.toggle()" aria-controls="sidebar" :aria-expanded="$store.nav.open.toString()">
+      <i class="bx bx-menu bx-sm" x-show="!$store.nav.open"></i>
+      <i class="bx bx-x bx-sm" x-show="$store.nav.open"></i>
+      <span class="sr-only">Toggle navigation</span>
+    </button>
+  </div>
+</header>
+<div data-sidebar="" class="sidebar-menu | relative overflow-y-auto scrollbar-thin px-6 py-5 md:!block" :class="{ 'block': $store.nav.open, 'hidden md:block': !$store.nav.open }" x-data="scrollContainer('app:sidebar')" x-bind="container" x-cloak="">
+      <nav>
+  <ul class="text-gray-700" role="list">
+    
+      
+        <li x-data="sidebarState" data-sidebar-section="">
+          <button type="button" class="flex justify-between items-center w-full py-2" @click="open = !open" :aria-expanded="open">
+            <span>Getting started</span>
+            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/start-guide/">
+                    <span>Start guide</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/fabric-start-guide/">
+                    <span>Fabric start guide</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/database-plans/">
+                    <span>Database plans</span>
+                  </a>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Deployment options</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                          
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/deployment-options/" aria-current="page">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/dedicated/">
+                            <span>DX Dedicated</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>DX Managed</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/managed/">
+                                  <span>Overview</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/managed-aws/">
+                                  <span>AWS</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li x-data="sidebarState" data-sidebar-section="">
+          <button type="button" class="flex justify-between items-center w-full py-2" @click="open = !open" :aria-expanded="open">
+            <span>Using DX</span>
+            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>AI Code Insights</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/ai-code-insights/overview/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/ai-code-insights/rollout/">
+                            <span>Evaluation</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>Deploy</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/installation/">
+                                  <span>Installation</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/mdm-installation/">
+                                  <span>Enterprise deployment</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/verify-deployment/">
+                                  <span>Verify deployment</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/troubleshooting/">
+                                  <span>Troubleshooting</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/uninstallation/">
+                                  <span>Uninstallation</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>Reference</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/agent-integrations/">
+                                  <span>Agent integrations</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/configuration/">
+                                  <span>Configuration reference</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/security-and-privacy/">
+                                  <span>Security and privacy</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/ai-code-insights/daemon-changelog/">
+                                  <span>Changelog</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/dashboard/overview/">
+                    <span>Dashboard</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/data-studio/">
+                    <span>Data Studio</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/dx-ai-chat/">
+                    <span>DX AI chat</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/dx-core-4/">
+                    <span>DX Core 4</span>
+                  </a>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Fabric</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/fabric/overview/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>Software catalog</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/overview/">
+                                  <span>Overview</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/entity-discovery/">
+                                  <span>Entity discovery</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/entity-reports/">
+                                  <span>Entity reports</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/advanced-properties/">
+                                  <span>Advanced properties</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/github-repository-integration/">
+                                  <span>GitHub repository integration</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/catalog/gitlab-repository-integration/">
+                                  <span>GitLab repository integration</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>Scorecards</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/scorecards/overview/">
+                                  <span>Overview</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/scorecards/examples/">
+                                  <span>Examples</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/scorecards/writing-checks/">
+                                  <span>Writing checks</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/scorecards/initiatives/">
+                                  <span>Initiatives</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                      
+                        <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4">
+                          <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                            <span>Self-service</span>
+                            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                          </button>
+                          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/self-service/overview/">
+                                  <span>Overview</span>
+                                </a>
+                              </li>
+                            
+                              
+                              
+                              <li class="relative last:mb-2 pl-4">
+                                <a href="/self-service/examples/">
+                                  <span>Examples</span>
+                                </a>
+                              </li>
+                            
+                          </ul>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/onboarding/">
+                    <span>Onboarding</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/platformx/">
+                    <span>PlatformX</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/playbooks/">
+                    <span>Playbooks</span>
+                  </a>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/pulse/">
+                    <span>Pulse</span>
+                  </a>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Reports</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ai-code-percentage/">
+                            <span>AI code percentage</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ai-code-overview/">
+                            <span>AI pull request overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/agent-sessions/">
+                            <span>Agent sessions</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/agent-effectiveness/">
+                            <span>Agent effectiveness</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ai-cost-management/">
+                            <span>AI cost management</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ai-impact/">
+                            <span>AI impact</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ai-dollar-impact/">
+                            <span>AI dollar impact</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/allocation/">
+                            <span>Allocation</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ado-allocation/">
+                            <span>Azure DevOps allocation</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/ado-capex/">
+                            <span>Azure DevOps CapEx</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/catalog-analysis/">
+                            <span>Catalog analysis</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/claude-adoption/">
+                            <span>Claude adoption</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cohort-analysis/">
+                            <span>Cohort analysis</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cohort-lifecycle-impact/">
+                            <span>Cohort lifecycle impact</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cursor-adoption/">
+                            <span>Cursor adoption</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cycle-completion/">
+                            <span>Cycle completion</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cycle-predictability/">
+                            <span>Cycle predictability</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cycle-spillover/">
+                            <span>Cycle spillover</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/cycle-volatility/">
+                            <span>Cycle volatility</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/dora-metrics/">
+                            <span>DORA metrics</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/github-copilot-adoption/">
+                            <span>GitHub Copilot adoption</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/iteration-completion/">
+                            <span>Iteration completion</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/iteration-predictability/">
+                            <span>Iteration predictability</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/iteration-spillover/">
+                            <span>Iteration spillover</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/iteration-volatility/">
+                            <span>Iteration volatility</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/jira-allocation/">
+                            <span>Jira allocation</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/jira-capex/">
+                            <span>Jira CapEx</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/lifecycle-by-phase/">
+                            <span>Lifecycle by phase</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/linear-allocation/">
+                            <span>Linear allocation</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/linear-capex/">
+                            <span>Linear CapEx</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/pr-rework-rate/">
+                            <span>PR rework rate</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/pr-throughput/">
+                            <span>PR throughput</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/scenario-planner/">
+                            <span>Scenario planner</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/sprint-completion/">
+                            <span>Sprint completion</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/sprint-predictability/">
+                            <span>Sprint predictability</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/sprint-spillover/">
+                            <span>Sprint spillover</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/sprint-volatility/">
+                            <span>Sprint volatility</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/truethroughput/">
+                            <span>TrueThroughput</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reports/windsurf-adoption/">
+                            <span>Devin Desktop adoption</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>SLAs</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/dashboard/slas/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/dashboard/custom-slas/">
+                            <span>Custom SLAs</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Snapshots</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/snapshots/overview/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/snapshots/configuration/">
+                            <span>Configuration</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/snapshots/pre-snapshot/">
+                            <span>Before each snapshot</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/snapshots/post-snapshot/">
+                            <span>After each snapshot</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/studies/">
+                    <span>Studies</span>
+                  </a>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Use DX with agents</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/use-dx-with-agents/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/cli/">
+                            <span>CLI</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/mcp/">
+                            <span>MCP</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li x-data="sidebarState" data-sidebar-section="">
+          <button type="button" class="flex justify-between items-center w-full py-2" @click="open = !open" :aria-expanded="open">
+            <span>Administration</span>
+            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Authorization</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/access-control/">
+                            <span>Access Control</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/atlassian-single-sign-on/">
+                            <span>Atlassian single sign-on</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/oidc-single-sign-on/">
+                            <span>OIDC single sign-on</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/okta-directory-sync/">
+                            <span>Okta directory sync</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/okta-single-sign-on/">
+                            <span>Okta single sign-on</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/permissions/">
+                            <span>Permissions</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/personal-access-tokens/">
+                            <span>Personal access tokens</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/roles/">
+                            <span>Roles</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/saml-single-sign-on/">
+                            <span>SAML single sign-on</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/scopes/">
+                            <span>Scopes</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/scim-role-management/">
+                            <span>SCIM role management</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Data Cloud</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/conditional-schemas/">
+                            <span>Conditional schemas</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/custom-tables/">
+                            <span>Custom tables</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/db-users/">
+                            <span>DB users</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/deploy-rules/">
+                            <span>Deploy rules</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>General settings</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/benchmarks/">
+                            <span>Benchmarks</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/dx-ai/">
+                            <span>DX AI</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/ic-metrics/">
+                            <span>IC metrics</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Microsoft Teams app</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/microsoft-teams-app/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/custom-ms-teams-bots/">
+                            <span>Adding custom Teams bots</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/microsoft-teams-html/">
+                            <span>HTML guide</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Org data</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/custom-user-attributes/">
+                            <span>Custom attributes</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/sql-powered-attributes/">
+                            <span>SQL-powered attributes</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/organization/">
+                            <span>Organization</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/team-hierarchies/">
+                            <span>Team hierarchies</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/user-properties/">
+                            <span>User properties</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Security</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/allowlisting-dx/">
+                            <span>Allowlisting DX</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/reverse-tunnel-proxy/">
+                            <span>Reverse tunnel proxy</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/tenant-headers/">
+                            <span>Tenant headers</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/using-dx-with-phi/">
+                            <span>Using DX with PHI</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Slack app</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/custom-slack-bots/">
+                            <span>Adding custom Slack bots</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/slack-app-permissions/">
+                            <span>Slack app permissions</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/slack-enterprise-grid/">
+                            <span>Slack Enterprise Grid</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/slack-markdown/">
+                            <span>Slack markdown guide</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/terraform-provider/">
+                    <span>Terraform provider</span>
+                  </a>
+                </li>
+              
+            
+          </ul>
+        </li>
+      
+    
+      
+        <li x-data="sidebarState" data-sidebar-section="">
+          <button type="button" class="flex justify-between items-center w-full py-2" @click="open = !open" :aria-expanded="open">
+            <span>APIs</span>
+            <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+          <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Web API</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/webapi/overview/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/webapi/methods/">
+                            <span>Methods</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                <li x-data="sidebarState" data-sidebar-section="" class="relative last:mb-2 pl-4 ">
+                  <button type="button" class="flex justify-between items-center w-full py-1.5" @click="open = !open" :aria-expanded="open">
+                    <span>Data Cloud API</span>
+                    <svg width="1em" height="1em" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" class="size-4 opacity-50" :class="open ? 'rotate-270' : 'rotate-90'"><path d="m9 18 6-6-6-6"></path></svg>
+                  </button>
+                  <ul x-show="open" x-collapse="" class="relative m-0 overflow-hidden flex min-h-0 w-full list-none flex-col p-0 before:absolute before:top-2 before:bottom-2 before:left-0 before:w-[1px] before:bg-[var(--color-gray-200)] before:content-['']">
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/datacloudapi/overview/">
+                            <span>Overview</span>
+                          </a>
+                        </li>
+                      
+                    
+                      
+                        
+                        
+                        <li class="relative last:mb-2 pl-4">
+                          <a href="/datacloudapi/methods/">
+                            <span>Methods</span>
+                          </a>
+                        </li>
+                      
+                    
+                  </ul>
+                </li>
+              
+            
+              
+                
+                
+                <li class="relative last:mb-2 pl-4">
+                  <a href="/webapi/object-types/">
+                    <span>Object types</span>
+                  </a>
+                </li>
+              
+            
+          </ul>
+        </li>
+      
+    
+      
+        
+        
+        <li class="relative">
+          <a href="/connectors/">
+            <span>Data connectors</span>
+          </a>
+        </li>
+      
+    
+      
+        
+        
+        <li class="relative">
+          <a href="/schema/">
+            <span>Database schema</span>
+          </a>
+        </li>
+      
+    
+      
+        
+        
+        <li class="relative">
+          <a href="/knowledgebase/">
+            <span>Knowledge base</span>
+          </a>
+        </li>
+      
+    
+  </ul>
+</nav>
+
+    </div><!-- fixed links mobile -->
+  <footer class="px-6 py-2 md:py-4 border-t lg:hidden" :class="{ 'block': $store.nav.open, 'hidden md:block': !$store.nav.open }" x-cloak="">
+    <nav class="text-gray-700 text-sm space-y-3 py-1.5">
+  <a href="mailto:support@getdx.com" class="btn btn-full btn-left"> <i class="bx bx-message"></i> Contact support </a>
+  <a href="https://app.getdx.com/signin" target="_blank" class="btn btn-full btn-left"> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 42 24" aria-hidden="true" class="size-4"><path d="m34.856 15.301 6.058 8.7H35.01c-.64-.716-1.261-1.577-1.812-2.372-.844-1.219-.842-2.893.03-4.092zM25.846 8.7 19.788 0h5.903c.64.715 1.26 1.576 1.811 2.37.844 1.22.842 2.894-.03 4.093zM34.467 1.476C35.09.466 35.787.078 36.875.078L41.691 0 26.025 23.12a1.82 1.82 0 0 1-1.506.802h-5.255C24.288 16.423 29.607 9.08 34.467 1.476M0 23.923h8.517c7.615 0 12.257-4.651 12.257-11.926S16.132.07 8.517.07H0l5.282 4.684H3.107A3.107 3.107 0 0 0 0 7.86v16.062m5.444-4.684V4.754h3.04c4.341 0 6.78 2.856 6.78 7.241 0 4.386-2.439 7.242-6.747 7.242z"></path></svg> Open app </a>
+</nav>
+
+  </footer>
+</div>
+
+<div id="htmx-wrapper" class="flex flex-col max-h-svh overflow-y-auto">
+  <div id="htmx-content" tabindex="-1" class="flex-1 w-full">
+    
+
+<!-- fixed links desktop -->
+<div class="hidden sticky top-0 md:flex z-30 bg-white border-b px-6 py-2.5 items-center justify-between h-16">
+  
+
+
+  
+
+
+
+
+
+  
+
+  <nav class="breadcrumb | text-gray-700 mb-6 md:mb-0" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center text-sm text-gray-600 list-none p-0">
+      
+        
+        <li class="flex items-center first:before:content-none before:content-['/'] before:-rotate-5 before:mx-1.5 before:text-gray-400">
+          
+            <span class="text-gray-700 hover:text-gray-700">Getting started</span>
+          
+        </li>
+      
+        
+        <li class="flex items-center first:before:content-none before:content-['/'] before:-rotate-5 before:mx-1.5 before:text-gray-400">
+          
+            <a href="/deployment-options/" class="text-gray-900" aria-current="page">Deployment options</a>
+          
+        </li>
+      
+    </ol>
+  </nav>
+
+
+
+  
+    <div class="hidden lg:block"><nav class="flex text-gray-700 gap-2.5 py-1.5 items-center">
+  <a href="mailto:support@getdx.com" class="btn btn-small btn-outline whitespace-nowrap"> <i class="bx bx-message"></i> Contact support </a>
+  <a href="https://app.getdx.com/signin" target="_blank" class="btn btn-outline btn-small btn-left whitespace-nowrap">
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 42 24" aria-hidden="true" class="size-4"><path d="m34.856 15.301 6.058 8.7H35.01c-.64-.716-1.261-1.577-1.812-2.372-.844-1.219-.842-2.893.03-4.092zM25.846 8.7 19.788 0h5.903c.64.715 1.26 1.576 1.811 2.37.844 1.22.842 2.894-.03 4.093zM34.467 1.476C35.09.466 35.787.078 36.875.078L41.691 0 26.025 23.12a1.82 1.82 0 0 1-1.506.802h-5.255C24.288 16.423 29.607 9.08 34.467 1.476M0 23.923h8.517c7.615 0 12.257-4.651 12.257-11.926S16.132.07 8.517.07H0l5.282 4.684H3.107A3.107 3.107 0 0 0 0 7.86v16.062m5.444-4.684V4.754h3.04c4.341 0 6.78 2.856 6.78 7.241 0 4.386-2.439 7.242-6.747 7.242z"></path></svg> Open app
+  </a>
+</nav>
+</div>
+  
+</div>
+
+
+<div class="grid lg:grid-cols-[auto_max-content] max-w-5xl mx-auto mt-24 mb-12 md:my-12 relative" data-pagefind-body="">
+  <div class="flow prose px-6 md:px-10 lg:px-12 xl:px-14 min-w-0 max-w-3xl">
+  <h1>Deployment options</h1>
+  <p>DX offers three deployment options to accommodate your business needs:</p>
+<p><strong>Multi-tenant SaaS –</strong> Your first-party DX data is hosted on infrastructure shared with other customers while third-party data imported from your tools like GitHub and Jira are hosted on dedicated infrastructure.</p>
+<p><strong>DX Dedicated (Single-tenant SaaS) –</strong> You get a dedicated instance of DX for your organization, fully managed by us. This provides the efficiency of SaaS while providing full data isolation, private networking, and data residency. For more details, <a href="/dedicated/">read more about DX Dedicated</a>.</p>
+<p><strong>DX Managed (Bring Your Own Cloud) –</strong> You get a dedicated instance of DX, deployed to a AWS sub-account or GCP project that you own and we fully manage and operate. For more details, <a href="/managed/">read more about DX Managed</a>.</p>
+<h2 id="data-connectors"><a class="heading-anchor" href="#data-connectors">Data connectors</a></h2>
+<p>Some SaaS customers have security protocols which discourage or prohibit external systems like DX from connecting to their engineering data sources (e.g., GitHub Enterprise Server). For these cases, DX provides three options for secure DX data connections.</p>
+<p><strong>IP Allowlisting –</strong> DX makes API requests to your engineering data sources through static IP addresses. You can <a href="/allowlisting-dx/">allowlist our IP addresses</a> to enable secure inbound connections from DX.</p>
+<p><strong>Network proxy –</strong> In cases where more safeguards are needed, customers may use a network proxy to intercept requests from DX and route them to end-sources securely.</p>
+<p><strong>Self-hosted extractors –</strong> For customers that cannot allow DX to make API requests into their network, DX provides a self-hosted <a href="/data-extractor/">data extractor</a> that pushes metadata to DX.</p>
+
+</div>
+
+
+  
+    <aside class="
+        px-4
+        hidden lg:flex lg:flex-col
+        lg:sticky lg:top-20
+        lg:max-h-[calc(100vh-5rem)]
+        overflow-y-auto
+        lg:w-[240px]
+        lg:self-start
+      ">
+      
+
+      <div class="toc | flow" x-data="toc" :style="indicatorStyles" data-toc="" data-pagefind-ignore="">
+        <h2 class="font-medium text-sm">On this page</h2>
+        <ul role="list" class="relative" :data-initial-load="isInitialLoad">
+          
+            <li class="relative pl-2 py-0.5 level-2">
+              <a href="#data-connectors" :data-active="'data-connectors' == activeId" @click.prevent="onNavigate('data-connectors')">
+                Data connectors
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+    </aside>
+  
+</div>
+
+  </div>
+</div>
+</main>
+    <div x-data="
+    { init() { this.$watch('$store.search.open', value => {
+      if (value) this.$nextTick(() => $refs.searchInput?.focus())
+    }) }}
+  " x-init="init" x-show="$store.search.open" x-cloak="" @keydown.escape.window="$store.search.closeDialog()" @keydown.right="$event.target.closest('input, textarea, [contenteditable=true]') ? null : ($event.preventDefault(), $store.search.selectNext())" @keydown.down.prevent="$store.search.selectNext()" @keydown.left="$event.target.closest('input, textarea, [contenteditable=true]') ? null : ($event.preventDefault(), $store.search.selectPrev())" @keydown.up.prevent="$store.search.selectPrev()" class="relative z-50" aria-modal="true" role="dialog">
+  <!-- bg overlay -->
+  <div x-cloak="" x-show="$store.search.open" class="fixed inset-0 bg-white/60 backdrop-blur-[1px]" aria-hidden="true" @click="$store.search.closeDialog()"></div>
+
+  <!-- container -->
+  <div x-cloak="" class="fixed inset-0 z-50 flex min-h-full items-center justify-center p-4 sm:p-0 ">
+    <div x-show="$store.search.open" x-trap.noscroll.inert="$store.search.open" x-on:click.outside="$store.search.closeDialog()" class="absolute flex flex-col overflow-hidden left-1/2 top-[15%] w-[90vw] max-w-2xl max-h-[min(73vh,580px)] -translate-x-1/2 rounded-lg bg-white border border-gray-400 shadow-[var(--dx-shadow-modal)] ">
+      <div class="relative">
+        <input x-ref="searchInput" type="search" x-model="$store.search.term" @input="$store.search.onInput()" class="w-full px-4 py-3 pr-10 text-lg outline-none" :class="$store.search.term ? 'border-b mb-1.5' : ''" placeholder="What are you searching for?">
+
+        <button class="absolute right-3 top-3.5" type="button" @click="$store.search.closeDialog()">
+          <kbd class="py-1 bg-white"> Esc </kbd>
+        </button>
+      </div>
+
+      <template x-if="$store.search.term !== ''">
+        <div class="search-results | p-2 overflow-y-auto overscroll-contain">
+          <div>
+            <h2 class="text-xs text-gray-700 p-2">Results:</h2>
+            <ul>
+              <template x-if="$store.search.results.length">
+                <template x-for="(result, index) in $store.search.results" :key="result.url">
+                  <li>
+                    <a :href="result.url" :class="
+                        {
+                          'bg-gray-300': $store.search.selectedIndex === index,
+                          'flex flex-col gap-1 px-3 pt-2.5 pb-3 rounded-md hover:bg-gray-200 text-gray-900 group': true
+                        }
+                      " @mouseenter="$store.search.selectedIndex = index" :aria-selected="$store.search.selectedIndex === index">
+                      <div class="flex items-center justify-between">
+                        <span class="text-base font-medium" x-text="result.meta.title"></span>
+                      </div>
+                      <p class="text-sm text-gray-500" x-html="result.excerpt"></p>
+                    </a>
+                  </li>
+                </template>
+              </template>
+
+              <template x-if="$store.search.loading && !$store.search.results.length">
+                <li class="px-2">
+                  <div class="flex flex-col gap-2 py-2 rounded-md">
+                    <div class="h-6 bg-gray-200 rounded-md w-1/3 animate-pulse"></div>
+                    <div class="h-6 bg-gray-200 rounded-md w-1/4 animate-pulse"></div>
+                  </div>
+                </li>
+              </template>
+
+              <template x-if="!$store.search.loading && !$store.search.results.length">
+                <li class="px-2 py-2 text-sm">Nothing found for "<span x-text="$store.search.term"></span>"</li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</div>
+
+  </body>
+</html>

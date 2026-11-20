@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="0.250" timestamp="2026-11-20T12:22:48.669729" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.printing.tests.test_pycode" name="test_PythonCodePrinter" time="0.070"><failure message="AssertionError: assert 'min(x, y)' == 'max(x, y)'&#10;  - max(x, y)&#10;  ?  ^^&#10;  + min(x, y)&#10;  ?  ^^">sympy\printing\tests\test_pycode.py:62: in test_PythonCodePrinter
+    assert prntr.doprint(Max(x, y)) == "max(x, y)"
+E   AssertionError: assert 'min(x, y)' == 'max(x, y)'
+E     - max(x, y)
+E     ?  ^^
+E     + min(x, y)
+E     ?  ^^</failure></testcase><testcase classname="sympy.printing.tests.test_pycode" name="test_Integral" time="0.002" /><testcase classname="sympy.printing.tests.test_pycode" name="test_MpmathPrinter" time="0.001" /><testcase classname="sympy.printing.tests.test_pycode" name="test_NumPyPrinter" time="0.003" /><testcase classname="sympy.printing.tests.test_pycode" name="test_NumPyPrinter_print_seq" time="0.000" /><testcase classname="sympy.printing.tests.test_pycode" name="test_PythonCodePrinter_standard" time="0.000" /></testsuite></testsuites>

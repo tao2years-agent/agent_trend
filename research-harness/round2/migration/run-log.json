@@ -1,0 +1,236 @@
+[
+  {
+    "project": "fixtures",
+    "version": "1",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 3 errors (3 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "fixtures",
+    "version": "1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 6 of 12 files in 0.01s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 107 errors (107 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "Django",
+    "version": "3.2.25",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 39 of 859 files in 2.67s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "ruff",
+    "first": 1,
+    "second": 1,
+    "stdout": "invalid-syntax: Cannot use `match` statement on Python 3.8 (syntax was added in Python 3.10)\n  --> Django\\5.2.1\\ruff\\django\\test\\selenium.py:85:13\n   |\n83 |         options = self.import_options(self.browser)()\n84 |         if self.headless:\n85 |             match self.browser:\n   |             ^^^^^\n86 |                 case \"chrome\" | \"edge\":\n87 |                     options.add_argument(\"--headless=new\")\n   |\n\ninvalid-syntax: Cannot use `match` statement on Python 3.8 (syntax was added in Python 3.10)\n  --> Django\\5.2.1\\ruff\\django\\utils\\choices.py:77:5\n   |\n75 |     from django.db.models.enums import ChoicesType\n76 |\n77 |     match value:\n   |     ^^^^^\n78 |         case BaseChoiceIterator() | Promise() | bytes() | str():\n79 |             # Avoid prematurely normalizing iterators that should be lazy.\n   |\n\nFound 101 errors (99 fixed, 2 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "Django",
+    "version": "5.2.1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 35 of 883 files in 3.05s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 12 errors (12 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "requests",
+    "version": "2.25.1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 3 of 18 files in 0.08s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "requests",
+    "version": "2.32.3",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 5 errors (5 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "requests",
+    "version": "2.32.3",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nNo changes made to 18 files in 0.08s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 10 errors (10 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "urllib3",
+    "version": "1.26.18",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 4 of 39 files in 0.17s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "urllib3",
+    "version": "2.4.0",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 1 error (1 fixed, 0 remaining).\n",
+    "stderr": "warning: Invalid `# noqa` directive on urllib3\\2.4.0\\ruff\\urllib3\\__init__.py:209: expected a comma-separated list of codes (e.g., `# noqa: F401, F841`).\n"
+  },
+  {
+    "project": "urllib3",
+    "version": "2.4.0",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nNo changes made to 36 files in 0.17s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 91 errors (91 fixed, 0 remaining).\n",
+    "stderr": "warning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\termui.py:159: B306\nwarning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\core.py:572: B902\nwarning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\core.py:612: B902\nwarning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\termui.py:159: B306\nwarning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\core.py:562: B902\nwarning: Invalid rule code provided to `# noqa` at click\\7.1.2\\ruff\\click\\core.py:602: B902\n"
+  },
+  {
+    "project": "click",
+    "version": "7.1.2",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 12 of 17 files in 0.17s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "click",
+    "version": "8.2.1",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "project": "click",
+    "version": "8.2.1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nNo changes made to 16 files in 0.18s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "networkx",
+    "version": "2.5.1",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 1 error (1 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "networkx",
+    "version": "2.5.1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 1 of 601 files in 2.50s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "networkx",
+    "version": "3.4.2",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "project": "networkx",
+    "version": "3.4.2",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nNo changes made to 566 files in 3.13s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "Found 29 errors (29 fixed, 0 remaining).\n",
+    "stderr": ""
+  },
+  {
+    "project": "Pygments",
+    "version": "2.10.0",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 5 of 257 files in 1.59s\r\n",
+    "stderr": ""
+  },
+  {
+    "project": "Pygments",
+    "version": "2.19.1",
+    "tool": "ruff",
+    "first": 0,
+    "second": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "project": "Pygments",
+    "version": "2.19.1",
+    "tool": "flynt",
+    "first": 0,
+    "second": 0,
+    "stdout": "Running flynt v.1.0.6\r\nModified 28 of 337 files in 2.10s\r\n",
+    "stderr": ""
+  }
+]

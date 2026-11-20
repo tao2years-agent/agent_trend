@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.158" timestamp="2026-11-20T12:24:04.710094" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_smith_normal" time="0.060" /><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_hermite_normal" time="0.000"><failure message="ValueError: range() arg 3 must not be zero">sympy\polys\matrices\tests\test_normalforms.py:44: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+sympy\polys\matrices\normalforms.py:406: in hermite_normal_form
+    return _hermite_normal_form(A)
+sympy\polys\matrices\normalforms.py:215: in _hermite_normal_form
+    for i in range(m - 1, -1, -0):
+E   ValueError: range() arg 3 must not be zero</failure></testcase></testsuite></testsuites>

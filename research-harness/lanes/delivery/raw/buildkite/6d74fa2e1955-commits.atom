@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/buildkite/agent/commits/main</id>
+  <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commits/main"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/buildkite/agent/commits/main.atom"/>
+  <title>Recent Commits to agent:main</title>
+  <updated>2026-11-19T00:33:42Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a"/>
+    <title>
+        Merge pull request #4670 from buildkite/bm/release_v4_12_0
+    </title>
+    <updated>2026-11-19T00:33:42Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4670 from buildkite/bm/release_v4_12_0
+
+release: v4.12.0&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/c4ab1954c56feb7bd9948e75a59800202dde377f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/c4ab1954c56feb7bd9948e75a59800202dde377f"/>
+    <title>
+        Prepare v4.12.0 release
+    </title>
+    <updated>2026-11-19T00:24:35Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Prepare v4.12.0 release&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/faff5efa35b868b24de78389eec96d68a398f95a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/faff5efa35b868b24de78389eec96d68a398f95a"/>
+    <title>
+        Merge pull request #4669 from buildkite/feat/program_status_span_events
+    </title>
+    <updated>2026-11-18T23:42:30Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4669 from buildkite/feat/program_status_span_events
+
+Record OSC program status reports as span events&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5c663ad758a7ab75a5d9cbe8c71dcefc6a093d97</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/5c663ad758a7ab75a5d9cbe8c71dcefc6a093d97"/>
+    <title>
+        Merge pull request #4640 from buildkite/fix/a-2159-verify-artifact-paths
+    </title>
+    <updated>2026-11-18T23:25:33Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/277926418?s=30&amp;v=4"/>
+    <author>
+      <name>buildkate</name>
+      <uri>https://github.com/buildkate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4640 from buildkite/fix/a-2159-verify-artifact-paths
+
+Sign and verify artifact upload paths in signed jobs&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/0e360c013c98b26ab01cc74056386943a1703b56</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/0e360c013c98b26ab01cc74056386943a1703b56"/>
+    <title>
+        Reuse the redactor for each program status report
+    </title>
+    <updated>2026-11-18T07:28:22Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Reuse the redactor for each program status report
+
+Share one redactor between each report&amp;#39;s ID and message to avoid
+initializing the matcher twice. Keep flushing after each field so
+partial secret matches cannot carry into the next field.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4683728950f3ca600dfc2d10bdc4f012d197db4c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/4683728950f3ca600dfc2d10bdc4f012d197db4c"/>
+    <title>
+        Record OSC program status reports as span events
+    </title>
+    <updated>2026-11-18T05:46:45Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Record OSC program status reports as span events
+
+Include record IDs, states and redacted messages on the active hook
+or phase span so status transitions can be inspected in traces.
+Document the OSC keys and event export limits.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/96840311d4ac4580edc695314f4974b78456768a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/96840311d4ac4580edc695314f4974b78456768a"/>
+    <title>
+        Sign and verify artifact upload paths
+    </title>
+    <updated>2026-11-18T04:59:46Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/277926418?s=30&amp;v=4"/>
+    <author>
+      <name>buildkate</name>
+      <uri>https://github.com/buildkate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Sign and verify artifact upload paths
+
+Co-authored-by: Amp &amp;lt;amp@ampcode.com&amp;gt;
+Amp-Thread-ID: https://ampcode.com/threads/T-142fe14b-1b9b-47aa-bf26-a9f3dcd721af&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/c6fd8acc9297758f27c050ebeb596a904ee8de8a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/c6fd8acc9297758f27c050ebeb596a904ee8de8a"/>
+    <title>
+        Merge pull request #4668 from buildkite/bm/release_v4_11_0
+    </title>
+    <updated>2026-11-17T05:29:06Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4668 from buildkite/bm/release_v4_11_0
+
+release: v4.11.0&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/2b09bf167f782b2946109ce0f73d40b4bad2409d</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/2b09bf167f782b2946109ce0f73d40b4bad2409d"/>
+    <title>
+        Prepare v4.11.0 release
+    </title>
+    <updated>2026-11-17T05:22:33Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Prepare v4.11.0 release&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d8f7e7e2ed89cbf20174d2fc5400c1e44ff8c909</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/d8f7e7e2ed89cbf20174d2fc5400c1e44ff8c909"/>
+    <title>
+        Merge pull request #4667 from buildkite/feat/program_status_span_ids
+    </title>
+    <updated>2026-11-17T02:18:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4667 from buildkite/feat/program_status_span_ids
+
+Add program status IDs to hook and command spans&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/75ec75cd30aed084ae87a159551a0bb794d99037</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/75ec75cd30aed084ae87a159551a0bb794d99037"/>
+    <title>
+        Gate span status IDs on active reporting
+    </title>
+    <updated>2026-11-17T02:08:10Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Gate span status IDs on active reporting
+
+Only attach program status IDs when the agent emits its OSC 7501
+reports. Cover enabled and disabled reporting for commands and hooks.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1074119920367812f6678870d7cd550435208b8a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/1074119920367812f6678870d7cd550435208b8a"/>
+    <title>
+        Add program status IDs to hook and command spans
+    </title>
+    <updated>2026-11-17T01:55:40Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/10952642?s=30&amp;v=4"/>
+    <author>
+      <name>mcncl</name>
+      <uri>https://github.com/mcncl</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Add program status IDs to hook and command spans
+
+Use the same record IDs as OSC 7501 reports so they can be correlated
+with spans by ID and timestamp.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5e9ba099ab994f456fefd0296e74ca8c79d2ea7f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/5e9ba099ab994f456fefd0296e74ca8c79d2ea7f"/>
+    <title>
+        Merge pull request #4657 from buildkite/dependabot/go_modules/cloud-p…
+    </title>
+    <updated>2026-11-16T16:29:40Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4657 from buildkite/dependabot/go_modules/cloud-providers-d538ab3943
+
+Bump the cloud-providers group across 1 directory with 11 updates&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/cd359462a1728b9d9ee24d659d382f0b32ad6938</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/cd359462a1728b9d9ee24d659d382f0b32ad6938"/>
+    <title>
+        Merge pull request #4660 from buildkite/dependabot/go_modules/github.…
+    </title>
+    <updated>2026-11-16T16:29:17Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4660 from buildkite/dependabot/go_modules/github.com/buildkite/osc7501-0.4.0
+
+Bump github.com/buildkite/osc7501 from 0.3.1 to 0.4.0&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/91cb90008f3649d245ff230f0ed69004efb2a4fd</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/91cb90008f3649d245ff230f0ed69004efb2a4fd"/>
+    <title>
+        Merge pull request #4658 from buildkite/dependabot/go_modules/cloud.g…
+    </title>
+    <updated>2026-11-16T16:25:06Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4658 from buildkite/dependabot/go_modules/cloud.google.com/go/kms-1.37.0
+
+Bump cloud.google.com/go/kms from 1.36.1 to 1.37.0&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9a931d884586c7dd7104e384bdb58a2373cf7f94</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/9a931d884586c7dd7104e384bdb58a2373cf7f94"/>
+    <title>
+        Merge pull request #4653 from buildkite/dependabot/docker/dot-buildki…
+    </title>
+    <updated>2026-11-16T16:20:09Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4653 from buildkite/dependabot/docker/dot-buildkite/container-images-582c916b9b
+
+Bump the container-images group across 1 directory with 2 updates&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4ec532d4bbe4d00e9028f61aae716de7a5229d34</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/4ec532d4bbe4d00e9028f61aae716de7a5229d34"/>
+    <title>
+        Bump the cloud-providers group across 1 directory with 11 updates
+    </title>
+    <updated>2026-11-16T16:17:13Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Bump the cloud-providers group across 1 directory with 11 updates
+
+Bumps the cloud-providers group with 11 updates in the / directory:
+
+| Package | From | To |
+| --- | --- | --- |
+| [github.com/aws/aws-sdk-go-v2](https://github.com/aws/aws-sdk-go-v2) | `1.47.7` | `1.48.0` |
+| [github.com/aws/aws-sdk-go-v2/config](https://github.com/aws/aws-sdk-go-v2) | `1.33.15` | `1.33.18` |
+| [github.com/aws/aws-sdk-go-v2/credentials](https://github.com/aws/aws-sdk-go-v2) | `1.20.15` | `1.21.0` |
+| [github.com/aws/aws-sdk-go-v2/feature/ec2/imds](https://github.com/aws/aws-sdk-go-v2) | `1.20.7` | `1.20.9` |
+| [github.com/aws/aws-sdk-go-v2/feature/s3/manager](https://github.com/aws/aws-sdk-go-v2) | `1.23.21` | `1.23.24` |
+| [github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager](https://github.com/aws/aws-sdk-go-v2) | `0.5.4` | `0.5.7` |
+| [github.com/aws/aws-sdk-go-v2/service/ec2](https://github.com/aws/aws-sdk-go-v2) | `1.344.1` | `1.346.0` |
+| [github.com/aws/aws-sdk-go-v2/service/kms](https://github.com/aws/aws-sdk-go-v2) | `1.62.4` | `1.62.6` |
+| [github.com/aws/aws-sdk-go-v2/service/s3](https://github.com/aws/aws-sdk-go-v2) | `1.114.8` | `1.114.10` |
+| [github.com/aws/smithy-go](https://github.com/aws/smithy-go) | `1.28.8` | `1.28.9` |
+| [google.golang.org/api](https://github.com/googleapis/google-api-go-client) | `0.311.0` | `0.314.0` |
+
+
+
+Updates `github.com/aws/aws-sdk-go-v2` from 1.47.7 to 1.48.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/v1.47.7...v1.48.0)
+
+Updates `github.com/aws/aws-sdk-go-v2/config` from 1.33.15 to 1.33.18
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/config/v1.33.15...config/v1.33.18)
+
+Updates `github.com/aws/aws-sdk-go-v2/credentials` from 1.20.15 to 1.21.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/credentials/v1.20.15...v1.21.0)
+
+Updates `github.com/aws/aws-sdk-go-v2/feature/ec2/imds` from 1.20.7 to 1.20.9
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/mq/v1.20.7...credentials/v1.20.9)
+
+Updates `github.com/aws/aws-sdk-go-v2/feature/s3/manager` from 1.23.21 to 1.23.24
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/pipes/v1.23.21...feature/s3/manager/v1.23.24)
+
+Updates `github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager` from 0.5.4 to 0.5.7
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/feature/s3/transfermanager/v0.5.4...feature/s3/transfermanager/v0.5.7)
+
+Updates `github.com/aws/aws-sdk-go-v2/service/ec2` from 1.344.1 to 1.346.0
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/ec2/v1.344.1...service/ec2/v1.346.0)
+
+Updates `github.com/aws/aws-sdk-go-v2/service/kms` from 1.62.4 to 1.62.6
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/rds/v1.62.4...service/iot/v1.62.6)
+
+Updates `github.com/aws/aws-sdk-go-v2/service/s3` from 1.114.8 to 1.114.10
+- [Release notes](https://github.com/aws/aws-sdk-go-v2/releases)
+- [Commits](https://github.com/aws/aws-sdk-go-v2/compare/service/s3/v1.114.8...service/s3/v1.114.10)
+
+Updates `github.com/aws/smithy-go` from 1.28.8 to 1.28.9
+- [Release notes](https://github.com/aws/smithy-go/releases)
+- [Changelog](https://github.com/aws/smithy-go/blob/main/CHANGELOG.md)
+- [Commits](https://github.com/aws/smithy-go/compare/v1.28.8...v1.28.9)
+
+Updates `google.golang.org/api` from 0.311.0 to 0.314.0
+- [Release notes](https://github.com/googleapis/google-api-go-client/releases)
+- [Changelog](https://github.com/googleapis/google-api-go-client/blob/main/CHANGES.md)
+- [Commits](https://github.com/googleapis/google-api-go-client/compare/v0.311.0...v0.314.0)
+
+---
+updated-dependencies:
+- dependency-name: github.com/aws/aws-sdk-go-v2
+  dependency-version: 1.48.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/config
+  dependency-version: 1.33.18
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/credentials
+  dependency-version: 1.21.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/feature/ec2/imds
+  dependency-version: 1.20.9
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/feature/s3/manager
+  dependency-version: 1.23.24
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager
+  dependency-version: 0.5.7
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/service/ec2
+  dependency-version: 1.346.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/service/kms
+  dependency-version: 1.62.6
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/aws-sdk-go-v2/service/s3
+  dependency-version: 1.114.10
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: github.com/aws/smithy-go
+  dependency-version: 1.28.9
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: cloud-providers
+- dependency-name: google.golang.org/api
+  dependency-version: 0.314.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: cloud-providers
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/466127bc0cf3a78813f977de5c61c3579092bc44</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/466127bc0cf3a78813f977de5c61c3579092bc44"/>
+    <title>
+        Merge pull request #4651 from buildkite/dependabot/go_modules/golang-…
+    </title>
+    <updated>2026-11-16T16:03:31Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4651 from buildkite/dependabot/go_modules/golang-x-1d431bde69
+
+Bump the golang-x group with 3 updates&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/0e60ef0fa934a9eb6a1ac5344ae5b3f27dbfdb37</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/0e60ef0fa934a9eb6a1ac5344ae5b3f27dbfdb37"/>
+    <title>
+        Merge pull request #4652 from buildkite/dependabot/docker/packaging/d…
+    </title>
+    <updated>2026-11-16T16:02:05Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=30&amp;v=4"/>
+    <author>
+      <name>github-actions</name>
+      <uri>https://github.com/github-actions</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #4652 from buildkite/dependabot/docker/packaging/docker/alpine/container-images-6e1cce0c38
+
+Bump the container-images group across 3 directories with 1 update&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/bc23dec5a4ce91c7f341dd23b0b1ec31be98f799</id>
+    <link type="text/html" rel="alternate" href="https://github.com/buildkite/agent/commit/bc23dec5a4ce91c7f341dd23b0b1ec31be98f799"/>
+    <title>
+        Bump github.com/buildkite/osc7501 from 0.3.1 to 0.4.0
+    </title>
+    <updated>2026-11-16T15:54:48Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Bump github.com/buildkite/osc7501 from 0.3.1 to 0.4.0
+
+Bumps [github.com/buildkite/osc7501](https://github.com/buildkite/osc7501) from 0.3.1 to 0.4.0.
+- [Release notes](https://github.com/buildkite/osc7501/releases)
+- [Commits](https://github.com/buildkite/osc7501/compare/v0.3.1...v0.4.0)
+
+---
+updated-dependencies:
+- dependency-name: github.com/buildkite/osc7501
+  dependency-version: 0.4.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

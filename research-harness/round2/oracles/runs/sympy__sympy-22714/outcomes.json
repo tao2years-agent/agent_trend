@@ -1,0 +1,208 @@
+{
+  "instance_id": "sympy__sympy-22714",
+  "src_test_paths": [
+    "sympy/geometry/tests/test_point.py"
+  ],
+  "upstream_import": "C:\\Users\\taos\\AppData\\Local\\Temp\\sympy__sympy-22714-d3_riljr\\sympy-3ff4717b6aef6086e78f01cdfa06f64ae23aed7e\\sympy\\__init__.py",
+  "phases": {
+    "original": {
+      "selected": {
+        "test_issue_22684": {
+          "role": "FTP",
+          "nodes": [],
+          "outcome": "missing"
+        },
+        "test_Point2D": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_Point2D"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test__normalize_dimension": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_arguments": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_arguments"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_concyclic_doctest_bug": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_dot": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_dot"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 3.06,
+      "xml": "original.xml",
+      "stdout": "original.txt"
+    },
+    "regression_on_base": {
+      "selected": {
+        "test_issue_22684": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_issue_22684"
+          ],
+          "outcome": "failure",
+          "observations": [
+            "failure"
+          ]
+        },
+        "test_Point2D": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_Point2D"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test__normalize_dimension": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_arguments": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_arguments"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_concyclic_doctest_bug": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_dot": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_dot"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 1,
+      "seconds": 2.31,
+      "xml": "regression_on_base.xml",
+      "stdout": "regression_on_base.txt"
+    },
+    "regression_on_gold": {
+      "selected": {
+        "test_issue_22684": {
+          "role": "FTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_issue_22684"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_Point2D": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_Point2D"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test__normalize_dimension": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test__normalize_dimension"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_arguments": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_arguments"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_concyclic_doctest_bug": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        },
+        "test_dot": {
+          "role": "PTP",
+          "nodes": [
+            "sympy/geometry/tests/test_point.py::test_dot"
+          ],
+          "outcome": "passed",
+          "observations": [
+            "passed"
+          ]
+        }
+      },
+      "exit": 0,
+      "seconds": 2.27,
+      "xml": "regression_on_gold.xml",
+      "stdout": "regression_on_gold.txt"
+    }
+  }
+}

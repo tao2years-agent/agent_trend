@@ -1,0 +1,40 @@
+[
+  {
+    "product": "argo",
+    "repo": "argoproj/argo-rollouts",
+    "path": "pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go",
+    "before_after": [
+      {
+        "tag": "v1.10.0",
+        "commit": "d90700ae8d71d141561f0c546e19f999bb335cbd",
+        "present": true,
+        "source": "argo-v1.10.0"
+      },
+      {
+        "tag": "v1.10.1",
+        "commit": "356117c8e9a21b74b58c2c01d640aa91994522b5",
+        "present": true,
+        "source": "argo-v1.10.1"
+      }
+    ],
+    "diff_path": "round2/evolution/diffs/argo-v1.10.0--v1.10.1.diff",
+    "diff_sha256": "f9104f150a7402d528bc736f12604e8753cdae4acb2504a54d9fa9d581a8e6c0",
+    "url": "https://github.com/argoproj/argo-rollouts/compare/v1.10.0...v1.10.1"
+  },
+  [
+    {
+      "id": "argo-v1.10.0",
+      "url": "https://github.com/argoproj/argo-rollouts/blob/d90700ae8d71d141561f0c546e19f999bb335cbd/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go",
+      "path": "round2/evolution/raw/argo-v1.10.0-e60fbc0fd743.go",
+      "sha256": "e60fbc0fd74304e10a6871e03be543bfc7d05e074a3fe2af9fa0463408277b4f",
+      "retrieved": "2026-11-20T04:04:02.131164+00:00"
+    },
+    {
+      "id": "argo-v1.10.1",
+      "url": "https://github.com/argoproj/argo-rollouts/blob/356117c8e9a21b74b58c2c01d640aa91994522b5/pkg/kubectl-argo-rollouts/cmd/dashboard/dashboard.go",
+      "path": "round2/evolution/raw/argo-v1.10.1-c98f43007185.go",
+      "sha256": "c98f430071853f6601598beec892db83baa614ab386126ff29ba01222cccbee7",
+      "retrieved": "2026-11-20T04:04:02.193627+00:00"
+    }
+  ]
+]

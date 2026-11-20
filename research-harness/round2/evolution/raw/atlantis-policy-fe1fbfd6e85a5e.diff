@@ -1,0 +1,4222 @@
+diff --git a/runatlantis.io/docs/custom-policy-checks.md b/runatlantis.io/docs/custom-policy-checks.md
+index b7a378bc96..19ee221b5b 100644
+--- a/runatlantis.io/docs/custom-policy-checks.md
++++ b/runatlantis.io/docs/custom-policy-checks.md
+@@ -4,6 +4,10 @@ If you want to run custom policy tools or scripts instead of the built-in Confte
+ 
+ This option can be configured either at the server-level in a [repos.yaml config file](server-configuration.md) or at the repo-level in an [atlantis.yaml file](repo-level-atlantis-yaml.md).
+ 
++::: tip
++Custom policy checks support [sticky policy approvals](policy-checking.md#sticky-policy-approvals). Use `policy_item_regex` to target the meaningful failure lines in your tool's output.
++:::
++
+ ## Server-side config example
+ 
+ Set the `policy_check` and `custom_policy_check` options to true, and run the custom tool in the policy check steps as seen below.
+diff --git a/runatlantis.io/docs/policy-checking.md b/runatlantis.io/docs/policy-checking.md
+index 1d3b8b1848..0ff8f5d1d1 100644
+--- a/runatlantis.io/docs/policy-checking.md
++++ b/runatlantis.io/docs/policy-checking.md
+@@ -20,14 +20,14 @@ Any failures need to either be addressed in a successive commit, or approved by
+ 
+ ![Policy Check Approval](./images/policy-check-approval.png)
+ 
+-Policy approvals may be cleared either by re-planing, or by issuing the following command:
++Policy approvals may be cleared either by re-planning, or by issuing the following command:
+ 
+ ```shell
+ atlantis approve_policies --clear-policy-approval
+ ```
+ 
+ ::: warning
+-Any plans following the approval will discard any policy approval and prompt again for it.
++By default, any plans following the approval will discard all policy approvals and prompt again for them. To change this behavior, see [Sticky Policy Approvals](#sticky-policy-approvals).
+ :::
+ 
+ ## Getting Started
+@@ -92,7 +92,9 @@ policies:
+ - `source` - Tells atlantis where to fetch the policies from. Currently you can only host policies locally by using `local`.
+ - `owners` - Defines the users/teams which are able to approve a specific policy set.
+ - `approve_count` - Defines the number of approvals needed to bypass policy checks. Defaults to the top-level policies configuration, if not specified.
+-- `prevent_self_approve` - Defines whether the PR author can approve policies
++- `prevent_self_approve` - Defines whether the PR author can approve policies.
++- `sticky_policy_approvals` - When `true`, approvals survive re-plans as long as no new policy output items (as matched by `policy_item_regex`) are introduced. See [Sticky Policy Approvals](#sticky-policy-approvals).
++- `policy_item_regex` - Regex used to extract comparable items from policy output for sticky approval tracking. See [Sticky Policy Approvals](#sticky-policy-approvals).
+ 
+ By default conftest is configured to only run the `main` package. If you wish to run specific/multiple policies consider passing `--namespace` or `--all-namespaces` to conftest with [`extra_args`](custom-workflows.md#adding-extra-arguments-to-terraform-commands) via a custom workflow as shown in the below example.
+ 
+@@ -207,16 +209,128 @@ When the policy check workflow runs, a file is created in the working directory
+ ```json
+ [
+   {
+-    "PolicySetName":  "policy1",
+-    "PolicyOutput": "",
+-    "Passed":         false,
+-    "ReqApprovals":   1,
+-    "CurApprovals":   0
++    "PolicySetName": "policy1",
++    "PolicyOutput": "FAIL - plan.json - main - WARNING: resource creation is prohibited.\n\n1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions\n",
++    "Passed": false,
++    "ReqApprovalCount": 1,
++    "Approvals": null,
++    "Hashes": ["ae6b7acaaedaf6fcd3d1823643dbf2ef1aa25374a99b44b1923d8227cc9707e3"],
++    "PolicyItemRegex": "(?s).+"
+   }
+ ]
++```
++
++| Field              | Type                | Description                                                                 |
++|--------------------|---------------------|-----------------------------------------------------------------------------|
++| `PolicySetName`    | string              | Name of the policy set.                                                     |
++| `PolicyOutput`     | string              | Raw output from the policy check.                                           |
++| `Passed`           | bool                | Whether the policy check passed.                                            |
++| `ReqApprovalCount` | int                 | Number of approvals required to bypass the failing policy.                  |
++| `Approvals`        | []PolicySetApproval | List of approvals, each with an `Approver` username and `Hashes` snapshot.  |
++| `Hashes`           | []string            | SHA-256 hex digests of items extracted from the policy output using `policy_item_regex`. |
++| `PolicyItemRegex`  | string              | The regex used to extract items from the policy output for hashing.         |
++
++## Sticky Policy Approvals
++
++By default, when a plan is re-run, all prior policy approvals are discarded. This means that after every `atlantis plan`, policy owners must re-approve even if nothing about the policy failures changed.
++
++**Sticky policy approvals** allow approvals to survive re-plans, as long as no new items appear in the policy output (matched via `policy_item_regex`). This is useful in workflows where plans are frequently re-run (e.g., due to base branch updates) but the policy violations remain the same or are being resolved.
++
++### How it works
++
++When sticky approvals are enabled, Atlantis extracts items from policy output using `policy_item_regex` and hashes them. Each approval records a snapshot of these hashes. On re-plan, approvals are carried forward only if their recorded hashes still cover the current output. Adding or changing items invalidates approvals; removing items (e.g., fixing a violation) preserves them.
++
++### Enabling sticky approvals
+ 
++Enable at the top level to apply to all policy sets:
++
++```yaml
++policies:
++  owners:
++    users:
++      - policyowner
++  sticky_policy_approvals: true
++  policy_sets:
++    - name: security-policy
++      path: /policies/security
++      source: local
+ ```
+ 
++Or enable per policy set:
++
++```yaml
++policies:
++  owners:
++    users:
++      - policyowner
++  policy_sets:
++    - name: security-policy
++      path: /policies/security
++      source: local
++      sticky_policy_approvals: true
++    - name: cost-policy
++      path: /policies/cost
++      source: local
++      # This policy set uses default (non-sticky) behavior
++```
++
++A per-policy-set `sticky_policy_approvals` value overrides the top-level setting. This lets you enable sticky approvals globally but opt specific policy sets out (or vice versa).
++
++### Customizing the policy item regex
++
++The `policy_item_regex` controls which parts of the policy output are used as the "identity" for sticky approval tracking. The default is `(?s).+`, which matches the entire output as a single item. This means any change to the output invalidates the approval — an all-or-nothing approach.
++
++For granular per-item tracking, override the regex to match individual items. For example, `.+` (without `(?s)`) matches each non-empty line as a separate item:
++
++```yaml
++policies:
++  owners:
++    users:
++      - policyowner
++  sticky_policy_approvals: true
++  policy_item_regex: ".+"
++  policy_sets:
++    - name: security-policy
++      path: /policies/security
++      source: local
++```
++
++With `.+`, each line is tracked independently. Approvals remain valid as long as every current line was present at approval time. Fixing a violation (removing a line) preserves existing approvals; adding or changing one invalidates them.
++
++::: tip
++The subset semantics above are intentional: an approval covers a specific set of items, and any current item must have been part of that set. Removing items (e.g., a policy author fixes a previously-flagged violation) is treated as progress and does **not** invalidate prior approvals. Only the appearance of new or changed items triggers re-approval.
++:::
++
++For text output, use `(?m)^FAIL.*` to track only lines starting with `FAIL`:
++
++```yaml
++policy_item_regex: "(?m)^FAIL.*"
++```
++
++::: tip
++Use the `(?m)` flag prefix to enable multiline matching, so `^` and `$` match the start and end of each line rather than just the start and end of the entire string.
++:::
++
++A per-policy-set `policy_item_regex` can override the top-level default:
++
++```yaml
++policies:
++  owners:
++    users:
++      - policyowner
++  sticky_policy_approvals: true
++  policy_item_regex: "(?m)^FAIL.*"
++  policy_sets:
++    - name: security-policy
++      path: /policies/security
++      source: local
++      policy_item_regex: ".+"
++```
++
++### Duplicate approval prevention
++
++When sticky approvals are used with `approve_count > 1`, the same user cannot provide multiple approvals for the same policy set with the same hashes. If a user has already fully approved a policy set and the extracted items haven't changed, subsequent approval attempts by the same user will produce an error asking for a different policy owner to approve.
++
+ ## Running policy check only on some repositories
+ 
+ When policy checking is enabled it will be enforced on all repositories, in order to disable policy checking on some repositories first [enable policy checks](policy-checking.md#getting-started) and then disable it explicitly on each repository with the `policy_check` flag.
+diff --git a/runatlantis.io/docs/server-side-repo-config.md b/runatlantis.io/docs/server-side-repo-config.md
+index 5372446c20..ed40499f40 100644
+--- a/runatlantis.io/docs/server-side-repo-config.md
++++ b/runatlantis.io/docs/server-side-repo-config.md
+@@ -596,12 +596,14 @@ mode: on_apply
+ 
+ ### Policies
+ 
+-| Key                    | Type            | Default | Required  | Description                                              |
+-|------------------------|-----------------|---------|-----------|----------------------------------------------------------|
+-| conftest_version       | string          | none    | no        | conftest version to run all policy sets                  |
+-| owners                 | Owners(#Owners) | none    | yes       | owners that can approve failing policies                 |
+-| approve_count          | int             | 1       | no        | number of approvals required to bypass failing policies. |
+-| policy_sets            | []PolicySet     | none    | yes       | set of policies to run on a plan output                  |
++| Key                      | Type            | Default | Required | Description                                                                                                                                       |
++|--------------------------|-----------------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
++| conftest_version         | string          | none    | no       | conftest version to run all policy sets                                                                                                           |
++| owners                   | Owners(#Owners) | none    | yes      | owners that can approve failing policies                                                                                                          |
++| approve_count            | int             | 1       | no       | number of approvals required to bypass failing policies.                                                                                          |
++| sticky_policy_approvals  | bool            | false   | no       | when true, policy approvals survive re-plans as long as no new policy output items (per `policy_item_regex`) are introduced. See [Sticky Policy Approvals](policy-checking.md#sticky-policy-approvals). |
++| policy_item_regex        | string          | `(?s).+`| no       | regex to extract comparable items from policy output for sticky approval tracking. Default matches entire output as one item. See [Sticky Policy Approvals](policy-checking.md#sticky-policy-approvals). |
++| policy_sets              | []PolicySet     | none    | yes      | set of policies to run on a plan output                                                                                                           |
+ 
+ ### Owners
+ 
+@@ -612,12 +614,16 @@ mode: on_apply
+ 
+ ### PolicySet
+ 
+-| Key                  | Type   | Default | Required | Description                                                                                                   |
+-| ------               | ------ | ------- | -------- | --------------------------------------------------------------------------------------------------------------|
+-| name                 | string | none    | yes      | unique name for the policy set                                                                                |
+-| path                 | string | none    | yes      | path to the rego policies directory                                                                           |
+-| source               | string | none    | yes      | only `local` is supported at this time                                                                        |
+-| prevent_self_approve | bool   | false   | no       | Whether or not the author of PR can approve policies. Defaults to `false` (the author must also be in owners) |
++| Key                      | Type   | Default   | Required | Description                                                                                                                                               |
++|--------------------------|--------|-----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
++| name                     | string | none      | yes      | unique name for the policy set                                                                                                                            |
++| path                     | string | none      | yes      | path to the rego policies directory                                                                                                                       |
++| source                   | string | none      | yes      | only `local` is supported at this time                                                                                                                    |
++| owners                   | Owners | none      | no       | owners that can approve this specific policy set (merged with top-level owners)                                                                           |
++| approve_count            | int    | inherited | no       | number of approvals required. Defaults to the top-level `approve_count` value                                                                             |
++| prevent_self_approve     | bool   | false     | no       | whether the PR author can approve policies. Defaults to `false` (the author must also be in owners)                                                       |
++| sticky_policy_approvals  | bool   | inherited | no       | overrides the top-level `sticky_policy_approvals` for this policy set. See [Sticky Policy Approvals](policy-checking.md#sticky-policy-approvals).         |
++| policy_item_regex        | string | inherited | no       | overrides the top-level `policy_item_regex` for this policy set. See [Sticky Policy Approvals](policy-checking.md#sticky-policy-approvals).               |
+ 
+ ### Metrics
+ 
+diff --git a/server/controllers/events/events_controller_e2e_test.go b/server/controllers/events/events_controller_e2e_test.go
+index a29568c093..31322fdb01 100644
+--- a/server/controllers/events/events_controller_e2e_test.go
++++ b/server/controllers/events/events_controller_e2e_test.go
+@@ -1214,6 +1214,28 @@ func TestGitHubWorkflowWithPolicyCheck(t *testing.T) {
+ 				{"exp-output-merge.txt"},
+ 			},
+ 		},
++		{
++			Description:     "sticky approval survives re-plan",
++			RepoDir:         "policy-checks-sticky-approvals",
++			ModifiedFiles:   []string{"main.tf"},
++			PolicyCheck:     true,
++			ExpAutoplan:     true,
++			ExpPolicyChecks: true,
++			Comments: []string{
++				"atlantis approve_policies",
++				"atlantis plan",
++				"atlantis apply",
++			},
++			ExpReplies: [][]string{
++				{"exp-output-autoplan.txt"},
++				{"exp-output-auto-policy-check.txt"},
++				{"exp-output-approve-policies.txt"},
++				{"exp-output-plan.txt"},
++				{"exp-output-policy-check-approved.txt"},
++				{"exp-output-apply.txt"},
++				{"exp-output-merge.txt"},
++			},
++		},
+ 	}
+ 
+ 	for _, c := range cases {
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-custom-run-steps/exp-output-auto-policy-check.txt b/server/controllers/events/testdata/test-repos/policy-checks-custom-run-steps/exp-output-auto-policy-check.txt
+index 9268bf45dd..68bc9518da 100644
+--- a/server/controllers/events/testdata/test-repos/policy-checks-custom-run-steps/exp-output-auto-policy-check.txt
++++ b/server/controllers/events/testdata/test-repos/policy-checks-custom-run-steps/exp-output-auto-policy-check.txt
+@@ -16,7 +16,7 @@ FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibit
+ 
+ 
+ ```diff
+-[{"PolicySetName":"test_policy","PolicyOutput":"FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.\n\n1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions\n","Passed":false,"ReqApprovals":1,"CurApprovals":0}]
++[{"PolicySetName":"test_policy","PolicyOutput":"FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.\n\n1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions\n","Passed":false,"ReqApprovalCount":1,"Approvals":null,"Hashes":["3834cfbccac1a4264575f3bc9e594df53cbd9cc5bf19a04379b6b29541c0f319"],"PolicyItemRegex":"(?s).+"}]
+ post-conftest output
+ 
+ ```
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/atlantis.yaml b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/atlantis.yaml
+new file mode 100644
+index 0000000000..8435733cd2
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/atlantis.yaml
+@@ -0,0 +1,4 @@
++version: 3
++projects:
++- dir: .
++  workspace: default
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-apply.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-apply.txt
+new file mode 100644
+index 0000000000..a54764c3bd
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-apply.txt
+@@ -0,0 +1,12 @@
++Ran Apply for dir: `.` workspace: `default`
++
++```diff
++null_resource.simple:
++null_resource.simple:
++
++Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
++
++Outputs:
++
++workspace = "default"
++```
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-approve-policies.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-approve-policies.txt
+new file mode 100644
+index 0000000000..5aed732384
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-approve-policies.txt
+@@ -0,0 +1,3 @@
++Approved Policies for 1 projects:
++
++1. dir: `.` workspace: `default`
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-auto-policy-check.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-auto-policy-check.txt
+new file mode 100644
+index 0000000000..3d94c6521c
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-auto-policy-check.txt
+@@ -0,0 +1,38 @@
++Ran Policy Check for dir: `.` workspace: `default`
++
++**Policy Check Failed**: Some policy sets did not pass.
++#### Policy Set: `test_policy`
++```diff
++FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
++
++1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
++
++```
++
++
++#### Policy Approval Status:
++```
++policy set: test_policy: requires: 1 approval(s), have: 0.
++```
++* :heavy_check_mark: To **approve** this project, comment:
++  ```shell
++  atlantis approve_policies -d .
++  ```
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To re-run policies **plan** this project again by commenting:
++  ```shell
++  atlantis plan -d .
++  ```
++---
++* :heavy_check_mark: To **approve** all unapplied plans from this Pull Request, comment:
++  ```shell
++  atlantis approve_policies
++  ```
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  ```shell
++  atlantis unlock
++  ```
++* :repeat: To re-run policies **plan** this project again by commenting:
++  ```shell
++  atlantis plan
++  ```
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-autoplan.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-autoplan.txt
+new file mode 100644
+index 0000000000..d3f41336a8
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-autoplan.txt
+@@ -0,0 +1,43 @@
++Ran Plan for dir: `.` workspace: `default`
++
++<details><summary>Show Output</summary>
++
++```diff
++Terraform used the selected providers to generate the following execution
++plan. Resource actions are indicated with the following symbols:
+++ create
++
++Terraform will perform the following actions:
++
++  # null_resource.simple[0] will be created
+++ resource "null_resource" "simple" {
++      + id = (known after apply)
++    }
++
++Plan: 1 to add, 0 to change, 0 to destroy.
++
++Changes to Outputs:
+++ workspace = "default"
++```
++</details>
++
++* :arrow_forward: To **apply** this plan, comment:
++  ```shell
++  atlantis apply -d .
++  ```
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To **plan** this project again, comment:
++  ```shell
++  atlantis plan -d .
++  ```
++Plan: 1 to add, 0 to change, 0 to destroy.
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  ```shell
++  atlantis apply
++  ```
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  ```shell
++  atlantis unlock
++  ```
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-merge.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-merge.txt
+new file mode 100644
+index 0000000000..70df2f2518
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-merge.txt
+@@ -0,0 +1,3 @@
++Locks and plans deleted for the projects and workspaces modified in this pull request:
++
++- dir: `.` workspace: `default`
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-plan.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-plan.txt
+new file mode 100644
+index 0000000000..d3f41336a8
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-plan.txt
+@@ -0,0 +1,43 @@
++Ran Plan for dir: `.` workspace: `default`
++
++<details><summary>Show Output</summary>
++
++```diff
++Terraform used the selected providers to generate the following execution
++plan. Resource actions are indicated with the following symbols:
+++ create
++
++Terraform will perform the following actions:
++
++  # null_resource.simple[0] will be created
+++ resource "null_resource" "simple" {
++      + id = (known after apply)
++    }
++
++Plan: 1 to add, 0 to change, 0 to destroy.
++
++Changes to Outputs:
+++ workspace = "default"
++```
++</details>
++
++* :arrow_forward: To **apply** this plan, comment:
++  ```shell
++  atlantis apply -d .
++  ```
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To **plan** this project again, comment:
++  ```shell
++  atlantis plan -d .
++  ```
++Plan: 1 to add, 0 to change, 0 to destroy.
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  ```shell
++  atlantis apply
++  ```
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  ```shell
++  atlantis unlock
++  ```
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-policy-check-approved.txt b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-policy-check-approved.txt
+new file mode 100644
+index 0000000000..67d647d8e1
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/exp-output-policy-check-approved.txt
+@@ -0,0 +1,33 @@
++Ran Policy Check for dir: `.` workspace: `default`
++
++#### Policy Set: `test_policy`
++<details><summary>:white_check_mark: 1 previously approved item</summary>
++
++```diff
++FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
++
++1 test, 0 passed, 0 warnings, 1 failure, 0 exceptions
++
++```
++</details>
++
++
++* :arrow_forward: To **apply** this plan, comment:
++  ```shell
++  atlantis apply -d .
++  ```
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To re-run policies **plan** this project again by commenting:
++  ```shell
++  atlantis plan -d .
++  ```
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  ```shell
++  atlantis apply
++  ```
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  ```shell
++  atlantis unlock
++  ```
+\ No newline at end of file
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/main.tf b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/main.tf
+new file mode 100644
+index 0000000000..582f9ea01d
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/main.tf
+@@ -0,0 +1,7 @@
++resource "null_resource" "simple" {
++  count = 1
++}
++
++output "workspace" {
++  value = terraform.workspace
++}
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/policies/policy.rego b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/policies/policy.rego
+new file mode 100644
+index 0000000000..c82e7e0706
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/policies/policy.rego
+@@ -0,0 +1,28 @@
++package main
++
++import input as tfplan
++
++deny contains reason if {
++	num_deletes.null_resource > 0
++	reason := "WARNING: Null Resource creation is prohibited."
++}
++
++resource_types = {"null_resource"}
++
++resources[resource_type] = all if {
++	some resource_type
++	resource_types[resource_type]
++	all := [name |
++		name := tfplan.resource_changes[_]
++		name.type == resource_type
++	]
++}
++
++# number of deletions of resources of a given type
++num_deletes[resource_type] = num if {
++	some resource_type
++	resource_types[resource_type]
++	all := resources[resource_type]
++	deletions := [res | res := all[_]; res.change.actions[_] == "create"]
++	num := count(deletions)
++}
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/repos.yaml b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/repos.yaml
+new file mode 100644
+index 0000000000..9a3bda8b8d
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/repos.yaml
+@@ -0,0 +1,9 @@
++policies:
++  owners:
++    users:
++      - runatlantis
++  sticky_policy_approvals: true
++  policy_sets:
++    - name: test_policy
++      path: policies/policy.rego
++      source: local
+diff --git a/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/versions.tf b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/versions.tf
+new file mode 100644
+index 0000000000..1516ade483
+--- /dev/null
++++ b/server/controllers/events/testdata/test-repos/policy-checks-sticky-approvals/versions.tf
+@@ -0,0 +1,8 @@
++terraform {
++  required_providers {
++    null = {
++      source  = "hashicorp/null"
++      version = "3.2.4"
++    }
++  }
++}
+diff --git a/server/core/boltdb/boltdb.go b/server/core/boltdb/boltdb.go
+index 2fa6282005..977a98c736 100644
+--- a/server/core/boltdb/boltdb.go
++++ b/server/core/boltdb/boltdb.go
+@@ -383,7 +383,11 @@ func (b *BoltDB) UpdatePullWithResults(pull models.PullRequest, newResults []com
+ 		bucket := tx.Bucket(b.pullsBucketName)
+ 		currStatus, err := b.getPullFromBucket(bucket, key)
+ 		if err != nil {
+-			return err
++			// Tolerate an unreadable prior entry (e.g. after a PullStatus
++			// schema change). It will be overwritten with fresh data below;
++			// in-flight policy approvals captured in the old blob are lost.
++			log.Printf("warning: discarding unreadable pull status at %q: %v", key, err)
++			currStatus = nil
+ 		}
+ 
+ 		// If there is no pull OR if the pull we have is out of date, we
+@@ -393,6 +397,23 @@ func (b *BoltDB) UpdatePullWithResults(pull models.PullRequest, newResults []com
+ 			for _, r := range newResults {
+ 				statuses = append(statuses, b.projectResultToProject(r))
+ 			}
++			// Preserve policy status from the previous commit so approvals
++			// survive between the plan DB write and the subsequent policy
++			// check DB write. doPolicyCheck applies sticky filtering and
++			// overwrites these when it writes its own results.
++			if currStatus != nil {
++				for i := range statuses {
++					for _, old := range currStatus.Projects {
++						if statuses[i].Workspace == old.Workspace &&
++							statuses[i].RepoRelDir == old.RepoRelDir &&
++							statuses[i].ProjectName == old.ProjectName &&
++							len(old.PolicyStatus) > 0 {
++							statuses[i].PolicyStatus = old.PolicyStatus
++							break
++						}
++					}
++				}
++			}
+ 			newStatus = models.PullStatus{
+ 				Pull:     pull,
+ 				Projects: statuses,
+diff --git a/server/core/boltdb/boltdb_test.go b/server/core/boltdb/boltdb_test.go
+index 5e6e31b204..1628fe0a24 100644
+--- a/server/core/boltdb/boltdb_test.go
++++ b/server/core/boltdb/boltdb_test.go
+@@ -9,6 +9,7 @@ import (
+ 	"errors"
+ 	"fmt"
+ 	"os"
++	"path/filepath"
+ 	"testing"
+ 	"time"
+ 
+@@ -958,8 +959,8 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
+ 							},
+ 						},
+ 					},
+@@ -975,8 +976,8 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
+ 							},
+ 						},
+ 					},
+@@ -995,9 +996,9 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
+-								CurApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
++								Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 							},
+ 						},
+ 					},
+@@ -1021,7 +1022,7 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 				PolicyStatus: []models.PolicySetStatus{
+ 					{
+ 						PolicySetName: "policy1",
+-						Approvals:     1,
++						Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					},
+ 				},
+ 			},
+@@ -1033,7 +1034,7 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 				PolicyStatus: []models.PolicySetStatus{
+ 					{
+ 						PolicySetName: "policy1",
+-						Approvals:     0,
++						Approvals:     nil,
+ 					},
+ 				},
+ 			},
+@@ -1042,6 +1043,167 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 	b.Close()
+ }
+ 
++// Test that policy approvals are preserved when HeadCommit changes,
++// so sticky approvals can survive across code pushes.
++func TestPullStatus_UpdateNewCommit_PreservesPolicyApprovals(t *testing.T) {
++	b := newTestDB2(t)
++
++	pull := models.PullRequest{
++		Num:        1,
++		HeadCommit: "sha-A",
++		URL:        "url",
++		HeadBranch: "head",
++		BaseBranch: "base",
++		Author:     "lkysow",
++		State:      models.OpenPullState,
++		BaseRepo: models.Repo{
++			FullName:          "runatlantis/atlantis",
++			Owner:             "runatlantis",
++			Name:              "atlantis",
++			CloneURL:          "clone-url",
++			SanitizedCloneURL: "clone-url",
++			VCSHost: models.VCSHost{
++				Hostname: "github.com",
++				Type:     models.Github,
++			},
++		},
++	}
++
++	// Write initial policy check results with an approval at commit A.
++	_, err := b.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.PolicyCheck,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				Failure: "policy failure",
++				PolicyCheckResults: &models.PolicyCheckResults{
++					PolicySetResults: []models.PolicySetResult{
++						{
++							PolicySetName:    "policy1",
++							ReqApprovalCount: 1,
++							Hashes:           []string{"h1", "h2"},
++							Approvals: []models.PolicySetApproval{
++								{Approver: "boss", Hashes: []string{"h1", "h2"}},
++							},
++						},
++					},
++				},
++			},
++		},
++	})
++	Ok(t, err)
++
++	// Push new commit B with a plan result (no PolicyCheckResults).
++	// This simulates what happens when autoplan writes the plan to DB
++	// before the policy check runs.
++	pull.HeadCommit = "sha-B"
++	status, err := b.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.Plan,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				PlanSuccess: &models.PlanSuccess{
++					TerraformOutput: "plan output",
++				},
++			},
++		},
++	})
++	Ok(t, err)
++
++	// The policy approvals from commit A should be preserved.
++	Equals(t, 1, len(status.Projects))
++	Equals(t, "mydir", status.Projects[0].RepoRelDir)
++	Assert(t, len(status.Projects[0].PolicyStatus) > 0, "expected policy status to be preserved across commit change")
++	Equals(t, "policy1", status.Projects[0].PolicyStatus[0].PolicySetName)
++	Equals(t, 1, len(status.Projects[0].PolicyStatus[0].Approvals))
++	Equals(t, "boss", status.Projects[0].PolicyStatus[0].Approvals[0].Approver)
++
++	// Verify via GetPullStatus too.
++	getStatus, err := b.GetPullStatus(pull)
++	Ok(t, err)
++	Equals(t, 1, len(getStatus.Projects[0].PolicyStatus[0].Approvals))
++	b.Close()
++}
++
++// TestPullStatus_UpdateOverwritesCorruptData verifies that
++// UpdatePullWithResults tolerates a pre-existing pull-status blob whose JSON
++// no longer matches the current Go shape (e.g. after upgrading across a
++// PullStatus schema change). The corrupt entry should be logged and
++// overwritten rather than causing every subsequent plan to fail.
++func TestPullStatus_UpdateOverwritesCorruptData(t *testing.T) {
++	tmp := t.TempDir()
++
++	pull := models.PullRequest{
++		Num:        1,
++		HeadCommit: "sha-A",
++		URL:        "url",
++		HeadBranch: "head",
++		BaseBranch: "base",
++		Author:     "lkysow",
++		State:      models.OpenPullState,
++		BaseRepo: models.Repo{
++			FullName:          "runatlantis/atlantis",
++			Owner:             "runatlantis",
++			Name:              "atlantis",
++			CloneURL:          "clone-url",
++			SanitizedCloneURL: "clone-url",
++			VCSHost: models.VCSHost{
++				Hostname: "github.com",
++				Type:     models.Github,
++			},
++		},
++	}
++
++	// First, let boltdb.New create the file and buckets.
++	b, err := boltdb.New(tmp)
++	Ok(t, err)
++	Ok(t, b.Close())
++
++	// Inject a corrupt pull-status blob simulating a legacy on-disk shape
++	// that the current Go types cannot unmarshal.
++	key := fmt.Appendf(nil, "%s::%s::%d",
++		pull.BaseRepo.VCSHost.Hostname, pull.BaseRepo.FullName, pull.Num)
++	corrupt := []byte(`{"Projects":[{"Workspace":"default","RepoRelDir":"mydir","ProjectName":"","PolicyStatus":[{"PolicySetName":"policy1","Passed":false,"Approvals":2}],"Status":0}],"Pull":{"Num":1}}`)
++	raw, err := bolt.Open(filepath.Join(tmp, "atlantis.db"), 0600, nil)
++	Ok(t, err)
++	err = raw.Update(func(tx *bolt.Tx) error {
++		return tx.Bucket([]byte("pulls")).Put(key, corrupt)
++	})
++	Ok(t, err)
++	Ok(t, raw.Close())
++
++	// Reopen and write fresh results. This must succeed despite the
++	// unreadable prior entry.
++	b, err = boltdb.New(tmp)
++	Ok(t, err)
++	defer b.Close()
++
++	status, err := b.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.Plan,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				PlanSuccess: &models.PlanSuccess{TerraformOutput: "plan output"},
++			},
++		},
++	})
++	Ok(t, err)
++	Equals(t, 1, len(status.Projects))
++	Equals(t, "mydir", status.Projects[0].RepoRelDir)
++	// Prior in-flight approvals are lost; this is the documented trade-off.
++	Equals(t, 0, len(status.Projects[0].PolicyStatus))
++
++	// The corrupt entry is gone: reading it back returns clean data.
++	got, err := b.GetPullStatus(pull)
++	Ok(t, err)
++	Assert(t, got != nil, "expected non-nil pull status")
++	Equals(t, 1, len(got.Projects))
++	Equals(t, models.PlannedPlanStatus, got.Projects[0].Status)
++}
++
+ // newTestDB returns a TestDB using a temporary path.
+ func newTestDB() (*bolt.DB, *boltdb.BoltDB) {
+ 	// Retrieve a temporary path.
+diff --git a/server/core/config/parser_validator_test.go b/server/core/config/parser_validator_test.go
+index 44e768cd2c..3b8b805a0f 100644
+--- a/server/core/config/parser_validator_test.go
++++ b/server/core/config/parser_validator_test.go
+@@ -1544,14 +1544,16 @@ policies:
+ 					"custom1": customWorkflow1,
+ 				},
+ 				PolicySets: valid.PolicySets{
+-					Version:      conftestVersion,
+-					ApproveCount: 1,
++					Version:         conftestVersion,
++					ApproveCount:    1,
++					PolicyItemRegex: "(?s).+",
+ 					PolicySets: []valid.PolicySet{
+ 						{
+-							Name:         "good-policy",
+-							Path:         "rel/path/to/policy",
+-							Source:       valid.LocalPolicySet,
+-							ApproveCount: 1,
++							Name:            "good-policy",
++							Path:            "rel/path/to/policy",
++							Source:          valid.LocalPolicySet,
++							ApproveCount:    1,
++							PolicyItemRegex: "(?s).+",
+ 						},
+ 					},
+ 				},
+@@ -1887,14 +1889,16 @@ func TestParserValidator_ParseGlobalCfgJSON(t *testing.T) {
+ 					"custom":  customWorkflow,
+ 				},
+ 				PolicySets: valid.PolicySets{
+-					Version:      conftestVersion,
+-					ApproveCount: 1,
++					Version:         conftestVersion,
++					ApproveCount:    1,
++					PolicyItemRegex: "(?s).+",
+ 					PolicySets: []valid.PolicySet{
+ 						{
+-							Name:         "good-policy",
+-							Path:         "rel/path/to/policy",
+-							Source:       valid.LocalPolicySet,
+-							ApproveCount: 1,
++							Name:            "good-policy",
++							Path:            "rel/path/to/policy",
++							Source:          valid.LocalPolicySet,
++							ApproveCount:    1,
++							PolicyItemRegex: "(?s).+",
+ 						},
+ 					},
+ 				},
+diff --git a/server/core/config/raw/policies.go b/server/core/config/raw/policies.go
+index 3dc526428b..4e1b65757e 100644
+--- a/server/core/config/raw/policies.go
++++ b/server/core/config/raw/policies.go
+@@ -11,16 +11,19 @@ import (
+ 
+ // PolicySets is the raw schema for repo-level atlantis.yaml config.
+ type PolicySets struct {
+-	Version      *string      `yaml:"conftest_version,omitempty" json:"conftest_version,omitempty"`
+-	Owners       PolicyOwners `yaml:"owners" json:"owners"`
+-	PolicySets   []PolicySet  `yaml:"policy_sets" json:"policy_sets"`
+-	ApproveCount int          `yaml:"approve_count,omitempty" json:"approve_count,omitempty"`
++	Version         *string      `yaml:"conftest_version,omitempty" json:"conftest_version,omitempty"`
++	Owners          PolicyOwners `yaml:"owners" json:"owners"`
++	PolicySets      []PolicySet  `yaml:"policy_sets" json:"policy_sets"`
++	StickyApprovals bool         `yaml:"sticky_policy_approvals,omitempty" json:"sticky_policy_approvals,omitempty"`
++	PolicyItemRegex *string      `yaml:"policy_item_regex,omitempty" json:"policy_item_regex,omitempty"`
++	ApproveCount    int          `yaml:"approve_count,omitempty" json:"approve_count,omitempty"`
+ }
+ 
+ func (p PolicySets) Validate() error {
+ 	return validation.ValidateStruct(&p,
+ 		validation.Field(&p.Version, validation.By(VersionValidator)),
+ 		validation.Field(&p.PolicySets, validation.Required.Error("cannot be empty; Declare policies that you would like to enforce")),
++		validation.Field(&p.PolicyItemRegex, validation.By(RegexValidator)),
+ 	)
+ }
+ 
+@@ -38,6 +41,12 @@ func (p PolicySets) ToValid() valid.PolicySets {
+ 		policySets.ApproveCount = 1
+ 	}
+ 
++	policySets.StickyApprovals = p.StickyApprovals
++	policySets.PolicyItemRegex = valid.DefaultPolicyItemRegex
++	if p.PolicyItemRegex != nil {
++		policySets.PolicyItemRegex = *p.PolicyItemRegex
++	}
++
+ 	policySets.Owners = p.Owners.ToValid()
+ 
+ 	validPolicySets := make([]valid.PolicySet, 0)
+@@ -47,7 +56,14 @@ func (p PolicySets) ToValid() valid.PolicySets {
+ 		if rawPolicySet.ApproveCount <= 0 {
+ 			rawPolicySet.ApproveCount = policySets.ApproveCount
+ 		}
+-		validPolicySets = append(validPolicySets, rawPolicySet.ToValid())
++		stickyApprovals := policySets.StickyApprovals
++		if rawPolicySet.StickyApprovals != nil {
++			stickyApprovals = *rawPolicySet.StickyApprovals
++		}
++		if rawPolicySet.PolicyItemRegex == nil {
++			rawPolicySet.PolicyItemRegex = &policySets.PolicyItemRegex
++		}
++		validPolicySets = append(validPolicySets, rawPolicySet.ToValid(stickyApprovals))
+ 	}
+ 	policySets.PolicySets = validPolicySets
+ 
+@@ -78,6 +94,8 @@ type PolicySet struct {
+ 	Name               string       `yaml:"name" json:"name"`
+ 	Owners             PolicyOwners `yaml:"owners" json:"owners"`
+ 	ApproveCount       int          `yaml:"approve_count,omitempty" json:"approve_count,omitempty"`
++	StickyApprovals    *bool        `yaml:"sticky_policy_approvals,omitempty" json:"sticky_policy_approvals,omitempty"`
++	PolicyItemRegex    *string      `yaml:"policy_item_regex,omitempty" json:"policy_item_regex,omitempty"`
+ 	PreventSelfApprove bool         `yaml:"prevent_self_approve,omitempty" json:"prevent_self_approve,omitempty"`
+ }
+ 
+@@ -88,18 +106,23 @@ func (p PolicySet) Validate() error {
+ 		validation.Field(&p.ApproveCount),
+ 		validation.Field(&p.Path, validation.Required.Error("is required")),
+ 		validation.Field(&p.Source, validation.In(valid.LocalPolicySet, valid.GithubPolicySet).Error("only 'local' and 'github' source types are supported")),
++		validation.Field(&p.PolicyItemRegex, validation.By(RegexValidator)),
+ 	)
+ }
+ 
+-func (p PolicySet) ToValid() valid.PolicySet {
++func (p PolicySet) ToValid(stickyApprovals bool) valid.PolicySet {
+ 	var policySet valid.PolicySet
+ 
+ 	policySet.Name = p.Name
+ 	policySet.Path = p.Path
+ 	policySet.Source = p.Source
+ 	policySet.ApproveCount = p.ApproveCount
++	policySet.StickyApprovals = stickyApprovals
+ 	policySet.PreventSelfApprove = p.PreventSelfApprove
+ 	policySet.Owners = p.Owners.ToValid()
++	if p.PolicyItemRegex != nil {
++		policySet.PolicyItemRegex = *p.PolicyItemRegex
++	}
+ 
+ 	return policySet
+ }
+diff --git a/server/core/config/raw/policies_test.go b/server/core/config/raw/policies_test.go
+index 48493201ee..a99f4acaee 100644
+--- a/server/core/config/raw/policies_test.go
++++ b/server/core/config/raw/policies_test.go
+@@ -154,6 +154,34 @@ func TestPolicySets_Validate(t *testing.T) {
+ 			},
+ 			expErr: "conftest_version: version \"version123\" could not be parsed: malformed version: version123.",
+ 		},
++		{
++			description: "invalid top-level policy_item_regex",
++			input: raw.PolicySets{
++				PolicyItemRegex: String("[invalid"),
++				PolicySets: []raw.PolicySet{
++					{
++						Name:   "policy-name-1",
++						Path:   "rel/path/to/source",
++						Source: valid.LocalPolicySet,
++					},
++				},
++			},
++			expErr: "policy_item_regex: policy_item_regex \"[invalid\" is not a valid regular expression: error parsing regexp: missing closing ]: `[invalid`.",
++		},
++		{
++			description: "invalid per-policy policy_item_regex",
++			input: raw.PolicySets{
++				PolicySets: []raw.PolicySet{
++					{
++						Name:            "policy-name-1",
++						Path:            "rel/path/to/source",
++						Source:          valid.LocalPolicySet,
++						PolicyItemRegex: String("(unclosed"),
++					},
++				},
++			},
++			expErr: "policy_sets: (0: (policy_item_regex: policy_item_regex \"(unclosed\" is not a valid regular expression: error parsing regexp: missing closing ): `(unclosed`.).).",
++		},
+ 	}
+ 
+ 	for _, c := range cases {
+@@ -202,16 +230,18 @@ func TestPolicySets_ToValid(t *testing.T) {
+ 				},
+ 			},
+ 			exp: valid.PolicySets{
+-				Version:      version,
+-				ApproveCount: 1,
++				Version:         version,
++				ApproveCount:    1,
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 				Owners: valid.PolicyOwners{
+ 					Users: []string{"test"},
+ 					Teams: []string{"testteam"},
+ 				},
+ 				PolicySets: []valid.PolicySet{
+ 					{
+-						Name:         "good-policy",
+-						ApproveCount: 1,
++						Name:            "good-policy",
++						ApproveCount:    1,
++						PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 						Owners: valid.PolicyOwners{
+ 							Users: []string{
+ 								"john-doe",
+@@ -243,8 +273,9 @@ func TestPolicySets_ToValid(t *testing.T) {
+ 				},
+ 			},
+ 			exp: valid.PolicySets{
+-				Version:      version,
+-				ApproveCount: 1,
++				Version:         version,
++				ApproveCount:    1,
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 				PolicySets: []valid.PolicySet{
+ 					{
+ 						Name: "good-policy",
+@@ -254,9 +285,157 @@ func TestPolicySets_ToValid(t *testing.T) {
+ 								"jane-doe",
+ 							},
+ 						},
+-						Path:         "rel/path/to/source",
+-						Source:       "local",
+-						ApproveCount: 1,
++						Path:            "rel/path/to/source",
++						Source:          "local",
++						ApproveCount:    1,
++						PolicyItemRegex: valid.DefaultPolicyItemRegex,
++					},
++				},
++			},
++		},
++		{
++			description: "sticky approvals enabled at top level",
++			input: raw.PolicySets{
++				Version:         String("v1.0.0"),
++				StickyApprovals: true,
++				PolicySets: []raw.PolicySet{
++					{
++						Name:   "sticky-policy",
++						Path:   "rel/path",
++						Source: valid.LocalPolicySet,
++					},
++				},
++			},
++			exp: valid.PolicySets{
++				Version:         version,
++				ApproveCount:    1,
++				StickyApprovals: true,
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
++				PolicySets: []valid.PolicySet{
++					{
++						Name:            "sticky-policy",
++						Path:            "rel/path",
++						Source:          "local",
++						ApproveCount:    1,
++						StickyApprovals: true,
++						PolicyItemRegex: valid.DefaultPolicyItemRegex,
++					},
++				},
++			},
++		},
++		{
++			description: "policy set overrides top-level sticky approvals to false",
++			input: raw.PolicySets{
++				Version:         String("v1.0.0"),
++				StickyApprovals: true,
++				PolicySets: []raw.PolicySet{
++					{
++						Name:            "not-sticky",
++						Path:            "rel/path",
++						Source:          valid.LocalPolicySet,
++						StickyApprovals: Bool(false),
++					},
++				},
++			},
++			exp: valid.PolicySets{
++				Version:         version,
++				ApproveCount:    1,
++				StickyApprovals: true,
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
++				PolicySets: []valid.PolicySet{
++					{
++						Name:            "not-sticky",
++						Path:            "rel/path",
++						Source:          "local",
++						ApproveCount:    1,
++						StickyApprovals: false,
++						PolicyItemRegex: valid.DefaultPolicyItemRegex,
++					},
++				},
++			},
++		},
++		{
++			description: "policy set enables sticky when top-level is off",
++			input: raw.PolicySets{
++				Version: String("v1.0.0"),
++				PolicySets: []raw.PolicySet{
++					{
++						Name:            "sticky-override",
++						Path:            "rel/path",
++						Source:          valid.LocalPolicySet,
++						StickyApprovals: Bool(true),
++					},
++				},
++			},
++			exp: valid.PolicySets{
++				Version:         version,
++				ApproveCount:    1,
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
++				PolicySets: []valid.PolicySet{
++					{
++						Name:            "sticky-override",
++						Path:            "rel/path",
++						Source:          "local",
++						ApproveCount:    1,
++						StickyApprovals: true,
++						PolicyItemRegex: valid.DefaultPolicyItemRegex,
++					},
++				},
++			},
++		},
++		{
++			description: "custom policy_item_regex at top level",
++			input: raw.PolicySets{
++				Version:         String("v1.0.0"),
++				PolicyItemRegex: String(`^FAIL.*`),
++				PolicySets: []raw.PolicySet{
++					{
++						Name:   "fail-only",
++						Path:   "rel/path",
++						Source: valid.LocalPolicySet,
++					},
++				},
++			},
++			exp: valid.PolicySets{
++				Version:         version,
++				ApproveCount:    1,
++				PolicyItemRegex: `^FAIL.*`,
++				PolicySets: []valid.PolicySet{
++					{
++						Name:            "fail-only",
++						Path:            "rel/path",
++						Source:          "local",
++						ApproveCount:    1,
++						PolicyItemRegex: `^FAIL.*`,
++					},
++				},
++			},
++		},
++		{
++			description: "policy set overrides top-level policy_item_regex",
++			input: raw.PolicySets{
++				Version:         String("v1.0.0"),
++				PolicyItemRegex: String(`^FAIL.*`),
++				PolicySets: []raw.PolicySet{
++					{
++						Name:            "custom-regex",
++						Path:            "rel/path",
++						Source:          valid.LocalPolicySet,
++						PolicyItemRegex: String(`^WARN.*`),
++					},
++				},
++			},
++			exp: valid.PolicySets{
++				Version:         version,
++				ApproveCount:    1,
++				PolicyItemRegex: `^FAIL.*`,
++				PolicySets: []valid.PolicySet{
++					{
++						Name:            "custom-regex",
++						Path:            "rel/path",
++						Source:          "local",
++						ApproveCount:    1,
++						PolicyItemRegex: `^WARN.*`,
+ 					},
+ 				},
+ 			},
+@@ -269,3 +448,88 @@ func TestPolicySets_ToValid(t *testing.T) {
+ 		})
+ 	}
+ }
++
++func TestPolicySetsConfig_StickyApprovals_YAMLMarshalling(t *testing.T) {
++	cases := []struct {
++		description string
++		input       string
++		exp         raw.PolicySets
++	}{
++		{
++			description: "sticky_policy_approvals true",
++			input: `
++sticky_policy_approvals: true
++policy_sets:
++- name: policy-name
++  source: "local"
++  path: "rel/path/to/policy-set"
++`,
++			exp: raw.PolicySets{
++				StickyApprovals: true,
++				PolicySets: []raw.PolicySet{
++					{
++						Name:   "policy-name",
++						Source: valid.LocalPolicySet,
++						Path:   "rel/path/to/policy-set",
++					},
++				},
++			},
++		},
++		{
++			description: "policy_item_regex at top level",
++			input: `
++policy_item_regex: "^FAIL.*"
++policy_sets:
++- name: policy-name
++  source: "local"
++  path: "rel/path/to/policy-set"
++`,
++			exp: raw.PolicySets{
++				PolicyItemRegex: String("^FAIL.*"),
++				PolicySets: []raw.PolicySet{
++					{
++						Name:   "policy-name",
++						Source: valid.LocalPolicySet,
++						Path:   "rel/path/to/policy-set",
++					},
++				},
++			},
++		},
++		{
++			description: "per-policy sticky and regex overrides",
++			input: `
++sticky_policy_approvals: true
++policy_sets:
++- name: policy-name
++  source: "local"
++  path: "rel/path/to/policy-set"
++  sticky_policy_approvals: false
++  policy_item_regex: "^WARN.*"
++`,
++			exp: raw.PolicySets{
++				StickyApprovals: true,
++				PolicySets: []raw.PolicySet{
++					{
++						Name:            "policy-name",
++						Source:          valid.LocalPolicySet,
++						Path:            "rel/path/to/policy-set",
++						StickyApprovals: Bool(false),
++						PolicyItemRegex: String("^WARN.*"),
++					},
++				},
++			},
++		},
++	}
++
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			var got raw.PolicySets
++			err := unmarshalString(c.input, &got)
++			Ok(t, err)
++			Equals(t, c.exp, got)
++
++			_, err = yaml.Marshal(got)
++			Ok(t, err)
++		})
++	}
++}
+diff --git a/server/core/config/raw/raw.go b/server/core/config/raw/raw.go
+index 41ec017581..219425e159 100644
+--- a/server/core/config/raw/raw.go
++++ b/server/core/config/raw/raw.go
+@@ -8,6 +8,7 @@ package raw
+ 
+ import (
+ 	"fmt"
++	"regexp"
+ 
+ 	version "github.com/hashicorp/go-version"
+ )
+@@ -25,3 +26,17 @@ func VersionValidator(value any) error {
+ 	}
+ 	return nil
+ }
++
++// RegexValidator validates that a *string field is a valid regular expression.
++// Implements ozzo-validation::Rule.Validate interface.
++func RegexValidator(value any) error {
++	strPtr := value.(*string)
++	if strPtr == nil {
++		return nil
++	}
++	_, err := regexp.Compile(*strPtr)
++	if err != nil {
++		return fmt.Errorf("policy_item_regex %q is not a valid regular expression: %w", *strPtr, err)
++	}
++	return nil
++}
+diff --git a/server/core/config/valid/global_cfg_test.go b/server/core/config/valid/global_cfg_test.go
+index 3ae463683c..aec717b7d8 100644
+--- a/server/core/config/valid/global_cfg_test.go
++++ b/server/core/config/valid/global_cfg_test.go
+@@ -556,14 +556,16 @@ policies:
+ 					StateRm:     valid.DefaultStateRmStage,
+ 				},
+ 				PolicySets: valid.PolicySets{
+-					Version:      nil,
+-					ApproveCount: 1,
++					Version:         nil,
++					ApproveCount:    1,
++					PolicyItemRegex: "(?s).+",
+ 					PolicySets: []valid.PolicySet{
+ 						{
+-							Name:         "good-policy",
+-							Path:         "rel/path/to/source",
+-							Source:       "local",
+-							ApproveCount: 1,
++							Name:            "good-policy",
++							Path:            "rel/path/to/source",
++							Source:          "local",
++							ApproveCount:    1,
++							PolicyItemRegex: "(?s).+",
+ 						},
+ 					},
+ 				},
+@@ -605,14 +607,16 @@ policies:
+ 					StateRm:     valid.DefaultStateRmStage,
+ 				},
+ 				PolicySets: valid.PolicySets{
+-					Version:      version,
+-					ApproveCount: 1,
++					Version:         version,
++					ApproveCount:    1,
++					PolicyItemRegex: "(?s).+",
+ 					PolicySets: []valid.PolicySet{
+ 						{
+-							Name:         "good-policy",
+-							Path:         "rel/path/to/source",
+-							Source:       "local",
+-							ApproveCount: 1,
++							Name:            "good-policy",
++							Path:            "rel/path/to/source",
++							Source:          "local",
++							ApproveCount:    1,
++							PolicyItemRegex: "(?s).+",
+ 						},
+ 					},
+ 				},
+diff --git a/server/core/config/valid/policies.go b/server/core/config/valid/policies.go
+index 0f8f3b3ab7..c74627928b 100644
+--- a/server/core/config/valid/policies.go
++++ b/server/core/config/valid/policies.go
+@@ -15,14 +15,21 @@ const (
+ 	GithubPolicySet string = "github"
+ )
+ 
++// DefaultPolicyItemRegex matches the entire non-empty policy output as a
++// single item ((?s) makes . match newlines). Any change invalidates the
++// approval. Override with `.+` for per-line matching.
++const DefaultPolicyItemRegex = `(?s).+`
++
+ // PolicySets defines version of policy checker binary(conftest) and a list of
+ // PolicySet objects. PolicySets struct is used by PolicyCheck workflow to build
+ // context to enforce policies.
+ type PolicySets struct {
+-	Version      *version.Version
+-	Owners       PolicyOwners
+-	ApproveCount int
+-	PolicySets   []PolicySet
++	Version         *version.Version
++	Owners          PolicyOwners
++	ApproveCount    int
++	StickyApprovals bool
++	PolicyItemRegex string
++	PolicySets      []PolicySet
+ }
+ 
+ type PolicyOwners struct {
+@@ -35,6 +42,8 @@ type PolicySet struct {
+ 	Path               string
+ 	Name               string
+ 	ApproveCount       int
++	StickyApprovals    bool
++	PolicyItemRegex    string
+ 	Owners             PolicyOwners
+ 	PreventSelfApprove bool
+ }
+diff --git a/server/core/redis/redis.go b/server/core/redis/redis.go
+index d934b4f2ce..6c47670610 100644
+--- a/server/core/redis/redis.go
++++ b/server/core/redis/redis.go
+@@ -9,6 +9,7 @@ import (
+ 	"crypto/tls"
+ 	"encoding/json"
+ 	"fmt"
++	"log"
+ 	"strings"
+ 	"time"
+ 
+@@ -341,7 +342,11 @@ func (r *RedisDB) UpdatePullWithResults(pull models.PullRequest, newResults []co
+ 	var newStatus models.PullStatus
+ 	currStatus, err := r.getPull(key)
+ 	if err != nil {
+-		return newStatus, fmt.Errorf("db transaction failed: %w", err)
++		// Tolerate an unreadable prior entry (e.g. after a PullStatus schema
++		// change). It will be overwritten with fresh data below; in-flight
++		// policy approvals captured in the old blob are lost.
++		log.Printf("warning: discarding unreadable pull status at %q: %v", key, err)
++		currStatus = nil
+ 	}
+ 
+ 	// If there is no pull OR if the pull we have is out of date, we
+@@ -351,6 +356,23 @@ func (r *RedisDB) UpdatePullWithResults(pull models.PullRequest, newResults []co
+ 		for _, res := range newResults {
+ 			statuses = append(statuses, r.projectResultToProject(res))
+ 		}
++		// Preserve policy status from the previous commit so approvals
++		// survive between the plan DB write and the subsequent policy
++		// check DB write. doPolicyCheck applies sticky filtering and
++		// overwrites these when it writes its own results.
++		if currStatus != nil {
++			for i := range statuses {
++				for _, old := range currStatus.Projects {
++					if statuses[i].Workspace == old.Workspace &&
++						statuses[i].RepoRelDir == old.RepoRelDir &&
++						statuses[i].ProjectName == old.ProjectName &&
++						len(old.PolicyStatus) > 0 {
++						statuses[i].PolicyStatus = old.PolicyStatus
++						break
++					}
++				}
++			}
++		}
+ 		newStatus = models.PullStatus{
+ 			Pull:     pull,
+ 			Projects: statuses,
+diff --git a/server/core/redis/redis_test.go b/server/core/redis/redis_test.go
+index 065930ebf2..84670e2b4a 100644
+--- a/server/core/redis/redis_test.go
++++ b/server/core/redis/redis_test.go
+@@ -979,8 +979,8 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
+ 							},
+ 						},
+ 					},
+@@ -996,8 +996,8 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
+ 							},
+ 						},
+ 					},
+@@ -1016,9 +1016,9 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 					PolicyCheckResults: &models.PolicyCheckResults{
+ 						PolicySetResults: []models.PolicySetResult{
+ 							{
+-								PolicySetName: "policy1",
+-								ReqApprovals:  1,
+-								CurApprovals:  1,
++								PolicySetName:    "policy1",
++								ReqApprovalCount: 1,
++								Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 							},
+ 						},
+ 					},
+@@ -1042,7 +1042,7 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 				PolicyStatus: []models.PolicySetStatus{
+ 					{
+ 						PolicySetName: "policy1",
+-						Approvals:     1,
++						Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					},
+ 				},
+ 			},
+@@ -1054,7 +1054,7 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 				PolicyStatus: []models.PolicySetStatus{
+ 					{
+ 						PolicySetName: "policy1",
+-						Approvals:     0,
++						Approvals:     nil,
+ 					},
+ 				},
+ 			},
+@@ -1062,6 +1062,150 @@ func TestPullStatus_UpdateMerge_ApprovePolicies(t *testing.T) {
+ 	}
+ }
+ 
++// Test that policy approvals are preserved when HeadCommit changes,
++// so sticky approvals can survive across code pushes.
++func TestPullStatus_UpdateNewCommit_PreservesPolicyApprovals(t *testing.T) {
++	s := miniredis.RunT(t)
++	rdb := newTestRedis(s)
++
++	pull := models.PullRequest{
++		Num:        1,
++		HeadCommit: "sha-A",
++		URL:        "url",
++		HeadBranch: "head",
++		BaseBranch: "base",
++		Author:     "lkysow",
++		State:      models.OpenPullState,
++		BaseRepo: models.Repo{
++			FullName:          "runatlantis/atlantis",
++			Owner:             "runatlantis",
++			Name:              "atlantis",
++			CloneURL:          "clone-url",
++			SanitizedCloneURL: "clone-url",
++			VCSHost: models.VCSHost{
++				Hostname: "github.com",
++				Type:     models.Github,
++			},
++		},
++	}
++
++	// Write initial policy check results with an approval at commit A.
++	_, err := rdb.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.PolicyCheck,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				Failure: "policy failure",
++				PolicyCheckResults: &models.PolicyCheckResults{
++					PolicySetResults: []models.PolicySetResult{
++						{
++							PolicySetName:    "policy1",
++							ReqApprovalCount: 1,
++							Hashes:           []string{"h1", "h2"},
++							Approvals: []models.PolicySetApproval{
++								{Approver: "boss", Hashes: []string{"h1", "h2"}},
++							},
++						},
++					},
++				},
++			},
++		},
++	})
++	Ok(t, err)
++
++	// Push new commit B with a plan result (no PolicyCheckResults).
++	pull.HeadCommit = "sha-B"
++	status, err := rdb.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.Plan,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				PlanSuccess: &models.PlanSuccess{
++					TerraformOutput: "plan output",
++				},
++			},
++		},
++	})
++	Ok(t, err)
++
++	// The policy approvals from commit A should be preserved.
++	Equals(t, 1, len(status.Projects))
++	Equals(t, "mydir", status.Projects[0].RepoRelDir)
++	Assert(t, len(status.Projects[0].PolicyStatus) > 0, "expected policy status to be preserved across commit change")
++	Equals(t, "policy1", status.Projects[0].PolicyStatus[0].PolicySetName)
++	Equals(t, 1, len(status.Projects[0].PolicyStatus[0].Approvals))
++	Equals(t, "boss", status.Projects[0].PolicyStatus[0].Approvals[0].Approver)
++
++	// Verify via GetPullStatus too.
++	getStatus, err := rdb.GetPullStatus(pull)
++	Ok(t, err)
++	Equals(t, 1, len(getStatus.Projects[0].PolicyStatus[0].Approvals))
++}
++
++// TestPullStatus_UpdateOverwritesCorruptData verifies that
++// UpdatePullWithResults tolerates a pre-existing pull-status blob whose JSON
++// no longer matches the current Go shape (e.g. after upgrading across a
++// PullStatus schema change). The corrupt entry should be logged and
++// overwritten rather than causing every subsequent plan to fail.
++func TestPullStatus_UpdateOverwritesCorruptData(t *testing.T) {
++	s := miniredis.RunT(t)
++	rdb := newTestRedis(s)
++
++	pull := models.PullRequest{
++		Num:        1,
++		HeadCommit: "sha-A",
++		URL:        "url",
++		HeadBranch: "head",
++		BaseBranch: "base",
++		Author:     "lkysow",
++		State:      models.OpenPullState,
++		BaseRepo: models.Repo{
++			FullName:          "runatlantis/atlantis",
++			Owner:             "runatlantis",
++			Name:              "atlantis",
++			CloneURL:          "clone-url",
++			SanitizedCloneURL: "clone-url",
++			VCSHost: models.VCSHost{
++				Hostname: "github.com",
++				Type:     models.Github,
++			},
++		},
++	}
++
++	// Inject a corrupt pull-status blob simulating a legacy on-disk shape
++	// that the current Go types cannot unmarshal (Approvals used to be int).
++	key := fmt.Sprintf("%s::%s::%d",
++		pull.BaseRepo.VCSHost.Hostname, pull.BaseRepo.FullName, pull.Num)
++	corrupt := `{"Projects":[{"Workspace":"default","RepoRelDir":"mydir","ProjectName":"","PolicyStatus":[{"PolicySetName":"policy1","Passed":false,"Approvals":2}],"Status":0}],"Pull":{"Num":1}}`
++	Ok(t, s.Set(key, corrupt))
++
++	// Write fresh results. This must succeed despite the unreadable prior entry.
++	status, err := rdb.UpdatePullWithResults(pull, []command.ProjectResult{
++		{
++			Command:    command.Plan,
++			RepoRelDir: "mydir",
++			Workspace:  "default",
++			ProjectCommandOutput: command.ProjectCommandOutput{
++				PlanSuccess: &models.PlanSuccess{TerraformOutput: "plan output"},
++			},
++		},
++	})
++	Ok(t, err)
++	Equals(t, 1, len(status.Projects))
++	Equals(t, "mydir", status.Projects[0].RepoRelDir)
++	// Prior in-flight approvals are lost; this is the documented trade-off.
++	Equals(t, 0, len(status.Projects[0].PolicyStatus))
++
++	// The corrupt entry is gone: reading it back returns clean data.
++	got, err := rdb.GetPullStatus(pull)
++	Ok(t, err)
++	Assert(t, got != nil, "expected non-nil pull status")
++	Equals(t, 1, len(got.Projects))
++	Equals(t, models.PlannedPlanStatus, got.Projects[0].Status)
++}
++
+ func newTestRedis(mr *miniredis.Miniredis) *redis.RedisDB {
+ 	r, err := redis.New(mr.Host(), mr.Server().Addr().Port, "", false, false, 0)
+ 	if err != nil {
+diff --git a/server/core/runtime/policy/conftest_client.go b/server/core/runtime/policy/conftest_client.go
+index 07ce0b0b34..ce5ec210a4 100644
+--- a/server/core/runtime/policy/conftest_client.go
++++ b/server/core/runtime/policy/conftest_client.go
+@@ -4,17 +4,17 @@
+ package policy
+ 
+ import (
++	"bytes"
+ 	"context"
++	"encoding/json"
+ 	"errors"
+ 	"fmt"
+ 	"os"
+ 	"path/filepath"
++	"regexp"
+ 	"runtime"
+ 	"strings"
+ 
+-	"encoding/json"
+-	"regexp"
+-
+ 	"github.com/hashicorp/go-getter/v2"
+ 
+ 	version "github.com/hashicorp/go-version"
+@@ -227,12 +227,32 @@ func (c *ConfTestExecutorWorkflow) Run(ctx command.ProjectContext, executablePat
+ 			passed = false
+ 		}
+ 
+-		policySetResults = append(policySetResults, models.PolicySetResult{
+-			PolicySetName: policySet.Name,
+-			PolicyOutput:  cmdOutput,
+-			Passed:        passed,
+-			ReqApprovals:  policySet.ApproveCount,
+-		})
++		// Sanitize before hashing so that hashes are stable across runs
++		// (temp file paths vary) and match what ends up in PolicyOutput.
++		sanitizedOutput := c.sanitizeOutput(inputFile, cmdOutput)
++
++		result, regexErr := models.NewPolicySetResult(
++			policySet.Name,
++			sanitizedOutput,
++			passed,
++			policySet.ApproveCount,
++			policySet.PolicyItemRegex,
++		)
++		if regexErr != nil {
++			// RegexValidator runs at config-parse time so this is in theory
++			// unreachable. Fail closed with a synthetic failing result so the
++			// project surfaces the misconfiguration rather than silently
++			// passing without this policy set.
++			ctx.Log.Err("invalid policy_item_regex for policy set %q: %v", policySet.Name, regexErr)
++			policySetResults = append(policySetResults, models.PolicySetResult{
++				PolicySetName:    policySet.Name,
++				PolicyOutput:     fmt.Sprintf("invalid policy_item_regex %q: %v", policySet.PolicyItemRegex, regexErr),
++				ReqApprovalCount: policySet.ApproveCount,
++				PolicyItemRegex:  policySet.PolicyItemRegex,
++			})
++			continue
++		}
++		policySetResults = append(policySetResults, *result)
+ 	}
+ 
+ 	if policySetResults == nil {
+@@ -242,20 +262,21 @@ func (c *ConfTestExecutorWorkflow) Run(ctx command.ProjectContext, executablePat
+ 		// return "", errors.Wrap(err, "building args")
+ 	}
+ 
+-	marshaledStatus, err := json.Marshal(policySetResults)
+-	if err != nil {
++	var buf bytes.Buffer
++	enc := json.NewEncoder(&buf)
++	enc.SetEscapeHTML(false)
++	if err := enc.Encode(policySetResults); err != nil {
+ 		return "", errors.New("cannot marshal data into []PolicySetResult. data")
+ 	}
++	marshaledStatus := bytes.TrimRight(buf.Bytes(), "\n")
+ 
+ 	// Write policy check results to a file which can be used by custom workflow run steps for metrics, notifications, etc.
+ 	policyCheckResultFile := filepath.Join(workdir, ctx.GetPolicyCheckResultFileName())
+-	err = os.WriteFile(policyCheckResultFile, marshaledStatus, 0600)
+-
+-	combinedErr = errors.Join(combinedErr, err)
+-
+-	output := string(marshaledStatus)
++	if writeErr := os.WriteFile(policyCheckResultFile, marshaledStatus, 0600); writeErr != nil {
++		combinedErr = errors.Join(combinedErr, writeErr)
++	}
+ 
+-	return c.sanitizeOutput(inputFile, output), combinedErr
++	return string(marshaledStatus), combinedErr
+ 
+ }
+ 
+diff --git a/server/core/runtime/policy/conftest_client_test.go b/server/core/runtime/policy/conftest_client_test.go
+index bd00942a2c..a98f493ad6 100644
+--- a/server/core/runtime/policy/conftest_client_test.go
++++ b/server/core/runtime/policy/conftest_client_test.go
+@@ -16,6 +16,7 @@ import (
+ 	models_mocks "github.com/runatlantis/atlantis/server/core/runtime/models/mocks"
+ 	conftest_mocks "github.com/runatlantis/atlantis/server/core/runtime/policy/mocks"
+ 	"github.com/runatlantis/atlantis/server/events/command"
++	"github.com/runatlantis/atlantis/server/events/models"
+ 	"github.com/runatlantis/atlantis/server/logging"
+ 	. "github.com/runatlantis/atlantis/testing"
+ )
+@@ -163,23 +164,23 @@ func TestRun(t *testing.T) {
+ 	workdir := t.TempDir()
+ 
+ 	policySet1 := valid.PolicySet{
+-		Source: valid.LocalPolicySet,
+-		Path:   policySetPath1,
+-		Name:   policySetName1,
++		Source:          valid.LocalPolicySet,
++		Path:            policySetPath1,
++		Name:            policySetName1,
++		PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 	}
+ 
+ 	policySet2 := valid.PolicySet{
+-		Source: valid.LocalPolicySet,
+-		Path:   policySetPath2,
+-		Name:   policySetName2,
++		Source:          valid.LocalPolicySet,
++		Path:            policySetPath2,
++		Name:            policySetName2,
++		PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 	}
+ 
+ 	ctx := command.ProjectContext{
+ 		PolicySets: valid.PolicySets{
+-			PolicySets: []valid.PolicySet{
+-				policySet1,
+-				policySet2,
+-			},
++			PolicySets:      []valid.PolicySet{policySet1, policySet2},
++			PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 		},
+ 		ProjectName: "testproj",
+ 		Workspace:   "default",
+@@ -190,7 +191,8 @@ func TestRun(t *testing.T) {
+ 		var extraArgs []string
+ 
+ 		expectedOutput := "Success"
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"Success","Passed":true,"ReqApprovals":0,"CurApprovals":0},{"PolicySetName":"policy2","PolicyOutput":"Success","Passed":true,"ReqApprovals":0,"CurApprovals":0}]`
++		h := models.HashPolicyItem("Success")
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"},{"PolicySetName":"policy2","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, h, h)
+ 
+ 		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+ 		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+@@ -203,8 +205,6 @@ func TestRun(t *testing.T) {
+ 
+ 		result, err := subject.Run(ctx, executablePath, envs, workdir, extraArgs)
+ 
+-		fmt.Println(result)
+-
+ 		Ok(t, errors.Unwrap(err))
+ 
+ 		Assert(t, result == expectedResult, "result is expected")
+@@ -215,10 +215,11 @@ func TestRun(t *testing.T) {
+ 		extraArgs := []string{"--all-namespaces"}
+ 
+ 		expectedOutput := "Success"
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"","Passed":true,"ReqApprovals":0,"CurApprovals":0},{"PolicySetName":"policy2","PolicyOutput":"","Passed":true,"ReqApprovals":0,"CurApprovals":0}]`
++		h := models.HashPolicyItem("Success")
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"},{"PolicySetName":"policy2","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, h, h)
+ 
+-		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+-		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
++		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color", "--all-namespaces"}
++		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color", "--all-namespaces"}
+ 
+ 		When(mockResolver.Resolve(policySet1)).ThenReturn(localPolicySetPath1, nil)
+ 		When(mockResolver.Resolve(policySet2)).ThenReturn(localPolicySetPath2, nil)
+@@ -228,8 +229,6 @@ func TestRun(t *testing.T) {
+ 
+ 		result, err := subject.Run(ctx, executablePath, envs, workdir, extraArgs)
+ 
+-		fmt.Println(result)
+-
+ 		Ok(t, errors.Unwrap(err))
+ 
+ 		Assert(t, result == expectedResult, "result is expected")
+@@ -240,7 +239,7 @@ func TestRun(t *testing.T) {
+ 		var extraArgs []string
+ 
+ 		expectedOutput := "Success"
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"Success","Passed":true,"ReqApprovals":0,"CurApprovals":0}]`
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, models.HashPolicyItem("Success"))
+ 
+ 		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+ 		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+@@ -283,7 +282,10 @@ func TestRun(t *testing.T) {
+ 
+ 		expectedOutputPolicy1 := fmt.Sprintf("FAIL - %s - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions", filepath.Join(workdir, "testproj-default.json"))
+ 		expectedOutputPolicy2 := "Success"
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovals":0,"CurApprovals":0},{"PolicySetName":"policy2","PolicyOutput":"Success","Passed":true,"ReqApprovals":0,"CurApprovals":0}]`
++		sanitizedPolicy1 := "FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"
++		hFail := models.HashPolicyItem(sanitizedPolicy1)
++		hSuccess := models.HashPolicyItem("Success")
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"},{"PolicySetName":"policy2","PolicyOutput":"Success","Passed":true,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, hFail, hSuccess)
+ 
+ 		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+ 		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+@@ -305,7 +307,9 @@ func TestRun(t *testing.T) {
+ 		var extraArgs []string
+ 
+ 		expectedOutput := fmt.Sprintf("FAIL - %s - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions", filepath.Join(workdir, "testproj-default.json"))
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovals":0,"CurApprovals":0},{"PolicySetName":"policy2","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovals":0,"CurApprovals":0}]`
++		sanitizedOutput := "FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"
++		hBoth := models.HashPolicyItem(sanitizedOutput)
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"},{"PolicySetName":"policy2","PolicyOutput":"FAIL - <redacted plan file> - failure\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions","Passed":false,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, hBoth, hBoth)
+ 
+ 		expectedArgsPolicy1 := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+ 		expectedArgsPolicy2 := []string{executablePath, "test", "-p", localPolicySetPath2, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+@@ -326,9 +330,9 @@ func TestRun(t *testing.T) {
+ 	t.Run("parse error should fail policy", func(t *testing.T) {
+ 		var extraArgs []string
+ 
+-		// Simulate a Rego parse error output
+ 		parseErrorOutput := "Error: running test: load: loading policies: load: 2 errors occurred during loading:"
+-		expectedResult := `[{"PolicySetName":"policy1","PolicyOutput":"Error: running test: load: loading policies: load: 2 errors occurred during loading:","Passed":false,"ReqApprovals":0,"CurApprovals":0}]`
++		hParseErr := models.HashPolicyItem(parseErrorOutput)
++		expectedResult := fmt.Sprintf(`[{"PolicySetName":"policy1","PolicyOutput":"%s","Passed":false,"ReqApprovalCount":0,"Approvals":null,"Hashes":["%s"],"PolicyItemRegex":"(?s).+"}]`, parseErrorOutput, hParseErr)
+ 
+ 		expectedArgsPolicy := []string{executablePath, "test", "-p", localPolicySetPath1, filepath.Join(workdir, "testproj-default.json"), "--no-color"}
+ 
+@@ -337,7 +341,8 @@ func TestRun(t *testing.T) {
+ 
+ 		ctxSinglePolicy := command.ProjectContext{
+ 			PolicySets: valid.PolicySets{
+-				PolicySets: []valid.PolicySet{policySet1},
++				PolicySets:      []valid.PolicySet{policySet1},
++				PolicyItemRegex: valid.DefaultPolicyItemRegex,
+ 			},
+ 			ProjectName: "testproj",
+ 			Workspace:   "default",
+diff --git a/server/events/command/project_context.go b/server/events/command/project_context.go
+index 955c431cfb..e76ebe660d 100644
+--- a/server/events/command/project_context.go
++++ b/server/events/command/project_context.go
+@@ -210,7 +210,7 @@ func (p ProjectContext) PolicyCleared() bool {
+ 		}
+ 		for _, psCfg := range p.PolicySets.PolicySets {
+ 			if psStatus.PolicySetName == psCfg.Name {
+-				if psStatus.Approvals != psCfg.ApproveCount {
++				if psStatus.GetCurApprovals() < psCfg.ApproveCount {
+ 					passing = false
+ 				}
+ 			}
+diff --git a/server/events/command/project_context_test.go b/server/events/command/project_context_test.go
+index 67bc324d38..43fa3dd934 100644
+--- a/server/events/command/project_context_test.go
++++ b/server/events/command/project_context_test.go
+@@ -34,7 +34,7 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        false,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 			},
+ 			policyClearedExp: false,
+@@ -53,7 +53,7 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        true,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 			},
+ 			policyClearedExp: true,
+@@ -72,7 +72,7 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        false,
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 			},
+ 			policyClearedExp: true,
+@@ -99,17 +99,17 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        false,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+ 					Passed:        false,
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 				{
+ 					PolicySetName: "policy3",
+ 					Passed:        true,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 			},
+ 			policyClearedExp: false,
+@@ -136,17 +136,17 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        false,
+-					Approvals:     2,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}, {Approver: "approver2"}},
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+ 					Passed:        false,
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 				{
+ 					PolicySetName: "policy3",
+ 					Passed:        true,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 			},
+ 			policyClearedExp: true,
+diff --git a/server/events/command/project_result.go b/server/events/command/project_result.go
+index c246393b1e..82d1902a89 100644
+--- a/server/events/command/project_result.go
++++ b/server/events/command/project_result.go
+@@ -47,9 +47,11 @@ func (p ProjectResult) PolicyStatus() []models.PolicySetStatus {
+ 	if p.PolicyCheckResults != nil {
+ 		for _, policySet := range p.PolicyCheckResults.PolicySetResults {
+ 			policyStatus := models.PolicySetStatus{
+-				PolicySetName: policySet.PolicySetName,
+-				Passed:        policySet.Passed,
+-				Approvals:     policySet.CurApprovals,
++				PolicySetName:   policySet.PolicySetName,
++				Passed:          policySet.Passed,
++				Approvals:       policySet.Approvals,
++				Hashes:          policySet.Hashes,
++				PolicyItemRegex: policySet.PolicyItemRegex,
+ 			}
+ 			policyStatuses = append(policyStatuses, policyStatus)
+ 		}
+diff --git a/server/events/command_requirement_handler_test.go b/server/events/command_requirement_handler_test.go
+index 8debcf0832..2080c29604 100644
+--- a/server/events/command_requirement_handler_test.go
++++ b/server/events/command_requirement_handler_test.go
+@@ -174,7 +174,7 @@ func TestAggregateApplyRequirements_ValidateApplyProject(t *testing.T) {
+ 					{
+ 						PolicySetName: "policy1",
+ 						Passed:        false,
+-						Approvals:     0,
++						Approvals:     nil,
+ 					},
+ 				},
+ 				PolicySets: valid.PolicySets{
+diff --git a/server/events/markdown_renderer_test.go b/server/events/markdown_renderer_test.go
+index 901b19d8bd..1c1db9ba4e 100644
+--- a/server/events/markdown_renderer_test.go
++++ b/server/events/markdown_renderer_test.go
+@@ -388,15 +388,15 @@ $$$
+ 									PolicyOutput: `FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
+ 
+ 2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions`,
+-									Passed:       false,
+-									ReqApprovals: 1,
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 								{
+ 									PolicySetName: "policy2",
+ 									// strings.Repeat require to get wrapped result
+-									PolicyOutput: "2 tests, 2 passed, 0 warnings, 0 failure, 0 exceptions",
+-									Passed:       true,
+-									ReqApprovals: 1,
++									PolicyOutput:     "2 tests, 2 passed, 0 warnings, 0 failure, 0 exceptions",
++									Passed:           true,
++									ReqApprovalCount: 1,
+ 								},
+ 							},
+ 							LockURL:   "lock-url",
+@@ -467,8 +467,8 @@ $$$
+ 									PolicyOutput: strings.Repeat("line\n", 13) + `FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
+ 
+ 2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions`,
+-									Passed:       false,
+-									ReqApprovals: 1,
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 							},
+ 							LockURL:   "lock-url",
+@@ -1032,10 +1032,10 @@ $$$
+ 						PolicyCheckResults: &models.PolicyCheckResults{
+ 							PolicySetResults: []models.PolicySetResult{
+ 								{
+-									PolicySetName: "policy1",
+-									PolicyOutput:  "4 tests, 2 passed, 0 warnings, 2 failures, 0 exceptions",
+-									Passed:        false,
+-									ReqApprovals:  1,
++									PolicySetName:    "policy1",
++									PolicyOutput:     "4 tests, 2 passed, 0 warnings, 2 failures, 0 exceptions",
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 							}, LockURL: "lock-url",
+ 							ApplyCmd:  "atlantis apply -d path -w workspace",
+@@ -1121,6 +1121,257 @@ $$$
+   $$$shell
+   atlantis plan
+   $$$
++`,
++		},
++		{
++			"approved policy set shows output in details",
++			command.PolicyCheck,
++			"",
++			[]command.ProjectResult{
++				{
++					Workspace:  "workspace",
++					RepoRelDir: "path",
++					ProjectCommandOutput: command.ProjectCommandOutput{
++						PolicyCheckResults: &models.PolicyCheckResults{
++							PolicySetResults: []models.PolicySetResult{
++								{
++									PolicySetName:    "policy1",
++									PolicyOutput:     "FAIL - deny_something\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions",
++									Passed:           false,
++									ReqApprovalCount: 1,
++									PolicyItemRegex:  ".+",
++									Hashes: []string{
++										models.HashPolicyItem("FAIL - deny_something"),
++										models.HashPolicyItem("1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"),
++									},
++									Approvals: []models.PolicySetApproval{{
++										Approver: "boss",
++										Hashes: []string{
++											models.HashPolicyItem("FAIL - deny_something"),
++											models.HashPolicyItem("1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"),
++										},
++									}},
++								},
++								{
++									PolicySetName: "policy2",
++									PolicyOutput:  "2 tests, 2 passed, 0 warnings, 0 failures, 0 exceptions",
++									Passed:        true,
++								},
++							},
++							LockURL:   "lock-url",
++							ApplyCmd:  "atlantis apply -d path -w workspace",
++							RePlanCmd: "atlantis plan -d path -w workspace",
++						},
++					},
++				},
++			},
++			models.Github,
++			`
++Ran Policy Check for dir: $path$ workspace: $workspace$
++
++#### Policy Set: $policy1$
++<details><summary>:white_check_mark: 2 previously approved items</summary>
++
++$$$diff
++FAIL - deny_something
++1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions
++$$$
++</details>
++
++#### Policy Set: $policy2$
++$$$diff
++2 tests, 2 passed, 0 warnings, 0 failures, 0 exceptions
++$$$
++
++
++* :arrow_forward: To **apply** this plan, comment:
++  $$$shell
++  atlantis apply -d path -w workspace
++  $$$
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To re-run policies **plan** this project again by commenting:
++  $$$shell
++  atlantis plan -d path -w workspace
++  $$$
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  $$$shell
++  atlantis apply
++  $$$
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  $$$shell
++  atlantis unlock
++  $$$
++`,
++		},
++		{
++			"partially approved multi-set policy check",
++			command.PolicyCheck,
++			"",
++			[]command.ProjectResult{
++				{
++					Workspace:  "workspace",
++					RepoRelDir: "path",
++					ProjectCommandOutput: command.ProjectCommandOutput{
++						PolicyCheckResults: &models.PolicyCheckResults{
++							PolicySetResults: []models.PolicySetResult{
++								{
++									PolicySetName:    "policy1",
++									PolicyOutput:     "FAIL - deny_something\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions",
++									Passed:           false,
++									ReqApprovalCount: 1,
++									PolicyItemRegex:  ".+",
++									Hashes: []string{
++										models.HashPolicyItem("FAIL - deny_something"),
++										models.HashPolicyItem("1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"),
++									},
++									Approvals: []models.PolicySetApproval{{
++										Approver: "boss",
++										Hashes: []string{
++											models.HashPolicyItem("FAIL - deny_something"),
++											models.HashPolicyItem("1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions"),
++										},
++									}},
++								},
++								{
++									PolicySetName:    "policy2",
++									PolicyOutput:     "FAIL - deny_other\n1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions",
++									Passed:           false,
++									ReqApprovalCount: 1,
++								},
++							},
++							LockURL:            "lock-url",
++							ApplyCmd:           "atlantis apply -d path -w workspace",
++							RePlanCmd:          "atlantis plan -d path -w workspace",
++							ApprovePoliciesCmd: "atlantis approve_policies -d path -w workspace",
++						},
++					},
++				},
++			},
++			models.Github,
++			`
++Ran Policy Check for dir: $path$ workspace: $workspace$
++
++#### Policy Set: $policy1$
++<details><summary>:white_check_mark: 2 previously approved items</summary>
++
++$$$diff
++FAIL - deny_something
++1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions
++$$$
++</details>
++
++#### Policy Set: $policy2$
++$$$diff
++FAIL - deny_other
++1 tests, 0 passed, 0 warnings, 1 failure, 0 exceptions
++$$$
++
++
++#### Policy Approval Status:
++$$$
++policy set: policy1: approved.
++policy set: policy2: requires: 1 approval(s), have: 0.
++$$$
++* :heavy_check_mark: To **approve** this project, comment:
++  $$$shell
++  atlantis approve_policies -d path -w workspace
++  $$$
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To re-run policies **plan** this project again by commenting:
++  $$$shell
++  atlantis plan -d path -w workspace
++  $$$
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  $$$shell
++  atlantis apply
++  $$$
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  $$$shell
++  atlantis unlock
++  $$$
++`,
++		},
++		{
++			"per-item filtering with stale approval",
++			command.PolicyCheck,
++			"",
++			[]command.ProjectResult{
++				{
++					Workspace:  "workspace",
++					RepoRelDir: "path",
++					ProjectCommandOutput: command.ProjectCommandOutput{
++						PolicyCheckResults: &models.PolicyCheckResults{
++							PolicySetResults: []models.PolicySetResult{
++								{
++									PolicySetName:    "policy1",
++									PolicyOutput:     "FAIL - deny_something\nFAIL - deny_other",
++									Passed:           false,
++									ReqApprovalCount: 1,
++									PolicyItemRegex:  ".+",
++									Hashes: []string{
++										models.HashPolicyItem("FAIL - deny_something"),
++										models.HashPolicyItem("FAIL - deny_other"),
++									},
++									Approvals: []models.PolicySetApproval{{
++										Approver: "boss",
++										Hashes: []string{
++											models.HashPolicyItem("FAIL - deny_something"),
++											models.HashPolicyItem("old_line"),
++										},
++									}},
++								},
++							},
++							LockURL:            "lock-url",
++							ApplyCmd:           "atlantis apply -d path -w workspace",
++							RePlanCmd:          "atlantis plan -d path -w workspace",
++							ApprovePoliciesCmd: "atlantis approve_policies -d path -w workspace",
++						},
++					},
++				},
++			},
++			models.Github,
++			`
++Ran Policy Check for dir: $path$ workspace: $workspace$
++
++#### Policy Set: $policy1$
++$$$diff
++FAIL - deny_other
++$$$
++<details><summary>:white_check_mark: 1 previously approved item</summary>
++
++$$$diff
++FAIL - deny_something
++$$$
++</details>
++
++
++#### Policy Approval Status:
++$$$
++policy set: policy1: requires: 1 approval(s), have: 0.
++$$$
++* :heavy_check_mark: To **approve** this project, comment:
++  $$$shell
++  atlantis approve_policies -d path -w workspace
++  $$$
++* :put_litter_in_its_place: To **delete** this plan and lock, click [here](lock-url)
++* :repeat: To re-run policies **plan** this project again by commenting:
++  $$$shell
++  atlantis plan -d path -w workspace
++  $$$
++
++---
++* :fast_forward: To **apply** all unapplied plans from this Pull Request, comment:
++  $$$shell
++  atlantis apply
++  $$$
++* :put_litter_in_its_place: To **delete** all plans and locks from this Pull Request, comment:
++  $$$shell
++  atlantis unlock
++  $$$
+ `,
+ 		},
+ 		{
+@@ -1315,14 +1566,14 @@ func TestRenderProjectResultsWithQuietPolicyChecks(t *testing.T) {
+ 									PolicyOutput: `FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
+ 
+ 2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions`,
+-									Passed:       false,
+-									ReqApprovals: 1,
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 								{
+-									PolicySetName: "policy2",
+-									PolicyOutput:  "2 tests, 2 passed, 0 warnings, 0 failure, 0 exceptions",
+-									Passed:        true,
+-									ReqApprovals:  1,
++									PolicySetName:    "policy2",
++									PolicyOutput:     "2 tests, 2 passed, 0 warnings, 0 failure, 0 exceptions",
++									Passed:           true,
++									ReqApprovalCount: 1,
+ 								},
+ 							},
+ 							LockURL:   "lock-url",
+@@ -1393,8 +1644,8 @@ $$$
+ 									PolicyOutput: strings.Repeat("line\n", 13) + `FAIL - <redacted plan file> - main - WARNING: Null Resource creation is prohibited.
+ 
+ 2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions`,
+-									Passed:       false,
+-									ReqApprovals: 1,
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 							},
+ 							LockURL:   "lock-url",
+@@ -1554,10 +1805,10 @@ Ran Policy Check for 2 projects:
+ 						PolicyCheckResults: &models.PolicyCheckResults{
+ 							PolicySetResults: []models.PolicySetResult{
+ 								{
+-									PolicySetName: "policy1",
+-									PolicyOutput:  "4 tests, 2 passed, 0 warnings, 2 failures, 0 exceptions",
+-									Passed:        false,
+-									ReqApprovals:  1,
++									PolicySetName:    "policy1",
++									PolicyOutput:     "4 tests, 2 passed, 0 warnings, 2 failures, 0 exceptions",
++									Passed:           false,
++									ReqApprovalCount: 1,
+ 								},
+ 							}, LockURL: "lock-url",
+ 							ApplyCmd:  "atlantis apply -d path -w workspace",
+diff --git a/server/events/mock_workingdir_test.go b/server/events/mock_workingdir_test.go
+index 07e2db7543..eb87a3ff2e 100644
+--- a/server/events/mock_workingdir_test.go
++++ b/server/events/mock_workingdir_test.go
+@@ -4,11 +4,12 @@
+ package events
+ 
+ import (
++	"reflect"
++	"time"
++
+ 	pegomock "github.com/petergtz/pegomock/v4"
+ 	models "github.com/runatlantis/atlantis/server/events/models"
+ 	logging "github.com/runatlantis/atlantis/server/logging"
+-	"reflect"
+-	"time"
+ )
+ 
+ type MockWorkingDir struct {
+diff --git a/server/events/models/models.go b/server/events/models/models.go
+index e3861a622a..f0a46aa2f9 100644
+--- a/server/events/models/models.go
++++ b/server/events/models/models.go
+@@ -8,6 +8,8 @@
+ package models
+ 
+ import (
++	"crypto/sha256"
++	"encoding/hex"
+ 	"errors"
+ 	"fmt"
+ 	"net/url"
+@@ -20,6 +22,34 @@ import (
+ 	"github.com/runatlantis/atlantis/server/logging"
+ )
+ 
++// HashPolicyItem returns the SHA-256 hex digest of a policy output item.
++func HashPolicyItem(item string) string {
++	h := sha256.Sum256([]byte(item))
++	return hex.EncodeToString(h[:])
++}
++
++// policyItemHashes returns deduplicated SHA-256 hex digests of substrings
++// matched by re in policyOutput, in first-seen order. If the regex produces
++// no matches (including when policyOutput is empty), the raw policyOutput
++// itself is hashed so there is always at least one hash.
++func policyItemHashes(policyOutput string, re *regexp.Regexp) []string {
++	matches := re.FindAllString(policyOutput, -1)
++	hashes := make([]string, 0, len(matches))
++	seen := make(map[string]struct{}, len(matches))
++	for _, m := range matches {
++		h := HashPolicyItem(m)
++		if _, ok := seen[h]; ok {
++			continue
++		}
++		seen[h] = struct{}{}
++		hashes = append(hashes, h)
++	}
++	if len(hashes) == 0 {
++		hashes = append(hashes, HashPolicyItem(policyOutput))
++	}
++	return hashes
++}
++
+ type PullReqStatus struct {
+ 	ApprovalStatus  ApprovalStatus
+ 	MergeableStatus MergeableStatus
+@@ -396,19 +426,81 @@ type PlanSuccess struct {
+ 	MergedAgain bool
+ }
+ 
++func NewPolicySetResult(policySetName string, policyOutput string, passed bool, reqApprovalCount int, policyItemRegex string) (*PolicySetResult, error) {
++	re, err := regexp.Compile(policyItemRegex)
++	if err != nil {
++		return nil, fmt.Errorf("compiling policy_item_regex %q for policy set %q: %w", policyItemRegex, policySetName, err)
++	}
++	hashes := policyItemHashes(policyOutput, re)
++	return &PolicySetResult{
++		PolicySetName:    policySetName,
++		PolicyOutput:     policyOutput,
++		Passed:           passed,
++		ReqApprovalCount: reqApprovalCount,
++		Hashes:           hashes,
++		PolicyItemRegex:  policyItemRegex,
++	}, nil
++}
++
+ type PolicySetResult struct {
+-	PolicySetName string
+-	PolicyOutput  string
+-	Passed        bool
+-	ReqApprovals  int
+-	CurApprovals  int
++	PolicySetName    string
++	PolicyOutput     string
++	Passed           bool
++	ReqApprovalCount int
++	Approvals        []PolicySetApproval
++	Hashes           []string
++	PolicyItemRegex  string
+ }
+ 
+-// PolicySetApproval tracks the number of approvals a given policy set has.
++type PolicySetApproval struct {
++	Approver string
++	Hashes   []string
++}
++
++// ApprovalCoversAllHashes reports whether approvalHashes contains every element of required.
++func ApprovalCoversAllHashes(approvalHashes, required []string) bool {
++	if len(required) == 0 {
++		return true
++	}
++	set := make(map[string]struct{}, len(approvalHashes))
++	for _, h := range approvalHashes {
++		set[h] = struct{}{}
++	}
++	for _, h := range required {
++		if _, ok := set[h]; !ok {
++			return false
++		}
++	}
++	return true
++}
++
++// PolicySetStatus tracks the approval state for a given policy set.
+ type PolicySetStatus struct {
+-	PolicySetName string
+-	Passed        bool
+-	Approvals     int
++	PolicySetName   string
++	Passed          bool
++	Approvals       []PolicySetApproval
++	Hashes          []string
++	PolicyItemRegex string
++}
++
++// GetCurApprovals returns the number of approvals that cover all hashes in this policy set.
++func (pss *PolicySetStatus) GetCurApprovals() int {
++	n := 0
++	for _, approval := range pss.Approvals {
++		if ApprovalCoversAllHashes(approval.Hashes, pss.Hashes) {
++			n++
++		}
++	}
++	return n
++}
++
++func (pss *PolicySetStatus) OwnerHasFullyApproved(owner string) bool {
++	for _, approval := range pss.Approvals {
++		if approval.Approver == owner && ApprovalCoversAllHashes(approval.Hashes, pss.Hashes) {
++			return true
++		}
++	}
++	return false
+ }
+ 
+ // Summary regexes
+@@ -530,7 +622,7 @@ func (p *PolicyCheckResults) Summary() string {
+ func (p *PolicyCheckResults) PolicyCleared() bool {
+ 	passing := true
+ 	for _, policySetResult := range p.PolicySetResults {
+-		if !policySetResult.Passed && (policySetResult.CurApprovals != policySetResult.ReqApprovals) {
++		if !policySetResult.Passed && (policySetResult.GetCurApprovals() < policySetResult.ReqApprovalCount) {
+ 			passing = false
+ 		}
+ 	}
+@@ -543,15 +635,49 @@ func (p *PolicyCheckResults) PolicySummary() string {
+ 	for _, policySetResult := range p.PolicySetResults {
+ 		if policySetResult.Passed {
+ 			summary = append(summary, fmt.Sprintf("policy set: %s: passed.", policySetResult.PolicySetName))
+-		} else if policySetResult.CurApprovals == policySetResult.ReqApprovals {
++		} else if policySetResult.GetCurApprovals() >= policySetResult.ReqApprovalCount {
+ 			summary = append(summary, fmt.Sprintf("policy set: %s: approved.", policySetResult.PolicySetName))
+ 		} else {
+-			summary = append(summary, fmt.Sprintf("policy set: %s: requires: %d approval(s), have: %d.", policySetResult.PolicySetName, policySetResult.ReqApprovals, policySetResult.CurApprovals))
++			summary = append(summary, fmt.Sprintf("policy set: %s: requires: %d approval(s), have: %d.", policySetResult.PolicySetName, policySetResult.ReqApprovalCount, policySetResult.GetCurApprovals()))
+ 		}
+ 	}
+ 	return strings.Join(summary, "\n")
+ }
+ 
++// GetCurApprovals returns the number of approvals that cover all hashes in this policy set result.
++func (p *PolicySetResult) GetCurApprovals() int {
++	n := 0
++	for _, approval := range p.Approvals {
++		if ApprovalCoversAllHashes(approval.Hashes, p.Hashes) {
++			n++
++		}
++	}
++	return n
++}
++
++// ApprovedHashes returns the deduplicated union of hashes across all approvals.
++func (p *PolicySetResult) ApprovedHashes() []string {
++	seen := make(map[string]struct{})
++	var result []string
++	for _, approval := range p.Approvals {
++		for _, h := range approval.Hashes {
++			if _, ok := seen[h]; !ok {
++				seen[h] = struct{}{}
++				result = append(result, h)
++			}
++		}
++	}
++	return result
++}
++
++func (p *PolicySetResult) PolicySetHashes(policyItemRegex string) ([]string, error) {
++	re, err := regexp.Compile(policyItemRegex)
++	if err != nil {
++		return nil, fmt.Errorf("compiling policy_item_regex %q: %w", policyItemRegex, err)
++	}
++	return policyItemHashes(p.PolicyOutput, re), nil
++}
++
+ type VersionSuccess struct {
+ 	VersionOutput string
+ }
+@@ -580,7 +706,7 @@ type ProjectStatus struct {
+ 	Workspace   string
+ 	RepoRelDir  string
+ 	ProjectName string
+-	// PolicySetApprovals tracks the approval status of every PolicySet for a Project.
++	// PolicyStatus tracks the policy check status for each policy set.
+ 	PolicyStatus []PolicySetStatus
+ 	// Status is the status of where this project is at in the planning cycle.
+ 	Status ProjectPlanStatus
+@@ -609,11 +735,11 @@ const (
+ 	// DiscardedPlanStatus means that there was an unapplied plan that was
+ 	// discarded due to a project being unlocked
+ 	DiscardedPlanStatus
+-	// ErroredPolicyCheckStatus means that there was an unapplied plan that was
+-	// discarded due to a project being unlocked
++	// ErroredPolicyCheckStatus means that the policy check errored or has
++	// failing policies.
+ 	ErroredPolicyCheckStatus
+-	// PassedPolicyCheckStatus means that there was an unapplied plan that was
+-	// discarded due to a project being unlocked
++	// PassedPolicyCheckStatus means that all policy checks passed or were
++	// approved.
+ 	PassedPolicyCheckStatus
+ )
+ 
+diff --git a/server/events/models/models_test.go b/server/events/models/models_test.go
+index 0bb318ec9e..24fbf890ae 100644
+--- a/server/events/models/models_test.go
++++ b/server/events/models/models_test.go
+@@ -586,9 +586,9 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 			description: "single policy set, not passed",
+ 			policysetResults: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					Passed:        false,
+-					ReqApprovals:  1,
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			policyClearedExp: false,
+@@ -598,9 +598,9 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 			description: "single policy set, passed",
+ 			policysetResults: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					Passed:        true,
+-					ReqApprovals:  1,
++					PolicySetName:    "policy1",
++					Passed:           true,
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			policyClearedExp: true,
+@@ -610,10 +610,10 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 			description: "single policy set, fully approved",
+ 			policysetResults: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					Passed:        false,
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 			},
+ 			policyClearedExp: true,
+@@ -623,22 +623,20 @@ func TestPolicyCheckResults_PolicyFuncs(t *testing.T) {
+ 			description: "multiple policy sets, different states.",
+ 			policysetResults: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					Passed:        false,
+-					ReqApprovals:  2,
+-					CurApprovals:  0,
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 2,
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					Passed:        false,
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy2",
++					Passed:           false,
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 				{
+-					PolicySetName: "policy3",
+-					Passed:        true,
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy3",
++					Passed:           true,
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			policyClearedExp: false,
+@@ -650,22 +648,21 @@ policy set: policy3: passed.`,
+ 			description: "multiple policy sets, all cleared.",
+ 			policysetResults: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					Passed:        false,
+-					ReqApprovals:  2,
+-					CurApprovals:  2,
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}, {Approver: "approver2"}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					Passed:        false,
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy2",
++					Passed:           false,
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 				{
+-					PolicySetName: "policy3",
+-					Passed:        true,
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy3",
++					Passed:           true,
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			policyClearedExp: true,
+@@ -685,6 +682,476 @@ policy set: policy3: passed.`,
+ 	}
+ }
+ 
++func TestApprovalCoversAllHashes(t *testing.T) {
++	cases := []struct {
++		description    string
++		approvalHashes []string
++		required       []string
++		expected       bool
++	}{
++		{
++			description:    "empty required always covered",
++			approvalHashes: nil,
++			required:       nil,
++			expected:       true,
++		},
++		{
++			description:    "empty required with non-empty approval",
++			approvalHashes: []string{"a", "b"},
++			required:       nil,
++			expected:       true,
++		},
++		{
++			description:    "exact match",
++			approvalHashes: []string{"hash1", "hash2"},
++			required:       []string{"hash1", "hash2"},
++			expected:       true,
++		},
++		{
++			description:    "superset covers required",
++			approvalHashes: []string{"hash1", "hash2", "hash3"},
++			required:       []string{"hash1", "hash2"},
++			expected:       true,
++		},
++		{
++			description:    "missing hash fails",
++			approvalHashes: []string{"hash1"},
++			required:       []string{"hash1", "hash2"},
++			expected:       false,
++		},
++		{
++			description:    "empty approval with non-empty required fails",
++			approvalHashes: nil,
++			required:       []string{"hash1"},
++			expected:       false,
++		},
++		{
++			description:    "completely disjoint fails",
++			approvalHashes: []string{"a", "b"},
++			required:       []string{"c", "d"},
++			expected:       false,
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			Equals(t, c.expected, models.ApprovalCoversAllHashes(c.approvalHashes, c.required))
++		})
++	}
++}
++
++func TestPolicySetStatus_GetCurApprovals(t *testing.T) {
++	cases := []struct {
++		description string
++		status      models.PolicySetStatus
++		expected    int
++	}{
++		{
++			description: "nil approvals returns 0",
++			status:      models.PolicySetStatus{Hashes: []string{"h1"}},
++			expected:    0,
++		},
++		{
++			description: "empty approvals returns 0",
++			status:      models.PolicySetStatus{Approvals: []models.PolicySetApproval{}, Hashes: []string{"h1"}},
++			expected:    0,
++		},
++		{
++			description: "all approvals cover hashes",
++			status: models.PolicySetStatus{
++				Hashes: []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{
++					{Approver: "user1", Hashes: []string{"h1", "h2"}},
++					{Approver: "user2", Hashes: []string{"h1", "h2", "h3"}},
++				},
++			},
++			expected: 2,
++		},
++		{
++			description: "only matching approvals counted",
++			status: models.PolicySetStatus{
++				Hashes: []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{
++					{Approver: "user1", Hashes: []string{"h1", "h2"}},
++					{Approver: "user2", Hashes: []string{"h1"}},
++				},
++			},
++			expected: 1,
++		},
++		{
++			description: "nil hashes means all approvals count",
++			status: models.PolicySetStatus{
++				Hashes: nil,
++				Approvals: []models.PolicySetApproval{
++					{Approver: "user1", Hashes: nil},
++					{Approver: "user2", Hashes: []string{"h1"}},
++				},
++			},
++			expected: 2,
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			Equals(t, c.expected, c.status.GetCurApprovals())
++		})
++	}
++}
++
++func TestPolicySetStatus_OwnerHasFullyApproved(t *testing.T) {
++	cases := []struct {
++		description string
++		status      models.PolicySetStatus
++		owner       string
++		expected    bool
++	}{
++		{
++			description: "owner not in approvals",
++			status: models.PolicySetStatus{
++				Hashes:    []string{"h1"},
++				Approvals: []models.PolicySetApproval{{Approver: "other", Hashes: []string{"h1"}}},
++			},
++			owner:    "user1",
++			expected: false,
++		},
++		{
++			description: "owner approved but hashes stale",
++			status: models.PolicySetStatus{
++				Hashes:    []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{{Approver: "user1", Hashes: []string{"h1"}}},
++			},
++			owner:    "user1",
++			expected: false,
++		},
++		{
++			description: "owner approved with matching hashes",
++			status: models.PolicySetStatus{
++				Hashes:    []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{{Approver: "user1", Hashes: []string{"h1", "h2"}}},
++			},
++			owner:    "user1",
++			expected: true,
++		},
++		{
++			description: "empty approvals returns false",
++			status: models.PolicySetStatus{
++				Hashes:    []string{"h1"},
++				Approvals: nil,
++			},
++			owner:    "user1",
++			expected: false,
++		},
++		{
++			description: "nil hashes means any approval covers",
++			status: models.PolicySetStatus{
++				Hashes:    nil,
++				Approvals: []models.PolicySetApproval{{Approver: "user1", Hashes: nil}},
++			},
++			owner:    "user1",
++			expected: true,
++		},
++		{
++			description: "stale approval followed by valid approval from same owner",
++			status: models.PolicySetStatus{
++				Hashes: []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{
++					{Approver: "user1", Hashes: []string{"h1"}},
++					{Approver: "user1", Hashes: []string{"h1", "h2"}},
++				},
++			},
++			owner:    "user1",
++			expected: true,
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			Equals(t, c.expected, c.status.OwnerHasFullyApproved(c.owner))
++		})
++	}
++}
++
++func TestNewPolicySetResult(t *testing.T) {
++	cases := []struct {
++		description      string
++		name             string
++		output           string
++		passed           bool
++		reqApprovalCount int
++		regex            string
++		expHashes        []string
++	}{
++		{
++			description:      "dot-star regex includes empty-string hash",
++			name:             "policy1",
++			output:           "FAIL - plan.json - deny\n\n2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions\n",
++			passed:           false,
++			reqApprovalCount: 1,
++			regex:            `.*`,
++			expHashes: []string{
++				models.HashPolicyItem("FAIL - plan.json - deny"),
++				models.HashPolicyItem(""),
++				models.HashPolicyItem("2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions"),
++			},
++		},
++		{
++			description:      "custom multiline regex extracts only FAIL lines",
++			name:             "policy1",
++			output:           "FAIL - plan.json - deny\nOK - plan.json - allow\nFAIL - plan.json - other",
++			passed:           false,
++			reqApprovalCount: 1,
++			regex:            `(?m)^FAIL.*`,
++			expHashes: []string{
++				models.HashPolicyItem("FAIL - plan.json - deny"),
++				models.HashPolicyItem("FAIL - plan.json - other"),
++			},
++		},
++		{
++			description:      "empty output with dot-star regex yields hash of empty string",
++			name:             "policy1",
++			output:           "",
++			passed:           true,
++			reqApprovalCount: 1,
++			regex:            `.*`,
++			expHashes:        []string{models.HashPolicyItem("")},
++		},
++		{
++			description:      "default regex matches entire output as one item",
++			name:             "policy1",
++			output:           "FAIL - plan.json - deny\n\n2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions\n",
++			passed:           false,
++			reqApprovalCount: 1,
++			regex:            `(?s).+`,
++			expHashes: []string{
++				models.HashPolicyItem("FAIL - plan.json - deny\n\n2 tests, 1 passed, 0 warnings, 1 failure, 0 exceptions\n"),
++			},
++		},
++		{
++			description:      "default regex on empty output yields hash of empty string",
++			name:             "policy1",
++			output:           "",
++			passed:           true,
++			reqApprovalCount: 1,
++			regex:            `(?s).+`,
++			expHashes:        []string{models.HashPolicyItem("")},
++		},
++		{
++			description:      "no matches with specific regex falls back to hash of raw output",
++			name:             "policy1",
++			output:           "all good here",
++			passed:           true,
++			reqApprovalCount: 0,
++			regex:            `^FAIL.*`,
++			expHashes:        []string{models.HashPolicyItem("all good here")},
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			result, err := models.NewPolicySetResult(c.name, c.output, c.passed, c.reqApprovalCount, c.regex)
++			Ok(t, err)
++			Equals(t, c.name, result.PolicySetName)
++			Equals(t, c.output, result.PolicyOutput)
++			Equals(t, c.passed, result.Passed)
++			Equals(t, c.reqApprovalCount, result.ReqApprovalCount)
++			Equals(t, c.expHashes, result.Hashes)
++			Assert(t, result.Approvals == nil, "new result should have nil approvals")
++		})
++	}
++}
++
++func TestNewPolicySetResult_InvalidRegex(t *testing.T) {
++	result, err := models.NewPolicySetResult("policy1", "output", true, 1, `[invalid`)
++	Assert(t, err != nil, "expected error for invalid regex")
++	Assert(t, result == nil, "expected nil result for invalid regex")
++}
++
++func TestPolicySetResult_GetCurApprovals(t *testing.T) {
++	cases := []struct {
++		description string
++		result      models.PolicySetResult
++		expected    int
++	}{
++		{
++			description: "nil approvals",
++			result:      models.PolicySetResult{Hashes: []string{"h1"}},
++			expected:    0,
++		},
++		{
++			description: "approval covers all hashes",
++			result: models.PolicySetResult{
++				Hashes:    []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{{Approver: "u", Hashes: []string{"h1", "h2"}}},
++			},
++			expected: 1,
++		},
++		{
++			description: "stale approval not counted",
++			result: models.PolicySetResult{
++				Hashes:    []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{{Approver: "u", Hashes: []string{"h1"}}},
++			},
++			expected: 0,
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			Equals(t, c.expected, c.result.GetCurApprovals())
++		})
++	}
++}
++
++func TestPolicySetResult_ApprovedHashes(t *testing.T) {
++	cases := []struct {
++		description string
++		result      models.PolicySetResult
++		expected    []string
++	}{
++		{
++			description: "no approvals returns empty",
++			result:      models.PolicySetResult{},
++			expected:    nil,
++		},
++		{
++			description: "single approval returns its hashes",
++			result: models.PolicySetResult{
++				Approvals: []models.PolicySetApproval{
++					{Approver: "u1", Hashes: []string{"a", "b"}},
++				},
++			},
++			expected: []string{"a", "b"},
++		},
++		{
++			description: "multiple approvals deduplicates",
++			result: models.PolicySetResult{
++				Approvals: []models.PolicySetApproval{
++					{Approver: "u1", Hashes: []string{"a", "b"}},
++					{Approver: "u2", Hashes: []string{"b", "c"}},
++				},
++			},
++			expected: []string{"a", "b", "c"},
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			Equals(t, c.expected, c.result.ApprovedHashes())
++		})
++	}
++}
++
++func TestNewPolicySetResult_StoresPolicyItemRegex(t *testing.T) {
++	result, err := models.NewPolicySetResult("test", "line1\nline2", true, 1, `line\d`)
++	Ok(t, err)
++	Equals(t, `line\d`, result.PolicyItemRegex)
++	Equals(t, []string{models.HashPolicyItem("line1"), models.HashPolicyItem("line2")}, result.Hashes)
++}
++
++func TestPolicySetResult_PolicySetHashes(t *testing.T) {
++	result := models.PolicySetResult{
++		PolicyOutput: "FAIL - plan.json - deny\nOK - plan.json - allow\nFAIL - plan.json - other",
++	}
++
++	allLines, err := result.PolicySetHashes(`.*`)
++	Ok(t, err)
++	Equals(t, 3, len(allLines))
++
++	failOnly, err := result.PolicySetHashes(`(?m)^FAIL.*`)
++	Ok(t, err)
++	Equals(t, 2, len(failOnly))
++	Equals(t, models.HashPolicyItem("FAIL - plan.json - deny"), failOnly[0])
++	Equals(t, models.HashPolicyItem("FAIL - plan.json - other"), failOnly[1])
++
++	noMatch, err := result.PolicySetHashes(`(?m)^WARN.*`)
++	Ok(t, err)
++	Equals(t, 1, len(noMatch))
++	Equals(t, models.HashPolicyItem(result.PolicyOutput), noMatch[0])
++
++	_, err = result.PolicySetHashes(`[invalid`)
++	Assert(t, err != nil, "expected error for invalid regex")
++}
++
++func TestHashPolicyItem(t *testing.T) {
++	h := models.HashPolicyItem("FAIL - plan.json - deny")
++	Equals(t, 64, len(h))
++	Assert(t, h == models.HashPolicyItem("FAIL - plan.json - deny"), "same input should produce same hash")
++	Assert(t, h != models.HashPolicyItem("FAIL - plan.json - other"), "different input should produce different hash")
++	Assert(t, models.HashPolicyItem("") != "", "empty string should still produce a hash")
++}
++
++func TestPolicySetResult_PolicySetHashes_DefaultRegex(t *testing.T) {
++	result := models.PolicySetResult{
++		PolicyOutput: "FAIL - plan.json - deny\nOK\nFAIL - other",
++	}
++	hashes, err := result.PolicySetHashes(`(?s).+`)
++	Ok(t, err)
++	Equals(t, 1, len(hashes))
++	Equals(t, models.HashPolicyItem("FAIL - plan.json - deny\nOK\nFAIL - other"), hashes[0])
++}
++
++func TestPolicyCheckResults_PolicyFuncs_WithHashes(t *testing.T) {
++	cases := []struct {
++		description      string
++		policysetResults []models.PolicySetResult
++		policyClearedExp bool
++		policySummaryExp string
++	}{
++		{
++			description: "approval with matching hashes clears policy",
++			policysetResults: []models.PolicySetResult{
++				{
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 1,
++					Hashes:           []string{"h1", "h2"},
++					Approvals: []models.PolicySetApproval{
++						{Approver: "user1", Hashes: []string{"h1", "h2"}},
++					},
++				},
++			},
++			policyClearedExp: true,
++			policySummaryExp: "policy set: policy1: approved.",
++		},
++		{
++			description: "approval with stale hashes does not clear",
++			policysetResults: []models.PolicySetResult{
++				{
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 1,
++					Hashes:           []string{"h1", "h2", "h3"},
++					Approvals: []models.PolicySetApproval{
++						{Approver: "user1", Hashes: []string{"h1", "h2"}},
++					},
++				},
++			},
++			policyClearedExp: false,
++			policySummaryExp: "policy set: policy1: requires: 1 approval(s), have: 0.",
++		},
++		{
++			description: "mixed: one stale and one fresh among two required",
++			policysetResults: []models.PolicySetResult{
++				{
++					PolicySetName:    "policy1",
++					Passed:           false,
++					ReqApprovalCount: 2,
++					Hashes:           []string{"h1"},
++					Approvals: []models.PolicySetApproval{
++						{Approver: "user1", Hashes: []string{"h1"}},
++						{Approver: "user2", Hashes: []string{"old_h1"}},
++					},
++				},
++			},
++			policyClearedExp: false,
++			policySummaryExp: "policy set: policy1: requires: 2 approval(s), have: 1.",
++		},
++	}
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			pcs := models.PolicyCheckResults{
++				PolicySetResults: c.policysetResults,
++			}
++			Equals(t, c.policyClearedExp, pcs.PolicyCleared())
++			Equals(t, c.policySummaryExp, pcs.PolicySummary())
++		})
++	}
++}
++
+ func TestPullStatus_StatusCount(t *testing.T) {
+ 	ps := models.PullStatus{
+ 		Projects: []models.ProjectStatus{
+diff --git a/server/events/project_command_runner.go b/server/events/project_command_runner.go
+index f29d0c8367..a6a141ac7a 100644
+--- a/server/events/project_command_runner.go
++++ b/server/events/project_command_runner.go
+@@ -353,7 +353,7 @@ func (p *DefaultProjectCommandRunner) doApprovePolicies(ctx command.ProjectConte
+ 			ignorePolicy := false
+ 			if policySet.Name == policyStatus.PolicySetName {
+ 				// Policy set either passed or has sufficient approvals. Move on.
+-				if policyStatus.Passed || (policyStatus.Approvals == policySet.ApproveCount) {
++				if policyStatus.Passed || (policyStatus.GetCurApprovals() >= policySet.ApproveCount) {
+ 					if !ctx.ClearPolicyApproval {
+ 						ignorePolicy = true
+ 					}
+@@ -364,10 +364,20 @@ func (p *DefaultProjectCommandRunner) doApprovePolicies(ctx command.ProjectConte
+ 				}
+ 				// Increment approval if user is owner.
+ 				if isOwner && !ignorePolicy && (ctx.User.Username != ctx.Pull.Author || !policySet.PreventSelfApprove) {
+-					if !ctx.ClearPolicyApproval {
+-						prjPolicyStatus[i].Approvals = policyStatus.Approvals + 1
+-					} else {
+-						prjPolicyStatus[i].Approvals = 0
++					alreadyFullyApproved := policyStatus.OwnerHasFullyApproved(ctx.User.Username) && policyStatus.GetCurApprovals() < policySet.ApproveCount
++					if alreadyFullyApproved {
++						remaining := policySet.ApproveCount - policyStatus.GetCurApprovals()
++						prjErr = errors.Join(prjErr, fmt.Errorf("policy set: already approved by %s; need %d more approval(s) from a different policy owner", ctx.User.Username, remaining))
++					}
++					if !alreadyFullyApproved {
++						if !ctx.ClearPolicyApproval {
++							prjPolicyStatus[i].Approvals = append(prjPolicyStatus[i].Approvals, models.PolicySetApproval{
++								Approver: ctx.User.Username,
++								Hashes:   policyStatus.Hashes,
++							})
++						} else {
++							prjPolicyStatus[i].Approvals = []models.PolicySetApproval{}
++						}
+ 					}
+ 					// User matches the author and prevent self approve is set to true
+ 				} else if isOwner && !ignorePolicy && ctx.User.Username == ctx.Pull.Author && policySet.PreventSelfApprove {
+@@ -377,16 +387,19 @@ func (p *DefaultProjectCommandRunner) doApprovePolicies(ctx command.ProjectConte
+ 					prjErr = errors.Join(prjErr, fmt.Errorf("policy set: %s user %s is not a policy owner - please contact policy owners to approve failing policies", policySet.Name, ctx.User.Username))
+ 				}
+ 				// Still bubble up this failure, even if policy set is not targeted.
+-				if !policyStatus.Passed && (prjPolicyStatus[i].Approvals != policySet.ApproveCount) {
++				if !policyStatus.Passed && (prjPolicyStatus[i].GetCurApprovals() < policySet.ApproveCount) {
+ 					allPassed = false
+ 				}
+ 
+ 				prjPolicySetResults = append(prjPolicySetResults, models.PolicySetResult{
+-					PolicySetName: policySet.Name,
+-					Passed:        policyStatus.Passed,
+-					CurApprovals:  prjPolicyStatus[i].Approvals,
+-					ReqApprovals:  policySet.ApproveCount,
++					PolicySetName:    policySet.Name,
++					Passed:           policyStatus.Passed,
++					Approvals:        prjPolicyStatus[i].Approvals,
++					ReqApprovalCount: policySet.ApproveCount,
++					Hashes:           policyStatus.Hashes,
++					PolicyItemRegex:  policySet.PolicyItemRegex,
+ 				})
++				break
+ 			}
+ 		}
+ 	}
+@@ -493,10 +506,19 @@ func (p *DefaultProjectCommandRunner) doPolicyCheck(ctx command.ProjectContext)
+ 			}
+ 			preConftestOutput = append(preConftestOutput, output)
+ 		} else {
+-			// Using a policy tool other than Conftest, manually building result struct
++			// Using a policy tool other than Conftest, manually building result struct.
++			// Excess outputs (no matching configured policy set) fall back to the
++			// top-level policies block for both regex and approve count.
+ 			policySetName := "Custom"
++			policyItemRegex := ctx.PolicySets.PolicyItemRegex
++			approveCount := ctx.PolicySets.ApproveCount
++			if approveCount <= 0 {
++				approveCount = 1
++			}
+ 			if index < len(inputPolicySets) {
+ 				policySetName = inputPolicySets[index].Name
++				policyItemRegex = inputPolicySets[index].PolicyItemRegex
++				approveCount = inputPolicySets[index].ApproveCount
+ 			}
+ 
+ 			// Handle empty output: treat as failure since it likely indicates misconfiguration
+@@ -518,7 +540,28 @@ func (p *DefaultProjectCommandRunner) doPolicyCheck(ctx command.ProjectContext)
+ 				policyOutput = output
+ 			}
+ 
+-			policySetResults = append(policySetResults, models.PolicySetResult{PolicySetName: policySetName, PolicyOutput: policyOutput, Passed: passed, ReqApprovals: 1, CurApprovals: 0})
++			result, regexErr := models.NewPolicySetResult(
++				policySetName,
++				policyOutput,
++				passed,
++				approveCount,
++				policyItemRegex,
++			)
++			if regexErr != nil {
++				// RegexValidator runs at config-parse time so this is in
++				// theory unreachable. Fail closed with a synthetic failing
++				// result so the project surfaces the misconfiguration rather
++				// than silently passing without this policy set.
++				ctx.Log.Err("invalid policy_item_regex for policy set %q: %v", policySetName, regexErr)
++				policySetResults = append(policySetResults, models.PolicySetResult{
++					PolicySetName:    policySetName,
++					PolicyOutput:     fmt.Sprintf("invalid policy_item_regex %q: %v", policyItemRegex, regexErr),
++					ReqApprovalCount: approveCount,
++					PolicyItemRegex:  policyItemRegex,
++				})
++				continue
++			}
++			policySetResults = append(policySetResults, *result)
+ 		}
+ 	}
+ 
+@@ -538,6 +581,44 @@ func (p *DefaultProjectCommandRunner) doPolicyCheck(ctx command.ProjectContext)
+ 		}
+ 	}
+ 
++	// For policy sets with sticky approvals, see if we can carry over previous approvals.
++	stickyPolicySetNames := make(map[string]bool)
++	currentPolicyItemRegex := make(map[string]string, len(ctx.PolicySets.PolicySets))
++	for _, ps := range ctx.PolicySets.PolicySets {
++		currentPolicyItemRegex[ps.Name] = ps.PolicyItemRegex
++		if ps.StickyApprovals {
++			stickyPolicySetNames[ps.Name] = true
++		}
++	}
++	resultByName := make(map[string]*models.PolicySetResult)
++	for i := range policySetResults {
++		resultByName[policySetResults[i].PolicySetName] = &policySetResults[i]
++	}
++	for _, status := range ctx.ProjectPolicyStatus {
++		if !stickyPolicySetNames[status.PolicySetName] {
++			continue
++		}
++		// Skip if the policy set is no longer in the current config; the
++		// resultByName lookup below would also miss, but doing this explicitly
++		// makes the intent unambiguous against empty-string regex values.
++		currentRegex, inConfig := currentPolicyItemRegex[status.PolicySetName]
++		if !inConfig {
++			continue
++		}
++		// If policy_item_regex changed since approvals were stored, hashes are
++		// not comparable; do not carry over.
++		if status.PolicyItemRegex != "" && currentRegex != status.PolicyItemRegex {
++			continue
++		}
++		result := resultByName[status.PolicySetName]
++		if result == nil {
++			continue
++		}
++		// Carry over all previous approvals; GetCurApprovals filters
++		// stale ones at read time.
++		result.Approvals = status.Approvals
++	}
++
+ 	// Check if we have any policy check results
+ 	// For non-custom policy checks (conftest), empty results means JSON parsing failed
+ 	// For custom policy checks, empty results when policy sets are configured means the check failed
+diff --git a/server/events/project_command_runner_test.go b/server/events/project_command_runner_test.go
+index bb98e1d26c..f98aa8ec1a 100644
+--- a/server/events/project_command_runner_test.go
++++ b/server/events/project_command_runner_test.go
+@@ -1409,8 +1409,8 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			expFailure: "One or more policy sets require additional approval.",
+@@ -1435,14 +1435,14 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  2,
+-					CurApprovals:  1,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 			},
+ 			expFailure: "One or more policy sets require additional approval.",
+@@ -1467,14 +1467,13 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  2,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 2,
+ 				},
+ 			},
+ 			expFailure: "One or more policy sets require additional approval.",
+@@ -1499,14 +1498,14 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 			},
+ 			expFailure: "",
+@@ -1532,14 +1531,13 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			expFailure: "One or more policy sets require additional approval.",
+@@ -1561,14 +1559,14 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     2,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}, {Approver: "approver2"}},
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  2,
+-					CurApprovals:  2,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}, {Approver: "approver2"}},
+ 				},
+ 			},
+ 			expFailure: ``,
+@@ -1592,15 +1590,14 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 				{
+ 					PolicySetName: "policy1",
+ 					Passed:        true,
+-					Approvals:     0,
++					Approvals:     nil,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  2,
+-					CurApprovals:  0,
+-					Passed:        true,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 2,
++					Passed:           true,
+ 				},
+ 			},
+ 			expFailure: ``,
+@@ -1631,25 +1628,24 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     0,
++					Approvals:     nil,
+ 					Passed:        false,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+-					Approvals:     0,
++					Approvals:     nil,
+ 					Passed:        false,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			expFailure: `One or more policy sets require additional approval.`,
+@@ -1680,25 +1676,25 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  2,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{},
+ 				},
+ 			},
+ 			expFailure: `One or more policy sets require additional approval.`,
+@@ -1729,25 +1725,25 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  2,
+-					CurApprovals:  1,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 			},
+ 			expFailure: `One or more policy sets require additional approval.`,
+@@ -1779,25 +1775,25 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+-					Approvals:     1,
++					Approvals:     []models.PolicySetApproval{{Approver: "approver1"}},
+ 					Passed:        false,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: "approver1"}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  2,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 2,
++					Approvals:        []models.PolicySetApproval{},
+ 				},
+ 			},
+ 			expFailure: `One or more policy sets require additional approval.`,
+@@ -1829,30 +1825,60 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 			policySetStatus: []models.PolicySetStatus{
+ 				{
+ 					PolicySetName: "policy1",
+-					Approvals:     0,
++					Approvals:     nil,
+ 					Passed:        false,
+ 				},
+ 				{
+ 					PolicySetName: "policy2",
+-					Approvals:     0,
++					Approvals:     nil,
+ 					Passed:        false,
+ 				},
+ 			},
+ 			expOut: []models.PolicySetResult{
+ 				{
+-					PolicySetName: "policy1",
+-					ReqApprovals:  1,
+-					CurApprovals:  1,
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
+ 				},
+ 				{
+-					PolicySetName: "policy2",
+-					ReqApprovals:  1,
+-					CurApprovals:  0,
++					PolicySetName:    "policy2",
++					ReqApprovalCount: 1,
+ 				},
+ 			},
+ 			expFailure: `One or more policy sets require additional approval.`,
+ 			hasErr:     true,
+ 		},
++		{
++			// Regression: prior to the explicit break in doApprovePolicies'
++			// inner loop, two ProjectPolicyStatus entries that share a name
++			// would each receive an approval and emit a duplicate
++			// PolicySetResult. The break ensures exactly one match per
++			// configured policy set.
++			description: "Duplicate PolicySetName entries in ProjectPolicyStatus only produce one approval and one result.",
++			hasErr:      false,
++			policySetCfg: valid.PolicySets{
++				Owners: valid.PolicyOwners{
++					Users: []string{testdata.User.Username},
++				},
++				PolicySets: []valid.PolicySet{
++					{
++						Name:         "policy1",
++						ApproveCount: 1,
++					},
++				},
++			},
++			policySetStatus: []models.PolicySetStatus{
++				{PolicySetName: "policy1"},
++				{PolicySetName: "policy1"},
++			},
++			expOut: []models.PolicySetResult{
++				{
++					PolicySetName:    "policy1",
++					ReqApprovalCount: 1,
++					Approvals:        []models.PolicySetApproval{{Approver: testdata.User.Username, Hashes: nil}},
++				},
++			},
++		},
+ 	}
+ 
+ 	for _, c := range cases {
+@@ -1936,3 +1962,435 @@ func TestDefaultProjectCommandRunner_ApprovePolicies(t *testing.T) {
+ 		})
+ 	}
+ }
++
++func TestDefaultProjectCommandRunner_ApprovePolicies_DuplicateApproval(t *testing.T) {
++	RegisterMockTestingT(t)
++	mockVcsClient := vcsmocks.NewMockClient()
++	mockInit := mocks.NewMockStepRunner()
++	mockPlan := mocks.NewMockStepRunner()
++	mockApply := mocks.NewMockStepRunner()
++	mockRun := mocks.NewMockCustomStepRunner()
++	mockEnv := mocks.NewMockEnvStepRunner()
++	mockWorkingDir := mocks.NewMockWorkingDir()
++	mockLocker := mocks.NewMockProjectLocker()
++	mockSender := mocks.NewMockWebhooksSender()
++
++	runner := events.DefaultProjectCommandRunner{
++		Locker:           mockLocker,
++		VcsClient:        mockVcsClient,
++		LockURLGenerator: mockURLGenerator{},
++		InitStepRunner:   mockInit,
++		PlanStepRunner:   mockPlan,
++		ApplyStepRunner:  mockApply,
++		RunStepRunner:    mockRun,
++		EnvStepRunner:    mockEnv,
++		WorkingDir:       mockWorkingDir,
++		Webhooks:         mockSender,
++		WorkingDirLocker: events.NewDefaultWorkingDirLocker(),
++	}
++	repoDir := t.TempDir()
++	When(mockWorkingDir.GetWorkingDir(
++		Any[models.Repo](),
++		Any[models.PullRequest](),
++		Any[string](),
++	)).ThenReturn(repoDir, nil)
++	When(mockLocker.TryLock(
++		Any[logging.SimpleLogging](),
++		Any[models.PullRequest](),
++		Any[models.User](),
++		Any[string](),
++		Any[models.Project](),
++		AnyBool(),
++	)).ThenReturn(&events.TryLockResponse{
++		LockAcquired: true,
++		LockKey:      "lock-key",
++	}, nil)
++
++	modelPull := models.PullRequest{BaseRepo: testdata.GithubRepo, State: models.OpenPullState, Num: testdata.Pull.Num, Author: testdata.User.Username}
++	When(runner.VcsClient.GetTeamNamesForUser(Any[logging.SimpleLogging](), Eq(testdata.GithubRepo), Eq(testdata.User))).ThenReturn(nil, nil)
++
++	ctx := command.ProjectContext{
++		User:       testdata.User,
++		Log:        logging.NewNoopLogger(t),
++		Workspace:  "default",
++		RepoRelDir: ".",
++		PolicySets: valid.PolicySets{
++			Owners: valid.PolicyOwners{
++				Users: []string{testdata.User.Username},
++			},
++			PolicySets: []valid.PolicySet{
++				{
++					Name:         "policy1",
++					ApproveCount: 2,
++				},
++			},
++		},
++		ProjectPolicyStatus: []models.PolicySetStatus{
++			{
++				PolicySetName: "policy1",
++				Hashes:        []string{"h1", "h2"},
++				Approvals: []models.PolicySetApproval{
++					{Approver: testdata.User.Username, Hashes: []string{"h1", "h2"}},
++				},
++			},
++		},
++		Pull: modelPull,
++	}
++
++	res := runner.ApprovePolicies(ctx)
++	Assert(t, res.Error != nil, "expected error for duplicate approval by same user")
++	Equals(t, 1, len(res.PolicyCheckResults.PolicySetResults))
++	result := res.PolicyCheckResults.PolicySetResults[0]
++	Equals(t, 1, result.GetCurApprovals())
++}
++
++// Test that sticky carry-over preserves all approvals (including dormant ones
++// for non-current hashes) so they can reactivate if code is reverted.
++func TestDefaultProjectCommandRunner_PolicyCheck_StickyCarryOverPreservesDormantApprovals(t *testing.T) {
++	RegisterMockTestingT(t)
++	mockPolicyCheck := mocks.NewMockStepRunner()
++	mockWorkingDir := mocks.NewMockWorkingDir()
++	mockLocker := mocks.NewMockProjectLocker()
++
++	runner := events.DefaultProjectCommandRunner{
++		Locker:                mockLocker,
++		LockURLGenerator:      mockURLGenerator{},
++		PolicyCheckStepRunner: mockPolicyCheck,
++		WorkingDir:            mockWorkingDir,
++		WorkingDirLocker:      events.NewDefaultWorkingDirLocker(),
++	}
++
++	repoDir := t.TempDir()
++	When(mockWorkingDir.GetWorkingDir(
++		Any[models.Repo](),
++		Any[models.PullRequest](),
++		Any[string](),
++	)).ThenReturn(repoDir, nil)
++	When(mockWorkingDir.GitReadLock(Any[models.Repo](), Any[models.PullRequest](), Any[string]())).ThenReturn(func() {})
++	When(mockLocker.TryLock(
++		Any[logging.SimpleLogging](),
++		Any[models.PullRequest](),
++		Any[models.User](),
++		Any[string](),
++		Any[models.Project](),
++		AnyBool(),
++	)).ThenReturn(&events.TryLockResponse{
++		LockAcquired: true,
++		LockKey:      "lock-key",
++	}, nil)
++
++	// Custom policy check returning NEW hashes (simulating changed code).
++	When(mockPolicyCheck.Run(
++		Any[command.ProjectContext](),
++		Any[[]string](),
++		Any[string](),
++		Any[map[string]string](),
++	)).ThenReturn("1 failure found\nnew-violation-line", nil)
++
++	ctx := command.ProjectContext{
++		Log:               logging.NewNoopLogger(t),
++		Workspace:         "default",
++		RepoRelDir:        ".",
++		CustomPolicyCheck: true,
++		PolicySets: valid.PolicySets{
++			PolicySets: []valid.PolicySet{
++				{
++					Name:            "policy1",
++					ApproveCount:    1,
++					StickyApprovals: true,
++					PolicyItemRegex: ".*",
++				},
++			},
++		},
++		// Previous status has an approval for OLD hashes (from a prior commit).
++		ProjectPolicyStatus: []models.PolicySetStatus{
++			{
++				PolicySetName: "policy1",
++				Hashes:        []string{"old-violation-line"},
++				Approvals: []models.PolicySetApproval{
++					{Approver: "boss", Hashes: []string{"old-violation-line"}},
++				},
++			},
++		},
++		Steps: []valid.Step{{StepName: "policy_check"}},
++	}
++
++	res := runner.PolicyCheck(ctx)
++
++	Assert(t, res.Error == nil, "not expecting error: %v", res.Error)
++	Assert(t, res.PolicyCheckResults != nil, "expecting policy check results")
++
++	result := res.PolicyCheckResults.PolicySetResults[0]
++
++	// The old approval should be preserved even though it doesn't match new hashes.
++	Equals(t, 1, len(result.Approvals))
++	Equals(t, "boss", result.Approvals[0].Approver)
++	Equals(t, []string{"old-violation-line"}, result.Approvals[0].Hashes)
++
++	// But GetCurApprovals should return 0 because the approval doesn't cover new hashes.
++	status := models.PolicySetStatus{
++		PolicySetName: result.PolicySetName,
++		Hashes:        result.Hashes,
++		Approvals:     result.Approvals,
++	}
++	Equals(t, 0, status.GetCurApprovals())
++}
++
++func TestDefaultProjectCommandRunner_PolicyCheck_StickyCarryOverBehavior(t *testing.T) {
++	cases := []struct {
++		description       string
++		stickyApprovals   bool
++		configRegex       string
++		storedRegex       string
++		storedApprovals   []models.PolicySetApproval
++		expectCarriedOver bool
++	}{
++		{
++			description:     "non-sticky policy set drops all previous approvals",
++			stickyApprovals: false,
++			configRegex:     ".*",
++			storedRegex:     ".*",
++			storedApprovals: []models.PolicySetApproval{
++				{Approver: "boss", Hashes: []string{"old-hash"}},
++			},
++			expectCarriedOver: false,
++		},
++		{
++			description:     "sticky with matching regex preserves approvals",
++			stickyApprovals: true,
++			configRegex:     ".+",
++			storedRegex:     ".+",
++			storedApprovals: []models.PolicySetApproval{
++				{Approver: "boss", Hashes: []string{"old-hash"}},
++			},
++			expectCarriedOver: true,
++		},
++		{
++			description:     "sticky with changed regex drops approvals",
++			stickyApprovals: true,
++			configRegex:     `(?m)^FAIL.*`,
++			storedRegex:     ".+",
++			storedApprovals: []models.PolicySetApproval{
++				{Approver: "boss", Hashes: []string{"old-hash"}},
++			},
++			expectCarriedOver: false,
++		},
++		{
++			description:     "sticky with empty stored regex (legacy) preserves approvals",
++			stickyApprovals: true,
++			configRegex:     ".+",
++			storedRegex:     "",
++			storedApprovals: []models.PolicySetApproval{
++				{Approver: "boss", Hashes: []string{"old-hash"}},
++			},
++			expectCarriedOver: true,
++		},
++	}
++
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			RegisterMockTestingT(t)
++			mockPolicyCheck := mocks.NewMockStepRunner()
++			mockWorkingDir := mocks.NewMockWorkingDir()
++			mockLocker := mocks.NewMockProjectLocker()
++
++			runner := events.DefaultProjectCommandRunner{
++				Locker:                mockLocker,
++				LockURLGenerator:      mockURLGenerator{},
++				PolicyCheckStepRunner: mockPolicyCheck,
++				WorkingDir:            mockWorkingDir,
++				WorkingDirLocker:      events.NewDefaultWorkingDirLocker(),
++			}
++
++			repoDir := t.TempDir()
++			When(mockWorkingDir.GetWorkingDir(
++				Any[models.Repo](),
++				Any[models.PullRequest](),
++				Any[string](),
++			)).ThenReturn(repoDir, nil)
++			When(mockWorkingDir.GitReadLock(Any[models.Repo](), Any[models.PullRequest](), Any[string]())).ThenReturn(func() {})
++			When(mockLocker.TryLock(
++				Any[logging.SimpleLogging](),
++				Any[models.PullRequest](),
++				Any[models.User](),
++				Any[string](),
++				Any[models.Project](),
++				AnyBool(),
++			)).ThenReturn(&events.TryLockResponse{
++				LockAcquired: true,
++				LockKey:      "lock-key",
++			}, nil)
++
++			When(mockPolicyCheck.Run(
++				Any[command.ProjectContext](),
++				Any[[]string](),
++				Any[string](),
++				Any[map[string]string](),
++			)).ThenReturn("new-violation-line", nil)
++
++			ctx := command.ProjectContext{
++				Log:               logging.NewNoopLogger(t),
++				Workspace:         "default",
++				RepoRelDir:        ".",
++				CustomPolicyCheck: true,
++				PolicySets: valid.PolicySets{
++					PolicySets: []valid.PolicySet{
++						{
++							Name:            "policy1",
++							ApproveCount:    1,
++							StickyApprovals: c.stickyApprovals,
++							PolicyItemRegex: c.configRegex,
++						},
++					},
++				},
++				ProjectPolicyStatus: []models.PolicySetStatus{
++					{
++						PolicySetName:   "policy1",
++						Hashes:          []string{"old-hash"},
++						PolicyItemRegex: c.storedRegex,
++						Approvals:       c.storedApprovals,
++					},
++				},
++				Steps: []valid.Step{{StepName: "policy_check"}},
++			}
++
++			res := runner.PolicyCheck(ctx)
++
++			Assert(t, res.Error == nil, "not expecting error: %v", res.Error)
++			Assert(t, res.PolicyCheckResults != nil, "expecting policy check results")
++
++			result := res.PolicyCheckResults.PolicySetResults[0]
++			if c.expectCarriedOver {
++				Equals(t, len(c.storedApprovals), len(result.Approvals))
++				Equals(t, c.storedApprovals[0].Approver, result.Approvals[0].Approver)
++			} else {
++				Assert(t, len(result.Approvals) == 0 || result.Approvals == nil,
++					"expected no approvals carried over but got %d", len(result.Approvals))
++			}
++		})
++	}
++}
++
++func TestDefaultProjectCommandRunner_ApprovePolicies_HashAwareApproval(t *testing.T) {
++	cases := []struct {
++		description       string
++		policySetStatus   []models.PolicySetStatus
++		policySetCfg      valid.PolicySets
++		expTotalApprovals int
++		expValidApprovals int
++		expFailure        string
++		hasErr            bool
++	}{
++		{
++			description: "approval with matching hashes counts",
++			policySetCfg: valid.PolicySets{
++				Owners: valid.PolicyOwners{
++					Users: []string{testdata.User.Username},
++				},
++				PolicySets: []valid.PolicySet{
++					{Name: "policy1", ApproveCount: 1},
++				},
++			},
++			policySetStatus: []models.PolicySetStatus{
++				{
++					PolicySetName: "policy1",
++					Hashes:        []string{"h1", "h2"},
++				},
++			},
++			expTotalApprovals: 1,
++			expValidApprovals: 1,
++			expFailure:        "",
++		},
++		{
++			description: "stale approval preserved alongside fresh approval, only fresh one valid",
++			policySetCfg: valid.PolicySets{
++				Owners: valid.PolicyOwners{
++					Users: []string{testdata.User.Username},
++				},
++				PolicySets: []valid.PolicySet{
++					{Name: "policy1", ApproveCount: 2},
++				},
++			},
++			policySetStatus: []models.PolicySetStatus{
++				{
++					PolicySetName: "policy1",
++					Hashes:        []string{"h_new"},
++					Approvals: []models.PolicySetApproval{
++						{Approver: "other-user", Hashes: []string{"h_old"}},
++					},
++				},
++			},
++			expTotalApprovals: 2,
++			expValidApprovals: 1,
++			expFailure:        "One or more policy sets require additional approval.",
++		},
++	}
++
++	for _, c := range cases {
++		t.Run(c.description, func(t *testing.T) {
++			RegisterMockTestingT(t)
++			mockVcsClient := vcsmocks.NewMockClient()
++			mockInit := mocks.NewMockStepRunner()
++			mockPlan := mocks.NewMockStepRunner()
++			mockApply := mocks.NewMockStepRunner()
++			mockRun := mocks.NewMockCustomStepRunner()
++			mockEnv := mocks.NewMockEnvStepRunner()
++			mockWorkingDir := mocks.NewMockWorkingDir()
++			mockLocker := mocks.NewMockProjectLocker()
++			mockSender := mocks.NewMockWebhooksSender()
++
++			runner := events.DefaultProjectCommandRunner{
++				Locker:           mockLocker,
++				VcsClient:        mockVcsClient,
++				LockURLGenerator: mockURLGenerator{},
++				InitStepRunner:   mockInit,
++				PlanStepRunner:   mockPlan,
++				ApplyStepRunner:  mockApply,
++				RunStepRunner:    mockRun,
++				EnvStepRunner:    mockEnv,
++				WorkingDir:       mockWorkingDir,
++				Webhooks:         mockSender,
++				WorkingDirLocker: events.NewDefaultWorkingDirLocker(),
++			}
++			repoDir := t.TempDir()
++			When(mockWorkingDir.GetWorkingDir(
++				Any[models.Repo](),
++				Any[models.PullRequest](),
++				Any[string](),
++			)).ThenReturn(repoDir, nil)
++			When(mockLocker.TryLock(
++				Any[logging.SimpleLogging](),
++				Any[models.PullRequest](),
++				Any[models.User](),
++				Any[string](),
++				Any[models.Project](),
++				AnyBool(),
++			)).ThenReturn(&events.TryLockResponse{
++				LockAcquired: true,
++				LockKey:      "lock-key",
++			}, nil)
++
++			modelPull := models.PullRequest{BaseRepo: testdata.GithubRepo, State: models.OpenPullState, Num: testdata.Pull.Num, Author: testdata.User.Username}
++			When(runner.VcsClient.GetTeamNamesForUser(Any[logging.SimpleLogging](), Eq(testdata.GithubRepo), Eq(testdata.User))).ThenReturn(nil, nil)
++
++			ctx := command.ProjectContext{
++				User:                testdata.User,
++				Log:                 logging.NewNoopLogger(t),
++				Workspace:           "default",
++				RepoRelDir:          ".",
++				PolicySets:          c.policySetCfg,
++				ProjectPolicyStatus: c.policySetStatus,
++				Pull:                modelPull,
++			}
++
++			res := runner.ApprovePolicies(ctx)
++			Equals(t, c.expFailure, res.Failure)
++			result := res.PolicyCheckResults.PolicySetResults[0]
++			Equals(t, c.expTotalApprovals, len(result.Approvals))
++			Equals(t, c.expValidApprovals, result.GetCurApprovals())
++			if c.hasErr {
++				Assert(t, res.Error != nil, "expecting error")
++			}
++		})
++	}
++}
+diff --git a/server/events/templates/policy_check.tmpl b/server/events/templates/policy_check.tmpl
+index 69ab18cc8d..77554edd73 100644
+--- a/server/events/templates/policy_check.tmpl
++++ b/server/events/templates/policy_check.tmpl
+@@ -1,9 +1,37 @@
+ {{ define "policyCheck" -}}
+ {{ $policy_sets := . }}
+-{{ range $ps, $policy_sets }}
++{{ range $_, $ps := $policy_sets }}
+ #### Policy Set: `{{ $ps.PolicySetName }}`
++{{- $approvedHashes := $ps.ApprovedHashes -}}
++{{- if and (ne $ps.PolicyItemRegex "") (gt (len $approvedHashes) 0) -}}
++{{- $unapproved := list -}}
++{{- $approved := list -}}
++{{- range $item := regexFindAll $ps.PolicyItemRegex $ps.PolicyOutput -1 -}}
++{{- if ne $item "" -}}
++{{- if has (sha256sum $item) $approvedHashes -}}
++{{- $approved = append $approved $item -}}
++{{- else -}}
++{{- $unapproved = append $unapproved $item -}}
++{{- end -}}
++{{- end -}}
++{{- end -}}
++{{- if gt (len $unapproved) 0 }}
++```diff
++{{ join "\n" $unapproved }}
++```
++{{- end -}}
++{{- if gt (len $approved) 0 }}
++<details><summary>:white_check_mark: {{ len $approved }} previously approved {{ if eq (len $approved) 1 }}item{{ else }}items{{ end }}</summary>
++
++```diff
++{{ join "\n" $approved }}
++```
++</details>
++{{- end }}
++{{- else }}
+ ```diff
+ {{ $ps.PolicyOutput }}
+ ```
++{{- end }}
+ {{ end }}
+ {{ end }}

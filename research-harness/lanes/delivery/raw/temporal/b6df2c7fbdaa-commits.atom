@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/temporalio/sdk-python/commits/main</id>
+  <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commits/main"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/temporalio/sdk-python/commits/main.atom"/>
+  <title>Recent Commits to sdk-python:main</title>
+  <updated>2026-11-19T18:27:15Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/333910697b8f7080660a30e14745b68265f55f42</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/333910697b8f7080660a30e14745b68265f55f42"/>
+    <title>
+        Pass through the main module when everything is passed through (#2141)
+    </title>
+    <updated>2026-11-19T18:27:15Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21269208?s=30&amp;v=4"/>
+    <author>
+      <name>1fanwang</name>
+      <uri>https://github.com/1fanwang</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Pass through the main module when everything is passed through (#2141)
+
+A workflow defined in __main__ is imported in the sandbox as
+__temporal_main__, which the host does not have. Passing it through
+failed validation with ModuleNotFoundError, so pass through the host&amp;#39;s
+__main__ instead.
+
+Signed-off-by: 1fanwang &amp;lt;1fannnw@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/7dcabf077e9e33840f3df080d8a7f113caa5ed9b</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/7dcabf077e9e33840f3df080d8a7f113caa5ed9b"/>
+    <title>
+        Fix runtime shutdown before interpreter finalization (#2120)
+    </title>
+    <updated>2026-11-19T17:33:37Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/7474900?s=30&amp;v=4"/>
+    <author>
+      <name>brianstrauch</name>
+      <uri>https://github.com/brianstrauch</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Fix runtime shutdown before interpreter finalization (#2120)
+
+* Fix runtime shutdown before interpreter finalization
+
+* Fix runtime shutdown test for Cloud connections
+
+* Address runtime shutdown review&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/e64f9dd3b3b513da6676caf5c1a6cbbb36119503</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/e64f9dd3b3b513da6676caf5c1a6cbbb36119503"/>
+    <title>
+        Fix stuck workflow eviction after deadlocks (#2142)
+    </title>
+    <updated>2026-11-19T03:30:16Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Fix stuck workflow eviction after deadlocks (#2142)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d8d594bb26ed4632fbc1ee7354af63ec9a1806df</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/d8d594bb26ed4632fbc1ee7354af63ec9a1806df"/>
+    <title>
+        Provide the namespace to external storage drivers (#2119)
+    </title>
+    <updated>2026-11-18T17:58:10Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/44687433?s=30&amp;v=4"/>
+    <author>
+      <name>jmaeagle99</name>
+      <uri>https://github.com/jmaeagle99</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Provide the namespace to external storage drivers (#2119)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/dd1d49176346798a09283fa6d8f7d6169ee250f6</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/dd1d49176346798a09283fa6d8f7d6169ee250f6"/>
+    <title>
+        Pass through from-imported submodules in the workflow sandbox (#2136)
+    </title>
+    <updated>2026-11-17T23:54:07Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21269208?s=30&amp;v=4"/>
+    <author>
+      <name>1fanwang</name>
+      <uri>https://github.com/1fanwang</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Pass through from-imported submodules in the workflow sandbox (#2136)
+
+importlib imports a package&amp;#39;s fromlist submodules with its own import
+function, so the sandbox importer never saw them and reloaded a submodule
+that imports_passed_through() should have passed through. Offer them to the
+importer too.
+
+Signed-off-by: 1fanwang &amp;lt;1fannnw@gmail.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/968c3c9dcf508ceca3f4e34b9ea910425351f6c5</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/968c3c9dcf508ceca3f4e34b9ea910425351f6c5"/>
+    <title>
+        Prepare release 1.36.1 (#2126)
+    </title>
+    <updated>2026-11-14T01:48:17Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Prepare release 1.36.1 (#2126)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1bd72d95bf3d7c594e1a508bbc814b25fed1559a</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/1bd72d95bf3d7c594e1a508bbc814b25fed1559a"/>
+    <title>
+        Increase CI test timeouts (#2125)
+    </title>
+    <updated>2026-11-14T00:33:31Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Increase CI test timeouts (#2125)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/bc45117000471d8b582adc2adfffc6e043f8dc79</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/bc45117000471d8b582adc2adfffc6e043f8dc79"/>
+    <title>
+        Disable single-batch workflow processing by default (#2121)
+    </title>
+    <updated>2026-11-13T23:58:19Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Disable single-batch workflow processing by default (#2121)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d3a25758cc20358b5968160c1a5c708f8887d143</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/d3a25758cc20358b5968160c1a5c708f8887d143"/>
+    <title>
+        Label incoming issues with repository name (#2123)
+    </title>
+    <updated>2026-11-13T19:54:35Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5458976?s=30&amp;v=4"/>
+    <author>
+      <name>tconley1428</name>
+      <uri>https://github.com/tconley1428</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Label incoming issues with repository name (#2123)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/6547f47e903518ca33f232ba38d0c665d6f730ae</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/6547f47e903518ca33f232ba38d0c665d6f730ae"/>
+    <title>
+        Automate Core updates and release preparation (#2112)
+    </title>
+    <updated>2026-11-12T17:47:16Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Automate Core updates and release preparation (#2112)
+
+* Automate Core updates and release preparation
+
+* Update all bridge dependencies during Core updates&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/4733537c4a1d523fa1f0081c18512d895f4f88b8</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/4733537c4a1d523fa1f0081c18512d895f4f88b8"/>
+    <title>
+        Prepare release 1.36.0 (#2110)
+    </title>
+    <updated>2026-11-11T00:36:35Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Prepare release 1.36.0 (#2110)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/57f3dd6b5ef8c9fe4e559c69c6d53ca5da707e39</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/57f3dd6b5ef8c9fe4e559c69c6d53ca5da707e39"/>
+    <title>
+        Update sdk-core to core-v0.11.0 (c675c324) (#2109)
+    </title>
+    <updated>2026-11-10T22:51:25Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/12554095?s=30&amp;v=4"/>
+    <author>
+      <name>veeral-patel</name>
+      <uri>https://github.com/veeral-patel</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update sdk-core to core-v0.11.0 (c675c324) (#2109)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/1f10991d8896bb8a1288238c91407277956f72ff</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/1f10991d8896bb8a1288238c91407277956f72ff"/>
+    <title>
+        Cap pytest below 9.2 for pytest-asyncio compatibility (#2113)
+    </title>
+    <updated>2026-11-10T22:37:18Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Cap pytest below 9.2 for pytest-asyncio compatibility (#2113)&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/cef472618afd415a8247b83263ae8ccd50bc68d9</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/cef472618afd415a8247b83263ae8ccd50bc68d9"/>
+    <title>
+        Skip no-op payload passes and context lookups without a codec or exte…
+    </title>
+    <updated>2026-11-10T21:50:54Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/198548569?s=30&amp;v=4"/>
+    <author>
+      <name>tonypodero</name>
+      <uri>https://github.com/tonypodero</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Skip no-op payload passes and context lookups without a codec or external storage (#2090)
+
+* Skip no-op payload passes without a codec or external storage
+
+* Keep the context-free failure converter and skip the store pass without external storage
+
+- With a cached workflow and no codec or external storage, activation
+  failures are converted with the context-free converter, as before.
+- encode_completion runs the external storage pass only when external
+  storage is configured, so a codec-only worker makes no store-context
+  lookups.
+- The test also counts get_external_store_context lookups and covers a
+  converter with external storage.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/ac50dfc189aab9b3d568df2fefd87fb8f67f7854</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/ac50dfc189aab9b3d568df2fefd87fb8f67f7854"/>
+    <title>
+        Warn against asyncio TaskGroup in workflows (#2085)
+    </title>
+    <updated>2026-11-10T17:49:57Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Warn against asyncio TaskGroup in workflows (#2085)
+
+* Warn against asyncio TaskGroup in workflows
+
+* Update warning message
+
+* Remove obsolete TaskGroup warning test skip
+
+* Clarify TaskGroup replay risk in README&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5d03915302fe506e9142c523b4446bfd69ede81f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/5d03915302fe506e9142c523b4446bfd69ede81f"/>
+    <title>
+        Run Lambda worker shutdown hooks when an invocation fails (#2073)
+    </title>
+    <updated>2026-11-09T19:04:15Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/130693642?s=30&amp;v=4"/>
+    <author>
+      <name>Jackmeson1</name>
+      <uri>https://github.com/Jackmeson1</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Run Lambda worker shutdown hooks when an invocation fails (#2073)
+
+* Run Lambda worker shutdown hooks when an invocation fails
+
+Invoke shutdown hooks from a finally inside the yielded configuration
+scope so invocation errors and cancellation no longer skip them. Keep
+hook-before-teardown ordering and ordinary hook-exception handling.
+
+Co-Authored-By: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;
+Claude-Session: https://claude.ai/code/session_01JfvcPZyKcKQUG9fQGYfRMw
+Signed-off-by: Jackmeson1 &amp;lt;130693642+Jackmeson1@users.noreply.github.com&amp;gt;
+
+* Run Lambda shutdown hooks when task queue validation fails
+
+Include task queue validation in the invocation cleanup scope for plain
+and generator configure callbacks. Preserve hook-before-teardown ordering
+and cover missing task queues in both existing shutdown-hook tests.
+
+Co-Authored-By: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;
+Claude-Session: https://claude.ai/code/session_01JfvcPZyKcKQUG9fQGYfRMw
+Signed-off-by: Jackmeson1 &amp;lt;130693642+Jackmeson1@users.noreply.github.com&amp;gt;
+
+---------
+
+Signed-off-by: Jackmeson1 &amp;lt;130693642+Jackmeson1@users.noreply.github.com&amp;gt;
+Co-authored-by: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9d04d55f52d6ea5d1f513656fa9815de413d1212</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/9d04d55f52d6ea5d1f513656fa9815de413d1212"/>
+    <title>
+        Increase CI test timeouts (#2097)
+    </title>
+    <updated>2026-11-09T17:45:23Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/5472859?s=30&amp;v=4"/>
+    <author>
+      <name>VegetarianOrc</name>
+      <uri>https://github.com/VegetarianOrc</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Increase CI test timeouts (#2097)
+
+* Increase V2 test timeout to 15 minutes
+
+* Increase build and test job timeout to 40 minutes&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/ce519ce1c176a2436ef9200d6fa5e96074611494</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/ce519ce1c176a2436ef9200d6fa5e96074611494"/>
+    <title>
+        fix(lambda-worker): create OTel tracer provider once per process (#2041)
+    </title>
+    <updated>2026-11-09T17:41:21Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/146908506?s=30&amp;v=4"/>
+    <author>
+      <name>avanish-garg</name>
+      <uri>https://github.com/avanish-garg</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;fix(lambda-worker): create OTel tracer provider once per process (#2041)
+
+apply_defaults is called from the configure callback, which run_worker
+invokes on every Lambda invocation. Each call built a new
+TracerProvider with an OTLP BatchSpanProcessor, but OpenTelemetry only
+allows the global provider to be set once, so from the second warm
+invocation on the new provider was never installed or shut down,
+leaking an export thread and gRPC channel per invocation.
+
+Install the provider once and reuse it on later calls. If another
+provider already owns the global slot, shut the unused one down.&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/72406f85e259e81ce165fc686f60e19a28b5c667</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/72406f85e259e81ce165fc686f60e19a28b5c667"/>
+    <title>
+        Bump protobuf from 4.25.9 to 5.29.6 (#2096)
+    </title>
+    <updated>2026-11-07T01:21:35Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/29110?s=30&amp;v=4"/>
+    <author>
+      <name>dependabot</name>
+      <uri>https://github.com/dependabot</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Bump protobuf from 4.25.9 to 5.29.6 (#2096)
+
+Bumps [protobuf](https://developers.google.com/protocol-buffers/) from 4.25.9 to 5.29.6.
+
+---
+updated-dependencies:
+- dependency-name: protobuf
+  dependency-version: 5.29.6
+  dependency-type: direct:production
+...
+
+Signed-off-by: dependabot[bot] &amp;lt;support@github.com&amp;gt;
+Co-authored-by: dependabot[bot] &amp;lt;49699333+dependabot[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/3499a789ef46992b11a8d832a22c4af81a870ba7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/temporalio/sdk-python/commit/3499a789ef46992b11a8d832a22c4af81a870ba7"/>
+    <title>
+        Dedup retried Nexus signals (#2036)
+    </title>
+    <updated>2026-11-07T00:45:48Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/55072906?s=30&amp;v=4"/>
+    <author>
+      <name>atol</name>
+      <uri>https://github.com/atol</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Dedup retried Nexus signals (#2036)
+
+* Dedup retried Nexus signals
+
+* Remove TemporalNexusClient.client and add signal context manager
+
+* Reduce yield points
+
+Co-authored-by: Alex Mazzeo &amp;lt;alex.mazzeo@temporal.io&amp;gt;
+
+* Encapsulate logic in context manager
+
+* Restore TemporalClient.client
+
+---------
+
+Co-authored-by: Alex Mazzeo &amp;lt;alex.mazzeo@temporal.io&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- OpenGraph Meta Tags (Server Injected) -->
+    <meta name="description" property="og:description" itemprop="description" content="Why Ramp SWE-Bench replaced test-based grading with LLM judges, and how separating evidence from judgment made those judges more consistent." />
+    <link rel="canonical" href="https://builders.ramp.com/post/building-llm-judges-to-judge-llms" />
+    <meta name="author" itemprop="creator" content="Sachet Bangia, Shaiyon Hariri <>" />
+    <meta name="dateCreated" content="2026-11-17T12:00:00.000Z" />
+    <meta name="dateModified" content="2026-11-17T12:00:00.000Z" />
+    <meta name="datePublished" content="2026-11-17T12:00:00.000Z" />
+    <meta property="og:url" itemprop="url" content="https://builders.ramp.com/post/building-llm-judges-to-judge-llms" />
+    <meta property="og:image" itemprop="images" content="https://assets.ramp.com/builders-blog/ramp_engineering.png" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Building LLM Judges to Judge LLMs" />
+    <meta property="og:description" content="Why Ramp SWE-Bench replaced test-based grading with LLM judges, and how separating evidence from judgment made those judges more consistent." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" itemprop="name" property="og:title" content="Building LLM Judges to Judge LLMs" />
+    <meta name="twitter:description" content="Why Ramp SWE-Bench replaced test-based grading with LLM judges, and how separating evidence from judgment made those judges more consistent." />
+    <meta name="twitter:site" content="@tryramp" />
+    <meta name="twitter:creator" content="" />
+    <meta name="twitter:image" content="https://assets.ramp.com/builders-blog/ramp_engineering.png" />
+    <title>Building LLM Judges to Judge LLMs | Ramp Builders</title>
+  
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#787868" />
+
+    
+    
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Ramp Builders" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <meta property="og:site_name" content="Ramp Builders" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="twitter:widgets:csp" content="on" />
+    <meta name="twitter:widgets:dnt" content="on" />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Ramp Builders Blog" href="/feed.xml" />
+    <script type="module" crossorigin src="/assets/index-DaCNdoGx.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DUBq_aFx.css">
+  </head>
+  <body>
+    <noscript>Discover engineering stories and ideas from the Ramp team.</noscript>
+    <div id="ramp-builders"></div>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R2HY3Z89VN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        window.dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-R2HY3Z89VN')
+    </script>
+    <script>
+      !(function () {
+        var analytics = (window.analytics = window.analytics || [])
+        if (!analytics.initialize)
+          if (analytics.invoked)
+            window.console && console.error && console.error('Segment snippet included twice.')
+          else {
+            analytics.invoked = !0
+            analytics.methods = [
+              'trackSubmit',
+              'trackClick',
+              'trackLink',
+              'trackForm',
+              'pageview',
+              'identify',
+              'reset',
+              'group',
+              'track',
+              'ready',
+              'alias',
+              'debug',
+              'page',
+              'once',
+              'off',
+              'on',
+            ]
+            analytics.factory = function (t) {
+              return function () {
+                var e = Array.prototype.slice.call(arguments)
+                e.unshift(t)
+                analytics.push(e)
+                return analytics
+              }
+            }
+            for (var t = 0; t < analytics.methods.length; t++) {
+              var e = analytics.methods[t]
+              analytics[e] = analytics.factory(e)
+            }
+            analytics.load = function (t, e) {
+              var n = document.createElement('script')
+              n.type = 'text/javascript'
+              n.async = !0
+              n.src = 'https://sgmnt-a.ramp.com/analytics.js/v1/' + t + '/analytics.min.js'
+              var a = document.getElementsByTagName('script')[0]
+              a.parentNode.insertBefore(n, a)
+              analytics._loadOptions = e
+            }
+            analytics.SNIPPET_VERSION = '4.13.2'
+            analytics.load('HuQUH6f0UVTnJEHhHiTSyL4hkEO4T4X0', {
+              integrations: {
+                'Sprig (Actions)': false,
+                'Segment.io': { apiHost: 'sgmnt-t.ramp.com/v1' },
+              },
+            })
+          }
+      })()
+    </script>
+  </body>
+</html>

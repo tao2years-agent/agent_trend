@@ -1,0 +1,716 @@
+=== PDF PAGE 1 ===
+            Reducing Interruptions at Work:
+       A Large-Scale Field Study of FlowLight
+
+      Manuela Z¨uger1, Christopher Corley2, Andr´e N. Meyer1, Boyang Li2, Thomas Fritz1,
+       David Shepherd2, Vinay Augustine2, Patrick Francis2, Nicholas Kraft2, Will Snipes2
+
+                               1University of Zurich, Zurich, Switzerland
+                   2ABB Corporate Research, Raleigh, United States
+
+    {zueger, ameyer, fritz}@iﬁ.uzh.ch, {christopher.corley, boyang.li, david.shepherd, vinay.augustine,
+                           patrick.francis, nicholas.a.kraft, will.snipes}@us.abb.com
+
+ABSTRACT                                        Due to the high cost and the high number of interruptions that
+Due to the high number and cost of interruptions at work,     knowledge workers experience every day (e.g., [10, 13]), sev-
+several approaches have been suggested to reduce this cost for      eral approaches have been proposed that can roughly be cate-
+knowledge workers. These approaches predominantly focus ei-     gorized by the interruptions they address: computer-based and
+ther on a manual and physical indicator, such as headphones or      in-person. Studies have shown that the cost of computer-based
+a closed ofﬁce door, or on the automatic measure of a worker’s      interruptions can successfully be mitigated by automatically
+interruptibilty in combination with a computer-based indicator.      detecting a knowledge worker’s interruptibility and mediating
+Little is known about the combination of a physical indicator      interruptions by deferring them to more opportune moments
+with an automatic interruptibility measure and its long-term      (aka. defer-to-breakpoint strategy) [19, 2, 16]. Another strat-
+impact in the workplace. In our research, we developed the     egy to reduce the cost of computer-based interruptions is to
+FlowLight, that combines a physical trafﬁc-light like LED      indicate a person’s interruptibility to co-workers in a contact-
+with an automatic interruptibility measure based on computer        list style application on the computer [30, 21, 5]. While these
+interaction data. In a large-scale and long-term ﬁeld study     approaches have also been suggested for addressing in-person
+with 449 participants from 12 countries, we found, amongst      interruptions, they did not show to have any effect on them,
+other results, that the FlowLight reduced the interruptions of      probably since the contact-list style applications can easily be
+participants by 46%, increased their awareness on the poten-     hidden behind other applications and thus forgotten at commu-
+tial disruptiveness of interruptions and most participants never      nication initiation [21, 5, 12, 14].
+stopped using it.
+                                                         For in-person interruptions—one of the most costly kind of
+                                                                   interruptions due to their high frequency and immediate na-
+ACM Classiﬁcation Keywords                                    ture [29, 13, 24]—approaches predominantly rely on manual
+H.5.3. Information Interfaces and Presentation: Group and      strategies to physically indicate interruptibility, such as wear-
+Organization Interfaces                                        ing headphones, closing the ofﬁce door, or using busy lights
+                                                                         that have to be set manually [29, 1]. Since manual approaches
+                                                                 are cumbersome to maintain, users generally don’t update
+Author Keywords
+                                                     them on a regular basis and their accuracy and beneﬁts are
+Interruption cost; knowledge worker; awareness; physical
+                                                                 limited [25]. Only very few approaches have looked at a
+indicator; automatic interruptibility measure; ﬁeld study
+                                                          combination of a physical interruptibility indicator with an
+                                                            automatic interruptibility measure to reduce the cost of in-
+INTRODUCTION                                             person interruptions [15, 7] and there is no knowledge on the
+Knowledge workers are frequently interrupted by their co-     long-term effects of such approaches.
+workers [13, 10, 29]. While many of these interruptions can
+                                                               In our research, we developed the FlowLight approach, an
+be beneﬁcial, for instance to resolve problems quickly [20],
+                                                            approach to reduce the cost of in-person interruptions by com-
+they can also incur a high cost on knowledge workers, espe-
+                                                              bining a physical interruptibility indicator in the form of a
+cially if they happen at inopportune moments and cannot be
+                                                                        trafﬁc-light like LED (light emitting diode) with an automatic
+postponed [4, 22, 8, 24].
+                                                                        interruptibility measurement based on a user’s computer in-
+                                                                      teraction.  In a large-scale and long-term ﬁeld study with
+ Permission to make digital or hard copies of all or part of this work for personal or     449 knowledge workers from 12 countries and 15 sites of a
+ classroom use is granted without fee provided that copies are not made or distributed      multinational corporation, we evaluated the FlowLight and
+ for proﬁt or commercial advantage and that copies bear this notice and the full citation
+ on the ﬁrst page. Copyrights for components of this work owned by others than the        its effects in the workplace. Over the course of the study,
+ author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or    we collected a rich set of quantitative and qualitative data,
+ republish,            to post               on servers                            or to redistribute                                               to lists, requires prior speciﬁc permission      including self-reported interruption logs of 36 participants, and/or a fee.            Request                     permissions                             from Permissions@acm.org.
+ CHI 2017, May 6-11, 2017, Denver, CO, USA.                               survey responses of 183 participants that used the FlowLight
+ Copyright is held by the owner/author(s). Publication rights licensed to ACM.             for at least 4 weeks, and in-depth interviews of 23 participants.
+ACM 978-1-4503-4655-9/17/05...$15.00
+ http://dx.doi.org/10.1145/3025453.3025662
+=== PDF PAGE 2 ===
+Our analysis of the data shows, amongst other results, that       their approach showed promise in measuring interruptibility,
+the FlowLight signiﬁcantly reduced the number of interrup-      the chosen features are difﬁcult to capture automatically.
+tions of participants by 46%, while having little impact on
+                                                    To automatically detect a person’s interruptibility, Stern et al.important interruptions. Further, the FlowLight increased the
+                                                           developed an approach that is based on the person’s locationawareness on the cost of interruptions within the workplace,
+                                                       and calendar information [28]. Fogarty et al. used speech
+participants felt more productive using the FlowLight and most
+                                                                    sensors, location and calendar information and activity on theparticipants continued using the light for up to 13 months by
+                                                         computer to measure presence and availability [11]; Tani andnow. Overall, the gained insights on the long-term usage of
+                                                 Yamada measured interruptibility using the pressure appliedthe FlowLight provide strong support for the beneﬁts of com-
+                                                     on the keyboard and mouse [31]; and Coordinate by Horvitzbining a physical interruptibility indicator with an automatic
+                                                                         et al. uses user activity and proximity of multiple devices tointerruptibility measure in the workplace and its signiﬁcant
+                                                                    forecast presence and availability [17].
+impact on reducing in-person interruption costs.
+                                                 More recently researchers have also started to use biometric
+RELATED WORK                                              data to measure interruptibility. For instance, Kramer classi-
+Related work on managing interruptions can broadly be     ﬁed interruptibility during a US military training with an elec-
+grouped into strategies for reducing interruptions and disrup-     troencephalography (EEG) sensor that captures the electrical
+tiveness, and ways of measuring and indicating interruptibility.      activity of the brain [23]. Chen et al. calculated interruptibility
+                                                          based on an electromyography (EMG) sensor that captures
+Reducing Interruptions and their Disruptiveness               heart rate variability and muscle activity [9]. In our previous
+Knowledge workers have long recognized the detrimental     work, we used various biometric sensors (EEG, electrodermal
+effects of interruptions and have sometimes developed their      activity (EDA), skin temperature, and photoplethysmography
+own techniques for managing them. These techniques include     (PPG)) to predict interruptibility [32]. Overall, research has
+the use of instant messaging to negotiate availability for an     shown that biometric sensors can be valuable in automatically
+interruption beforehand and reduce the disruptiveness for the     measuring interruptibility, however, at this point the biomet-
+interrupted person [26], as well as the use of manual and       ric sensors required to accurately measure interruptibility are
+physical indicators, such as headphones or a closed ofﬁce door      generally still too invasive for long-term usage.
+to either signal unavailability or tune out distractions [29].                                                   The FlowLight builds upon previous research in this area by
+In addition to these informal means, researchers have devel-     automatically measuring interruptibility based on a combi-
+oped approaches to reduce the negative effects of interruptions.     nation of computer activity, calendar information and log-in
+One strategy to reduce the disruptiveness of interruptions is to       state. It thereby utilizes a minimally invasive set of features
+defer them from moments when the interruptee is in the middle      that performs well without compromising the users’ privacy
+of a task to naturally occurring breakpoints—aka. ‘defer-to-     or requiring additional body-worn biometric sensors. It fur-
+breakpoint’ strategy. This idea is based on studies ﬁnding that      ther extends previous research in this area by combining the
+the cognitive load drops at task boundaries, and that interrup-     automatic measure with a physical indicator.
+tions at lower cognitive load are less harmful [3, 8]. Iqbal
+and Bailey developed a system that implements a defer-to-     Indicating Interruptibility
+                                                   To indicate a knowledge worker’s interruptibility to co-breakpoint policy to reschedule notiﬁcations to more oppor-
+                                                               workers, most prior research focused on contact list-style toolstune moments and found that they caused less frustration and
+                                                                      that are installed on the user’s computer and vary mostly inshorter reaction times [19]. Ho and Intille used accelerometers
+                                                                 the data that is used to determine availability/interruptibility.to detect activity transitions and found that messages on mobile
+                                                         For instance, the ConNexus tool has a contact list view thatdevices were better received during transitions compared to
+                                                               provides awareness information on a person’s device idleness,random times [16]. While these approaches have been success-
+                                                                   log-in state and activity history and thus indicates a person’sful at mitigating interruptions from the computer and mobile
+                                                                        availability to facility communication for the integrated com-devices, they do not address the frequent and costly in-person
+                                                           munication channels, such as IM [30]. Awarenex and Lilsysinterruptions in workplaces that the FlowLight targets.
+                                                                   build on ConNexus, adding mobile location tracking and physi-
+A second strategy that builds upon the idea of deferring inter-      cal presence sensors, respectively. An evaluation of these tools
+ruptions to more opportune moments is to indicate a knowl-     found a qualitative improvement in interruption awareness but
+edge worker’s interruptibility to potential interrupters and     no reduction in the number of interruptions [5]. Lai et al.’s
+thereby implicitly help negotiate the timing of the interruption.    MyTeam approach uses information on presence, network con-
+In the following, we discuss approaches to measure and to      nection and mouse and keyboard activity to indicate availabil-
+indicate a knowledge worker’s interruptibility.                       ity in a contact list. In a small user study, they found that the
+                                                            approach decreased the number of phone calls and voice mails
+Measuring Interruptibility                                     but increased the face-to-face interruptions [21]. Fogarty et
+Previous research has explored various features to measure a        al. developed MyVine that integrates with a phone, IM and an
+person’s interruptibility. For instance, Hudson et al. simulated      email client and uses context information from speech sensors,
+sensors by coding audio and video recordings into features     computer activity, location and calendar information. A four
+related to the person’s current context, such as the number of    week study revealed that the context information was mainly
+people present or the phone being on the hook [18]. While     used as presence indicator and did not prevent interruptions
+=== PDF PAGE 3 ===
+via IM [12]. Overall, study results for these computer-based     Application. The application features three main components:
+interruptibility indicators suggest that they can help increase     a Tracker to capture events relevant for calculating the inter-
+awareness on the disruptiveness of interruptions, which could       ruptibility state, a Status Analyzer to analyze the captured
+be a ﬁrst good step as stated by Beyea[6]. However, the results      events and calculate the user’s interruptibility state on the ﬂy,
+also suggest that these approaches do not reduce in-person     and a Status Manager to manage the user’s current status,
+interruption costs, which is what the FlowLight is addressing.     propagating it to the LED light and other applications, in par-
+                                                                        ticular instant messaging (IM) clients. The application was
+Since in-person interruptions are one of the top causes for                                                       implemented to be compatible with the Windows operating
+interruptions in the workplace and their immediate nature                                                             system, Skype for Business, an IM and video-conferencing
+makes them particularly disruptive [29], researchers found                                                             system, and Ofﬁce 365, a software suite that provides email
+that knowledge workers use physical indicators, such as head-
+                                                       and calendaring services, amongst others. We chose to tailor
+phones or ofﬁce doors to indicate interruptibility and reduce
+                                                              our application to these systems and applications due to the IT
+interruptions and distraction [29].
+                                                                setup at the target company for our study.
+Only few researchers examined indicators that are not just vis-                                                   The Tracker logs a user’s mouse and keyboard interaction.
+ible on a knowledge worker’s computer monitor. InterruptMe                                                               In particular, it collects mouse clicks, movements as pixels
+projects availability cues of possible contacts onto a wall at                                                      moved, scrolling as pixels scrolled and keystrokes (without
+the time when the interrupter is about to initiate a commu-
+                                                                recording the speciﬁc key). This component also logs calendar
+nication [15, 14]. The MoodLight uses an ambient display                                                                events to determine meetings and the Skype status.
+connected to an electro-dermal activity (EDA) monitor that
+indicates the excitement level of one or two individuals [27].    The Status Analyzer uses the tracked keyboard and mouse
+Bjelica et al. developed an automatic interruptibility indicator      events to calculate the user’s interruptibility status on the ﬂy,
+that displays the status through ambient lighting effects and        i.e., whether the user is available, busy, highly busy (DnD)
+found in a small and short study that the indicator reduced the      or away. The algorithms used to calculate the interruptibility
+number of interruptions [7]. The FlowLight presented in this      status are described below.
+paper uses a physical trafﬁc-light like LED placed at the desk
+                                                   The Status Manager is notiﬁed by the Status Analyzer atof each person, such that the person’s interruptibility status
+                                                               every change in the user’s interruptibility, and then propagatescan be seen by anyone approaching. Thereby, our approach
+                                                                 the updated status to the physical LED light and the user’sis more direct and prominent than subtle ambient lighting
+                                                            presence status in Skype for Business. The presence statusand different to previous research, our large-scale ﬁeld study
+                                                                    in Skype for Business can also be changed manually by theexamines the long-term effects of such physical indicators.
+                                                                      user, or automatically by the Ofﬁce 365 calendar, in case a
+                                                         meeting is scheduled. In case the presence status is changed
+APPROACH AND IMPLEMENTATION
+                                                               manually, the Status Manager updates the interruptibility state
+The FlowLight consists of a computer application to automat-
+                                                                of the application and the physical LED light.
+ically determine a user’s interruptibility state and a physical
+LED light to indicate this state to co-workers. The FlowLight     Algorithms for Status Updates. Over the course of this study,
+was developed iteratively over more than a year and improved    we used three different algorithms to determine and update the
+continuously based on feedback from a small developer team       interruptibility status automatically, improving them based on
+that we used for testing, and later on, also based on feedback       critical user feedback as discussed below.
+from study participants.
+                                                            FlowTracker. This algorithm sums up the computer interac-
+Physical LED Light. FlowLight uses a physical trafﬁc-light      tion in the past three minutes according to heuristic weights
+like LED to indicate the interruptibility status to co-workers.     assigned to each type of event, which were tuned based on
+This light has evolved throughout the pilots1. The ﬁrst model,     feedback from early alpha and beta users of the FlowLight.
+which was designed and soldered in-house, is shown in Fig-       If the value of the sum is in between the top 9% and the top
+ure 1a. In Figure 1b the same model light is shown encased    4% of their activity range—we captured averages over the
+in plastic and deployed in an open ofﬁce space. Finally, Fig-      past days—the user is considered busy. If it is within the top
+ure 1c shows the blink(1)2 LED light that we adopted to avoid     4%, the user is considered highly busy. In our ﬁrst pilot study
+installation issues with certain drivers immediately after the      in Bangalore, India (India #1 in Figure 2), we used different
+ﬁrst major pilot, which was also the ﬁrst of two pilots in India      thresholds at ﬁrst, namely 13% and 5% based on a prior study
+(denoted as India #1 in Figure 2). Typically, we mounted the       that indicated that knowledge workers are not interruptible for
+LED light on a user’s cubical wall or outside a user’s ofﬁce.      approximately 18% of their day. However, several technical
+                                                                     writers (and others) involved in that pilot gave strong feedback
+The light uses different colors to indicate four states: Available
+                                                                      that the light switched to the busy state too easily, which is
+as green, Busy as red, Do Not Disturb (DnD) as pulsating red,
+                                               why we lowered the thresholds to the mentioned 9% and 4%.
+and Away as yellow. Note that these states and colors mimic
+the ones used by prominent instant messaging services, in     Smoothing. While the FlowTracker showed promise, many
+particular the one used by the company under study.               early users complained that it was too sensitive to certain input.
+                                                            For instance, a twenty second burst of typing may cause a user
+1We use the term pilot to refer to each individual ﬁeld study trial
+                                                                    to temporarily be shown as busy. Therefore, the Smoothingwith a separate team.
+2https://blink1.thingm.com/                                    algorithm marks users as busy if they were active in each of the
+=== PDF PAGE 4 ===
+ (a) July 2015 - Original Prototype       (b) August 2015 - First Major Pilot       (c) October 2015 - Blink(1) Version       (d) April 2016 - Deployment in Sec-
+                                         (Lights Emphasized with Overlays)      with Adhesive Clip                  ond Pilot in India (India #2)
+
+                         Figure 1: Evolution of the Physical Indicator of the FlowLight Over Time
+
+
+last three minutes and exceeded a threshold of 100 combined
+mouse clicks and key presses in the recent past (between 4
+and 7 minutes ago). This algorithm reduces frequent changes
+by requiring over three minutes of activity to become busy
+and, once busy, by requiring only one above-threshold minute
+in the recent past to remain busy. To achieve the highly busy
+status, users had to be busy at the current point in time and
+                                                                        Figure 3: Timeline of Study Procedurehad to be above-threshold for ﬁfteen of the last thirty minutes.
+
+Smoothed FlowTracker. While the Smoothing algorithm leads                                                         and the major pilots of this study since its beginning and up to
+to fewer status changes, since it relied on a static threshold                                                         September 2016.
+(i.e., 100 combined mouse clicks and key presses), it did not
+adapt to individual users’ work patterns. For instance, design-
+ers working on drawings tended to use mouse clicks almost     Study Procedure
+exclusively, which makes it difﬁcult to exceed the threshold.     For each team participating in our ﬁeld study we conducted
+Thus, we ﬁnally combined the FlowTracker algorithm with      the same ﬁve-week pilot procedure as illustrated in Figure 3.
+the Smoothing algorithm to achieve the advantages of both      Prior to the start of a pilot, we asked the participants to install
+approaches. This algorithm, currently in use, operates as the      the FlowLight application in ‘data collection only’-mode.
+Smoothing algorithm, but instead of using a static threshold, it                                                                 In Week #1 of the pilot, users were instructed to use the Flow-
+utilizes the FlowTracker algorithm to determine above thresh-                                                               Light application to manually log the time and severity of each
+old values. This algorithm eliminated all of the most common                                                                      interruption during the ﬁve day work week. Our application al-
+complaints reported by pilot users. Further reﬁnement of the                                                         lowed participants to log interruptions by a click on the taskbar
+algorithm is left for future work.                                                menu or a hotkey combination for minimal invasiveness. As
+Although our main intent was to use an algorithm to infer     soon as an interruption had been logged, a single modal dialog
+interruptibility, we offered participants a “Manual Only” mode     appeared that asked participants to specify the severity of the
+since it was requested by some participants, especially those      interruption on a 5-point Likert scale.
+with management roles that needed to be available to others                                                     At the beginning of Week #2, the physical indicator of the
+most of the time, and we noticed (and our study conﬁrmed)                                                         FlowLight was installed and the automatic status update fea-
+that our algorithms might not be accurate for everyone or for                                                                     ture for the interruptibility status was activated. To minimize
+all activities requiring focus, such as reading or thinking.                                                          Hawthorne-type effects and have participants and co-workers
+                                                                   get used to the FlowLight, we then waited for one week before
+EVALUATION                                    we gave further instructions.
+To evaluate the FlowLight, in particular the combination of the                                                     At the beginning of Week #3, we again asked participants to
+physical indicator and the automatic interruptibility measure as                                                         manually log their interruptions for 5 work days. We also
+well as its effect on knowledge workers, we conducted a long-                                                        reminded participants about the manual logging in Week #1
+term and large-scale ﬁeld study with 449 knowledge workers.
+                                                        and #3 to ensure they would not forget.
+For this study, we installed the FlowLight at over 15 locations
+in 12 countries of one multinational corporation. Over the     During Week #4 and #5 users continued using the Flow-
+course of the study, we collected a rich set of data using a      Light. Throughout these 5 weeks the application collected
+combination of experience sampling, a survey, an interview     anonymized usage data. At the end of Week #5, after par-
+and computer interaction monitoring. Figure 1 illustrates a few      ticipants had the FlowLight for four weeks, our application
+pictures of the FlowLight in use in different pilots. Figure 2     prompted them to complete a survey. The survey took an av-
+indicates the increasing and continuous number of participants     erage of 14.2 minutes to complete and had questions on the
+=== PDF PAGE 5 ===
+Figure 2: FlowLight Users Over Time (Size of Orange Circles Indicates the Number of Participants; Regular Dips in the Number
+of Pilot Users Represent Weekends and the Prolonged Dip in December/January 2016 represents the Christmas Break)
+
+FlowLight approach and its impact, in particular on partici-     a variety of work areas, including 77 participants in develop-
+pants’ interest in continuing using the approach, its impact     ment, 56 in other engineering, 24 in project management, 15
+on interruption costs, productivity and interaction behavior,      in other non-engineering, and 11 in testing, and with various
+on the accuracy of the automatic state detection and manual      job roles, including 70 individual contributors, 36 other, 32
+setting, as well as on general feedback and demographics. Af-      leads, 31 managers, 8 executives, and 6 architects;
+ter completing the survey, users were asked on the last page     Interview transcripts (conducted by us) from 23 participants
+of the survey to upload their data collected by the FlowLight      (IDs: I1-I23), 22 of which were male, 1 female, average age of
+application, which included the usage data logs and the logs     36.9 years (± 5.8), average experience of 13.2 years (± 4.7),
+of the manually captured interruptions.                        and with various job roles, including 9 managers, 11 software
+                                                                 developers, 1 researcher, 1 product owner, and 1 tester;For a deeper understanding of the long-term usage, experience
+and effect of the FlowLight, we conducted in-depth interviews     Interruption logs (self-reported) from 36 participants across
+with a subset of participants approximately two months af-      six different countries, 13 from Argentina, 6 from Norway, 5
+ter they installed the FlowLight. Interview participants were     from Poland, 5 from Switzerland, 5 from Sweden, and 2 from
+selected semi-randomly, based on accessibility, availability      the USA;
+and willingness to participate in the interview. The interviews     Usage data logs from 47 participants (IDs: D1-D47) 20 from
+were on average 19.5 minutes long and the questions focused      Argentina, 18 from India, 4 from Poland, and 5 from Vietnam.
+on the beneﬁts and limitations participants observed with the
+                                                        Online logs from all 449 participants that installed the ap-
+FlowLight approach, as well as on how it impacted their own
+                                                           proach (each one had the application running for at least one
+behavior and interactions in the team over the course of the
+                                                        day after we integrated the logging feature).
+two months since the installation. For instance, we asked par-
+ticipants whether they felt that their colleagues respected their     Note that due to privacy concerns with the collected data, we
+FlowLight or if they noticed situations in which the status was      did not require participants to identify themselves in each
+not accurate. Note that the interview and survey questions can      step and/or ﬁll in their demographics, except for the survey,
+be found on our supplemental materials site 3.                 which is why we can only report some demographics for each
+                                                          round and are not able to track the participants across the dif-
+Independent of the timeline of the study procedure, we also      ferent methods, for instance the survey and the self-reported
+started to anonymously log the number of people running the      interruption logging.
+FlowLight application each day. For privacy reasons, we only
+keep track of the number of unique active FlowLight users in
+                                                       Data Collection and Analysis
+the online log.
+                                                      Survey and Interview. In total, we collected survey responses
+                                                        from 183 participants after they had been using the FlowLight
+Participants                                                       for at least four weeks, and interview transcripts from the 23
+Since the beginning of our study 13 months ago, we installed                                                                    participants after they had been using the FlowLight for ap-
+the FlowLight approach with a total of 449 participants from                                                            proximately two months. To analyze the textual data of the
+15 sites, located in 12 different countries, of one multinational                                                              survey and interview responses, we used techniques based on
+corporation. From these 449 participants, we were able to                                                      Grounded Theory, in particular open coding and axial coding
+gather:                                                                     to determine higher level themes. To establish a common set
+Survey responses from 183 participants (IDs: S1-S183), 144      of codes and themes, two of the authors applied open axial
+male and 39 female, with an average age of 36.0 years (stan-     coding to the same subset of interview transcripts and then
+dard deviation, in the following denoted with ±, of 8.7), an      established a common understanding and deﬁned a structure
+average professional experience of 12.0 years (± 8.0), from      for the most commonly mentioned concepts. As the topics of
+                                                                 the survey and interviews overlap, we used and extended the
+3https://sites.google.com/site/focuslightonline              same coding scheme to analyze the textual survey responses.
+=== PDF PAGE 6 ===
+To validate the analysis of the survey results, two additional        9                              35                                                         •
+authors extracted their main ﬁndings from a subset of the re-
+sponses independently.                                                  8                              30                                                         •
+Interruption Logs. Interruption logs capture the self-reported        7                                                                                                     25                                                         ••interruptions per participant logged with the FlowLight soft-
+ware. We collected interruption logs with at least two logged        6                                                          •                                                                                        ••                                                                                                    20                   •
+interruptions from 102 participants. We down-selected these         5
+to 36 logs by applying strict ﬁltering criteria to ensure data                                         15
+validity as follows. We excluded all interruptions in all logs       4                                                                                                              •
+that were accidentally logged during the ﬁrst ﬁve days after                                        10                                                                            3
+the installation of the FlowLight, as interruptions in the pe-
+                                                                                                                    5riod right after the installation are not representative due to        2
+Hawthorne-type effects, such as participants getting used to
+                                                                                                                                       1                             0
+the FlowLight, and co-workers asking curiosity questions. We
+then excluded all participants, that logged interruptions for         Before Installation   After Installation      Before Installation   After Installation
+fewer than three days in the pre- or the post-installation period.       (a) Interruptions per Participant and   (b) Number of State Changes per Par-
+We chose three days as the threshold for each period to ensure       Day.                                     ticipant and Day.
+a representative sample of work days for comparison without
+a too strong bias by individual outlier days. Each of the 36      Figure 4: Logged Interruptions and State Changes Before and
+interruption logs captured a combined average of 9.0 work      After Installing the FlowLight.
+days (± 2.2) for pre- and post-period, and contained an aver-
+age of 28.9 total logged interruptions (± 17.0) per participant      Light. We analyzed differences between the data sets gathered
+for the combined time period. We used these interruption logs     with the three main variations of the algorithms and found
+to compare the impact of the FlowLight on the number of     no signiﬁcant differences between the data collected with any
+interruptions rated as disruptive by participants.               two variations, neither in the collected survey items, nor the
+                                                                   interruption logs. In the following, we will therefore presentUsage Data Logs. We captured usage data logs from a total
+                                                                  the results aggregated over all variations.of 179 participants. These logs consist of computer interac-
+tion logs, such as mouse and keyboard events, and FlowLight
+                                              RESULTS
+usage data. Since we wanted to analyze user behavior before
+                                                               In this section we present the primary ﬁndings of our ﬁeld
+and after installing the light, we removed any logs that did not
+                                                                   study. We ﬁrst examine the effect of the FlowLight on
+include at least two days before and after installing the light.
+                                                                 the cost of interruptions before we examine how the Flow-
+We also excluded logs older than January 2016, as key usage
+                                                             Light changed participants’ interruption awareness,  their
+messages were not yet logged by our software, making the
+                                                                     interruption-related behavior, and their perception of produc-
+analysis infeasible. We ended up with 47 usage data logs con-
+                                                                                 tivity. Subsequently, we present insights on the costs of the
+taining a total of 1560 work days. These logs consisted of an
+                                                             approach, on the inﬂuence of its accuracy, on its continued
+average of 7.3 work days (±4.2) prior to light installation and
+                                                           usage by participants and on professional differences.
+25.9 work days (±14.0) after light installation per participant.
+We analyzed usage logs in two ways. First, we counted the    Reduced Cost of Interruptions
+number of status change events recorded in the log per day     Figure 4a is based on the 36 collected interruption logs and
+per user for the period before and after the light installation       illustrates the distribution of the number of interruptions per
+event.  It is worth noting that we only included usage logs     day and participant in the period before and the period after
+within the ﬁve work days and not on weekends. Second, we      participants had been using the FlowLight for one week.
+used the intervals between status change events detected by
+                                                                    Overall, the number of interruptions decreased after the instal-one of our algorithms to determine how much time was spent
+                                                                     lation and one week usage of the FlowLight by an averagein each status, again for before and after light installation. To
+                                                               of 1.9 (±1.6) interruptions (49%) per participant and day,eliminate inappropriate intervals (e.g., a user did not turn off
+                                                      from 4.1 (±2.1) to 2.2 (±1.1). A Wilcoxon signed-rank testthe workstation after work), we only accumulated the duration
+                                                      showed that this reduction is statistically signiﬁcant (Z =-5.0,within 12 hours per day.
+                                                      p <.000001).
+Online Logs. We collected online logs for a total of 305
+days from November 2, 2015 until September 2, 2016 and   A second Wilcoxon signed-rank test only on the number of
+from 449 participants. These logs were used to determine      severe interruptions (disruptiveness rating of 4 or 5) per day
+how many users were using the FlowLight on a given day (as     and participant further showed that there is also a statistically
+shown in Figure 2). We analyzed these logs by summing up      signiﬁcant reduction with p <.001 and Z = -3.2.
+the number of unique identiﬁers that appeared in the log on
+                                             An analysis of the survey results (see Figure 5 for more detail)a given day, which represents the number of active users for
+                                                                      further supports that installing the FlowLight reduced the costthat day. Based on participants’ feedback during the period
+                                                               of interruptions. 55.0% of the 182 survey participants thatof the ﬁeld study, we deployed the three main variations of
+                                                        answered the question stated that they either strongly agree,the algorithm described earlier to set the status of the Flow-
+                                                             agree or agree somewhat that they were interrupted less than
+=== PDF PAGE 7 ===
+     The state as represented by the color of the FORZ/ight               12.0%                    17.2%                                                         70.8%
+  captured my state of availability for interruptions accurately.                                                                                                                           Strongly agree
+
+        With the FORZ/ight I am interrupted less than usual.                        26.8%         20.6%                                               52.6%                     Agree
+              With the FORZ/ight I had less interruptions at                      23.0%            19.2%                                                  58.0%                Somewhat agree
+                  inopportune moments than I usually have.
+                                                                                                                                                         Somewhat disagree
+       My colleagues respected the state of my FORZ/Lght.                  18.2%            24.0%                                                     57.9%
+                                                                                                                                                                                    Disagree
+                            I would like to continue using the FORZ/ight.              12.0%                         10.0%                                                         78.0%        Strongly disagree
+
+                      I felt more productive when using the FORZ/ight.                     23.4%           20.6%                                                 56.0%                   8QGHFLGHG
+
+                                                         40%    20%    0%     20%    40%    60%    80%
+                                   Figure 5: Results of a Subset of the Survey Questions.
+
+ usual during their work, while only 20.3% disagreed with     The increased awareness and respect also triggered partici-
+ it. Even more participants, 59.3%, agreed that they had less      pants to change their behavior in a variety of ways, ranging
+ interruptions at inopportune moments than usual, whereas only     from thinking twice before asking, to deferring the interrup-
+ 19.8% disagreed with this statement.                                 tion, asking before interrupting and changing to a different
+                                                         communication channel, such as email or instant messaging:
+ During interviews participants echoed this quantitative evi-
+ dence. In interview excerpts (full quotes listed in subsequent    “People ask each other if they are available, even when the light
+ subsections) participants consistently mentioned that interrup-       is green, even to people with no light. When I see the colleague
+ tions were reduced. They claimed that the pilot “..resulted in       I want to ask a question ... has a red light, then I wait a while,
+ less interruptions..” (S126) , eliminated interruptions from     or write an email.” (S77)
+ colleagues (e.g., “When [the light]’s red I think they don’t in-     “If it’s red, I’ll send them a message so that when they’re no
+ terrupt.” (I11) ), and “..didn’t stop [interruptions] completely     longer busy or something like that, they’ll see the message
+ but they surely reduced.” (S16) .                           and they can respond to it then ... so it doesn’t require an
+                                                           immediate response” (I19) Overall, our ﬁndings from the interruption logs, survey ques-
+ tions, and interview questions show strong support that the      Fortunately, participants used common sense when working
+ introduction of the FlowLight reduced the cost of interruptions     with FlowLights. If a light was red or red blinking participants
+ in terms of the overall number as well as their severity.          would still interrupt if the request was urgent:
+
+                                                   “Once I go up there [to the person] and I see the light and then
+                                                                                  I also see that they’re pretty intense then I’ll push it off unless
+ Increased Awareness of Interruption Cost                                                                                  I really need to get answered to.” (I17)
+ After using the FlowLight for some time, participants devel-
+ oped a high degree of awareness for the cost of interruptions:     Feeling of Increased Productivity and Self-Motivation
+                                                As a further effect of the FlowLight, 58.5% of the survey“It brings more awareness to what people are doing. Sometimes
+                                                             respondents felt more productive using it, while only 20.1% people take it for granted that people are always interruptible.
+                                                               disagreed with this (Figure 5). This feeling of increased pro- But there is actually a cost or a penalty when you interrupt
+                                                                     ductivity often stemmed from the fewer interruptions: someone. So, I think just the concept is good because it re-
+ minds people that there is sometimes a good time and a bad     “I deﬁnitely think it resulted in less interruptions both in person
+ time to interrupt people. So, I think just from an awareness     and via Skype. This resulted in more focus and ability to ﬁnish
+ campaign, it’s valuable as well.” (I20)                        work.” (S126)
+“The pilot increased the sensitivity to interruption. Team mem-     Another reason for the increased productivity is that the Flow-
+ bers think more about whether an interrupt is necessary and      Light serves for some participants as a self-monitoring device
+ try to ﬁnd a suitable time.” (S45)                                   that motivates them to become or stay focused, which, how-
+                                                                        ever, can also be distracting at times:
+ The FlowLight thereby served as a physical reminder for the
+ interruptibility of co-workers in the moment and participants    “Mostly it has helped as a personal monitor only for me. If I see
+ generally respect it and its state:                                   the light red, I sense I am in the ﬂow and I keep working.” (I2)
+“It’s kind of a like a mood indicator ... so it tells people the state    “When I notice that my light is turning yellow, and I’ll feel like,
+  ... of the owner of the light. And then it helps people be more    ’Oh yeah, I’ve been idle’ and then I do something ... I think
+ aware or attentive to what my current situation is.” (I18)         the other way, yeah, there’s some effect there too. Like, if
+                                                                                I see that it’s red, or even ﬂashing red, then I’m like, ’Yeah,
+“I think what really changed is ... a different consciousness
+                                                                       I’ve been very active, or productive, I should keep that going.’
+ about interruptions in our team and also with my colleagues
+                                                            At the same time, I think it’s also a little bit distracting too.
+  ... I think ... they really respect the light. When it’s red I think
+                                                        Sometimes just because the light is there, I turn around to
+ they don’t interrupt.” (I11)
+                                                             check it.” (I12)
+ Overall, 70% of the 23 interview participants explicitly stated
+ that the FlowLight is respected in their ofﬁces and 59.6% of     Costs of Using the FlowLight
+ 183 survey respondents agreed that colleagues respected the     While people experienced reduced interruption costs and in-
+ state of their FlowLight vs. 23.0% that did not (Figure 5).         crease in productivity, there are also costs when starting to use
+=== PDF PAGE 8 ===
+ the FlowLight. Especially right after installing it the curiosity      100%
+ of co-workers can lead to an increase of interruptions, which,      80%
+ however, diminishes after a few days:
+                                                                   60%
+“People walk by, they see it, they ask me questions, ’What’s
+                                                                   40%
+ that? How does it work? What’s going on?’ like this.” (I19)
+                                                                   20%
+“Initially there were many people just curious to know what the
+ light is about. This increased the number of interruptions but       0%
+ after few days, people started to respect [it].” (S16)                     Away          Free          Busy         Dnd                                                                                                        Pre       Post      Pre       Post      Pre       Post       Pre       Post
+A few participants also experienced situations in which the        Mean: 40.0%   39.2%   51.2%   47.0%   5.9%    10.9%    2.9%    2.9%
+ FlowLight provoked interruptions, as the green color of the                                                             Figure 6: Time Spent in each State Before (Pre) and After
+ light might be misunderstood as an invitation (observed by                                                                    (Post) Installation.
+ 26% of the interviewed participants):
+“What I deﬁnitely notice is that green is more inviting. So it
+ actually encourages people to come by and say, “Hello” for                                                                    increase shows that the automated algorithm is affecting users’
+ me at least.” (I20)                                                                           availability status in Skype. Figure 6 presents the time spent in
+ In some cases, changing the interaction culture might require     each state before and after light installation. Analysis of this
+ a mandate from higher up or can even be too expensive:           data shows a small insigniﬁcant decrease in time spent in the
+                                                                   available state from 51.2% to 47.0% (Wilcoxon signed-rank“The more important issue is for it to work, you have to have
+                                                                             test Z =-1.7143, p = .043) and a signiﬁcant increase in the people committed to following the light rules, which probably
+                                                              time spent in the busy state from 5.9% to 10.9% (Z =-3.6403, requires engagement of some higher management ... and re-
+                                                       p ≤.01), a very small yet signiﬁcant difference in do not dis- quires introducing the lights to a wider audience.” (I6)
+                                                                     turb state (Z =-3.2093, p ≤.01), and no signiﬁcant changes to
+“For us ... the main cost of introducing [it is] that you have to     time spent in the away state. Note that during the before-light
+ change how you are used to interact with people, that you ﬁrst      period the status was already affected by meetings entered in
+ have to remember to take a look at the light. That’s something      the calendar, which caused the status to change to busy.
+ that’s probably too much for the team. [In] our environment ..
+ it’s easier to look at the people than at lights.” (I8)                Participants generally agreed that the FlowLight captured their
+                                                                          state of availability for interruptions accurately:
+ If colleagues choose to ignore the light, especially for unim-
+ portant interruptions, it can lead to negative emotions:           “I think it [state representativeness] was actually quite good,
+                                                           because what I found is, if I’m not working on a critical task,
+“So, for us, what we also heard sometimes is that people have                                                                     for example, responding to email which usually isn’t criti-
+ the light red, and others still interrupt them, and they’re like,                                                                     cally mind provoking. The light would be green and then
+’Oh no, I have this light red, why did they?’ Like it bothers                                                            people would take that opportunity to stop by and see what
+ them, and it creates negative emotions almost more than it                                                                   they needed to talk about. Whereas if I was in the middle of a
+ creates positive emotions...” (I17)                                                           meeting or if I was more involved in my work, it would turn
+ Finally, the public disclosure of the interruptibility status might      red and then at that point they might wait for it to turn green.
+ make people feel exposed at times (8% of survey participants      That’s my impression.” (I20)
+ agree, 6% strongly agree) or lead to negative feelings:                                                                  Overall, 71.0% of survey respondents agreed that the Flow-
+“Oh, do other people see that my light is yellow? And are they     Light captures their state accurately while only 15.8% dis-
+ thinking that I’m not working?” (I12)                           agreed (Figure 5). This shows that even an interruptibility mea-
+                                                                  sure based on a simple algorithm might be accurate enough to Like any new technology, there is a cost to adopting the Flow-
+                                                          be accepted by users and provide value. Light. However, most of the identiﬁed costs diminish quickly
+ or can be mitigated by clear direction from management. Over-    At the same time, interview participants and 64% of our sur-
+ all though participants predominantly stated that the colors of     vey respondents mentioned that there are situations where the
+ the light were interpreted appropriately and were mostly not     FlowLight was not representative and accurate, partly stem-
+ concerned about being observed.                           ming from limitations in measuring interruptibility solely with
+                                                          computer interaction data:
+ Automatic State Changes and Accuracy
+                                                   “The light was mostly green while debugging code. During The algorithm of the FlowLight caused automatic state
+                                                               debugging, I think interrupts hurt a lot. On the other hand, the changes to indicate a user is, for instance, available for in-
+                                                                            light was sometimes red when working on documents / e-mails terruptions or busy and not interruptible. Figure 4b illustrates
+                                                                      that do not require too much focus.” (S45) the change in distribution of the number of state changes per
+ participant per day before and after installation. A Wilcoxon    “[The] light captures the movements of the mouse and keyboard,
+ signed-rank test with Bonferroni-adjusted alpha levels of .01     and actually, there are times, which I think of a solution sepa-
+ per test (.05/5) showed a statistically signiﬁcant change in      rate from the time, which I implement [it] so ... I’m the most
+ the number of state changes (Z =-5.5337, p ≤.01) with an     occupied when I think something and usually, I write it on a
+ increase in state changes from 1.8 before to 8.4 after. This     paper or just keep it on my mind.” (I4)
+=== PDF PAGE 9 ===
+ In several cases, participants just changed to setting the state      project managers stated more frequently than participants from
+ manually when it was not accurate and they wanted to indicate      other working areas that they wanted to continue using the
+ to others that they are available or do not want to be disturbed:     FlowLight , even though not signiﬁcantly (82% vs 70% on
+                                                                average) and perceived their state to be signiﬁcantly more ac-“There was a case when I was reading an article, and I needed
+                                                                   curate (77% vs 60%, t =2.51, p =.01). For project managers, a 100% concentration on that, so I just manually changed my
+                                                                   these differences might be explained by the fact that they also status to busy. It was helping me a lot. I think my colleagues
+                                                                   reported more often (but not signiﬁcantly) to manually change are also doing the same when they are engrossed in an article
+                                                                          their FlowLight status on a daily basis than participants from and they want free time, they’ll just keep their light busy.” (I4)
+                                                                  other work areas (24% vs 16%) and by our experiences gath-
+ In fact, 32% of our survey respondents reported to have      ered during the installation phase, in which managers often
+ changed their Skype status (which is linked to the FlowLight)     asked to disable the automatic mode completely as they wanted
+ more often after the light was installed, 23% less often and      to be available for most of their work time. For developers, the
+ 45% had no changes. With the FlowLight installed, 17% of      differences might be explained by their extensive computer
+ participants reported to change their status at least once a day,      interaction, but future research is needed to conﬁrm this.
+ 37% one to several times a week, and 46% rarely or never.
+ The job role can also affect the accuracy of the FlowLight,                                                 DISCUSSION
+ especially for managers, administrative assistants, and sales                                                    The results of our large-scale and long-term study show that
+ people. For instance, several managers mentioned that interac-                                                                    the FlowLight can reduce the interruption costs for knowledge
+ tion was such a core part of their role that they felt they should                                                           workers and can increase the awareness, amongst other bene-
+ always be available and turned off the automatic feature.                                                                          ﬁts. In the following, we discuss implications of our ﬁndings,
+                                                                     in particular with respect to the combination of the physical Continued Usage of FlowLight
+                                                                      indicator with the automatic interruptibility measure, the accu-
+ Most participants, 82.6% of the 23 interview participants and
+                                                               racy of the measure, and the cost of not interrupting. Finally,
+ 79.1% of the 183 survey participants, stated their intention
+                                               we discuss threats to validity and limitations of our study.
+ to keep using the FlowLight even after the pilot period. This
+ sentiment is reﬂected in actual usage data: two months after
+ installing the FlowLight application 85.5% of users remained     Reasons for FlowLight’s Positive Effects
+                                                   The FlowLight uses a combination of a physical LED light active (384/449).
+                                                            with an automatic measure based on computer interaction to
+ Based on online logging of application instances that we     update the user’s interruptibility status. The ﬁndings show
+ started in November 2015, Figure 2 shows the number of      that the approach was well adopted and successfully reduced
+ active FlowLight users per day. The Figure also depicts the      in-person interruption costs. This poses the question if these
+ start date and relative size for the major pilots (e.g., India #1      effects might after all stem solely either from the automatic
+ started in August ’15 and had 80 participants, Norway started       interruptibility measure or the physical LED light. With re-
+ in November ’14 and had 44).                                    spect to the sole use of an automatic interruptibility measure,
+                                                                     prior related work that used an automatic measure to update Note that due to holidays in different locales, vacation, sick
+                                                           computer-based contact-list style tools, did not ﬁnd any or days, and travel the number of active users per day is consis-
+                                                                 the same level of positive effects as our study on both, cost tently about 70% of the number of unique users over the last
+                                                                  reduction and awareness [30, 5, 21]. On the other hand, manu- month (e.g., a measure of 200 active users per day indicates
+                                                                         ally maintaining the interruptibility state incurs a high cost as about 315 number of unique users in the last month).
+                                                      shown by previous research [25] and only very few of our users
+ In spite of most users continuing to use the FlowLight, about     switched to the manual option in cases the algorithm was not
+ 20% of users discontinued usage. There were several rea-     accurate enough or they wanted to ensure some undisrupted
+ sons that we identiﬁed from the interviews and surveys that      time. In addition, our ﬁndings show that while participants
+ decreased the beneﬁt of the FlowLight, including the ofﬁce     have a high tolerance for the accuracy of the automatic inter-
+ layout and the visibility of the LED light, the company culture       ruptibility status updates, when inaccuracies happen too often,
+ and people ignoring the lights, the initial willingness to use      participants also stop using the approach altogether. Overall,
+ such a system, and the accuracy of the state indicated by the       this indicates that the combination of the physical LED light
+ FlowLight. In some cases, the decreased beneﬁt also resulted     and the automatic interruptibility measure is important to pro-
+ in participants ceasing to use the FlowLight:                     vide signiﬁcant beneﬁts to knowledge workers to use it in the
+                                                             long-term and that it led to the positive impact on awareness“From my perspective that was something I was against from
+                                                         and interruption cost found in our study. the ﬁrst day but as I said I decided to join the pilot because
+ I am a team member.  ... From time to time I was looking at
+ it but it was a little bit discouraging because the color of the     Accuracy of Automatic Interruptibility Measure
+ light didn’t reﬂect what I was doing and maybe after one week      Participants’ high tolerance for the accuracy of the automatic
+ of using it I gave up totally.” (I9)                                    interruptibility measure of the FlowLight poses the question
+                                                                of how accurate the underlying measure has to be to provide
+ Professional Differences in Using the FlowLight               sufﬁcient beneﬁt to the user. Over the course of our ﬁeld
+ An analysis of the survey responses with respect to profes-      study, we adapted the automatic measure two times to account
+ sional roles shows that developers (including testers) and      for early user feedback, yet we did not ﬁnd any signiﬁcant
+=== PDF PAGE 10 ===
+differences in the effects on interruption cost and behavior.     reminding them to log their interruptions. Furthermore, differ-
+However, we intend to study the relation between accuracy      ent participants might have different criteria and judgement
+and the effects on interruption cost further in the future.           standards for logging interruptions. We tried to mitigate this
+                                                                        fact by instructing participants to only log external in-person
+Also, while participants had a high tolerance, they reported                                                                   interruptions at work. In addition, by using a paired test that
+numerous situations in which they observed the status to be
+                                                              only compares within subject (Wilcoxon signed rank), we mit-
+set incorrectly. The most frequent situation in which the status                                                                    igate this effect as long as participants did not change their
+is incorrect occurs when participants “think” about something
+                                                               deﬁnition of an interruption over time.
+and experience a high cognitive load, yet do not interact with
+the computer at all. In future work and with the continuously    We limited the validity threats related to generalizability across
+decreasing invasiveness of biometric sensors, we plan to ex-      individuals and teams by collecting data from 449 participants
+tend our approach to integrate biometric sensors, to cover these     from twelve countries and with a variety of job roles. As not
+situations more accurately. We further plan to improve our       all participants are native English speakers, there might be a
+algorithm by integrating application data, which we were not      response bias. We tried to mitigate this risk by providing sufﬁ-
+able to collect in this study due to privacy constraints. Know-      cient instructions, opportunity for contacting us if participants
+ing the current application might improve the algorithm’s     had any questions, and also by visiting each major pilot site to
+accuracy, e.g. one might be less interruptible while working      introduce and explain the study. Based on the large number
+in a development related program and more while being in an     and diversity of participants, we observed that responses were
+email client. As the nature of work and interactions vary across      not dominantly distributed to extremes, which would indicate
+work areas and job roles, tailoring the algorithm accordingly      that these knowledge workers were particularly biased based
+could further improve its accuracy.                         on such difﬁculties. From our in-person experience we can
+                                                                   report that with very few exceptions we perceived similar ac-
+Cost of Not Interrupting                                        ceptance, respect and in general a very positive perception of
+As related work has shown, not all interruptions are bad      the FlowLight across all locations.
+and some are deﬁnitely needed, for instance, to unblock co-                                                          Another threat is the inﬂuence of the various algorithms on the
+workers. By physically indicating knowledge workers as not                                                              study results. Since we wanted to ensure that participants are
+interruptible (Busy and DnD state), the FlowLight might pre-                                                                satisﬁed with the FlowLight and that we take their feedback
+vent co-workers from interrupting them for important issues,                                                                     serious, we evolved the algorithm two times. To mitigate the
+reducing overall team productivity. The ﬁndings of our study                                                                      risk of a certain bias in the data, we looked for signiﬁcant
+on the FlowLight provides evidence that this cost is minimal                                                                  differences between populations where we might expect to
+at best for two reasons. First, a data analysis of the usage logs                                                    ﬁnd them and did not ﬁnd any.
+collected for our study shows that the FlowLight ends up hav-
+ing a signiﬁcant yet small effect on the time that a knowledge
+                                            CONCLUSION
+worker is indicated as not interruptible (+5% per day). Sec-
+                                                                In-person interruptions at the workplace can incur a high cost
+ond, while the FlowLight increases the awareness of the cost
+                                                        and consume a lot of a knowledge worker’s time, if they hap-of interruptions, participants still interrupt their co-workers
+                                                       pen at inopportune moments. While there are several ap-regardless of the FlowLight state if they have an important
+                                                           proaches to possibly reduce the interruption costs, little isconcern to discuss, as also stated by 35% of our interview
+                                                  known about the impact of a physical and automatic interrupt-
+participants, without being explicitly asked.
+                                                                             ibility indicator. In this paper, we presented FlowLight—an
+                                                            automatic interruptibility indicator in the form of a physical
+Threats and Limitations                                                                      trafﬁc-light like LED—and reported on results from a large-
+A major threat to the validity of our study is the completeness                                                                   scale and long-term ﬁeld study with 449 participants from 12
+of the collected data. For instance, we were not able to identify                                                                     countries. We found that the FlowLight signiﬁcantly reduced
+participants across different data sets. While we encouraged                                                                 the number of interruptions by 46%. We also observed an
+participants to share their data and ensured them that we only                                                                 increased awareness of the potential disruptiveness of interrup-
+use it for research purposes, we could not demand it due to                                                                    tions at inopportune moments, which impacts the interaction
+privacy concerns. We were also not able to collect geographic                                                                   culture in a positive way, and that our approach can motivate
+data due to privacy concerns and thus were not able to analyze                                                        knowledge workers and make them feel more productive. We
+geographic differences.                                                                discuss the importance of combining the physical indicator
+Similarly, the accuracy of the interruption logs might be in-     with the automatic interruptibility measure and the high toler-
+complete or not completely accurate. Since interruption logs     ance of participants to the accuracy of the approach. Overall,
+are based on self-reports, participants might have forgotten to     our study provides deep insights and strong evidence on the
+log some interruptions. Also, the work patterns and habits of     very positive effects of the long-term usage of the FlowLight,
+the days on which they logged interruptions before and after     and the continued usage of the approach by most participants
+the installation of the FlowLight might have been signiﬁcantly      indicates the success of the approach.
+different, which makes it more difﬁcult to compare the effect
+of the FlowLight. We tried to mitigate this risk by only includ-   ACKNOWLEDGMENTS
+ing the logs of participants who logged interruptions for more     The authors would like to thank all study participants. This
+than three days before and three days after and by regularly     work was funded in part by SNF.
+=== PDF PAGE 11 ===
+REFERENCES                                                   conference on Human factors in computing systems.
+ 1. 2016. http://www.embrava.com/. (2016).                  ACM, 113–120.
+
+ 2. Ernesto Arroyo and Ted Selker. 2011. Attention and          14. Juan David Hincapié-Ramos, Stephen Voida, and Gloria
+    intention goals can mediate disruption in                      Mark. 2011a. A design space analysis of
+   human-computer interaction. In IFIP Conference on               availability-sharing systems. In Proceedings of the 24th
+   Human-Computer Interaction. Springer, 454–470.               annual ACM symposium on User interface software and
+                                                                    technology. ACM, 85–96. 3. Brian P Bailey and Shamsi T Iqbal. 2008. Understanding
+    changes in mental workload during execution of              15. Juan David Hincapié-Ramos, Stephen Voida, and Gloria
+    goal-directed tasks and its application for interruption           Mark. 2011b. Sharing availability information with
+   management. ACM Transactions on Computer-Human            InterruptMe. In Proceedings of the 13th international
+    Interaction (TOCHI) 14, 4 (2008), 21.                           conference on Ubiquitous computing. ACM, 477–478.
+
+ 4. Brian P Bailey and Joseph A Konstan. 2006. On the need      16. Joyce Ho and Stephen S Intille. 2005. Using
+    for attention-aware systems: Measuring effects of                context-aware computing to reduce the perceived burden
+    interruption on task performance, error rate, and affective          of interruptions from mobile devices. In Proceedings of
+     state. Computers in human behavior 22, 4 (2006),                 the SIGCHI conference on Human factors in computing
+    685–708.                                                        systems. ACM, 909–918.
+ 5. James Bo Begole, Nicholas E Matsakis, and John C Tang.     17. Eric Horvitz, Paul Koch, Carl M Kadie, and Andy Jacobs.
+    2004. Lilsys: sensing unavailability. In Proceedings of           2002. Coordinate: Probabilistic forecasting of presence
+    the 2004 ACM conference on Computer supported              and availability. In Proceedings of the Eighteenth
+    cooperative work. ACM, 511–514.                              conference on Uncertainty in artiﬁcial intelligence.
+                                                      Morgan Kaufmann Publishers Inc., 224–233. 6. Suzanne C Beyea. 2007. Distractions, interruptions, and
+    patient safety. AORN journal 86, 1 (2007), 109–112.          18. Scott Hudson, James Fogarty, Christopher Atkeson,
+                                                                 Daniel Avrahami, Jodi Forlizzi, Sara Kiesler, Johnny Lee, 7. Milan Z Bjelica, Bojan Mrazovac, Istvan Papp, and
+                                                           and Jie Yang. 2003. Predicting human interruptibility    Nikola Teslic. 2011. Busy ﬂag just got better:
+                                                                with sensors: a Wizard of Oz feasibility study. In    Application of lighting effects in mediating social
+                                                                Proceedings of the SIGCHI conference on Human factors    interruptions. In MIPRO, 2011 Proceedings of the 34th
+                                                                         in computing systems. ACM, 257–264.    International Convention. IEEE, 975–980.
+                                                                19. Shamsi T Iqbal and Brian P Bailey. 2008. Effects of 8. Jelmer P Borst, Niels A Taatgen, and Hedderik van Rijn.
+                                                                             intelligent notiﬁcation management on users and their    2015. What Makes Interruptions Disruptive?: A
+                                                                            tasks. In Proceedings of the SIGCHI Conference on    Process-Model Account of the Effects of the Problem
+                                                Human Factors in Computing Systems. ACM, 93–102.    State Bottleneck on Task Interruption and Resumption. In
+    Proceedings of the 33rd annual ACM conference on           20. Ellen Isaacs, Steve Whittaker, David Frohlich, and Brid
+   human factors in computing systems. ACM, 2971–2980.          O’Conaill. 1997. Informal communication re-examined:
+                                              New functions for video in supporting opportunistic 9. Daniel Chen, Jamie Hart, and Roel Vertegaal. 2007.
+   Towards a physiological model of user interruptability. In          encounters. Video-mediated communication 997 (1997),
+    IFIP Conference on Human-Computer Interaction.              459–485.
+    Springer, 439–451.                                          21. Jennifer Lai, Sachiko Yoshihama, Thomas Bridgman,
+10. Mary Czerwinski, Eric Horvitz, and Susan Wilhite. 2004.       Mark Podlaseck, Paul B Chou, and Danny C Wong. 2003.
+  A diary study of task switching and interruptions. In Proc.       MyTeam: Availability Awareness Through the Use of
+   SIGCHI. ACM, 175–182.                                     Sensor Data.. In INTERACT.
+11. James Fogarty, Andrew J Ko, Htet Htet Aung, Elspeth        22. Gloria Mark, Daniela Gudith, and Ulrich Klocke. 2008.
+    Golden, Karen P Tang, and Scott E Hudson. 2005.             The cost of interrupted work: more speed and stress. In
+   Examining task engagement in sensor-based statistical           Proceedings of the SIGCHI conference on Human
+    models of human interruptibility. In Proceedings of the           Factors in Computing Systems. ACM, 107–110.
+   SIGCHI conference on Human Factors in Computing                                                                23. Santosh Mathan, Stephen Whitlow, Michael Dorneich,
+    Systems. ACM, 331–340.                                                                           Patricia Ververs, and Gene Davis. 2007.
+12. James Fogarty, Jennifer Lai, and Jim Christensen. 2004.          Neurophysiological estimation of interruptibility:
+    Presence versus availability: the design and evaluation of         Demonstrating feasibility in a ﬁeld context. In In
+    a context-aware communication client. International             Proceedings of the 4th International Conference of the
+    Journal of Human-Computer Studies 61, 3 (2004),             Augmented Cognition Society.
+    299–317.                                                                24. Daniel McFarlane. 2002. Comparison of four primary
+13. Victor M González and Gloria Mark. 2004. Constant,           methods for coordinating the interruption of people in
+    constant, multi-tasking craziness: managing multiple            human-computer interaction. Human-Computer
+    working spheres. In Proceedings of the SIGCHI                   Interaction 17, 1 (2002), 63–139.
+=== PDF PAGE 12 ===
+25. Allen E Milewski and Thomas M Smith. 2000. Providing      29. Edward R Sykes. 2011. Interruptions in the workplace: A
+    presence cues to telephone users. In Proceedings of the           case study to reduce their effects. International Journal of
+   2000 ACM conference on Computer supported                   Information Management 31, 4 (2011), 385–394.
+    cooperative work. ACM, 89–96.
+                                                                30. John C Tang, Nicole Yankelovich, James Begole, Max
+26. Bonnie A Nardi, Steve Whittaker, and Erin Bradner.           Van Kleek, Francis Li, and Janak Bhalodia. 2001.
+    2000. Interaction and outeraction: instant messaging in         ConNexus to awarenex: extending awareness to mobile
+    action. In Proceedings of the 2000 ACM conference on             users. In Proceedings of the SIGCHI conference on
+   Computer supported cooperative work. ACM, 79–88.         Human factors in computing systems. ACM, 221–228.
+27. Jaime Snyder, Mark Matthews, Jacqueline Chien,                                                                31. Takahisa Tani and Seiji Yamada. 2013. Estimating user
+   Pamara F Chang, Emily Sun, Saeed Abdullah, and Geri                                                                              interruptibility by measuring table-top pressure. In
+    Gay. 2015. Moodlight: Exploring personal and social                                                        CHI’13 Extended Abstracts on Human Factors in
+    implications of ambient display of biosensor data. In                                                          Computing Systems. ACM, 1707–1712.
+    Proceedings of the 18th ACM Conference on Computer
+    Supported Cooperative Work & Social Computing. ACM,      32. Manuela Züger and Thomas Fritz. 2015. Interruptibility
+   143–153.                                                        of software developers and its prediction using
+                                                                   psycho-physiological sensors. In Proceedings of the 33rd
+28. Hermann Stern, Viktoria Pammer, and Stefanie N
+                                                           Annual ACM Conference on Human Factors in
+    Lindstaedt. 2011. A preliminary study on interruptibility
+                                                          Computing Systems. ACM, 2981–2990.
+    detection based on location and calendar information.
+    Proc. CoSDEO 11 (2011).

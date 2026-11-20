@@ -1,0 +1,14 @@
+F......s.............                                                    [100%]
+================================== FAILURES ===================================
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:33: in test_PythonCodePrinter
+    assert prntr.doprint(-Mod(x, y)) == '-(x % y)'
+E   AssertionError: assert '-x % y' == '-(x % y)'
+E     - -(x % y)
+E     ?  -     -
+E     + -x % y
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22080\V8ac07b4cf056\modules1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - Assertio...
+1 failed, 19 passed, 1 skipped in 0.28s

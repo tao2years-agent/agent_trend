@@ -1,0 +1,16 @@
+F.....                                                                   [100%]
+================================== FAILURES ===================================
+______________________________ test_issue_14941 _______________________________
+sympy\utilities\tests\test_lambdify.py:1195: in test_issue_14941
+    f2b = lambdify([], (1,))  # gh-23224
+sympy\utilities\lambdify.py:900: in lambdify
+    c = compile(funcstr, filename, 'exec')
+E     File "<lambdifygenerated-3>", line 2
+E       return [1,)
+E                 ^
+E   SyntaxError: closing parenthesis ')' does not match opening parenthesis '['
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23262\V0f81c0d0e786\labels0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_14941 -   File "<la...
+1 failed, 5 passed in 0.84s

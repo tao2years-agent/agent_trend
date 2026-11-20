@@ -1,0 +1,18 @@
+{
+  "commit": "ed4ff2990049ace5c675203c70d41676fa55682c",
+  "packages": {
+    "langgraph": "0.2.71",
+    "langchain-core": "0.3.34",
+    "pytest": "8.4.2"
+  },
+  "driver": "Python direct invocation of all upstream test functions, asyncio.run for awaitables",
+  "files": [
+    "tests/duo_workflow_service/checkpointer/test_node_lifecycle.py",
+    "duo_workflow_service/checkpointer/node_lifecycle.py",
+    "duo_workflow_service/agent_platform/node_naming.py",
+    "duo_workflow_service/agent_platform/constants.py"
+  ],
+  "exit": 1,
+  "stdout": "PASS test_event_to_dict_is_the_wire_shape\nFAIL test_handler_against_real_langgraph_interrupt_and_resume\nFAIL test_handler_against_real_langgraph_stream\nPASS test_handler_handles_legacy_node_without_role_suffix\nPASS test_handler_ignores_nested_runnable_starts\nPASS test_handler_ignores_start_with_no_component\nPASS test_handler_records_ended_not_errored_on_graph_interrupt\nPASS test_handler_records_ended_on_node_end\nPASS test_handler_records_errored_on_non_interrupt_error\nPASS test_handler_records_started_on_node_boundary\nPASS test_handler_terminal_for_unopened_run_is_a_noop\nPASS test_handler_tracks_concurrent_nodes_by_run_id\nPASS test_log_records_in_order\n",
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 10, in <module>\n  File \"D:\\anaconda3\\Lib\\asyncio\\runners.py\", line 194, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"D:\\anaconda3\\Lib\\asyncio\\runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\anaconda3\\Lib\\asyncio\\base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"tests/duo_workflow_service/checkpointer/test_node_lifecycle.py\", line 294, in test_handler_against_real_langgraph_interrupt_and_resume\n    assert _tuples(log1) == [\n           ^^^^^^^^^^^^^^^^^^\nAssertionError\nTraceback (most recent call last):\n  File \"<string>\", line 10, in <module>\n  File \"D:\\anaconda3\\Lib\\asyncio\\runners.py\", line 194, in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n  File \"D:\\anaconda3\\Lib\\asyncio\\runners.py\", line 118, in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\anaconda3\\Lib\\asyncio\\base_events.py\", line 687, in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n  File \"tests/duo_workflow_service/checkpointer/test_node_lifecycle.py\", line 246, in test_handler_against_real_langgraph_stream\n    assert _tuples(log) == [\n           ^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

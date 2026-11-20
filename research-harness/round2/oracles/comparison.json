@@ -1,0 +1,881 @@
+{
+  "whole": {
+    "wall_seconds": 110.156,
+    "n_subprocesses": 46,
+    "elapsed_subprocess_seconds": 127.748,
+    "status_counts_by_phase": {
+      "original": {
+        "passed": 322,
+        "xfail": 1,
+        "skipped": 30
+      },
+      "regression_on_base": {
+        "passed": 313,
+        "failure": 12,
+        "xfail": 1,
+        "skipped": 30
+      },
+      "regression_on_gold": {
+        "passed": 325,
+        "xfail": 1,
+        "skipped": 30
+      },
+      "without-1": {
+        "passed": 120,
+        "failure": 15,
+        "xfail": 1,
+        "skipped": 15,
+        "error": 1
+      },
+      "without-2": {
+        "passed": 163,
+        "failure": 3,
+        "xfail": 1,
+        "skipped": 15
+      },
+      "without-3": {
+        "passed": 164,
+        "xfail": 1,
+        "skipped": 15,
+        "failure": 2
+      },
+      "without-4": {
+        "passed": 30,
+        "failure": 1
+      }
+    },
+    "by_case": [
+      {
+        "case": "sympy__sympy-22080",
+        "module_count": 3,
+        "gold_statuses": {
+          "passed": 135,
+          "xfail": 1,
+          "skipped": 15
+        },
+        "gold_nonpass": [
+          {
+            "node": "sympy/codegen/tests/test_rewriting.py::sympy.codegen.tests.test_rewriting::test_optims_numpy_TODO",
+            "outcome": "xfail",
+            "reason": ""
+          },
+          {
+            "node": "sympy/codegen/tests/test_rewriting.py::sympy.codegen.tests.test_rewriting::test_compiled_ccode_with_rewriting",
+            "outcome": "skipped",
+            "reason": "cython not installed."
+          },
+          {
+            "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_issue_20762",
+            "outcome": "skipped",
+            "reason": "antlr not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_basic_math",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_placeholders",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_variables",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_logical_operations",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_piecewise",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_multi_max",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_multi_min",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_relational",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_complexes",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_array_arg",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_array_arg",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_array_arg_using_numpy",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_dotproduct",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          }
+        ],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [
+            "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_empty_modules"
+          ],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0,
+            0,
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 150,
+          "sum_seconds": 20.234
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/codegen/tests/test_rewriting.py::sympy.codegen.tests.test_rewriting::test_create_expand_pow_optimization",
+              "name": "test_create_expand_pow_optimization",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            },
+            {
+              "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_PythonCodePrinter",
+              "name": "test_PythonCodePrinter",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            },
+            {
+              "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_empty_modules",
+              "name": "test_empty_modules",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1,
+            1,
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 151,
+          "sum_seconds": 8.577
+        },
+        "variants": [
+          {
+            "omit": 1,
+            "short_exit3_12": 1,
+            "contrasts": [
+              {
+                "node": "sympy/codegen/tests/test_rewriting.py::sympy.codegen.tests.test_rewriting::test_create_expand_pow_optimization",
+                "name": "test_create_expand_pow_optimization",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_Integral",
+                "name": "test_Integral",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_PythonCodePrinter",
+                "name": "test_PythonCodePrinter",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_empty_modules",
+                "name": "test_empty_modules",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_integral",
+                "name": "test_integral",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_issue_15654",
+                "name": "test_issue_15654",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_issue_9334",
+                "name": "test_issue_9334",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_issue_9871",
+                "name": "test_issue_9871",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_lambdify_cse",
+                "name": "test_lambdify_cse",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_lambdify_mixed_symbol_dummy_args",
+                "name": "test_lambdify_mixed_symbol_dummy_args",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_numexpr_userfunctions",
+                "name": "test_numexpr_userfunctions",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_numpy_inverse",
+                "name": "test_numpy_inverse",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_numpy_numexpr",
+                "name": "test_numpy_numexpr",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_numpy_piecewise",
+                "name": "test_numpy_piecewise",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_vector_discontinuous",
+                "name": "test_vector_discontinuous",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": false,
+                "is_in_small_oracle": false
+              }
+            ],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              1,
+              1,
+              1
+            ],
+            "timeouts": 0,
+            "number_shared": 151,
+            "sum_seconds": 9.077
+          },
+          {
+            "omit": 2,
+            "short_exit3_12": 1,
+            "contrasts": [
+              {
+                "node": "sympy/codegen/tests/test_rewriting.py::sympy.codegen.tests.test_rewriting::test_create_expand_pow_optimization",
+                "name": "test_create_expand_pow_optimization",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_PythonCodePrinter",
+                "name": "test_PythonCodePrinter",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_empty_modules",
+                "name": "test_empty_modules",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              }
+            ],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              1,
+              1,
+              1
+            ],
+            "timeouts": 0,
+            "number_shared": 151,
+            "sum_seconds": 8.515
+          },
+          {
+            "omit": 3,
+            "short_exit3_12": 1,
+            "contrasts": [
+              {
+                "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_PythonCodePrinter",
+                "name": "test_PythonCodePrinter",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              },
+              {
+                "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_empty_modules",
+                "name": "test_empty_modules",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              }
+            ],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              0,
+              1,
+              1
+            ],
+            "timeouts": 0,
+            "number_shared": 151,
+            "sum_seconds": 8.374
+          }
+        ]
+      },
+      {
+        "case": "sympy__sympy-22456",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 31
+        },
+        "gold_nonpass": [],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 31,
+          "sum_seconds": 2.094
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_String",
+              "name": "test_String",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 31,
+          "sum_seconds": 1.75
+        },
+        "variants": [
+          {
+            "omit": 1,
+            "short_exit3_12": 4,
+            "contrasts": [],
+            "missing_from_candidate": [
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Assignment",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Assignment_printing",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Attribute",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_AugAssign",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_CodeBlock",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_CodeBlock_cse",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_CodeBlock_cse__issue_14118",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_CodeBlock_free_symbols",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_CodeBlock_topological_sort",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Comment",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Declaration",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_FloatType",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_For",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_FunctionCall",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_FunctionPrototype_and_FunctionDefinition",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_IntBaseType",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Node",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Pointer",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Print",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Return",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Scope",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_String",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Type",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Type__cast_check__complex_floating_point",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Type__cast_check__floating_point",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Type__cast_check__integers",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Type__from_expr",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_Variable",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_While",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_ast_replace",
+              "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_none"
+            ],
+            "additional_on_candidate": [
+              "sympy/codegen/tests/test_ast.py::::sympy.codegen.tests.test_ast"
+            ],
+            "module_codes": [
+              2
+            ],
+            "timeouts": 0,
+            "number_shared": 0,
+            "sum_seconds": 1.484
+          },
+          {
+            "omit": 2,
+            "short_exit3_12": 0,
+            "contrasts": [],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              0
+            ],
+            "timeouts": 0,
+            "number_shared": 31,
+            "sum_seconds": 1.672
+          },
+          {
+            "omit": 3,
+            "short_exit3_12": 0,
+            "contrasts": [],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              0
+            ],
+            "timeouts": 0,
+            "number_shared": 31,
+            "sum_seconds": 1.625
+          },
+          {
+            "omit": 4,
+            "short_exit3_12": 1,
+            "contrasts": [
+              {
+                "node": "sympy/codegen/tests/test_ast.py::sympy.codegen.tests.test_ast::test_String",
+                "name": "test_String",
+                "from": "failure",
+                "gold": "passed",
+                "is_ftp": true,
+                "is_in_small_oracle": true
+              }
+            ],
+            "missing_from_candidate": [],
+            "additional_on_candidate": [],
+            "module_codes": [
+              1
+            ],
+            "timeouts": 0,
+            "number_shared": 31,
+            "sum_seconds": 1.688
+          }
+        ]
+      },
+      {
+        "case": "sympy__sympy-22714",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 13
+        },
+        "gold_nonpass": [],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [
+            "sympy/geometry/tests/test_point.py::sympy.geometry.tests.test_point::test_issue_22684"
+          ],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 12,
+          "sum_seconds": 3.015
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/geometry/tests/test_point.py::sympy.geometry.tests.test_point::test_issue_22684",
+              "name": "test_issue_22684",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 13,
+          "sum_seconds": 2.516
+        },
+        "variants": []
+      },
+      {
+        "case": "sympy__sympy-22914",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 20,
+          "skipped": 1
+        },
+        "gold_nonpass": [
+          {
+            "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_issue_20762",
+            "outcome": "skipped",
+            "reason": "antlr not installed."
+          }
+        ],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 21,
+          "sum_seconds": 1.984
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/printing/tests/test_pycode.py::sympy.printing.tests.test_pycode::test_PythonCodePrinter",
+              "name": "test_PythonCodePrinter",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 21,
+          "sum_seconds": 1.641
+        },
+        "variants": []
+      },
+      {
+        "case": "sympy__sympy-23262",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 103,
+          "skipped": 14
+        },
+        "gold_nonpass": [
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_basic_math",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_placeholders",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_variables",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_logical_operations",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_piecewise",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_multi_max",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_multi_min",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_relational",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_complexes",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_tensorflow_array_arg",
+            "outcome": "skipped",
+            "reason": "tensorflow not installed."
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_issue_20070",
+            "outcome": "skipped",
+            "reason": "numba not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_array_arg",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_array_arg_using_numpy",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          },
+          {
+            "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_cupy_dotproduct",
+            "outcome": "skipped",
+            "reason": "CuPy not installed"
+          }
+        ],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 117,
+          "sum_seconds": 5.0
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/utilities/tests/test_lambdify.py::sympy.utilities.tests.test_lambdify::test_issue_14941",
+              "name": "test_issue_14941",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 117,
+          "sum_seconds": 4.438
+        },
+        "variants": []
+      },
+      {
+        "case": "sympy__sympy-23413",
+        "module_count": 2,
+        "gold_statuses": {
+          "passed": 6
+        },
+        "gold_nonpass": [],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [
+            "sympy/matrices/tests/test_normalforms.py::sympy.matrices.tests.test_normalforms::test_issue_23410"
+          ],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0,
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 5,
+          "sum_seconds": 3.5
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/matrices/tests/test_normalforms.py::sympy.matrices.tests.test_normalforms::test_hermite_normal",
+              "name": "test_hermite_normal",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            },
+            {
+              "node": "sympy/matrices/tests/test_normalforms.py::sympy.matrices.tests.test_normalforms::test_issue_23410",
+              "name": "test_issue_23410",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": false,
+              "is_in_small_oracle": false
+            },
+            {
+              "node": "sympy/polys/matrices/tests/test_normalforms.py::sympy.polys.matrices.tests.test_normalforms::test_hermite_normal",
+              "name": "test_hermite_normal",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1,
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 6,
+          "sum_seconds": 3.141
+        },
+        "variants": []
+      },
+      {
+        "case": "sympy__sympy-23534",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 13
+        },
+        "gold_nonpass": [],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 13,
+          "sum_seconds": 1.937
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/core/tests/test_symbol.py::sympy.core.tests.test_symbol::test_symbols",
+              "name": "test_symbols",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 13,
+          "sum_seconds": 1.657
+        },
+        "variants": []
+      },
+      {
+        "case": "sympy__sympy-23824",
+        "module_count": 1,
+        "gold_statuses": {
+          "passed": 4
+        },
+        "gold_nonpass": [],
+        "original_to_gold": {
+          "contrasts": [],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            0
+          ],
+          "timeouts": 0,
+          "number_shared": 4,
+          "sum_seconds": 3.938
+        },
+        "same_tests_base_to_gold": {
+          "contrasts": [
+            {
+              "node": "sympy/physics/hep/tests/test_gamma_matrices.py::sympy.physics.hep.tests.test_gamma_matrices::test_kahane_simplify1",
+              "name": "test_kahane_simplify1",
+              "from": "failure",
+              "gold": "passed",
+              "is_ftp": true,
+              "is_in_small_oracle": true
+            }
+          ],
+          "missing_from_candidate": [],
+          "additional_on_candidate": [],
+          "module_codes": [
+            1
+          ],
+          "timeouts": 0,
+          "number_shared": 4,
+          "sum_seconds": 3.484
+        },
+        "variants": []
+      }
+    ]
+  }
+}

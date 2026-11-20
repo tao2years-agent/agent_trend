@@ -1,0 +1,183 @@
+Google SRE - Canary Release: Deployment Safety and Efficiency (https://sre.google/workbook/canarying-releases/)
+citeturn58view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://sre.google/workbook/canarying-releases/","lineno":null}); Total lines: 257
+L0: 【0†iframe†www.googletagmanager.com】
+L1: ## Chapter 16 - Canarying Releases
+L2:   1. 【1†Table of Contents】
+L3:   2. 【2†Foreword I】
+L4:   3. 【3†Foreword II】
+L5:   4. 【4†Preface】
+L6:   5. 【5†1. How SRE Relates to DevOps】
+L7:   6. 【6†Part I - Foundations】
+L8:   7. 【7†2. Implementing SLOs】
+L9:   8. 【8†3. SLO Engineering Case Studies】
+L10:   9. 【9†4. Monitoring】
+L11:   10. 【10†5. Alerting on SLOs】
+L12:   11. 【11†6. Eliminating Toil】
+L13:   12. 【12†7. Simplicity】
+L14:   13. 【13†Part II - Practices】
+L15:   14. 【14†8. On-Call】
+L16:   15. 【15†9. Incident Response】
+L17:   16. 【16†10. Postmortem Culture: Learning from Failure】
+L18:   17. 【17†11. Managing Load】
+L19:   18. 【18†12. Introducing Non-Abstract Large System Design】
+L20:   19. 【19†13. Data Processing Pipelines】
+L21:   20. 【20†14. Configuration Design and Best Practices】
+L22:   21. 【21†15. Configuration Specifics】
+L23:   22. 【22†16. Canarying Releases】
+L24:   23. 【23†Part III - Processes】
+L25:   24. 【24†17. Identifying and Recovering from Overload】
+L26:   25. 【25†18. SRE Engagement Model】
+L27:   26. 【26†19. SRE: Reaching Beyond Your Walls】
+L28:   27. 【27†20. SRE Team Lifecycles】
+L29:   28. 【28†21. Organizational Change Management in SRE】
+L30:   29. 【29†Conclusion】
+L31:   30. 【30†Appendix A. Example SLO Document】
+L32:   31. 【31†Appendix B. Example Error Budget Policy】
+L33:   32. 【32†Appendix C. Results of Postmortem Analysis】
+L34:   33. 【33†Index】
+L35:   34. 【34†About the Editors】
+L36:   35. 【35†Colophon】
+L37: # Canarying Releases
+L38: 
+L39: By Alec Warner and Štěpán Davidovič
+L40: with Alex Hidalgo, Betsy Beyer, Kyle Smith, and Matt Duftler
+L41: Release engineering is a term we use to describe all the processes and artifacts related to getting code from a repository into a running production system. Automating releases can help avoid many of the traditional pitfalls associated with release engineering: the toil of repetitive and manual tasks, the inconsistency of a nonautomated process, the inability of knowing the exact state of a rollout, and the difficulty of rolling back.
+L42: The 【36†automation of release engineering】 has been well covered in other literature—for example, books on continuous integration and continuous delivery (CI/CD).^{【37†1】}
+L43: We define canarying as a partial and time-limited deployment of a change in a service and its evaluation. This evaluation helps us decide whether or not to proceed with the rollout. The part of the service that receives the change is “the canary,” and the remainder of the service is “the control.” The logic underpinning this approach is that usually the canary deployment is performed on a much smaller subset of production, or affects a much smaller subset of the user base than the control portion.
+L44: Canarying is effectively an A/B testing process.
+L45: We’ll first cover the basics of 【36†release engineering】 and the benefits of automating releases to establish a shared vocabulary.
+L46: ## Release Engineering Principles
+L47: 
+L48: The basic principles of release engineering are as follows:
+L49: 
+L50: Reproducible builds
+L51: 
+L52:   * The build system should be able to take the build inputs (source code, assets, and so on) and produce repeatable artifacts. The code built from the same inputs last week should produce the same output this week.
+L53: 
+L54: Automated builds
+L55: 
+L56:   * Once code is checked in, automation should produce build artifacts and upload them to a storage system.
+L57: 
+L58: Automated tests
+L59:   * Once the automated build system builds artifacts, a test suite of some kind should ensure they function.
+L60: 
+L61: Automated deployments
+L62: 
+L63:   * Deployments should be performed by computers, not humans.
+L64: 
+L65: Small deployments
+L66: 
+L67:   * Build artifacts should contain small, self-contained changes.
+L68: 
+L69: These principles provide specific benefits to operators:
+L70:   * Reducing operational load on engineers by removing manual and repetitive tasks.
+L71:   * Enforcing peer review and version control, since automation is generally code-based.
+L72:   * Establishing consistent, repeatable, automated processes, resulting in fewer mistakes.
+L73:   * Enabling monitoring of the release pipeline, allowing for measurement and continuous improvement by addressing questions like:
+L74:     * How long does it take a release to reach production?
+L75:     * How often are releases successful? A successful release is a release made available to customers with no severe defects or SLO violations.
+L76:     * What changes can be made to catch defects as early in the pipeline as possible?
+L77:     * Which steps can be parallelized or further optimized?
+L78: CI/CD coupled with release automation can deliver continuous improvements to the development cycle, as shown in 【38†Figure 16-1】. When releases are automated, you can release more often. For software with a nontrivial rate of change, releasing more often means fewer changes are bundled in any given release artifact. Smaller, self-contained release artifacts make it cheaper and easier to roll back any given release artifact in the event of a bug.
+L79: Quicker release cadences mean that bug fixes reach users faster.
+L80: 【39†Image: the-virtuous-cycle-of-ci-cd】 Figure 16-1. The virtuous cycle of CI/CD
+L81: # Balancing Release Velocity and Reliability
+L82: 
+L83: Release velocity (hereafter called “shipping”) and reliability are often treated as opposing goals. The business wants to ship new features and product improvements as quickly as possible with 100% reliability! While that goal is not achievable (as 100% is never the right target for reliability; see 【7†Implementing SLOs】), it is possible to ship as quickly as possible while meeting specific reliability goals for a given product.
+L84: The first step toward this goal is understanding the impact of shipping on software reliability. In Google’s experience, a majority of incidents are triggered by binary or configuration pushes (see 【32†Results of Postmortem Analysis】). Many kinds of software changes can result in a system failure—for example, changes in the behavior of an underlying component, changes in the behavior of a dependency (such as an API), or a change in configuration like DNS.
+L85: Despite the risk inherent in making changes to software, these changes—bug fixes, security patches, and new features—are necessary for the business to succeed. Instead of advocating against change, you can use the concept of SLOs and error budgets to measure the impact of releases on your reliability. Your goal should be to ship software as quickly as possible while meeting the reliability targets your users expect. The following section discusses how you can use a canary process to achieve these goals.
+L86: ##### Separating Components That Change at Different Rates
+L87: 
+L88: Your services are composed of multiple components with different rates of change: binaries or code, environments such as JVM, kernel/OS, libraries, service config or flags, feature/experiment config, and user config. If you have only one way to deploy changes, actually allowing these components to change independently may be difficult.
+L89: Feature flag or experiment frameworks like 【40†Gertrude†github.com】, 【41†Feature†github.com】, and 【42†PlanOut†sreworkbook.page.link】 allow you to separate feature launches from binary releases. If a binary release includes multiple features, you can enable them one at a time by changing the experiment configuration. That way, you don’t have to batch all of these changes into one big change or perform an individual release for each feature.
+L90: More importantly, if only some of the new features don’t behave as expected, you can selectively disable those features until the next build/release cycle can deploy a new binary.
+L91: You can apply the principles of feature flags/experiments to any type of change to your service, not just software releases.
+L92: # What Is Canarying?
+L93: 
+L94: The term canarying refers to the 【43†practice of bringing canaries into coal mines to determine if the mine is safe for humans†en.wikipedia.org】. Because the birds are smaller and breathe faster than humans, they are intoxicated by dangerous gases faster than their human handlers.
+L95: Even if your release pipeline is fully automated, you won’t be able to detect all release-related defects until real traffic is hitting the service. By the time a release is ready to be deployed to production, your testing strategy should instill reasonable confidence that the release is safe and works as intended. However, your test environments aren’t 100% identical to production, and your tests probably don’t cover 100% of possible scenarios. Some defects will reach production.
+L96: If a release deploys instantly everywhere, any defects will deploy in the same way.
+L97: This scenario might be acceptable if you can detect and resolve the defects quickly. However, you have a safer alternative: initially expose just some of your production traffic to the new release using a canary. Canarying allows the deployment pipeline to detect defects as quickly as possible with as little impact to your service as possible.
+L98: # Release Engineering and Canarying
+L99: When deploying a new version of a system or its key components (such as configuration or data), we bundle changes—changes that typically have not been exposed to real-world inputs, such as user-facing traffic or batch processing of user-supplied data. Changes bring new features and capabilities, but they also bring risk that is exposed at the time of deployment. Our goal is to mitigate this risk by testing each change on a small portion of traffic to gain confidence that it has no ill effects.
+L100: We will discuss evaluation processes later in this chapter.
+L101: The canary process also lets us gain confidence in our change as we expose it to larger and larger amounts of traffic. Introducing the change to actual production traffic also enables us to identify problems that might not be visible in testing frameworks like unit testing or load testing, which are often more artificial.
+L102: We will examine the process of canarying and its evaluation using a worked example, while steering clear of a deep dive into statistics. Instead, we focus on the process as a whole and typical practical considerations. We use a simple application on App Engine to illustrate various aspects of the rollout.
+L103: ##### Requirements of a Canary Process
+L104: 
+L105: Canarying for a given service requires specific capabilities:
+L106: 
+L107:   * A method to deploy the canary change to a subset of the population of the service.^{【44†2】}
+L108:   * An evaluation process to evaluate if the canaried change is “good” or “bad.”
+L109:   * Integration of the canary evaluations into the release process.
+L110: Ultimately, the canary process demonstrates value when canaries detect bad release candidates with high confidence, and identify good releases without false positives.
+L111: ##### Our Example Setup
+L112: We’ll use a simple frontend web service application to illustrate some canarying concepts. The application offers an HTTP-based API that consumers can use to manipulate various data (simple information like the price of a product). The example application has some tunable parameters that we can use to simulate various production symptoms, to be evaluated by the canary process.
+L113: For example, we can make the application return errors for 20% of requests, or we can stipulate that 5% of requests take at least two seconds.
+L114: We illustrate the canary process using an application deployed on Google App Engine, but the principles apply to any environment. While the example application is fairly contrived, in real-world scenarios, similar applications share common signals with our example that can be used in a canary process.
+L115: Our example service has two potential versions: live and release candidate. The live version is the version currently deployed in production, and the release candidate is a newly built version. We use these versions to illustrate various rollout concepts and how to implement canaries to make the rollout process safer.
+L116: # A Roll Forward Deployment Versus a Simple Canary Deployment
+L117: 
+L118: Let’s first look at a deployment with no canary process, so we can later compare it to a canaried deployment in terms of error budget savings and general impact when a breakage occurs. Our deployment process features a development environment. Once we feel the code is working in the development environment, we deploy that version in the production environment.
+L119: Shortly after our deployment, our monitoring starts reporting a high rate of errors (see 【45†Figure 16-2】, where we intentionally configured our sample application to fail 20% of requests to simulate a defect in the example service). For the sake of this example, let’s say that our deployment process doesn’t provide us the option to roll back to a previously known good configuration.
+L120: Our best option to fix the errors is to find defects in the production version, patch them, and deploy a new version during the outage. This course of action will almost certainly prolong the user impact of the bug.
+L121: 【46†Image: high-rate-of-errors-after-deployment】 Figure 16-2. High rate of errors after deployment
+L122: To improve upon this initial deployment process, we can utilize canaries in our rollout strategy to reduce the impact of a bad code push. Instead of deploying to production all at once, we need a way to create a small segment of production that runs our release candidate. Then we can send a small portion of the traffic to that segment of production (the canary) and compare it against the other segment (the control).
+L123: Using this method, we can spot defects in the release candidate before all of production is affected.
+L124: The simple canary deployment in our App Engine example 【47†splits traffic†cloud.google.com】 between specific labeled versions of our application. You can split traffic using App Engine, or any number of other methods, such as backend weights on a load balancer, proxy configurations, or round-robin DNS records.
+L125: 【48†Figure 16-3】 shows that the impact of the change is greatly reduced when we use a canary; in fact, the errors are barely visible! This raises an interesting issue: the canary evaluation is difficult to see and track compared to the overall traffic trend.
+L126: 
+L127: 【49†Image: error-rate-of-canary-deployment】 Figure 16-3. Error rate of canary deployment; because the canary population is a small subset of production, the overall error rate is reduced
+L128: To get a clearer picture of the errors we need to track at a reasonable scale, we can look at our key metric (HTTP response codes) by App Engine application version, as shown in 【50†Figure 16-4】. When we look at per-version breakdown, we can plainly see the errors the new version introduces. We can also observe from 【50†Figure 16-4】 that the live version is serving very few errors.
+L129: We can now tune our deployment to automatically react based on the HTTP error rate by App Engine version. If the error rate of the canary metric is too far from the control error rate, this signals the canary deployment is “bad.” In response, we should pause and roll back the deployment, or perhaps contact a human to help troubleshoot the issue. If the error ratios are similar, we can proceed with the deployment as normal.
+L130: In the case of 【50†Figure 16-4】, our canary deployment is clearly bad and we should roll it back.
+L131: 【51†Image: http-response-codes-by-app-engine-version】 Figure 16-4. HTTP response codes by App Engine version; the release candidate serves the vast majority of the errors, while the live version produces a low number of errors at a steady state (note: the graph uses a base-10 log scale)
+L132: # Canary Implementation
+L133: 
+L134: Now that we’ve seen a fairly trivial canary deployment implementation, let’s dig deeper into the parameters that we need to understand for a successful canary process.
+L135: ##### Minimizing Risk to SLOs and the Error Budget
+L136: 
+L137: 【7†Implementing SLOs】 discusses how SLOs reflect business requirements around service availability. These requirements also apply to canary implementations. The canary process risks only a small fragment of our error budget, which is limited by time and the size of the canary population.
+L138: Global deployment can place the SLO at risk fairly quickly. If we deploy the candidate from our trivial example, we would risk failing 20% of requests. If we instead use a canary population of 5%, we serve 20% errors for 5% of traffic, resulting in a 1% overall error rate (as seen earlier in 【48†Figure 16-3】). This strategy allows us to conserve our error budget—impact on the budget is directly proportional to the amount of traffic exposed to defects.
+L139: We can assume that detection and rollback take about the same time for both the naive deployment and the canary deployment, but when we integrate a canary process into our deployment, we learn valuable information about our new version at a much lower cost to our system.
+L140: This is a very simple model that assumes uniform load. It also assumes that we can spend our entire error budget (beyond what we’ve already included in the organic measurement of current availability) on canaries. Rather than actual availability, here we consider only unavailability introduced by new releases. Our model also assumes a 100% failure rate because this is a worst-case scenario.^{【52†3】} It is likely that defects in the canary deployment will not affect 100% of system usage.
+L141: We also allow overall system availability to go below SLO for the duration of the canary deployment.^{【53†4】}
+L142: This model has clear flaws, but is a solid starting point that you can adjust to match business needs.^{【54†5】} We recommend using the simplest model that meets your technical and business objectives. In our experience, focusing on making the model as technically correct as possible often leads to overinvestment in modeling. For services with high rates of complexity, overly complex models can lead to incessant model tuning for no real benefit.
+L143: ##### Choosing a Canary Population and Duration
+L144: When choosing an appropriate canary duration, you need to factor in development velocity. If you release daily, you can’t let your canary last for a week while running only one canary deployment at a time. If you deploy weekly, you have time to perform fairly long canaries. If you deploy continuously (for example, 20 times in a day), your canary duration must be significantly shorter.
+L145: On a related note, while we can run multiple canary deployments simultaneously, doing so adds significant mental effort to track system state. This can become problematic during any nonstandard circumstances, when reasoning about the system’s state quickly is important. Running simultaneous canaries also increases the risk of signal contamination if the canaries overlap. We strongly advise running only one canary deployment at a time.
+L146: For basic evaluation, we do not need a terribly large canary population in order to detect key critical conditions.^{【55†6】} However, a representative canary process requires decisions across many dimensions:
+L147: 
+L148: Size and duration
+L149:   * It should be sizeable and last long enough to be representative of the overall deployment. Terminating a canary deployment after receiving just a handful of queries doesn’t provide a useful signal for systems characterized by diverse queries with varied functionality. The higher the processing rate, the less time is required to get a representative sample in order to ensure the observed behavior is actually attributable to the canaried change, and not just a random artifact.
+L150: 
+L151: Traffic volume
+L152:   * We need to receive enough traffic on the system to ensure it has handled a representative sample, and that the system has a chance to react negatively to the inputs. Typically, the more homogeneous the requests, the less traffic volume you need.
+L153: 
+L154: Time of day
+L155: 
+L156:   * Performance defects typically manifest only under heavy load,^{【56†7】} so deploying at an off-peak time likely wouldn’t trigger performance-related defects.
+L157: 
+L158: Metrics to evaluate
+L159:   * The representativeness of a canary is tightly connected to the metrics we choose to evaluate (which we’ll discuss later in this chapter). We can evaluate trivial metrics like query success quickly, but other metrics (such as queue depth) may need more time or a large canary population to provide a clear signal.
+L160: Frustratingly, these requirements can be mutually at odds. Canarying is a balancing act, informed both by cold analysis of worst-case scenarios and the past realistic track record of a system. Once you’ve gathered metrics from past canaries, you can choose canary parameters based upon typical canary evaluation failure rates rather than hypothetical worst-case scenarios.
+L161: # Selecting and Evaluating Metrics
+L162: So far, we have been looking at the success ratio, a very clear and obvious metric for canary evaluation. But intuitively, we know this single metric is not sufficient for a meaningful canary process. If we serve all requests at 10 times the latency, or use 10 times as much memory while doing so, we might also have a problem. Not all metrics are good candidates for evaluating a canary. What properties of metrics are best suited for evaluating whether a canary is good or bad?
+L163: ##### Metrics Should Indicate Problems
+L164: First and foremost, the metric needs to be able to indicate problems in the service. This is tricky because what constitutes a “problem” isn’t always objective. We can probably consider a failed user request problematic.^{【57†8】} But what if a request takes 10% longer, or the system requires 10% more memory? We typically recommend using SLIs as a place to start thinking about canary metrics. Good SLIs tend to have strong attribution to service health.
+L165: If SLIs are already being measured to drive SLO compliance, we can reuse that work.
+L166: Almost any metric can be problematic when taken to the extreme, but there’s also a cost to adding too many metrics to your canary process. We need to correctly define a notion of acceptable behavior for each of the metrics. If the idea of acceptable behavior is overly strict, we will get lots of false positives; that is, we will think a canary deployment is bad, even though it isn’t.
+L167: Conversely, if a definition of acceptable behavior is too loose, we will be more likely to let a bad canary deployment go undetected. Choosing what’s acceptable behavior correctly can be an expensive process—it’s time-consuming and requires analysis. When it’s done poorly, however, your results can completely mislead you. Also, you need to reevaluate expectations on a regular basis as the service, its feature set, and its behavior evolve.
+L168: We should stack-rank the metrics we want to evaluate based on our opinion of how well they indicate actual user-perceivable problems in the system. Select the top few metrics to use in canary evaluations (perhaps no more than a dozen). Too many metrics can bring diminishing returns, and at some point, the returns are outweighed by the cost of maintaining them, or the negative impact on trust in the release process if they are not maintained.
+L169: To make this guideline more tangible, let’s look at our example service. It has many metrics we might evaluate: CPU usage, memory footprint, HTTP return codes (200s, 300s, etc.), latency of response, correctness, and so on. In this case, our best metrics are likely the HTTP return codes and latency of response because their degradation most closely maps to an actual problem that impacts users.
+L170: In this scenario, metrics for CPU usage aren’t as useful: an increase in resource usage doesn’t necessarily impact a service and may result in a flaky or noisy canary process. This can result in the canary process being disabled or ignored by operators, which can defeat the point of having a canary process in the first place. In the case of frontend services, we intuitively know that being slower or failing to respond are typically reliable signals that there are problems in the service.
+L171: HTTP return codes contain interesting tricky cases, such as code 404, which tells us the resource was not found. This could happen because users get the wrong URL (imagine a broken URL getting shared on a popular discussion board), or because the server incorrectly stops serving a resource. Often we can work around problems like this by excluding 400-level codes from our canary evaluation and adding black-box monitoring to test for the presence of a particular URL.
+L172: We can then include the black-box data as part of our canary analysis to help isolate our canary process from odd user behaviors.
+L173: ##### Metrics Should Be Representative and Attributable
+L174: 
+L175: The source of changes in the observed metrics should be clearly attributable to the change we are canarying, and should not be influenced by external factors.
+L176: In a large population (for example, many servers or many containers), we are likely to have outliers—oversubscribed machines, machines running different kernels with different performance characteristics, or machines on an overloaded segment of the network. The difference between the canary population and the control is just as much a function of the change we have deployed as the difference between the two infrastructures on which we deploy.
+L177: Managing canaries is a balancing act between a number of forces. Increasing the size of the canary population is one way to decrease impact of this problem (as discussed earlier). When we reach what we consider a reasonable canary population size for our system, we need to consider whether the metrics we have chosen could show high variance.
+L178: We should also be aware of shared failure domains between our canary and control environments; a bad canary could negatively impact the control, while bad behavior in the system might lead us to incorrectly evaluate the canary. Similarly, make sure that your metrics are well isolated. Consider a system that runs both our application and other processes.
+L179: A dramatic increase in CPU usage of the system as a whole would make for a poor metric, as other processes in the system (database load, log rotation, etc.) might be causing that increase. A better metric would be CPU time spent as the process served the request. An even better metric would be CPU time spent serving the request over the window of time the serving process was actually scheduled on a CPU.
+

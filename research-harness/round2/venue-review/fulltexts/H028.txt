@@ -1,0 +1,780 @@
+                                           More with Less: An Empirical Study of Turn-Control Strategies
+                                                            for Efficient Coding Agents
+                                                                             Pengfei Gao                                                                      Chao Peng∗
+                                                                            ByteDance                                                                      ByteDance
+                                                                          Beijing, China                                                                  Beijing, China
+                                                                   gaopengfei.se@bytedance.com                                                      pengchao.x@bytedance.com
+
+                                         Abstract                                                                                   ACM Reference Format:
+                                         LLM-powered coding agents, which operate in iterative loops (turns)                        Pengfei Gao and Chao Peng. 2026. More with Less: An Empirical Study
+                                                                                                                                    of Turn-Control Strategies for Efficient Coding Agents. In 2026 IEEE/ACM
+                                         to solve software engineering tasks, are becoming increasingly pow-
+                                                                                                                                    48th International Conference on Software Engineering (ICSE ’26), April 12–
+arXiv:2510.16786v2 [cs.SE] 25 Nov 2025
+
+
+
+
+                                         erful. However, their practical deployment is hindered by significant                      18, 2026, Rio de Janeiro, Brazil. ACM, New York, NY, USA, 12 pages. https:
+                                         and unpredictable costs. This challenge arises from a combination of                       //doi.org/10.1145/3744916.3773250
+                                         factors: quadratically growing token counts with each turn, the high
+                                         price of state-of-the-art models, the large number of turns required                       1    Introduction
+                                         for real-world tasks, and the tendency of agents to take inefficient or
+                                                                                                                                    Large Language Models (LLMs) have profoundly impacted soft-
+                                         unnecessary actions. While existing research focuses on optimizing
+                                                                                                                                    ware development, with their most prominent application being
+                                         individual turns, the strategic control of the total number of turns
+                                                                                                                                    the Coding Agent. A coding agent typically comprises an LLM at
+                                         remains an underexplored area for managing agent performance
+                                                                                                                                    its core, a set of tools (e.g., a file editor, a shell), and an interactive
+                                         and cost. To address this gap, we conduct a comprehensive empiri-
+                                                                                                                                    environment that includes the project’s codebase. The agent oper-
+                                         cal study on the SWE-bench benchmark using three state-of-the-art
+                                                                                                                                    ates in a multi-round loop to solve a given task, such as a GitHub
+                                         models (Claude 4 Sonnet, Gemini 2.5 Pro, and GPT 4.1). We system-
+                                                                                                                                    issue. Each cycle in this loop, referred to as a turn, involves the LLM
+                                         atically evaluate the impact of three distinct turn-control strategies:
+                                                                                                                                    analyzing the problem state, selecting a tool to interact with the
+                                         an unrestricted baseline, a fixed-turn limit with reminders, and a
+                                                                                                                                    environment, executing it, and then processing the output to de-
+                                         novel dynamic-turn strategy that grants extensions on-demand.
+                                                                                                                                    cide its next action. This loop continues until the agent determines
+                                         Our findings first reveal a fundamental trade-off in the unrestricted
+                                                                                                                                    the task is complete. This powerful paradigm is already deployed
+                                         setting, where no single model excels across performance, cost, and
+                                                                                                                                    in popular AI-powered IDEs like Cursor [4], TRAE [8] and CLI
+                                         turn efficiency. We then show that a fixed-turn limit, specifically at
+                                                                                                                                    assistants like Claude Code [1], and Gemini CLI [10].
+                                         the 75th percentile of the baseline, serves as a "sweet spot", substan-
+                                                                                                                                        However, a critical challenge limiting the widespread, cost-effective
+                                         tially reducing costs (by 24%-68%) with minimal impact on solve
+                                                                                                                                    deployment of these agents is their significant resource consump-
+                                         rates. Most significantly, our proposed dynamic-turn strategy con-
+                                                                                                                                    tion, particularly in terms of tokens. We argue that managing the
+                                         sistently outperforms fixed-limit approaches, achieving comparable
+                                                                                                                                    number of turns is a crucial, yet underexplored, strategy for control-
+                                         or better solve rates while further reducing costs by an additional
+                                                                                                                                    ling this cost. Our argument is built on the following observations:
+                                         12%-24% by intelligently allocating resources only to tasks that
+                                                                                                                                     1 First, the token cost of an agentic interaction can grow faster
+                                         need them. This work provides the first systematic analysis of turn-
+                                                                                                                                    than linearly with the number of turns. In every single typical
+                                         control strategies, offering simple yet effective guidelines for devel-
+                                                                                                                                    agentic loop, the entire conversation history, including all previous
+                                         opers to balance cost and efficacy. We demonstrate that dynamic
+                                                                                                                                    prompts, tool calls, and their output, is fed back into the LLM as
+                                         resource allocation is a superior, easy-to-implement approach for
+                                                                                                                                    context for the next turn. This leads to a prompt size that grows
+                                         deploying powerful yet economically viable coding agents.
+                                                                                                                                    non-linearly, often quadratically (𝑂 (𝑛 2 )), with the number of turns
+                                                                                                                                    𝑛, causing computational and financial costs to escalate rapidly. 2
+                                         CCS Concepts                                                                               Second, the state-of-the-art (SOTA) models best suited for these
+                                         • Software and its engineering → Software verification and                                 tasks are expensive. For instance, Anthropic’s Claude 4 Sonnet is
+                                         validation.                                                                                priced at $3.00 per million input tokens and $15.00 per million out-
+                                                                                                                                    put tokens. Its more powerful counterpart, Claude 4 Opus, costs
+                                         Keywords                                                                                   $15.00 and $75.00 per million input and output tokens, respectively.
+                                         Bug Fixing, Coding Agents, Large Language Models, Automated                                When combined with the quadratic growth of tokens, high turn
+                                         Program Repair                                                                             counts directly translate to prohibitive costs. 3 Third, solving
+                                                                                                                                    real-world tasks requires a large number of turns. An analysis of
+                                         ∗ Corresponding author.
+                                                                                                                                    top-performing agents on the SWE-bench Verified leaderboard [22],
+                                                                                                                                    a benchmark of real GitHub issues, illustrates this reality. As shown
+                                         ICSE ’26, Rio de Janeiro, Brazil
+                                         © 2026 Copyright held by the owner/author(s).
+                                                                                                                                    in Figure 1, the median number of turns required by five leading
+                                         This is the author’s version of the work. It is posted here for your personal use. Not     agents to solve an instance ranges from 41 to 58, with some com-
+                                         for redistribution. The definitive Version of Record was published in 2026 IEEE/ACM        plex tasks demanding over 175 turns. In our own experiments using
+                                         48th International Conference on Software Engineering (ICSE ’26), April 12–18, 2026, Rio
+                                         de Janeiro, Brazil, https://doi.org/10.1145/3744916.3773250.                               Claude 4 Sonnet, an agent with no turn limit cost an average of
+                                                                                                                                    $5.85 to generate a patch and $7.80 for a correct patch, underscoring
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                         Gao et al.
+
+
+                                                                              first establish a baseline with an unlimited-turn agent. We then
+                             Number of Turns Needed by Different Agents       investigate a fixed-turn strategy, where agents operate under a hard
+                                                                              deadline with explicit reminders of their remaining turns. Finally,
+                    175                                                       we propose and evaluate a dynamic-turn strategy, which starts with
+                    150                                                       a conservative turn budget and grants a one-time extension only
+                                                                              when necessary. In addition to these quantitative experiments, we
+                    125                                                       present in-depth case studies to qualitatively analyze the underly-
+  Number of Turns
+
+
+
+
+                                                                              ing behavioral changes that explain why constrained agents can
+                    100                                                       outperform their unrestricted counterparts.
+                                                                                  Our research is guided by the following Research Questions
+                    75                                                        (RQs), with key findings summarized below:
+                                                                              RQ1: What are the performance and cost of coding agents
+                    50
+                                                                              in an unrestricted, unlimited-turn setting? We first explore
+                    25                                                        the baseline performance and cost of agents operating without any
+                                                                              turn limitations, where the only exit condition is the agent’s own
+                          TRAE   Refact.ai Agent Tools +     Tools +   Warp   decision to terminate. This provides a crucial reference point for
+                                                 Claude 4   Claude 4          different LLMs and a baseline for our subsequent experiments.
+                                                   Opus      Sonnet
+                                                                              Findings. Our analysis reveals a clear trade-off between problem-
+       Figure 1: Number of Turns Needed by Different Agents                   solving effectiveness, turn efficiency, and economic cost, with no sin-
+                                                                              gle model excelling across all dimensions. Claude 4 Sonnet emerges
+                                                                              as the most effective model, achieving a superior solve rate of 75%.
+the substantial expense. 4 Finally, agents are prone to wasting               This performance, however, comes at the highest financial price,
+turns on unnecessary or even harmful actions. Without explicit                costing nearly 50% more per solution than its most economical
+constraints, models can be verbose or take indirect paths to a so-            competitor at $7.80. In contrast, GPT 4.1 stands out as the most
+lution. For example, users on the Cursor IDE forum have reported              cost-effective option. It delivers a strong 62% solve rate, comparable
+agents adding "duplicate functions" and "redundant code" while                to Gemini 2.5 Pro, but at a significantly lower cost of $5.19 per solu-
+fixing a simple bug, or breaking a project by attempting to refactor          tion, making it the optimal choice for budget-constrained scenarios.
+and add unrequested features [5]. These behaviors not only inflate            Finally, Gemini 2.5 Pro distinguishes itself as the most turn-efficient
+the turn count and cost but can also degrade the quality of the final         agent, requiring substantially fewer conversational turns to reach
+output.                                                                       solutions, suggesting it could be the fastest to generate patches.
+   Given these factors—quadratic token growth, high model prices,             However, this efficiency is undermined by verbose, non-optional
+the high number of turns needed for real tasks, and the agent’s               reasoning steps that inflate its output token count, placing its final
+tendency toward inefficient actions, we conclude that developing              cost between the other two models. This highlights a critical insight:
+effective turn-control strategies is a critical and urgent research           the choice of an agent depends directly on the primary objective,
+direction. Such strategies are of immense practical value to both             whether it is maximizing success (Claude 4 Sonnet), minimizing
+end-users and the developers building these agentic products.                 cost (GPT 4.1), or prioritizing speed of resolution (Gemini 2.5 Pro).
+   While research into improving the efficiency of LLM-based agents           RQ2: How does a fixed-turn limit with reminders affect agent
+is active, existing work has a unifying limitation: it focuses on op-         performance and cost? Here, we investigate a strategy where
+timizing the cost or content of individual turns, not the number              a hard turn limit is imposed, set to the 25th, 50th, and 75th per-
+of turns in the agentic loop. Current strategies include optimizing           centiles of the baseline turn distributions from RQ1. To make the
+the prompt via compression [13] and RAG [16]; re-architecting                 agent aware of this constraint, a reminder of the remaining turns
+the agent with plan caching [25] or multi-agent systems [7]; and              is included in each prompt (e.g., "You have X turns left to finish the
+constraining the output with per-turn token budgets [11]. These               task"). This RQ examines whether a hard deadline can maintain
+techniques address the payload of each step, not the length of                efficacy while reducing costs.
+the entire workflow. The common use of a static step limit as a               Findings. Imposing a fixed-turn limit is a highly effective cost-saving
+safeguard [2, 14] is a brute-force approach that lacks the adapt-             strategy, though its impact on performance is nuanced and reveals
+ability needed for tasks of varying complexity. Consequently, the             distinct behavioral profiles across models. We identify a clear op-
+explicit study of dynamic turn-control strategies as a mechanism              timal "sweet spot": setting the limit at the 75th percentile of the
+for cost-performance management in coding agents is not yet well-             baseline turn distribution yields substantial cost reductions, rang-
+established.                                                                  ing from 24% to 68%, with only a minor, and sometimes positive
+   To bridge this gap, we conduct a comprehensive empirical study             impact, on solve rates. The most remarkable finding involves Gem-
+to investigate the impact of various turn-control strategies on the           ini 2.5 Pro. At this 75th-percentile limit, it not only saw its costs
+performance and cost of coding agents. Our study is grounded                  cut by a staggering 68% but its solve rate also increased by over 3%,
+in the realistic and challenging SWE-bench Verified benchmark,                achieving a win-win outcome. This suggests that a moderate sense
+utilizing a representative subset of 100 tasks involving both bug             of urgency can catalyze the model to be more efficient. Furthermore,
+fixes and feature implementations. We evaluate three SOTA closed-             this strategy uncovers different robustness profiles. While Claude
+source models: Claude 4 Sonnet, Gemini 2.5 Pro, and GPT 4.1. We               4 Sonnet and GPT 4.1 exhibit "graceful degradation" under tighter
+More with Less: An Empirical Study of Turn-Control Strategies for Efficient Coding Agents                                   ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil
+
+
+constraints (e.g., the 25th percentile), Gemini 2.5 Pro displays a                          why constrained agents can outperform unconstrained ones. Sec-
+"threshold effect", where its performance collapses catastrophically                        tion 5 discusses the potential threats to validity. Finally, Section 7
+under extreme pressure. These insights provide critical, practical                          concludes the paper and outlines future research directions.
+guidance for deploying agentic systems in budget-constrained envi-
+ronments, proving that "more with less" can be achieved by setting                          2     Experimental Setting
+intelligent external constraints.                                                           This section details the experimental setup, including the task and
+RQ3: Can a dynamic-turn growth strategy further improve                                     benchmark, the language models employed, the evaluation metrics
+the balance between performance and cost? In this RQ, we                                    used to measure performance and cost, and the architecture of our
+evaluate a dynamic strategy where an agent starts with a low turn                           autonomous agent.
+budget (e.g., the 25th percentile limit) and is granted a one-time
+extension (e.g., to the 50th percentile limit) only if it fails to pro-
+duce a patch within the initial budget. This RQ assesses whether a
+                                                                                            2.1     Task and Benchmark
+"start small, add more if needed" approach can further optimize the
+performance-cost trade-off.                                                                 Table 1: Distribution of Tasks in the SWE-bench Verified
+Findings. The dynamic-turn strategy is unequivocally superior to                            Benchmark vs. Our Subset
+a fixed-budget approach. By starting with a lower turn limit and
+granting an extension only to tasks that truly need it, this strat-
+                                                                                                                             SWE-bench Verified             Our Subset
+egy achieves comparable or even better performance than a high,                                       Repository
+                                                                                                                                  Count                       Count
+fixed-turn limit, while consistently reducing costs by an additional
+                                                                                                     astropy/astropy                22                          4
+12% to 24%. Our results show this advantage holds true across dif-
+                                                                                                      django/django                231                          47
+ferent configurations. For instance, in a strategy starting with a
+                                                                                                 matplotlib/matplotlib              34                          7
+25th percentile turn limit and growing to a 50th percentile limit
+                                                                                                  mwaskom/seaborn                    2                           0
+upon initial failure, as well as in a higher-budget setting growing
+                                                                                                       pallets/flask                 1                          0
+from the 50th to the 75th percentile, the dynamic approach was
+                                                                                                       psf/requests                  8                          2
+consistently superior. It not only lowered costs in every scenario
+                                                                                                      pydata/xarray                 22                          4
+but also, in some cases, improved solve rates for models like Gemini
+                                                                                                    pylint-dev/pylint               10                          2
+2.5 Pro and GPT 4.1. The success of this strategy stems from a core
+                                                                                                    pytest-dev/pytest               19                           4
+principle: efficient resource allocation. A fixed-budget approach
+                                                                                                scikit-learn/scikit-learn           32                          6
+wastes resources by over-provisioning for simple tasks, whereas
+                                                                                                   sphinx-doc/sphinx                44                           9
+the dynamic strategy intelligently reserves its budget and allocates
+                                                                                                      sympy/sympy                   75                          15
+the extra turns precisely to the more challenging tasks that require
+                                                                                                           Total                   500                         100
+them. This "on-demand" allocation proves that a staged, targeted
+investment is a more powerful and economical approach than pro-
+viding a large, one-size-fits-all budget from the outset.
+   Our main contributions are as follows:                                                      Our research targets real-world software engineering tasks ex-
+                                                                                            tracted from GitHub issues, including both bug fixes and new fea-
+• We provide the first comprehensive empirical study that systemat-                         ture implementations. For evaluation, we utilize the widely-used
+  ically investigates the impact of simple yet powerful turn-control                        SWE-bench Verified benchmark.
+  strategies on the cost and effectiveness of coding agents, using                             To balance experimental rigor with computational and financial
+  SOTA LLMs on a realistic benchmark.                                                       costs, we curated a representative subset of 100 tasks. This subset
+• Our empirical results reveal the trade-offs of different turn-control                     was created by randomly sampling from the full SWE-bench Veri-
+  strategies, identifying a practical "sweet spot" for fixed-turn lim-                      fied benchmark while preserving the original proportional distri-
+  its that yields substantial cost reductions with minimal impact                           bution of tasks across the repositories. Table 1 provides a statistical
+  on solve rates, and uncovering distinct behavioral profiles of                            overview of the task distribution in our subset compared to the full
+  different models under pressure.                                                          SWE-bench Verified set.
+• We propose and empirically validate a novel dynamic-turn allo-
+  cation strategy, demonstrating through our experiments that it                            2.2     Large Language Models
+  is superior to fixed-limit approaches in achieving high efficacy                          We conducted our experiments using three state-of-the-art closed-
+  with greater economic efficiency.                                                         source models to ensure our results are representative of current
+                                                                                            top-tier AI capabilities: Claude 4 Sonnet (Anthropic), Gemini 2.5 Pro
+   The remainder of this paper is structured as follows. Section 2                          (Google), and GPT 4.1 (OpenAI). Our study focuses exclusively on
+details our experimental setting, including the benchmark used, the                         these closed-source models because, at the time of our experiments,
+SOTA models evaluated, and the specific turn-control strategies                             a discernible performance gap still existed between them and their
+we designed. Section 3 presents the detailed quantitative results                           open-source counterparts, particularly for complex reasoning tasks
+of our experiments, structured around our three Research Ques-                              like software engineering. Using established, commercially avail-
+tions (RQs). Section 4 provides a qualitative analysis through two                          able APIs also provides a stable and reproducible baseline for our
+in-depth case studies, exploring the behavioral mechanisms behind                           experiments.
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                      Gao et al.
+
+
+   The monetary cost for each interaction was calculated based on       • Unlimited-Turn Agent (Baseline): This agent serves as our
+the official pricing structures of these models at the time of our        experimental baseline. Its inputs are the issue description and the
+experiments. The specific rates are detailed below:                       project codebase. The agent operates in a continuous loop: the
+• Claude 4 Sonnet: $3.00 per million input tokens and $15.00 per          LLM generates a tool call. If the tool is task_done, the process
+  million output tokens.                                                  terminates, and the patch is saved. Otherwise, the specified tool
+• Gemini 2.5 Pro: Employed a tiered pricing model based on the            is executed, and its output is fed back to the LLM for the next
+  prompt’s context length. For prompts with ≤ 200,000 tokens:             turn. This agent has no turn restrictions.
+  $1.25 per million input tokens and $10.00 per million output          • Fixed-Turn Agent with Reminder: This agent is constrained
+  tokens. For prompts with > 200,000 tokens: $2.50 per million            by a predefined number of turns. To introduce a sense of urgency,
+  input tokens and $15.00 per million output tokens.                      at each step, followed by the tool execution result, a reminder
+• GPT 4.1: $2.00 per million input tokens and $8.00 per million           prompt is added "ENVIRONMENT REMINDER: You have X turns
+  output tokens.                                                          left to complete the task." If the turn limit is reached, the task
+                                                                          is terminated. This configuration allows us to observe agent
+2.3      Evaluation Metrics                                               performance and cost under a strict deadline.
+                                                                        • Dynamic-Turn Agent with Reminder and Growth: This
+We assess the performance and cost of each agent configuration
+                                                                          agent starts with a fixed initial turn limit. If this limit is exhausted
+using the following metrics:
+                                                                          before the task is complete, the agent is granted a one-time buffer
+• Solve Rate (pass@1): This metric measures the percentage of             of additional turns and notified with a message like "ENVIRON-
+  tasks for which a valid patch is successfully generated. A patch is     MENT REMINDER: You have used up all turns but have not yet
+  considered valid if it passes the corresponding test suite provided     completed the task. You are granted an additional X turns to
+  by the SWE-bench evaluation harness. For each task, the agent is        continue and complete the task." The agent then continues its
+  given up to three attempts to produce a single patch. The process       execution until either the task is successfully completed or the
+  stops immediately once the first patch is generated. If no patch is     buffer is depleted. This configuration explores the benefits of
+  produced after three attempts, the instance is marked as a failure.     granting agents more opportunities to succeed while still con-
+• Number of Empty Patch (#Empty): This counts the number of               trolling resource consumption.
+  instances where the agent fails to generate any patch at all. An
+  experimental run for a given task can have one of three outcomes:
+  generating a valid patch (a success), generating an invalid patch     3 Study Results
+  (a failure), or generating no patch (also a failure). This metric
+  specifically tracks the last case.
+                                                                        3.1 RQ1: Performance and Cost on
+• Number of Total Turns (#Total Turns): The total number of inter-          Unlimited-Turn Agent
+  actions with the LLM an agent consumes to solve all instances.        To answer RQ1, we conducted experiments using the unlimited-
+• Token Consumption (#Input Tokens, #Output Tokens): The total          turn agent configuration. The comprehensive results are presented
+  number of input (prompt) and output (completion and reasoning)        in Table 2. The first column denotes the Large Language Model
+  tokens consumed by the LLM.                                           (LLM) used. The second column indicates the percentage of prob-
+• Monetary Cost (Total Cost): The financial cost incurred, calcu-       lems successfully solved by the agent. #Empty shows the number
+  lated based on the token consumption and the respective pricing       of instances where the agent failed to generate a patch. #Total
+  of each LLM, as detailed previously.                                  Turns represents the cumulative number of conversational turns
+                                                                        across all problems. The subsequent three columns, #Turn (25th),
+2.4      Agent Design                                                   #Turn (50th), and #Turn (75th), detail the percentile distribution for
+We adopt TRAE Agent[8]1 , the open-sourced and state-of-the-art         the number of turns required to solve a single problem, with the
+agent on the SWE-bench Verified benchmark for our experiment.           median (50th) indicating typical performance. The #Input Tokens
+The agent is equipped with a specific toolset and can be deployed       and #Output Tokens columns list the aggregate tokens consumed
+in one of three configurations.                                         and generated, respectively. Finally, Total Cost presents the total
+Toolset. The agent can access to the following tools to interact        economic expenditure in USD based on API pricing. Our analy-
+with the code environment:                                              sis is structured around three core dimensions: problem-solving
+                                                                        effectiveness, turn efficiency, and economic cost.
+• str_replace_editor: A versatile tool that allows the agent to
+  view, create, and edit files, as well as undo previous edits.
+• bash: This tool provides the agent with the ability to execute        3.1.1 Problem-Solving Effectiveness. Effectiveness is measured by
+   arbitrary shell commands within a secure Docker container.           the Solve Rate, which directly reflects the Agent’s ability to suc-
+• task_done: A custom tool that the agent must call to signify that     cessfully generate a valid patch. In this dimension, Claude 4 Sonnet
+   it has completed the task.                                           demonstrated superior performance, achieving the highest solve
+Agent Configurations. To investigate the effects of turn limits on      rate of 75%. This establishes it as the most effective model in an unre-
+task performance and cost, we tested three agent configurations.        stricted setting. In contrast, Gemini 2.5 Pro and GPT 4.1 performed
+Figure 2 shows the overview of the agent.                               comparably to each other with solve rates of 63% and 62% respec-
+                                                                        tively, indicating a significant performance gap when compared to
+1 https://github.com/bytedance/trae-agent                               Claude 4 Sonnet.
+More with Less: An Empirical Study of Turn-Control Strategies for Efficient Coding Agents                                    ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil
+
+
+
+
+                                                                                                                                 You have been assigned
+                                                                       Patch                                                     X more turns to …
+
+                                                                        Y                                       add more turns
+          Issue                                                                                                                       Y
+        Description
+                                                                                     N                               N                                N
+                                           LLM                   Task done?                       Turns left?                Have buffer?                             Fail
+          Project
+         Codebase
+                                                You have X                                              Y
+                                                turns left …
+                                                                                                       Tool
+                                                            Tool Execution Result                    Execution
+
+
+
+     Figure 2: The workflow of the autonomous agent, illustrating the core loop of agent and the turn-control mechanism
+
+                                    Table 2: Agent Performance Metrics in the Unlimited-Turn Configuration
+
+  LLM                  Solve Rate    #Empty      #Total Turns     # Turn (25th)     # Turn (50th)      # Turn (75th)     #Input Tokens     #Output Tokens         Total Cost
+  Claude 4 Sonnet         75%          0            5,704              44                52                63.75          186,043,718        1,805,267             $585.21
+  Gemini 2.5 Pro          63%          0            3,925              19               28.5               44.5           239,689,532        4,332,151             $407.66
+  GPT 4.1                 62%          0            5,641             38.75             49.5               66.25          159,117,047         473,835              $322.02
+
+
+3.1.2 Turn Efficiency. Turn efficiency, measured by the total num-                          • No One-Size-Fits-All Model: There is no single best model;
+ber of turns consumed (i.e. #Total Turns), reflects the number of                             selection depends on the specific priorities of the task, balancing
+conversational steps required to finish all tasks. It serves as a proxy                       effectiveness, efficiency, and cost.
+for both computational demand and time-to-solution, assuming                                • For Maximum Effectiveness: Claude 4 Sonnet is the top per-
+consistent LLM API latency. As shown in Table 2, Gemini 2.5 Pro                               former, achieving the highest solve rate (75%). This makes it the
+was markedly the most turn-efficient model, requiring only 3,925                              ideal choice when the primary goal is to maximize the success of
+total turns. Its percentile distribution further confirms that it re-                         problem-solving, despite its higher cost.
+solved tasks more quickly on average. Conversely, Claude 4 Sonnet                           • For Optimal Cost-Efficiency: GPT 4.1 offers the best value. It
+(5,704 turns) and GPT 4.1 (5,641 turns) were less efficient, requiring                        is the most budget-friendly option and delivers a solid solve rate
+substantially more interactions to complete their tasks, with their                           (62%), matching Gemini 2.5 Pro’s performance at a significantly
+turn counts being nearly identical.                                                           lower cost.
+
+3.1.3 Economic Cost. Economic cost is a critical factor for practical
+application, determined by token consumption and model pricing.                             3.2     RQ2: Performance and Cost on Fixed-Turn
+    GPT 4.1 emerged as the most cost-effective option at $322.02.
+                                                                                                    Agent with Reminder
+Claude 4 Sonnet was the most expensive model, with its total cost
+of $585.21 being nearly double that of GPT 4.1. Interestingly, despite                      To address RQ2, we investigate how imposing a fixed turn limit,
+its superior turn efficiency, Gemini 2.5 Pro incurred high token costs                      coupled with a number of turns left reminder fed to models, affects
+($407.66). This is primarily because the model has a default "rea-                          model performance and cost. We constrained the agents to turn
+soning" step that generates verbose output and cannot be disabled,                          limits corresponding to the 25th, 50th, and 75th percentiles of the
+leading to a higher number of output tokens per turn.                                       turns consumed by their respective baseline runs (c.f. Table 2). The
+    To provide a normalized view, we calculated the average cost                            detailed results of this experiment are presented in Table 3, which
+per successfully solved instance:                                                           contrasts the performance of the constrained agents against the
+                                                                                            unconstrained baseline. The table is structured into four sections
+• Claude 4 Sonnet: $7.80 per solution ($585.21 / 75)                                        for clear comparison. The first section (Rows 3-5) establishes the
+• Gemini 2.5 Pro: $6.47 per solution ($407.66 / 63)                                         baseline performance from the unconstrained, unlimited-turn con-
+• GPT 4.1: $5.19 per solution ($322.02 / 62)                                                figuration discussed in RQ1. The subsequent sections display the
+This confirms that GPT 4.1 is the most economical on a per-success                          results when the turn limit is fixed at the 25th (Rows 7-9), 50th
+basis.                                                                                      (Rows 11-13), and 75th (Rows 15-17) percentiles of each model’s
+                                                                                            baseline turn consumption. Within the table, the first column de-
+Takeaway for RQ1                                                                            notes the LLM. Solve Rate is the percentage of successfully solved
+                                                                                            problems. #Empty counts failed attempts that yielded an empty
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                     Gao et al.
+
+
+              LLM                         Solve Rate   #Empty   #Total Turns #Input Tokens #Output Tokens             Total Cost
+                                                                   Unlimited Turns
+              Claude 4 Sonnet                75%          0         5,704        186,043,718   1,805,267               $585.21
+              Gemini 2.5 Pro                 63%          0         3,925        239,689,532   4,332,151               $407.66
+              GPT 4.1                        62%          0         5,641        159,117,047    473,835                $322.02
+                                                               25th Percentiles of Turns
+              Claude 4 Sonnet           60% (↓ 20.00%)    16        4,107         98,100,806   1,242,319          $312.94 (↓ 46.53%)
+              Gemini 2.5 Pro            26% (↓ 58.73%)    63        1,749         28,026,514   1,613,666          $51.17 (↓ 87.45%)
+              GPT 4.1                   49% (↓ 20.97%)    26        3,415         59,048,594    238,074           $120.00 (↓ 62.74%)
+                                                               50th Percentiles of Turns
+              Claude 4 Sonnet           63% (↓ 16.00%)    11        4,512        121,324,264   1,350,688          $384.23 (↓ 34.34%)
+              Gemini 2.5 Pro            52% (↓ 17.46%)    24        2,314         51,008,477   1,871,124          $82.47 (↓ 79.77%)
+              GPT 4.1                    57% (↓ 8.06%)    10        4,049         80,391,717    279,172           $163.02 (↓ 49.38%)
+                                                               75th Percentiles of Turns
+              Claude 4 Sonnet            71% (↓ 5.33%)     3        4,958        141,319,799   1,535,340          $446.99 (↓ 23.62%)
+              Gemini 2.5 Pro             65% (↑ 3.17%)     4        2,808         84,083,495   2,421,621          $129.32 (↓ 68.28%)
+              GPT 4.1                    57% (↓ 8.06%)     3        4,695         97,679,714    362,165           $198.26 (↓ 38.43%)
+                                         Table 3: Performance and Cost Metrics under Fixed-Turn Limitations
+
+
+
+patch. #Total Turns, #Input Tokens, and #Output Tokens quantify             constraints but suffering a systemic breakdown when limits become
+resource consumption, and Total Cost shows the final expenditure            too severe.
+in USD. Crucially, the values in parentheses () in the Solve Rate
+and Total Cost columns indicate the percentage change relative to           3.2.2 Agent Performance without Turn Reminders. In a scenario
+the unlimited-turn baseline, making it easy to assess performance           where the agent is not reminded of the turn limit, it would simply
+impact and cost reduction.                                                  halt upon exhausting its turns, resulting in an empty patch and
+                                                                            a failed task. Therefore, we re-analyzed our baseline data: if an
+3.2.1 Performance Impact: Convergence with a Cost. Introducing a            instance was successfully solved but required more turns than the
+fixed-turn limit proved to be a double-edged sword, generally re-           given limit, we re-classified it as a failure with an empty patch.
+sulting in a degradation of problem-solving capabilities, albeit with       The results, summarized in Table 4, show a clear and significant
+a critical and insightful exception. The severity of the performance        performance degradation (less solve rate and more empty patches)
+loss was directly correlated with the stringency of the turn limit.         when no reminders are given.
+    Under the most restrictive 25th-percentile limit, all models expe-      3.2.3 Cost Impact: Significant and Universal Economic Benefits. In
+rienced a significant decline in their solve rate. The performance          contrast to the often-negative impact on performance, the fixed-
+of Claude 4 Sonnet and GPT 4.1 dropped by approximately 20%, a              turn strategy yielded universally positive and substantial economic
+substantial but measured decrease. In contrast, Gemini 2.5 Pro’s per-       benefits. Across every model and every constraint level, the to-
+formance collapsed catastrophically, with its solve rate plummeting         tal monetary cost was dramatically lower than the unrestricted
+by 58.73%. This failure was accompanied by a dramatic increase in           baseline.
+the number of failed patch generations (#Empty), where Gemini                   The magnitude of cost savings was directly proportional to the
+2.5 Pro failed in 63 instances, suggesting it is unable to finish a task    strictness of the turn limit. The most significant savings were ob-
+under extreme pressure.                                                     served at the 25th-percentile limit, where Gemini 2.5 Pro, despite
+    As the constraints were relaxed to the 50th and 75th percentile         its poor performance, registered a remarkable 87.45% reduction in
+limits, performance across all models systematically improved,              cost. Even under the most lenient 75th-percentile constraint, the
+demonstrating a strong positive correlation between task success            economic advantages remained compelling, with savings ranging
+and the number of available interaction turns. However, a signifi-          from 23.62% for Claude 4 Sonnet to an impressive 68.28% for Gemini
+cant and counter-intuitive exception emerged with Gemini 2.5 Pro            2.5 Pro.
+at the 75th percentile limit. It was the only model to not only recover
+but surpass its baseline performance, achieving a 3.17% increase in         3.2.4 Synthesized Analysis: Identifying the Optimal Efficacy-Cost
+its solve rate. This suggests that a moderate sense of urgency can,         Ratio. By synthesizing the performance and cost data, we can iden-
+in some cases, prompt the model to generate higher-quality, more            tify the optimal trade-off point, or "sweet spot" for this strategy.
+concise solutions.                                                          The 75th-percentile limit clearly emerges as the most balanced and
+    This analysis also reveals distinct robustness profiles. Claude         advantageous configuration overall. At this level, all three LLMs
+4 Sonnet and GPT 4.1 exhibit a pattern of "graceful degradation",           achieved a highly favorable efficacy-cost ratio, trading single-digit
+where their performance declines smoothly in proportion to the              performance losses (or, in Gemini 2.5 Pro’s case, a gain) for cost
+reduction in available turns. Gemini 2.5 Pro, conversely, displays          reductions ranging from 23% to 68%. The combination of Gemini 2.5
+a "threshold effect", performing exceptionally well with moderate           Pro with a 75th-percentile limit was the standout performer of the
+More with Less: An Empirical Study of Turn-Control Strategies for Efficient Coding Agents                               ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil
+
+
+                                          Table 4: Agent Performance with and without Turn Reminders
+
+       Percentile            LLM                Solve Rate (w/ rem.) Solve Rate (w/o rem.) #Empty (w/ rem.)                            #Empty (w/o rem.)
+                        Claude 4 Sonnet                 60%                   24% (↓ 60%)           16                                     73 (↑ 57)
+           25th         Gemini 2.5 Pro                  26%                   20% (↓ 23%)           63                                     73 (↑ 10)
+                            GPT 4.1                     49%                   24% (↓ 51%)           26                                     71 (↑ 45)
+                        Claude 4 Sonnet                 63%                   46% (↓ 27%)           11                                     48 (↑ 37)
+           50th         Gemini 2.5 Pro                  52%                   39% (↓ 25%)           24                                     49 (↑ 25)
+                            GPT 4.1                     57%                   40% (↓ 30%)           10                                     48 (↑ 38)
+                        Claude 4 Sonnet                 71%                   63% (↓ 11%)           3                                      25 (↑ 22)
+           75th         Gemini 2.5 Pro                  65%                   54% (↓ 17%)            4                                     25 (↑ 21)
+                            GPT 4.1                     57%                    54% (↓ 5%)            3                                     24 (↑ 21)
+                                                        Note: Rem. is the abbreviation of reminder.
+
+experiment, achieving a "win-win" by simultaneously improving                               instance, for the Claude 4 Sonnet model, "Dynamic 25→50" means
+its solve rate and drastically cutting costs.                                               the agent initially has a limit of 44 turns (the 25th percentile from
+    For applications prioritizing extreme cost-effectiveness, the per-                      Table 2). If these turns are exhausted without a patch, the agent
+formance of GPT 4.1 at the 50th-percentile limit is also highly                             is granted an additional 8 turns to complete the task, bringing the
+attractive. It delivered a substantial 50% cost reduction while incur-                      total maximum budget to 52 turns (the 50th percentile).
+ring a modest performance loss of less than 10%, representing an                               To test this approach, we conducted two comparative experi-
+excellent value proposition.                                                                ments, with results detailed in Table 5. The table is organized into
+                                                                                            two distinct comparison pairs:
+Takeaway for RQ2
+                                                                                            • Dynamic 25→50 vs. Fixed 50: The performance of the dynamic
+• Primarily a Cost-Optimization Tool: The fixed-turn strategy’s
+                                                                                              strategy (Rows 7-9) is compared against a fixed 50th-percentile
+  main value lies in its ability to enforce budgetary control. It
+                                                                                              turn limit baseline (Rows 3-5).
+  consistently yields significant cost savings, typically in exchange
+                                                                                            • Dynamic 50→75 vs. Fixed 75: The performance of the dynamic
+  for a controlled degradation in solve rate.
+                                                                                              strategy (Rows 15-17) is compared against a fixed 75th-percentile
+• Optimal "Sweet Spot" at 75th Percentile: Across all models,
+                                                                                              turn limit baseline (Rows 11-13).
+  setting the turn limit to the 75th percentile of the baseline dis-
+  tribution provides the most favorable efficacy-cost ratio. This
+  setting secures substantial cost reductions (ranging from 23% to                          Within the table, the columns track key metrics such as Solve Rate,
+  68%) while incurring only minimal performance losses.                                     resource consumption (#Total Turns, Token counts), and Total Cost.
+• The "More with Less" Anomaly: The combination of Gemini                                   For the dynamic strategy results, the values in parentheses () indi-
+  2.5 Pro and a 75th-percentile limit is a standout exception. It                           cate the percentage change relative to their corresponding fixed-
+  not only cuts costs by over 68% but also improves the solve rate                          turn baseline, directly showing performance shifts and cost savings.
+  by 3.17%, demonstrating that a moderate sense of urgency can
+  catalyze a highly efficient model to unlock its potential.
+• Actionable Recommendation: For deploying agentic systems                                  3.3.1 Analysis of the Lower-Turn Setting: Dynamic 25→50 vs. Fixed
+  in budget-constrained environments, we strongly recommend                                 50. In the first comparison, we evaluated a dynamic-turn agent that
+  implementing a fixed-turn limit. A setting at approximately the                           started with 25th percentiles of turns and received a buffer to reach
+  75th percentile of the expected turn distribution is a robust strat-                      50th percentiles of turns if necessary. The results show that this
+  egy to dramatically reduce operational costs with negligible, and                         dynamic approach is clearly a better choice than simply giving the
+  sometimes even positive, impact on performance.                                           agent a fixed 50th percentiles of turns from the beginning.
+                                                                                                In terms of performance, the dynamic strategy was either better
+                                                                                            or equal across all models. The solve rates for Claude 4 Sonnet and
+3.3     RQ3: Performance and Cost on                                                        Gemini 2.5 Pro actually increased, with Gemini 2.5 Pro showing a
+                                                                                            notable improvement of nearly 6%. GPT 4.1’s performance remained
+        Dynamic-Turn Agent with Reminder and                                                identical. This shows that giving a "second chance" to agents that
+        Growth                                                                              struggle initially not only helps them complete their task but can
+RQ3 explores whether a dynamic turn-allocation strategy, which                              sometimes lead to even better outcomes.
+grants extra turns only when needed, can improve the balance be-                                From a cost perspective, the dynamic strategy was significantly
+tween performance and cost. We define a "Dynamic X→Y" strategy                              cheaper for all models. The cost savings were substantial, with
+as a two-stage process: an agent is first given a turn limit of X (e.g.,                    GPT 4.1’s cost being reduced by an impressive 24.30%. In short, the
+the 25th percentile of baseline turns). If it fails to generate a patch                     dynamic 25→50 strategy achieved the same or better performance
+within this initial budget, it receives more turns to continue its                          than the fixed 50-turn approach, but at a much lower cost. Therefore,
+work, up to a total maximum of Y (e.g., the 50th percentile). For                           it is the unquestionably superior strategy in this setting.
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                  Gao et al.
+
+
+                LLM                      Solve Rate   #Total Turns #Input Tokens #Output Tokens
+                                                      #Empty                                            Total Cost
+                                                               Fixed 50
+                Claude 4             63        11        4,512         121,324,264    1,350,688          $384.23
+                Gemini 2.5 Pro       52        24        2,314          51,008,477    1,871,124           $82.47
+                GPT 4.1              57        10        4,049          80,391,717     279,172           $163.02
+                                                         Dynamic 25 → 50
+                Claude 4        64 (↑ 1.59%) 3 (↓ 8)     4,150         101,750,021    1,280,320    $324.45 (↓ 15.56%)
+                Gemini 2.5 Pro 55 (↑ 5.77%) 12 (↓ 40)     2056          43,713,411    2,291,746      $77.56 (↓ 5.95%)
+                GPT 4.1          57 (0.00%)   10 (0)     3,500          60,713,443     248,291     $123.41 (↓ 24.30%)
+                                                               Fixed 75
+                Claude 4             71         3        4,958         141,319,799    1,535,340          $446.99
+                Gemini 2.5 Pro       65         4        2,808          84,083,495    2,421,621          $129.32
+                GPT 4.1              57         3        4,695          97,679,714     362,165           $198.26
+                                                         Dynamic 50 → 75
+                Claude 4        70 (↓ 1.41%) 1 (↓ 2)     4,532         122,229,766    1,353,787    $387.00 (↓ 13.42%)
+                Gemini 2.5 Pro 64 (↓ 1.54%)  3 (↓ 1)     2,382          57,526,042    2,614,100     $98.05 (↓ 24.18%)
+                GPT 4.1         59 (↑ 3.51%) 1 (↓ 2)     4,069          85,859,248     275,959     $173.93 (↓ 12.27%)
+                             Table 5: Performance and Cost Metrics of Dynamic vs. Fixed Turn Strategies
+
+
+
+3.3.2 Analysis of the Higher-Turn Setting: Dynamic 50→75 vs. Fixed      • Achieves More with Less: This approach provides a reliable
+75. We then tested if this advantage holds in a higher-turn set-          method to significantly reduce costs (by 5% to 24%) while simul-
+ting, comparing a dynamic 50→75 strategy to a fixed 75 limit. The         taneously preserving—and in some cases, even improving—the
+findings were consistent and reinforced our earlier conclusion.           problem-solving success rate.
+   The performance of the dynamic strategy remained nearly iden-        • Based on Efficient Resource Allocation: Its success stems
+tical to the fixed-limit approach. For Claude 4 Sonnet and Gemini         from allocating resources only when needed. It avoids the waste
+2.5 Pro, the performance drop was only about 1.5%, a negligible           inherent in fixed-limit strategies by allowing easy tasks to fin-
+difference in practice. More impressively, GPT 4.1’s resolve rate         ish cheaply and providing a "second chance" only to tasks that
+increased by 3.5%, once again showing that the dynamic method             genuinely require it.
+can sometimes outperform a fixed, larger budget.                        • Recommended for Practical Deployment: For any agentic
+   At the same time, the cost benefits remained significant. All mod-     system where balancing high performance with cost management
+els saw cost reductions between 12% and 24%. This result confirms         is critical, a dynamic, multi-stage turn allocation should be the
+that even when allowing for a high number of maximum turns, the           default and preferred implementation strategy.
+dynamic strategy is a smarter and more efficient choice. It delivers
+nearly the same (or better) results while consistently saving a large
+portion of the budget.
+                                                                        4     Case Study
+3.3.3 Discussion: The Principle of Efficient Resource Allocation. The   Our quantitative results reveal a compelling, counterintuitive find-
+success of the dynamic strategy is based on a simple and powerful       ing: agents operating under specific constraints can outperform
+logic: most tasks do not require the maximum number of turns            their unrestricted counterparts. This section delves into the qualita-
+allowed. A fixed-limit strategy wastes resources by giving too many     tive "why" behind these numbers through two illustrative case stud-
+turns to "easy tasks" that can be solved quickly.                       ies. The first case study analyzes how a moderate, fixed-turn limit
+   The dynamic strategy avoids this waste. It works like a "start       can guide an agent toward a more focused and effective problem-
+small, add more if needed" system. By starting with a lower turn        solving strategy, preventing the kind of chaotic exploration that
+limit, it allows simple tasks to finish quickly and cheaply. It then    plagues unconstrained agents. The second case study examines
+saves its resources (the extra turns) and gives them only to the        the psychological and strategic benefits of a dynamic turn budget,
+"difficult tasks" that truly need them. The data clearly shows that     showing how an initial constraint followed by a "second chance"
+this approach of making a second, targeted investment in struggling     extension can transform failure into success.
+tasks is more effective than giving all tasks a large budget from the
+start.
+                                                                        4.1    Case Study 1
+Takeaway for RQ3                                                        Our quantitative results show that Gemini 2.5 Pro under a 75th-
+                                                                        percentile fixed-turn limit with reminders, achieved a 65% solve
+• Unambiguously Superior Strategy: The dynamic-turn strat-              rate, surpassing the 63% solve rate of its unrestricted, unlimited-
+  egy consistently outperforms its fixed-turn counterparts in all       turn counterpart. To understand the underlying behavioral changes
+  tested scenarios. It is demonstrably more efficient and effective.    driving this performance improvement, we present a case study
+More with Less: An Empirical Study of Turn-Control Strategies for Efficient Coding Agents                                 ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil
+
+
+of a instanced named sympy__sympy-22456. This instance is par-                              4.2    Case Study 2
+ticularly illustrative: the 75th-percentile agent successfully gener-                       The superiority of our dynamic-turn strategy is vividly illustrated
+ated a correct patch in just 35 turns, whereas the unlimited-turn                           in the case of django__django-15161, solved by the agent with
+agent failed after a prolonged 82-turn trajectory that produced                             Claude 4 Sonnet. Under a high, fixed 75th-percentile turn limit (64
+an incorrect patch. Analysis of these two trajectories reveals how                          turns), the agent failed to produce any patch. However, when using
+moderate pressure can guide an agent toward a more effective                                a Dynamic 50→75 strategy, which started with a lower budget
+problem-solving path.                                                                       of 52 turns and received a 12-turn extension upon initial failure,
+   The successful agent, operating under the turn constraint, fol-                          it succeeded in generating a correct patch within the same total
+lowed a direct and systematic solution path emblematic of an ex-                            budget of 64 turns. A comparative analysis of the two trajectories
+pert workflow. It correctly diagnosed the root cause of the failure:                        reveals that the dynamic strategy’s success is not merely about the
+the __new__ method of the String class in sympy/codegen/ast.py                              total number of turns, but about how the phased allocation of turns
+did not properly handle cases where an argument was already                                 influences the agent’s problem-solving psychology and strategy.
+an instance of String, leading to faulty object reconstruction.                                 The agent with a fixed 64-turn limit exhibited a behavior we
+Based on this accurate diagnosis, the agent implemented a pre-                              term "unfocused exploration." Aware of its large initial budget, the
+cise and minimal fix by inserting a single conditional check, if                            agent engaged in an exhaustive but inefficient discovery process.
+isinstance(name, cls): return name, at the beginning of the                                 The agent spent its initial turns conducting a wide-ranging, unfo-
+method. Its verification process was equally robust; after a pre-                           cused exploration of the codebase. It viewed numerous directories
+liminary check, it correctly located the official test file, added a                        and files (django/db/models, expressions.py, __init__.py),
+new regression test, and executed the entire module’s test suite                            seemingly attempting to build a complete mental model of the
+to ensure no side effects were introduced. The trajectory of this                           entire expressions subsystem from scratch. This reconnaissance
+constrained agent demonstrates a high degree of certainty from                              phase, while thorough, was not directly tied to a specific, testable
+the outset, suggesting that the perceived turn pressure discouraged                         hypothesis about the problem. The agent then spent a significant
+exploratory deviations and maintained a sharp focus on a correct                            number of turns (over 30) writing and repeatedly debugging a com-
+and efficient solution path.                                                                plex, all-encompassing test script. This script was designed to test
+   In contrast, the unlimited-turn agent’s trajectory exemplifies a                         the deconstruction of 15 different expression classes at once. This
+cascading failure initiated by a flawed diagnosis. The critical di-                         "all-or-nothing" verification strategy proved brittle; a TypeError
+vergence occurred at the initial bug-reproduction step. The agent                           in one part of the script caused repeated failures, forcing the agent
+received a more ambiguous error message, TypeError: No value                                into a protracted debugging loop that consumed the majority of
+for ’text’ given and attribute has no default, and                                          its turn budget. By the time the agent finally managed to run its
+observed that s.args was an empty tuple. Instead of investigat-                             tests and correctly diagnose the issue, it had already spent over 50
+ing why the arguments were empty, it incorrectly focused on the                             turns. With only a few turns remaining, it was unable to pivot to the
+TypeError as the primary symptom, hypothesizing that the issue                              implementation and final verification phase, ultimately timing out
+lay in how s.func() was called with no arguments. This misdiag-                             without producing a patch. The high initial budget created a false
+nosis led it down an unproductive path of erroneous fixes. It spent                         sense of security, encouraging a complex, non-essential verification
+dozens of turns repeatedly rewriting the __new__ method in both                             process that ultimately led to the mission’s failure.
+the String class and its parents, introducing new NameError and                                 The dynamic-turn agent, starting with a more constrained bud-
+AttributeError exceptions. This created a vicious cycle where                               get of 52 turns, adopted a markedly different and more effective
+the agent was forced to address self-inflicted errors, such as fixing                       strategy characterized by "focused urgency". The initial turn limit
+a TypeError that led to a new problem with __eq__, which in turn                            immediately focused the agent. Instead of a broad file-system sur-
+created an issue with __hash__. Having lost the original objective,                         vey, it directly inspected the most relevant files (expressions.py,
+the agent even attempted to modify unrelated files like cnodes.py                           __init__.py) and used grep to quickly find all classes with deco-
+and became trapped in loops of undoing and retrying its own faulty                          rators named @deconstructible. This was a targeted, hypothesis-
+modifications. The agent’s reasoning became polluted by a his-                              driven approach aimed at understanding the specific pattern that
+tory of failed attempts and contradictory hypotheses, making it                             needed to be replicated. Rather than building a monolithic test
+increasingly difficult to return to a correct line of reasoning.                            script, this agent began applying the @deconstructible decora-
+   In summary, the failure of the unrestricted agent originated                             tor to the necessary classes one by one. This iterative approach
+from a critical misinterpretation of an initial symptom. The lack                           allowed for incremental progress and provided immediate feedback.
+of constraints afforded it the "freedom to get lost" in a protracted,                       The agent methodically worked through each required class (Func,
+chaotic exploration that was ultimately fatal to its success. The                           Value, ExpressionWrapper, When, etc.), making small, verifiable
+75th-percentile agent, however, was guided by the turn limit to                             changes. The agent successfully modified all required classes just as
+adopt a more focused strategy, leading to a correct diagnosis and an                        it exhausted its initial 52 turns. At this critical juncture, the agent’s
+efficient, successful outcome. This case demonstrates that moderate                         state was highly advanced: the core logic was implemented, and
+constraints can act as a beneficial heuristic, pruning the search                           all that remained was final verification. The notification that it was
+space and preventing the agent from pursuing erroneous, high-cost                           "granted an additional 12 turns" provided the necessary impetus to
+solution paths.                                                                             complete the task. The agent used this extension efficiently to run
+                                                                                            the final tests, confirm the fix, and submit the correct patch.
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                            Gao et al.
+
+
+                                                      Table 6: Repeated Experiments for Each Case Study
+
+                Case Study          Configuration          Result in Paper   Repeated Runs     Success Rate      95% Clopper-Pearson
+                                    75th-percentile            Solved           8 Solved           80%                [0.44, 0.97]
+                    Case 1
+                                    Unlimited-turn            Unsolved          4 Solved           40%                [0.12, 0.74]
+                                    Dynamic 50->75             Solved           4 Solved           40%                [0.12, 0.74]
+                    Case 2
+                                       Fixed 75               Unsolved          2 Solved           20%                [0.03, 0.56]
+
+
+   In summary, this case study demonstrates that the dynamic-                    current study did not adopt this approach, which may affect the
+turn strategy’s effectiveness stems from its psychological impact                stability of our conclusions.
+on the agent’s planning and execution. The initial, lower budget
+enforces focus and efficiency, compelling the agent to prioritize
+high-value actions and adopt a more direct, iterative workflow. The              5.2    LLM Selection
+subsequent turn extension then acts as a crucial "second chance",                Another threat to validity lies in the selection of proprietary LLMs.
+providing the final resources needed to push a nearly-complete                   Our model selection focused on state-of-the-art models from the top
+solution over the finish line. This contrasts sharply with the high              commercial providers, namely OpenAI, Google, and Anthropic, to
+fixed-budget approach, where the absence of initial pressure led to              ensure our findings are relevant to the most widely used, production-
+an inefficient and overly complex strategy that consumed the entire              grade agentic systems. At the time of our experiments, on Open-
+budget on preliminary steps. The total turn count was identical,                 Router, the popular model service provider, nine of the top ten
+but the phasing of the budget made all the difference, transforming              most-used models are closed-source models while the only open-
+failure into success.                                                            source model is free to use, indicating that for paid workloads
+                                                                                 where cost-efficiency is critical, the market overwhelmingly relies
+                                                                                 on closed-source solutions.
+4.3      Stochasticity of Case Study                                                 The decision for Sonnet over Opus was data-driven. While Opus
+We conduct supplementary repeated experiments (10 runs for each                  is a top performer, Sonnet is far more widely deployed. For instance,
+case study) to verify the stochasticity and robustness of them, as               recent OpenRouter data shows Sonnet’s minimum daily usage (33.4
+illustrated in Table 6                                                           billion tokens) is over five times higher than Opus’s peak (6.35
+    In two completely independent cases, our proposed strategies                 billion). For a study on practical cost-efficiency, selecting the more
+demonstrated a strong effect of doubling the success rate (from                  heavily utilized model ensures our findings have a significantly
+40% to 80% in Case 1, and from 20% to 40% in Case 2). Due to                     greater impact on real-world agentic workloads.
+the small sample size (n=10), a result of the high cost of these
+experiments, these differences do not reach statistical significance
+at the 𝑝 < 0.05 level. However, both cases together reveal a clear               5.3    Simplified Cost Model
+and robust positive trend. For example, in Case 1, the lower bound               Our cost calculations are based on the official token pricing of each
+of the constrained strategy’s confidence interval (0.44) is already              model, and to ensure a consistent comparison, we uniformly dis-
+higher than the point estimate of the unlimited-turn strategy (0.40),            abled the prompt caching feature. This presents a threat to validity,
+which clearly indicates a strong trend of superior performance.                  as prompt caching is a common cost-optimization tool in real-world
+    These repeated experiments greatly enhance the credibility of                production environments. Since different models have varying pric-
+our case studies and the robustness of our method. They indicate                 ing strategies for caching, enabling this feature could alter the final
+that the performance improvements we observed are not acciden-                   cost for each model, thereby affecting our assessment of their eco-
+tal, but rather a systematic and repeatable positive effect of our               nomic efficiency and the cost savings of our proposed strategies.
+proposed turn-control strategies.                                                Future work could investigate the cost-performance trade-offs of
+                                                                                 different turn control strategies with prompt caching enabled.
+5 Threats to Validity
+5.1 Stochasticity of LLMs                                                        5.4    Specificity of Agent and Prompt Design
+The primary threat to validity stems from the inherent stochastic                The conclusions of this study are contingent upon our specific agent
+nature of Large Language Models. A single experimental run may                   architecture and its associated prompting strategies (e.g., "You have
+not be representative of a model’s average performance, as its                   X turns left..."). The agent’s toolset (str_replace_editor, bash)
+output can be influenced by chance. A successful solution may                    and the precise wording of the reminder prompts could influence
+result from a fortuitous reasoning path, while a failure could be                its behavior. An agent with a more powerful toolset or different
+an incidental anomaly. Although conducting our experiments on                    prompting techniques might respond differently to the same turn
+100 tasks helps to smooth out this randomness to some extent, a                  limits. Therefore, the observed effects may be the result of an in-
+more robust methodology would involve repeating each experiment                  teraction between the turn-control strategy and our specific agent
+multiple times (e.g., 3-5 runs) and reporting the mean and standard              implementation, rather than a universally applicable effect of the
+deviation of the metrics. Due to budget and time constraints, our                strategy itself.
+More with Less: An Empirical Study of Turn-Control Strategies for Efficient Coding Agents                                ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil
+
+
+6     Related Work                                                                          introduce a mechanism to actively govern the iterative process of
+In response to the escalating costs and performance challenges of                           a single worker agent. The problem of an agent getting stuck in a
+LLM-based agents, a diverse range of optimization techniques has                            loop is simply moved, not solved.
+emerged. This research can be categorized by its point of interven-
+tion: optimizing the model’s context, re-architecting the agent’s                           6.3    Constraining the Reasoning Process
+structure, or constraining the reasoning process. A critical anal-                          The research most adjacent to our work involves direct constraints
+ysis reveals that while these methods offer value, they primarily                           on the agent’s reasoning process. Token Budgeting explicitly in-
+address the cost and content of individual turns rather than the                            structs the LLM to limit the length of its generated response in a
+overall number of turns. This review highlights a crucial gap in                            given turn. The TALE framework, for example, dynamically esti-
+the literature: the absence of dynamic, intelligent control over the                        mates a "reasonable" token budget and injects it into the prompt,
+length of the agent’s iterative loop.                                                       reducing token costs by an average of 67% [11]. Other work has
+                                                                                            explored fine-tuning models to self-estimate budgets [17]. A key
+6.1     Optimizing the Prompt                                                               finding from this research is the "Token Elasticity" phenomenon:
+                                                                                            an overly aggressive budget can backfire, causing the model to
+The most direct approach to reducing cost is optimizing the prompt.
+                                                                                            generate an even longer response [11].
+Prompt compression methods shorten the input while preserving
+                                                                                               In practice, many systems also use a Static Step/Turn Limit (e.g.,
+key semantic content [12, 13]. These generally fall into two cate-
+                                                                                            max_turns) as a brute-force safeguard against unlimited loops, as
+gories: extractive techniques that prune redundant tokens based
+                                                                                            seen in frameworks like SWE-bench [2, 14]. However, this is not an
+on information-theoretic metrics, and abstractive techniques that
+                                                                                            intelligent strategy, as a fixed limit lacks the adaptability for tasks
+use a smaller model to generate a summary [18]. More advanced
+                                                                                            of varying complexity.
+methods leverage the model’s internal states [6] or reinforcement
+                                                                                               The distinction between these methods and our work is critical.
+learning [12, 13] to select the most salient information.
+                                                                                            Token budgeting controls the verbosity of a single turn. It does not
+   A more holistic approach is Retrieval-Augmented Generation
+                                                                                            control the number of turns in the agentic loop. It addresses the
+(RAG), a form of context engineering where an agent retrieves rele-
+                                                                                            length of an atomic unit of work, whereas the problem at hand is
+vant information from an external knowledge base (e.g., documenta-
+                                                                                            the length of the entire workflow.
+tion or code) to augment its prompt before generation [9, 16, 20, 21].
+By improving the prompt’s signal-to-noise ratio, RAG directly ad-
+                                                                                            7     Conclusion
+dresses the "lost in the middle" problem, where models struggle to
+utilize information buried in long contexts [19].                                           The high operational cost of LLM-based coding agents poses a sig-
+   Despite their effectiveness, these techniques operate within a                           nificant barrier to their widespread adoption. This paper addresses
+turn. They optimize the payload of each conversational step, making                         this challenge through the first comprehensive empirical study
+a 100-turn interaction cheaper but doing nothing to prevent the                             of turn-control strategies as a primary mechanism for cost man-
+agent from taking 100 turns in the first place. Control over the                            agement. Our findings demonstrate that well-calibrated fixed-turn
+iteration count remains outside their scope.                                                limits can drastically reduce costs—by up to 68%—with minimal
+                                                                                            impact on solve rates, and can even improve performance by in-
+6.2     Re-architecting the Agent                                                           ducing more focused agent behavior. Furthermore, we propose and
+                                                                                            validate a novel dynamic-turn strategy that outperforms the best
+A second category of optimizations moves beyond the prompt to re-                           fixed-limit approaches by intelligently allocating turns only to the
+design the agent’s fundamental architecture. Agentic Plan Caching                           tasks that require them. Overall, our work provides concrete, action-
+stores and reuses structured plan templates for semantically similar                        able evidence that explicit turn management is a critical lever for
+tasks. This allows the system to bypass the expensive, multi-turn                           optimizing the cost-effectiveness of coding agents, offering prac-
+planning process for known problems, invoking a full planner LLM                            tical guidance for building the next generation of economically
+only for novel tasks. This has been shown to reduce serving costs                           viable AI developers. In the future, we want to develop more sophis-
+by 46.62% while maintaining 96.67% of optimal performance [25].                             ticated strategies where agents can dynamically request or budget
+   Codified Prompting, as seen in the CodeAgents framework [24],                            turns based on a task’s perceived complexity or their own solution
+replaces verbose natural language communication between agent                               confidence.
+components with a structured, typed pseudocode. This makes the
+agent’s reasoning more precise and token-efficient, reducing input                          Data availability
+tokens by 55%–87% and output tokens by 41%–70%.
+                                                                                            The code and related experimental data in this paper are accessible
+   Hierarchical and Multi-Agent Systems decompose complex tasks,
+                                                                                            on this page: https://doi.org/10.6084/m9.figshare.30705524
+delegating sub-tasks to multiple, specialized agents [3, 15, 23]. This
+enables strategies like cost-effective cascades, where cheaper mod-
+els handle most work and expensive models are reserved for critical
+steps, achieving cost reductions up to 94.2% [7].
+   These architectural patterns apply classic software engineering
+principles to AI systems. However, they either bypass the iterative
+loop (caching), make communication within it cheaper (codified
+prompting), or delegate work from it (hierarchical systems). None
+ICSE ’26, April 12–18, 2026, Rio de Janeiro, Brazil                                                                                                                    Gao et al.
+
+
+References                                                                                  [14] Carlos E Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir
+ [1] Anthropic. 2025. Claude Code. https://www.anthropic.com/claude-code.                        Press, and Karthik Narasimhan. 2023. Swe-bench: Can language models resolve
+ [2] Cognition AI. 2024. SWE-bench technical report. https://cognition.ai/blog/swe-              real-world github issues? arXiv preprint arXiv:2310.06770 (2023).
+     bench-technical-report.                                                                [15] LangChain. 2024. LangGraph. Software library. https://langchain.com/langgraph
+ [3] CrewAI. 2024. CrewAI. Software library. https://www.crewai.com/                        [16] Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin,
+ [4] Cursor. 2025. Cursor. https://cursor.com.                                                   Naman Goyal, Heinrich Küttler, Mike Lewis, Wen-tau Yih, Tim Rocktäschel,
+ [5] Cursor Community Forum. 2024. Claude 3.7 Booby Traps. https://forum.cursor.                 et al. 2020. Retrieval-augmented generation for knowledge-intensive nlp tasks.
+     com/t/claude-3-7-booby-traps/63114. Accessed: 2024-07-25.                                   Advances in neural information processing systems 33 (2020), 9459–9474.
+ [6] Weizhi Fei, Xueyan Niu, Guoqing Xie, Yingqing Liu, Bo Bai, and Wei Han. 2025.          [17] Zheng Li, Qingxiu Dong, Jingyuan Ma, Di Zhang, and Zhifang Sui. 2025. Self-
+     Efficient Prompt Compression with Evaluator Heads for Long-Context Trans-                   budgeter: Adaptive token allocation for efficient llm reasoning. arXiv preprint
+     former Inference. arXiv preprint arXiv:2501.12959 (2025).                                   arXiv:2505.11274 (2025).
+ [7] Shubham Gandhi, Manasi Patwardhan, Lovekesh Vig, and Gautam Shroff. 2024.              [18] Zongqian Li, Yinhong Liu, Yixuan Su, and Nigel Collier. 2024. Prompt compression
+     Budgetmlagent: A cost-effective llm multi-agent system for automating machine               for large language models: A survey. arXiv preprint arXiv:2410.12388 (2024).
+     learning tasks. In Proceedings of the 4th International Conference on AI-ML Systems.   [19] Nelson F Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua,
+     1–9.                                                                                        Fabio Petroni, and Percy Liang. 2023. Lost in the middle: How language models
+ [8] Pengfei Gao, Zhao Tian, Xiangxin Meng, Xinchen Wang, Ruida Hu, Yuanan Xiao,                 use long contexts. arXiv preprint arXiv:2307.03172 (2023).
+     Yizhou Liu, Zhao Zhang, Junjie Chen, Cuiyun Gao, et al. 2025. Trae agent: An           [20] Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik Narasimhan, and
+     llm-based agent for software engineering with test-time scaling. arXiv preprint             Shunyu Yao. 2023. Reflexion: Language agents with verbal reinforcement learning.
+     arXiv:2507.23370 (2025).                                                                    Advances in Neural Information Processing Systems 36 (2023), 8634–8652.
+ [9] GitHub. 2025. Enhancing software development with retrieval-augmented gen-             [21] Hongjin Su, Shuyang Jiang, Yuhang Lai, Haoyuan Wu, Boao Shi, Che Liu, Qian
+     eration. https://github.com/resources/articles/ai/software-development-with-                Liu, and Tao Yu. 2024. Evor: Evolving retrieval for code generation. In Findings
+     retrieval-augmentation-generation-rag.                                                      of the Association for Computational Linguistics: EMNLP 2024. 2538–2554.
+[10] Google. 2025.       Gemini CLI.        https://blog.google/technology/developers/      [22] SWE-bench. 2025. SWE-bench Verified Leaderboard. https://www.swebench.
+     introducing-gemini-cli-open-source-ai-agent/.                                               com/.
+[11] Tingxu Han, Zhenting Wang, Chunrong Fang, Shiyu Zhao, Shiqing Ma, and                  [23] Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, Erkang Zhu, Li
+     Zhenyu Chen. 2024. Token-budget-aware llm reasoning. arXiv preprint                         Jiang, Xiaoyun Zhang, Shaokun Zhang, Jiale Liu, et al. 2024. Autogen: Enabling
+     arXiv:2412.18547 (2024).                                                                    next-gen LLM applications via multi-agent conversations. In First Conference on
+[12] Jinwu Hu, Wei Zhang, Yufeng Wang, Yu Hu, Bin Xiao, Mingkui Tan, and Qing                    Language Modeling.
+     Du. 2025. Dynamic compressing prompts for efficient inference of large language        [24] Bruce Yang, Xinfeng He, Huan Gao, Yifan Cao, Xiaofan Li, and David Hsu. 2025.
+     models. arXiv preprint arXiv:2504.11004 (2025).                                             CodeAgents: A Token-Efficient Framework for Codified Multi-Agent Reasoning
+[13] Huiqiang Jiang, Qianhui Wu, Chin-Yew Lin, Yuqing Yang, and Lili Qiu. 2023.                  in LLMs. arXiv preprint arXiv:2507.03254 (2025).
+     Llmlingua: Compressing prompts for accelerated inference of large language             [25] Qizheng Zhang, Michael Wornow, and Kunle Olukotun. 2025. Cost-Efficient Serv-
+     models. arXiv preprint arXiv:2310.05736 (2023).                                             ing of LLM Agents via Test-Time Plan Caching. arXiv preprint arXiv:2506.14852
+                                                                                                 (2025).
+

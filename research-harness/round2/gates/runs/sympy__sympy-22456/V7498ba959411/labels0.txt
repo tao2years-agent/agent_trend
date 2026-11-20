@@ -1,0 +1,11 @@
+F.....                                                                   [100%]
+================================== FAILURES ===================================
+_________________________________ test_String _________________________________
+sympy\codegen\tests\test_ast.py:269: in test_String
+    assert st.func(**st.kwargs()) == st
+E   TypeError: sympy.codegen.ast.String.func.<locals>.<lambda>() argument after ** must be a mapping, not NoneType
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22456\V7498ba959411\labels0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_ast.py::test_String - TypeError: sympy.codege...
+1 failed, 5 passed in 0.30s

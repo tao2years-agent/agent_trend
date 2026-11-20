@@ -1,0 +1,219 @@
+Independent Assessment of AI R&D Acceleration at Anthropic in October 2026 - METR (https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/)
+citeturn51view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/","lineno":null}); Total lines: 697
+L0:   * Our Work
+L1: 
+L2:     * 【0†Research】
+L3:     * 【1†Notes】
+L4:     * 【2†Updates】
+L5:     * 【3†Risk Assessment】
+L6: 
+L7:   * 【4†About】
+L8:   * 【5†Donate】
+L9:   * 【6†Careers】
+L10:   * Language
+L11: 
+L12:     * 【7†English】
+L13:     * 【8†Español】
+L14:     * 【9†中文】
+L15: 
+L16:   * 【10†Search】
+L17: 
+L18: 【11†Image: METR Logo】
+L19: 
+L20:   * 【12†Our Work】
+L21: 
+L22: 【0†Research】 【1†Notes】 【2†Updates】 【3†Risk Assessment】
+L23: 
+L24:   * 【4†About】
+L25:   * 【5†Donate】
+L26:   * 【6†Careers】
+L27:   * 【7†English】 【8†Español】 【9†中文】
+L28: 
+L29:   * [Input] [Input: Search...]
+L30: 
+L31: 【7†English】 【8†Español】 【9†中文】
+L32: 
+L33: [Button: Menu]
+L34: Independent Assessment of AI R&D Acceleration at Anthropic in October 2026
+L35: ##### CONTRIBUTORS
+L36: 
+L37: 【13†Tom Cunningham】, 【14†Nate Rush】, 【15†Parker Whitfill】, and 【16†Hjalmar Wijk】
+L38: ##### DATE
+L39: 
+L40: November 5, 2026
+L41: 
+L42: [Input: Join our newsletter] [Button: Subscribe]
+L43: Redaction summary: As part of this assessment, Anthropic had rights to redact any non-public information in this post. 【17†Per our approach to transparency】, we had the right to disclose if Anthropic exercised redaction rights, and whether or not any of our findings depended significantly on redacted information. While we were able to freely share our highest-level conclusions about risk, Anthropic redacted a majority of the evidence we found most informative for these conclusions.
+L44: Anthropic described the redactions as “aimed at removing confidential information that could accelerate other AI developers.”^{【18†1】} Some of these redactions are themselves challenging to describe clearly without revealing sensitive information we have been asked to redact. We share a table of important evidence we were and were not able to discuss given the redactions in our 【19†process section】 below.
+L45: All redactions that were important for our conclusions are covered by our descriptions in that table or other in-line descriptions in the report below.
+L46: Much of the redacted evidence we viewed had multiple plausible interpretations, and both METR and Anthropic researchers have significant uncertainty about how to synthesize the evidence into a holistic picture. This makes it hard for the public to judge this evidence themselves, reconcile it with evidence from other sources, and come to their own conclusions (i.e. this report does not achieve 【17†‘transparency about evidence’】).
+L47: As a consequence, the public has to rely on METR’s judgment much more than would be ideal, given the weight of the questions answered here.
+L48: ## Executive summary
+L49: 
+L50: From August 12 to October 29, 2026, METR staff performed a high-access evaluation at Anthropic to assess the degree to which AI is accelerating AI R&D.^{【20†2】} If AI systems started to significantly accelerate further AI development, this could lead to a 【21†sudden emergence of extreme and risky capabilities†arxiv.org】.
+L51: Anthropic offered unprecedented access to internal data on their AI R&D process, including a variety of metrics on pretraining, reinforcement learning (RL), training compute in each domain, benchmark scores for internal models, AI speedup analyses, forecasts of a future model’s metrics, and interviews with relevant staff.
+L52: 
+L53: In our first section, 【22†we share our subjective conclusions about risk】. We now believe that:
+L54:   * As of October 2026, Anthropic is likely improving the capabilities of their models on well-specified tasks at around twice the rate they did between March 2024 and October 2025. This estimate is given with high uncertainty; we would not be surprised if the true acceleration was closer to 1.3x or 3x the historical rate.
+L55:   * A majority of this acceleration today is likely attributable to Anthropic’s extensive use of AI to do R&D, though there is significant uncertainty and other causes likely played a large role in acceleration in late 2025.
+L56:   * The lack of observed bottlenecks or strong diminishing returns means there is a significant risk that further capabilities progress could lead to even faster acceleration, though, as we say below, we may be missing important bottlenecks.
+L57: In our second section we share some of the 【23†key empirical findings from our Full Report】:
+L58:   * Since October 2025, benchmark scores (measured via AECI, Anthropic’s version of the Epoch Capabilities Index) for Anthropic’s models have been growing at an estimated 1.9x the pre-October 2025 rate [95% confidence interval: 1.5–2.8x], implying that Anthropic has made roughly two years of historical progress over the last year.
+L59:   * We are confident that the acceleration was not due to an acceleration in the scaling of training compute.
+L60:   * Interviews and surveys are consistent with AI usage causing a doubling in the pace of capabilities progress. Anthropic staff self-report dramatic uplift from use of AI systems in interviews and surveys, although these are challenging to interpret. We were told that R&D is accelerated primarily via AI assistance rather than fully autonomous contributions, but there are some signs that fully autonomous contributions will play a larger role soon.
+L61:   * We did not see evidence for significant bottlenecks which would prevent further capabilities progress due to limits on algorithmic progress, training compute, experiment compute, or data in the next 12 months. However, our understanding of the status of different bottlenecks changed several times as we received more detailed information, so we are not confident in our current assessment.
+L62: Some of the key findings that most informed our conclusions about risk were redacted by Anthropic.
+L63: 
+L64: In our third section, we describe the 【19†assessment process】:
+L65: 
+L66:   * The scope, setup, and timeline of this assessment.
+L67:   * Details of the information shared with METR.
+L68:   * Details of what information and evidence we were not able to share given Anthropic’s redactions.
+L69: 
+L70: Finally, we describe the biggest 【24†limitations】 of our analysis:
+L71:   * We could be underestimating capability acceleration if we did not assign enough importance to (1) evidence that some growth rates have further increased recently; (2) further automation of AI R&D tasks leading to a further acceleration in progress; (3) evidence that AECI growth has sometimes understated growth in real-world impact.
+L72:   * We could be overestimating capability acceleration if we did not assign enough importance to (1) non-AI factors in Anthropic’s research progress; (2) AECI’s focus on verifiable tasks; (3) reasons why Anthropic’s early growth rate (2023–2025) was unusually low.
+L73: The remainder of the report goes into detailed discussion of each of the key components. We include 【25†appendices】 with supplemental material.
+L74: ## Our subjective conclusions on risk
+L75: 
+L76: Our conclusions on risk.
+L77: 
+L78: Independently of this assessment, METR published 【26†an October 2026 article】 proposing a set of high-level questions about AI R&D acceleration we believe the public needs to understand to be able to judge loss-of-control risks from frontier AI development. In this section, we describe how the evidence we reviewed in this assessment changed our subjective conclusions on these high-level questions.
+L79: 
+L80: Pace of capabilities progress.
+L81: A significant acceleration of Anthropic’s overall rate of progress would be surprising, since diminishing returns and dependence on compute scaling mean this would likely require remarkable scaling in other inputs.^{【27†3】} After reviewing the internal evidence, we still have significant uncertainty and internal disagreements on the team, but most METR staff who worked on this project now believe that, as of October 2026, Anthropic is likely improving the capabilities of their models on well-specified tasks at around twice the rate they did between March 2024 and October 2025.
+L82: We would not be surprised if the current rate of growth was closer to 1.3x or 3x the historical rate. We have additional uncertainty in how this acceleration translates to broader and less well-specified tasks.
+L83: The 1.9x acceleration [95% confidence interval: 1.5–2.8x] in the AECI trend since October 2025 described below significantly informed this view, but could be explained by overfitting to the benchmark distribution or otherwise be an artifact of the AECI methodology. On the other hand, we are not confident that AECI would reliably let us estimate recent R&D acceleration, since the data points are lagging acceleration in research and are somewhat sparse.
+L84: Beyond the AECI evidence, we also saw redacted evidence that significantly informed our view on this question, and made us take this apparent ≈2x acceleration more seriously. It also gave us some indication that acceleration could be above 2x and increasing over time, though we would be surprised if it was significantly higher.
+L85: 
+L86: Attribution to AI.
+L87: We looked at a variety of factors that could explain the acceleration we observed, including compute scaling, hiring, data improvements, algorithmic discoveries, and resolving other bottlenecks.
+L88: 
+L89: As we describe below, we were able to confidently determine that the acceleration was not due to an acceleration in the rate of growth of training compute. Beyond that, there was not a consensus among Anthropic’s own staff and we did not find decisive evidence. Our overall subjective estimate is that:
+L90:   1. The acceleration in late 2025 was likely influenced by non-AI factors. We investigated a variety of factors which could have contributed to the observed acceleration in late 2025, but details of many of these factors have been redacted.
+L91:   2. We guess that a majority (perhaps ≈80%) of the current (October 2026) acceleration is due to AI. This judgment is given with substantial uncertainty, but is based on a variety of lines of evidence on contributions from AI and other causes. We believe AI’s contribution has grown relatively more important over time, and do not think the other factors we investigated would explain the sustained acceleration.
+L92: The evidence of speedup from the usage of AI we describe below also seems compatible with a large contribution.
+L93: We illustrate these points below:
+L94: 
+L95: Our more detailed estimates for the cumulative and instantaneous effects of AI on Anthropic’s rate of progress in AECI, and at various stages of the model training pipeline, were redacted.
+L96: 
+L97: Bottlenecks to further acceleration.
+L98: A key concern is that acceleration from the use of AI could start to compound, as the development of more capable models leads to further acceleration. As we describe below, we did not identify any clear bottlenecks (limited inputs that would prevent further growth) or steep diminishing returns to further scaling that would get in the way of such compounding acceleration, though our understanding evolved several times over the course of this assessment, and we have significant uncertainty.
+L99: Because of this, we believe there is a significant risk that further capabilities progress could lead to even faster acceleration over the coming year.
+L100: ## Key findings
+L101: 
+L102: In this section, we summarize the key empirical findings from our Full Report that we can describe without revealing redacted information (see the 【19†process section】 for more details on what was redacted).
+L103: 
+L104: Terminology: We describe growth as annual multiples and acceleration as a ratio of growth rates.
+L105: 
+L106: We use “acceleration” to refer to an increase in the rate of growth, such that a 2x acceleration means that 2 years of historical progress is made in 1 year.
+L107: If AECI’s historical trend was 15 points/year, then increasing to 30 points/year implies an acceleration rate of 2 (it takes 1 year to achieve 2 years’ progress at the old rate). For an exponentially growing variable, the acceleration rate is the ratio of growth rates. If a variable is growing 3x/year, then to make 2 years of progress in 1 year the growth rate must be (3^{2})x/yr = 9x/yr (and acceleration can be written as ln(9)/ln(3) = 2).
+L108: Since October 2025, benchmark scores for internal models have been growing at around twice their historical rate.
+L109: 
+L110: Benchmark scores of Anthropic’s models, as measured by AECI (Anthropic’s version of the 【28†Epoch Capabilities Index†epoch.ai】), have accelerated 1.9x [95% confidence interval: 1.5–2.8x] since October 2025. Put another way, Anthropic appears to have made as much progress on benchmarks in the past year as they did between October 2023 and October 2025 (roughly, Claude 2.1 to Sonnet 4.5):
+L111: Our estimated acceleration is greater than that reported in the 【29†Haiku 5.5 system card†assets.claude.com】 (1.7x) primarily because of the inclusion of data on newer unreleased models, explained further below.
+L112: We investigated the robustness of these results to different choices of benchmark inclusion, model dating, model inclusion, and benchmark saturation. Robustness analyses find acceleration rates between 1.1x and 2.9x. We would be surprised if the true evolution of benchmark scores (e.g. as measured by an improved version of AECI) showed no acceleration or acceleration above 3x. See our 【30†appendix section】 for details.
+L113: 
+L114: The acceleration is not driven by an acceleration in the scale of training compute.
+L115: We received convincing evidence that the acceleration was not due to an acceleration in the scale of training compute. Further details on this evidence were redacted.
+L116: 
+L117: Interviews and surveys are consistent with AI usage driving this doubling in the pace of capabilities progress.
+L118: We have many lines of evidence relevant to AI’s contribution to progress in different parts of the model training pipeline, including interviews, self-reported uplift, headcount, lines of code, experiment usage, and qualitative reflections from leadership. We highlight three important unredacted sources.
+L119: First, both METR and Anthropic interviewed many researchers in detail about the degree of overall acceleration in their area of work attributable to AI use (see details in the 【31†appendix】 below). Our overall impression was a quite wide range of estimates, but centered around a 2x acceleration. Some quotes, with sensitive details redacted, are in the appendix.
+L120: Second, Anthropic also shared data on self-reported uplift due to AI from a variety of sources. The most recent data is from a series of Slack polls, where staff use reactions to vote on their estimated speedup from the most recent model at the time. We consider this to be only very loose evidence, as the responses reflect low-effort consideration. Nevertheless, we observe consistent growth in these self-reports, and very high levels (reaching 12x in October 2026), as shown in the chart below.
+L121: Note that individual uplift/speedup estimates do not correspond to acceleration rates. Sustaining a particular growth rate in outputs like model capabilities generally requires a similarly sustained growth in inputs like labor and/or labor productivity to overcome diminishing returns. Achieving a significant acceleration in the overall rate of progress generally requires a significant acceleration of these inputs.
+L122: We thus care most about whether we see a large change in the growth rate of individual uplift, not the absolute level. Our more detailed analysis of what rate of growth in individual uplift might be needed to explain our estimated acceleration rates in key areas was redacted.
+L123: Third, we understand that AI is not yet able to make highly significant and fully autonomous contributions to the most important parts of the model training process. However, researchers described significant “signs of life” implying such contributions could occur soon, although with substantial variation in maturity depending on the area.
+L124: 
+L125: We did not identify any convincing bottlenecks to continued rapid progress.
+L126: We did not see evidence for significant bottlenecks in algorithmic progress, training compute, experiment compute, or data that will take effect in the next 12 months. However, our understanding of the status of different bottlenecks changed several times as we got more detailed information, so we are not confident in our current assessment. Anthropic redacted our analysis of a number of specific bottlenecks.
+L127: Additional redacted evidence was sometimes hard to interpret, but supports sustained and potentially increasing acceleration.
+L128: We investigated a number of internal metrics and methodologies for measuring acceleration in key areas of the model training pipeline. This included evidence of progress on benchmarks and metrics of algorithmic efficiency and overall model strength in pretraining and RL, as well as improvements to compute utilization, inference efficiency and data efficiency. These investigations included attempts to understand:
+L129:   1. Different methodological variants of internal metrics. We spent multiple weeks on these investigations, and this is our greatest source of uncertainty.
+L130:   2. The beliefs of staff on the relevant teams about key internal evidence and estimates of acceleration.
+L131:   3. Whether other parts of the model training pipeline could be biasing our estimates of acceleration, and where adjustments could be applied.
+L132:   4. Whether Anthropic could be overfitting to internal metrics.
+L133: This internal evidence provided support for there being significant acceleration in Anthropic’s model training pipeline. Some of this evidence indicated that acceleration could be above 2x and increasing over time, but there are significant uncertainties about how to interpret it.
+L134: ## Process details
+L135: 
+L136: METR staff assessed how much AI is speeding up AI R&D at Anthropic.
+L137: 
+L138: METR staff^{【32†4】} (2.5 full-time equivalents) piloted a high-access evaluation at Anthropic to assess the degree to which AI is accelerating AI R&D, and how quickly extreme and risky capabilities may emerge in the near future.
+L139: Anthropic lists AI R&D acceleration as a key risk indicator in its 【33†Responsible Scaling Policy†www-cdn.anthropic.com】 (RSP). In this assessment, we do not pay special attention to the thresholds set in the RSP. Instead, we try to develop a holistic picture of AI-driven acceleration of AI R&D.
+L140: 
+L141: This engagement started in mid-August, and is distinct from the 【34†assessment announced†www.anthropic.com】 on October 15 by Anthropic.
+L142: 
+L143: Details of the engagement.
+L144: The METR staff worked over eleven weeks to independently assess how much AI is accelerating AI R&D at Anthropic. Our assessment focused on three broad questions:
+L145: 
+L146:   1. Has the growth rate of Anthropic’s internal capabilities accelerated?
+L147:   2. What share of any acceleration is attributable to AI?
+L148:   3. Are there important bottlenecks that could slow growth or limit acceleration in the near term?
+L149: We were additionally scoped to review the AI R&D section of Anthropic’s August 2026 Risk Report, which we are 【35†publishing separately】. As we describe below, the initial contracted assessment was scoped to include a verification of what percent of compute was allocated to capabilities vs. safety.
+L150: METR had the ability to request access to any information we believed relevant to understanding AI R&D acceleration, and Anthropic could unilaterally approve or reject our requests. In practice, we often negotiated with Anthropic staff and compromised towards data that was informative, not extremely sensitive, and easy to share. We give more details on what Anthropic shared as well as what it declined to share below, noting that broadly the access provided surpassed our expectations.
+L151: For this engagement, we did not request or receive access to sample from non-public models.
+L152: Note that neither METR nor Anthropic intended for this project to involve full “employee-like” access, meaning unmediated access to data, documents, or models. In particular, this project is not the one described in 【34†Anthropic’s October 15 update on independent evaluators†www.anthropic.com】.
+L153: 
+L154: Anthropic had unilateral redaction rights over all non-public information in this report. We had a unilateral right to disclose:
+L155:   * the existence and general terms of the review and redaction process,
+L156:   * whether Anthropic exercised redaction rights,
+L157:   * whether or not any findings depended significantly on redacted information,
+L158:   * the level of access provided.
+L159: For security reasons, we worked on Anthropic devices for the duration of this assessment. Anthropic provided free tokens for this assessment, which we primarily used for AI-assisted data analysis and visualization. Per our standard approach, we did not take payment from Anthropic.
+L160: This exercise followed METR’s 【17†policies for engaging with AI companies】. We provide a conflict of interest (COI) disclosure and excerpted contract language in the 【36†process transparency disclosures】 appendix plus the 【37†AEF-1 checklist】.
+L161: 
+L162: Details of Anthropic’s redactions.
+L163: Our ~100-page Full Report attempts to answer the 【38†key questions】 we recently described as crucial to answer in future AI R&D assessments in detail. We summarize the evidence sources we were given, and which we were able to include in this public report, in the table below.
+L164: 
+L165: Table of shared and redacted evidence sources
+L166: Type of information  | Shared with METR?  | Results described in public report
+L167: --- | --- | ---
+L168: Measurements of internal capabilities: benchmark capabilities of internal models  | Yes  | Yes
+L169: Measurements of internal capabilities: key intermediate measures  | Yes  | No
+L170: Algorithmic progress estimates  | Yes  | No
+L171: Evidence of AI’s contribution  | Yes  | Partly
+L172: Measurements of key R&D inputs  | Mostly  | No
+L173: Details of bottlenecks and forecasts  | Partly  | No
+L174: Interviews with staff  | Yes  | Partly
+L175: Anthropic’s redactions also meant that we could not communicate:
+L176:   1. Our more detailed estimates of acceleration and attribution to AI usage for key areas of the model training pipeline.
+L177:   2. Our more detailed breakdown of progress attributable to compute, data and algorithmic progress, other than the key takeaway that “We are confident that the acceleration was not due to acceleration in training compute.”
+L178:   3. More detailed answers to the limitations questions in our proposal, which would require more discussion of methodological details.
+L179:   4. Forecasts of metrics for future models.
+L180: They also made some other more minor redactions throughout, which we attempt to describe in each section of this report.
+L181: 
+L182: Anthropic described the redactions as “aimed at removing confidential information that could accelerate other AI developers.”
+L183: 
+L184: Key dates.
+L185:   1. August 12: Anthropic begins sharing confidential information with METR.
+L186:   2. August 14: Anthropic shares the unredacted version of its August AI R&D Risk Report with METR.
+L187:   3. September 12: METR delivers a first draft of its Full Report to Anthropic for feedback.
+L188:   4. September 18: METR delivers a first draft of its Risk Report Review to Anthropic for feedback.
+L189:   5. September 22–October 22: METR iterates on the Risk Report Review and the Full Report with further information.
+L190:   6. October 22: METR delivers its ~100-page Full Report to Anthropic.
+L191:   7. October 25: Anthropic shares redaction guidance, summarized above.
+L192:   8. October 26: METR delivers a draft of this public report to Anthropic.
+L193:   9. October 27–29: Anthropic tightens the redaction guidance, and METR iterates on the public report as a result.
+L194:   10. October 29: METR submits a draft public report.
+L195:   11. October 29: Anthropic and METR agree on an ~5 day extension to more carefully accommodate the new redaction guidance.
+L196:   12. November 3: METR submits the final public report.
+L197: METR received a significant amount of private data from Anthropic.
+L198: 
+L199: METR made extensive requests for information on every part of the AI R&D pipeline, and Anthropic shared more information than was initially scoped for this project, surpassing our expectations. Information was typically shared within a few days of requesting it.
+L200: 
+L201: A detailed description of the data we had access to was redacted. A summarized version is as follows:
+L202:   1. Internal benchmark scores and AECI for internal models, plus sample tasks, rubric answers and agent expenditure on those tasks.
+L203:   2. Historical data on algorithmic efficiency and overall model strength in pretraining and RL, as well as improvements to compute utilization, inference efficiency and data efficiency.
+L204:   3. Headcount and attribution of progress to specific staff.
+L205:   4. Training compute metrics in many relevant domains.
+L206:   5. Internal analysis on relevant open questions.
+L207:   6. Internal surveys of self-reported AI uplift by team.
+L208:   7. Lines of code and pull requests across the company and some research teams.
+L209:   8. AI agent inference spend over time.
+L210:   9. Internal documents on autonomous research contributions.
+L211:   10. ~15 interviews with key staff, covering a predefined but wide scope that excluded particularly sensitive topics.
+L212: In a small number of cases, Anthropic did not provide relevant information when they deemed it too sensitive.
+L213: 
+L214: Anthropic also offered extensive staff time and expertise to this project. We believe the two staff we worked most closely with are the two highest-context researchers on AI R&D acceleration measurement at Anthropic. Both of these staff met with us frequently for live discussion, and spent substantial time collecting data, doing analysis, and providing feedback.
+L215: Anthropic canceled a compute allocation component of this assessment.
+

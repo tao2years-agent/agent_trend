@@ -1,0 +1,39 @@
+{
+  "version": "v0.71.0",
+  "asset_url": "https://github.com/open-policy-agent/conftest/releases/download/v0.71.0/conftest_0.71.0_Windows_x86_64.zip",
+  "sha256": "a9228097e6f827dac7fee48f5cf0baa42ebd88454560de26bbb531d65ae0f448",
+  "checksums_url": "https://github.com/open-policy-agent/conftest/releases/download/v0.71.0/checksums.txt",
+  "policy": "package main\n\ndeny contains \"production needs an owner\" if {\n  input.environment == \"prod\"\n  not input.owner\n}\n",
+  "command": "conftest test manifest.json --policy rule.rego --output json",
+  "at": "2026-11-20T03:16:40.335377+00:00",
+  "cases": [
+    {
+      "name": "owned",
+      "input": {
+        "environment": "prod",
+        "owner": "payments"
+      },
+      "exit": 0,
+      "stdout": "[\n\t{\n\t\t\"filename\": \"manifest.json\",\n\t\t\"namespace\": \"main\",\n\t\t\"successes\": 1\n\t}\n]\n",
+      "stderr": ""
+    },
+    {
+      "name": "unowned",
+      "input": {
+        "environment": "prod"
+      },
+      "exit": 1,
+      "stdout": "[\n\t{\n\t\t\"filename\": \"manifest.json\",\n\t\t\"namespace\": \"main\",\n\t\t\"successes\": 0,\n\t\t\"failures\": [\n\t\t\t{\n\t\t\t\t\"msg\": \"production needs an owner\",\n\t\t\t\t\"metadata\": {\n\t\t\t\t\t\"query\": \"data.main.deny\"\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}\n]\n",
+      "stderr": ""
+    },
+    {
+      "name": "development",
+      "input": {
+        "environment": "dev"
+      },
+      "exit": 0,
+      "stdout": "[\n\t{\n\t\t\"filename\": \"manifest.json\",\n\t\t\"namespace\": \"main\",\n\t\t\"successes\": 1\n\t}\n]\n",
+      "stderr": ""
+    }
+  ]
+}

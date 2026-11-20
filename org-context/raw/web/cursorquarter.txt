@@ -1,0 +1,342 @@
+检索参数 {"search_query":[{"q":"site:cursor.com/changelog after:2026-08-17 before:2026-11-19 knowledge shared team rules learned skills context organization changelog"}],"response_length":"medium"}
+Rules | Cursor Docs (https://prod.cursor.com/docs/rules)
+citeturn58search0 [wordlim: 200] Crawled: today; Team and Enterprise plans can create and enforce rules across their entire organization from the Cursor dashboard. ...   * Where they apply: When a Team Rule is enabled (and not disabled by the user, unless enforced), it is included in the model context for Agent (Chat) across all repositories and projects for that team.
+## Team Rules
+
+Team and Enterprise plans can create and enforce rules across their entire organization from the Cursor dashboard. Admins can configure whether or not each rule is required for team members.
+
+Team Rules work alongside other rule types and take precedence to ensure organizational standards are maintained across all projects. They provide a powerful way to ensure consistent coding standards, practices, and workflows across your entire team without requiring individual setup or configuration.
+
+### Managing Team Rules
+
+Team administrators can create and manage rules directly from the Cursor dashboard:
+
+Image: Empty team rules dashboard where team administrators can add new rules
+
+Once team rules are created, they automatically apply to all team members and are visible in the dashboard:
+
+Image: Team rules dashboard showing a single team rule that will be enforced for all team members
+
+### Activation and enforcement
+
+  * Enable this rule immediately: When checked, the rule is active as soon as you create it. When unchecked, the rule is saved as a draft and does not apply until you enable it later.
+  * Enforce this rule: When enabled, the rule is required for all team members and cannot be disabled in Customize. When not enforced, team members can toggle the rule off under Team Rules in Customize.
+
+By default, non‑enforced Team Rules can be disabled by users. Use Enforce this rule to prevent that.
+
+### Format and how Team Rules are applied
+
+  * Content: Team Rules are free‑form text. They do not use the folder structure of Project Rules.
+  * Glob patterns: Team Rules support glob patterns for file-scoped application. When a glob pattern is set (e.g., `**/*.py`), the rule only applies when matching files are in context. Rules without a glob pattern apply to every conversation.
+  * Where they apply: When a Team Rule is enabled (and not disabled by the user, unless enforced), it is included in the model context for Agent (Chat) across all repositories and projects for that team.
+  * Precedence: Rules are applied in this order: Team Rules → Project Rules → User Rules. All applicable rules are merged; earlier sources take precedence when guidance conflicts.
+
+Some teams use enforced rules as part of internal compliance workflows. While this is supported, AI guidance should not be your only security control.
+
+## Importing rules from a repository
+
+Rules aren't imported on their own. To bring rules in from a GitHub repository, package them in a plugin and publish that plugin through a marketplace: import the repository in Customize with From GitHub Repository (the repository needs a `.cursor-plugin/marketplace.json`), or add it as a team marketplace, then install the plugin. The rules arrive with the plugin and appear in Customize alongside your other rules.
+
+--------------------------------------------------------------------------------
+Customize Cursor · Cursor (https://cursor.com/changelog/customize)
+citeturn58search1 [wordlim: 200] Published: 4 months ago; Crawled: today; 3.9 Jun 22, 2026 · Changelog ... Cursor now shows you a leaderboard of the most popular plugins, skills, and MCPs across your team. ... Plugins now support prebuilt canvases: shared setup templates your team can open and reuse.
+
+3.9 Jun 22, 2026 · Changelog
+
+# Customize Cursor
+
+Plugins, skills, and MCPs let you customize Cursor for your workflows. The new Customize page brings them into one place.
+
+You can now add and manage plugins, skills, MCPs, subagents, rules, commands, and hooks at the user, team, or workspace level, and even bring your own custom MCPs.
+
+## #Marketplace leaderboard
+
+Cursor now shows you a leaderboard of the most popular plugins, skills, and MCPs across your team.
+
+Add any to your setup with one click from the new Customize page and extend Cursor for your workflow.
+
+## #Plugin canvases
+
+Plugins now support prebuilt canvases: shared setup templates your team can open and reuse.
+
+Use the Hex Canvas to build data visualizations.
+
+Use the Atlassian Canvas to see a realtime view of all our issues, projects, and documents.
+
+## #New Team Marketplaces
+
+Team marketplaces now support imports of plugin repositories from GitLab, BitBucket, or Azure DevOps so you easily add plugins and distribute them to your team.
+
+Learn more in our docs.--------------------------------------------------------------------------------
+What's New in Cursor — Latest Updates & Release Notes (https://cursor.com/changelog)
+citeturn58search2 [wordlim: 200] Crawled: today; Nov 6, 2026 · Changelog ... You can then share your app with specific people, groups, or your entire team, all behind Cursor sign-in. ... Each file in `tools/` is one typed action the model can call. `skills/` holds procedures the model loads on demand, `mcp-connections/` adds tools from MCP servers, and `channels/` defines where the bot receives and answers messages. `agent-sdk validate` checks the project and `agent-sdk info` prints what was discovered.
+The coding agent speaks for itself too. It shares short progress notes while it works and a brief answer when it's done, so you usually hear a short update instead of the full written reply.
+
+## #Powered by Grok Voice
+
+Voice chat runs on Grok Voice. Pick from many voices in Voice settings, including Ara, Eve, Leo, Rex, and Sal. With Privacy Mode on, voice chat runs with zero data retention.
+
+## #Voice chat and dictation
+
+Voice chat is separate from dictation, which earlier releases called Voice Mode. Dictation still turns your speech into text in the chat input, and Cmd+Shift+Space still toggles it in the IDE. Voice chat is a two-way conversation where the agent answers out loud.
+
+Update Cursor to try voice chat. Learn more in our docs.
+
+Nov 5, 2026 · Changelog
+
+# Build Live Apps in Cursor
+
+Agents have lowered the cost of writing code, but most apps and tools that users build never make it off of localhost.
+
+Now, you can build live apps directly in Cursor and share them with a link.   * Training, enablement, and onboarding experiences for new hires
+  * Live dashboards and tools for sales teams to understand their pipeline and opportunities
+  * Portals to manage engineering services
+
+Cursor can deploy apps from new or existing repos across Cursor Origin and GitHub. Support for other git providers like GitLab is coming soon.
+
+## #Controls and guardrails
+
+When you publish an app, Cursor will run deterministic and agentic security checks to catch common issues, like secrets written in app files or exposed credentials. If a check fails, the agent tells you what it needs to fix. Nothing goes live until the checks pass and you explicitly publish the app.
+
+Team admins can see every app and secret on the team. They can also add their own rules to the security review, approve publishes the review blocked, and unpublish any app.
+
+## #Share with your team
+
+Once the checks pass, Cursor deploys the app to the URL you chose. You can then share your app with specific people, groups, or your entire team, all behind Cursor sign-in. On individual plans, you can also share apps publicly.
+
+You can also provision a Cursor API key if you want a script or Grok Bot to use your app.
+
+## #Get started
+
+This capability is now available on all paid plans with cloud agents enabled. Learn more by reading our docs.
+
+Oct 20, 2026 · Changelog
+
+# Agent SDK
+
+The Agent SDK is available today. It allows you to define an agent as a folder of code, test it with evals, and deploy it to Cursor or your own infrastructure.
+
+Run `npx @cursor/agent-sdk init ./my-bot`, then `agent-sdk dev` to start the bot locally with a playground. Pass `--template` to start from a security reviewer, an owners-policy approver, a PR autofixer, or a Linear or Jira triager.
+
+## #Deploy agents wherever you need them
+
+When you're ready to put an agent into use, you can deploy it to Cursor by running `agent-sdk deploy` from the project directory. The command builds the agent, gives it a URL, and starts it on our infrastructure. You can manage secrets and integrations from the dashboard, while continuing to use the same logs, evals, and playground available locally.
+
+## #Agents as code
+
+An agent is a project. `instructions.md` is the prompt. Each file in `tools/` is one typed action the model can call. `skills/` holds procedures the model loads on demand, `mcp-connections/` adds tools from MCP servers, and `channels/` defines where the bot receives and answers messages. `agent-sdk validate` checks the project and `agent-sdk info` prints what was discovered.
+
+## #Channels
+
+Agents wake on pull request, comment, and CI events from GitHub, GitLab, and Bitbucket; on mentions and DMs in Slack; on webhooks from any provider; and on a cron schedule. GitHub events pull through your Cursor account, so no public webhook URL is required. Slack is well-supported out of the box.
+
+Each conversation keeps its own session and a complete record of every message and tool call. Follow-ups on a pull request or Slack thread resume the same session.
+
+## #Evals
+
+An eval sends a fixed message to the bot and asserts on what it did: which tools ran, with what input, and the shape of the reply. Run `agent-sdk eval` locally or in CI.
+
+`agent-sdk github replay <pr-url>` turns a real pull request into signed webhook payloads and sends them to the bot, so GitHub-driven bots can be tested without waiting for a push. Add `--dry-run --fixtures-dir fixtures/` to save the payloads as eval fixtures.
+
+## #Get started
+
+The Agent SDK is generally available today. Read the docs and get started.
+--------------------------------------------------------------------------------
+Browser Controls, Plan Mode, and Hooks · Cursor (https://cursor.com/changelog/1-7)
+citeturn58search3 [wordlim: 200] Published: 1.1 years ago; Crawled: today; 1.7 Sep 29, 2025 · Changelog ... Cursor can now write detailed plans before starting complex tasks. ... Tab to accept suggestions and attach files to context. ... ### #Team rules
+
+1.7 Sep 29, 2025 · Changelog
+
+# Browser Controls, Plan Mode, and Hooks
+
+### #Browser Controls
+
+Agent can take screenshots, improve UI, and debug client issues. Read more about browser capabilities.
+
+### #Plan Mode
+
+Cursor can now write detailed plans before starting complex tasks. This allows agents to run for significantly longer.
+
+### #Autocomplete for Agent
+
+When writing prompts, autocomplete suggestions will appear based on recent changes. Tab to accept suggestions and attach files to context.
+
+### #Hooks (beta)
+
+You can now observe, control, and extend the Agent loop using custom scripts. Hooks give you a way to customize and influence Agent behavior at runtime.
+
+Use Hooks to audit Agent usage, block commands, or redact secrets from context. It's still in beta and we'd love to hear your feedback.
+
+### #Team rules
+
+Teams can now define and share global rules from the dashboard that will be applied to all projects. We've also shipped team rules for Bugbot, so behavior is consistent across repos.
+
+Image
+
+### #Share prompts with deeplinks (beta)
+
+Generate shareable deeplinks for reusable prompts. Useful for setup instructions in documentation, team resources, and sharing workflows. See our documentation for how to create them.
+
+### #Sandboxed terminals
+
+Commands now execute in a secure, sandboxed environment. If you're on allowlist mode, non-allowlisted commands will automatically run in a sandbox with read/write access to your workspace and no internet access.
+
+If a command fails and we detect the sandbox was the cause, you'll be prompted to retry outside of the sandbox.
+--------------------------------------------------------------------------------
+Release notes | Cursor Docs (https://prod.cursor.com/docs/release-notes)
+citeturn58search4 [wordlim: 200] Crawled: today; Tapping a cursor.com/agents link in an agent chat, including a link to a subagent, opens that agent in Cursor for iOS, and shared agent links open straight to the agent's chat instead of the inbox. ... A team rule scoped to a pattern such as `*.py` used to be added to every agent conversation. ... When a Cloud Agent can't start because of your plan, usage pricing, model choice, or a protected scope, the dialog explaining why now opens on the page you started from, for pages within the agents area of cursor.com, instead of later on the agents page. ...   * Cloud workers share the Project's Context. ... Member lists, role pickers, CSV exports, and the organization member detail page now show team admins as Team Admin and organization admins as Org Admin. ... Skills in the Customize view no longer wait for team rules to finish loading before they appear.
+Fixed team rules scoped to a file pattern, such as `*.py`, being added to every agent conversation. They now apply when the agent reads a matching file or you add one to context, so unrelated chats no longer spend tokens on them. Team rules without a file pattern still apply to every conversation.
+  * Fixed getting stuck when a usage limit offers Switch to Auto. When a usage limit offers a model switch, the limit banner now shows Switch to Auto next to the upgrade button, and the prompt stays editable. Choosing Switch to Auto clears the banner and resends your message with Auto so the conversation can continue.
+  * Cloud subagents waiting on you now stand out. When a cloud subagent stops to ask you a question or needs you to sign in to an MCP server, the Agents pill shows a yellow status dot and the subagent's row in the tray is marked as needing attention, so you can unblock it instead of waiting on a stalled run.
+  * Video review subagents no longer review videos they weren't given. When the agent asks a subagent to review a video, the video file now has to be attached. A file path that only appears in the prompt no longer counts. If no video is attached, the subagent says so in plain text instead of making up a review.
+
+### Chat and composer
+
+  * A Save check mark while editing a queued message or goal. When you edit a queued message or a goal, the send button becomes a Save check mark.
+  * Smoother scrolling while an agent streams. While the chat follows a streaming reply, it now glides to new text and tool cards instead of jumping.
+  * The steering prompt opens Settings. The Steer New Messages? banner above the queue now opens Settings at New Messages instead of changing the setting for you. The first time a message steers a running agent, a one-time notice says so and links to the setting.
+
+## 3.21
+
+### Browser
+
+  * Separate browser sessions per workspace. The built-in browser now keeps cookies, logins, and storage separate for each workspace, so sessions from one project no longer carry into another. See session persistence. Signing out of Cursor clears browser data for every workspace. Element selection and area screenshots respond only to your own clicks, so a web page can't inject fake selections into chat.
+
+### Agent
+
+  * Agent responses start faster. Cursor prepares the agent in the background when you focus a chat and again when you send a message, so the first response arrives sooner.
+  * Admin Team rules with file patterns apply only to matching files. A team rule scoped to a pattern such as `*.py` used to be added to every agent conversation. Now the agent picks it up only when it reads a matching file or you add one to context. Team rules without a pattern still always apply. See how Team Rules are applied.
+  * The @ menu no longer shows non-working Docs options. The Authenticate button fetches a fresh sign-in link when the cached one is missing.
+  * Fixes to the agent chat transcript. Chats no longer stay stuck on generating after a turn finishes, so queued messages send. Sharing a chat that is too large shows a clear error.
+  * Fixes to the agent prompt input. Focus returns to the prompt after you pick a model or close the model picker. Attaching HEIC and HEIF images works again, and autocomplete in the prompt no longer suggests files excluded by `.cursorignore`.
+  * Performance fixes on Linux. Cursor no longer pauses periodically while sampling CPU usage on machines with many cores, and bursts of internal messaging no longer exhaust a window's file descriptors.
+  * Fixes to agent tools and hooks. When the agent waits on a terminal command, it stops as soon as the command finishes or its output matches what it is waiting for, instead of always running out the full timeout. Agent directory listings honor `.cursorignore` patterns from parent folders when listing a subfolder. `beforeMCPExecution` hooks get the MCP server's command or URL instead of an empty value.
+  * Fixes to editor menus and dialogs. Quick Fix and refactor menus you open manually no longer go blank or fail to run when the lightbulb refreshes in the background. In the simple file picker, typing a folder path that ends with `/` opens that folder. Hidden dialogs no longer capture keyboard input, so typing and shortcuts keep working.
+  * Fixes to skills and Agent Store links. Skills in the Customize view no longer wait for team rules to finish loading before they appear. Clicking a built-in skill in a cloud agent chat opens its SKILL.md file instead of an empty tab, and clicking an Agent Store file citation in chat opens the latest version instead of a stale copy.
+  * Fixes to plan recognition. Pro Student subscribers are recognized as paid, so they get the correct model access and usage banners instead of Free plan limits.
+
+Origin · Aug 31, 2026
+
+--------------------------------------------------------------------------------
+Cursor Projects · Cursor (https://cursor.com/changelog/projects)
+citeturn58search5 [wordlim: 200] Published: 2 months ago; Crawled: today; Sep 10, 2026 · Changelog
+
+# Cursor Projects ... The shared context grows with the Project, making the coordinator more effective over time.
+
+Sep 10, 2026 · Changelog
+
+# Cursor Projects
+
+Today we're launching Projects in Cursor. Projects lets you take on larger bodies of work, such as a feature, a migration, or a full app. It maintains context over months of work, delegates tasks to thousands of subagents, and performs recurring work without being prompted.
+
+Access Projects from the left-hand nav. The coordinator agent in a project doesn't write code itself; it plans the work, delegates it to agents that implement it, and brings the finished work back to you to check. Coordinators create and manage agents on your behalf, running as many in parallel as the work needs.
+
+## #Powered by Cloud Agents
+
+A Project runs on its own computer in the cloud, so closing your laptop doesn't stop it. When something needs testing on your machine, the coordinator spins up a local agent to run it there.
+
+## #Shared context
+
+You shouldn't have to onboard an agent every time you start a task. Each Project maintains a set of files that sync across every cloud and local machine its agents use. Agents add research and artifacts, along with what they learn about the codebase and how you prefer work to be done. If one agent figures out how to test a service, for example, every future agent can use those instructions. The shared context grows with the Project, making the coordinator more effective over time.
+
+## #Subscriptions
+
+Tell the coordinator agent to watch a Slack channel, run on a schedule, or follow all your PRs. This way it can take action based on signals it detects, without waiting for your prompt.
+
+Connect Slack and point it at a bug-report channel, and it starts delegating each time a bug comes in.
+
+Projects are available in beta and rolling out to all users starting today.--------------------------------------------------------------------------------
+Rules | Cursor Docs (https://cursor.com/docs/rules?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn58search6 [wordlim: 200] Crawled: today; Team and Enterprise plans can create and enforce rules across their entire organization from the Cursor dashboard. ...   * Where they apply: When a Team Rule is enabled (and not disabled by the user, unless enforced), it is included in the model context for Agent (Chat) across all repositories and projects for that team.
+
+## Team Rules
+
+Team and Enterprise plans can create and enforce rules across their entire organization from the Cursor dashboard. Admins can configure whether or not each rule is required for team members.
+
+Team Rules work alongside other rule types and take precedence to ensure organizational standards are maintained across all projects. They provide a powerful way to ensure consistent coding standards, practices, and workflows across your entire team without requiring individual setup or configuration.
+
+### Managing Team Rules
+
+Team administrators can create and manage rules directly from the Cursor dashboard:
+
+Image: Empty team rules dashboard where team administrators can add new rules
+
+Once team rules are created, they automatically apply to all team members and are visible in the dashboard:
+
+Image: Team rules dashboard showing a single team rule that will be enforced for all team members
+
+### Activation and enforcement
+
+  * Enable this rule immediately: When checked, the rule is active as soon as you create it. When unchecked, the rule is saved as a draft and does not apply until you enable it later.
+  * Enforce this rule: When enabled, the rule is required for all team members and cannot be disabled in Customize. When not enforced, team members can toggle the rule off under Team Rules in Customize.
+
+By default, non‑enforced Team Rules can be disabled by users. Use Enforce this rule to prevent that.
+
+### Format and how Team Rules are applied
+
+  * Content: Team Rules are free‑form text. They do not use the folder structure of Project Rules.
+  * Glob patterns: Team Rules support glob patterns for file-scoped application. When a glob pattern is set (e.g., `**/*.py`), the rule only applies when matching files are in context. Rules without a glob pattern apply to every conversation.
+  * Where they apply: When a Team Rule is enabled (and not disabled by the user, unless enforced), it is included in the model context for Agent (Chat) across all repositories and projects for that team.
+  * Precedence: Rules are applied in this order: Team Rules → Project Rules → User Rules. --------------------------------------------------------------------------------
+Agent Skills | Cursor Docs (https://cursor.com/docs/skills)
+citeturn58search7 [wordlim: 200] Crawled: today; To bring skills in from a GitHub repository, package them in a plugin and publish that plugin through a marketplace: import the repository in Customize with From GitHub Repository (the repository needs a `.cursor-plugin/marketplace.json`), or add it as a team marketplace, then install the plugin. ... Cursor includes a built-in `/migrate-to-skills` skill in 2.4 that helps you convert existing dynamic rules and slash commands to skills.
+
+### Stop syncing
+
+Turn off Sync Skills for Cloud Agents under Settings → Agents. Cursor moves the synced skills back to your machine.
+
+### Team admin controls
+
+On Teams and Enterprise plans, admins decide whether members can sync:
+
+  1. Open Team Settings.
+  2. Go to Security & Identity.
+  3. Turn Sync Skills for Cloud Agents off to disable sync for everyone on the team.
+
+When the team setting is on, each member still chooses whether to sync. When it is off, no one on the team can sync.
+
+To share a skill with teammates, publish it to your team marketplace. Publishing is different from sync: teammates can install a published skill, and Cursor stores a copy in a repository hosted for your team.
+
+## Installing skills from a repository
+
+Skills aren't imported on their own. To bring skills in from a GitHub repository, package them in a plugin and publish that plugin through a marketplace: import the repository in Customize with From GitHub Repository (the repository needs a `.cursor-plugin/marketplace.json`), or add it as a team marketplace, then install the plugin. --------------------------------------------------------------------------------
+Canvas Design Mode and Context Usage Report · Cursor (https://cursor.com/changelog/canvas-improvements)
+citeturn58search8 [wordlim: 200] Published: 5 months ago; Crawled: today; 3.7 Jun 4, 2026 · Changelog ... With canvases, agents can create interactive artifacts like dashboards, reports, and internal tools that you can share with your team. ... The context explorer breaks down where tokens go across the system prompt, tool definitions, rules, skills, and more. ... Click the Debug with Agent button embedded in the canvas to ask Cursor to identify opportunities to reduce context usage in a new conversation.
+
+3.7 Jun 4, 2026 · Changelog
+
+# Canvas Design Mode and Context Usage Report
+
+With canvases, agents can create interactive artifacts like dashboards, reports, and internal tools that you can share with your team.
+
+This release introduces Design Mode for faster canvas editing, new ways to understand context usage, and other quality-of-life improvements.
+
+## #Design Mode in canvases
+
+Design Mode is now available in canvases.
+
+Select and annotate UI elements directly in a canvas to guide Cursor's edits, just as you would in the browser. Instead of describing the change in text, you can point to it, provide feedback, and iterate more quickly.
+
+## #Context usage report in canvas
+
+Cursor can now show your agent's context usage as an interactive report in a canvas.
+
+The context explorer breaks down where tokens go across the system prompt, tool definitions, rules, skills, and more. Because it's a canvas, you can ask the agent follow-up questions, and it can customize the report to answer your specific questions.
+
+Click the Debug with Agent button embedded in the canvas to ask Cursor to identify opportunities to reduce context usage in a new conversation.
+
+### Canvas Improvements (4)↓
+
+  * Shared canvases can now be opened full-screen in the browser, making them easier to present to others.
+  * Added the ability for agents to embed buttons in canvases that will run a specific prompt when clicked.
+  * Improved the agent's ability to fix canvas type errors.
+  * Improved component styling, and added more chart customization functionality.--------------------------------------------------------------------------------
+Agent Skills | Cursor Docs (https://cursor.com/docs/skills?trk=public_post_comment-text)
+citeturn58search9 [wordlim: 200] Crawled: last week; They are not shared with your team. ... To bring skills in from a GitHub repository, package them in a plugin and publish that plugin through a marketplace: import the repository in Customize with From GitHub Repository (the repository needs a `.cursor-plugin/marketplace.json`), or add it as a team marketplace, then install the plugin. ... Cursor includes a built-in `/migrate-to-skills` skill in 2.4 that helps you convert existing dynamic rules and slash commands to skills.
+--------------------------------------------------------------------------------
+Changelog · Cursor (https://cursor.com/changelog/page/14)
+citeturn58search10 [wordlim: 200] Published: 11 months ago; Crawled: today; Dec 18, 2025 · Changelog ... Cursor can now analyze the code and context in each agent session to understand the type of work that is being done, including: ... Enterprise customers can also extend these categories across their organization and teams. ... ## #Shared agent transcripts ... View a timestamped log of admin events in Cursor: user access, setting changes, Team Rule edits, and member management events.
+--------------------------------------------------------------------------------
+Introducing Cursor for Enterprise · Cursor (https://cursor.com/blog/enterprise)
+citeturn58search11 [wordlim: 200] Published: last year; Crawled: today; Extend Cursor with code: Connect external systems, inject context, or trigger automations. ... Team Rules bring shared context and best practices to every developer in your organization.
+

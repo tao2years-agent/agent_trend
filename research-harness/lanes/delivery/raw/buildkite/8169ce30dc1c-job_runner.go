@@ -1,0 +1,1156 @@
+package agent
+
+import (
+	"cmp"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"maps"
+	"math/rand/v2"
+	"os"
+	"path/filepath"
+	"runtime"
+	"slices"
+	"strconv"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
+
+	"github.com/buildkite/agent/v4/api"
+	"github.com/buildkite/agent/v4/core"
+	envutil "github.com/buildkite/agent/v4/env"
+	"github.com/buildkite/agent/v4/internal/experiments"
+	"github.com/buildkite/agent/v4/internal/job"
+	"github.com/buildkite/agent/v4/internal/process"
+	"github.com/buildkite/agent/v4/internal/shell"
+	"github.com/buildkite/agent/v4/kubernetes"
+	"github.com/buildkite/agent/v4/logger"
+	"github.com/buildkite/agent/v4/metrics"
+	"github.com/buildkite/agent/v4/status"
+	"github.com/buildkite/shellwords"
+)
+
+const (
+	// BuildkiteMessageMax is the maximum length of "BUILDKITE_MESSAGE=...\0"
+	// environment entry passed to bootstrap, beyond which it will be truncated
+	// to avoid exceeding the system limit. Note that it includes the variable
+	// name, equals sign, and null terminator.
+	//
+	// The true limit varies by system and may be shared with other env/argv
+	// data. We'll settle on an arbitrary generous but reasonable value, and
+	// adjust it if issues arise.
+	//
+	// macOS 10.15:    256 KiB shared by environment & argv
+	// Linux 4.19:     128 KiB per k=v env
+	// Windows 10:  16,384 KiB shared
+	// POSIX:            4 KiB minimum shared
+	BuildkiteMessageMax = 64 * 1024
+
+	// BuildkiteMessageName is the env var name of the build/commit message.
+	BuildkiteMessageName = "BUILDKITE_MESSAGE"
+
+	VerificationBehaviourWarn  = "warn"
+	VerificationBehaviourBlock = "block"
+)
+
+type JobRunnerConfig struct {
+	// The configuration of the agent from the CLI
+	AgentConfiguration AgentConfiguration
+
+	// How often to check if the job has been cancelled
+	JobStatusInterval time.Duration
+
+	// The JSON Web Keyset for verifying the job
+	JWKS any
+
+	// A scope for metrics within a job
+	MetricsScope *metrics.Scope
+
+	// The job to run
+	Job *api.Job
+
+	// What signal to use for worker cancellation
+	CancelSignal process.Signal
+
+	// Whether to set debug in the job
+	Debug bool
+
+	// Whether to set debug HTTP Requests in the job
+	DebugHTTP bool
+
+	// KubernetesExec enables Kubernetes execution mode. When true, the job runner
+	// creates a kubernetes.Runner that listens on a UNIX socket for other agent containers
+	// to connect, rather than spawning a local bootstrap subprocess. The other agent containers
+	// containers run `kubernetes-bootstrap` which connects to this socket, receives
+	// environment variables, and executes the bootstrap phases.
+	KubernetesExec bool
+
+	// KubernetesContainerStartTimeout is the maximum duration to wait for all
+	// containers in a Kubernetes pod to connect before the job is considered failed.
+	// It's useful to be configured in situations like huge container image cold download.
+	KubernetesContainerStartTimeout time.Duration
+
+	// JobContextDir is the directory for files the agent uses to coordinate
+	// with the processes running the job: the job env files, the job timeout
+	// marker file, and, in Kubernetes mode, the coordination socket. If
+	// empty, it defaults to kubernetes.DefaultContextDir in Kubernetes mode,
+	// or the system temporary directory otherwise. In Kubernetes mode it must
+	// be on a volume shared by all containers in the pod.
+	JobContextDir string
+
+	// Stdout of the parent agent process. Used for job log stdout writing arg, for simpler containerized log collection.
+	AgentStdout io.Writer
+}
+
+type JobRunner struct {
+	// The configuration for the job runner
+	conf JobRunnerConfig
+
+	// How the JobRunner should respond when job verification fails (one of `block` or `warn`)
+	VerificationFailureBehavior string
+
+	// agentLogger is a agentLogger that outputs to the agent logs
+	agentLogger logger.Logger
+
+	// The APIClient that will be used when updating the job
+	apiClient *api.Client
+
+	// The agentlib Client is used to drive some APIClient methods
+	client *core.Client
+
+	// The internal process of the job
+	process jobProcess
+
+	// The internal buffer of the process output
+	output *process.Buffer
+
+	// The internal log streamer. Don't write to this directly, use `jobLogs` instead
+	logStreamer *LogStreamer
+
+	// jobLogs is an io.Writer that sends data to the job logs
+	jobLogs io.Writer
+
+	// Job cancellation control
+	cancelLock sync.Mutex // prevent concurrent calls to Cancel
+
+	// State flags
+	cancelled     atomic.Bool // job is cancelled?
+	agentStopping atomic.Bool
+
+	// When the job was started
+	startedAt time.Time
+
+	// Files containing a copy of the job env
+	envShellFile *os.File
+	envJSONFile  *os.File
+
+	// jobLogTmpFile is the file that receives a copy of the job log when
+	// enable-job-log-tmpfile is set. It stays open for the life of the job
+	// because output can arrive after the bootstrap process exits (the PTY
+	// copy drains after Done() closes, and runJob writes notices after Run
+	// returns). cleanup closes and removes it once all writers are finished.
+	jobLogTmpFile *os.File
+
+	// jobTimeoutFilePath is the path to a marker file that, if present at
+	// post-command hook time, signals to the executor that the job was
+	// cancelled because of a Buildkite job-level timeout. The path is passed
+	// to the bootstrap subprocess via BUILDKITE_AGENT_JOB_TIMEOUT_FILE.
+	jobTimeoutFilePath string
+
+	// droppedRemoteMirrorURL records a backend-provided mirror removed from the
+	// bootstrap environment because it did not match --allowed-repositories.
+	// createEnvironment runs before jobLogs exists, so Run emits the warning.
+	droppedRemoteMirrorURL string
+
+	// jobEnvError means the job env couldn't be normalized (case-colliding
+	// names on Windows). NewJobRunner runs before jobLogs exists, so Run
+	// refuses the job before anything reads the env.
+	jobEnvError error
+
+	// signedJobEnv is the job env exactly as the backend sent it. Only
+	// signature verification and the env-name allowlist should read it, since
+	// both match names as they were written. Everything else uses
+	// r.conf.Job.Env, which holds the names the OS will actually resolve.
+	signedJobEnv map[string]string
+}
+
+// jobProcess is either a *process.Process, or a *kubernetes.Runner.
+type jobProcess interface {
+	Done() <-chan struct{}
+	Started() <-chan struct{}
+	Interrupt() error
+	Terminate() error
+	Run(ctx context.Context) error
+	WaitStatus() process.WaitStatus
+}
+
+// Initializes the job runner
+func NewJobRunner(ctx context.Context, l logger.Logger, apiClient *api.Client, conf JobRunnerConfig) (*JobRunner, error) {
+	// Normalize before either validation or agent overrides can observe the
+	// job, while keeping the names as sent for signature checks.
+	signedJobEnv := conf.Job.Env
+	normalizedJob := *conf.Job
+	var jobEnvError error
+	normalizedJob.Env, jobEnvError = normalizeJobEnv(signedJobEnv, runtime.GOOS)
+	conf.Job = &normalizedJob
+
+	// If the accept response has a token attached, we should use that instead of the Agent Access Token that
+	// our current apiClient is using
+	if conf.Job.Token != "" {
+		clientConf := apiClient.Config()
+		clientConf.Token = conf.Job.Token
+		apiClient = apiClient.New(clientConf)
+	}
+
+	r := &JobRunner{
+		agentLogger:  l,
+		conf:         conf,
+		apiClient:    apiClient,
+		client:       &core.Client{APIClient: apiClient, Logger: l},
+		jobEnvError:  jobEnvError,
+		signedJobEnv: signedJobEnv,
+	}
+
+	var err error
+	r.VerificationFailureBehavior, err = r.normalizeVerificationBehavior(conf.AgentConfiguration.VerificationFailureBehaviour)
+	if err != nil {
+		return nil, fmt.Errorf("setting no signature behavior: %w", err)
+	}
+
+	if conf.JobStatusInterval == 0 {
+		conf.JobStatusInterval = 1 * time.Second
+	}
+
+	// The log streamer that will take the output chunks, and send them to
+	// the Buildkite Agent API
+	r.logStreamer = NewLogStreamer(
+		r.agentLogger,
+		func(ctx context.Context, chunk *api.Chunk) error {
+			startUpload := time.Now()
+			// core.Client.UploadChunk contains the retry/backoff.
+			if err := r.client.UploadChunk(ctx, r.conf.Job.ID, chunk); err != nil {
+				logChunkUploadErrors.Inc()
+				logBytesUploadErrors.Add(float64(chunk.Size))
+				return err
+			}
+			logUploadDurations.Observe(time.Since(startUpload).Seconds())
+			logChunksUploaded.Inc()
+			logBytesUploaded.Add(float64(chunk.Size))
+			logCompressedBytesUploaded.Add(float64(chunk.CompressedBytes))
+			logChunkSizeBytes.Observe(float64(chunk.Size))
+			return nil
+		},
+		LogStreamerConfig{
+			Concurrency:       3,
+			MaxChunkSizeBytes: r.conf.Job.ChunksMaxSizeBytes,
+			MaxSizeBytes:      r.conf.Job.LogMaxSizeBytes,
+		},
+	)
+
+	contextDir := jobContextDir(conf)
+
+	r.envShellFile, r.envJSONFile, err = createJobEnvFiles(r.agentLogger, r.conf.Job.ID, contextDir)
+	if err != nil {
+		return nil, err
+	}
+
+	// Reserve a path for the job timeout marker file. It is only created on
+	// disk if the job is cancelled because of a Buildkite job-level timeout
+	// (see Cancel). The bootstrap subprocess reads this path from the
+	// BUILDKITE_AGENT_JOB_TIMEOUT_FILE env var.
+	r.jobTimeoutFilePath = jobTimeoutFilePath(r.conf.Job.ID, contextDir)
+
+	env, err := r.createEnvironment(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Our log streamer works off a buffer of output
+	r.output = &process.Buffer{}
+	var outputWriter io.Writer = r.output
+
+	// {stdout, stderr} -> processWriter	// processWriter = io.MultiWriter(allWriters...)
+	var allWriters []io.Writer
+
+	// if agent config "EnableJobLogTmpfile" is set, we extend the outputWriter to write to a temporary file.
+	// By default, the tmp file will be created on os.TempDir unless config "JobLogPath" is specified.
+	// BUILDKITE_JOB_LOG_TMPFILE is an environment variable that contains the full path to this temporary file.
+	if conf.AgentConfiguration.EnableJobLogTmpfile {
+		jobLogDir := ""
+		if conf.AgentConfiguration.JobLogPath != "" {
+			jobLogDir = conf.AgentConfiguration.JobLogPath
+			r.agentLogger.Debugf("[JobRunner] Job Log Path: %s", jobLogDir)
+		}
+		tmpFile, err := os.CreateTemp(jobLogDir, "buildkite_job_log")
+		if err != nil {
+			return nil, err
+		}
+		r.jobLogTmpFile = tmpFile
+
+		if err := os.Chmod(tmpFile.Name(), 0o644); err != nil { // Make it world-readable - useful for log collection etc
+			r.removeJobLogTmpfile()
+			return nil, fmt.Errorf("failed to set permissions on job log tmpfile %s: %w", tmpFile.Name(), err)
+		}
+
+		// Pass the path to this job's bootstrap only. Setting it in the agent
+		// process env would leak it into concurrent jobs (--spawn) and later
+		// jobs. As before, it is not written to the job env files.
+		env = append(env, "BUILDKITE_JOB_LOG_TMPFILE="+tmpFile.Name())
+
+		// The tmpfile is a secondary copy of the log. Writing to it must never
+		// fail the write to r.output, otherwise a tmpfile error (disk full,
+		// file closed) would abort the copy that feeds the Buildkite job log.
+		outputWriter = io.MultiWriter(outputWriter, &bestEffortWriter{
+			w:      tmpFile,
+			logger: r.agentLogger,
+			desc:   "job log tmpfile " + tmpFile.Name(),
+		})
+	}
+
+	// processWriter -> timestamper -> outputWriter
+
+	// If we have ansi-timestamps, we can skip line timestamps
+	prefixer := process.NewTimestamper(outputWriter, core.BKTimestamp, 1*time.Second)
+	allWriters = append(allWriters, prefixer)
+
+	if conf.AgentConfiguration.WriteJobLogsToStdout {
+		allWriters = append(allWriters, NewJobLogger(conf))
+	}
+
+	// The writer that output from the process goes into
+	r.jobLogs = io.MultiWriter(allWriters...)
+
+	// Copy the current processes ENV and merge in the new ones. We do this
+	// so the sub process gets PATH and stuff. We merge our path in over
+	// the top of the current one so the ENV from Buildkite and the agent
+	// take precedence over the agent
+	processEnv := append(os.Environ(), env...)
+
+	// The process that will run the bootstrap script
+	if conf.KubernetesExec {
+		// Thank you Mario, but our bootstrap is in another container
+		containerCount, err := strconv.Atoi(os.Getenv("BUILDKITE_CONTAINER_COUNT"))
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse BUILDKITE_CONTAINER_COUNT: %w", err)
+		}
+		r.process = kubernetes.NewRunner(r.agentLogger, kubernetes.RunnerConfig{
+			SocketPath:         kubernetes.SocketPath(contextDir),
+			Stdout:             r.jobLogs,
+			Stderr:             r.jobLogs,
+			ClientCount:        containerCount,
+			Env:                processEnv,
+			ClientStartTimeout: conf.KubernetesContainerStartTimeout,
+			ClientLostTimeout:  30 * time.Second,
+		})
+	} else { // not Kubernetes
+		// The bootstrap-script gets parsed based on the operating system
+		cmd, err := shellwords.Split(conf.AgentConfiguration.BootstrapScript)
+		if err != nil {
+			return nil, fmt.Errorf("splitting bootstrap-script (%q) into tokens: %w", conf.AgentConfiguration.BootstrapScript, err)
+		}
+
+		// CancelSignal == SIGKILL means the user wants the command to be killed
+		// instead of signaled more gracefully (SIGTERM, SIGINT, etc).
+		// We don't send SIGKILL to the bootstrap itself as a cancel signal,
+		// because that would kill the bootstrap immediately, which would
+		// prevent capturing the exit status of the command, executing various
+		// pre-exit hooks, and other cleanup.
+		cancelSignal := conf.CancelSignal
+		if cancelSignal == process.SIGKILL {
+			cancelSignal = process.SIGTERM
+		}
+
+		r.process = process.New(r.agentLogger, process.Config{
+			Path:              cmd[0],
+			Args:              cmd[1:],
+			Dir:               conf.AgentConfiguration.BuildPath,
+			Env:               processEnv,
+			PTY:               conf.AgentConfiguration.RunInPty,
+			Stdout:            r.jobLogs,
+			Stderr:            r.jobLogs,
+			InterruptSignal:   cancelSignal,
+			SignalGracePeriod: conf.AgentConfiguration.CancelSignalTimeout,
+		})
+	}
+
+	return r, nil
+}
+
+// removeJobLogTmpfile closes and deletes the job log tmpfile, if there is one.
+// Closing before removing matters: on Windows, removing an open file fails,
+// and on Unix the descriptor would otherwise stay open (leaking one per job).
+// It must only be called once nothing else can write to the file.
+func (r *JobRunner) removeJobLogTmpfile() {
+	if r.jobLogTmpFile == nil {
+		return
+	}
+	if err := r.jobLogTmpFile.Close(); err != nil {
+		r.agentLogger.Warnf("[JobRunner] Error closing job log tmpfile: %s", err)
+	}
+	if err := os.Remove(r.jobLogTmpFile.Name()); err != nil {
+		r.agentLogger.Warnf("[JobRunner] Error cleaning up job log tmpfile: %s", err)
+	} else {
+		r.agentLogger.Debugf("[JobRunner] Deleted job log tmpfile: %s", r.jobLogTmpFile.Name())
+	}
+	r.jobLogTmpFile = nil
+}
+
+// bestEffortWriter forwards writes to w but always reports success. A failed
+// write is logged once, then further failures are silent. Use it for secondary
+// sinks (such as the job log tmpfile) that must not disturb the primary log.
+type bestEffortWriter struct {
+	w      io.Writer
+	logger logger.Logger
+	desc   string
+
+	warnOnce sync.Once
+}
+
+func (b *bestEffortWriter) Write(p []byte) (int, error) {
+	if _, err := b.w.Write(p); err != nil {
+		b.warnOnce.Do(func() {
+			b.logger.Warnf("[JobRunner] Couldn't write to %s, further errors will not be logged: %v", b.desc, err)
+		})
+	}
+	return len(p), nil
+}
+
+func (r *JobRunner) normalizeVerificationBehavior(behavior string) (string, error) {
+	switch behavior {
+	case VerificationBehaviourBlock, VerificationBehaviourWarn:
+		return behavior, nil
+	case "":
+		return VerificationBehaviourBlock, nil
+	default:
+		return "", fmt.Errorf("invalid job verification behavior: %q", behavior)
+	}
+}
+
+// Creates the environment variables that will be used in the process and writes a flat environment file
+func (r *JobRunner) createEnvironment(ctx context.Context) ([]string, error) {
+	// Most checkout-scoped vars are locked against the backend job env in every
+	// mode except none; only none lets pipeline/step env override agent config,
+	// matching the rule secrets follow (see IsCheckoutLockedForSecrets). The
+	// exception is the sparse-checkout paths and mode, which have a from-job floor:
+	// a step's checkout.sparse config is honored under the default mode too, and
+	// only strict locks them (see IsCheckoutLockedForJobEnv). Within-job sources
+	// (hooks, plugins, the Job API) are governed separately and only strict locks
+	// them.
+	checkoutMode := r.conf.AgentConfiguration.CheckoutOverrideMode
+
+	protectedEnvPatterns, err := envutil.ProtectedEnvPatterns(r.conf.AgentConfiguration.ProtectedEnvironmentVariables, r.conf.AgentConfiguration.ProtectDangerousGitEnvironmentVariables)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a clone of our jobs environment. We'll then set the
+	// environment variables provided by the agent, which will override any
+	// sent by Buildkite. The variables below should always take precedence,
+	// except the checkout-scoped vars set via setCheckoutEnv, which defer to
+	// the Buildkite-sent value unless the checkout-override mode locks them.
+	env := make(map[string]string, len(r.conf.Job.Env))
+	maps.Copy(env, r.conf.Job.Env)
+
+	// The agent registration token should never make it into the job environment
+	delete(env, "BUILDKITE_AGENT_TOKEN")
+
+	// Filter only job-supplied values, before injecting agent configuration or
+	// writing either env file. The process inherits the operator's environment
+	// separately, so deleting a job override preserves any trusted value.
+	// Always replace the policy itself, including case variants, so neither
+	// bootstrap nor a container consuming an env file can take it from the job.
+	var ignoredEnv []string
+	for name := range env {
+		if strings.EqualFold(name, "BUILDKITE_PROTECTED_ENVIRONMENT_VARIABLES") ||
+			strings.EqualFold(name, "BUILDKITE_PROTECT_DANGEROUS_GIT_ENVIRONMENT_VARIABLES") ||
+			envutil.MatchesProtectedEnv(name, protectedEnvPatterns) {
+			delete(env, name)
+			ignoredEnv = append(ignoredEnv, name)
+		}
+	}
+
+	// Whether the backend job env (pipeline/step) already chose an OTLP
+	// destination, checked against the pristine job env before agent
+	// overrides are applied. If it did, the control-plane exporter is not
+	// injected for this job (see below): mixing the server credential with a
+	// pipeline-chosen endpoint — or a pipeline credential with the server's
+	// endpoint — must never happen. The check goes through env.Environment,
+	// which normalizes key case on Windows (a no-op on Unix), so a
+	// case-variant pipeline OTEL_* var cannot dodge it.
+	jobEnvHasOTLPDestination := false
+	normalizedJobEnv := envutil.FromMap(r.conf.Job.Env)
+	for _, name := range envutil.OTLPDestinationVars {
+		if normalizedJobEnv.Exists(name) {
+			jobEnvHasOTLPDestination = true
+			break
+		}
+	}
+
+	// Always override an ambient agent-process value. Without the explicit
+	// empty entry, bootstrap's inherited os.Environ could enable a mirror that
+	// the backend did not provide or that the repository allowlist rejected.
+	mirrorURL := env["BUILDKITE_GIT_REMOTE_MIRROR_URL"]
+	env["BUILDKITE_GIT_REMOTE_MIRROR_URL"] = ""
+	if mirrorURL != "" {
+		if !job.RepositoryAllowed(r.conf.AgentConfiguration.AllowedRepositories, mirrorURL) {
+			r.droppedRemoteMirrorURL = mirrorURL
+		} else {
+			env["BUILDKITE_GIT_REMOTE_MIRROR_URL"] = mirrorURL
+		}
+	}
+
+	allowedRepositories := make([]string, 0, len(r.conf.AgentConfiguration.AllowedRepositories))
+	for _, pattern := range r.conf.AgentConfiguration.AllowedRepositories {
+		allowedRepositories = append(allowedRepositories, pattern.String())
+	}
+	// Windows treats env names as case-insensitive, so remove job-supplied
+	// variants that could override the agent's policy when bootstrap starts.
+	maps.DeleteFunc(env, func(name, _ string) bool {
+		return strings.EqualFold(name, "BUILDKITE_ALLOWED_REPOSITORIES")
+	})
+	env["BUILDKITE_ALLOWED_REPOSITORIES"] = strings.Join(allowedRepositories, ",")
+
+	// When in KubernetesExec mode, filter out the Kubernetes plugin,
+	// since it's not a real plugin. agent-stack-k8s reads it but we have no
+	// need for it. Supplying it when not using agent-stack-k8s is a mistake
+	// but not one worth preventing.
+	if pluginsJSON := env["BUILDKITE_PLUGINS"]; pluginsJSON != "" && r.conf.KubernetesExec {
+		filtered, err := removeKubernetesPlugin([]byte(pluginsJSON))
+		if err != nil {
+			r.agentLogger.Errorf("Invalid BUILDKITE_PLUGINS: %v", err)
+		}
+		if string(filtered) == "" {
+			delete(env, "BUILDKITE_PLUGINS")
+		} else {
+			env["BUILDKITE_PLUGINS"] = string(filtered)
+		}
+	}
+
+	// Wrap setting values in env, so that when any that were already present in
+	// supplied Job env are overwritten, they can be added to ignoredEnv.
+	setEnv := func(name, value string) {
+		if _, exists := env[name]; exists {
+			ignoredEnv = append(ignoredEnv, name)
+		}
+		env[name] = value
+	}
+	setEnv("BUILDKITE_PROTECTED_ENVIRONMENT_VARIABLES", strings.Join(r.conf.AgentConfiguration.ProtectedEnvironmentVariables, ","))
+	setEnv("BUILDKITE_PROTECT_DANGEROUS_GIT_ENVIRONMENT_VARIABLES", fmt.Sprint(r.conf.AgentConfiguration.ProtectDangerousGitEnvironmentVariables))
+
+	// For some checkout env vars, we allow the Job env (if present) to have
+	// higher precedence than the agent configuration, unless the checkout-override
+	// mode locks them. Only checkout-scoped vars are passed here.
+	setCheckoutEnv := func(name, value string) {
+		if !envutil.IsCheckoutLockedForJobEnv(name, checkoutMode) {
+			if _, exists := env[name]; exists {
+				return
+			}
+		}
+		setEnv(name, value)
+	}
+
+	// Write out the job environment to file:
+	// - envShellFile: in k="v" format, with newlines escaped. If the
+	//   propagate-agent-vars experiment is enabled, the names of several agent
+	//   config variables are prepended at the top.
+	// - envJSONFile: as a single JSON object {"k":"v",...}, escaped appropriately for JSON.
+	// We present only the clean environment - i.e only variables configured
+	// on the job upstream - and expose the path in another environment variable.
+	if r.envShellFile != nil {
+		// Note that some variables in this list might not be defined later,
+		// when something comes to read the file. See below where they are
+		// added conditionally, e.g. BUILDKITE_OPENTELEMETRY_TRACING.
+		// Docker in particular tolerates undefined vars in an env file
+		// without complaints.
+		const agentCfgVars = `BUILDKITE_GIT_CHECKOUT_FLAGS
+BUILDKITE_ARTIFACT_UPLOAD_CONCURRENCY
+BUILDKITE_GIT_CLEAN_FLAGS
+BUILDKITE_GIT_CLONE_FLAGS
+BUILDKITE_GIT_CLONE_MIRROR_FLAGS
+BUILDKITE_GIT_MIRROR_CHECKOUT_MODE
+BUILDKITE_GIT_FETCH_FLAGS
+BUILDKITE_GIT_MIRRORS_LOCK_TIMEOUT
+BUILDKITE_GIT_MIRRORS_PATH
+BUILDKITE_GIT_MIRRORS_SKIP_UPDATE
+BUILDKITE_GIT_MIRRORS_LFS_CACHE
+BUILDKITE_GIT_SUBMODULES
+BUILDKITE_GIT_SUBMODULE_CLONE_CONFIG
+BUILDKITE_CHECKOUT_OVERRIDE_MODE
+BUILDKITE_ALLOWED_REPOSITORIES
+BUILDKITE_CANCEL_SIGNAL_TIMEOUT
+BUILDKITE_CANCEL_CLEANUP_TIMEOUT
+BUILDKITE_COMMAND_EVAL
+BUILDKITE_LOCAL_HOOKS_ENABLED
+BUILDKITE_PLUGINS_ENABLED
+BUILDKITE_REDACTED_VARS
+BUILDKITE_SHELL
+BUILDKITE_HOOKS_SHELL
+BUILDKITE_SSH_KEYSCAN
+BUILDKITE_STRICT_SINGLE_HOOKS
+BUILDKITE_OPENTELEMETRY_TRACING
+BUILDKITE_PROGRAM_STATUS
+BUILDKITE_TELEMETRY_SERVICE_NAME
+BUILDKITE_TRACING_TRACEPARENT
+BUILDKITE_TRACING_TRACESTATE
+BUILDKITE_AGENT_AWS_KMS_KEY
+BUILDKITE_AGENT_GCP_KMS_KEY
+BUILDKITE_AGENT_JWKS_FILE
+BUILDKITE_AGENT_JWKS_KEY_ID`
+		if _, err := fmt.Fprintln(r.envShellFile, agentCfgVars); err != nil {
+			return nil, err
+		}
+
+		for key, value := range env {
+			// Note that the value below is %q-quoted, and not shell-escaped.
+			// Env files are designed to be validated by the pre-bootstrap hook.
+			// Because the job env may contain untrusted or even dangerous env
+			// vars (suppose a user adds an env var in the "New Build" UI with a
+			// value that exploits a command injection in Bash), the
+			// pre-bootstrap hook should do this validation *without* sourcing
+			// the file. (If the job env was universally safe, then we wouldn't
+			// bother using a file - we'd load it straight into the subprocess
+			// env.)
+			if _, err := fmt.Fprintf(r.envShellFile, "%s=%q\n", key, value); err != nil {
+				return nil, err
+			}
+		}
+		if err := r.envShellFile.Close(); err != nil {
+			return nil, err
+		}
+	}
+	if r.envJSONFile != nil {
+		// key="value" format can be difficult to parse in some circumstances,
+		// so we also have a JSON formatted env file.
+		if err := json.NewEncoder(r.envJSONFile).Encode(env); err != nil {
+			return nil, err
+		}
+		if err := r.envJSONFile.Close(); err != nil {
+			return nil, err
+		}
+	}
+	// Now that the env files have been written, we can add their corresponding
+	// paths to the job env.
+	if r.envShellFile != nil {
+		setEnv("BUILDKITE_ENV_FILE", r.envShellFile.Name())
+	}
+	if r.envJSONFile != nil {
+		setEnv("BUILDKITE_ENV_JSON_FILE", r.envJSONFile.Name())
+	}
+
+	// Tell the bootstrap where to look for the job timeout marker. Cancel
+	// writes to this path only when cancellation is caused by a Buildkite
+	// job-level timeout, allowing the executor to expose
+	// BUILDKITE_JOB_TIMED_OUT=true to the post-command hook.
+	if r.jobTimeoutFilePath != "" {
+		setEnv("BUILDKITE_AGENT_JOB_TIMEOUT_FILE", r.jobTimeoutFilePath)
+	}
+
+	cache := r.conf.Job.Step.Cache
+	if cache != nil && len(cache.Paths) > 0 {
+		setEnv("BUILDKITE_AGENT_CACHE_PATHS", strings.Join(cache.Paths, ","))
+	}
+
+	// Set BUILDKITE_SECRETS_CONFIG so bootstrap can access secrets configuration
+	if len(r.conf.Job.Step.Secrets) > 0 {
+		secretsJSON, err := json.Marshal(r.conf.Job.Step.Secrets)
+		if err != nil {
+			r.agentLogger.Errorf("Failed to marshal secrets configuration: %v", err)
+			return nil, err
+		}
+
+		setEnv("BUILDKITE_SECRETS_CONFIG", string(secretsJSON))
+	}
+
+	// Add the API configuration
+	apiConfig := r.apiClient.Config()
+	setEnv("BUILDKITE_AGENT_ENDPOINT", apiConfig.Endpoint)
+	setEnv("BUILDKITE_AGENT_ACCESS_TOKEN", apiConfig.Token)
+	setEnv("BUILDKITE_NO_HTTP2", fmt.Sprint(apiConfig.DisableHTTP2))
+
+	// ... including any server-specified request headers, so that sub-processes such as
+	// buildkite-agent annotate etc can respect them.
+	for header, values := range r.apiClient.ServerSpecifiedRequestHeaders() {
+		k := fmt.Sprintf(
+			"BUILDKITE_REQUEST_HEADER_%s",
+			strings.ToUpper(strings.ReplaceAll(header, "-", "_")),
+		)
+		for _, v := range values {
+			env[k] = v
+		}
+	}
+
+	// Add agent environment variables
+	setEnv("BUILDKITE_AGENT_DEBUG", fmt.Sprint(r.conf.Debug))
+	setEnv("BUILDKITE_AGENT_DEBUG_HTTP", fmt.Sprint(r.conf.DebugHTTP))
+	setEnv("BUILDKITE_AGENT_PID", strconv.Itoa(os.Getpid()))
+
+	// We know the BUILDKITE_BIN_PATH dir, because it's the path to the
+	// currently running file (there is only 1 binary)
+	// Note that [os.Executable] returns an absolute path.
+	exePath, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+
+	setEnv("BUILDKITE_BIN_PATH", filepath.Dir(exePath))
+
+	// Add options from the agent configuration
+	setEnv("BUILDKITE_CONFIG_PATH", r.conf.AgentConfiguration.ConfigPath)
+	setEnv("BUILDKITE_BUILD_PATH", r.conf.AgentConfiguration.BuildPath)
+	setEnv("BUILDKITE_SOCKETS_PATH", r.conf.AgentConfiguration.SocketsPath)
+	setEnv("BUILDKITE_GIT_MIRRORS_PATH", r.conf.AgentConfiguration.GitMirrorsPath)
+	setEnv("BUILDKITE_GIT_MIRRORS_SKIP_UPDATE", fmt.Sprint(r.conf.AgentConfiguration.GitMirrorsSkipUpdate))
+	setEnv("BUILDKITE_GIT_MIRRORS_LFS_CACHE", fmt.Sprint(r.conf.AgentConfiguration.GitMirrorsLFSCache))
+	setEnv("BUILDKITE_HOOKS_PATH", r.conf.AgentConfiguration.HooksPath)
+	setEnv("BUILDKITE_ADDITIONAL_HOOKS_PATHS", strings.Join(r.conf.AgentConfiguration.AdditionalHooksPaths, ","))
+	setEnv("BUILDKITE_PLUGINS_PATH", r.conf.AgentConfiguration.PluginsPath)
+	setEnv("BUILDKITE_SSH_KEYSCAN", fmt.Sprint(r.conf.AgentConfiguration.SSHKeyscan))
+	// submodules/skip-checkout/skip-fetch/timeout/fetch-base-branch are each emitted
+	// by the agent on only one side of their default (submodules off, skip-checkout
+	// on, skip-fetch on, timeout > 0, base branch fetch not off); on the other,
+	// silent, side the agent stays quiet and historically let pipeline/step env
+	// decide. Only strict closes that silent side, emitting the agent value
+	// unconditionally so a job can't reintroduce a setting the agent left at its
+	// default. from-job and none keep the historical conditional emit;
+	// setCheckoutEnv then decides precedence against backend job env: from-job keeps
+	// agent config authoritative on the emitted side, none lets job env win. The
+	// checkout flags above are agent-authoritative in both from-job and strict (they
+	// were always emitted), so only these five differ by mode here.
+	if checkoutMode == envutil.CheckoutOverrideStrict {
+		setEnv("BUILDKITE_GIT_SUBMODULES", fmt.Sprint(r.conf.AgentConfiguration.GitSubmodules))
+		setEnv("BUILDKITE_SKIP_CHECKOUT", fmt.Sprint(r.conf.AgentConfiguration.SkipCheckout))
+		setEnv("BUILDKITE_GIT_SKIP_FETCH_EXISTING_COMMITS", fmt.Sprint(r.conf.AgentConfiguration.GitSkipFetchExistingCommits))
+		setEnv("BUILDKITE_GIT_FETCH_BASE_BRANCH", cmp.Or(r.conf.AgentConfiguration.GitFetchBaseBranch, job.GitFetchBaseBranchOff))
+		// A zero timeout means no checkout timeout; emit it anyway under strict so
+		// a job-supplied value can't reintroduce one past the agent config.
+		setEnv("BUILDKITE_GIT_CHECKOUT_TIMEOUT", strconv.Itoa(r.conf.AgentConfiguration.GitCheckoutTimeout))
+	} else {
+		// Default submodules off when disabled in agent config, but let pipeline/
+		// step env override via BUILDKITE_GIT_SUBMODULES (unless from-job locks it).
+		if !r.conf.AgentConfiguration.GitSubmodules {
+			setCheckoutEnv("BUILDKITE_GIT_SUBMODULES", "false")
+		}
+		// Allow BUILDKITE_SKIP_CHECKOUT to be enabled either by agent config
+		// or by pipeline/step env
+		// This is here now to make it ready for if/when we add skip_checkout to the core app
+		if r.conf.AgentConfiguration.SkipCheckout {
+			setCheckoutEnv("BUILDKITE_SKIP_CHECKOUT", "true")
+		}
+		if r.conf.AgentConfiguration.GitSkipFetchExistingCommits {
+			setCheckoutEnv("BUILDKITE_GIT_SKIP_FETCH_EXISTING_COMMITS", "true")
+		}
+		if mode := r.conf.AgentConfiguration.GitFetchBaseBranch; mode != "" && mode != job.GitFetchBaseBranchOff {
+			setCheckoutEnv("BUILDKITE_GIT_FETCH_BASE_BRANCH", mode)
+		}
+		if r.conf.AgentConfiguration.GitCheckoutTimeout > 0 {
+			setCheckoutEnv("BUILDKITE_GIT_CHECKOUT_TIMEOUT", strconv.Itoa(r.conf.AgentConfiguration.GitCheckoutTimeout))
+		}
+	}
+	setEnv("BUILDKITE_CHECKOUT_OVERRIDE_MODE", checkoutMode.String())
+	setEnv("BUILDKITE_CHECKOUT_ATTEMPTS", strconv.Itoa(r.conf.AgentConfiguration.CheckoutAttempts))
+	setEnv("BUILDKITE_COMMAND_EVAL", fmt.Sprint(r.conf.AgentConfiguration.CommandEval))
+	setEnv("BUILDKITE_PLUGINS_ENABLED", fmt.Sprint(r.conf.AgentConfiguration.PluginsEnabled))
+	// Allow BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH to be enabled either by config
+	// or by pipeline/step env.
+	if r.conf.AgentConfiguration.PluginsAlwaysCloneFresh {
+		setEnv("BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH", "true")
+	}
+	setEnv("BUILDKITE_LOCAL_HOOKS_ENABLED", fmt.Sprint(r.conf.AgentConfiguration.LocalHooksEnabled))
+
+	setCheckoutEnv("BUILDKITE_GIT_CHECKOUT_FLAGS", r.conf.AgentConfiguration.GitCheckoutFlags)
+	setCheckoutEnv("BUILDKITE_GIT_CLONE_FLAGS", r.conf.AgentConfiguration.GitCloneFlags)
+	setCheckoutEnv("BUILDKITE_GIT_FETCH_FLAGS", r.conf.AgentConfiguration.GitFetchFlags)
+	setCheckoutEnv("BUILDKITE_GIT_SPARSE_CHECKOUT_PATHS", strings.Join(r.conf.AgentConfiguration.GitSparseCheckoutPaths, ","))
+	setCheckoutEnv("BUILDKITE_GIT_SPARSE_CHECKOUT_MODE", r.conf.AgentConfiguration.GitSparseCheckoutMode.String())
+	setEnv("BUILDKITE_GIT_CLONE_MIRROR_FLAGS", r.conf.AgentConfiguration.GitCloneMirrorFlags)
+	setEnv("BUILDKITE_GIT_MIRROR_CHECKOUT_MODE", r.conf.AgentConfiguration.GitMirrorCheckoutMode)
+	setCheckoutEnv("BUILDKITE_GIT_CLEAN_FLAGS", r.conf.AgentConfiguration.GitCleanFlags)
+	setEnv("BUILDKITE_GIT_MIRRORS_LOCK_TIMEOUT", strconv.Itoa(r.conf.AgentConfiguration.GitMirrorsLockTimeout))
+	setEnv("BUILDKITE_GIT_SUBMODULE_CLONE_CONFIG", strings.Join(r.conf.AgentConfiguration.GitSubmoduleCloneConfig, ","))
+	setCheckoutEnv("BUILDKITE_GIT_COMMIT_VERIFICATION", r.conf.AgentConfiguration.GitCommitVerification)
+
+	setEnv("BUILDKITE_SHELL", r.conf.AgentConfiguration.Shell)
+	setEnv("BUILDKITE_HOOKS_SHELL", r.conf.AgentConfiguration.HooksShell)
+	setEnv("BUILDKITE_AGENT_EXPERIMENT", strings.Join(experiments.Enabled(ctx), ","))
+
+	// Tools such as the Buildkite CLI (bk) don't send program status reports
+	// when BUILDKITE or CI are set, unless BUILDKITE_PROGRAM_STATUS turns them
+	// on. A job can still set it to false to turn them off.
+	if _, ok := env["BUILDKITE_PROGRAM_STATUS"]; !ok && experiments.IsEnabled(ctx, experiments.ProgramStatus) {
+		env["BUILDKITE_PROGRAM_STATUS"] = "true"
+	}
+
+	setEnv("BUILDKITE_REDACTED_VARS", strings.Join(r.conf.AgentConfiguration.RedactedVars, ","))
+	setEnv("BUILDKITE_STRICT_SINGLE_HOOKS", fmt.Sprint(r.conf.AgentConfiguration.StrictSingleHooks))
+	setEnv("BUILDKITE_CANCEL_SIGNAL_TIMEOUT", r.conf.AgentConfiguration.CancelSignalTimeout.String())
+	setEnv("BUILDKITE_CANCEL_CLEANUP_TIMEOUT", r.conf.AgentConfiguration.CancelCleanupTimeout.String())
+
+	if !r.conf.AgentConfiguration.AllowMultipartArtifactUpload {
+		setEnv("BUILDKITE_NO_MULTIPART_ARTIFACT_UPLOAD", "true")
+	}
+	if r.conf.AgentConfiguration.ArtifactUploadConcurrency > 0 {
+		setEnv("BUILDKITE_ARTIFACT_UPLOAD_CONCURRENCY", strconv.Itoa(r.conf.AgentConfiguration.ArtifactUploadConcurrency))
+	}
+
+	// propagate CancelSignal to bootstrap, unless it's the default SIGTERM
+	if r.conf.CancelSignal != process.SIGTERM {
+		setEnv("BUILDKITE_CANCEL_SIGNAL", r.conf.CancelSignal.String())
+	}
+
+	// Whether to enable profiling in the bootstrap
+	if r.conf.AgentConfiguration.Profile != "" {
+		setEnv("BUILDKITE_AGENT_PROFILE", r.conf.AgentConfiguration.Profile)
+	}
+
+	// PTY-mode is enabled by default in `start` and `bootstrap`, so we only need
+	// to propagate it if it's explicitly disabled.
+	if !r.conf.AgentConfiguration.RunInPty {
+		setEnv("BUILDKITE_PTY", "false")
+	}
+
+	// pass through the KMS key ID for signing
+	if r.conf.AgentConfiguration.SigningAWSKMSKey != "" {
+		setEnv("BUILDKITE_AGENT_AWS_KMS_KEY", r.conf.AgentConfiguration.SigningAWSKMSKey)
+	}
+
+	// pass through the GCP KMS key for signing
+	if r.conf.AgentConfiguration.SigningGCPKMSKey != "" {
+		setEnv("BUILDKITE_AGENT_GCP_KMS_KEY", r.conf.AgentConfiguration.SigningGCPKMSKey)
+	}
+
+	// Pass signing details through to the executor - any pipelines uploaded by this agent will be signed
+	if r.conf.AgentConfiguration.SigningJWKSFile != "" {
+		setEnv("BUILDKITE_AGENT_JWKS_FILE", r.conf.AgentConfiguration.SigningJWKSFile)
+	}
+
+	if r.conf.AgentConfiguration.SigningJWKSKeyID != "" {
+		setEnv("BUILDKITE_AGENT_JWKS_KEY_ID", r.conf.AgentConfiguration.SigningJWKSKeyID)
+	}
+
+	if r.conf.AgentConfiguration.DebugSigning {
+		setEnv("BUILDKITE_AGENT_DEBUG_SIGNING", "true")
+	}
+
+	enablePluginValidation := r.conf.AgentConfiguration.PluginValidation
+	// Allow BUILDKITE_PLUGIN_VALIDATION to be enabled from env for easier
+	// per-pipeline testing
+	if pluginValidation, ok := env["BUILDKITE_PLUGIN_VALIDATION"]; ok {
+		switch pluginValidation {
+		case "true", "1", "on":
+			// Skip ignoredEnv by pretending it wasn't set by the job.
+			delete(env, "BUILDKITE_PLUGIN_VALIDATION")
+			enablePluginValidation = true
+		}
+	}
+	setEnv("BUILDKITE_PLUGIN_VALIDATION", fmt.Sprint(enablePluginValidation))
+
+	if r.conf.AgentConfiguration.OpenTelemetryTracing {
+		setEnv("BUILDKITE_OPENTELEMETRY_TRACING", "true")
+		setEnv("BUILDKITE_TELEMETRY_SERVICE_NAME", r.conf.AgentConfiguration.TelemetryServiceName)
+
+		// Buildkite backend can provide a traceparent property on the job
+		// which can be propagated to the job tracing if OpenTelemetry is used
+		//
+		// https://www.w3.org/TR/trace-context/#traceparent-header
+		if r.conf.Job.TraceParent != "" {
+			setEnv("BUILDKITE_TRACING_TRACEPARENT", r.conf.Job.TraceParent)
+		}
+		// Buildkite backend may also provide a tracestate property on the job,
+		// which carries vendor-specific trace context alongside the traceparent.
+		//
+		// https://www.w3.org/TR/trace-context/#tracestate-header
+		if r.conf.Job.TraceState != "" {
+			setEnv("BUILDKITE_TRACING_TRACESTATE", r.conf.Job.TraceState)
+		}
+	}
+
+	// Deliver control-plane OTLP exporter configuration (endpoint, protocol,
+	// and possibly credentialed headers, from agent registration) to the
+	// bootstrap process through the standard traces-specific OTel variables.
+	// Hooks, plugins, and the job command inherit them, so job-level OTel
+	// tooling can join the trace via the propagated traceparent and export
+	// spans to the same collector. This runs after the env files were written
+	// above, so the credential still stays out of BUILDKITE_ENV_FILE — note
+	// this means plugins that use the env file as a propagation allowlist
+	// (e.g. docker's propagate-environment) won't forward these names into
+	// containers they create.
+	//
+	// Skipped entirely when the pipeline chose its own OTLP destination: its
+	// values are left untouched (endpoint and headers must travel together,
+	// so there is no partial merge).
+	if exp := r.conf.AgentConfiguration.ControlPlaneTracingExporter; exp != nil && r.conf.AgentConfiguration.OpenTelemetryTracing {
+		if jobEnvHasOTLPDestination {
+			r.agentLogger.Infof("Not delivering control-plane OTLP exporter to job %s: the job env already sets an OTEL_EXPORTER_OTLP_* destination, which takes precedence", r.conf.Job.ID)
+		} else {
+			maps.Copy(env, controlPlaneOTLPEnv(exp))
+		}
+	}
+
+	// This is an agent-operator setting, not a pipeline setting. Always
+	// overwrite the job-provided value so a pipeline cannot enable OTLP export
+	// or choose its destination when the agent operator has not opted in.
+	setEnv("BUILDKITE_JOB_LOGS_OTLP", fmt.Sprint(r.conf.AgentConfiguration.JobLogsOTLP))
+
+	setEnv("BUILDKITE_AGENT_DISABLE_WARNINGS_FOR", strings.Join(r.conf.AgentConfiguration.DisableWarningsFor, ","))
+
+	// see documentation for BuildkiteMessageMax
+	if err := truncateEnv(r.agentLogger, env, BuildkiteMessageName, BuildkiteMessageMax); err != nil {
+		r.agentLogger.Warnf("failed to truncate %s: %v", BuildkiteMessageName, err)
+		// attempt to continue anyway
+	}
+
+	// Finally, set BUILDKITE_IGNORED_ENV so the bootstrap can show warnings.
+	if len(ignoredEnv) > 0 {
+		env["BUILDKITE_IGNORED_ENV"] = strings.Join(ignoredEnv, ",")
+	}
+
+	// Convert the env map into a slice (which is what the script gear
+	// needs)
+	envSlice := []string{}
+	for key, value := range env {
+		envSlice = append(envSlice, fmt.Sprintf("%s=%s", key, value))
+	}
+
+	return envSlice, nil
+}
+
+// normalizeJobEnv returns the job env with names spelled the way goos will
+// resolve them, or an error if two names would resolve to the same variable.
+func normalizeJobEnv(jobEnv map[string]string, goos string) (map[string]string, error) {
+	switch goos {
+	case "windows":
+		normalized := make(map[string]string, len(jobEnv))
+		originalNames := make(map[string]string, len(jobEnv))
+		for name, value := range jobEnv {
+			key := strings.ToUpper(name) // Matches env.Environment's Windows key handling.
+			if previous, exists := originalNames[key]; exists {
+				return nil, fmt.Errorf("job environment contains case-colliding names %q and %q", previous, name)
+			}
+			originalNames[key] = name
+			normalized[key] = value
+		}
+		return normalized, nil
+
+	default:
+		return maps.Clone(jobEnv), nil
+	}
+}
+
+// truncateEnv cuts environment variable `key` down to `max` length, such that
+// "key=value\0" does not exceed the max.
+func truncateEnv(l logger.Logger, env map[string]string, key string, max int) error {
+	msglen := len(env[key])
+	if msglen <= max {
+		return nil
+	}
+	msgmax := max - len(key) - 2 // two bytes for "=" and null terminator
+	description := fmt.Sprintf("value truncated %d -> %d bytes", msglen, msgmax)
+	apology := fmt.Sprintf("[%s]", description)
+	if len(apology) > msgmax {
+		return fmt.Errorf("max=%d too short to include truncation apology", max)
+	}
+	keeplen := msgmax - len(apology)
+	env[key] = env[key][0:keeplen] + apology
+	l.Warnf("%s %s", key, description)
+	return nil
+}
+
+// removeKubernetesPlugin removes the Kubernetes plugin from a BUILDKITE_PLUGINS
+// JSON value. It returns nil if no plugins remain, so callers can unset the
+// variable rather than leave an empty list that still counts as having plugins.
+func removeKubernetesPlugin(pluginsJSON []byte) ([]byte, error) {
+	var plugins []map[string]json.RawMessage
+	if err := json.Unmarshal(pluginsJSON, &plugins); err != nil {
+		return pluginsJSON, err
+	}
+	plugins = slices.DeleteFunc(plugins, func(plugin map[string]json.RawMessage) bool {
+		_, isK8sPlugin := plugin["github.com/buildkite-plugins/kubernetes-buildkite-plugin"]
+		return isK8sPlugin
+	})
+	if len(plugins) == 0 {
+		return nil, nil
+	}
+	return json.Marshal(plugins)
+}
+
+type LogWriter struct {
+	l logger.Logger
+}
+
+func (w LogWriter) Write(bytes []byte) (int, error) {
+	w.l.Infof("%s", bytes)
+	return len(bytes), nil
+}
+
+func (r *JobRunner) executePreBootstrapHook(ctx context.Context, hook string) (bool, error) {
+	r.agentLogger.Infof("Running pre-bootstrap hook %q", hook)
+
+	sh, err := shell.New(
+		shell.WithStdout(LogWriter{l: r.agentLogger}),
+	)
+	if err != nil {
+		return false, err
+	}
+
+	// This (plus inherited) is the only ENV that should be exposed
+	// to the pre-bootstrap hook.
+	// - Env files are designed to be validated by the pre-bootstrap hook.
+	//   Because the job env may contain untrusted or even dangerous env vars
+	//   (suppose a user adds an env var in the "New Build" UI with a value that
+	//   exploits a command injection in Bash), the pre-bootstrap hook should do
+	//   this validation *without* sourcing the file. (If the job env was
+	//   universally safe to source, then we would just pre-populate this env
+	//   with it.)
+	// - The pre-bootstrap hook may want to create annotations, so it can also
+	//   have a few necessary and global args as env vars.
+	environ := envutil.New()
+	environ.Set("BUILDKITE_ENV_FILE", r.envShellFile.Name())
+	environ.Set("BUILDKITE_ENV_JSON_FILE", r.envJSONFile.Name())
+	environ.Set("BUILDKITE_JOB_ID", r.conf.Job.ID)
+	apiConfig := r.apiClient.Config()
+	environ.Set("BUILDKITE_AGENT_ACCESS_TOKEN", apiConfig.Token)
+	environ.Set("BUILDKITE_AGENT_ENDPOINT", apiConfig.Endpoint)
+	environ.Set("BUILDKITE_NO_HTTP2", fmt.Sprint(apiConfig.DisableHTTP2))
+	environ.Set("BUILDKITE_AGENT_DEBUG", fmt.Sprint(r.conf.Debug))
+	environ.Set("BUILDKITE_AGENT_DEBUG_HTTP", fmt.Sprint(r.conf.DebugHTTP))
+
+	script, err := sh.Script(hook, r.conf.AgentConfiguration.HooksShell)
+	if err != nil {
+		r.agentLogger.Errorf("Finished pre-bootstrap hook %q: script not runnable: %v", hook, err)
+		return false, err
+	}
+	if err := script.Run(ctx, shell.ShowPrompt(false), shell.WithExtraEnv(environ)); err != nil {
+		r.agentLogger.Errorf("Finished pre-bootstrap hook %q: job rejected: %v", hook, err)
+		return false, err
+	}
+	r.agentLogger.Infof("Finished pre-bootstrap hook %q: job accepted", hook)
+	return true, nil
+}
+
+// jobCancellationChecker waits for the processes to start, then continuously
+// polls GetJobState to see if the job has been cancelled server-side. If so,
+// it calls r.Cancel.
+func (r *JobRunner) jobCancellationChecker(ctx context.Context) {
+	ctx, setStat, done := status.AddSimpleItem(ctx, "Job Cancellation Checker")
+	defer done()
+	setStat("Starting...")
+
+	defer r.agentLogger.Debugf("[JobRunner] Routine that refreshes the job has finished")
+
+	select {
+	case <-r.process.Started():
+	case <-ctx.Done():
+		return
+	}
+
+	intervalTicker := time.NewTicker(r.conf.JobStatusInterval)
+	defer intervalTicker.Stop()
+	first := make(chan struct{}, 1)
+	first <- struct{}{}
+
+	for {
+		setStat("😴 Waiting for next job status interval tick")
+		select {
+		case <-first:
+			// continue below
+		case <-intervalTicker.C:
+			// continue below
+		case <-ctx.Done():
+			return
+		case <-r.process.Done():
+			return
+		}
+
+		// Within the interval, wait a random amount of time to avoid
+		// spontaneous synchronisation across agents.
+		jitter := rand.N(r.conf.JobStatusInterval)
+		setStat(fmt.Sprintf("🫨 Jittering for %v", jitter))
+		select {
+		case <-time.After(jitter):
+			// continue below
+		case <-ctx.Done():
+			return
+		case <-r.process.Done():
+			return
+		}
+
+		setStat("📡 Fetching job state from Buildkite")
+
+		// Re-get the job and check its status to see if it's been cancelled
+		jobState, response, err := r.apiClient.GetJobState(ctx, r.conf.Job.ID)
+		if err != nil {
+			if response != nil && response.StatusCode == 401 {
+				r.agentLogger.Errorf("Invalid access token, cancelling job %s", r.conf.Job.ID)
+				if err := r.Cancel(CancelReasonInvalidToken); err != nil {
+					r.agentLogger.Errorf("Failed to cancel the process (job: %s): %v", r.conf.Job.ID, err)
+				}
+			} else {
+				// We don't really care if it fails, we'll just try again soon anyway
+				r.agentLogger.Warnf("Problem with getting job state %s (%s)", r.conf.Job.ID, err)
+			}
+			continue // the loop
+		}
+		switch jobState.State {
+		case "canceling", "canceled":
+			if err := r.Cancel(CancelReasonJobState); err != nil {
+				r.agentLogger.Errorf("Unexpected error canceling process as requested by server (job: %s) (err: %s)", r.conf.Job.ID, err)
+			}
+		case "timing_out", "timed_out":
+			if err := r.Cancel(CancelReasonJobTimeout); err != nil {
+				r.agentLogger.Errorf("Unexpected error canceling process as requested by server (job: %s) (err: %s)", r.conf.Job.ID, err)
+			}
+		}
+	}
+}
+
+// jobContextDir returns the directory for files the agent creates to
+// coordinate with the processes running the job (the env files, the job
+// timeout marker file, and, in Kubernetes mode, the coordination socket). In
+// Kubernetes mode these files are read by other containers in the pod, so the
+// directory must be on a volume shared by all containers in the pod.
+func jobContextDir(conf JobRunnerConfig) string {
+	if conf.JobContextDir != "" {
+		return conf.JobContextDir
+	}
+	if conf.KubernetesExec {
+		return kubernetes.DefaultContextDir
+	}
+	return os.TempDir()
+}
+
+func createJobEnvFiles(l logger.Logger, jobID, contextDir string) (shellFile, jsonFile *os.File, err error) {
+	// contextDir is not guaranteed to exist
+	if _, err := os.Stat(contextDir); os.IsNotExist(err) {
+		// Actual file permissions will be reduced by umask, and won't be 0o777 unless the user has manually changed the umask to 000
+		if err = os.MkdirAll(contextDir, 0o777); err != nil {
+			return nil, nil, err
+		}
+	}
+
+	shellFile, err = os.CreateTemp(contextDir, fmt.Sprintf("job-env-%s", jobID))
+	if err != nil {
+		return nil, nil, err
+	}
+	l.Debugf("[JobRunner] Created env file (shell format): %s", shellFile.Name())
+
+	jsonFile, err = os.CreateTemp(contextDir, fmt.Sprintf("job-env-json-%s", jobID))
+	if err != nil {
+		_ = shellFile.Close()
+		_ = os.Remove(shellFile.Name())
+		return nil, nil, err
+	}
+	l.Debugf("[JobRunner] Created env file (JSON format): %s", jsonFile.Name())
+
+	return shellFile, jsonFile, nil
+}
+
+// jobTimeoutFilePath returns a deterministic path within the job context
+// directory used to signal to the bootstrap that the job was cancelled
+// because of a Buildkite job-level timeout. The file is not created until
+// the timeout actually fires; the bootstrap detects the timeout by checking
+// whether the file exists.
+func jobTimeoutFilePath(jobID, contextDir string) string {
+	return filepath.Join(contextDir, fmt.Sprintf("job-timeout-%s", jobID))
+}

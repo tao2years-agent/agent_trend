@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="0.670" timestamp="2026-11-20T12:24:54.967085" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_simplify1" time="0.020"><failure message="assert False&#10; +  where False = &lt;bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])&gt;(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))&#10; +    where &lt;bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])&gt; = Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]]).equals&#10; +    and   GammaMatrix(rho) = G(rho)&#10; +    and   GammaMatrix(sigma) = G(sigma)">sympy\physics\hep\tests\test_gamma_matrices.py:265: in test_kahane_simplify1
+    assert r.equals(4*G(rho)*G(sigma))
+E   assert False
+E    +  where False = &lt;bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])&gt;(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))
+E    +    where &lt;bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])&gt; = Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]]).equals
+E    +    and   GammaMatrix(rho) = G(rho)
+E    +    and   GammaMatrix(sigma) = G(sigma)</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_gamma_matrix_class" time="0.146"><failure message="AssertionError">sympy\physics\hep\tests\test_gamma_matrices.py:285: in test_gamma_matrix_class
+    execute_gamma_simplify_tests_for_function(simplify_gamma_expression, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:120: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(st, (D*(-2*D + 4))*G(m2))
+sympy\physics\hep\tests\test_gamma_matrices.py:14: in _is_tensor_eq
+    return arg2.equals(arg1)
+sympy\tensor\tensor.py:3512: in equals
+    assert not self.components
+E   AssertionError</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_algorithm" time="0.119"><failure message="AssertionError">sympy\physics\hep\tests\test_gamma_matrices.py:192: in test_kahane_algorithm
+    execute_gamma_simplify_tests_for_function(tfunc, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:120: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(st, (D*(-2*D + 4))*G(m2))
+sympy\physics\hep\tests\test_gamma_matrices.py:14: in _is_tensor_eq
+    return arg2.equals(arg1)
+sympy\tensor\tensor.py:3512: in equals
+    assert not self.components
+E   AssertionError</failure></testcase></testsuite></testsuites>

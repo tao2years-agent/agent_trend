@@ -1,0 +1,275 @@
+Accelerating Large-Scale Test Migration with LLMs | Airbnb Engineering & Data Science (https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/?trk=article-ssr-frontend-pulse_x-social-details_comments-action_comment-text)
+citeturn75search0 [wordlim: 200] Crawled: 2 weeks ago; Airbnb recently completed our first large-scale, LLM-driven code migration, updating nearly 3.5K React component test files from Enzyme to use React Testing Library (RTL) instead. We’d originally estimated this would take 1.5 years of engineering time to do by hand, but — using a combination of frontier models and robust automation — we finished the entire migration in just 6 weeks.
+
+# Accelerating Large-Scale Test Migration with LLMs
+
+How Airbnb migrated nearly 3.5K Enzyme test files to React Testing Library in just 6 weeks using automation and LLMs
+
+By: Charles Covey-Brandt
+
+Airbnb recently completed our first large-scale, LLM-driven code migration, updating nearly 3.5K React component test files from Enzyme to use React Testing Library (RTL) instead. We’d originally estimated this would take 1.5 years of engineering time to do by hand, but — using a combination of frontier models and robust automation — we finished the entire migration in just 6 weeks.
+
+In this blog post, we’ll highlight the unique challenges we faced migrating from Enzyme to RTL, how LLMs excel at solving this particular type of challenge, and how we structured our migration tooling to run an LLM-driven migration at scale.
+
+# Background
+
+In 2020, Airbnb adopted React Testing Library (RTL) for all new React component test development, marking our first steps away from Enzyme. Although Enzyme had served us well since 2015, it was designed for earlier versions of React, and the framework’s deep access to component internals no longer aligned with modern React testing practices.
+
+However, because of the fundamental differences between these frameworks, we couldn’t easily swap out one for the other (read more about the differences here). We also couldn’t just delete the Enzyme files, as analysis showed this would create significant gaps in our code coverage. To complete this migration, we needed an automated way to refactor test files from Enzyme to RTL while preserving the intent of the original tests and their code coverage.
+
+# How We Did It
+
+In mid-2023, an Airbnb hackathon team demonstrated that large language models could successfully convert hundreds of Enzyme files to RTL in just a few days.
+
+Building on this promising result, in 2024 we developed a scalable pipeline for an LLM-driven migration. We broke the migration into discrete, per-file steps that we could parallelize, added configurable retry loops, and significantly expanded our prompts with additional context. Finally, we performed breadth-first prompt tuning for the long tail of complex files.
+
+# 1. File Validation and Refactor Steps
+
+We started by breaking down the migration into a series of automated validation and refactor steps. Think of it like a production pipeline: each file moves through stages of validation, and when a check fails, we bring in the LLM to fix it.
+
+We modeled this flow like a state machine, moving the file to the next state only after validation on the previous state passed:
+
+ImageDiagram shows refactor steps from Enzyme refactor, fixing Jest, fixing lint and tsc, and marking file as complete.
+
+This step-based approach provided a solid foundation for our automation pipeline. It enabled us to track progress, improve failure rates for specific steps, and rerun files or steps when needed. The step-based approach also made it simple to run migrations on hundreds of files concurrently, which was critical for both quickly migrating simple files, and chipping away at the long tail of files later in the migration.
+
+--------------------------------------------------------------------------------
+Airbnb migrated 3,500 test files with an LLM pipeline in 6 weeks instead of 1.5 years | Agents in the Wild (https://agentsinthewild.co/use-cases/airbnb-enzyme-rtl-migration)
+citeturn75search1 [wordlim: 200] Published: 1.7 years ago; Crawled: last month; # Airbnb migrated 3,500 test files with an LLM pipeline in 6 weeks instead of 1.5 years
+
+Airbnb moved nearly 3,500 React test files from Enzyme to React Testing Library using an automated, step-by-step LLM pipeline with retry loops. ... ~3,500 test files migrated in 6 weeks; about 97% fully automated and the rest finished by hand. ... Accelerating Large-Scale Test Migration with LLMs — Airbnb Tech Blog, Mar 2025
+
+# Airbnb migrated 3,500 test files with an LLM pipeline in 6 weeks instead of 1.5 years
+
+Airbnb moved nearly 3,500 React test files from Enzyme to React Testing Library using an automated, step-by-step LLM pipeline with retry loops. Engineers had estimated 1.5 years of manual work.
+
+Organization
+    Airbnb
+
+Industry
+    Travel
+
+When
+    Mar 2025
+
+Evidence
+    Company reported
+
+Agents and tools
+    LLM pipeline (custom)
+
+## Reported outcome
+
+~3,500 test files migrated in 6 weeks; about 97% fully automated and the rest finished by hand.
+
+  * ~3,500
+
+Files migrated
+
+  * 6 weeks vs ~1.5 years est.
+
+Time
+
+  * ~97%
+
+Automated
+
+## Caveats
+
+Stated by the company that uses the agent (blog, earnings call, interview). Not independently audited.
+
+  * The 1.5-year manual estimate is Airbnb's own.
+  * Going from about 75% to 97% automated took much more effort than the first 75%.
+
+## What the agent does
+
+Each test file goes through fixed steps: refactor, fix Jest errors, fix lint, fix TypeScript. After each step, the pipeline runs the check. --------------------------------------------------------------------------------
+Inside Airbnb’s AI-Powered Pipeline to Migrate Tests: Months of Work in Days (https://blog.bytebytego.com/p/inside-airbnbs-ai-powered-pipeline)
+citeturn75search2 [wordlim: 200] Published: 1.4 years ago; Crawled: 2 months ago; By 2020, Airbnb had shifted all new test development to React Testing Library (RTL). ... However, thousands of existing test files at Airbnb were still using Enzyme. ...   * Manual effort was prohibitive: Early projections estimated over a year of engineering time to complete the migration manually, which was too costly to justify. ... This gave the team visibility into patterns: common failure points, repeat offenders, and areas where LLM-generated code needed help. ... In practice, it pushed the migration from 75% to 97% completion in just four days.
+
+# ByteByteGo Newsletter
+
+# Inside Airbnb’s AI-Powered Pipeline to Migrate Tests: Months of Work in Days
+
+ByteByteGo
+
+Jun 24, 2025
+
+Disclaimer: The details in this post have been derived from the articles/videos shared online by the Airbnb Engineering Team. All credit for the technical details goes to the Airbnb Engineering Team. The links to the original articles and videos are present in the references section at the end of the post. We’ve attempted to analyze the details and provide our input about them. If you find any inaccuracies or omissions, please leave a comment, and we will do our best to fix them.
+
+Code migrations are usually a slow affair. Dependencies change, frameworks evolve, and teams get stuck rewriting thousands of lines that don’t even change product behavior. 
+
+That was the situation at Airbnb. 
+
+Thousands of React test files still relied on Enzyme, a tool that hadn’t kept up with modern React patterns. The goal was clear: move everything to React Testing Library (RTL). 
+By 2020, Airbnb had shifted all new test development to React Testing Library (RTL). 
+
+RTL encourages testing components from the perspective of how users interact with them, focusing on rendered output and behavior, not implementation details. This shift reflects modern React testing practices, which prioritize maintainability and resilience to refactoring.
+
+However, thousands of existing test files at Airbnb were still using Enzyme. Migrating them introduced several challenges:
+
+  * Different testing models: Enzyme relies on accessing component internals. RTL operates at the DOM interaction level. Tests couldn’t be translated line-for-line and required structural rewrites.
+
+  * Risk of coverage loss: Simply removing legacy Enzyme tests would leave significant gaps in test coverage, particularly for older components no longer under active development.
+
+  * Manual effort was prohibitive: Early projections estimated over a year of engineering time to complete the migration manually, which was too costly to justify.
+
+The migration was necessary to standardize testing across the codebase and support future React versions, but it had to be automated to be feasible.
+
+--------------------------------------------------------------------------------
+Accelerating Large-Scale Test Migration with LLMs | devblogs.sh (https://devblogs.sh/posts/accelerating-large-scale-test-migration-with-llms)
+citeturn75search3 [wordlim: 200] Crawled: last month; Airbnb used LLMs and an automated, step-based pipeline to migrate ~3.5K React component tests from Enzyme to React Testing Library. ... The bulk run migrated 75% of files in four hours and, after sample/tune/sweep iterations, reached 97% automation; the remaining files were manually finished. The migration preserved test intent and coverage and completed in six weeks with LLM API costs and engineering time far lower than the initial manual estimate.
+Feed AirbnbPostFrom Airbnb
+
+# Accelerating Large-Scale Test Migration with LLMs
+
+Airbnb used LLMs and an automated, step-based pipeline to migrate ~3.5K React component tests from Enzyme to React Testing Library. Their approach used a state-machine of validation/refactor steps, retry loops with dynamic prompts, and progressively larger prompt contexts (including up to 50 related files and 40k–100k tokens) plus breadth-first prompt tuning. The bulk run migrated 75% of files in four hours and, after sample/tune/sweep iterations, reached 97% automation; the remaining files were manually finished. The migration preserved test intent and coverage and completed in six weeks with LLM API costs and engineering time far lower than the initial manual estimate.
+
+  * Frontend Development
+  * Machine Learning & AI
+  * Testing
+
+1 year ago
+
+Save postRead on Airbnb--------------------------------------------------------------------------------
+Cross-Industry (https://www.deloitte.com/content/dam/assets-zone4/br/pt/docs/services/consulting/2026/Full%20PDF%20Report%20-%20Three%20ways%20to%20approach%20legacy%20tech%20modernization%20with%20AI.pdf)
+citeturn75search12 [wordlim: 200] Published: 9 months ago; Additionally, Airbnb completed its first large-scale, large language model–driven code migration with the help of ... The company was able to update around 3,500 React component test files
+from Enzyme to a React Testing Library in six weeks, compared with an earlier estimate of manually updating them
+Human and AI development teams are changing software development. Amazon uses its gen AI assistant, Amazon
+Q, to upgrade applications to Java 17. On average, the organization is able to reduce the time to upgrade an
+application from 50 developer days to a few hours. These upgrades have also enhanced security and reduced
+6
+infrastructure costs, resulting in an estimated US$260 million in annualized efficiency gains.
+Additionally, Airbnb completed its first large-scale, large language model–driven code migration with the help of
+frontier models and robust automation. The company was able to update around 3,500 React component test files
+from Enzyme to a React Testing Library in six weeks, compared with an earlier estimate of manually updating them
+7
+8
+in 1.5 years.  Goldman Sachs has used auto-coding to improve developer proficiency by 20%.  Conceptually, these
+agents act as team members and an embedded support system that can code, research, and automate processes
+alongside human teams.
+A great unknown: Reimagining the business
+For some organizations, modernizing the tech estate can be an existential exercise. Rather than automating existing
+processes with AI, they might reimagine processes—and then incorporate AI. These enterprises have amplified the
+impact with AI by digitally transforming the front and back office.
+Change of this magnitude will not happen overnight. To help drive this, CIOs can work with the business to identify
+business processes that are ripe for change, such as converting a lead to cash or an order, pricing configuration, or
+order submission. These can be reimagined function by function, translating learnings into a new enterprise core in a
+hub-and-spoke model.
+Some enterprises are just beginning to experiment in this space; for example, using large language models to respond
+to level one and level two customer calls with minimal human assistance or employing digital twins to simulate the--------------------------------------------------------------------------------
+Getafix: How Facebook tools learn to fix bugs automatically - Engineering at Meta (https://engineering.fb.com/2018/11/06/developer-tools/getafix-how-facebook-tools-learn-to-fix-bugs-automatically/)
+citeturn75search4 [wordlim: 200] Published: 8.0 years ago; Crawled: last week; It also suggests fixes — via SapFix — for bugs detected by Sapienz, our intelligent automated testing system for our apps. ... Getafix can also narrow the space of possible program changes that need to be searched to find a fix for a bug, enabling it to select an appropriate patch more quickly and without the high computation time that brute force and logic-based techniques require.
+Getafix uses a more powerful clustering algorithm and also analyzes the context around the particular lines of problematic code to find more appropriate fixes.
+
+Modern production codebases are extremely complex and are updated constantly. To create a system that can automatically find fixes for bugs — without help from engineers — we built a tool that learns from engineers’ previous changes to the codebase. It finds hidden patterns and uses them to identify the most likely remediations for new bugs.
+
+This tool, called Getafix, has been deployed to production at Facebook, where it now contributes to the stability of apps that billions of people use. Getafix works in conjunction with two other Facebook tools, though the technology can be used to address code issues from any source. It currently suggests fixes for bugs found by Infer, our static analysis tool that identifies issues such as null pointer exceptions in Android and Java code. It also suggests fixes — via SapFix — for bugs detected by Sapienz, our intelligent automated testing system for our apps. Having previously given an overview of SapFix and Sapienz, we are now offering a deep dive into how Getafix learns how to fix bugs (using the term broadly to refer to any code issues, not just those that will cause an app to crash).
+
+The goal of Getafix is to let computers take care of the routine work, albeit under the watchful eye of a human, who must decide when a bug requires a complex, nonroutine remediation. The tool works by applying a new method of hierarchical clustering to many thousands of past code changes that human engineers made, looking at both the change itself and also the context around the code change. This method allows it to detect the underlying patterns in bugs and the corresponding fixes that previous auto-fix tools couldn’t.
+
+Getafix can also narrow the space of possible program changes that need to be searched to find a fix for a bug, enabling it to select an appropriate patch more quickly and without the high computation time that brute force and logic-based techniques require. This more efficient approach makes it possible to deploy Getafix to production environments. At the same time, because Getafix learns from past code changes, it also produces fixes that are easy for human engineers to understand.
+
+Getafix is deployed in Facebook to automatically suggest fixes for the null dereference bugs that Infer reports, as well as to suggest fixes for the null dereference-related crash errors that Sapienz flags. It is also being used to resolve code quality concerns that are found when revisiting existing code with newer versions of Infer.
+
+--------------------------------------------------------------------------------
+Coding Is No Longer the Constraint: Scaling Developer Experience to Teams and Agents at Spotify | Spotify Engineering (https://engineering.atspotify.com/2026/6/code-with-claude-coding-is-no-longer-the-constraint?_hsmi=422204528)
+citeturn75search5 [wordlim: 200] Published: 5 months ago; Crawled: today; Niklas Gustavsson, Spotify’s Chief Architect and VP of Engineering, recently shared how our yearslong investment in internal development platforms and engineering best practices is driving our AI transition — enabling both our teams and our agents to move faster than ever, while also providing the foundations for meeting the new challenges ahead. ... What if we used automation to make changes across hundreds or even thousands of software components at once? ... To date, we’ve merged more than 2.5 million automated maintenance PRs, the vast majority auto-merged with no human in the loop. ... A team running a migration can see at a glance how many PRs have been created, how many have been merged, and which ones need attention. ... ###### “What used to be hundreds of teams doing migrations for their components, taking weeks and weeks or months, now can be done by a single engineer in a few days.” ... As coding velocity increases, the constraints shift toward human decisions. ... The investments we made years ago in Fleet Management, Backstage, and engineering standardization have positioned us well.
+
+AI tool adoption dipped around the holidays across the board, but the orange spike shows Claude Code adoption skyrocketing with Opus 4.5
+
+###### “We roll out tools internally all the time to make our developers more productive, but we have never seen the rate of adoption that we’ve seen rolling out AI coding tools.”
+
+## We started this journey before agents
+
+A few years ago, we noticed our production codebase was growing seven times faster than the number of engineers. Developers were spending more and more of their time on maintenance — upgrading dependencies, migrating APIs, patching vulnerabilities — and less time building features. Migrations were the number one source of developer frustration.
+
+Instead of asking hundreds of teams to manually update their components one by one, we imagined a different approach. What if we used automation to make changes across hundreds or even thousands of software components at once? That idea became Fleet Management, and the underlying system we built to execute it is called Fleetshift. Fleet Management has been running at Spotify for several years now. To date, we’ve merged more than 2.5 million automated maintenance PRs, the vast majority auto-merged with no human in the loop.
+
+The graph shows the overall growth of automated PRs at Spotify — with the green section representing PRs that were auto-merged
+
+###### “Instead of doing this component per component and fairly manually, can we imagine a way where we do this as a way to mutate our entire fleet of components?”
+
+## Meet Honk, our background coding agent
+
+Fleet Management worked beautifully for simple changes, but complex code modifications — replacing API calls, refactoring usage patterns — pushed our deterministic scripts to the breaking point. When you run a script across millions of lines and thousands of components, you hit every corner case. 
+
+As LLMs matured, we saw an opportunity. What if, instead of writing ever-more-complex deterministic scripts, we could use a model to handle the code modifications? 
+
+Image: Meet Honk at Code with Claude
+--------------------------------------------------------------------------------
+The Pulse: We need to talk about migrations with AI — WPS (https://www.worldprogramming.org/posts/the-pulse-we-need-to-talk-about-migrations-with-ai-m7ryao)
+citeturn75search6 [wordlim: 200] Published: 2 months ago; Crawled: 2 months ago; Whereas Enzyme is oriented towards component testing (notice how the test operates on a component instance), the React Testing Library operates on the rendered Document Object Model (a data structure representing the HTML shipped to the client) so the test sees the whole rendered page, not just the component its written for. ... Last year, Airbnb revealed how they migrated their Enzyme test suite of 3,500 component test files within six weeks with LLMs. ... Airbnb did the LLM-aided migration in a multi-phase process: ... They then built a more sophisticated refactor pipeline for the remaining 25% of tests; after building the pipeline, the new loop migrated most of the remaining tests (97%) in total, after running over 4 days.
+That’s why the testing approach will differ radically between the two frameworks, especially when testing complex user journeys. You can learn more here on the tradeoffs between the two approaches from the React Testing Library author.
+
+### It took Airbnb 6 weeks to migrate 3,500 tests with AI
+
+Last year, Airbnb revealed how they migrated their Enzyme test suite of 3,500 component test files within six weeks with LLMs. The estimate of doing this by hand was 1.5 engineering years. Airbnb did the LLM-aided migration in a multi-phase process:
+
+ImageFive phases of the migration, for each file. Source: Airbnb
+
+Airbnb’s team had to build loops to keep retrying migrations; once they did, 75% of files were migrated in just four hours, and the migrations were straightforward. They then built a more sophisticated refactor pipeline for the remaining 25% of tests; after building the pipeline, the new loop migrated most of the remaining tests (97%) in total, after running over 4 days. The remaining 3% was done with LLM input, with engineers finishing it in a week.
+
+This was in March 2025, when the frontier coding model was Claude 3.7 Sonnet. Today, models are a lot more capable, such as the likes of GPT-5.6 Sol and Claude Fable 5.
+
+--------------------------------------------------------------------------------
+1,500+ PRs Later: Spotify’s Journey with Our Background Coding Agent (Honk, Part 1) | Spotify Engineering (https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1)
+citeturn75search7 [wordlim: 200] Published: last year; Crawled: today; At Spotify, our Fleet Management system automated much of that toil, yet any moderately complex migration still requires many human hands. ... This post explores how we have evolved our Fleet Management platform with background coding agents and what more than 1,500 merged AI-generated pull requests have taught us about the future of large-scale software maintenance. ... It has allowed us to automate away countless hours of toil, vastly reducing the time to roll out fleet-wide changes. ... We were codeveloping the tooling alongside early adopters who applied it to their in-flight migrations. ... The ROI for an automated change also continues to increase as we scale it out to more and more codebases over time. ... Stay tuned for our follow-up posts on effective context engineering and using feedback loops to achieve more predictable results.
+
+## Automating toil using Fleet Management 
+
+Fleet Management is a powerful framework for applying code transformations across all of Spotify’s repositories. The idea is simple: We write small snippets of code that themselves modify source code and apply these transformations to thousands of software components. This way we can take care of maintenance tasks across our codebase.
+
+On a high level, Fleet Management has been a roaring success. It has allowed us to automate away countless hours of toil, vastly reducing the time to roll out fleet-wide changes. The system works by running these source-to-source transformations as jobs, in a containerized environment, which then automatically open pull requests against the target repositories.
+
+Figure 1: Creating pull requests using Fleet Management.
+
+This approach has excelled in several areas, including:
+
+  * Bumping dependencies in build files, such as in a Maven Project Object Model (POM) files 
+
+  * Updating configuration files, such as deployment manifests
+--------------------------------------------------------------------------------
+Airbnb AI Code Migration Case Study: 1.5 Years to 6 Weeks (https://lucianoayres.com/ai-brief/cases/airbnb-test-migration/)
+citeturn75search8 [wordlim: 200] Published: 3 weeks ago; Crawled: 2 weeks ago; Airbnb used large language models to migrate nearly 3,500 React component test files to a new testing framework in 6 weeks, a job its engineers had estimated at 1.5 years by hand, according to an Airbnb Engineering post published on March 13, 2025. ... Airbnb adopted React Testing Library for all new React component tests in 2020, but thousands of older tests still used Enzyme, a framework designed for earlier versions of React (Airbnb Engineering). ... The whole migration of nearly 3,500 test files took 6 weeks, and Airbnb says it kept the original test intent and its overall code coverage. ... Airbnb reached 75% on its first bulk run and 97% after four days of tuning; a first pilot should plan for less.
+--------------------------------------------------------------------------------
+Fleet Management at Spotify (Part 3): Fleet-wide Refactoring | Spotify Engineering (https://engineering.atspotify.com/2023/05/fleet-management-at-spotify-part-3-fleet-wide-refactoring)
+citeturn75search9 [wordlim: 200] Published: 3.5 years ago; Crawled: 2 days ago; Each team at Spotify that produces a platform, library, SDK, API, etc., is the best team to handle and automate the rollout of that change to the entire fleet — we don’t want to have a single “refactoring team” responsible for rolling out other teams’ changes, as that would create a bottleneck and adversely affect how many fleet-wide changes we can realistically make. ... An engineer wanting to make a fleet-wide code change needs to supply a Docker image that will refactor the code, using either off-the-shelf tools (such as sed, grep, etc.) or writing custom code. ... The author of the shift specifies the commit message and PR title/description in the shift configuration so that the receiver of the automated change can understand what is being changed and why.
+--------------------------------------------------------------------------------
+Airbnb recently migrated 3.5K React component test files using AI from Enzyme to React Testing Library. | Fabrice Bernhard (https://www.linkedin.com/posts/fabricebernhard_leantech-activity-7326236429800423424-WSo_)
+citeturn75search10 [wordlim: 200] Crawled: 3 months ago; Airbnb recently migrated 3.5K React component test files using AI from Enzyme to React Testing Library. ... Similar to AirBNB we see two main engineering challenges: 1. ... This is where experience is needed to best divide the problem and make sure the migration task fits within the context window, tipically under 200k for Claude 3.7. ... This is makes a huge difference in terms of productivity once you apply those prompts to thousands of files. AI is a game-changer when migrating code, but it requires the right #LeanTech approach of experimentation and continuous improvement, led by skilled (human) developers.
+--------------------------------------------------------------------------------
+Background Coding Agents: Supercharging Downstream Consumer Dataset Migrations (Honk, Part 4) | Spotify Engineering (https://engineering.atspotify.com/2026/4/background-coding-agents-dataset-migrations-honk-part-4?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn75search11 [wordlim: 200] Published: 7 months ago; Crawled: today; However, the resulting context was not comprehensive enough, and Honk was left to make assumptions about how to map from one dataset field to another that were often incorrect. ... Here, Backstage and Fleetshift greatly simplified the ongoing monitoring and management of our shifts by providing an overview UI that gave us a snapshot view of migration progress, and the ability to easily click through and view any of the automated PRs without manually searching for the repositories. ... With both of these wider, strategic changes taking place, and alongside that the underlying Claude Code agents improving in capability all the time, we look forward to seeing Fleet Management using Honk excelling on tackling more and more complex migrations in the future and reducing manual toil for our engineering teams.
+--------------------------------------------------------------------------------
+Cypress
+
+existing testing tools only allowed them (https://assets.ctfassets.net/4jxj4sdo1v5c/31DGryxD2IWHH8G8BMAsw2/ccd5afe01f35a3758fce4af00257d779/extend-case-study.pdf)
+citeturn75search13 [wordlim: 200] Published: 3.2 years ago; Crawled: 5 days ago; Recognizing the urgency for a change in their low-level UI testing approach, Extend acknowledged that their existing solution, Enzyme, was becoming obsolete due to the lack of ongoing support from Airbnb. The limited testing coverage in their component library, extensively used across their four front-end applications, further underscored the necessity for a new solution. ... Immersed in React, we discovered patterns worth highlighting and curated these as code examples in the Cypress component test repository.
+--------------------------------------------------------------------------------
+Airbnb did a large scale React migration with LLMs in 6 weeks. (https://www.reddit.com/r/ExperiencedDevs/comments/1mcnhzd)
+citeturn75reddit14 [wordlim: 200] Published: 1.3 years ago; Crawled: 1.3 years ago; After four days of prompt and script refinement using the “sample, tune, and sweep” strategy, we reached 97% of the 3.5K original Enzyme files. ...   Using it this way is just a super-powered codemod. ... It's a tool and AirBnB is demonstrating the right way to use the tool... ...     That's why I wrote my comment, the article title says test migration, while the post says react migration, which is misleading. ... I'd be suspicious if an LLM could make that jump and they've haven't ended up with a bunch of Enzyme style tests just written in RTL. ... I'm in data engineering, so I'm not exposed too much to this side.
+--------------------------------------------------------------------------------
+Airbnb did a large scale React TESTING migration with LLMs in 6 weeks. (https://www.reddit.com/r/ExperiencedDevs/comments/1mcogf5)
+citeturn75reddit15 [wordlim: 200] Published: 1.3 years ago; Crawled: 1.1 years ago; > Airbnb recently completed our first large-scale, LLM-driven code migration, updating nearly 3.5K React component test files from Enzyme to use React Testing Library (RTL) instead. ...         I suspect AirBnB used a combination of this kind of library with an LLM to glue everything together and speed up the generation of the codemod scripts. ... > In mid-2023, an Airbnb hackathon team demonstrated that large language models could successfully convert hundreds of Enzyme files to RTL in just a few days. ... Sounds like someone wants to validate their staff engineer promotion for using AI. ... They have excellent data engineering blogs, and I can see through the nuances in those. ... When we moved an app from struts to spring boot we wrote a custom translator that converted all the code for thousands of files in about six weeks.
+--------------------------------------------------------------------------------
+How Airbnb migrated 3,500 React component test files with LLMs in just 6 weeks (https://www.reddit.com/r/LLMDevs/comments/1jetmaz)
+citeturn75reddit16 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.7 years ago; This blog post from Airbnb describes how they used LLMs to migrate 3,500 React component test files from Enzyme to React Testing Library (RTL) in just 6 weeks instead of the originally estimated 1.5 years of manual work. ... They say they achieved 75% migration success in just 4 hours, and reached 97% after 4 days of prompt refinement, significantly reducing both time and cost while maintaining test integrity.
+--------------------------------------------------------------------------------
+How Airbnb migrated 3,500 React component test files with LLMs in just 6 weeks (https://www.reddit.com/r/ChatGPTCoding/comments/1jetujm)
+citeturn75reddit17 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.6 years ago; This blog post from Airbnb describes how they used LLMs to migrate 3,500 React component test files from Enzyme to React Testing Library (RTL) in just 6 weeks instead of the originally estimated 1.5 years of manual work. ... They say they achieved 75% migration success in just 4 hours, and reached 97% after 4 days of prompt refinement, significantly reducing both time and cost while maintaining test integrity. ...       For the particular project, an industrial dashboard, we are expanding it and most of the use is going to be desktop, and over the lifetime of the flutter app we saw more people using it on desktop than the iPads they expected to. ... I think the other thing here is that Airbnb has a pretty sizable codebase if they have thousands of test files. ... Maybe LLM helped with the hard cases.
+--------------------------------------------------------------------------------
+Thesis report_MaiTran (1).docx (https://www.theseus.fi/bitstream/handle/10024/793189/Thesis%20report_MaiTran_1900308.pdf?sequence=2)
+citeturn75search18 [wordlim: 200] Crawled: 3 days ago; This is expected, as the principle of RTL is to test the user behaviour on the component and also very beneficial to test if there are any side effects when executing an action. ... Created by Airbnb, the Enzyme library helps render React components in the same way they would be rendered on the browser. ... Both are used for testing React components, providing the necessary tools to do so, but with different approaches: The Enzyme library enables writing Test Driven Development (TDD), while React Testing Library focuses on Behavioral Driven Development (BDD).
+--------------------------------------------------------------------------------
+Testing Framework Migration with Large Language Models (https://andrehora.github.io/pub/2026-ast-test-migration.pdf)
+citeturn75search19 [wordlim: 200] Published: 8 months ago; To ensure the migration proposed by the LLMs was correct, we reproduced the test environment of each migration and actually executed both LLM-migrated and developer-migrated tests. ... * The contributions of this paper are twofold: (1) we provide the first study to explore test migration with LLMs and (2) we discuss multiple implications for researchers and practitioners. ... Unittest belongs to the Python standard library, while Pytest is a third-party testing framework. ... The set includes projects broadly adopted worldwide, such as Pandas (data analysis library), Flask (web development framework), Requests (library for performing HTTP requests), and Ansible (open-source automation software).
+--------------------------------------------------------------------------------
+Qcon - Oct 2024 - Presentation (https://videog.infoq.com/downloads/pdfdownloads/presentations/QConSF2024-SergiiGorbachov-SlacksAIPoweredHybridApproachforLargeScaleMigrationfromEnzymetoReactTestingLibrary.pdf)
+citeturn75search20 [wordlim: 200] Crawled: last year; Slack engineering blog: AI-Powered Conversion From Enzyme to React Testing Library at Slack
+
+Open-sourced on npm: @slack/enzyme-to-rtl-codemod
+--------------------------------------------------------------------------------
+"But it doesn't work in real-world codebases!" (https://www.reddit.com/r/theprimeagen/comments/1jftbuf)
+citeturn75reddit21 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.3 years ago;               I don’t have the time now but I can pull up what an actual real world test looks like and you’ll quickly see that even a complicated codemod won’t be able to do the transpilation without a ton of manual work. ...     Migrating from one testing library to another is something you could probably write a Python script for. ... Looking at the "migrate from enzyme guide" that react testing library has, its a fair comparison. ...   In mid-2023, an Airbnb hackathon team demonstrated that large language models could successfully convert hundreds of Enzyme files to RTL in just a few days. ...   Test case migration is sort of one of the use cases that LLM works really well for. ... They could have saved 1.5 engineering years, but I promise you, a project like this costs at least 1 engineer years to implement in an enterprise setting, and could actually take a 4 person team 6-12 months if they are required to build a production level system to back it.
+

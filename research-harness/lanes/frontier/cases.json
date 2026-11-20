@@ -1,0 +1,282 @@
+[
+  {
+    "id": "F01",
+    "name": "OpenAI Symphony",
+    "category": "开源工单驱动编排规范及参考实现",
+    "platform": "语言无关 SPEC 与 Elixir 参考实现；仓库样例展示团队工作流。",
+    "sources": [
+      {
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/SPEC.md",
+        "download_url": "https://raw.githubusercontent.com/openai/symphony/be10a1b79df723d6d7612b5651c8522704dafb2e/SPEC.md",
+        "path": "lanes/frontier/raw/symphony/c6638056502ecd2e/SPEC.md",
+        "date": "2026-09-15",
+        "sha256": "c6638056502ecd2e60eb04e1f1a627a4964506fcdf4d39873e78aa5834de85d5",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:27.959638+00:00",
+        "detail": "SPEC 核对调度边界、并发、重复尝试与独立工作目录。"
+      },
+      {
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/lib/symphony_elixir/orchestrator.ex",
+        "download_url": "https://raw.githubusercontent.com/openai/symphony/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/lib/symphony_elixir/orchestrator.ex",
+        "path": "lanes/frontier/raw/symphony/ffa6fd2ca66f775b/orchestrator.ex",
+        "date": "2026-09-15",
+        "sha256": "ffa6fd2ca66f775b93ca561adb60a61a416f8fb604ff247128d3638169fdab22",
+        "kind": "source",
+        "retrieved_utc": "2026-11-20T03:22:28.276190+00:00",
+        "detail": "maybe_dispatch、reconcile_issue_state、handle_info retry token。"
+      },
+      {
+        "url": "https://github.com/openai/symphony/blob/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/WORKFLOW.md",
+        "download_url": "https://raw.githubusercontent.com/openai/symphony/be10a1b79df723d6d7612b5651c8522704dafb2e/elixir/WORKFLOW.md",
+        "path": "lanes/frontier/raw/symphony/7c465f8a44c6698d/WORKFLOW.md",
+        "date": "2026-09-15",
+        "sha256": "7c465f8a44c6698db804dc7c6665cc1c2b7cadc1efed7d26c48629fcf530869d",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:27.742916+00:00",
+        "detail": "样例的 Human Review、Merging 与 Rework 约定。"
+      },
+      {
+        "url": "https://github.com/openai/symphony/releases/tag/v0.0.3",
+        "download_url": "https://github.com/openai/symphony/releases.atom",
+        "path": "lanes/frontier/raw/symphony/85b0986012457a2c/releases.atom",
+        "date": "2026-09-15",
+        "sha256": "85b0986012457a2c72a76e614b95e17c43eecf71b28bd0d330165dd38b3855ce",
+        "kind": "release",
+        "retrieved_utc": "2026-11-20T03:22:30.137613+00:00",
+        "detail": "v0.0.3 的认证与发行更新；Atom 条目 updated UTC 日期。"
+      },
+      {
+        "url": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "download_url": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+        "kind": "report",
+        "path": "lanes/frontier/raw/symphony/report-20260427/web-excerpt.json",
+        "date": "2026-04-27",
+        "sha256": "01809488d6304f2d03f14df61b38f79d383fcafe2c7d5be2f232ed64350ec1ff",
+        "retrieved_utc": "2026-11-20T03:25:26.364834+00:00",
+        "detail": "厂商内部实践与公开规范的网页摘录；非完整页面。"
+      }
+    ],
+    "scenario": "问题管理系统持续出现可以并行处理的维护任务。工程师希望移动工单状态就能派工，也能在事项被取消或返工时收回或恢复执行。",
+    "mechanism": "orchestrator 在每次派发前先与 tracker 对账，区分 running、blocked、terminal，按可用并发槽派发；重试带 token，陈旧定时器不会接管新尝试。规范把正常结束后的继续检查与失败指数退避分开。每事项有独立工作目录，仓库内 WORKFLOW.md 保存提示与运行配置。",
+    "human": "样例在 PR 附着并验证后移入 Human Review；人同意后进入 Merging，要求修改则回 Rework。发起新运行、修改 tracker 和产品责任验收是不同动作；人可通过 tracker 状态收回正在处理的工作。",
+    "org": "工单成为团队可见的排队、认领和交接单位，运行日志与 PR 通过 issue ID 关联。人主要处理需求不明确、指标冲突和最终接受，而不是每次在聊天中重新分派。",
+    "limits": "SPEC 允许不同信任和沙箱策略；独立工作目录并非进程级隔离。人审状态属于样例约定，组织必须决定哪些仓库保护能强制执行。静态阅读，无真实 tracker 租户实验。",
+    "change": "2026-04-27 官方经验报告公开这套工单驱动规范；v0.0.3 的 2026-09-15 发布记录列出凭证别名清理及 GitLab API 认证变更。不能据此将单团队产出外推为普遍收益。",
+    "insight": "把任务分配的状态机交给调度器，把任务内部可变步骤留给代理，用明确的交付状态界定机器和人的责任。",
+    "experiment": "比较同类维护单的手工启动与 tracker 调度；主动制造重复轮询、工单转终态和旧重试到达，观察重复 PR 数、遗留 worker 数、等待验收分钟数和真正关闭的工单数。"
+  },
+  {
+    "id": "F02",
+    "name": "GitHub Agentic Workflows（gh-aw）",
+    "category": "开源自然语言工作流编译与受限写入",
+    "platform": "GitHub Actions、github.com；公开编译及 handler 实现。",
+    "sources": [
+      {
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/process_safe_outputs.cjs",
+        "download_url": "https://raw.githubusercontent.com/github/gh-aw/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/process_safe_outputs.cjs",
+        "path": "lanes/frontier/raw/ghaw/05a1b17671d7b2c2/process_safe_outputs.cjs",
+        "date": "2026-11-19",
+        "sha256": "05a1b17671d7b2c2f3abca755b68eaab551fcb69cd41298f18cf811b25f7f670",
+        "kind": "source",
+        "retrieved_utc": "2026-11-20T03:22:27.801568+00:00",
+        "detail": "process_safe_outputs 调用独立 manager 并避免将 handler stdout/stderr 打包。"
+      },
+      {
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/docs/adr/68724-infer-read-permissions-for-staged-safe-output-handlers.md",
+        "download_url": "https://raw.githubusercontent.com/github/gh-aw/32398b3f20e9dd5ce206a0183611b45a62ad9267/docs/adr/68724-infer-read-permissions-for-staged-safe-output-handlers.md",
+        "path": "lanes/frontier/raw/ghaw/a9289183a6eb3b41/68724-infer-read-permissions-for-staged-safe-output-handlers.md",
+        "date": "2026-11-19",
+        "sha256": "a9289183a6eb3b4115b98e40df522cad95222871151a6a6842d1422f9bfac842",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:27.817124+00:00",
+        "detail": "2026-10-14 Proposed ADR，对照 staged 权限和私有仓库过滤器。"
+      },
+      {
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/.changeset/patch-skip-write-permissions-staged-safe-outputs.md",
+        "download_url": "https://raw.githubusercontent.com/github/gh-aw/32398b3f20e9dd5ce206a0183611b45a62ad9267/.changeset/patch-skip-write-permissions-staged-safe-outputs.md",
+        "path": "lanes/frontier/raw/ghaw/e0bdd71d1c678b10/patch-skip-write-permissions-staged-safe-outputs.md",
+        "date": "2026-11-19",
+        "sha256": "e0bdd71d1c678b1016c0ec3a476724fbc5176aceca47c90c07f39fe7122fdeb7",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:27.815120+00:00",
+        "detail": "早期 changeset 对 staged 不配置写权限的预期。"
+      },
+      {
+        "url": "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/",
+        "download_url": "https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available/",
+        "path": "lanes/frontier/raw/ghaw/5880fcffa12f6e79/page.html",
+        "date": "2026-10-28",
+        "sha256": "5880fcffa12f6e7976c6f630e19a06a5662405688b34b096a96d790aef239f32",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:29.889920+00:00",
+        "detail": "2026-10-28 正式 GA，默认权限、运行器和预算预测。"
+      },
+      {
+        "url": "https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/",
+        "download_url": "https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/",
+        "path": "lanes/frontier/raw/ghaw/e8c7c38a862ffaa0/page.html",
+        "date": "2026-02-13",
+        "sha256": "e8c7c38a862ffaa0c8d3f3c3eccaba4c90b261221bdeedea9e6b3d1cd2e9e15c",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:35.948905+00:00",
+        "detail": "2026-02-13 技术预览说明，追溯只读及 safe outputs。"
+      },
+      {
+        "url": "https://github.com/github/gh-aw/blob/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/safe_output_handler_manager.cjs",
+        "download_url": "https://raw.githubusercontent.com/github/gh-aw/32398b3f20e9dd5ce206a0183611b45a62ad9267/actions/setup/js/safe_output_handler_manager.cjs",
+        "path": "lanes/frontier/raw/ghaw/965a3aa3dfdfeba6/safe_output_handler_manager.cjs",
+        "date": "2026-11-19",
+        "sha256": "965a3aa3dfdfeba639da7a4cf9507100d9386371f7f484c5982a4c1d08793902",
+        "kind": "source",
+        "retrieved_utc": "2026-11-20T03:23:46.121157+00:00",
+        "detail": "safe_output_handler_manager 的 effectiveAuthorization、授权规则选择、batchDigest、stagedFor 与按类型 dispatch。"
+      }
+    ],
+    "scenario": "仓库维护者要自动分类 issue、更新文档或分析 CI，但希望预审自动化能写哪些仓库对象，并沿用已经部署的 Actions 运行器与权限制度。",
+    "mechanism": "仓库中的 Markdown 描述任务，CLI 生成标准 Actions YAML。默认只读代理提出结构化 safe outputs，独立处理层根据受信配置和操作类型路由到 handler。源码按类型取授权配置、校验目标、识别 staged 状态与批次摘要。handler 的实际写权限可以与代理读取上下文的权限分离。",
+    "human": "工作流作者或维护者先审可用输出和目标；staged 允许预览。并非每种写入都天然需要真人确认，合并或部署仍要接入仓库规则或业务审批。",
+    "org": "可沿用 runner group 与组织级策略，把同一机器人能够提议的动作做成多个团队可复用的有限目录。应将提议数、拒绝数、真正写入数拆开计量。",
+    "limits": "历史 changeset 主张 staged 空权限；2026-10-14 的后续 ADR 指出有些 handler 预览前仍须读取私有对象，否则 403，建议分配最小只读。ADR 状态为 Proposed，不能仅凭提案断定所有编译版本的权限矩阵。未运行 GitHub 租户工作流。",
+    "change": "官方 2026-02-13 技术预览已有只读默认与 safe outputs；2026-10-28 GA 说明增加自托管 ARC/Docker-in-Docker 支持和预算预测等。以前已经具备的机制不能算作 GA 首发。",
+    "insight": "最小权限不总等于零权限。应将读取验证、预览、实际提交分别建模，使审批端能看到将写入的准确对象。",
+    "experiment": "选私有测试仓的标签变更，比较只读 staged、授权写入及不满足过滤条件三种运行。核对实际 GitHub 权限、预览是否与最终动作一致、以及触发前后资源变化。"
+  },
+  {
+    "id": "F03",
+    "name": "Tessl",
+    "category": "商业托管的技能注册、版本与行为评测",
+    "platform": "Tessl Registry、CLI、托管评测；本次核对公开文档与发布页，未读取后端源码。",
+    "sources": [
+      {
+        "url": "https://docs.tessl.io/improving-your-skills/evaluate-skill-quality-using-scenarios",
+        "download_url": "https://docs.tessl.io/improving-your-skills/evaluate-skill-quality-using-scenarios",
+        "path": "lanes/frontier/raw/tessl/d4f59b4b0ed976c7/page.html",
+        "date": "",
+        "sha256": "d4f59b4b0ed976c766d2b2ba7827c0581414e27d5a74fda184544bb679e5b9ae",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:34.285298+00:00",
+        "detail": "Prove a skill works using evaluation；baseline、variant、plugin 根路径和场景。"
+      },
+      {
+        "url": "https://docs.tessl.io/changelog-web",
+        "download_url": "https://docs.tessl.io/changelog-web",
+        "path": "lanes/frontier/raw/tessl/97b16a8986accb80/page.html",
+        "date": "",
+        "sha256": "97b16a8986accb8023a88b97d829c63834d6250cf821c30e1f82c56f35277a3d",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:30.261960+00:00",
+        "detail": "2026-10-30 周更中 Skill activation for more agents；区分加载与完成。"
+      },
+      {
+        "url": "https://tessl.io/blog/introducing-task-evals-measure-whether-your-skills-actually-work",
+        "download_url": "https://tessl.io/blog/introducing-task-evals-measure-whether-your-skills-actually-work",
+        "path": "lanes/frontier/raw/tessl/70663727a3deff21/page.html",
+        "date": "2026-02-17",
+        "sha256": "70663727a3deff21e278ce5ece4ba59e48e2289e9ce0b92307de37c29fa1d737",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:31.724553+00:00",
+        "detail": "2026-02-17 Task Evals 发布说明及当时 repo evals 的阶段。"
+      }
+    ],
+    "scenario": "多个团队共享技能文件。维护者需要知道哪个版本确实能改变代理的输出，以及更换模型后规则是否仍生效。",
+    "mechanism": "以 plugin root 关联 skill 和 evals，用相同任务分别运行无 skill、有 skill 两种条件，按场景标准评分；也能声明其他 variants。文档区分内容 review 与实际任务 eval，并支持用已有仓库历史工作构造测试。Web changelog 进一步记录跨代理的技能激活观测。",
+    "human": "作者编写或审查验收标准、选择历史任务及对照模型，并检查低分案例、无激活案例；查看原始轨迹比接受一个汇总倍率更能解释失败。",
+    "org": "团队可将共享规范作为可版本化依赖管理，并把“没读规范”和“读了仍失败”分开治理。跨团队迁移前需要用接收方的仓库样本再评估。",
+    "limits": "厂商文档给出评测流程，未获得托管后台源码，也未复跑其注册表上的分数。历史任务泄漏、评分器偏好和同一场景随机性都可能影响差值。",
+    "change": "2026-02-17 公告发布 task evals，并把 repo evals 记为当时 beta；2026-10-30 周更记录 Codex、Cursor、Tessl 的评测也能报告实际加载的技能，此前只记录 Claude Code。两项证据适用时间不同。",
+    "insight": "技能被安装、被读取、行为改变、最终交付改善是四个不同问题。只看下载量或单次通过率，会隐藏错误的优化目标。",
+    "experiment": "选取未进入技能编写材料的历史维护项，固定模型版本、多次重复两种配置，分别记录加载、行为达标、独立测试通过和总成本，再换仓库检查可迁移性。"
+  },
+  {
+    "id": "F04",
+    "name": "Claude Code Scheduled tasks（原 Routines）",
+    "category": "商业托管的事件与定时任务",
+    "platform": "Claude Code 云会话，也可按组织路由到自托管环境。源码核对范围止于公开文档；本例与 E09 SDK 是不同产品层。",
+    "sources": [
+      {
+        "url": "https://code.claude.com/docs/en/routines.md",
+        "download_url": "https://code.claude.com/docs/en/routines.md",
+        "path": "lanes/frontier/raw/routines/9377bc3e62c3bed0/page.md",
+        "date": "",
+        "sha256": "9377bc3e62c3bed0f909f35a4dedffee77fb9250f8d02f0650333901aa97c0e3",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:34.060553+00:00",
+        "detail": "现行 Scheduled tasks 文档，核对旧名、触发、个人归属、权限与暂停。"
+      },
+      {
+        "url": "https://claude.com/resources/articles/introducing-routines-in-claude-code",
+        "download_url": "https://claude.com/resources/articles/introducing-routines-in-claude-code",
+        "path": "lanes/frontier/raw/routines/9c2422bf3dc711f9/page.html",
+        "date": "2026-04-14",
+        "sha256": "9c2422bf3dc711f9bf36b5b1dcb5f8cccf4570f7e5630c28576db971846395a9",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:30.127998+00:00",
+        "detail": "2026-04-14 产品发布页，核对历史命名和发行时间。"
+      }
+    ],
+    "scenario": "在成员电脑关机后，仍需按日程处理积压工单，或在上游 SDK 的 PR 合并后提交下游语言版本的对应修改。",
+    "mechanism": "将提示、环境、仓库、连接器与触发器保存到任务；日程、GitHub 事件或 API 请求启动会话。保存过的提示是任务指令，触发本身不代表当次高影响动作获得人授权。当前文档说明在 Anthropic 云新建会话时优先使用 auto mode；连续阻止达到阈值后可暂停等待人。",
+    "human": "创建者选择触发条件、最小连接器与执行身份；组织管理员能关停能力。文档明确任务属于个人账号，经其 GitHub、Slack 等连接器做的事体现该账号身份，故需业务侧管理离职和交接。",
+    "org": "将原来靠人盯仓库事件的维护变成可重复执行的服务。对组织产品，任务归属、谁承担配额、能否接管及凭据轮换，比可选多少 cron 表达式更关键。",
+    "limits": "适用权限取决于托管方式、连接器和分支保护。个人拥有的任务不等于团队共享服务账号；公开文档不能证明某组织内的实际策略。未登录或触发任务。",
+    "change": "2026-04-14 以 Routines 名称发布。现行官方文档改称 Scheduled tasks，并解释旧名称为何仍留在 URL 和部分界面；无一手证据确定改名首日。",
+    "insight": "组织级自动化中，“系统能定时运行”与“人员变化后仍有明确责任人”需要分别选型和验收。",
+    "experiment": "在两个授权测试账号的非生产项目里分别创建同一只读任务，记录事件来源、产物作者和配额账单归属，再停用管理员开关或撤销一个连接器，验证队列和故障提示。"
+  },
+  {
+    "id": "F05",
+    "name": "OpenSandbox",
+    "category": "开源代理沙箱生命周期平台",
+    "platform": "原 alibaba/OpenSandbox 地址现指向 opensandbox-group/OpenSandbox；本例核对 Fast Sandbox 自动休眠及 Linux/容器相关部署文档。",
+    "sources": [
+      {
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/README.md",
+        "download_url": "https://raw.githubusercontent.com/opensandbox-group/OpenSandbox/b71264afc2a32048b7d7a1fe7b876c8a07a03493/README.md",
+        "path": "lanes/frontier/raw/sandbox/39535d8f0c100407/README.md",
+        "date": "2026-11-19",
+        "sha256": "39535d8f0c100407c2a7bbd3c9e47a058e5ac1aaf1751d6a6dab59c5a51ac48e",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:39.375267+00:00",
+        "detail": "OpenSandbox 仓库用途、平台及后端。"
+      },
+      {
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/server/opensandbox_server/integrations/idle_pause/decision.py",
+        "download_url": "https://raw.githubusercontent.com/opensandbox-group/OpenSandbox/b71264afc2a32048b7d7a1fe7b876c8a07a03493/server/opensandbox_server/integrations/idle_pause/decision.py",
+        "path": "lanes/frontier/raw/sandbox/4a9d6938393164f6/decision.py",
+        "date": "2026-11-19",
+        "sha256": "4a9d6938393164f6641b767438f74ebc3918c6054f1791592d8cf0e5c343c905",
+        "kind": "source",
+        "retrieved_utc": "2026-11-20T03:22:32.750907+00:00",
+        "detail": "evaluate_idle 所有条件分支与未知状态的 tombstone 意义。"
+      },
+      {
+        "url": "https://github.com/opensandbox-group/OpenSandbox/blob/b71264afc2a32048b7d7a1fe7b876c8a07a03493/docs/guides/auto-pause-wake.md",
+        "download_url": "https://raw.githubusercontent.com/opensandbox-group/OpenSandbox/b71264afc2a32048b7d7a1fe7b876c8a07a03493/docs/guides/auto-pause-wake.md",
+        "path": "lanes/frontier/raw/sandbox/75d07beab3dfd353/auto-pause-wake.md",
+        "date": "2026-11-19",
+        "sha256": "75d07beab3dfd35381702feb3e3c238c4b306370c88030d1557dad3ab240c53b",
+        "kind": "documentation",
+        "retrieved_utc": "2026-11-20T03:22:28.843090+00:00",
+        "detail": "v1.2.0+、Fast Sandbox、网关流量和 Redis 前置条件、唤醒超时。"
+      },
+      {
+        "url": "https://github.com/opensandbox-group/OpenSandbox/releases/tag/release-1.3.0-rc.2",
+        "download_url": "https://github.com/opensandbox-group/OpenSandbox/releases.atom",
+        "path": "lanes/frontier/raw/sandbox/4adc4ff2609bd9ba/releases.atom",
+        "date": "2026-11-19",
+        "sha256": "4adc4ff2609bd9ba72bf3e68ed61cc350eb6c895afe050fb201b7225c9a4da7a",
+        "kind": "release",
+        "retrieved_utc": "2026-11-20T03:22:30.151556+00:00",
+        "detail": "1.3.0-rc.2 发布记录，续期与删除竞争及正常退出的状态问题。"
+      }
+    ],
+    "scenario": "大量代理在工具调用、人工审批或外部依赖期间闲置。平台希望释放容量，同时避免把短暂缺失的活动遥测解释成工作已结束。",
+    "mechanism": "根据 ingress 流量在 Redis 记录活动时间，sweeper 逐项检查是否到达空闲门槛，再执行暂停。源码明确，活动记录缺失时先返回 UNKNOWN 并申请写 tombstone；后续观测越过门槛才可判 idle。下一次请求可唤醒环境，其等待预算耗尽会返回 503 和 Retry-After，恢复仍可能继续。",
+    "human": "平台管理员启用 server 与 ingress 侧开关，工作负载还要选择声明 idlePolicy；业务侧决定出现超时是等待恢复、重试还是升级给人。",
+    "org": "组织可把等待人审的计算成本与恢复延迟分别量化。通过网关的流量和实际任务进展需分别观测，否则后台纯计算任务可能完全不适用这种策略。",
+    "limits": "文档仅覆盖全栈 v1.2.0+ 的 Fast Sandbox 后端和经过 ingress 的工作负载，默认关闭。本次运行固定源码中的纯判断函数，未部署 Redis、网关、Docker、Kubernetes 或云集群。",
+    "change": "1.3.0-rc.2 的 2026-11-19 发布记录修复 Docker 续期与过期删除竞争、Kubernetes 过期删除旧对象的竞争，也修复已正常退出的 BatchSandbox 状态；该版本是候选版，不能写为稳定版全面可用。",
+    "insight": "超时、空闲、已被删除和恢复中是不同状态。元数据过期时保留“不确定”，往往比静默终止工作更符合研发任务的代价结构。",
+    "experiment": "已用固定提交的 evaluate_idle 运行六个本地用例，近期活动、过期活动、无记录、新旧 tombstone、近期活动覆盖旧 tombstone 均符合预期。下一步在专用集群注入遥测延迟，比较误休眠率、恢复 p95、计算费用及重试风暴。"
+  }
+]

@@ -1,0 +1,167 @@
+Was this page helpful?
+Yes
+No
+Thanks for your feedback!
+This page explains how Mergify’s contributor-based billing works and how to read your invoice.
+Contributor-based billing
+Section titled Contributor-based billing
+Many enterprise solutions charge per user, irrespective of actual usage. At Mergify, we firmly believe in billing you only for what you actively use.
+This is why our billing system operates on the principle of contributors. Here’s how it works:
+A contributor is any user who
+opens a pull request or updates one
+. An update is any change to the pull request’s head branch: pushing commits to it, or updating it with the latest changes from its base branch. Mergify counts whoever performed the update, not necessarily the author of the commits it brought in. Other activity, such as reviewing, commenting on, closing, or reopening a pull request, does not make someone a contributor.
+Bot accounts are never contributors. A GitHub App or bot user that opens a pull request or updates one, such as a dependency updater, is skipped. So are
+web-flow
+, the account GitHub attributes web-editor commits to, and accounts that have since been deleted. Only real user accounts are counted.
+Each user is counted
+only once
+, even if they contribute to pull requests across multiple repositories.
+The system uses a 30-day sliding window. A user is counted as a contributor for 30 days after they open a pull request or update one. After that period, if they make no further contributions, they are no longer considered active for billing purposes.
+Usage is prorated to the day: if a contributor is seen active during 48 days, the system only bills for precisely 48 days, not 2 entire months.
+Estimating contributors
+Section titled Estimating contributors
+If you don’t know the number of contributors that Mergify might count, you can use
+this script
+to estimate the number of contributors over the last 30 days.
+Go to
+https://github.com/settings/tokens
+(or the equivalent page on your GitHub Enterprise Server installation, at
+https://<your-ghes-host>/settings/tokens
+) to create a token. The token must have the permissions to access the repository (read permission is enough);
+Export the token as an environment variable with
+export
+GITHUB_TOKEN=<your-token>
+;
+Install
+requests
+on your system by running
+python3
+-m
+pip install requests
+;
+Run the script with
+python3
+mergify-count-contributors.py
+<repo1-url>
+<repo2-url>
+etc
+, passing the list of repositories where Mergify will be deployed. Use the full repository URLs, including the host, so the script can reach the right API endpoint (for example
+https://github.com/org/repo
+for GitHub.com or
+https://github.example.com/org/repo
+for GitHub Enterprise Server).
+The script will run and print its progress. It can take several minutes for the script to complete depending on the number of repositories scanned and the number of active pull requests they have.
+Note
+The script automatically targets the GitHub Enterprise Server REST API (
+https://<your-ghes-host>/api/v3
+) based on the repository URLs you pass. If your installation serves a self-signed or internal-CA certificate, you can disable TLS verification by setting
+export GITHUB_SKIP_SSL_VERIFY=1
+before running the script.
+Caution
+This script provides an
+approximate estimate
+of the number of users that Mergify might consider active. GitHub’s API does not record who pushed a commit, so the script counts the commit’s committer in place of the user who updated the pull request, and discrepancies may exist. This script is for reference only and should not be considered the source of truth.
+Annual subscription
+Section titled Annual subscription
+Mergify does not require an annual subscription (except for the Enterprise plan), but offers a large discount if you buy users in advance for a 12-month period.
+An annual subscription allows you to buy a base number of seats (users) per product at the start of the year. If your usage goes beyond the pre-purchased seats, additional seats are billed monthly, prorated to the exact day of use.
+For example, let’s say you have purchased an annual license for 100 users. If your number of users increases to 110 users during 45 days, you will be invoiced for 10 extra users over 45 days.
+Note
+You can subscribe to a yearly plan at any time by contacting
+your customer representative
+.
+Checking current usage
+Section titled Checking current usage
+You can check your current usage on the
+Subscription page
+of the Mergify dashboard, under
+Settings → Organization → Subscription
+. The
+Usage
+row gives the number of repositories your plan covers and of active contributors.
+The repository count takes you to your repositories list, and a button beside the contributor count opens the list of people counted for your plan.
+When your plan carries several products, a
+Products
+row takes its place, with one line per product and a
+Total
+line that counts each contributor once.
+On a plan carrying one product, a billing manager also gets a
+Seats
+row with the number of seats billed. An annual subscription splits that number between the seats you pre-purchased, shown as
+Committed
+, and the
+On-demand
+seats billed monthly on top of them. The
+Products
+row carries the same split, as two of its columns.
+On some plans the
+Active Contributors
+count is headed
+Collaborators
+instead. It counts everyone with write access to a repository that has a Mergify product enabled, rather than only the people who contributed to it.
+Products your plan does not cover are listed further down the page, under
+Not in Your Plan
+.
+Note
+The Subscription page is not available for on-premise plans.
+Switching or cancelling plans
+Section titled Switching or cancelling plans
+Billing managers cancel from the
+Cancel
+row of the Subscription page, and the row itself says which of two routes your subscription takes. When it offers
+Cancel Subscription
+, you cancel it yourself: the plan stops at the end of the period you have already paid for, it does not renew, and you can undo the cancellation until that date. When it offers
+Request Cancellation
+instead (a plan that runs for a fixed term, one that covers a larger team, one we no longer sell, or one that was set up with us), the row explains why and sends us your request, so we can settle the timing and any credit with you.
+To switch between plans,
+contact our customer support
+. They’ll guide you through the process.
+Either cancellation route may produce one last invoice: see
+final invoice after cancellation
+below.
+Understanding your invoice
+Section titled Understanding your invoice
+A single invoice usually mixes two things: an adjustment for the period that just ended, and the charge for the period that is starting. The adjustment is there because the number of contributors Mergify counts can change any day. Cancelling your subscription produces one more invoice, which works differently and is covered last.
+1.
+Real-time user adjustment
+Section titled 1. Real-time user adjustment
+Mergify keeps the number of seats on your subscription in step with the number of contributors it counts. Every time that count changes, the adjustment is prorated: you are credited for the seats you had already paid for over the rest of the period, then charged for the new count over those same days. Both lines show up on your next invoice, labeled “unused time” and “remaining time” by our payment provider, so only the difference between them changes your total.
+2.
+Upcoming period charge
+Section titled 2. Upcoming period charge
+The rest of the invoice charges the period that is about to start, based on your user count on the day it is issued. If that count changes during the period, the next invoice carries the same kind of adjustment.
+A worked example
+Section titled A worked example
+Say
+example-org
+is billed on the 1st of each month at $10 per user per month and has 20 contributors. Two more contributors push commits on April 16th, halfway through the period. The invoice issued on May 1st then reads:
+Line
+Period
+Amount
+Unused time on 20 users
+Apr 16 – May 1
+-$100.00
+Remaining time on 22 users
+Apr 16 – May 1
+$110.00
+22 users
+May 1 – Jun 1
+$220.00
+Total
+$230.00
+The first two lines are the real-time user adjustment: half of April is credited back at the old count, and the same half is re-charged at the new one. The $10 difference is what the two extra contributors cost for the time they were counted. The third line is the upcoming period, at the count you have on the day the invoice is issued.
+Note
+example-org
+, the 20 contributors, and the $10 per-user rate are all made up to keep the arithmetic easy to follow. Your own invoice uses the rate on your plan, and your billing dates come from your own subscription.
+3.
+Final invoice after cancellation
+Section titled 3. Final invoice after cancellation
+A cancelled subscription may still produce one last invoice, dated on the day it ends.
+That last invoice covers your final billing period, not a renewal. It collects the
+real-time user adjustments
+described above: when your user count changes mid-period, the prorated difference is only settled on the next invoice, which for a cancelled subscription is the final one, issued when the period ends. So if your team grew during your last month, that growth is billed on the day your subscription ends. Once you pay it, you won’t be charged again.
+By understanding how your invoices are built, you can more easily interpret and anticipate how changes in your contributors influence your Mergify charges.
+Was this page helpful?
+Yes
+No
+Thanks for your feedback!

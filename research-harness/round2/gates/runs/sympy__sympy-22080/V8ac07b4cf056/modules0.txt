@@ -1,0 +1,14 @@
+.........F.....xs                                                        [100%]
+================================== FAILURES ===================================
+_____________________ test_create_expand_pow_optimization _____________________
+sympy\codegen\tests\test_rewriting.py:269: in test_create_expand_pow_optimization
+    assert cc(-x**4) == '-(x*x*x*x)'
+E   AssertionError: assert '-x*x*x*x' == '-(x*x*x*x)'
+E     - -(x*x*x*x)
+E     ?  -       -
+E     + -x*x*x*x
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22080\V8ac07b4cf056\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization
+1 failed, 14 passed, 1 skipped, 1 xfailed in 0.95s

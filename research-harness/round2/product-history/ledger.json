@@ -1,0 +1,1647 @@
+[
+  {
+    "id": "BUY01",
+    "product": "Aider",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY01",
+        "date": "2025-08-07",
+        "version": "v0.85.5",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "GPT-5 编辑强制使用 diff 格式，并支持 reasoning_effort。",
+        "evidence": "direct",
+        "refs": [
+          "aider",
+          "E04-5"
+        ],
+        "locator": "Aider v0.85.5"
+      },
+      {
+        "id": "BUY01",
+        "date": "2025-08-09",
+        "version": "v0.86.0",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "缩短 /undo 显示的提交消息，并扩大 GPT-5 模型支持。",
+        "evidence": "direct",
+        "refs": [
+          "E04-5"
+        ],
+        "locator": "Aider v0.86.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY02",
+    "product": "OpenAI Codex CLI",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY02",
+        "date": "2026-11-18",
+        "version": "0.170.0",
+        "precision": "日",
+        "kind": "fix",
+        "scope": "改善云端对话重连时保留恢复中的轮次，修复子线程丢失既有沙箱限制。",
+        "evidence": "direct",
+        "refs": [
+          "codex170"
+        ],
+        "locator": "Improved automatic reconnection"
+      },
+      {
+        "id": "BUY02",
+        "date": "2026-11-20",
+        "version": "0.171.0",
+        "precision": "日",
+        "kind": "fix",
+        "scope": "修复旧轮次完成事件误取消新审批，并按策略版本隔离自动审查缓存。",
+        "evidence": "direct",
+        "refs": [
+          "E05-4"
+        ],
+        "locator": "0.171.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY03",
+    "product": "Cline",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY03",
+        "date": "2026-10-26",
+        "version": "Desktop v0.0.49",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "桌面会话头部增加 Changes 按钮，显示改动行数和差异入口。",
+        "evidence": "direct",
+        "refs": [
+          "E07-4"
+        ],
+        "locator": "Desktop v0.0.49"
+      },
+      {
+        "id": "BUY03",
+        "date": "2026-11-04",
+        "version": "desktop-nightly-20261104233655",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "桌面 nightly 将 UX 验证委派给子代理，并保留委派工具审批策略；未推断稳定版已包含。",
+        "evidence": "direct",
+        "refs": [
+          "E07-4"
+        ],
+        "locator": "delegate UX verification"
+      }
+    ]
+  },
+  {
+    "id": "BUY04",
+    "product": "OpenCode",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY04",
+        "date": "2026-11-13",
+        "version": "v2.3.0",
+        "precision": "日",
+        "kind": "default",
+        "scope": "后台子代理成为默认，父会话可继续，子代理空闲后汇报。",
+        "evidence": "direct",
+        "refs": [
+          "E08-4"
+        ],
+        "locator": "Background Subagents by Default"
+      },
+      {
+        "id": "BUY04",
+        "date": "2026-11-18",
+        "version": "v2.3.1",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "超过前台超时的 shell 命令转后台继续并报告结果。",
+        "evidence": "direct",
+        "refs": [
+          "E08-4"
+        ],
+        "locator": "Timed-Out Shell Commands Keep Running"
+      }
+    ]
+  },
+  {
+    "id": "BUY05",
+    "product": "Qoder",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY05",
+        "date": "2025-10-22",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "Quest 增加 Remote Delegation，将任务交给远程云环境处理。",
+        "evidence": "direct",
+        "refs": [
+          "qoder"
+        ],
+        "locator": "Remote Delegation"
+      },
+      {
+        "id": "BUY05",
+        "date": "2026-10-15",
+        "version": "",
+        "precision": "日",
+        "kind": "retirement",
+        "scope": "Qoder IDE 旧 Quest 视窗于北京时间 23:59 退场，Editor 窗口仍保留；厂商另有新版入口与迁移安排。",
+        "evidence": "direct",
+        "refs": [
+          "CN01"
+        ],
+        "locator": "October 15, 2026"
+      }
+    ]
+  },
+  {
+    "id": "BUY06",
+    "product": "腾讯 CodeBuddy Code",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY06",
+        "date": "",
+        "version": "v2.95.0",
+        "precision": "版本",
+        "kind": "enhancement",
+        "scope": "队员结束计划后审批弹窗出现在 lead 终端，可通过、继续规划或退出，并增加关停握手。",
+        "evidence": "direct",
+        "refs": [
+          "CN06"
+        ],
+        "locator": "v2.95.0"
+      },
+      {
+        "id": "BUY06",
+        "date": "",
+        "version": "v2.140.0",
+        "precision": "版本",
+        "kind": "fix",
+        "scope": "修复主 Agent 回合已结束但成员仍运行时停止无效的问题，取消单会话不会波及其他会话成员。",
+        "evidence": "direct",
+        "refs": [
+          "CN07"
+        ],
+        "locator": "v2.140.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY07",
+    "product": "华为云码道 CodeArts 代码智能体",
+    "status": "直接原件可作先后对照",
+    "direct": 3,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY07",
+        "date": "2026-02-26",
+        "version": "",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "发布华为云码道代码智能体公测版，集成 IDE、自主开发、规范驱动与代码库索引。",
+        "evidence": "direct",
+        "refs": [
+          "huawei-preview"
+        ],
+        "locator": "2026-02-26"
+      },
+      {
+        "id": "BUY07",
+        "date": "2026-04-25",
+        "version": "",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "公测更新列入自动快照与回退的检查点功能。",
+        "evidence": "direct",
+        "refs": [
+          "huawei"
+        ],
+        "locator": "2026年04月25日"
+      },
+      {
+        "id": "BUY07",
+        "date": "2026-11-17",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "商用栏列入可集成企业规范的 Review Agent 与提供批量修复的 Fix Agent。",
+        "evidence": "direct",
+        "refs": [
+          "huawei"
+        ],
+        "locator": "2026年11月17日"
+      }
+    ]
+  },
+  {
+    "id": "BUY08",
+    "product": "TRAE",
+    "status": "直接原件可作先后对照",
+    "direct": 3,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY08",
+        "date": "2026-03-31",
+        "version": "SOLO 桌面 v0.1.0",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "发布 SOLO 桌面及网页，支持通用 Work 与开发 Code 两种工作模式。",
+        "evidence": "direct",
+        "refs": [
+          "CN17"
+        ],
+        "locator": "v0.1.0"
+      },
+      {
+        "id": "BUY08",
+        "date": "2026-06-09",
+        "version": "TraeWork v0.1.18",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "SOLO 升级为 TraeWork，支持企业版账号登录。",
+        "evidence": "direct",
+        "refs": [
+          "CN17"
+        ],
+        "locator": "v0.1.18"
+      },
+      {
+        "id": "BUY08",
+        "date": "2026-06-18",
+        "version": "v0.1.19~0.1.20",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "逐步灰度自动执行 Agent 删除工具，所删文件可在系统回收站找回。",
+        "evidence": "direct",
+        "refs": [
+          "CN17"
+        ],
+        "locator": "v0.1.19"
+      }
+    ]
+  },
+  {
+    "id": "BUY09",
+    "product": "Google Antigravity",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY09",
+        "date": "2025-11-20",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "Google 发布文章介绍 Antigravity 的编辑器与管理代理入口，代理可用工件呈现工作。日期为文章披露日。",
+        "evidence": "direct",
+        "refs": [
+          "antigravity"
+        ],
+        "locator": "NOV. 20, 2025"
+      },
+      {
+        "id": "BUY09",
+        "date": "2026-05-19",
+        "version": "2.0",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "独立桌面应用编排多个代理，I/O 同期公布 CLI 等开发入口。",
+        "evidence": "direct",
+        "refs": [
+          "M07-3"
+        ],
+        "locator": "Antigravity 2.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY10",
+    "product": "Factory Droid",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY10",
+        "date": "2026-04-20",
+        "version": "CLI 0.105.0 / Desktop 0.61.0",
+        "precision": "日",
+        "kind": "default",
+        "scope": "Missions worker 发起的权限请求改为自动拒绝。",
+        "evidence": "direct",
+        "refs": [
+          "M01-3"
+        ],
+        "locator": "Missions worker permission requests are now auto-denied"
+      },
+      {
+        "id": "BUY10",
+        "date": "2026-08-29",
+        "version": "CLI 0.208.0 / Desktop 0.165.0",
+        "precision": "日",
+        "kind": "fix",
+        "scope": "修复中断、暂停或恢复后里程碑验证被跳过的情况。",
+        "evidence": "direct",
+        "refs": [
+          "M01-3"
+        ],
+        "locator": "August 29, 2026"
+      }
+    ]
+  },
+  {
+    "id": "BUY11",
+    "product": "Cognition Devin",
+    "status": "直接原件可作先后对照",
+    "direct": 8,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY11",
+        "date": "2026-05-08",
+        "version": "May 8, 2026",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "单个 PR 可开关自动 Devin Review，同时保留组织设置。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "May 8, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-09-09",
+        "version": "September 9, 2026",
+        "precision": "日",
+        "kind": "界面增强·提前证据",
+        "scope": "Automations 页面的 preflight-check 卡片和脚本编辑器已经改版。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "September 9, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-09-23",
+        "version": "September 23, 2026",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "自动评审可按账号、SCM 组织、仓、前缀或成员入选，再组合分支、标签、文件等条件；排除规则优先。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "September 23, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-09-30",
+        "version": "September 30, 2026",
+        "precision": "日",
+        "kind": "功能公告·首次日期未定",
+        "scope": "这天文档详细发布触发后、启动 Devin 前的脚本，可校验或改写输入、跳过任务；脚本在隔离环境中、可设超时，结果进执行明细。同日已提到 Mark done/Stop session 的不同入口。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "September 30, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-10-30",
+        "version": "October 30, 2026",
+        "precision": "日",
+        "kind": "默认改变",
+        "scope": "未配置 PAT 策略的企业，成员申请 PAT 默认需要管理员审批。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "October 30, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-11-02",
+        "version": "November 2, 2026",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "自动化介绍增加 Preflight 检查说明，网络策略编辑会应用到该自动化已运行的会话。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release",
+          "devin-access"
+        ],
+        "locator": "November 2, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-11-12",
+        "version": "November 12, 2026",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "是否自动修复自己 PR 上的 Devin Review findings 变成独立设置，可设组织默认及个人覆盖；各 MCP 工具可分别设允许、需批准、阻止。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "November 12, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      },
+      {
+        "id": "BUY11",
+        "date": "2026-11-16",
+        "version": "November 16, 2026",
+        "precision": "日",
+        "kind": "界面语义·发布",
+        "scope": "Mark done 替换 Archive，只把会话移到个人 Done；它仍运行，其他订阅者仍可见。",
+        "evidence": "direct",
+        "refs": [
+          "devin-release"
+        ],
+        "locator": "November 16, 2026",
+        "upstream_entry_url": "https://docs.devin.ai/release-notes/2026"
+      }
+    ]
+  },
+  {
+    "id": "BUY12",
+    "product": "GitLab Duo Agent Platform",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY12",
+        "date": "2026-07-16",
+        "version": "GitLab 19.2",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "Custom Flows 与 GitLab CLI 的相关代理能力一般可用，强调组织内受控运行。",
+        "evidence": "direct",
+        "refs": [
+          "M04-3"
+        ],
+        "locator": "Custom Flows"
+      },
+      {
+        "id": "BUY12",
+        "date": "2026-11-19",
+        "version": "GitLab 19.6",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "定时 automations 为 beta，用独立服务账号并提供运行记录。",
+        "evidence": "direct",
+        "refs": [
+          "M04-4"
+        ],
+        "locator": "service account"
+      }
+    ]
+  },
+  {
+    "id": "BUY13",
+    "product": "GitHub Copilot cloud agent",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY13",
+        "date": "2026-06-02",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "为 Copilot cloud agent 提供定时与自动任务入口，受当时可选仓库范围限制。",
+        "evidence": "direct",
+        "refs": [
+          "W08"
+        ],
+        "locator": "schedule"
+      },
+      {
+        "id": "BUY13",
+        "date": "2026-10-28",
+        "version": "",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "连贯的云端开发体验及 cloud sandbox GA，支持从不同入口接续任务。",
+        "evidence": "direct",
+        "refs": [
+          "W21"
+        ],
+        "locator": "generally available"
+      }
+    ]
+  },
+  {
+    "id": "BUY14",
+    "product": "Claude Code Scheduled tasks",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY14",
+        "date": "2026-04-14",
+        "version": "Routines",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "以 Routines 名称推出云端运行的例行任务能力；当前文档改名，改名日期未定位。",
+        "evidence": "direct",
+        "refs": [
+          "F04-2"
+        ],
+        "locator": "April 14, 2026"
+      },
+      {
+        "id": "BUY14",
+        "date": "2026-10-26",
+        "version": "v2.1.311",
+        "precision": "日",
+        "kind": "fix",
+        "scope": "修复 Anthropic 托管环境中 owner 退出后重新加入组织时 routine 持续锁定的问题。",
+        "evidence": "direct",
+        "refs": [
+          "claude-release"
+        ],
+        "locator": "staying locked after their owner"
+      }
+    ]
+  },
+  {
+    "id": "BUY15",
+    "product": "goose",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY15",
+        "date": "2026-11-10",
+        "version": "v1.59.0",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "goose-agent GDK 加入停止、审批与工具 hook 的操作扩展点。",
+        "evidence": "direct",
+        "refs": [
+          "E03-4"
+        ],
+        "locator": "v1.59.0"
+      },
+      {
+        "id": "BUY15",
+        "date": "2026-11-17",
+        "version": "v1.60.0",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "oi-kit 增加 steering 操作，加入可执行命令及 SlashCommandOperation。",
+        "evidence": "direct",
+        "refs": [
+          "E03-4"
+        ],
+        "locator": "Steering operation"
+      }
+    ]
+  },
+  {
+    "id": "BUY16",
+    "product": "Sourcegraph Batch Changes",
+    "status": "直接原件可作先后对照",
+    "direct": 6,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY16",
+        "date": "2026-05-29",
+        "version": "7.4.0-rc.0",
+        "precision": "日",
+        "kind": "修复·预发布",
+        "scope": "批处理缓存键不再使用每个任务的独有环境变量。",
+        "evidence": "direct",
+        "refs": [
+          "src-cli-1"
+        ],
+        "locator": "7.4.0-rc.0",
+        "upstream_entry_url": "https://github.com/sourcegraph/src-cli/releases/tag/7.4.0-rc.0"
+      },
+      {
+        "id": "BUY16",
+        "date": "2026-07-30",
+        "version": "7.6.0",
+        "precision": "日",
+        "kind": "修复·正式发布",
+        "scope": "对 changeset hooks 和 executor 的文件目标路径进行验证。",
+        "evidence": "direct",
+        "refs": [
+          "src-cli-1"
+        ],
+        "locator": "7.6.0",
+        "upstream_entry_url": "https://github.com/sourcegraph/src-cli/releases/tag/7.6.0"
+      },
+      {
+        "id": "BUY16",
+        "date": "2026-09-17",
+        "version": "8.0.0",
+        "precision": "日",
+        "kind": "修复·正式发布",
+        "scope": "维护者列明批执行的工作区隔离修复，包括消除传往步骤的 executor 环境泄漏以及处理仓库归档里 Git 元数据。",
+        "evidence": "direct",
+        "refs": [
+          "src-cli-1"
+        ],
+        "locator": "8.0.0",
+        "upstream_entry_url": "https://github.com/sourcegraph/src-cli/releases/tag/8.0.0"
+      },
+      {
+        "id": "BUY16",
+        "date": "2026-11-02",
+        "version": "Sourcegraph Cloud",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "后台批执行期间可继续原对话并单独调查失败。与 src-cli 为不同发行面。",
+        "evidence": "direct",
+        "refs": [
+          "W12"
+        ],
+        "locator": "batch"
+      },
+      {
+        "id": "BUY16",
+        "date": "2026-11-09",
+        "version": "Sourcegraph Cloud",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "在对话中确认 merge，并将会话及其工作交接给其他工程师。",
+        "evidence": "direct",
+        "refs": [
+          "W11"
+        ],
+        "locator": "merge"
+      },
+      {
+        "id": "BUY16",
+        "date": "2026-11-11",
+        "version": "8.2.0",
+        "precision": "日",
+        "kind": "移除内部命令",
+        "scope": "删掉 src batch exec 及其 CLI 文件；8.0.0 在 usage 明示仅供内部使用。另核当前公开 preview/apply 入口仍各自存在。",
+        "evidence": "direct",
+        "refs": [
+          "src-cli-1",
+          "pr-1381",
+          "src-cli-8.0.0",
+          "src-preview",
+          "src-apply"
+        ],
+        "locator": "8.2.0",
+        "upstream_entry_url": "https://github.com/sourcegraph/src-cli/releases/tag/8.2.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY17",
+    "product": "Moderne Platform",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY17",
+        "date": "2025-09-30",
+        "version": "DevCenter",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "新 DevCenter 允许按 recipe 配置工作视图并追踪代码现代化进度。",
+        "evidence": "direct",
+        "refs": [
+          "moderne"
+        ],
+        "locator": "September 30, 2025"
+      },
+      {
+        "id": "BUY17",
+        "date": "2026-05-19",
+        "version": "Changelog",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "发布按 changeset 汇总跨仓变更的 Changelog，展示阻塞和待处理项。",
+        "evidence": "direct",
+        "refs": [
+          "A17"
+        ],
+        "locator": "changeset"
+      }
+    ]
+  },
+  {
+    "id": "BUY18",
+    "product": "AWS Transform custom",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY18",
+        "date": "2025-12-01",
+        "version": "",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "AWS Transform custom 一般可用，支持用预建与自定义方案执行可重复迁移。",
+        "evidence": "direct",
+        "refs": [
+          "P15"
+        ],
+        "locator": "Dec 1, 2025"
+      },
+      {
+        "id": "BUY18",
+        "date": "2026-03-31",
+        "version": "",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "其自动代码库分析功能一般可用，输出架构和技术债报告及现代化建议。",
+        "evidence": "direct",
+        "refs": [
+          "aws"
+        ],
+        "locator": "2026-03-31"
+      }
+    ]
+  },
+  {
+    "id": "BUY19",
+    "product": "CodeRabbit",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY19",
+        "date": "2025-09-16",
+        "version": "CLI",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "推出 CodeRabbit CLI，将审查反馈带入本地开发和编码代理的迭代过程。",
+        "evidence": "direct",
+        "refs": [
+          "coderabbit"
+        ],
+        "locator": "September 16, 2025"
+      },
+      {
+        "id": "BUY19",
+        "date": "2026-03-11",
+        "version": "Pre-Merge Checks",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "提出合并前的内置和自定义检查，可选择 warning 或 error。",
+        "evidence": "direct",
+        "refs": [
+          "M05-3"
+        ],
+        "locator": "March 11, 2026"
+      }
+    ]
+  },
+  {
+    "id": "BUY20",
+    "product": "PR-Agent",
+    "status": "直接原件可作先后对照",
+    "direct": 5,
+    "index_only": 0,
+    "context": 1,
+    "events": [
+      {
+        "id": "BUY20",
+        "date": "2026-06-21",
+        "version": "v0.37.0",
+        "precision": "日",
+        "kind": "项目自身配置·不可归入开源能力",
+        "scope": "发布摘要有「Qodo 自审后可批准」一项。对应 PR 只改本仓 .pr_agent.toml，新增注释说明由独立托管的 Qodo 免费开源项目机器人消费；其中 review_agent 小节属于该托管服务。",
+        "evidence": "context",
+        "refs": [
+          "pr-agent-2",
+          "pr-project-config"
+        ],
+        "locator": "v0.37.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.37.0"
+      },
+      {
+        "id": "BUY20",
+        "date": "2026-07-05",
+        "version": "v0.39.0",
+        "precision": "日",
+        "kind": "窗口首次发布",
+        "scope": "新增把 review、describe、improve 结果发布为 GitHub Checks 的途径，也引入集中组织设置。",
+        "evidence": "direct",
+        "refs": [
+          "pr-agent-2"
+        ],
+        "locator": "v0.39.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.39.0"
+      },
+      {
+        "id": "BUY20",
+        "date": "2026-08-08",
+        "version": "v0.42.0",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "报告可以列出未进入审查范围的文件；GitLab 的 review 可选发成能解决的讨论。",
+        "evidence": "direct",
+        "refs": [
+          "pr-agent-1"
+        ],
+        "locator": "v0.42.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.42.0"
+      },
+      {
+        "id": "BUY20",
+        "date": "2026-09-05",
+        "version": "v0.45.0",
+        "precision": "日",
+        "kind": "增强",
+        "scope": "重新审查保留已有 findings；大 diff 可选择分块并定义归并规则。",
+        "evidence": "direct",
+        "refs": [
+          "pr-agent-1"
+        ],
+        "locator": "v0.45.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.45.0"
+      },
+      {
+        "id": "BUY20",
+        "date": "2026-10-02",
+        "version": "v0.47.0",
+        "precision": "日",
+        "kind": "修复·默认改变",
+        "scope": "GitHub Action 对工具已记录但吞掉的失败默认转为失败。主机可设置 fail_on_tool_errors=false 保留旧行为；PR 评论不能改该开关。",
+        "evidence": "direct",
+        "refs": [
+          "pr-agent-1",
+          "pr-3712",
+          "pr-agent-v0.46.0",
+          "pr-agent-v0.47.0"
+        ],
+        "locator": "v0.47.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.47.0"
+      },
+      {
+        "id": "BUY20",
+        "date": "2026-11-07",
+        "version": "v0.50.0",
+        "precision": "日",
+        "kind": "移除无效设置",
+        "scope": "从分发设置中移除 approve_pr_on_self_review 与 fold_suggestions_on_self_review。官方说明这两项从未改变 /improve 行为。",
+        "evidence": "direct",
+        "refs": [
+          "pr-agent-1",
+          "pr-unused"
+        ],
+        "locator": "v0.50.0",
+        "upstream_entry_url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.50.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY21",
+    "product": "阿里云云效 Codeup AI 评审",
+    "status": "具体日或正式版的功能变化仍未定位",
+    "direct": 0,
+    "index_only": 0,
+    "context": 6,
+    "events": [
+      {
+        "id": "BUY21",
+        "date": "2025-10",
+        "version": "",
+        "precision": "月",
+        "kind": "month",
+        "scope": "月度表记载 Codeup 合并请求流程新增 AI 代码评审。原文仅有月份。",
+        "evidence": "context",
+        "refs": [
+          "ali"
+        ],
+        "locator": "代码评审流程支持 AI 智能评审"
+      },
+      {
+        "id": "BUY21",
+        "date": "2025-10-14",
+        "version": "",
+        "precision": "日",
+        "kind": "community-context",
+        "scope": "阿里云云原生社区账号文章称推出按 commit 评审。该页明确使用社区供稿条款；日期作为发布披露，不代替云效正式版本日志。",
+        "evidence": "context",
+        "refs": [
+          "ali-commit",
+          "ali-profile"
+        ],
+        "locator": "2025-10-14"
+      },
+      {
+        "id": "BUY21",
+        "date": "2025-11-05",
+        "version": "",
+        "precision": "日",
+        "kind": "campaign-context",
+        "scope": "云效 DevOps 署名的智能评审体验官招募开始，限活动登记与反馈，不作为引入功能的日期。",
+        "evidence": "context",
+        "refs": [
+          "ali-campaign"
+        ],
+        "locator": "2025年11月5日"
+      },
+      {
+        "id": "BUY21",
+        "date": "2026-03",
+        "version": "",
+        "precision": "月",
+        "kind": "month",
+        "scope": "月度表记载可用组织指定代码库统一配置评审规则。原文仅有月份。",
+        "evidence": "context",
+        "refs": [
+          "ali"
+        ],
+        "locator": "智能评审支持设置全局代码评审规则"
+      },
+      {
+        "id": "BUY21",
+        "date": "2026-08-01",
+        "version": "",
+        "precision": "日",
+        "kind": "policy",
+        "scope": "云效 AI 助手和站点架构调整生效，公告区分以往代码评审免费能力与新计费规则；为可用性/商业政策变化。",
+        "evidence": "context",
+        "refs": [
+          "A21A"
+        ],
+        "locator": "2026"
+      },
+      {
+        "id": "BUY21",
+        "date": "2026-09",
+        "version": "",
+        "precision": "月",
+        "kind": "month",
+        "scope": "月度表记载新增采纳/误报反馈、评论中唤起评审和管理员选择模型。原文仅有月份。",
+        "evidence": "context",
+        "refs": [
+          "ali"
+        ],
+        "locator": "代码行内评论增加采纳"
+      }
+    ]
+  },
+  {
+    "id": "BUY22",
+    "product": "SonarQube Server",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY22",
+        "date": "",
+        "version": "2025.5",
+        "precision": "版本",
+        "kind": "enhancement",
+        "scope": "部分升级引入的问题可放入 sandbox，暂不影响质量门禁。",
+        "evidence": "direct",
+        "refs": [
+          "A22"
+        ],
+        "locator": "sandbox"
+      },
+      {
+        "id": "BUY22",
+        "date": "",
+        "version": "2025.6",
+        "precision": "版本",
+        "kind": "enhancement",
+        "scope": "新增质量门禁失败和由失败转为通过的 Slack 即时通知。",
+        "evidence": "direct",
+        "refs": [
+          "A22"
+        ],
+        "locator": "Slack integration"
+      }
+    ]
+  },
+  {
+    "id": "BUY23",
+    "product": "Graphite Merge Queue",
+    "status": "仅索引原文可作先后对照",
+    "direct": 0,
+    "index_only": 2,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY23",
+        "date": "2023-05-30",
+        "version": "标题 5/31/2023",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "付费 beta 的队列新增 fast-forward merge 选项。按正文署名日期记录，标题晚一天；源站当前 404，仅保留检索索引内厂商正文。",
+        "evidence": "index-only",
+        "refs": [
+          "graphite-index1"
+        ],
+        "locator": "paid beta"
+      },
+      {
+        "id": "BUY23",
+        "date": "2024-04-09",
+        "version": "标题 4/10/2024",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "企业版队列开放给 bot 和非 Graphite 用户。按正文署名日期记录，标题晚一天，仅索引内厂商正文可读。",
+        "evidence": "index-only",
+        "refs": [
+          "graphite-index2"
+        ],
+        "locator": "Bots and non-Graphite users"
+      }
+    ]
+  },
+  {
+    "id": "BUY24",
+    "product": "Mergify",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY24",
+        "date": "2025-11-12",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "后续包含某 PR 的批次通过全部检查和条件时，可选择跳过中间结果并提前合入。",
+        "evidence": "direct",
+        "refs": [
+          "mergify"
+        ],
+        "locator": "skip_intermediate"
+      },
+      {
+        "id": "BUY24",
+        "date": "2026-11-12",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "允许在检查/批准尚未就绪时登记排队意向，更新提交会取消该请求。",
+        "evidence": "direct",
+        "refs": [
+          "A24"
+        ],
+        "locator": "queue"
+      }
+    ]
+  },
+  {
+    "id": "BUY25",
+    "product": "Argo Rollouts",
+    "status": "直接原件可作先后对照",
+    "direct": 4,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY25",
+        "date": "2026-08-27",
+        "version": "v1.10.0",
+        "precision": "日",
+        "kind": "修复·正式发布",
+        "scope": "中止灰度且处于缩容等待期时，若 HPA 等更改 spec.replicas，新的 ReplicaSet 的 desired-replicas 注解可过期。控制器同步注解、保持实际规模，使后续 reconcile 能继续处理路由和服务。",
+        "evidence": "direct",
+        "refs": [
+          "argo-rollouts-1",
+          "argo-abort"
+        ],
+        "locator": "v1.10.0",
+        "upstream_entry_url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.10.0"
+      },
+      {
+        "id": "BUY25",
+        "date": "2026-10-12",
+        "version": "v1.8.5",
+        "precision": "日",
+        "kind": "修复·回补",
+        "scope": "同一 dashboard 默认值回补 1.8 维护支线。",
+        "evidence": "direct",
+        "refs": [
+          "argo-rollouts-1"
+        ],
+        "locator": "v1.8.5",
+        "upstream_entry_url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.8.5"
+      },
+      {
+        "id": "BUY25",
+        "date": "2026-10-12",
+        "version": "v1.9.2",
+        "precision": "日",
+        "kind": "修复·回补",
+        "scope": "同一 dashboard 默认值回补 1.9 维护支线。",
+        "evidence": "direct",
+        "refs": [
+          "argo-rollouts-1"
+        ],
+        "locator": "v1.9.2",
+        "upstream_entry_url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.9.2"
+      },
+      {
+        "id": "BUY25",
+        "date": "2026-10-12",
+        "version": "v1.10.1",
+        "precision": "日",
+        "kind": "修复·默认改变",
+        "scope": "dashboard 的 CLI 增加 address，默认监听回环地址。自定义 Service 暴露需显式指定监听地址；同时官方部署清单也在 PR 中更新。",
+        "evidence": "direct",
+        "refs": [
+          "argo-rollouts-1",
+          "pr-5098",
+          "argo-v1.10.0",
+          "argo-v1.10.1"
+        ],
+        "locator": "v1.10.1",
+        "upstream_entry_url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.10.1"
+      }
+    ]
+  },
+  {
+    "id": "BUY26",
+    "product": "LaunchDarkly Guarded Rollouts",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY26",
+        "date": "2025-05-14",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "增加开跑前验证 flag、metric 及自定义持续时间的能力。",
+        "evidence": "direct",
+        "refs": [
+          "A26A"
+        ],
+        "locator": "Guarded"
+      },
+      {
+        "id": "BUY26",
+        "date": "2025-07-24",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "Guarded Rollouts 扩展至 AI Configs。",
+        "evidence": "direct",
+        "refs": [
+          "ld"
+        ],
+        "locator": "July 24, 2025"
+      }
+    ]
+  },
+  {
+    "id": "BUY27",
+    "product": "Atlantis",
+    "status": "直接原件可作先后对照",
+    "direct": 5,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY27",
+        "date": "2026-06-10",
+        "version": "v0.44.0",
+        "precision": "日",
+        "kind": "窗口首次发布",
+        "scope": "提供 sticky policy approvals。启用后按 policy_item_regex 提取策略输出条目并比较哈希；重新 plan 若无新增条目，允许延续原审批。",
+        "evidence": "direct",
+        "refs": [
+          "atlantis-1",
+          "atlantis-policy"
+        ],
+        "locator": "v0.44.0",
+        "upstream_entry_url": "https://github.com/runatlantis/atlantis/releases/tag/v0.44.0"
+      },
+      {
+        "id": "BUY27",
+        "date": "2026-06-26",
+        "version": "v0.44.1",
+        "precision": "日",
+        "kind": "修复·默认改变",
+        "scope": "读取全局 apply 锁失败时不再按允许命令标记继续。新路径标记错误、更新失败状态、发 PR 评论并返回。",
+        "evidence": "direct",
+        "refs": [
+          "atlantis-1",
+          "pr-6533",
+          "atlantis-v0.44.0",
+          "atlantis-v0.44.1"
+        ],
+        "locator": "v0.44.1",
+        "upstream_entry_url": "https://github.com/runatlantis/atlantis/releases/tag/v0.44.1"
+      },
+      {
+        "id": "BUY27",
+        "date": "2026-06-28",
+        "version": "v0.45.0",
+        "precision": "日",
+        "kind": "首次公开·alpha",
+        "scope": "发布漂移检测、状态、修复和历史 API；检测和有实际更改的修复分别启用。",
+        "evidence": "direct",
+        "refs": [
+          "atlantis-1"
+        ],
+        "locator": "v0.45.0",
+        "upstream_entry_url": "https://github.com/runatlantis/atlantis/releases/tag/v0.45.0"
+      },
+      {
+        "id": "BUY27",
+        "date": "2026-06-30",
+        "version": "v0.46.0",
+        "precision": "日",
+        "kind": "增强与修复",
+        "scope": "apply 加强对过时 head/base 的校验；清理 plan 时保留 on_apply 锁。",
+        "evidence": "direct",
+        "refs": [
+          "atlantis-1"
+        ],
+        "locator": "v0.46.0",
+        "upstream_entry_url": "https://github.com/runatlantis/atlantis/releases/tag/v0.46.0"
+      },
+      {
+        "id": "BUY27",
+        "date": "2026-09-22",
+        "version": "v0.48.0",
+        "precision": "日",
+        "kind": "增强·正式发布",
+        "scope": "加载待 apply 的 plan 后做哈希，先持久化 plan 结果再报告成功，使用校验过的 managed-plan 快照。",
+        "evidence": "direct",
+        "refs": [
+          "atlantis-1"
+        ],
+        "locator": "v0.48.0",
+        "upstream_entry_url": "https://github.com/runatlantis/atlantis/releases/tag/v0.48.0"
+      }
+    ]
+  },
+  {
+    "id": "BUY28",
+    "product": "Spacelift",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 1,
+    "events": [
+      {
+        "id": "BUY28",
+        "date": "",
+        "version": "Self-hosted v5.1.1",
+        "precision": "版本",
+        "kind": "version-context",
+        "scope": "版本化指南列出旧 initialization/task policies 向 approval policy 的迁移方式。仅确认该版本文档范围，无充分变化时点。",
+        "evidence": "context",
+        "refs": [
+          "A28"
+        ],
+        "locator": "Migrating to Approval Policies"
+      },
+      {
+        "id": "BUY28",
+        "date": "2026-05-26",
+        "version": "",
+        "precision": "日",
+        "kind": "deprecation",
+        "scope": "控制台为 stack access 和 task policies 增加弃用提示。",
+        "evidence": "direct",
+        "refs": [
+          "spacelift"
+        ],
+        "locator": "deprecation banners"
+      },
+      {
+        "id": "BUY28",
+        "date": "2026-09-01",
+        "version": "",
+        "precision": "日",
+        "kind": "default",
+        "scope": "proposed/test runs 在 ready 两天后取消；持锁的 tracked、task、destroy runs 在 ready 七天后取消。",
+        "evidence": "direct",
+        "refs": [
+          "spacelift"
+        ],
+        "locator": "seven days in the ready state"
+      }
+    ]
+  },
+  {
+    "id": "BUY29",
+    "product": "Renovate",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY29",
+        "date": "2026-07-29",
+        "version": "44.0.0",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "pep621 manager 在存在 pixi.lock 时同步更新；该 release 特别说明 major bump 标记失误。",
+        "evidence": "direct",
+        "refs": [
+          "renovate44"
+        ],
+        "locator": "pixi.lock"
+      },
+      {
+        "id": "BUY29",
+        "date": "2026-11-19",
+        "version": "44.253.4",
+        "precision": "日",
+        "kind": "fix",
+        "scope": "修复 GitLab 对新推送提交重新启用 automerge 的行为。",
+        "evidence": "direct",
+        "refs": [
+          "D06-3"
+        ],
+        "locator": "re-enable automerge"
+      }
+    ]
+  },
+  {
+    "id": "BUY30",
+    "product": "Snyk Open Source",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY30",
+        "date": "2025-07-24",
+        "version": "",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "Snyk Generated Pull Requests 报表 GA，汇总手动与自动修复 PR 的跨项目状态。",
+        "evidence": "direct",
+        "refs": [
+          "snyk"
+        ],
+        "locator": "July 24, 2025"
+      },
+      {
+        "id": "BUY30",
+        "date": "2026-02-04",
+        "version": "",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "Breakability Analysis 以 Early Access 为升级 PR 提供兼容性风险信息。",
+        "evidence": "direct",
+        "refs": [
+          "A30"
+        ],
+        "locator": "Breakability"
+      }
+    ]
+  },
+  {
+    "id": "BUY31",
+    "product": "incident.io Investigations",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY31",
+        "date": "2025-07-02",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "厂商发布 AI SRE / Investigations，汇集事故上下文给出调查发现。",
+        "evidence": "direct",
+        "refs": [
+          "P03"
+        ],
+        "locator": "July 2, 2025"
+      },
+      {
+        "id": "BUY31",
+        "date": "2026-01-15",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "聊天调查更注重人工已确认的发现，提供定位到具体 PR 的内容。",
+        "evidence": "direct",
+        "refs": [
+          "P04"
+        ],
+        "locator": "January"
+      }
+    ]
+  },
+  {
+    "id": "BUY32",
+    "product": "Rootly AI SRE",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY32",
+        "date": "2026-06-04",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "Slack 中的 Rootly Agent 可读取事故数据、频道讨论与通话记录，并回答追问。",
+        "evidence": "direct",
+        "refs": [
+          "rootly"
+        ],
+        "locator": "June 4, 2026"
+      },
+      {
+        "id": "BUY32",
+        "date": "2026-11-12",
+        "version": "",
+        "precision": "日",
+        "kind": "introduction",
+        "scope": "Teams 加入调查、追问、值班呼叫及接班摘要入口。",
+        "evidence": "direct",
+        "refs": [
+          "A32"
+        ],
+        "locator": "Microsoft Teams"
+      }
+    ]
+  },
+  {
+    "id": "BUY33",
+    "product": "Datadog Bits Investigation",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY33",
+        "date": "2025-06-10",
+        "version": "Bits AI SRE",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "Limited Availability 阶段使用遥测和服务上下文做初步告警调查。",
+        "evidence": "direct",
+        "refs": [
+          "dd"
+        ],
+        "locator": "Limited Availability"
+      },
+      {
+        "id": "BUY33",
+        "date": "2025-12-02",
+        "version": "Bits AI SRE",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "Datadog 宣布该 SRE 调查代理一般可用。",
+        "evidence": "direct",
+        "refs": [
+          "A33"
+        ],
+        "locator": "Generally Available"
+      }
+    ]
+  },
+  {
+    "id": "BUY34",
+    "product": "Sentry Seer",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY34",
+        "date": "2025-06-17",
+        "version": "Seer",
+        "precision": "日",
+        "kind": "GA",
+        "scope": "Seer AI Debugger 一般可用，定位和修复应用问题。",
+        "evidence": "direct",
+        "refs": [
+          "sentry"
+        ],
+        "locator": "June 17, 2025"
+      },
+      {
+        "id": "BUY34",
+        "date": "2026-04-28",
+        "version": "Seer Agent",
+        "precision": "日",
+        "kind": "preview",
+        "scope": "新 Seer Agent 问答/调试形态进入 open beta；与已有 debugger 的 GA 范围不同。",
+        "evidence": "direct",
+        "refs": [
+          "A34"
+        ],
+        "locator": "open beta"
+      }
+    ]
+  },
+  {
+    "id": "BUY35",
+    "product": "CircleCI Chunk",
+    "status": "直接原件可作先后对照",
+    "direct": 2,
+    "index_only": 0,
+    "context": 0,
+    "events": [
+      {
+        "id": "BUY35",
+        "date": "2025-11-06",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "Ad-Hoc Tasks 改为向分支推入改动并触发用户 CI，失败后会尝试修复，属该任务子类。",
+        "evidence": "direct",
+        "refs": [
+          "circle"
+        ],
+        "locator": "Nov 06, 2025"
+      },
+      {
+        "id": "BUY35",
+        "date": "2026-02-27",
+        "version": "",
+        "precision": "日",
+        "kind": "enhancement",
+        "scope": "从 pipeline/job 页一键传递失败作业及上下文给 Chunk。",
+        "evidence": "direct",
+        "refs": [
+          "P02"
+        ],
+        "locator": "Feb"
+      }
+    ]
+  }
+]

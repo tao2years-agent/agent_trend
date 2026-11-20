@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.815" timestamp="2026-11-20T12:02:42.416165" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_simplify1" time="0.022"><failure message="assert False&#10; +  where False = &lt;bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)&gt;(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))&#10; +    where &lt;bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)&gt; = 4*GammaMatrix(sigma)*GammaMatrix(rho).equals&#10; +    and   GammaMatrix(rho) = G(rho)&#10; +    and   GammaMatrix(sigma) = G(sigma)">sympy\physics\hep\tests\test_gamma_matrices.py:265: in test_kahane_simplify1
+    assert r.equals(4*G(rho)*G(sigma))
+E   assert False
+E    +  where False = &lt;bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)&gt;(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))
+E    +    where &lt;bound method TensMul.equals of 4*GammaMatrix(sigma)*GammaMatrix(rho)&gt; = 4*GammaMatrix(sigma)*GammaMatrix(rho).equals
+E    +    and   GammaMatrix(rho) = G(rho)
+E    +    and   GammaMatrix(sigma) = G(sigma)</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_gamma_matrix_class" time="0.239" /><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_algorithm" time="0.201" /></testsuite></testsuites>

@@ -1,0 +1,18 @@
+..FF                                                                     [100%]
+================================== FAILURES ===================================
+_____________________________ test_hermite_normal _____________________________
+sympy\matrices\tests\test_normalforms.py:63: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+E   assert Matrix(3, 0, []) == Matrix([\n[1, ...],\n[0, 0, 1]])
+E     Use -v to get more diff
+______________________________ test_issue_23410 _______________________________
+sympy\matrices\tests\test_normalforms.py:87: in test_issue_23410
+    assert hermite_normal_form(A) == H
+E   assert Matrix(3, 0, []) == Matrix([\n[1, ..., 8],\n[0, 5]])
+E     Use -v to get more diff
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23413\Vbeb29014cded\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/matrices/tests/test_normalforms.py::test_hermite_normal - assert...
+FAILED sympy/matrices/tests/test_normalforms.py::test_issue_23410 - assert Ma...
+2 failed, 2 passed in 0.23s

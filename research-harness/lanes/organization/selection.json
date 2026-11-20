@@ -1,0 +1,52 @@
+{
+  "opencost": ["README.md","core/pkg/opencost/allocation.go","pkg/costmodel/allocation.go"],
+  "devlake": [
+    "backend/plugins/dora/tasks/change_lead_time_calculator.go",
+    "grafana/dashboards/postgresql/multi-ai-comparison.json",
+    "backend/plugins/dora/e2e/calculate_change_lead_time_test.go"
+  ],
+  "promptfoo": [
+    "site/docs/configuration/expected-outputs/index.md",
+    "src/assertions/assertionsResult.ts",
+    "src/evaluator/derivedMetricFormula.ts"
+  ],
+  "backstage": [
+    "docs/features/software-catalog/life-of-an-entity.md",
+    "plugins/catalog-backend/src/processors/BuiltinKindsEntityProcessor.ts"
+  ],
+  "otel": [
+    "exporter/exporterhelper/README.md",
+    "service/internal/graph/graph.go"
+  ],
+  "langfuse": [
+    "fern/apis/server/definition/annotation-queues.yml",
+    "web/src/features/annotation-queues/server/annotationQueueItemsRouter.ts",
+    "web/src/features/annotation-queues/server/annotationQueueAssignmentsRouter.ts"
+  ],
+  "phoenix": [
+    "packages/phoenix-client/examples/experiments/experiment_trace_evaluator.py",
+    "packages/phoenix-client/src/phoenix/client/resources/experiments/__init__.py"
+  ],
+  "flagd": [
+    "docs/reference/custom-operations/fractional-operation.md",
+    "core/pkg/evaluator/fractional.go"
+  ],
+  "openfga": [
+    "docs/check/README.md",
+    "pkg/server/commands/check.go"
+  ],
+  "alertmanager": [
+    "docs/alertmanager.md",
+    "inhibit/inhibit.go",
+    "dispatch/route.go"
+  ],
+  "k6": [
+    "examples/thresholds.js",
+    "metrics/thresholds.go"
+  ],
+  "conftest": [
+    "docs/exceptions.md",
+    "runner/test.go",
+    "policy/engine.go"
+  ]
+}

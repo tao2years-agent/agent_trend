@@ -1,0 +1,69 @@
+{
+  "langgraph": {
+    "R1": "b9676136697aeb8f76a63fde03132554",
+    "R2": "4cdd41fd1c29bd079676185c7276b7fc",
+    "duplicate_old_interrupt": {
+      "status": "waiting",
+      "next": [
+        "approval"
+      ],
+      "interrupts": [
+        {
+          "request": "R2",
+          "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+        }
+      ],
+      "interrupt_ids": [
+        "4cdd41fd1c29bd079676185c7276b7fc"
+      ]
+    },
+    "before_valid_R2": {
+      "effects": [],
+      "invocations": []
+    },
+    "after_valid_R2": {
+      "status": "published",
+      "next": [],
+      "interrupts": [],
+      "interrupt_ids": []
+    },
+    "target": {
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 22836,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    }
+  },
+  "temporal": {
+    "same_request_id_sent_twice": "3506b50e-de97-4583-a1eb-dbe230998330",
+    "fresh_request_id": "51024f2f-842e-4ad4-b686-609268a42f97",
+    "gate_after_repeat": 2,
+    "before_valid_R2": {
+      "effects": [],
+      "invocations": []
+    },
+    "result": "published",
+    "signal_event_ids": [
+      5,
+      9
+    ],
+    "target": {
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 10804,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    }
+  }
+}

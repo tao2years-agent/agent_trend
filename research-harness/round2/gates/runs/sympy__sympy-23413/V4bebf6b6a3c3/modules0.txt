@@ -1,0 +1,28 @@
+..FF                                                                     [100%]
+================================== FAILURES ===================================
+_____________________________ test_hermite_normal _____________________________
+sympy\matrices\tests\test_normalforms.py:63: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+sympy\matrices\normalforms.py:127: in hermite_normal_form
+    return _hnf(A._rep, D=D, check_rank=check_rank).to_Matrix()
+sympy\polys\matrices\normalforms.py:406: in hermite_normal_form
+    return _hermite_normal_form(A)
+sympy\polys\matrices\normalforms.py:225: in _hermite_normal_form
+    if A[i][j] != 0:
+E   IndexError: list index out of range
+______________________________ test_issue_23410 _______________________________
+sympy\matrices\tests\test_normalforms.py:87: in test_issue_23410
+    assert hermite_normal_form(A) == H
+sympy\matrices\normalforms.py:127: in hermite_normal_form
+    return _hnf(A._rep, D=D, check_rank=check_rank).to_Matrix()
+sympy\polys\matrices\normalforms.py:406: in hermite_normal_form
+    return _hermite_normal_form(A)
+sympy\polys\matrices\normalforms.py:225: in _hermite_normal_form
+    if A[i][j] != 0:
+E   IndexError: list index out of range
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23413\V4bebf6b6a3c3\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/matrices/tests/test_normalforms.py::test_hermite_normal - IndexE...
+FAILED sympy/matrices/tests/test_normalforms.py::test_issue_23410 - IndexErro...
+2 failed, 2 passed in 0.23s

@@ -1,0 +1,420 @@
+[
+  {
+    "case": "01-extract",
+    "mode": "extract",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3"
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0"
+      }
+    ],
+    "branches": {}
+  },
+  {
+    "case": "02-provider",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/httpx-0.x": [
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "03-group",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/tested-asgi-pair": [
+        {
+          "package": "starlette",
+          "old": "0.36.3",
+          "new": "0.37.2",
+          "update_type": "minor",
+          "isBreaking": false
+        },
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "04-approved-first",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/starlette-0.x": [
+        {
+          "package": "starlette",
+          "old": "0.36.3",
+          "new": "0.37.2",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "05-approved-second",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.37.2",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.37.2",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/httpx-0.x": [
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "06-dashboard",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/httpx-0.x": [
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "07-ignore",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "skipReason": "disabled"
+      }
+    ],
+    "branches": {}
+  },
+  {
+    "case": "08-no-update",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {}
+  },
+  {
+    "case": "09-flask-provider",
+    "mode": "lookup",
+    "pins": {
+      "Flask": "2.2.2",
+      "Werkzeug": "2.2.3"
+    },
+    "lookups": [
+      "/pypi/flask/json",
+      "/pypi/werkzeug/json"
+    ],
+    "deps": [
+      {
+        "depName": "Flask",
+        "currentValue": "==2.2.2",
+        "warnings": []
+      },
+      {
+        "depName": "Werkzeug",
+        "currentValue": "==2.2.3",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/werkzeug-2.x": [
+        {
+          "package": "Werkzeug",
+          "old": "2.2.3",
+          "new": "2.3.8",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "10-flask-bridge",
+    "mode": "lookup",
+    "pins": {
+      "Flask": "2.2.2",
+      "Werkzeug": "2.2.3"
+    },
+    "lookups": [
+      "/pypi/flask/json",
+      "/pypi/werkzeug/json"
+    ],
+    "deps": [
+      {
+        "depName": "Flask",
+        "currentValue": "==2.2.2",
+        "warnings": []
+      },
+      {
+        "depName": "Werkzeug",
+        "currentValue": "==2.2.3",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/flask-2.x": [
+        {
+          "package": "Flask",
+          "old": "2.2.2",
+          "new": "2.2.5",
+          "update_type": "patch",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "11-unrestricted",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/starlette-0.x": [
+        {
+          "package": "starlette",
+          "old": "0.36.3",
+          "new": "0.52.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ],
+      "renovate/starlette-1.x": [
+        {
+          "package": "starlette",
+          "old": "0.36.3",
+          "new": "1.10.0",
+          "update_type": "major",
+          "isBreaking": true
+        }
+      ],
+      "renovate/httpx-0.x": [
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  },
+  {
+    "case": "12-ungrouped",
+    "mode": "lookup",
+    "pins": {
+      "starlette": "0.36.3",
+      "httpx": "0.26.0"
+    },
+    "lookups": [
+      "/pypi/httpx/json",
+      "/pypi/starlette/json"
+    ],
+    "deps": [
+      {
+        "depName": "starlette",
+        "currentValue": "==0.36.3",
+        "warnings": []
+      },
+      {
+        "depName": "httpx",
+        "currentValue": "==0.26.0",
+        "warnings": []
+      }
+    ],
+    "branches": {
+      "renovate/starlette-0.x": [
+        {
+          "package": "starlette",
+          "old": "0.36.3",
+          "new": "0.37.2",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ],
+      "renovate/httpx-0.x": [
+        {
+          "package": "httpx",
+          "old": "0.26.0",
+          "new": "0.28.1",
+          "update_type": "minor",
+          "isBreaking": false
+        }
+      ]
+    }
+  }
+]

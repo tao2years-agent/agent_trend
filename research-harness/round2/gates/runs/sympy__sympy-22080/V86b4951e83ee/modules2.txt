@@ -1,0 +1,36 @@
+............................F......................ssssssssss........... [ 63%]
+.......................F.............sss.                                [100%]
+================================== FAILURES ===================================
+____________________________ test_double_integral _____________________________
+sympy\utilities\tests\test_lambdify.py:320: in test_double_integral
+    d = l(1)
+<lambdifygenerated-48>:2: in _lambdifygenerated
+    return nquad(lambda x, y: (-x**2 + 1)**(-1.0), ((0, 1), (0, z)))[0]
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:1218: in nquad
+    return _NQuad(func, ranges, opts, full_output).integrate(*args)
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:1272: in integrate
+    quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:464: in quad
+    retval = _quad(func, a, b, args, full_output, epsabs, epsrel, limit,
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:611: in _quad
+    return _quadpack._qagse(func,a,b,args,full_output,epsabs,epsrel,limit)
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:1272: in integrate
+    quad_r = quad(f, low, high, args=args, full_output=self.full_output,
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:464: in quad
+    retval = _quad(func, a, b, args, full_output, epsabs, epsrel, limit,
+..\..\verified-sympy-20261120\full311\Lib\site-packages\scipy\integrate\_quadpack_py.py:611: in _quad
+    return _quadpack._qagse(func,a,b,args,full_output,epsabs,epsrel,limit)
+<lambdifygenerated-48>:2: in <lambda>
+    return nquad(lambda x, y: (-x**2 + 1)**(-1.0), ((0, 1), (0, z)))[0]
+E   ZeroDivisionError: 0.0 cannot be raised to a negative power
+______________________________ test_issue_15654 _______________________________
+sympy\utilities\tests\test_lambdify.py:1221: in test_issue_15654
+    assert abs(sympy_value - scipy_value) < 1e-15
+E   assert 0.636184745607157 < 1e-15
+E    +  where 0.636184745607157 = abs((0.0995741367357279 - 0.7357588823428847))
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22080\V86b4951e83ee\modules2.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_double_integral - ZeroDiv...
+FAILED sympy/utilities/tests/test_lambdify.py::test_issue_15654 - assert 0.63...
+2 failed, 98 passed, 13 skipped, 3 warnings in 3.02s

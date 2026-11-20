@@ -1,0 +1,35 @@
+BUY01|核心模块|E04|AIDER|本地 GitRepo.commit 组装提交、返回短 SHA。|核实 commit 范围、hook 配置及测试输出；短 SHA 不能代替远端门禁。
+BUY02|核心模块|E05||Codex CLI 审批策略与自动审批的 Rust 模块。|云端 Codex 身份、租户策略继承及托管服务实现未据此核验。
+BUY03|核心模块|E07||Cline 仓内会话 checkpoint restore 模块，公开 SDK 包路径。|现场指定入口试恢复本地文件与任务状态；验证是否接入该模块及能否撤销远端写入。
+BUY04|核心模块|E08||OpenCode 核心的子任务作业与完成通知模块。|子任务消息到达后用目标仓写入回执核对；完成消息不能代替集成结果。
+BUY05|扩展示例||QODEREX|Qoder 官方 SDK 示例以 authorize_tool 回调演示运行时工具授权。|本次未固定可归属新版 Qoder 执行器的源码；旧 Quest 入口退场，须在当前租户演示中途撤回。
+BUY06|扩展示例||CODEBUDDY|腾讯云 CloudBase 发给 CodeBuddy 的插件配置，含接入方式与版本。|插件未披露 CodeBuddy Agent Teams 服务端；并行任务的取消传播须验。
+BUY07|未核到实现|||码道代码智能体的任务/交付形态有官方文档。|本次未核到对应编排核心；向供应方索要目标版本与人工接管记录。
+BUY08|相邻实现||TRAE|字节公开的 Trae Agent README 将其定位为可研究和实验的 CLI。|尚无锁定材料将该项目绑定到采购项 TRAE IDE/SOLO 的发布构建；不借其推断。
+BUY09|集成客户端||ADK|Google ADK 实现 AntigravityAgent 桥接器，将 SDK agent 运行接入 ADK 应用。|未核到当前 Agent Manager 调度、云端停止的源码；需现场核对权限撤回。
+BUY10|扩展示例||FACTORY|Droid Control 扩展的插件 manifest 声明自动化能力与版本。|没有 Droid 云调度、租户隔离或审批模型的同一版源码。
+BUY11|扩展示例||DEVIN|Cognition 官方模板校验脚本检查插件目录与清单。|不能验证 Devin Preflight 是否执行、停止后外部资源如何回收。
+BUY12|核心模块||GITLAB|官方开发指引链接至 Duo Workflow Service；公开模块处理节点中断、生命周期与 checkpoint。|部署 commit、租户流配置、GitLab 账户权限和对话恢复后的外部写入须另验。
+BUY13|集成客户端||GHSDK|Copilot Node 客户端与本地 CLI 通信。|未核到 Copilot cloud agent 托管 worker 或组织策略执行；勿把 Actions Runner 替入。
+BUY14|扩展示例||CLAUDE|官方 Claude Code 仓 PreToolUse 命令检查示例，可以检视示例 hook 输入输出。|云端 Scheduled tasks 触发器、重复交付、停止传播、计价等仍按云文档和实测判断。
+BUY15|核心模块|E03|GOOSE|在产品 crate 读取工具授权汇总与否决优先逻辑，复用原 scheduler 记录。|拒绝优先只约束进入此函数的请求；后端工具是否已发生副作用须单独检查。
+BUY16|集成客户端|||公开 src-cli 历史本地执行器有 tag 差分，8.2.0 已删除对照路径；服务文档记录服务端执行。|当前大规模重跑、重放、发布 changeset 的服务端策略未通过该 diff 证明。
+BUY17|相邻实现||MOD|Moderne 官方说明 OpenRewrite 是基础；公开 RecipeScheduler 控制单次 recipe cycle。|不能推出托管平台的多仓授权、并发配额、批次撤回；需要平台操作记录。
+BUY18|扩展示例||AWSEX|AWS Samples 的批迁移示例脚本通过 atx CLI 创建 campaign、更新仓状态。|本次未固定对应云服务编排核心；在客户隔离目标上验批次中止与失败重试。
+BUY19|扩展示例||CBEX|CodeRabbit 官方扩展的 review.js 处理本地审阅命令、重跑与读取最近结果。|本次未建立生产评审引擎与公开实现的对应关系；试验应检查真实 PR 状态。
+BUY20|核心模块|D07||PR-Agent 自托管 pr_reviewer、参数校验及 Actions 运行失败传递有固定源码。|Qodo 商用机器人与 PR-Agent 分开；分支是否阻合并取决于宿主配置。
+BUY21|集成客户端||ALI|阿里云云效 MCP 适配器调用 API 创建/读取 Codeup 变更请求与 patch sets。|索取同一 MR 的审批、必需检查状态以及重复回调，未核到其托管引擎。
+BUY22|相邻实现||SONAR|SonarQube Community Build 的 Java 门禁求值器与测试公开。|付费 Server 的 PR 分析链与社区代码发布绑定未知；须在实际版次验空门禁。
+BUY23|未核到实现|||Graphite 的合并队列设置和入队/出队有产品文档。|未固定托管队列的调度核心；CLI 或命令文档不足以证明 merge train 服务行为。
+BUY24|未核到实现||MERGIFY|截至所锁 commit，官方同名仓 README 为社区 issue tracker，其树含 README 与图片。|当前托管队列、优先级与重试逻辑未核；不能据此断言从未公开过历史代码。
+BUY25|核心模块|D05|ARGO|控制器以 pause reason、策略和计时条件判断何时允许继续。|暂停条件和真实流量各有观测接口；上线前分别检查。
+BUY26|集成客户端||LAUNCH|LaunchDarkly Go 服务端 SDK 的评估客户端公开，server-side 指运行位置。|Guarded Rollouts 的云端指标判定与自动回退引擎未核；验真实 flag 变化。
+BUY27|核心模块|D08||Atlantis 的命令执行、项目锁和全局锁检查失败路径公开。|锁错误的执行终止可查代码，实际 IaC 后端是否发生写入仍需读取其回执。
+BUY28|集成客户端||SPACE|Spacelift 官方 Terraform provider 实现 stack 资源的 API 映射。|队列、策略解释器、执行 worker 没有因 provider 公开而得到核验。
+BUY29|核心模块|D06|REN|公开仓库工作器的小时 PR 计数与并发计数，另有重用的 automerge 实现。|主机异常种类、仓分支前缀和时间窗口会改变读数；组织总预算另验。
+BUY30|集成客户端||SNYK|Snyk 官方 CLI 的 monitor 命令收集并上报项目状态。|Snyk Open Source 是产品名；监测客户端不足以证实云端修复 PR 的生成或限额。
+BUY31|集成客户端||INC|官方 Terraform provider 管理 incident template，可见 API 资源形状。|未覆盖 Investigations 的假设生成、权限裁剪与证据检索。
+BUY32|集成客户端||ROOTLY|Rootly 官方 Terraform provider 创建 incident 型 workflow task。|AI SRE 调查器并非此资源处理函数；原始观测与处置需在租户内复核。
+BUY33|集成客户端||DD|Datadog 官方 Terraform provider 管理 incident type。|不能由此推断 Bits 调查的推理过程、日志保留与写权限。
+BUY34|宿主侧子系统||SENTRY|公开 Sentry 服务端保存 Seer coding agent handoff 并连接部分 PR；带组织范围。|未核到 Seer 调查/推断服务核心；单条宿主记录不能证明下游成功。
+BUY35|集成客户端||CIRCLE|CircleCI 官方 CLI 的 pipeline run 命令可读。|通用管道客户端没有披露 Chunk 如何诊断失败、选择修复或决定重跑。

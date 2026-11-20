@@ -1,0 +1,413 @@
+Accelerating code migrations with AI (https://research.google/blog/accelerating-code-migrations-with-ai/)
+citeturn78search0 [wordlim: 200] Published: 2.3 years ago; Crawled: last month; Stoyan Nikolov, Senior Staff Software Engineer, Google Core, and Siddharth Taneja, Senior Engineering Manager, Google Ads ... For years, Google has employed special infrastructure for large scale changes to execute complex code migrations. ... At inference time, we annotate each line where we expect a change is needed with a natural language instruction as well as a general instruction for the model. ... The changes are then sharded and sent to multiple reviewers who own the part of the codebase affected by the change. ... Engineers still needed to spend time on the analysis of the files that needed changes and on their review.
+
+# Accelerating code migrations with AI
+
+July 18, 2024
+
+Stoyan Nikolov, Senior Staff Software Engineer, Google Core, and Siddharth Taneja, Senior Engineering Manager, Google Ads
+
+Generative AI-powered workflows allow Google to migrate code faster and maintain its codebase more effectively
+
+In the past decades, source code bases have grown exponentially. Google's monorepo is an example of large code datasets, which includes billions of lines of code. Keeping up with the code transformations (called “migrations”) to accommodate new language versions, framework updates, changing APIs and data types across this vast codebase is challenging, to say the least.
+
+For years, Google has employed special infrastructure for large scale changes to execute complex code migrations. The infrastructure uses static analysis and tools like Kythe and Code Search to discover which locations need to be changed along with their dependencies. Tools like ClangMR are then employed to make the changes.
+
+We conceptually split the process of the migration into three stages:
+
+  1. Targeting the locations in the codebase that needed modifications
+  2. Edit generation and validation
+  3. Change review and rollout
+
+While each of these stages benefits from AI, we focus on #2.
+
+To generate and validate the code changes we leverage a version of the Gemini model that we fine-tuned on internal Google code and data.
+
+Each migration requires as input:
+
+  * A set of files and the locations of expected changes: path + line number in the file
+  * One or two prompts that describe the change
+  * [Optional] Few-shot examples to decide if a file actually needs migration
+
+Example execution of the multi-stage code migration process.
+
+The file locations provided by the user are collected through a combination of pre-existing static tools and human input. Our migration toolkit automatically expands this set with additional relevant files that can include: test files, interface files, and other dependencies.   * Changes in the class interfaces need to be taken into account across multiple files.
+  * Tests need to be updated to verify that the 64-bit IDs are handled correctly.
+
+The full effort, if done manually was expected to require many, many software engineering years.
+
+To accelerate the work, we employed our AI migration tooling and devised the following workflow:
+
+  1. An expert engineer identifies the ID they want to migrate and, using a combination of Code Search, Kythe, and custom scripts, identifies a (relatively tight) superset of files and locations to migrate.
+  2. The migration toolkit runs autonomously and produces verified changes that only contain code that passes unit tests. Some tests are themselves updated to reflect the new reality.
+  3. The engineer quickly checks the change and potentially updates files where the model failed or made a mistake. The changes are then sharded and sent to multiple reviewers who own the part of the codebase affected by the change.
+
+Note that the IDs used in the internal code base have appropriate privacy protections already applied. While the model migrates them to a new type, it does not alter or surface them, so all privacy protections will remain intact.
+
+For this workstream we found that 80% of the code modifications in the landed CLs were AI-authored, the rest were human-authored. The total time spent on the migration was reduced by an estimated 50% as reported by the engineers doing the migration. There was significant reduction in communication overhead as a single engineer could generate all necessary changes. Engineers still needed to spend time on the analysis of the files that needed changes and on their review. We found that in Java files our model predicted the need to edit a file with 91% accuracy.
+
+The toolkit has already been used to create hundreds of change lists in this and other migrations. On average we achieve >75% of the AI-generated character changes successfully landing in the monorepo.
+
+## Future directions
+
+The next step is addressing more complex migrations that impact multiple components exchanging data or requiring system architecture changes. We have already had success when migrating from deprecated types that require non-trivial refactorings, as well as moving away from older testing frameworks.
+
+We are researching how to apply AI in the other parts of the development journey, specifically to help with targeting the changes and better filtering those that are unnecessary. Another interesting area is to improve the migration user experience in the IDE so that it gives greater control and freedom to the change operator to mix-and-match the existing tooling.
+
+Overall we see a wide potential application of this work, likely beyond the strict space of code migration and possibly also applied to error correction and general code maintenance at scale.
+
+## Acknowledgements
+
+This work is the result of a collaboration between the Google Core Developer, Google Ads and Google DeepMind teams. We would like to thank key contributors Daniele Codecasa, Anna Sjövall, Ayoub Kachkach, Celal Ziftci, Max Kim, Jonathan Binghan, Ballie Sandhu, and Christoph Grotz. We would also like to thank our colleagues Alexander Frömmgen, Lera Kharatyan, Maxim Tabachnyk, Shardul Natu, Bar Karapetov, Kashmira Phalak, Andrew Villadsen, Maia Deutsch, AK Kulkarni, Satish Chandra, Danny Tarlow, Aditya Kini, Marc Brockschmidt, Yurun Shen, Milad Hashemi, Chris Gorgolewski, Don Schwarz, Chris Kennely, Sarah Drasner, Niranjan Tulpule, Madhura Dudhgaonkar and the developers of the DIDACT effort.
+
+  * Labels:
+  * Generative AI
+
+  * Machine Intelligence
+
+  * Software Systems & Engineering--------------------------------------------------------------------------------
+What Breaks Google? (https://research.google/pubs/what-breaks-google/)
+citeturn78search1 [wordlim: 200] Crawled: 3 weeks ago; In large-scale environments like Google’s mono-repository, this is not feasible to do in terms of both latency and compute cost, given the frequency of change requests and overall size of the codebase. ... In order to make testing at Google more efficient and lower latency, TAP Postsubmit is developing a new scheduling algorithm that utilizes Bug Prediction metrics, features from the change, and historical information about the tests and targets to predict and rank targets by their likelihood to fail. ...   * Software engineering
+
+# What Breaks Google?
+
+Abhayendra Singh
+
+Avi Kondareddy
+
+Tim A. D. Henderson
+
+(2023)
+
+Download Google Scholar
+
+## Abstract
+
+In an ideal Continuous Integration (CI) workflow, all potentially impacted builds/tests would be run before submission for every proposed change. In large-scale environments like Google’s mono-repository, this is not feasible to do in terms of both latency and compute cost, given the frequency of change requests and overall size of the codebase. Instead, the compromise is to run more comprehensive testing at later stages of the development lifecycle – batched after submission. These runs detect newly broken tests. Automated culprit finders determine which change broke the tests, the culprit change.
+In order to make testing at Google more efficient and lower latency, TAP Postsubmit is developing a new scheduling algorithm that utilizes Bug Prediction metrics, features from the change, and historical information about the tests and targets to predict and rank targets by their likelihood to fail. This presentation examines the association between some of our selected features with culprits in Google3.
+
+## Research Areas
+
+  * Software engineering--------------------------------------------------------------------------------
+Large sequence models for software development activities (https://research.google/blog/large-sequence-models-for-software-development-activities/)
+citeturn78search2 [wordlim: 200] Published: 3.5 years ago; Crawled: 2 days ago; We leverage instrumentation of Google's software development to scale up the quantity and diversity of developer-activity data beyond previous works. ... In principle, one could use this record to replay in detail the key episodes in the “software engineering video” of how Google’s codebase came to be, step-by-step — one code edit, compilation, comment, variable rename, etc., at a time. ... When the developer is ready to package a set of code changes together for a specific purpose (e.g., fixing a bug), they create a changelist (CL) in Critique, Google’s code-review system. ... The DIDACT approach complements the great strides taken by large language models at Google and elsewhere, towards technologies that ease toil, improve productivity, and enhance the quality of work of software engineers.
+
+## A treasure trove of data about the software engineering process
+
+Google’s software engineering toolchains store every operation related to code as a log of interactions among tools and developers, and have done so for decades. In principle, one could use this record to replay in detail the key episodes in the “software engineering video” of how Google’s codebase came to be, step-by-step — one code edit, compilation, comment, variable rename, etc., at a time.
+
+Google code lives in a monorepo, a single repository of code for all tools and systems. A software developer typically experiments with code changes in a local copy-on-write workspace managed by a system called Clients in the Cloud (CitC). When the developer is ready to package a set of code changes together for a specific purpose (e.g., fixing a bug), they create a changelist (CL) in Critique, Google’s code-review system. As with other types of code-review systems, the developer engages in a dialog with a peer reviewer about functionality and style. The developer edits their CL to address reviewer comments as the dialog progresses. Eventually, the reviewer declares “LGTM!” (“looks good to me”), and the CL is merged into the code repository.
+
+Of course, in addition to a dialog with the code reviewer, the developer also maintains a “dialog” of sorts with a plethora of other software engineering tools, such as the compiler, the testing framework, linters, static analyzers, fuzzers, etc.
+
+An illustration of the intricate web of activities involved in developing software: small actions by the developer, interactions with a code reviewer, and invocations of tools such as compilers.
+
+ 
+
+--------------------------------------------------------------------------------
+Understanding Architectural Complexity, Maintenance Burden, and Developer Sentiment -- A Large-Scale Study (https://research.google/pubs/understanding-architectural-complexity-maintenance-burden-and-developer-sentiment-a-large-scale-study/)
+citeturn78search3 [wordlim: 200] Crawled: today; Intuitively, the more complex a software system is, the harder it is to maintain. ... In this paper, we report a large-scale study of 1200+ projects written in C++ and Java from Google LLC. In this study, we collected three categories of measures: (1) architectural complexity, measured using propagation cost (PC), decoupling level (DL), and structural anti-patterns; (2) maintenance activity, measured using the number of changes, lines of code (LOC) written, and active coding time (ACT) spent on feature-addition vs. bug-fixing, and (3) developer sentiment on complexity and productivity, collected from 7200 survey responses.
+
+# Understanding Architectural Complexity, Maintenance Burden, and Developer Sentiment -- A Large-Scale Study
+
+Yuanfang Cai
+
+Lanting He
+
+Jun Qian
+
+Yony Kochinski
+
+Nan Zhang
+
+Ciera Jaspan
+
+Antonio Bianco
+
+2025
+
+## Abstract
+
+Intuitively, the more complex a software system is, the harder it is to maintain. Statistically, it is not clear which complexity measures correlate with maintenance effort; in fact, it is not even clear how to objectively measure maintenance burden, so that developers’ sentiment and intuition can be supported by numbers. Without effective complexity and maintenance measures, it remains difficult to objectively monitor maintenance, control complexity, or justify refactoring. In this paper, we report a large-scale study of 1200+ projects written in C++ and Java from Google LLC. In this study, we collected three categories of measures: (1) architectural complexity, measured using propagation cost (PC), decoupling level (DL), and structural anti-patterns; (2) maintenance activity, measured using the number of changes, lines of code (LOC) written, and active coding time (ACT) spent on feature-addition vs. bug-fixing, and (3) developer sentiment on complexity and productivity, collected from 7200 survey responses. We statistically analysed the correlations among these measures and obtained significant evidence of the following findings: 1) the more complex the architecture is (higher propagation cost, more instances of anti-patterns), the more LOC is spent on bug-fixing, rather than adding new features; 2) developers who commit more changes for features, spend more lines of code on features, or spend more time on features also feel that they are less hindered by technical debt and complexity. To the best of our knowledge, this is the first large-scale empirical study establishing the statistical correlation among architectural complexity, maintenance activity, and developer sentiment. The implication is that, instead of solely relying upon developer sentiment and intuitions to detect degraded structure or increased burden to evolve, it is possible to objectively and continuously measure and monitor architectural complexity and maintenance difficulty, increasing feature delivery efficiency by reducing architectural complexity and anti-patterns.--------------------------------------------------------------------------------
+Modern Code Review: A Case Study at Google (https://research.google/pubs/modern-code-review-a-case-study-at-google/)
+citeturn78search4 [wordlim: 200] Published: 8.9 years ago; Crawled: today; # Modern Code Review: A Case Study at Google ... International Conference on Software Engineering, Software Engineering in Practice track (ICSE SEIP) (2018) (to appear) ... motivations behind code review at Google, current practices,
+
+# Modern Code Review: A Case Study at Google
+
+Caitlin Sadowski
+
+Emma Söderberg
+
+Luke Church
+
+Michal Sipko
+
+Alberto Bacchelli
+
+International Conference on Software Engineering, Software Engineering in Practice track (ICSE SEIP) (2018) (to appear)
+
+Download Google Scholar
+
+## Abstract
+
+Employing lightweight, tool-based code review of code changes
+(aka modern code review) has become the norm for a wide
+variety of open-source and industrial systems. In this paper,
+we make an exploratory investigation of modern code
+review at Google. Google introduced code review early on
+and evolved it over the years; our study sheds light on why
+Google introduced this practice and analyzes its current
+status, after the process has been refined through decades of
+code changes and millions of code reviews. By means of 12
+interviews, a survey with 44 respondents, and the analysis
+of review logs for 9 million reviewed changes, we investigate
+motivations behind code review at Google, current practices,
+and developers’ satisfaction and challenges.
+
+## Research Areas
+
+  * Software engineering--------------------------------------------------------------------------------
+AI in software engineering at Google: Progress and the path ahead (https://research.google/blog/ai-in-software-engineering-at-google-progress-and-the-path-ahead/)
+citeturn78search5 [wordlim: 200] Published: 2.5 years ago; Crawled: today; # AI in software engineering at Google: Progress and the path ahead ... And a significant number of those have used ML-based autocomplete, whether it is using company internal tools at large companies, e.g., Google’s internal code completion, or via commercially available products. ... Our team is responsible for the software development environments where Google engineers spend the majority of their time, including inner loop (e.g., IDE, code review, code search), as well as outer loop surfaces (e.g., bug management, planning). ... This data, for example, enables us to represent fine-grained code edits, build outcomes, edits to resolve build issues, code copy-paste actions, fixes of pasted code, code reviews, edits to fix reviewer issues, and change submissions to a repository. ... Experiments requiring the user to remember to trigger the feature have failed to scale.
+
+In this blog, we present our newest AI-powered improvements within the context of the continuing transformation of Google’s internal software development tools, and discuss further changes that we expect to see in the coming 5 years. We also present our methodology on how to build AI products that deliver value for professional software development. Our team is responsible for the software development environments where Google engineers spend the majority of their time, including inner loop (e.g., IDE, code review, code search), as well as outer loop surfaces (e.g., bug management, planning). We illustrate that improvements to these surfaces can directly impact developer productivity and satisfaction, both metrics that we monitor carefully.
+
+## The challenge
+
+An ongoing challenge in this domain is that AI technology is evolving quickly and it is hard to predict which ideas to explore first. This cycle is essential for learning from practical behavior, rather than synthetic formulations.
+
+Image: AIforSE-Hero1
+
+Improving AI-based features in coding tools (e.g., in the IDE) with historical high quality data across tools and with usage data capturing user preferences and needs.
+
+Image: AIforSE-LineGraph2
+
+Continued increase of the fraction of code created with AI assistance via code completion, defined as the number of accepted characters from AI-based suggestions divided by the sum of manually typed characters and accepted characters from AI-based suggestions. Notably, characters from copy-pastes are not included in the denominator.
+
+We use our extensive and high quality logs of internal software engineering activities across multiple tools, which we have curated over many years. This data, for example, enables us to represent fine-grained code edits, build outcomes, edits to resolve build issues, code copy-paste actions, fixes of pasted code, code reviews, edits to fix reviewer issues, and change submissions to a repository. --------------------------------------------------------------------------------
+Regression Test Selection at Scale (https://research.google/pubs/regression-test-selection-at-scale-4/)
+citeturn78search6 [wordlim: 200] Crawled: 3 weeks ago; # Regression Test Selection at Scale ... Download Google Scholar ... A small code change in these libraries ... In this paper, we propose a novel ranking-based approach that ...   * Software engineering
+
+# Regression Test Selection at Scale
+
+Randall Parker
+
+Laiba Mehnaz
+
+Charlie Song
+
+Michelle Wang
+
+Daniel Lee
+
+Brandon Stewart
+
+Ilya Kavalerov
+
+2026
+
+Download Google Scholar
+
+## Abstract
+
+Core libraries in massive codebases are dependency
+hot-spots with high code churn and an immense number of
+reverse dependencies. A small code change in these libraries
+can impact a vast number of clients, creating a massive blast
+radius of costly breakages if a bug or regression is submitted.
+To prevent expensive post-submit breakages, it is not feasible to
+test global dependencies during the pre-submit stage for each
+code change because of resource limitations and the desire for
+minimal developer friction.
+In this paper, we propose a novel ranking-based approach that
+utilizes a hybrid call graph to test global dependencies during the
+pre-submit stage. Our method leverages the call graph to select a
+per-commit subset of these global dependencies and to generate
+inexpensive graph structural features that allow our machine
+learning model to learn the complex relationships between library
+code changes and client tests to predict failures. Evaluating our
+approach on 10 high-impact core libraries with an average test
+suite size of 220,000, we demonstrate that a fixed budget of 2,000
+tests per commit, representing just 0.9% of the total execution
+cost, effectively catches regressions for 40% of failing commits.
+
+## Research Areas
+
+  * Software engineering--------------------------------------------------------------------------------
+Software engineering and programming languages (https://research.google/teams/software-engineering-and-programming-languages/)
+citeturn78search7 [wordlim: 200] Crawled: today; We generate an AST diff from the textual code changes and transform it into a domain-specific language called Delta that encodes the change that must be made to make the code compile. ... In this paper, we describe a field experiment with anonymous author code review, where we withheld author identity information during 5217 code reviews from 300 professional software engineers at one company. ... Preview Preview abstract Quickly identifying and fixing code changes that introduce regressions is critical to keep the momentum on software development, especially in very large scale software repositories with rapid development cycles, such as at Google. ...   * Software engineering at Google: Lessons Learned from Programming Over Time A book on how Google manages an ultra-large scale, living codebase that evolves and responds to changing requirements and demands over time. ...   * Caitlin Sadowski Data Management Human-Computer Interaction and Visualization Information Retrieval and the Web +2 more
+
+# Software engineering and programming languages
+
+Software engineering and programming language researchers at Google study all aspects of the software development process, from the engineers who make software to the languages and tools that they use.
+
+## About the team
+
+We are a collection of teams from across the company who study the problems faced by engineers and invent new technologies to solve those problems. Our teams take a variety of approaches to solve these problems, including empirical methods, interviews, surveys, innovative tools, formal models, predictive machine learning modeling, data science, experiments, and mixed-methods research techniques. As our engineers work within the largest code repository in the world, the solutions need to work at scale, across a team of global engineers and over 2 billion lines of code.
+
+We aim to make an impact internally on Google engineers and externally on the larger ecosystem of software engineers around the world.
+
+## Team focus summaries
+
+### Developer Tools
+
+Google provides its engineers’ with cutting edge developer tools that operate on codebase with billions of lines of code. The tools are designed to provide engineers with a consistent view of the codebase so they can navigate and edit any project. We research and create new, unique developer tools that allow us to get the benefits of such a large codebase, while still retaining a fast development velocity.
+
+### Developer Inclusion and Diversity
+
+We aim to understand diversity and inclusion challenges facing software developers and evaluate interventions that move the needle on creating an inclusive and equitable culture for all.
+
+### Developer Productivity
+
+We use both qualitative and quantitative methods to study how to make engineers more productive. Google uses the results of these studies to improve both our internal developer tools and processes and our external offerings for developers on GCP and Android.
+
+### Program Analysis and Refactoring
+
+We build static and dynamic analysis tools that find and prevent serious bugs from manifesting in both Google’s and third-party code. We also leverage this large-scale analysis infrastructure to refactor Google’s code at scale.
+
+### Machine Learning for Code
+
+We apply deep learning to Google’s large, well-curated codebase to automatically write code and repair bugs.
+
+### Programming Language Design and Implementation
+
+We design, evaluate, and implement new features for popular programming languages like Java, C++, and Go through their standards’ processes.
+
+### Automated Software Testing and Continuous Integration
+
+We design, implement and evaluate tools and frameworks to automate the testing process and integrate tests with the Google-wide continuous integration infrastructure.
+We propose a heuristic for judging whether a node is arid or not, conditioned on the programming language. We focus on a code-review based approach and consider the effects of surfacing mutation results on developer attention. The described system is used by 6,000 engineers in Google on all code changes they author or review, affecting in total more than 14,000 code authors as part of the mandatory code review process. The system processes about 30% of all diffs across Google that have statement coverage calculated. View details
+
+Engineering Impacts of Anonymous Author Code Review: A Field Experiment
+
+Emerson Rex Murphy-Hill
+
+Jill Dicker
+
+Maggie Hodges
+
+Carolyn Denomme Egelman
+
+Ciera Nicole Christopher Jaspan
+
+Lan Cheng
+
+Liz Kammer
+
+Ben Holtz
+
+Matthew A. Jorde
+
+Andrea Marie Knight Dolan
+
+Collin Green
+
+Transactions on Software Engineering (2021)
+
+Preview Preview abstract Code review is a powerful technique to ensure high quality software and spread knowledge of best coding practices between engineers. 
+Celal Ziftci
+
+Jim Reardon
+
+Proceedings of the 39th International Conference on Software Engineering: Software Engineering in Practice Track, IEEE Press, Buenos Aires, Argentina (2017), pp. 113-122 (to appear)
+
+Preview Preview abstract Quickly identifying and fixing code changes that introduce regressions is critical to keep the momentum on software development, especially in very large scale software repositories with rapid development cycles, such as at Google. Identifying and fixing such regressions is one of the most expensive, tedious, and time consuming tasks in the software development life-cycle. Therefore, there is a high demand for automated techniques that can help developers identify such changes while minimizing manual human intervention. Various techniques have recently been proposed to identify such code changes. However, these techniques have shortcomings that make them unsuitable for rapid development cycles as at Google. In this paper, we propose a novel algorithm to identify code changes that introduce regressions, and discuss case studies performed at Google on 140 projects. More than 100,000 code changes are submitted to our repository on average each day, in- cluding changes from either human users or automated tools. More than 15 million builds are executed on average each day. In this EXPERIENCE paper, we first describe an overview of our scal- able build service architecture. Then, we discuss more details about how we make build scheduling decisions. Finally, we discuss some experience in the scalability of the build service system and the performance of the build scheduling service. View details
+
+Accessibility of Command Line Interfaces
+
+Harini Sampath
+
+Alice Merrick
+
+Andrew Macvean
+
+CHI Conference on Human Factors in Computing Systems (2021)
+
+Preview Preview abstract Command line interfaces (CLIs) remain a popular tool among developers and system administrators. Since CLIs are text based interfaces, they are sometimes considered accessible alternatives to predominantly visual developer tools like IDEs. However, there is no systematic evaluation of accessibility of CLIs in the literature. In this paper, we describe two studies with 12 developers on their experience of using CLIs with screen readers. Our findings show that CLIs have their own set of accessibility issues - the most important being CLIs are unstructured text interfaces. Based on our findings, we provide a set of recommendations for improving accessibility of command line interfaces. View details
+
+## Highlighted work
+
+  * Software engineering at Google: Lessons Learned from Programming Over Time A book on how Google manages an ultra-large scale, living codebase that evolves and responds to changing requirements and demands over time. Learn More
+  * Why Google Stores Billions of Lines of Code in a Single Repository Presentation at the @Scale conference in 2015 on why Google stores all the code in a single codebase and the tools we have created to manage it. Learn More
+  * Keeping 2 billion lines of code moving forward Presentation at the @Scale conference in 2017 on how we keep velocity up in a large scale codebase. Learn More
+  * 2019 Accelerate State of DevOps Report Industry-standard report that to helps teams and organizations benchmark themselves against the industry and identify key capabilities to become high performers. Learn More
+  * 【32†Error Prone Google’s standard static analysis tool for Java and the foundation for our refactoring infrastructure. --------------------------------------------------------------------------------
+Searching for Build Debt: Experiences Managing Technical Debt at Google (https://research.google/pubs/searching-for-build-debt-experiences-managing-technical-debt-at-google/)
+citeturn78search8 [wordlim: 200] Published: 14.9 years ago; Crawled: last month; # Searching for Build Debt: Experiences Managing Technical Debt at Google ... With a large and rapidly changing codebase, Google software engineers are constantly paying interest on various forms of technical debt. ...   * Software engineering
+
+# Searching for Build Debt: Experiences Managing Technical Debt at Google
+
+J. David Morgenthaler
+
+Misha Gridnev
+
+Raluca Sauciuc
+
+Sanjay Bhansali
+
+Proceedings of the Third International Workshop on Managing Technical Debt, IEEE (2012), pp. 1-6
+
+Google Scholar
+
+[Input] Copy Bibtex
+
+## Abstract
+
+With a large and rapidly changing codebase, Google software engineers are constantly paying interest on various forms of technical debt. Google engineers also make efforts to pay down that debt, whether through special Fixit days, or via dedicated teams, variously known as janitors, cultivators,
+or demolition experts. We describe several related efforts to measure and pay down technical debt found in Google's BUILD files and associated dead code. We address debt found in dependency specifications, unbuildable targets, and
+unnecessary command line flags. These efforts often expose other forms of technical debt that must first be managed.
+
+## Research Areas
+
+  * Software engineering--------------------------------------------------------------------------------
+Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale - Engineering at Meta (https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/)
+citeturn78search9 [wordlim: 200] Published: 3 weeks ago; Crawled: today;   * Our paper, “Just-in-Time Catching Test Generation at Meta,” fully details our initial deployment and testing with Catching JiTTests. ... Key differences between traditional LLM-based code review and Catching JiTTests. ... To filter false positives, we employed a traditional rule-based approach combined with an ensemble approach we call “LLM-as-Judge,” which aggregates judgements from several state-of-the-art (SOTA) LLMs, all tasked with classifying weak catches as likely true or false positives. ... Agentic software development is helping engineers and developers across the industry write, review, and ship code faster than ever before. ... The approach is generalizable: Engineers define success criteria early, let AI execute the testing, monitor the outcomes at an aggregate level, and intervene at the policy level rather than per item.
+
+ImageFigure 2. The impact of Catching JiTTests at Meta in the first half of 2026.
+
+## Why It Matters
+
+Agentic software development is helping engineers and developers across the industry write, review, and ship code faster than ever before. But faster deployment means there’s also a need for faster testing. Every bug caught before it reaches production is one that end users never need to deal with. We’ve shown that LLMs can provide an additional safety layer capable of catching what traditional tests may miss, demonstrating that AI-generated testing can scale enough to reduce organizational risk. 
+
+Catching JiTTests is a solution that is scalable, both technologically and socially. Combining these tests with a human-on-the-loop approach helps ensure that engineers rarely need to read test code and only need to confirm whether an observed behavioral change was intended.
+
+The approach is generalizable: Engineers define success criteria early, let AI execute the testing, monitor the outcomes at an aggregate level, and intervene at the policy level rather than per item.
+
+## Read the Paper
+
+Our paper, “Just-in-Time Catching Test Generation at Meta,” which was presented at FSE 2026 and featured at Product@Scale, details our initial deployment and testing with Catching JiTTests in Meta’s infrastructure.--------------------------------------------------------------------------------
+Resolving code review comments with ML (https://research.google/blog/resolving-code-review-comments-with-ml/)
+citeturn78search10 [wordlim: 200] Published: 3.5 years ago; Crawled: last month; Code-change reviews are a critical part of the software development process at scale, taking a significant amount of the code authors’ and the code reviewers’ time. ... At Google, we see millions of reviewer comments per year, and authors require an average of ~60 minutes active shepherding time between sending changes for review and finally submitting the change. ... Today, we describe our application of recent advances in large sequence models (using the DIDACT methodology) in a real-world setting to automatically resolve code review comments in the day-to-day development workflow at Google.
+
+Image: Resolving code review comments with ML
+
+# Resolving code review comments with ML
+
+May 23, 2023
+
+Posted by Alexander Frömmgen, Staff Software Engineer, and Lera Kharatyan, Senior Software Engineer, Core Systems & Experiences
+
+Code-change reviews are a critical part of the software development process at scale, taking a significant amount of the code authors’ and the code reviewers’ time. As part of this process, the reviewer inspects the proposed code and asks the author for code changes through comments written in natural language. At Google, we see millions of reviewer comments per year, and authors require an average of ~60 minutes active shepherding time between sending changes for review and finally submitting the change. In our measurements, the required active work time that the code author must do to address reviewer comments grows almost linearly with the number of comments. However, with machine learning (ML), we have an opportunity to automate and streamline the code review process, e.g., by proposing code changes based on a comment’s text.
+
+Today, we describe our application of recent advances in large sequence models (using the DIDACT methodology) in a real-world setting to automatically resolve code review comments in the day-to-day development workflow at Google. As of today, code-change authors at Google address a substantial amount of reviewer comments by applying an ML-suggested edit. We expect that to reduce time spent on code reviews by hundreds of thousands of hours annually at Google scale. Unsolicited, very positive feedback highlights that the impact of ML-suggested code edits increases Googlers' productivity and allows them to focus on more creative and complex tasks.
+
+## Predicting the code edit
+
+We started by training a model that predicts code edits needed to address reviewer comments. The model is pre-trained on various coding tasks and related developer activities (e.g., renaming a variable, repairing a broken build, editing a file). It’s then fine-tuned for this specific task with reviewed code changes, the reviewer comments, and the edits the author performed to address those comments.
+
+An example of an ML-suggested edit of refactorings that are spread within the code.
+
+Google uses a monorepo, a single repository for all of its software artifacts, which allows our training dataset to include all unrestricted code used to build Google's most recent software, as well as previous versions.
+
+To improve the model quality, we iterated on the training dataset. For example, we compared the model performance for datasets with a single reviewer comment per file to datasets with multiple comments per file, and experimented with classifiers to clean up the training data based on a small, curated dataset to choose the model with the best offline precision and recall metrics.
+
+--------------------------------------------------------------------------------
+LLMs Are the Key to Mutation Testing and Better Compliance - Engineering at Meta (https://engineering.fb.com/2025/09/30/security/llms-are-the-key-to-mutation-testing-and-better-compliance/)
+citeturn78search11 [wordlim: 200] Published: 1.1 years ago; Crawled: today;   * Following our keynote presentations at FSE 2025 and Eurostar 2025, we’re delving further into the development of Meta’s Automated Compliance Hardening (ACH) tool, an LLM-based tool for software testing that is automating aspects of compliance adherence at Meta, while accelerating developer and product velocity. ... The idea behind mutation testing is to go beyond traditional structural coverage criteria like statement coverage or branch coverage (which only show if lines of code are run), to a more robust system of testing. Where statement or branch coverage might still fail to detect a bug if a line still runs, mutation testing reveals whether a test fails after inserting a mutation, indicating that the tests are not effectively checking the code’s behavior. ... In practice however, mutation testing has been notoriously difficult to deploy. ... In addition to examining ways to ensure that human reviewers are present to help prevent false positives, we should also investigate how developers are interacting with LLM-generated tests to improve their adoption and usability.
+POSTED ON SEPTEMBER 30, 2025 TO AI Research, ML Applications, Security & Privacy
+
+LLMs Are the Key to Mutation Testing and Better Compliance
+
+  * Following our keynote presentations at FSE 2025 and Eurostar 2025, we’re delving further into the development of Meta’s Automated Compliance Hardening (ACH) tool, an LLM-based tool for software testing that is automating aspects of compliance adherence at Meta, while accelerating developer and product velocity.
+  * By leveraging LLMs we’ve been able to overcome the barriers that have prevented mutation testing from being efficiently deployed at scale. This allows us to greatly simplify risk assessments, reduce cognitive load for developers, and, ultimately, create a safer online ecosystem by enabling continuous compliance.
+  * We’re also inviting the community to join us in exploring new challenges and opportunities for leveraging LLMs in software testing through efforts like ...

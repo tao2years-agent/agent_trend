@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="0.253" timestamp="2026-11-20T12:22:29.789047" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.geometry.tests.test_point" name="test_issue_22684" time="0.001"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:459: in test_issue_22684
+    Point(1, 2)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test_Point2D" time="0.001"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:312: in test_Point2D
+    p1 = Point2D(1, 5)
+sympy\geometry\point.py:915: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test__normalize_dimension" time="0.000"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:449: in test__normalize_dimension
+    assert Point._normalize_dimension(Point(1, 2), Point(3, 4)) == [
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test_arguments" time="0.000"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:368: in test_arguments
+    singles2d = ((1,2), [1,2], Point(1,2))
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test_concyclic_doctest_bug" time="0.000"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:357: in test_concyclic_doctest_bug
+    p1, p2 = Point(-1, 0), Point(1, 0)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test_dot" time="0.001"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:445: in test_dot
+    raises(TypeError, lambda: Point(1, 2).dot(Line((0, 0), (1, 1))))
+sympy\geometry\tests\test_point.py:445: in &lt;lambda&gt;
+    raises(TypeError, lambda: Point(1, 2).dot(Line((0, 0), (1, 1))))
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase></testsuite></testsuites>

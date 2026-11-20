@@ -1,0 +1,2422 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	
+	<link rel="preload" href="https://jellyfish.co/wp-content/themes/jellyfish/fonts/Roobert-Regular.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="https://jellyfish.co/wp-content/themes/jellyfish/fonts/Roobert-Bold.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="https://jellyfish.co/wp-content/themes/jellyfish/fonts/Roobert-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+
+	<script src="https://app.guideflow.com/assets/embed.js"></script>
+
+	
+	<script>
+		var hsscript = document.createElement("script");
+		hsscript.id = "wphs";
+		hsscript.src = "https://cdn.jsdelivr.net/npm/hockeystack@latest/hockeystack.min.js";
+		hsscript.async = 1;
+		hsscript.dataset.apikey = "f37b0dd24af9afd4f0f157f3a8e0ee";
+		hsscript.dataset.cookieless = 1;
+		hsscript.dataset.autoIdentify = 1;
+		document.getElementsByTagName('head')[0].append(hsscript);
+	</script>
+
+	<script src="https://fast.wistia.com/player.js" async></script>
+
+	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+  
+  <script>
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []
+			w[l].push({
+				'gtm.start': new Date().getTime(),
+				event: 'gtm.js',
+			})
+			var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s),
+				dl = l !== 'dataLayer' ? '&l=' + l : ''
+			j.async = true
+			j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+			f.parentNode.insertBefore(j, f)
+		})(window, document, 'script', 'dataLayer', 'GTM-PHDCM88')
+  </script>
+  
+
+  
+  <script>
+		(function (w, q) {
+			w['QualifiedObject'] = q
+			w[q] = w[q] || function () {
+				(w[q].q = w[q].q || []).push(arguments)
+			}
+		})(window, 'qualified')
+  </script>
+	
+	
+	<title>How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation  - Jellyfish</title>
+	<meta name="description" content="When it comes to team health, measuring developer experience is key. Learn how Jellyfish improved productivity and morale with its DevEx product." />
+	<link rel="canonical" href="https://jellyfish.co/blog/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation  - Jellyfish" />
+	<meta property="og:description" content="When it comes to team health, measuring developer experience is key. Learn how Jellyfish improved productivity and morale with its DevEx product." />
+	<meta property="og:url" content="https://jellyfish.co/blog/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation/" />
+	<meta property="og:site_name" content="Jellyfish" />
+	<meta property="article:published_time" content="2024-08-22T12:30:00+00:00" />
+	<meta property="og:image" content="https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp" />
+	<meta property="og:image:width" content="2560" />
+	<meta property="og:image:height" content="1402" />
+	<meta property="og:image:type" content="image/webp" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"Article","@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#article","isPartOf":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/"},"author":{"name":"Gail Axelrod","@id":"https:\/\/jellyfish.co\/#\/schema\/person\/a51606cba4bef0d4a5e071acaf68774d"},"headline":"How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation ","datePublished":"2024-08-22T12:30:00+00:00","mainEntityOfPage":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/"},"wordCount":1287,"commentCount":0,"image":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#primaryimage"},"thumbnailUrl":"https:\/\/jellyfish.co\/wp-content\/uploads\/2024\/08\/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp","articleSection":["Best Practices","DevEx"],"inLanguage":"en-US","potentialAction":[{"@type":"CommentAction","name":"Comment","target":["https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#respond"]}]},{"@type":"WebPage","@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/","url":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/","name":"How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation  - Jellyfish","isPartOf":{"@id":"https:\/\/jellyfish.co\/#website"},"primaryImageOfPage":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#primaryimage"},"image":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#primaryimage"},"thumbnailUrl":"https:\/\/jellyfish.co\/wp-content\/uploads\/2024\/08\/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp","datePublished":"2024-08-22T12:30:00+00:00","author":{"@id":"https:\/\/jellyfish.co\/#\/schema\/person\/a51606cba4bef0d4a5e071acaf68774d"},"description":"When it comes to team health, measuring developer experience is key. Learn how Jellyfish improved productivity and morale with its DevEx product.","breadcrumb":{"@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/"]}]},{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#primaryimage","url":"https:\/\/jellyfish.co\/wp-content\/uploads\/2024\/08\/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp","contentUrl":"https:\/\/jellyfish.co\/wp-content\/uploads\/2024\/08\/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp","width":2560,"height":1402,"caption":"blog How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation"},{"@type":"BreadcrumbList","@id":"https:\/\/jellyfish.co\/blog\/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/jellyfish.co\/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https:\/\/jellyfish.co\/blog\/"},{"@type":"ListItem","position":3,"name":"How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation "}]},{"@type":"WebSite","@id":"https:\/\/jellyfish.co\/#website","url":"https:\/\/jellyfish.co\/","name":"Jellyfish","description":"","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/jellyfish.co\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Person","@id":"https:\/\/jellyfish.co\/#\/schema\/person\/a51606cba4bef0d4a5e071acaf68774d","name":"Gail Axelrod","image":{"@type":"ImageObject","inLanguage":"en-US","@id":"https:\/\/secure.gravatar.com\/avatar\/27a28a2430a37d22d75d18a045bb567e30179ea5dfe6868e2180f79a9952fe8c?s=96&d=mm&r=g","url":"https:\/\/secure.gravatar.com\/avatar\/27a28a2430a37d22d75d18a045bb567e30179ea5dfe6868e2180f79a9952fe8c?s=96&d=mm&r=g","contentUrl":"https:\/\/secure.gravatar.com\/avatar\/27a28a2430a37d22d75d18a045bb567e30179ea5dfe6868e2180f79a9952fe8c?s=96&d=mm&r=g","caption":"Gail Axelrod"},"url":"https:\/\/jellyfish.co\/blog\/author\/gail-axelrod\/"}]}</script>
+	
+
+
+<link rel='dns-prefetch' href='//cdn.jsdelivr.net' />
+<link rel='dns-prefetch' href='//js.navattic.com' />
+<link rel='dns-prefetch' href='//tofu-js.s3.us-west-2.amazonaws.com' />
+<link rel='dns-prefetch' href='//js.qualified.com' />
+<link rel='dns-prefetch' href='//play.vidyard.com' />
+<link rel='dns-prefetch' href='//www.youtube.com' />
+<link rel='dns-prefetch' href='//assets.adoberesources.net' />
+<link rel='dns-prefetch' href='//app-ab46.marketo.com' />
+<link href='https://fonts.googleapis.com' crossorigin='anonymous' rel='preconnect' />
+<link href='https://fonts.gstatic.com' crossorigin='anonymous' rel='preconnect' />
+<link href='https://cdn.jsdelivr.net' rel='preconnect' />
+<link href='https://js.qualified.com' rel='preconnect' />
+<link href='https://play.vidyard.com' rel='preconnect' />
+<link href='https://app-ab46.marketo.com' rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Jellyfish &raquo; Feed" href="https://jellyfish.co/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Jellyfish &raquo; Comments Feed" href="https://jellyfish.co/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Jellyfish &raquo; How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation  Comments Feed" href="https://jellyfish.co/blog/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://jellyfish.co/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjellyfish.co%2Fblog%2Fhow-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://jellyfish.co/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fjellyfish.co%2Fblog%2Fhow-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation%2F&#038;format=xml" />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-break:normal!important}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style^=border-color],[style*=";border-color"],[style*="; border-color"]){border-style:solid}html :where([style^=border-top-color],[style*=";border-top-color"],[style*="; border-top-color"]){border-top-style:solid}html :where([style^=border-right-color],[style*=";border-right-color"],[style*="; border-right-color"]){border-right-style:solid}html :where([style^=border-bottom-color],[style*=";border-bottom-color"],[style*="; border-bottom-color"]){border-bottom-style:solid}html :where([style^=border-left-color],[style*=";border-left-color"],[style*="; border-left-color"]){border-left-style:solid}html :where([style^=border-width],[style*=";border-width"],[style*="; border-width"]){border-style:solid}html :where([style^=border-top-width],[style*=";border-top-width"],[style*="; border-top-width"]){border-top-style:solid}html :where([style^=border-right-width],[style*=";border-right-width"],[style*="; border-right-width"]){border-right-style:solid}html :where([style^=border-bottom-width],[style*=";border-bottom-width"],[style*="; border-bottom-width"]){border-bottom-style:solid}html :where([style^=border-left-width],[style*=";border-left-width"],[style*="; border-left-width"]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--navy: #0D062B;--wp--preset--color--purple: #7319F2;--wp--preset--color--aqua: #13E2BF;--wp--preset--color--neongreen: #CFEF09;--wp--preset--color--lightpurple: #F9F6FE;--wp--preset--color--red: #FF502A;--wp--preset--color--purple-tint-100: #E3D1FC;--wp--preset--color--purple-tint-300: #9767DD;--wp--preset--color--purple-tint-400: #8F47F3;--wp--preset--color--black-tinted-100: #E1DEE9;--wp--preset--color--black-tinted-300: #6E6A80;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:root { --wp--style--global--content-size: 80rem;--wp--style--global--wide-size: 140rem; }:where(body) { margin: 0; }.wp-site-blocks > .alignleft { float: left; margin-right: 2em; }.wp-site-blocks > .alignright { float: right; margin-left: 2em; }.wp-site-blocks > .aligncenter { justify-content: center; margin-left: auto; margin-right: auto; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}.is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-navy-color{color: var(--wp--preset--color--navy) !important;}.has-purple-color{color: var(--wp--preset--color--purple) !important;}.has-aqua-color{color: var(--wp--preset--color--aqua) !important;}.has-neongreen-color{color: var(--wp--preset--color--neongreen) !important;}.has-lightpurple-color{color: var(--wp--preset--color--lightpurple) !important;}.has-red-color{color: var(--wp--preset--color--red) !important;}.has-purple-tint-100-color{color: var(--wp--preset--color--purple-tint-100) !important;}.has-purple-tint-300-color{color: var(--wp--preset--color--purple-tint-300) !important;}.has-purple-tint-400-color{color: var(--wp--preset--color--purple-tint-400) !important;}.has-black-tinted-100-color{color: var(--wp--preset--color--black-tinted-100) !important;}.has-black-tinted-300-color{color: var(--wp--preset--color--black-tinted-300) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-navy-background-color{background-color: var(--wp--preset--color--navy) !important;}.has-purple-background-color{background-color: var(--wp--preset--color--purple) !important;}.has-aqua-background-color{background-color: var(--wp--preset--color--aqua) !important;}.has-neongreen-background-color{background-color: var(--wp--preset--color--neongreen) !important;}.has-lightpurple-background-color{background-color: var(--wp--preset--color--lightpurple) !important;}.has-red-background-color{background-color: var(--wp--preset--color--red) !important;}.has-purple-tint-100-background-color{background-color: var(--wp--preset--color--purple-tint-100) !important;}.has-purple-tint-300-background-color{background-color: var(--wp--preset--color--purple-tint-300) !important;}.has-purple-tint-400-background-color{background-color: var(--wp--preset--color--purple-tint-400) !important;}.has-black-tinted-100-background-color{background-color: var(--wp--preset--color--black-tinted-100) !important;}.has-black-tinted-300-background-color{background-color: var(--wp--preset--color--black-tinted-300) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-navy-border-color{border-color: var(--wp--preset--color--navy) !important;}.has-purple-border-color{border-color: var(--wp--preset--color--purple) !important;}.has-aqua-border-color{border-color: var(--wp--preset--color--aqua) !important;}.has-neongreen-border-color{border-color: var(--wp--preset--color--neongreen) !important;}.has-lightpurple-border-color{border-color: var(--wp--preset--color--lightpurple) !important;}.has-red-border-color{border-color: var(--wp--preset--color--red) !important;}.has-purple-tint-100-border-color{border-color: var(--wp--preset--color--purple-tint-100) !important;}.has-purple-tint-300-border-color{border-color: var(--wp--preset--color--purple-tint-300) !important;}.has-purple-tint-400-border-color{border-color: var(--wp--preset--color--purple-tint-400) !important;}.has-black-tinted-100-border-color{border-color: var(--wp--preset--color--black-tinted-100) !important;}.has-black-tinted-300-border-color{border-color: var(--wp--preset--color--black-tinted-300) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='jellyfish-style-css' href='https://jellyfish.co/wp-content/themes/jellyfish/dist/style-editor.js?ver=1795031583' media='all' />
+<link rel='stylesheet' id='jellyfish-components-css' href='https://jellyfish.co/wp-content/themes/jellyfish/dist/css/components-compiled.css?ver=1795031583' media='all' />
+<link rel='stylesheet' id='jellyfish-main-css' href='https://jellyfish.co/wp-content/themes/jellyfish/dist/css/main.css?ver=1795031583' media='all' />
+<link rel='stylesheet' id='aos-css-css' href='https://jellyfish.co/wp-content/themes/jellyfish/js/aos-master/dist/aos.css?ver=1.0.0' media='print' onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://jellyfish.co/wp-content/themes/jellyfish/js/aos-master/dist/aos.css"></noscript><script id="gsap-js" src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?ver=3.12.5"></script>
+<script id="gsap-scrolltrigger-js" src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?ver=3.12.5"></script>
+<script id="navattic-embeds-js" src="https://js.navattic.com/embeds.js"></script>
+<script id="marketo-forms-js" src="//app-ab46.marketo.com/js/forms2/js/forms2.min.js"></script>
+<script id="jquery-core-js-extra">
+var ajax_params = {"ajax_url":"https://jellyfish.co/wp-admin/admin-ajax.php","post_type":"resources","nonce":"91a7fa4b34"};
+//# sourceURL=jquery-core-js-extra
+</script>
+<script id="jquery-core-js" src="https://jellyfish.co/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+<script id="jquery-migrate-js" src="https://jellyfish.co/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1"></script>
+<script id="marketo-loader-js" src="https://jellyfish.co/wp-content/themes/jellyfish/js/marketo-loader.js?ver=1.0.0"></script>
+<link rel="https://api.w.org/" href="https://jellyfish.co/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://jellyfish.co/wp-json/wp/v2/posts/21968" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://jellyfish.co/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 7.1.4" />
+<link rel='shortlink' href='https://jellyfish.co/?p=21968' />
+<link rel="pingback" href="https://jellyfish.co/xmlrpc.php"><link rel="icon" href="https://jellyfish.co/wp-content/uploads/2023/08/cropped-jellyfish-favicon-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://jellyfish.co/wp-content/uploads/2023/08/cropped-jellyfish-favicon-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://jellyfish.co/wp-content/uploads/2023/08/cropped-jellyfish-favicon-180x180.png" />
+<meta name="msapplication-TileImage" content="https://jellyfish.co/wp-content/uploads/2023/08/cropped-jellyfish-favicon-270x270.png" />
+  
+  <script>
+		var $ = jQuery
+  </script>
+	
+</head>
+
+<body class="wp-singular post-template-default single single-post postid-21968 single-format-standard wp-embed-responsive wp-theme-jellyfish has-banner demo-btn-electric-glow">
+
+	
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PHDCM88" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+	
+
+		
+	
+<div id="pencil-banner"
+	class="fixed w-[100%] top-0 py-[10px] leading-[18px] text-center"
+	data-banner-id="775a032f99e18613d53a02fd638b348b"
+	role="region"
+	aria-label="Site announcement">
+
+			<div class="container mx-auto">
+			<span class="banner-msg text-[14px] navy">What is your token spend actually buying you? Get answers from Jellyfish leadership at AWS re:Invent, Nov 30 to Dec 3.									<a class="cta-link navy ml-[13px]" href="https://jellyfish.co/events-and-webinars/jellyfish-re-invent/">
+						Save your spot					</a>
+							</span>
+		</div>
+	</div>
+
+	
+		
+
+	<a href="#content" class="sr-only">Skip to content</a>
+
+	<div class="overlay"></div>
+<header id="masthead">
+	    <div id="header-inner" class="header-container mx-auto flex items-center justify-between flex-nowrap gap-x-14 glass-dark xl:glass-light">
+      
+      <a id="global-logo" class="navbar-brand has-logo-links" rel="home" href="https://jellyfish.co/"
+              itemprop="url" aria-haspopup="menu" aria-controls="logo-context-menu">
+				<svg class="site-logo w-full pointer-events-none" width="170" height="30" viewBox="0 0 170 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.932 1.783C12.376-1.937 4.175.347.416 6.939-.441 8.442.07 10.362 1.549 11.23c0 0 .816.61 2.053 1.49l-2.304 4.046a1.643 1.643 0 0 0 .59 2.23l.271.158a1.6 1.6 0 0 0 2.201-.597l2.172-3.808a108 108 0 0 0 2.316 1.512L3.02 26.486a1.643 1.643 0 0 0 .589 2.23l.272.158a1.6 1.6 0 0 0 2.2-.597l5.828-10.225c.808.439 1.64.873 2.448 1.282l-3.853 6.764a1.643 1.643 0 0 0 .589 2.23l.272.158a1.6 1.6 0 0 0 2.2-.597l3.99-7.002c1.372.643 2.3 1.052 2.3 1.052a3.08 3.08 0 0 0 4.236-1.148l.103-.18c3.808-6.68 1.397-15.05-5.263-18.828m26.65 15.238c0 4.518-2.621 6.597-6.619 6.597-4.055 0-6.21-2.288-6.45-6.571a.173.173 0 0 1 .162-.184l1.817-.134a.17.17 0 0 1 .181.163c.235 3.265 1.628 4.826 4.32 4.826 2.777 0 4.376-1.432 4.376-4.613V6.129c0-.096.078-.175.173-.175h1.871c.095 0 .173.079.173.175v10.892zm17.907 4.564v1.595a.175.175 0 0 1-.173.175H51.12a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.175.173-.175h11.775c.094 0 .173.079.173.175v1.595a.175.175 0 0 1-.173.175h-9.73v5.595h8.007c.095 0 .173.079.173.175v1.586a.175.175 0 0 1-.173.176h-8.008v5.983h10.15a.17.17 0 0 1 .174.17m15.289.001v1.595a.175.175 0 0 1-.173.175H67.79a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.175.173-.175h1.871c.095 0 .173.079.173.175v15.28h8.774c.091 0 .17.08.17.176m14.844 0v1.595a.175.175 0 0 1-.173.175H82.635a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.175.173-.175h1.871c.095 0 .173.079.173.175v15.28h8.774c.09 0 .169.08.169.176m8.852-4.831v6.426a.176.176 0 0 1-.174.175h-1.871a.176.176 0 0 1-.173-.175v-6.43L93.572 6.225a.173.173 0 0 1 .144-.267h2.16c.057 0 .115.029.144.08l5.415 8.7 5.415-8.7a.17.17 0 0 1 .144-.08h1.995c.136 0 .219.15.144.267zM115.208 7.9v5.87h8.214c.095 0 .173.079.173.175v1.594a.175.175 0 0 1-.173.176h-8.214v7.469a.175.175 0 0 1-.173.175h-1.871a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.175.173-.175h11.873c.095 0 .173.079.173.175v1.595a.175.175 0 0 1-.173.175zm14.099-1.942h1.871c.095 0 .173.08.173.175v17.05a.175.175 0 0 1-.173.176h-1.871a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.171.173-.171m8.415 12.512a.17.17 0 0 1 .235.088c1.059 2.405 3.103 3.169 5.555 3.169 3.145 0 4.69-1.349 4.69-3.177 0-1.846-1.372-2.489-3.28-2.76-.936-.134-2.786-.35-3.408-.426-3.1-.346-4.872-1.737-4.872-4.526 0-3.085 2.799-5.06 6.598-5.068 2.473-.008 5.053.747 6.623 3.57a.176.176 0 0 1-.058.233l-1.446.944a.17.17 0 0 1-.243-.063c-1.241-2.15-3.025-2.755-4.9-2.776-2.704-.02-4.41 1.282-4.41 2.994 0 1.686 1.092 2.38 2.975 2.613.549.059 2.72.33 3.466.41 2.984.367 5.119 1.594 5.119 4.633 0 3.311-2.687 5.328-6.891 5.328-3.404 0-6.013-1.06-7.43-4.134a.175.175 0 0 1 .078-.23zM169.97 6.129v17.05a.175.175 0 0 1-.173.176h-1.871a.175.175 0 0 1-.173-.175v-7.774h-10.48v7.774a.175.175 0 0 1-.173.175h-1.871a.175.175 0 0 1-.173-.175V6.129c0-.096.078-.175.173-.175h1.871c.095 0 .173.079.173.175v7.331h10.48V6.13c0-.096.078-.175.173-.175h1.871a.177.177 0 0 1 .173.175" fill="currentColor"/></svg>      </a>
+
+      
+      <div id="mobile-nav-back-header" class="mobile-nav-back-header" style="display: none;">
+        <button id="mobile-nav-back-button" class="mobile-nav-back-button" aria-label="Go back to main menu">
+          <svg class="back-arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="mobile-nav-submenu-title" class="mobile-nav-submenu-title"></span>
+        </button>
+      </div>
+
+      <div class="align-center gap-x-4 flex xl:hidden">
+				            <div class="mobile-actions">
+              <a href="https://www.jellyfish.co/request-a-demo/" class="primary-btn small neongreen">
+								Request a Demo              </a>
+            </div>
+					        <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false"
+                aria-label="Toggle Mobile Menu">
+          <svg class="toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="toggle-icon-path" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      
+							        <nav class="main-nav">
+          <ul class="top-level-menu">
+						              <li class="menu-item">
+								                  
+                  <button class="menu-item-link" aria-haspopup="true" aria-expanded="false">
+										Platform                    <svg class="toggle-icon" aria-hidden="true" width="12" height="7" viewBox="0 0 18 11">
+                      <path class="toggle-icon-path" fill-rule="evenodd" clip-rule="evenodd"
+                              d="M1.17472 1.17496C1.63033 0.719349 2.36902 0.719349 2.82463 1.17496L8.99967 7.35L15.1747 1.17496C15.6303 0.719349 16.369 0.719349 16.8246 1.17496C17.2802 1.63057 17.2802 2.36926 16.8246 2.82487L9.82463 9.82487C9.36902 10.2805 8.63033 10.2805 8.17472 9.82487L1.17472 2.82487C0.719105 2.36926 0.719105 1.63057 1.17472 1.17496Z"
+                              fill="currentColor"/>
+                    </svg>
+                  </button>
+								
+								                  <div class="dropdown-wrapper">
+                    <div class="dropdown">
+											                      <div class="dropdown-content">
+												                          <div class="column overview-column
+																			">
+														                                    <div class="overview-column-content">
+
+
+                                      <div class="overview-layout">
+                                        
+                                        <div class="overview-level-1-column">
+																					                                            <div class="overview-eyebrow">Products                                            </div>
+																																										                                              <button
+                                                      class="overview-level-1 has-children active"
+                                                      data-overview-index="0"
+																								                                                  aria-haspopup="true"
+                                                  aria-expanded="true"
+																								>
+																								                                                <span class="overview-content">
+															<span class="overview-title">
+																AI Impact																															</span>
+																                                  <span
+                                          class="overview-desc">Effectively build AI-integrated engineering teams</span>
+																														</span>
+                                              </button>
+																							                                              <button
+                                                      class="overview-level-1 has-children"
+                                                      data-overview-index="1"
+																								                                                  aria-haspopup="true"
+                                                  aria-expanded="false"
+																								>
+																								                                                <span class="overview-content">
+															<span class="overview-title">
+																Operational Effectiveness																															</span>
+																                                  <span
+                                          class="overview-desc">Use data to proactively manage teams and remove bottlenecks</span>
+																														</span>
+                                              </button>
+																							                                              <button
+                                                      class="overview-level-1 has-children"
+                                                      data-overview-index="2"
+																								                                                  aria-haspopup="true"
+                                                  aria-expanded="false"
+																								>
+																								                                                <span class="overview-content">
+															<span class="overview-title">
+																Business Alignment																															</span>
+																                                  <span
+                                          class="overview-desc">Focus engineering work on impact and communicate outcomes</span>
+																														</span>
+                                              </button>
+																							                                              <button
+                                                      class="overview-level-1 has-children"
+                                                      data-overview-index="3"
+																								                                                  aria-haspopup="true"
+                                                  aria-expanded="false"
+																								>
+																								                                                <span class="overview-content">
+															<span class="overview-title">
+																DevEx																															</span>
+																                                  <span
+                                          class="overview-desc">Uncover issues impacting productivity with dev surveys</span>
+																														</span>
+                                              </button>
+																							                                              <button
+                                                      class="overview-level-1 has-children"
+                                                      data-overview-index="4"
+																								                                                  aria-haspopup="true"
+                                                  aria-expanded="false"
+																								>
+																								                                                <span class="overview-content">
+															<span class="overview-title">
+																DevFinOps																															</span>
+																                                  <span
+                                          class="overview-desc">Align with Finance and automate financial reporting</span>
+																														</span>
+                                              </button>
+																							                                        </div>
+
+                                        
+                                        <div class="overview-level-2-column">
+																					                                                <div
+                                                        class="overview-level-2-group overview-group-0 active">
+																									                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/"
+                                                              target=""
+                                                              class="overview-level-2 is-bold">
+																												AI Impact Overview																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/drive-adoption/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Drive Adoption																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/ai-token-usage-monitoring/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												AI Token Cost Management																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/impact-insights/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Impact Insights																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/workflow-optimization/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Workflow Optimization																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/enable-teams/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Enable Teams																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/vendor-comparison/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Vendor Comparison																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/jellyfish-ai-impact/report-builder/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Report Builder																												                                                      </a>
+																										                                                </div>
+																							                                                <div
+                                                        class="overview-level-2-group overview-group-1">
+																									                                                      <a href="https://jellyfish.co/solutions/engineering-product-operations/"
+                                                              target=""
+                                                              class="overview-level-2 is-bold">
+																												Operational Effectiveness Overview																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/engineering-metrics/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Metrics																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/life-cycle-explorer/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Life Cycle Explorer																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/solutions/engineering-product-operations/team-workflow-analysis/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Workflow Analysis																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/solutions/engineering-product-operations/people-management/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												People Management																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/benchmarks/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Team Benchmarks																												                                                      </a>
+																										                                                </div>
+																							                                                <div
+                                                        class="overview-level-2-group overview-group-2">
+																									                                                      <a href="https://jellyfish.co/solutions/business-alignment/"
+                                                              target=""
+                                                              class="overview-level-2 is-bold">
+																												Business Alignment Overview																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/platform/resource-allocations/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Resource Allocations																												                                                      </a>
+																										                                                </div>
+																							                                                <div
+                                                        class="overview-level-2-group overview-group-3">
+																									                                                      <a href="https://jellyfish.co/platform/devex/"
+                                                              target=""
+                                                              class="overview-level-2 is-bold">
+																												DevEx Overview																												                                                      </a>
+																										                                                </div>
+																							                                                <div
+                                                        class="overview-level-2-group overview-group-4">
+																									                                                      <a href="https://jellyfish.co/platform/devfinops/"
+                                                              target=""
+                                                              class="overview-level-2 is-bold">
+																												DevFinOps Overview																												                                                      </a>
+																										                                                      <a href="https://jellyfish.co/solutions/software-capitalization/"
+                                                              target=""
+                                                              class="overview-level-2">
+																												Software Capitalization																												                                                      </a>
+																										                                                </div>
+																							                                        </div>
+                                      </div>
+                                    </div>
+																	                          </div>
+												                          <div class="column standard-column
+																			">
+														                                    <div
+                                            class="standard-column-content column-light-purple ">
+																			                                        <div class="eyebrow">Jellyfish Platform</div>
+																																						                                        <ul
+                                                class="menu-list ">
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/tour/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Take a Tour</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/platform/jellyfish-assistant/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Jellyfish AI Assistant</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/platform/data-hub/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Data Hub</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/blog/what-is-allocation/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Patented Data Model</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/integrations/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Integrations</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/learn/trust-center/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Security</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://academy.jellyfish.co/app"
+                                                      class="menu-item-link-child"
+																								 target="_blank">
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Jellyfish Academy</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/request-a-demo/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Get a Demo</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                        </ul>
+																			
+																			                                    </div>
+																	                          </div>
+												                      </div>
+											                    </div>
+                  </div>
+								              </li>
+						              <li class="menu-item">
+								                  
+                  <button class="menu-item-link" aria-haspopup="true" aria-expanded="false">
+										Teams                    <svg class="toggle-icon" aria-hidden="true" width="12" height="7" viewBox="0 0 18 11">
+                      <path class="toggle-icon-path" fill-rule="evenodd" clip-rule="evenodd"
+                              d="M1.17472 1.17496C1.63033 0.719349 2.36902 0.719349 2.82463 1.17496L8.99967 7.35L15.1747 1.17496C15.6303 0.719349 16.369 0.719349 16.8246 1.17496C17.2802 1.63057 17.2802 2.36926 16.8246 2.82487L9.82463 9.82487C9.36902 10.2805 8.63033 10.2805 8.17472 9.82487L1.17472 2.82487C0.719105 2.36926 0.719105 1.63057 1.17472 1.17496Z"
+                              fill="currentColor"/>
+                    </svg>
+                  </button>
+								
+								                  <div class="dropdown-wrapper">
+                    <div class="dropdown">
+											                      <div class="dropdown-content">
+												                          <div class="column standard-column
+																			">
+														                                    <div
+                                            class="standard-column-content column-white standard-column-grid">
+																																						                                        <ul
+                                                class="menu-list gridded">
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/solutions/engineering-leaders/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-executive.svg"
+                                                              alt="Engineering executives"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Engineering Executives</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Drive and communicate org impact</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/solutions/engineering-managers/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-engineering-manager.svg"
+                                                              alt="Engineering mangers"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Engineering Managers</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Help your teams work more effectively</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/solutions/platform-engineering/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-platform-engineering.svg"
+                                                              alt="Platform engineering"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Platform Engineering</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Reduce friction &amp; improve DevEx</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://www.jellyfish.co/solutions/product-leaders/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-product-leaders.svg"
+                                                              alt="Product leaders"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Product Leaders</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Build trust in roadmap predictability</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/solutions/finance-teams/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-finance.svg"
+                                                              alt="Finance teams"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Finance Teams</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Automate R&amp;D financial reporting</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/solutions/engineers/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                      <img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-software-developers.svg"
+                                                              alt="Software developers"
+                                                              class="item-icon">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Software Developers</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																												                                                          <p class="item-description">
+																														Find more focus and make your voice heard</p>
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                        </ul>
+																			
+																			                                    </div>
+																	                          </div>
+												                      </div>
+											                    </div>
+                  </div>
+								              </li>
+						              <li class="menu-item no-dropdown">
+								                  
+                  <a href="https://jellyfish.co/pricing/" class="menu-item-link"
+										>
+										Pricing                  </a>
+								
+								              </li>
+						              <li class="menu-item">
+								                  
+                  <button class="menu-item-link" aria-haspopup="true" aria-expanded="false">
+										Research                    <svg class="toggle-icon" aria-hidden="true" width="12" height="7" viewBox="0 0 18 11">
+                      <path class="toggle-icon-path" fill-rule="evenodd" clip-rule="evenodd"
+                              d="M1.17472 1.17496C1.63033 0.719349 2.36902 0.719349 2.82463 1.17496L8.99967 7.35L15.1747 1.17496C15.6303 0.719349 16.369 0.719349 16.8246 1.17496C17.2802 1.63057 17.2802 2.36926 16.8246 2.82487L9.82463 9.82487C9.36902 10.2805 8.63033 10.2805 8.17472 9.82487L1.17472 2.82487C0.719105 2.36926 0.719105 1.63057 1.17472 1.17496Z"
+                              fill="currentColor"/>
+                    </svg>
+                  </button>
+								
+								                  <div class="dropdown-wrapper">
+                    <div class="dropdown">
+											                      <div class="dropdown-content">
+												                          <div class="column standard-column
+																			">
+														                                    <div
+                                            class="standard-column-content column-white ">
+																																						                                        <ul
+                                                class="menu-list ">
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/research/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Research Library</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/state-of-ai-software-engineering/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														State of AI in Software Engineering</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/ai-engineering-trends/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														AI Engineering Trends</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/blog/ai-impact-framework/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														AI Impact Framework</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/blog/a-new-software-engineering-intelligence-maturity-model/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														SEI Maturity Model</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/2026-state-of-engineering-management/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														State of Engineering Management</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                        </ul>
+																			
+																			                                    </div>
+																	                          </div>
+												                          <div class="column callout-column
+																			">
+														                                    <a href="https://jellyfish.co/research/ai-coding/"
+                                            class="callout-column-content column-light-purple"
+																			>
+																			                                        <div class="eyebrow">Featured</div>
+																			
+																			                                        <div class="callout-image">
+                                          <img src="https://jellyfish.co/wp-content/uploads/2025/08/Jellyfish_research-library_Featured-Image_450x200.webp"
+                                                  alt="">
+                                        </div>
+																			
+                                      <div class="flex gap-2 items-center">
+																				                                          <span class="item-title semibold">AI Research Library</span>
+																																								                                      </div>
+
+																			                                        <p class="item-description">Cutting edge research from the leaders in Software Engineering Intelligence</p>
+																			
+                                    </a>
+																	                          </div>
+												                      </div>
+											                    </div>
+                  </div>
+								              </li>
+						              <li class="menu-item no-dropdown">
+								                  
+                  <a href="https://jellyfish.co/company/customers/" class="menu-item-link"
+										>
+										Customers                  </a>
+								
+								              </li>
+						              <li class="menu-item">
+								                  
+                  <button class="menu-item-link" aria-haspopup="true" aria-expanded="false">
+										Resources                    <svg class="toggle-icon" aria-hidden="true" width="12" height="7" viewBox="0 0 18 11">
+                      <path class="toggle-icon-path" fill-rule="evenodd" clip-rule="evenodd"
+                              d="M1.17472 1.17496C1.63033 0.719349 2.36902 0.719349 2.82463 1.17496L8.99967 7.35L15.1747 1.17496C15.6303 0.719349 16.369 0.719349 16.8246 1.17496C17.2802 1.63057 17.2802 2.36926 16.8246 2.82487L9.82463 9.82487C9.36902 10.2805 8.63033 10.2805 8.17472 9.82487L1.17472 2.82487C0.719105 2.36926 0.719105 1.63057 1.17472 1.17496Z"
+                              fill="currentColor"/>
+                    </svg>
+                  </button>
+								
+								                  <div class="dropdown-wrapper">
+                    <div class="dropdown">
+											                      <div class="dropdown-content">
+												                          <div class="column standard-column
+																			">
+														                                    <div
+                                            class="standard-column-content column-white ">
+																																						                                        <ul
+                                                class="menu-list ">
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://www.jellyfish.co/blog/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Blog</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://www.jellyfish.co/resources/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Reports &amp; Guides</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://www.jellyfish.co/webinars/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Webinars &amp; Events</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://adamferrari.substack.com/"
+                                                      class="menu-item-link-child"
+																								 target="_blank">
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Engineering Together</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/learn/engineering-leadership-academy/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Leadership Academy</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/library/whats-new/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Product Releases</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/glow/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														GLOW Video Series</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                            <li class="menu-list-item">
+																							                                              <a href="https://jellyfish.co/library/index/"
+                                                      class="menu-item-link-child"
+																								>
+																								                                                <div class="child-item-wrapper">
+                                                  <div class="flex items-start gap-2">
+																										                                                    <div class="w-full">
+                                                      <div class="flex gap-2 items-center">
+																												                                                          <span class="item-title">
+																														Learn</span>
+																																																								                                                      </div>
+                                                      <div
+                                                              class="">
+																																																								                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+																								                                              </a>
+																						                                            </li>
+																					                                        </ul>
+																			
+																			                                    </div>
+																	                          </div>
+												                          <div class="column callout-column
+																			">
+														                                    <a href="https://jellyfish.co/resources/tokenomics-for-your-2027-rd-budget/"
+                                            class="callout-column-content column-light-purple"
+																			>
+																			
+																			                                        <div class="callout-image">
+                                          <img src="https://jellyfish.co/wp-content/uploads/2026/10/Jellyfish_Resource-Card_ebook_2027-tokenomics.webp"
+                                                  alt="">
+                                        </div>
+																			
+                                      <div class="flex gap-2 items-center">
+																				                                          <span class="item-title semibold">Tokenomics for Your 2027 R&amp;D Budget</span>
+																																								                                      </div>
+
+																			                                        <p class="item-description">New Jellyfish Research on how AI spend really behaves, plus a five-step exercise to set a 2027 number that holds up with finance.</p>
+																			
+                                    </a>
+																	                          </div>
+												                      </div>
+											                    </div>
+                  </div>
+								              </li>
+						          </ul>
+        </nav>
+        <nav id="mobile-navigation" aria-label="Mobile Navigation">
+          <div class="h-full flex flex-col">
+            
+            <ul class="mobile-top-level-menu">
+							                <li class="mobile-menu-item">
+									                    
+                    <button class="mobile-menu-item-toggle" aria-expanded="false" data-submenu-id="mobile-submenu-0">
+                      <span class="mobile-menu-item-text">Platform</span>
+                      <span
+                              class="screen-reader-text">Toggle Platform submenu</span>
+                      <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+									                </li>
+								                <li class="mobile-menu-item">
+									                    
+                    <button class="mobile-menu-item-toggle" aria-expanded="false" data-submenu-id="mobile-submenu-1">
+                      <span class="mobile-menu-item-text">Teams</span>
+                      <span
+                              class="screen-reader-text">Toggle Teams submenu</span>
+                      <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+									                </li>
+								                <li class="mobile-menu-item">
+									                    
+                    <a href="https://jellyfish.co/pricing/" class="mobile-menu-item-link"
+											>
+											Pricing                    </a>
+									                </li>
+								                <li class="mobile-menu-item">
+									                    
+                    <button class="mobile-menu-item-toggle" aria-expanded="false" data-submenu-id="mobile-submenu-3">
+                      <span class="mobile-menu-item-text">Research</span>
+                      <span
+                              class="screen-reader-text">Toggle Research submenu</span>
+                      <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+									                </li>
+								                <li class="mobile-menu-item">
+									                    
+                    <a href="https://jellyfish.co/company/customers/" class="mobile-menu-item-link"
+											>
+											Customers                    </a>
+									                </li>
+								                <li class="mobile-menu-item">
+									                    
+                    <button class="mobile-menu-item-toggle" aria-expanded="false" data-submenu-id="mobile-submenu-5">
+                      <span class="mobile-menu-item-text">Resources</span>
+                      <span
+                              class="screen-reader-text">Toggle Resources submenu</span>
+                      <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+									                </li>
+								            </ul>
+
+            
+						              <ul class="submenu" id="mobile-submenu-0">
+								                            <li class="overview-mobile-column-content">
+															                                <div class="eyebrow">Products</div>
+															
+															                                <ul class="overview-mobile-list">
+																	                                    <li
+                                            class="overview-mobile-item has-submenu">
+																																							                                        <button class="overview-mobile-toggle" aria-expanded="false" data-nested-submenu-id="mobile-submenu-nested-0-1" data-nested-submenu-title="AI Impact">
+                                          <div class="overview-mobile-toggle-content">
+																						                                            <div class="overview-mobile-text">
+                                              <div class="flex gap-2 items-center">
+																								                                                  <span class="item-title">AI Impact                                                  </span>
+																																																                                              </div>
+																							                                                <p class="item-description">
+																									Effectively build AI-integrated engineering teams                                                </p>
+																							                                            </div>
+                                          </div>
+                                          <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                        </button>
+
+																				                                          <ul class="nested-submenu" id="mobile-submenu-nested-0-1">
+																						                                                <li class="nested-submenu-item is-bold">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/"
+																										>
+                                                    <span>AI Impact Overview</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/drive-adoption/"
+																										>
+                                                    <span>Drive Adoption</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/ai-token-usage-monitoring/"
+																										>
+                                                    <span>AI Token Cost Management</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/impact-insights/"
+																										>
+                                                    <span>Impact Insights</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/workflow-optimization/"
+																										>
+                                                    <span>Workflow Optimization</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/enable-teams/"
+																										>
+                                                    <span>Enable Teams</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/vendor-comparison/"
+																										>
+                                                    <span>Vendor Comparison</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/jellyfish-ai-impact/report-builder/"
+																										>
+                                                    <span>Report Builder</span>
+																										                                                  </a>
+                                                </li>
+																							                                          </ul>
+																				
+																			                                    </li>
+																	                                    <li
+                                            class="overview-mobile-item has-submenu">
+																																							                                        <button class="overview-mobile-toggle" aria-expanded="false" data-nested-submenu-id="mobile-submenu-nested-0-2" data-nested-submenu-title="Operational Effectiveness">
+                                          <div class="overview-mobile-toggle-content">
+																						                                            <div class="overview-mobile-text">
+                                              <div class="flex gap-2 items-center">
+																								                                                  <span class="item-title">Operational Effectiveness                                                  </span>
+																																																                                              </div>
+																							                                                <p class="item-description">
+																									Use data to proactively manage teams and remove bottlenecks                                                </p>
+																							                                            </div>
+                                          </div>
+                                          <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                        </button>
+
+																				                                          <ul class="nested-submenu" id="mobile-submenu-nested-0-2">
+																						                                                <li class="nested-submenu-item is-bold">
+                                                  <a href="https://jellyfish.co/solutions/engineering-product-operations/"
+																										>
+                                                    <span>Operational Effectiveness Overview</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/engineering-metrics/"
+																										>
+                                                    <span>Metrics</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/life-cycle-explorer/"
+																										>
+                                                    <span>Life Cycle Explorer</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/solutions/engineering-product-operations/team-workflow-analysis/"
+																										>
+                                                    <span>Workflow Analysis</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/solutions/engineering-product-operations/people-management/"
+																										>
+                                                    <span>People Management</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/benchmarks/"
+																										>
+                                                    <span>Team Benchmarks</span>
+																										                                                  </a>
+                                                </li>
+																							                                          </ul>
+																				
+																			                                    </li>
+																	                                    <li
+                                            class="overview-mobile-item has-submenu">
+																																							                                        <button class="overview-mobile-toggle" aria-expanded="false" data-nested-submenu-id="mobile-submenu-nested-0-3" data-nested-submenu-title="Business Alignment">
+                                          <div class="overview-mobile-toggle-content">
+																						                                            <div class="overview-mobile-text">
+                                              <div class="flex gap-2 items-center">
+																								                                                  <span class="item-title">Business Alignment                                                  </span>
+																																																                                              </div>
+																							                                                <p class="item-description">
+																									Focus engineering work on impact and communicate outcomes                                                </p>
+																							                                            </div>
+                                          </div>
+                                          <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                        </button>
+
+																				                                          <ul class="nested-submenu" id="mobile-submenu-nested-0-3">
+																						                                                <li class="nested-submenu-item is-bold">
+                                                  <a href="https://jellyfish.co/solutions/business-alignment/"
+																										>
+                                                    <span>Business Alignment Overview</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/platform/resource-allocations/"
+																										>
+                                                    <span>Resource Allocations</span>
+																										                                                  </a>
+                                                </li>
+																							                                          </ul>
+																				
+																			                                    </li>
+																	                                    <li
+                                            class="overview-mobile-item has-submenu">
+																																							                                        <button class="overview-mobile-toggle" aria-expanded="false" data-nested-submenu-id="mobile-submenu-nested-0-4" data-nested-submenu-title="DevEx">
+                                          <div class="overview-mobile-toggle-content">
+																						                                            <div class="overview-mobile-text">
+                                              <div class="flex gap-2 items-center">
+																								                                                  <span class="item-title">DevEx                                                  </span>
+																																																                                              </div>
+																							                                                <p class="item-description">
+																									Uncover issues impacting productivity with dev surveys                                                </p>
+																							                                            </div>
+                                          </div>
+                                          <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                        </button>
+
+																				                                          <ul class="nested-submenu" id="mobile-submenu-nested-0-4">
+																						                                                <li class="nested-submenu-item is-bold">
+                                                  <a href="https://jellyfish.co/platform/devex/"
+																										>
+                                                    <span>DevEx Overview</span>
+																										                                                  </a>
+                                                </li>
+																							                                          </ul>
+																				
+																			                                    </li>
+																	                                    <li
+                                            class="overview-mobile-item has-submenu">
+																																							                                        <button class="overview-mobile-toggle" aria-expanded="false" data-nested-submenu-id="mobile-submenu-nested-0-5" data-nested-submenu-title="DevFinOps">
+                                          <div class="overview-mobile-toggle-content">
+																						                                            <div class="overview-mobile-text">
+                                              <div class="flex gap-2 items-center">
+																								                                                  <span class="item-title">DevFinOps                                                  </span>
+																																																                                              </div>
+																							                                                <p class="item-description">
+																									Align with Finance and automate financial reporting                                                </p>
+																							                                            </div>
+                                          </div>
+                                          <svg class="toggle-icon" aria-hidden="true" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="m1.167 15.167 7-7-7-7" stroke="#9e9baa" stroke-width="2.333" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                        </button>
+
+																				                                          <ul class="nested-submenu" id="mobile-submenu-nested-0-5">
+																						                                                <li class="nested-submenu-item is-bold">
+                                                  <a href="https://jellyfish.co/platform/devfinops/"
+																										>
+                                                    <span>DevFinOps Overview</span>
+																										                                                  </a>
+                                                </li>
+																							                                                <li class="nested-submenu-item">
+                                                  <a href="https://jellyfish.co/solutions/software-capitalization/"
+																										>
+                                                    <span>Software Capitalization</span>
+																										                                                  </a>
+                                                </li>
+																							                                          </ul>
+																				
+																			                                    </li>
+																	                                </ul>
+															                            </li>
+													                            <li class="standard-column-content column-light-purple">
+															                                <div class="eyebrow">Jellyfish Platform</div>
+															
+															<ul class="menu-list">
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/tour/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Take a Tour</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/platform/jellyfish-assistant/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Jellyfish AI Assistant</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/platform/data-hub/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Data Hub</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/blog/what-is-allocation/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Patented Data Model</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/integrations/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Integrations</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/learn/trust-center/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Security</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://academy.jellyfish.co/app"
+				class="menu-item-link-child"
+				 target="_blank">
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Jellyfish Academy</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/request-a-demo/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Get a Demo</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+	</ul>
+
+															                            </li>
+													              </ul>
+							              <ul class="submenu" id="mobile-submenu-1">
+								                            <li class="standard-column-content column-white">
+															
+															<ul class="menu-list">
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/solutions/engineering-leaders/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-executive.svg"
+							alt="Engineering executives"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Engineering Executives</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Drive and communicate org impact</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/solutions/engineering-managers/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-engineering-manager.svg"
+							alt="Engineering mangers"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Engineering Managers</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Help your teams work more effectively</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/solutions/platform-engineering/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-platform-engineering.svg"
+							alt="Platform engineering"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Platform Engineering</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Reduce friction &amp; improve DevEx</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://www.jellyfish.co/solutions/product-leaders/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-product-leaders.svg"
+							alt="Product leaders"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Product Leaders</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Build trust in roadmap predictability</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/solutions/finance-teams/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-finance.svg"
+							alt="Finance teams"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Finance Teams</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Automate R&amp;D financial reporting</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/solutions/engineers/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+											<img src="https://jellyfish.co/wp-content/uploads/2026/01/icon-teams-software-developers.svg"
+							alt="Software developers"
+							class="item-icon">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Software Developers</span>
+																				</div>
+						<div class="">
+															<p class="item-description">Find more focus and make your voice heard</p>
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+	</ul>
+
+															                            </li>
+													              </ul>
+							              <ul class="submenu" id="mobile-submenu-2">
+								              </ul>
+							              <ul class="submenu" id="mobile-submenu-3">
+								                            <li class="standard-column-content column-white">
+															
+															<ul class="menu-list">
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/research/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Research Library</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/state-of-ai-software-engineering/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									State of AI in Software Engineering</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/ai-engineering-trends/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									AI Engineering Trends</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/blog/ai-impact-framework/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									AI Impact Framework</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/blog/a-new-software-engineering-intelligence-maturity-model/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									SEI Maturity Model</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/2026-state-of-engineering-management/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									State of Engineering Management</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+	</ul>
+
+															                            </li>
+													                            <li class="callout-column-content column-light-purple">
+                              <a href="https://jellyfish.co/research/ai-coding/" class="callout-link"
+																>
+																                                  <div class="eyebrow">Featured</div>
+																
+																                                  <div class="callout-image">
+                                    <img src="https://jellyfish.co/wp-content/uploads/2025/08/Jellyfish_research-library_Featured-Image_450x200.webp"
+                                            alt="">
+                                  </div>
+																
+                                <div class="callout-text">
+                                  <div class="flex gap-2 items-center">
+																		                                      <span class="item-title semibold">AI Research Library</span>
+																																				                                  </div>
+
+																	                                    <p class="item-description">Cutting edge research from the leaders in Software Engineering Intelligence</p>
+																	                                </div>
+                              </a>
+                            </li>
+													              </ul>
+							              <ul class="submenu" id="mobile-submenu-4">
+								              </ul>
+							              <ul class="submenu" id="mobile-submenu-5">
+								                            <li class="standard-column-content column-white">
+															
+															<ul class="menu-list">
+		<li class="menu-list-item">
+					<a href="https://www.jellyfish.co/blog/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Blog</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://www.jellyfish.co/resources/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Reports &amp; Guides</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://www.jellyfish.co/webinars/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Webinars &amp; Events</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://adamferrari.substack.com/"
+				class="menu-item-link-child"
+				 target="_blank">
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Engineering Together</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/learn/engineering-leadership-academy/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Leadership Academy</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/library/whats-new/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Product Releases</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/glow/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									GLOW Video Series</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+		<li class="menu-list-item">
+					<a href="https://jellyfish.co/library/index/"
+				class="menu-item-link-child"
+				>
+					<div class="child-item-wrapper">
+				<div class="flex items-start gap-2">
+										<div class="w-full">
+						<div class="flex gap-2 items-center">
+															<span class="item-title">
+									Learn</span>
+																				</div>
+						<div class="">
+																				</div>
+					</div>
+				</div>
+			</div>
+					</a>
+			</li>
+	</ul>
+
+															                            </li>
+													                            <li class="callout-column-content column-light-purple">
+                              <a href="https://jellyfish.co/resources/tokenomics-for-your-2027-rd-budget/" class="callout-link"
+																>
+																
+																                                  <div class="callout-image">
+                                    <img src="https://jellyfish.co/wp-content/uploads/2026/10/Jellyfish_Resource-Card_ebook_2027-tokenomics.webp"
+                                            alt="">
+                                  </div>
+																
+                                <div class="callout-text">
+                                  <div class="flex gap-2 items-center">
+																		                                      <span class="item-title semibold">Tokenomics for Your 2027 R&amp;D Budget</span>
+																																				                                  </div>
+
+																	                                    <p class="item-description">New Jellyfish Research on how AI spend really behaves, plus a five-step exercise to set a 2027 number that holds up with finance.</p>
+																	                                </div>
+                              </a>
+                            </li>
+													              </ul>
+							          </div>
+        </nav>
+			
+      <div id="utility-navigation">
+				<div class="utility-wrapper">
+	<div class="menu-utility-container"><ul id="menu-utility" class="menu"><li id="menu-item-25" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-25"><a href="https://app.jellyfish.co/account/login/">Sign In</a></li>
+<li id="menu-item-26" class="nav-btn menu-item menu-item-type-custom menu-item-object-custom menu-item-26"><a href="/request-a-demo/">Request a demo</a></li>
+</ul></div></div>      </div>
+    </div>
+  </header>
+
+			<nav id="logo-context-menu" class="logo-context-menu" hidden role="menu" aria-label="Brand links" aria-hidden="true">
+			<ul class="logo-context-menu__list">
+									<li class="logo-context-menu__item" role="none">
+						<a
+							class="logo-context-menu__link"
+							role="menuitem"
+							href="https://jellyfish.co/brand/"
+													>
+															<img
+									class="logo-context-menu__icon"
+									src="https://jellyfish.co/wp-content/uploads/2026/08/icon-primary-purple-logo-2x.svg"
+									alt=""
+									width="16"
+									height="16"
+									decoding="async"
+								/>
+														<span class="logo-context-menu__label">Visit brand page</span>
+						</a>
+					</li>
+									<li class="logo-context-menu__item" role="none">
+						<a
+							class="logo-context-menu__link"
+							role="menuitem"
+							href="https://jellyfish.co/wp-content/uploads/2026/07/Jellyfish-logos.zip"
+															download
+													>
+															<img
+									class="logo-context-menu__icon"
+									src="https://jellyfish.co/wp-content/uploads/2026/08/icon-primary-purple-download-2x.svg"
+									alt=""
+									width="16"
+									height="16"
+									decoding="async"
+								/>
+														<span class="logo-context-menu__label">Download all logos</span>
+						</a>
+					</li>
+							</ul>
+		</nav>
+	
+	<main id="content" role="main">
+  <section id="primary">
+    <main id="main">
+
+			
+<div id="post-21968" >
+
+	    <header class="relative entry-header text-center pt-[100px] md:pt-[65px] md:pb-[350px] pb-[250px]">
+		<span class="eyebrow">
+		Best Practices DevEx 		</span>
+			<h1 class="max-w-[950px] entry-title">How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation </h1>
+      <div style="bottom: -1px;right: -1px;transform: rotate(180deg);" class="absolute corner-shape lower-right">
+        <svg class="w-[100px] md:w-[125px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 201 200">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M200.586 0C90.129 0 0.585938 89.543 0.585938 200L0.585938 0L200.586 0Z" fill="#ffffff"/>
+        </svg>
+      </div>
+    </header>
+    <div data-aos="fade-up" data-aos-easing="ease-in-sine" class="featured-image-hero flex items-center rounded-[20px] overflow-hidden max-w-[90%] md:w-[950px] mx-auto -mt-[200px] md:-mt-[300px] mb-[65px] max-h-[520px]">
+			
+			<figure>
+				<img width="2560" height="1402" src="https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="blog How Jellyfish Used Its Own DevEx Tool to Double Engineer Satisfaction with Test Automation" decoding="async" fetchpriority="high" srcset="https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--scaled.webp 2560w, https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--300x164.webp 300w, https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--1024x561.webp 1024w, https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--768x421.webp 768w, https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--1536x841.webp 1536w, https://jellyfish.co/wp-content/uploads/2024/08/blog-How-Jellyfish-Used-Its-Own-DevEx-Tool-to-Double-Engineer-Satisfaction-with-Test-Automation--2048x1122.webp 2048w" sizes="(max-width: 2560px) 100vw, 2560px" />			</figure>
+
+			    </div>
+	
+  <div class="entry-content mx-auto container-xs prose prose-neutral max-w-none prose-a:text-primary">
+					      <div class="entry-meta">
+        <div class="flex items-center">
+          <div>
+            <img class="pointer-events-none w-[61px] mr-[15px]" src="https://jellyfish.co/wp-content/uploads/2024/05/Jellyfish_Blog-Author-Headshots_Jasmine-Oliveria-1.webp"/>
+          </div>
+					          <div>
+						              <span class="author semibold">Jasmine Oliveira</span><br>
+							<a class="author-read-more" href="https://jellyfish.co/blog/author_posttype/jasmine-oliveira/">Read more by this author</a><br>
+												<span class="entry-meta__date">August 22, 2024</span>
+          </div>
+        </div>
+      </div>
+				<p><strong>Key Results</strong></p>
+<ul>
+<li>2X improvement in engineer satisfaction for test automation</li>
+<li>Engineers satisfied with 9 out of 10 key topics</li>
+<li>15% increase in overall satisfaction and well-being</li>
+</ul>
+<p>Measuring developer satisfaction and morale is top of mind for engineering organizations, particularly as these companies try to recruit and retain top talent. But many engineering teams <a href="https://www.jellyfish.co/blog/lets-talk-about-developer-experience-why-just-asking-isnt-enough-to-drive-improvements/">struggle to define developer experience, let alone measure it</a>. Until recently, Jellyfish was no different.</p>
+<p>Measuring developer experience provides engineering leaders with unbiased data on their team’s health and performance. They can use this data to inform changes to their tools and processes, leading to happier employees and improved retention.</p>
+<p>Jellyfish relies on its engineering team to build tools for other engineering organizations, and the company uses its own tools for everything from scenario planning to <a href="https://www.jellyfish.co/platform/devfinops/">DevFinOps</a>. After recognizing gaps in how the company measured engineer satisfaction, Jellyfish created its own <a href="https://www.jellyfish.co/platform/devex/">DevEx</a> tool to conduct surveys and capture unbiased data.</p>
+<p><img decoding="async" class="aligncenter wp-image-21971 size-full" src="https://www.jellyfish.co/wp-content/uploads/2024/08/devex-blog-insights_Jellyfish.jpg" alt="devex-blog-insights_Jellyfish" width="1416" height="842" srcset="https://jellyfish.co/wp-content/uploads/2024/08/devex-blog-insights_Jellyfish.jpg 1416w, https://jellyfish.co/wp-content/uploads/2024/08/devex-blog-insights_Jellyfish-300x178.jpg 300w, https://jellyfish.co/wp-content/uploads/2024/08/devex-blog-insights_Jellyfish-1024x609.jpg 1024w, https://jellyfish.co/wp-content/uploads/2024/08/devex-blog-insights_Jellyfish-768x457.jpg 768w" sizes="(max-width: 1416px) 100vw, 1416px" /></p>
+<p>Before using DevEx, Jellyfish took an anecdotal approach to tracking engineer sentiment. Managers asked their employees in one-on-one conversations about specific topics and challenges, and then compared notes to see if these problems were company-wide or localized to just a few engineers.</p>
+<p>“The biggest thing for me is to get some representative data and truth behind how people are doing and what is frustrating them,” said Eli Daniel, Jellyfish’s Head of Engineering. “I want to have that be something that we can look at in aggregate without the recency bias of whoever I happen to have spoken to last.” Daniel worked together with engineering managers and the individual contributors responsible for Jellyfish DevEx to start collecting actionable data on engineer sentiment across the company.</p>
+<h2>Taking a clear look at developer satisfaction</h2>
+<p>For members of Jellyfish’s executive team, deploying DevEx meant confronting some difficult truths about how the company plans and organizes its work. Jellyfish’s first DevEx survey revealed widespread dissatisfaction with the company’s testing environment.</p>
+<p>“This is an area where, historically, we thought our system was just complicated. I had assumed that the work we were doing was too complex for our testing to ever be simple or easy to use,” said Daniel. “It was an area I had gotten accustomed to, but we got some pretty stark, low numbers around sentiment in those areas of the survey. That was a signal that we needed to spend time improving things.” Jellyfish conducted its first DevEx survey during the second half of 2023, asking engineers for their feedback across 10 topics: test automation, documentation, team processes, satisfaction &amp; well-being, context switching, code review, tools &amp; environments, perceived productivity, clear direction, and release process. Jellyfish DevEx includes industry-leading questionnaires and templates, so engineering managers can quickly and easily create and administer employee surveys.</p>
+<p>While the answers are anonymous, managers can filter the data to see whether different results are more pronounced among specific roles or teams. This analysis feature allowed engineering leaders like Daniel to identify problems that were truly present across the entire organization, and team managers to focus on individual team challenges .</p>
+<h2>Committing to positive change</h2>
+<p>Jellyfish DevEx generates results automatically, including team segments, explanations of each result, and suggestions on how to make improvements. The results of Jellyfish’s first DevEx survey revealed serious dissatisfaction around test automation. The topic scored just 26 out of 100 in terms of developer sentiment, the lowest of the 10 topics surveyed. Daniel and other engineering leaders at Jellyfish recognized that they could no longer put off improvements to their testing environment.</p>
+<p>Following the DevEx survey, Jellyfish prioritized test automation as an area for immediate improvement. One engineer spent two weeks working on test automation. Before beginning that session, they surveyed their fellow engineers on the challenges they were facing and what improvements they felt were necessary. Emboldened by the survey results, his colleagues were forthcoming and collaborative in working towards a new solution. After two weeks of work, the engineer addressed many of the most tedious issues with the test environment.</p>
+<p>“I think the engagement of devoting some real energy to the problem changed the perception of how addressable these problems are,” said Daniel. “We know now that we can improve things around here when we set our mind to it.” Jellyfish conducted a second DevEx survey during the first half of 2024. Sentiment around test automation improved dramatically — more than doubling from 26 to 58 — the highest increase among the topics measured. Jellyfish’s engineering managers will continue to make improvements to test automation and follow these results in future DevEx surveys.</p>
+<h2>Satisfaction at every level</h2>
+<p>Jellyfish’s new approach to DevEx is popular among employees at every level of the engineering organization.</p>
+<p>For Greta Heissenberger, a backend engineer who joined the company in late 2023, DevEx shows that Jellyfish is taking actionable steps to improve their work experience:</p>
+<p><em>I love that people are talking about these things in regular meetings. We go over the results, we talk about what’s bad, and then we talk about what we can do about it. You actually see actionable items come out of these discussions. It’s one thing to sit at your desk and say ‘I wish we had better documentation.’ When you actually have a survey and see that everyone agrees, it’s a lot easier to commit to making that a priority and spending time to make it better.</em></p>
+<p>For Marilyn Cole, an engineering manager at Jellyfish, DevEx has changed the way she approaches coaching and feedback with her team:</p>
+<p><em>We asked engineers how they felt about their growth feedback and whether their manager cares about their growth. We did okay, but not as well as we’d like. When we pulled the data, we could see that people who report to one manager felt really great about it — that allowed other managers to talk to him and understand how he gives feedback, and then apply that to their own teams. The data made me more motivated to ask that question and to make more of a conscientious effort.</em></p>
+<p>And for Daniel, DevEx provides clarity on what’s actually happening in the organization:</p>
+<p><em>I love having factual information about where things stand. Are issues improving or not? What was the result of the testing efforts we took? What was the ROI? It’s great to be able to answer those questions. That’s not subjective opinion — it’s really valuable.</em></p>
+<h2>Supporting continuous improvement</h2>
+<p>Jellyfish continues to use its DevEx tool to improve the engineering experience, tracking changes over time while also introducing new topics and questions. Company leaders are working  to find the right cadence for surveys — giving the organization enough time to respond to feedback and implement changes before measuring whether the situation has improved. “DevEx gives us a recipe,” added Daniel. “If we’re seeing some smoke that indicates there might be a problem, we can add different questions to the next survey. It simplifies the execution.”</p>
+<p>The results of Jellyfish’s second DevEx survey showed the company was moving in the right direction. Engineers recorded positive sentiments (scores greater than 50) in nine out of 10 topics, as well as a 15% improvement in overall satisfaction and well-being. The survey also revealed new areas to target for improvement — namely, documentation. Following the example set with test automation, Jellyfish organized a team of employees who will focus on improving documentation. Those results will be measured after six months in the next DevEx survey. Going forward, DevEx will be a key driver of continuous improvement at Jellyfish, leading to happier engineers and healthier teams.</p>
+<h3>To learn more about Jellyfish DevEx and how it can improve team health at your engineering organization, take our <a href="https://www.jellyfish.co/platform/devex/">product tour</a> or <a href="https://www.jellyfish.co/request-a-demo/">request a demo</a>.</h3>
+  </div>
+	    <div class="featured-posts-blog container mx-auto py-[100px]">
+      <h2 class="mb-[1em]">Dive Deeper with Jellyfish Content</h2>
+      <div class="grid lg:grid-cols-3 gap-4 md:grid-cols-2 xs:grid-cols-1">
+				            <div>
+              <div class="related-resource">
+                <a class="image-link" href="https://jellyfish.co/blog/best-developer-experience-tools/">
+									<img width="1024" height="561" src="https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-1024x561.webp" class=" wp-post-image" alt="Uplevel alternatives" decoding="async" srcset="https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-1024x561.webp 1024w, https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-300x164.webp 300w, https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-768x421.webp 768w, https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-1536x841.webp 1536w, https://jellyfish.co/wp-content/uploads/2024/10/blog-How-to-Choose-the-Right-Developer-Experience-Tool-2048x1122.webp 2048w" sizes="(max-width: 1024px) 100vw, 1024px" />                </a>
+                <a href="https://jellyfish.co/blog/best-developer-experience-tools/"><h4 class="mb-[0.5em]">10 Best Developer Experience (DevEx) Tools Heading Into 2027</h4></a>
+                <a class="related-resource__link link flex justify-between items-center w-full" href="https://jellyfish.co/blog/best-developer-experience-tools/">
+                  <span class="link-text flex-1">Learn more</span>
+                  <span class="link-arrow flex items-center">
+                    <img src="https://jellyfish.co/wp-content/themes/jellyfish/assets/images/arrows/arrow-long-purple.svg" alt="" class="m-0" />
+                  </span>
+                </a>
+              </div>
+            </div>
+						            <div>
+              <div class="related-resource">
+                <a class="image-link" href="https://jellyfish.co/blog/engineering-kpis/">
+									<img width="1024" height="561" src="https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-1024x561.webp" class=" wp-post-image" alt="Cortex alternatives" decoding="async" loading="lazy" srcset="https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-1024x561.webp 1024w, https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-300x164.webp 300w, https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-768x421.webp 768w, https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-1536x841.webp 1536w, https://jellyfish.co/wp-content/uploads/2024/11/blog-26-Important-Engineering-KPIs-2048x1122.webp 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px" />                </a>
+                <a href="https://jellyfish.co/blog/engineering-kpis/"><h4 class="mb-[0.5em]">26 Engineering KPIs and Metrics to Track (With Examples)</h4></a>
+                <a class="related-resource__link link flex justify-between items-center w-full" href="https://jellyfish.co/blog/engineering-kpis/">
+                  <span class="link-text flex-1">Learn more</span>
+                  <span class="link-arrow flex items-center">
+                    <img src="https://jellyfish.co/wp-content/themes/jellyfish/assets/images/arrows/arrow-long-purple.svg" alt="" class="m-0" />
+                  </span>
+                </a>
+              </div>
+            </div>
+						            <div>
+              <div class="related-resource">
+                <a class="image-link" href="https://jellyfish.co/blog/getdx-alternatives-competitors/">
+									<img width="1024" height="561" src="https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-1024x561.webp" class=" wp-post-image" alt="11 Best GetDX Alternatives for Engineering Teams" decoding="async" loading="lazy" srcset="https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-1024x561.webp 1024w, https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-300x164.webp 300w, https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-768x421.webp 768w, https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-1536x841.webp 1536w, https://jellyfish.co/wp-content/uploads/2026/11/blog-11-Best-GetDX-Alternatives-2048x1122.webp 2048w" sizes="auto, (max-width: 1024px) 100vw, 1024px" />                </a>
+                <a href="https://jellyfish.co/blog/getdx-alternatives-competitors/"><h4 class="mb-[0.5em]">11 Best GetDX Alternatives for Engineering Teams (2027)</h4></a>
+                <a class="related-resource__link link flex justify-between items-center w-full" href="https://jellyfish.co/blog/getdx-alternatives-competitors/">
+                  <span class="link-text flex-1">Learn more</span>
+                  <span class="link-arrow flex items-center">
+                    <img src="https://jellyfish.co/wp-content/themes/jellyfish/assets/images/arrows/arrow-long-purple.svg" alt="" class="m-0" />
+                  </span>
+                </a>
+              </div>
+            </div>
+						      </div>
+
+    </div>
+		
+  <div class="footer-cta-block overhaul-block">
+    <div class="global-section-wrapper jellyfish-block background-white spacing-top-base spacing-bottom-base">
+      <div class="section-content">
+        <div class="container mx-auto">
+          <div class="footer-cta-content">
+            <div class="footer-cta-container" data-aos="fade-in" data-aos-easing="ease-in-sine">
+              <div class="footer-cta-inner background-navy text-white headline-white" style="background-image: url('https://jellyfish.co/wp-content/themes/jellyfish/assets/images/backgrounds/jf-footer-bg.webp');">
+                <div class="footer-cta-content">
+                  <div class="global-content-block !space-y-6">
+                    <h2 class="heading-2-overhaul mb-[24px] text-balance">Ready to Drive Engineering Impact?</h2>
+                    <div class="paragraph-large-overhaul mb-[24px]">
+                      <p class="text-balance">Schedule a demo or take an interactive tour. Discover how Jellyfish can enable your teams to work smarter, feel empowered, and deliver better outcomes for the business.</p>
+                    </div>
+                    <div class="links flex items-center flex-wrap">
+                      <a href="/request-a-demo" class="button is-white">Request a demo</a>
+                      <a href="/tour" class="cta-link medium white">Product tour</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+	// window.addEventListener('load', function () {
+	// var imageContainer = document.querySelector('.image-container');
+	// var image = imageContainer.querySelector('img');
+
+	// if (image.naturalHeight > 260) { // Change 300 to your desired threshold
+	// 	imageContainer.classList.add('exceeds-height');
+	// }
+	// });
+
+</script>
+
+<div id="comments">
+
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/blog/how-jellyfish-used-its-own-devex-tool-to-double-engineer-satisfaction-with-test-automation/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://jellyfish.co/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> <span class="required-field-message">Required fields are marked <span class="required">*</span></span></p><p class="comment-form-comment"><label for="comment">Comment <span class="required">*</span></label> <textarea id="comment" name="comment" cols="45" rows="5" maxlength="65525" required></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" autocomplete="name" required /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" autocomplete="email" required /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" autocomplete="url" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='21968' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p></form>	</div>
+	
+</div>
+
+    </main>
+  </section>
+
+
+	</main>
+
+	
+<footer id="footer-main" style="--footer-bg-desktop: url(https://jellyfish.co/wp-content/uploads/2026/03/footer-desktop-scaled.webp);--footer-bg-tablet: url(https://jellyfish.co/wp-content/uploads/2026/03/footer-tablet.webp);">
+	<div class="footer-top">
+		<div class="footer-inner container-jellyfish mx-auto">
+			<div class="footer-columns text-left">
+				<div class="footer-col-brand">
+
+										<a href="https://jellyfish.co/">
+						<img class="jellyfish-symbol grid-row w-[150px] mx-auto sm:mx-0" src="https://jellyfish.co/wp-content/themes/jellyfish/assets/images/jellyfish_logo_white.svg" />
+					</a>
+
+																<div class="footer-badges-grid footer-badges-grid--g2">
+																																<img src="https://jellyfish.co/wp-content/uploads/2026/08/G2-Fall-2026-Badge.png" alt="G2 Fall 2026 Badge" />
+																																								<img src="https://jellyfish.co/wp-content/uploads/2026/03/g2-top-50.svg" alt="" />
+																																								<img src="https://jellyfish.co/wp-content/uploads/2026/03/g2-momentum-leader-winter-2026.svg" alt="" />
+																					</div>
+					
+																<div class="footer-ratings-group">
+
+															<div class="footer-rating">
+																			<img class="footer-rating__icon" src="https://jellyfish.co/wp-content/uploads/2024/11/g2-icon.png" alt="" />
+																												<span class="footer-rating__text"><b>4.5/5</b> on G2</span>
+																	</div>
+							
+															<div class="footer-rating">
+																			<img class="footer-rating__icon" src="https://jellyfish.co/wp-content/uploads/2025/06/gartner.svg" alt="" />
+																												<span class="footer-rating__text"><b>4.5/5</b> on Gartner</span>
+																	</div>
+							
+						</div>
+					
+																<div class="footer-badges-grid footer-badges-grid--other">
+																																<img src="https://jellyfish.co/wp-content/uploads/2026/03/badge-aicpa.png" alt="" />
+																																												</div>
+					
+																<div class="footer-socials">
+																							<a href="https://www.instagram.com/_jellyfish_co/" target="_blank" rel="noopener noreferrer">
+									<img src="https://jellyfish.co/wp-content/uploads/2026/03/social-ig.svg" alt="" />
+								</a>
+																							<a href="https://twitter.com/_jellyfish_co" target="_blank" rel="noopener noreferrer">
+									<img src="https://jellyfish.co/wp-content/uploads/2026/03/social-x.svg" alt="" />
+								</a>
+																							<a href="https://www.linkedin.com/company/jellyfish-co" target="_blank" rel="noopener noreferrer">
+									<img src="https://jellyfish.co/wp-content/uploads/2026/03/social-li.svg" alt="" />
+								</a>
+																							<a href="https://www.youtube.com/channel/UCW8y7ZWnOa9hXBcwFf_xfCw" target="_blank" rel="noopener noreferrer">
+									<img src="https://jellyfish.co/wp-content/uploads/2026/03/social-yt.svg" alt="" />
+								</a>
+													</div>
+					
+				</div>
+				<div>
+					<div class="menu-footer-column-1-container"><ul id="footer-1" class="menu" aria-label="submenu"><li id="menu-item-32190" class="menu-column-header menu-item menu-item-type-custom menu-item-object-custom menu-item-32190"><a>Platform</a></li>
+<li id="menu-item-11807" class="menu-group menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-11807"><a>space</a>
+<ul class="sub-menu">
+	<li id="menu-item-30343" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30343"><a href="https://jellyfish.co/platform/jellyfish-ai-impact/">AI Impact</a></li>
+	<li id="menu-item-32191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32191"><a href="https://jellyfish.co/solutions/engineering-product-operations/">Operational Effectiveness</a></li>
+	<li id="menu-item-32193" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32193"><a href="https://jellyfish.co/solutions/business-alignment/">Business Alignment</a></li>
+	<li id="menu-item-30341" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30341"><a href="https://jellyfish.co/platform/devex/">DevEx</a></li>
+	<li id="menu-item-30342" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30342"><a href="https://jellyfish.co/platform/devfinops/">DevFinOps</a></li>
+	<li id="menu-item-10882" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10882"><a href="https://jellyfish.co/platform/engineering-management-platform/">Engineering Management</a></li>
+	<li id="menu-item-28333" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28333"><a href="https://jellyfish.co/pricing/">Pricing</a></li>
+	<li id="menu-item-32196" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32196"><a href="https://jellyfish.co/tour/">Jellyfish Tour</a></li>
+	<li id="menu-item-32219" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32219"><a href="https://jellyfish.co/request-a-demo/">Request a Demo</a></li>
+</ul>
+</li>
+</ul></div>				</div>
+				<div>
+					<div class="menu-footer-column-2-container"><ul id="footer-2" class="menu" aria-label="submenu"><li id="menu-item-32198" class="menu-column-header menu-item menu-item-type-custom menu-item-object-custom menu-item-32198"><a>Jellyfish For</a></li>
+<li id="menu-item-62" class="menu-group menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-62"><a>space</a>
+<ul class="sub-menu">
+	<li id="menu-item-11826" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11826"><a href="https://jellyfish.co/?page_id=11777">Engineering Executives</a></li>
+	<li id="menu-item-32580" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32580"><a href="https://jellyfish.co/solutions/engineering-managers/">Engineering Managers</a></li>
+	<li id="menu-item-32199" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32199"><a href="https://jellyfish.co/solutions/platform-engineering/">Platform Engineering</a></li>
+	<li id="menu-item-11829" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11829"><a href="https://jellyfish.co/solutions/product-leaders/">Product Leaders</a></li>
+	<li id="menu-item-11827" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11827"><a href="https://jellyfish.co/?page_id=11582">Finance Teams | Old</a></li>
+	<li id="menu-item-32582" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32582"><a href="https://jellyfish.co/solutions/engineers/">Software Developers</a></li>
+</ul>
+</li>
+</ul></div>				</div>
+				<div>
+					<div class="menu-footer-column-3-container"><ul id="footer-3" class="menu" aria-label="submenu"><li id="menu-item-32200" class="menu-column-header menu-item menu-item-type-custom menu-item-object-custom menu-item-32200"><a>Why Jellyfish</a></li>
+<li id="menu-item-68" class="menu-group menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-68"><a>space</a>
+<ul class="sub-menu">
+	<li id="menu-item-34167" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34167"><a href="https://jellyfish.co/company/customers/">Customer Stories</a></li>
+	<li id="menu-item-30923" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30923"><a href="https://jellyfish.co/integrations/">Integrations</a></li>
+	<li id="menu-item-32201" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32201"><a href="https://jellyfish.co/platform/jellyfish-assistant/">Jellyfish Assistant</a></li>
+	<li id="menu-item-32970" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32970"><a href="https://jellyfish.co/platform/data-hub/">Data Hub</a></li>
+	<li id="menu-item-34168" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34168"><a href="https://jellyfish.co/learn/engineering-management-platform-market/">Compare Solutions</a></li>
+	<li id="menu-item-14574" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14574"><a href="https://jellyfish.co/roi-calculator/">ROI Calculator</a></li>
+	<li id="menu-item-34169" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34169"><a href="https://jellyfish.co/engineering-benchmarks/">Engineering Benchmarks</a></li>
+	<li id="menu-item-22999" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-22999"><a href="https://jellyfish.co/blog/what-is-allocation/">Patented Data Model</a></li>
+</ul>
+</li>
+</ul></div>				</div>
+				<div>
+					<div class="menu-footer-column-4-container"><ul id="footer-4" class="menu" aria-label="submenu"><li id="menu-item-23006" class="menu-column-header menu-item menu-item-type-custom menu-item-object-custom menu-item-23006"><a>Resources</a></li>
+<li id="menu-item-32202" class="menu-group menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-32202"><a>space</a>
+<ul class="sub-menu">
+	<li id="menu-item-23001" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-23001"><a href="https://jellyfish.co/blog/">Blog</a></li>
+	<li id="menu-item-32203" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32203"><a href="https://jellyfish.co/research/ai-coding/">AI Research</a></li>
+	<li id="menu-item-33163" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-33163"><a href="https://jellyfish.co/ai-engineering-trends/">AI Engineering Trends</a></li>
+	<li id="menu-item-33207" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-33207"><a href="https://jellyfish.co/2026-state-of-engineering-management/">State of Engineering Management</a></li>
+	<li id="menu-item-23003" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23003"><a href="https://www.jellyfish.co/resources/">Reports &#038; Guides</a></li>
+	<li id="menu-item-23004" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23004"><a href="https://jellyfish.co/webinars/">Events &#038; Webinars</a></li>
+	<li id="menu-item-28746" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-28746"><a href="https://jellyfish.co/library/whats-new/">Product Releases</a></li>
+	<li id="menu-item-23005" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23005"><a href="https://jellyfish.co/jellyfish-podcasts/">Podcasts</a></li>
+	<li id="menu-item-13700" class="menu-item menu-item-type-post_type_archive menu-item-object-newsroom menu-item-13700"><a href="https://jellyfish.co/newsroom/">Newsroom</a></li>
+	<li id="menu-item-32205" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32205"><a href="https://jellyfish.co/library/index/">Learn</a></li>
+	<li id="menu-item-32206" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32206"><a href="https://academy.jellyfish.co/app">Jellyfish Academy</a></li>
+</ul>
+</li>
+</ul></div>				</div>
+				<div>
+					<div class="menu-footer-column-5-container"><ul id="footer-6" class="menu" aria-label="submenu"><li id="menu-item-32207" class="menu-column-header menu-item menu-item-type-custom menu-item-object-custom menu-item-32207"><a>Company</a></li>
+<li id="menu-item-32208" class="menu-group menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-32208"><a href="https://jellyfish.co/company/">space</a>
+<ul class="sub-menu">
+	<li id="menu-item-32209" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32209"><a href="https://jellyfish.co/company/about-us/">About Us</a></li>
+	<li id="menu-item-32210" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32210"><a href="https://jellyfish.co/company/careers/">Careers</a></li>
+	<li id="menu-item-32211" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32211"><a href="https://jellyfish.co/deib/">DEIB</a></li>
+	<li id="menu-item-32212" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32212"><a href="https://store.jellyfish.co/">The Jellyfish Store</a></li>
+</ul>
+</li>
+<li id="menu-item-32213" class="menu-group menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-32213"><a>Security</a>
+<ul class="sub-menu">
+	<li id="menu-item-34163" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34163"><a href="https://jellyfish.co/learn/trust-center/">Trust Center</a></li>
+	<li id="menu-item-34166" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34166"><a href="https://jellyfish.co/learn/trust-center/security-advisories-and-bulletins/">Report a Vulnerability</a></li>
+	<li id="menu-item-32218" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32218"><a href="https://jellyfish.co/library/cookie-notice/">Cookies</a></li>
+	<li id="menu-item-32216" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32216"><a href="https://privacyportal.onetrust.com/webform/4463b889-af3a-46e6-b496-7f7db227c301/0b4e58e2-8623-4303-8ca3-87cb41fbe916">Exercise your Rights</a></li>
+	<li id="menu-item-32217" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32217"><a href="https://www.jellyfish.co/library/jellyfish-subprocessors/">Jellyfish Subprocessors</a></li>
+</ul>
+</li>
+</ul></div>				</div>
+			</div>
+		</div>
+	</div>
+				<div class="footer-cta-bar">
+			<div class="footer-inner container-jellyfish mx-auto">
+				<div class="footer-cta-bar__inner">
+					<div class="footer-demo-cta">
+													<p class="footer-demo-cta__text">See how Jellyfish helps engineering teams improve productivity and prove AI ROI.</p>
+												<a href="https://jellyfish.co/request-a-demo/" class="button is-neon footer-demo-cta__button"  >Request a Demo</a>					</div>
+				</div>
+			</div>
+		</div>
+	
+	<div class="footer-bottom">
+		<div class="footer-inner container-jellyfish mx-auto">
+			<div class="footer-bottom__inner">
+				<div class="footer-copyright">&copy; 2026 Jellyfish. All Rights Reserved.</div>
+				<div class="subfooter-menu">
+					<div class="menu-sub-footer-container"><ul id="footer-5" class="menu" aria-label="submenu"><li id="menu-item-78" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-78"><a href="https://help.jellyfish.co/hc/en-us">Help Center</a></li>
+<li id="menu-item-23011" class="menu-item menu-item-type-post_type menu-item-object-seopage menu-item-23011"><a href="https://jellyfish.co/library/privacy-policy/">Jellyfish Privacy Notice</a></li>
+<li id="menu-item-79" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-79"><a href="/contact-us/">Contact Us</a></li>
+</ul></div>				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/jellyfish/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script id="tofu-runner-js" async src="https://tofu-js.s3.us-west-2.amazonaws.com/tofu_embed.js"></script>
+<script id="qualified-embed-js" async src="https://js.qualified.com/qualified.js?token=kGUsk2Rc3qUfvwTR"></script>
+<script id="vidyard-embed-js" async src="https://play.vidyard.com/embed/v4.js"></script>
+<script id="youtube-iframe-api-js" src="https://www.youtube.com/iframe_api"></script>
+<script id="adobe-resources-js" src="https://assets.adoberesources.net/loader.js?orgId=E434202C61DE135D0A495E92%40AdobeOrg&#038;instanceId=jellyfish&#038;env=prod&#038;geo=va7"></script>
+<script id="aos-script-js" src="https://jellyfish.co/wp-content/themes/jellyfish/js/aos-master/dist/aos.js?ver=1.0.0"></script>
+<script id="aos-script-js-after">
+jQuery(document).ready(function($) { AOS.init({ once: true }); });
+//# sourceURL=aos-script-js-after
+</script>
+<script id="flickity-script-js" src="https://jellyfish.co/wp-content/themes/jellyfish/js/flickity/dist/js/flickity.pkgd.min.js?ver=1.0.0"></script>
+<script id="slick-script-js" src="https://jellyfish.co/wp-content/themes/jellyfish/js/slick/slick.min.js?ver=1.0.0"></script>
+<script type="module" id="jellyfish-script-js" src="https://jellyfish.co/wp-content/themes/jellyfish/dist/js/script.min.js?ver=1795031583"></script>
+<script async data-wp-strategy="async" fetchpriority="low" id="comment-reply-js" src="https://jellyfish.co/wp-includes/js/comment-reply.min.js?ver=7.1.4"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://jellyfish.co/wp-includes/js/wp-emoji-release.min.js?ver=7.1.4"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+var e="script#wp-emoji-settings",t=document.querySelector(e);if(!(t instanceof HTMLScriptElement))throw new Error("Element missing: "+e);const r=JSON.parse(t.text),s=(window._wpemojiSettings=r,"wpEmojiSettingsSupports"),o=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(s,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const r=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===r[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,r){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!r(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,r){let a;const s=(a="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),o=(s.textBaseline="top",s.font="600 32px Arial",{});return e.forEach(e=>{o[e]=t(s,e,n,r)}),o}function a(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}r.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(s));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(o),u.toString(),c.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"});const a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=e=>{i(n=e.data),a.terminate(),t(n)})}catch(e){}i(n=f(o,u,c,p))}t(n)}).then(e=>{for(const n in e)r.supports[n]=e[n],r.supports.everything=r.supports.everything&&r.supports[n],"flag"!==n&&(r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&r.supports[n]);var t;r.supports.everythingExceptFlag=r.supports.everythingExceptFlag&&!r.supports.flag,r.supports.everything||((t=r.source||{}).concatemoji?a(t.concatemoji):t.wpemoji&&t.twemoji&&(a(t.twemoji),a(t.wpemoji)))});
+//# sourceURL=https://jellyfish.co/wp-includes/js/wp-emoji-loader.min.js
+</script>
+
+</body>
+</html>

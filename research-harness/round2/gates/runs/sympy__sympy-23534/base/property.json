@@ -1,0 +1,50 @@
+[
+  {
+    "id": "function-list",
+    "input": "['x:2', 'y:2']",
+    "expected": "('list', (('tuple', (('function', 'x0'), ('function', 'x1'))), ('tuple', (('function', 'y0'), ('function', 'y1')))))",
+    "actual": "('list', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": false
+  },
+  {
+    "id": "function-tuple",
+    "input": "('x:2', 'y:2')",
+    "expected": "('tuple', (('tuple', (('function', 'x0'), ('function', 'x1'))), ('tuple', (('function', 'y0'), ('function', 'y1')))))",
+    "actual": "('tuple', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": false
+  },
+  {
+    "id": "symbol-list",
+    "input": "['x:2', 'y:2']",
+    "expected": "('list', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "actual": "('list', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "symbol-tuple",
+    "input": "('x:2', 'y:2')",
+    "expected": "('tuple', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "actual": "('tuple', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "dummy-list",
+    "input": "['x:2', 'y:2']",
+    "expected": "('list', (('tuple', (('dummy', 'x0'), ('dummy', 'x1'))), ('tuple', (('dummy', 'y0'), ('dummy', 'y1')))))",
+    "actual": "('list', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": false
+  },
+  {
+    "id": "dummy-tuple",
+    "input": "('x:2', 'y:2')",
+    "expected": "('tuple', (('tuple', (('dummy', 'x0'), ('dummy', 'x1'))), ('tuple', (('dummy', 'y0'), ('dummy', 'y1')))))",
+    "actual": "('tuple', (('tuple', (('symbol', 'x0'), ('symbol', 'x1'))), ('tuple', (('symbol', 'y0'), ('symbol', 'y1')))))",
+    "error": null,
+    "ok": false
+  }
+]

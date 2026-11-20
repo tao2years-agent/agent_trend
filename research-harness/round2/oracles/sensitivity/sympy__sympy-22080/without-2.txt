@@ -1,0 +1,29 @@
+FFF.....                                                                 [100%]
+================================== FAILURES ===================================
+_____________________ test_create_expand_pow_optimization _____________________
+sympy\codegen\tests\test_rewriting.py:269: in test_create_expand_pow_optimization
+    assert cc(-x**4) == '-(x*x*x*x)'
+E   AssertionError: assert '-x*x*x*x' == '-(x*x*x*x)'
+E     - -(x*x*x*x)
+E     ?  -       -
+E     + -x*x*x*x
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:33: in test_PythonCodePrinter
+    assert prntr.doprint(-Mod(x, y)) == '-(x % y)'
+E   AssertionError: assert '-x % y' == '-(x % y)'
+E     - -(x % y)
+E     ?  -     -
+E     + -x % y
+_____________________________ test_empty_modules ______________________________
+sympy\utilities\tests\test_lambdify.py:274: in test_empty_modules
+    assert no_modules(3, 7) == empty_modules(3, 7)
+E   assert -3 == 4
+E    +  where -3 = <function _lambdifygenerated at 0x000001FD03B18860>(3, 7)
+E    +  and   4 = <function _lambdifygenerated at 0x000001FD03B18AE0>(3, 7)
+- generated xml file: F:\dongcha\research-harness\round2\oracles\sensitivity\sympy__sympy-22080\without-2.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_rewriting.py::test_create_expand_pow_optimization
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - Assertio...
+FAILED sympy/utilities/tests/test_lambdify.py::test_empty_modules - assert -3...
+3 failed, 5 passed in 1.15s

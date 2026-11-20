@@ -1,0 +1,29 @@
+{
+  "sqlite_sha256": "617d7da72933e985f4a2c06f4cd02c249b687b90926e95c58e5f89de4bba5df1",
+  "bytes": 1032192,
+  "integrity_check": "ok",
+  "foreign_key_violations": 0,
+  "aliases": {
+    "candidate": 3,
+    "production": 1
+  },
+  "templates": {
+    "1": "Agenda: {{topic}}.",
+    "2": "Next meeting: {{topic}}.",
+    "3": "Reminder: {{topic}}."
+  },
+  "model_config": {
+    "1": {
+      "model_name": "synthetic-local",
+      "temperature": 0.1
+    },
+    "2": {
+      "model_name": "synthetic-local",
+      "temperature": 0.8
+    },
+    "3": {
+      "model_name": "synthetic-local",
+      "temperature": 0.1
+    }
+  }
+}

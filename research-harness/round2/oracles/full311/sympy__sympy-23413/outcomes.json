@@ -1,0 +1,170 @@
+[
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "original",
+    "module": "sympy/matrices/tests/test_normalforms.py",
+    "exit": 0,
+    "seconds": 2.016,
+    "xml": "original_m1.xml",
+    "log": "original_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal_deprecated",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "original",
+    "module": "sympy/polys/matrices/tests/test_normalforms.py",
+    "exit": 0,
+    "seconds": 1.484,
+    "xml": "original_m2.xml",
+    "log": "original_m2.txt",
+    "tests": [
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "regression_on_base",
+    "module": "sympy/matrices/tests/test_normalforms.py",
+    "exit": 1,
+    "seconds": 1.594,
+    "xml": "regression_on_base_m1.xml",
+    "log": "regression_on_base_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal_deprecated",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "failure",
+        "reason": "assert Matrix(3, 0, []) == Matrix([\\n[1],\\n[0],\\n[0]])\n  Use -v to get more diff"
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_issue_23410",
+        "outcome": "failure",
+        "reason": "assert Matrix([\\n[12],\\n[ 8],\\n[ 5]]) == Matrix([\\n[1, ..., 8],\\n[0, 5]])\n  Use -v to get more diff"
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "regression_on_base",
+    "module": "sympy/polys/matrices/tests/test_normalforms.py",
+    "exit": 1,
+    "seconds": 1.547,
+    "xml": "regression_on_base_m2.xml",
+    "log": "regression_on_base_m2.txt",
+    "tests": [
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "failure",
+        "reason": "assert DomainMatrix(...], (3, 0), ZZ) == DomainMatrix(...], (3, 1), ZZ)\n  Use -v to get more diff"
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "regression_on_gold",
+    "module": "sympy/matrices/tests/test_normalforms.py",
+    "exit": 0,
+    "seconds": 1.578,
+    "xml": "regression_on_gold_m1.xml",
+    "log": "regression_on_gold_m1.txt",
+    "tests": [
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_smith_normal_deprecated",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.matrices.tests.test_normalforms",
+        "name": "test_issue_23410",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  },
+  {
+    "case": "sympy__sympy-23413",
+    "phase": "regression_on_gold",
+    "module": "sympy/polys/matrices/tests/test_normalforms.py",
+    "exit": 0,
+    "seconds": 1.453,
+    "xml": "regression_on_gold_m2.xml",
+    "log": "regression_on_gold_m2.txt",
+    "tests": [
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_smith_normal",
+        "outcome": "passed",
+        "reason": ""
+      },
+      {
+        "class": "sympy.polys.matrices.tests.test_normalforms",
+        "name": "test_hermite_normal",
+        "outcome": "passed",
+        "reason": ""
+      }
+    ]
+  }
+]

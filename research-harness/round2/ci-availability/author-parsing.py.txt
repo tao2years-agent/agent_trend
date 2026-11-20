@@ -1,0 +1,367 @@
+import ast
+from multiprocessing import Pool
+import numpy as np
+from pymongo import MongoClient
+import pandas as pd
+import re
+import sys
+import pandas as pd
+
+sys.path.insert(0, "./")
+
+from utils.helpers import get_seconds
+username = "admin"
+password = "password"
+
+conn = MongoClient("mongodb://%s:%s@localhost:27018" % (username, password))
+db = conn["recheck_builds_common"]
+raw_dataset_collection = db["messages_filtered"]
+
+raw_dataset = raw_dataset_collection.find()
+
+df = pd.DataFrame(list(raw_dataset))
+
+df["created_at"] = pd.to_datetime(df["created_at"])
+df.sort_values(by=["created_at"], inplace=True)
+def remove_specific_patterns(message):
+    pattern = r"""
+    ^\s*                           # Leading whitespace at the start of the string
+    (?:                            # Non-capturing group for the patterns
+        patch\s+set\s+\d+:         # "patch set " followed by digits and a colon
+        (?:\s*code-review[+-]\d+)? # Optional "code-review" followed by + or - and digits
+        |\s*workflow[+-]\d+        # "workflow" followed by + or - and digits
+        |\s*code-review[+-]\d+     # "code-review" followed by + or - and digits
+        |\s*patch\s+set\s+\d+      # "patch set " followed by digits (without colon)
+        |\s*-code-review           # "-code-review"
+        |\s*code-review            # "code-review"
+    )+                             # One or more occurrences of the patterns
+    \s*\n*                         # Any amount of whitespace and newline characters
+    """
+
+    return re.sub(pattern, "", message, flags=re.IGNORECASE | re.VERBOSE)
+
+
+def check_if_recheck_message(initial_message):
+    message = remove_specific_patterns(initial_message).strip()
+
+    starts_with_pattern = r"^recheck\.?"
+    if re.match(starts_with_pattern, message):
+        return True
+
+    message = message.replace(": ", ":").split(" ")[0]
+    pattern_for_split = r"[-:]"
+    words = re.split(pattern_for_split, message)
+
+    pattern = r"^(recheck|recheck\.)$"
+    for word in words:
+        if re.match(pattern, word.strip(), re.IGNORECASE):
+            return True
+
+    return False
+
+
+def get_recheck_statuses(bots_info):
+    updated_bots_info = []
+    for bot_info in bots_info:
+        status = "success"
+        for key, bot in bot_info.items():
+            if key != "recheck_number":
+                if bot["status"] != "success":
+                    status = "failure"
+                    break
+        updated_bots_info.append({**bot_info, "status": status})
+
+    return updated_bots_info
+
+
+def process_builds(group, key):
+    build_detected = False
+    recheck = False
+    computation_time = 0
+    total_max_time = 0
+    max_time = 0
+    bots_info = []
+    recheck_requestors = []
+    recheck_count = 0
+    round_number = 0
+    start_time = None
+    end_time = None
+    final_status = {}
+    prev_status = {}
+    is_first_message = False
+    project = ""
+
+    for index, row in group.iterrows():
+        if len(project) == 0:
+            project = row["project"]
+        current_time = row["created_at"]
+
+        # Set the start and end times
+        if start_time == None:
+            start_time = current_time
+        end_time = current_time if end_time == None else max(end_time, current_time)
+
+        author = row["author"]
+
+        # Detect owner of patch
+        if not is_first_message:
+            recheck_requestors.append(
+                {
+                    "account_id": author["_account_id"],
+                    "build_status": None,
+                    "created_at": str(row["created_at"]),
+                    "recheck_number": round_number,
+                }
+            )
+            is_first_message = True
+
+        if (
+            not build_detected
+            and author["is_bot"]
+            and "build" in row["message"].lower()
+        ):
+            build_detected = True
+
+        if not build_detected:
+            continue
+
+        # Process bot messages
+        if author["is_bot"]:
+            jobs = process_bot_jobs(row["message"])
+            bot_time, patch_fail, should_skip = process_bot_message(row, jobs)
+            if should_skip:
+                continue
+            computation_time += bot_time
+            max_time = max(max_time, bot_time)
+
+            update_bots_info(bots_info, round_number, row, bot_time, patch_fail, key)
+
+        # Detect recheck
+        user_full_message = row["message"].lower()
+        if "recheck" in user_full_message and not author["is_bot"]:
+            recheck_count += 1
+            round_number += 1
+
+            recheck_requestors.append(
+                {
+                    "account_id": author["_account_id"],
+                    "build_status": None,
+                    "created_at": str(row["created_at"]),
+                    "recheck_number": round_number,
+                    "recheck_request_message": user_full_message,
+                }
+            )
+
+            total_max_time += max_time
+            max_time = 0
+
+    updated_bots_info = get_recheck_statuses(bots_info)
+
+    final_status = updated_bots_info[-1]["status"] if len(updated_bots_info) else ""
+
+    updated_recheck_requestors = recheck_requestors
+    for index, recheck_requestor in enumerate(recheck_requestors):
+        recheck_number = recheck_requestor["recheck_number"]
+        for bot in updated_bots_info:
+            if str(bot["recheck_number"]) == str(recheck_number):
+                updated_recheck_requestors[index]["build_status"] = bot["status"]
+
+    total_max_time += max_time
+    base_build_info = generate_base_build_info(
+        computation_time,
+        final_status,
+        get_recheck_statuses(bots_info),
+        total_max_time,
+        start_time,
+        end_time,
+        recheck_count,
+        project,
+    )
+    return base_build_info, updated_recheck_requestors
+
+
+def process_bot_message(row, jobs):
+    build_phrases = re.findall(
+        r"((?:merge|build) (?:succeeded|failed))", row["message"], re.IGNORECASE
+    )
+    bot_phrases = re.findall(
+        r"((?:success|failure|aborted) in(?: \w+?)*s)", row["message"], re.IGNORECASE
+    )
+    bot_time = sum(get_seconds(x.split(" in ")[1]) for x in bot_phrases)
+
+    should_skip = False
+    if len(build_phrases) == 0 and len(bot_phrases) == 0 and len(jobs) == 0:
+        patch_fail = False
+        should_skip = True
+        return bot_time, patch_fail, should_skip
+    elif len(build_phrases) == 0:
+        patch_fail = False
+        if len(jobs) == 0:
+            patch_fail = True
+        for job in jobs:
+            if job["voting"]:
+                if job["status"] != "success":
+                    patch_fail = True
+    else:
+        patch_fail = any(
+            "fail" in phrase.lower() or "abort" in phrase.lower()
+            for phrase in build_phrases
+        )
+
+    return bot_time, patch_fail, should_skip
+
+
+def process_bot_jobs(message):
+    bot_jobs = []
+
+    patterns = [
+        r"-(.*?(success|failed|failure|aborted|timed_out|timeout) in(?: \w+?)*s *(?:\(non-voting\))?)",
+        r"\*(.*?(success|failed|failure|aborted|timed_out|timeout) in(?: \w+?)*s *(?:\(non-voting\))?)",
+        r"(.*?(success|failed|failure|aborted|timed_out|timeout) in(?: \w+?)*s *(?:\(non-voting\))?)",
+    ]
+
+    for pattern in patterns:
+        found_bot_jobs = re.findall(pattern, message, re.IGNORECASE)
+        if found_bot_jobs:
+            bot_jobs = found_bot_jobs
+            break
+
+    jobs = []
+
+    for bot_job in bot_jobs:
+        job = bot_job[0]
+        job = job.strip().replace(": ", "")
+        is_voting = not job.endswith("(non-voting)")
+        job = job.replace(" (non-voting)", "")
+
+        # try:
+        job_components = job.split(" ", 2)
+        job_name = job_components[0]
+        try:
+            job_link = job_components[1]
+            job_status_and_time = job_components[2]
+        except:
+            continue
+        if " in " in job_status_and_time:
+            job_status, job_time = job_status_and_time.split(" in ", 1)
+        else:
+            job_status = bot_job[1]
+
+        try:
+            job_time = get_seconds(job_time)
+        except:
+            job_time = -1
+        jobs.append(
+            {
+                "name": job_name,
+                "link": job_link,
+                "voting": is_voting,
+                "status": job_status.lower(),
+                "time_in_seconds": job_time,
+            }
+        )
+
+    return jobs
+
+
+def update_bots_info(bots_info, round_number, row, bot_time, patch_fail, key):
+    # recheck_index = round_number
+    rechecks_info_index = -1
+    for index, rechecks_info in enumerate(bots_info):
+        if rechecks_info["recheck_number"] == str(round_number):
+            rechecks_info_index = index
+            break
+
+    author = row["author"]
+    bot_id = author["_account_id"]
+    jobs = process_bot_jobs(row["message"])
+
+    bot_info = {
+        "status": "failure" if patch_fail else "success",
+        "jobs": jobs,
+        "started_at": str(row["created_at"]),
+        "computation_time": bot_time,
+    }
+
+    try:
+        if rechecks_info_index != -1:
+            if bot_id in bots_info[rechecks_info_index]:
+                prev_bot_info = bots_info[rechecks_info_index][str(bot_id)]
+
+                updated_bot_info = dict()
+                updated_bot_info["status"] = (
+                    "success"
+                    if prev_bot_info["status"] == "success"
+                    and bot_info["status"] == "success"
+                    else "failure"
+                )
+                updated_bot_info["jobs"] = bot_info["jobs"] + prev_bot_info["jobs"]
+                updated_bot_info["started_at"] = str(
+                    min(bot_info["started_at"], prev_bot_info["started_at"])
+                )
+                updated_bot_info["computation_time"] = (
+                    bot_info["computation_time"] + prev_bot_info["computation_time"]
+                )
+
+                bots_info[rechecks_info_index][str(bot_id)] = updated_bot_info
+            else:
+                bots_info[rechecks_info_index][str(bot_id)] = bot_info
+        else:
+            bots_info.append(
+                {
+                    "recheck_number": str(round_number),
+                    f"{bot_id}": bot_info,
+                }
+            )
+    except:
+        print(rechecks_info_index)
+        print(bots_info)
+        raise Exception("Sorry, no numbers below zero")
+
+
+def generate_base_build_info(
+    computation_time,
+    status,
+    bots_info,
+    total_max_time,
+    start_time,
+    end_time,
+    recheck_count,
+    project,
+):
+    return {
+        "computation_time": computation_time,
+        "status": status,
+        "bot": bots_info,
+        "waiting_time": total_max_time,
+        "code_review_time": int((end_time - start_time).total_seconds()),
+        "recheck_count": recheck_count,
+        "project": project,
+    }
+from tqdm import tqdm
+
+one_run_builds_collection = db["one_run_builds"]
+recheck_builds_collection = db["recheck_builds"]
+
+
+def calculate_builds_by_patches(patch_sets):
+    rerun_builds_info = []
+    one_run_builds_info = []
+
+    for key, group in tqdm(patch_sets):
+        base_build_info, recheck_requestors = process_builds(group, key)
+        build_info = {
+            "key": str(key),
+            "rerun_requestors": recheck_requestors,
+            **base_build_info,
+        }
+        if len(base_build_info["bot"]) > 1:
+            rerun_builds_info.append(build_info)
+        else:
+            if len(base_build_info["bot"]) != 0:
+                one_run_builds_info.append(build_info)
+
+    recheck_builds_collection.insert_many(rerun_builds_info)
+    one_run_builds_collection.insert_many(one_run_builds_info)
+patch_sets = df.groupby(["number", "revision_number"])
+calculate_builds_by_patches(patch_sets)

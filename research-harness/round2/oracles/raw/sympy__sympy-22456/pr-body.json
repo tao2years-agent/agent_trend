@@ -1,0 +1,8 @@
+{
+  "pr_url": "https://github.com/sympy/sympy/pull/22456",
+  "source_page_sha256": "6ddc2ff564224b71dec4dc161ad779cc7bf5f43b3c83507636250b2e78ea6cdd",
+  "pr_body_text": "References to other Issues or PRs\nFixes\n#22455\nSee also\n#22310\nBrief description of what is fixed or changed\nPreviously,\nString\nand its subclasses only supported the\ninvariance\nstring.func(**string.kwargs()) == string\n. Now\nalso\nstring.func(string.args) == string\nis supported as is\nrequired for all\nBasic\nsubclasses.\nOther comments\nNow the proposed solution since it would allow the class to function as it currently does in addition to preserving the argument invariance\nCurrently this would mean that\nstring.func(**string.kwargs()) == string\ndoes not work, since no arguments are allowed. Instead, it acts as an\nAtom\nand does not allow modification of its non-\nexpr.arg\narguments.\nThis does not generally solve the issue for\nToken\nclasses with mixed\nexpr.arg\nand non-\nexpr.arg\narguments, however, it does not appear that such a class currently exists.\nThis could be a possible solution for supporting this invariance:\ndef\nfunc\n(\nself\n,\n*\nargs\n,\n**\nkwargs\n):\nif\nself\n.\nis_Atom\nand\nnot\nkwargs\n:\nreturn\nself\nelse\n:\nreturn\nsuper\n().\nfunc\n(\n*\nargs\n,\n**\nkwargs\n)\nAlternatively,\nlambda *args, **kwargs: self\ncould simply be returned\nRelease Notes\nNO ENTRY",
+  "issue_references_in_closing_phrases": [
+    22455
+  ]
+}

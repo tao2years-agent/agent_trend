@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/jenkinsci/pipeline-input-step-plugin/commits/master</id>
+  <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commits/master"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commits/master.atom"/>
+  <title>Recent Commits to pipeline-input-step-plugin:master</title>
+  <updated>2026-11-09T20:09:42Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/0c9db265274122f4ff54056c7d5977f266ef75db</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/0c9db265274122f4ff54056c7d5977f266ef75db"/>
+    <title>
+        Merge pull request #352 from timja/fix-dialog-title-header
+    </title>
+    <updated>2026-11-09T20:09:42Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/154109?s=30&amp;v=4"/>
+    <author>
+      <name>jglick</name>
+      <uri>https://github.com/jglick</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #352 from timja/fix-dialog-title-header
+
+Fix X-Dialog-Title header mangling uppercase letters, digits and &amp;#39;?&amp;#39;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9a7fc3845e703de135a9fdad4aec1b40dfb989c9</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/9a7fc3845e703de135a9fdad4aec1b40dfb989c9"/>
+    <title>
+        Assert dialog title trims boundary whitespace
+    </title>
+    <updated>2026-11-06T23:06:12Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Assert dialog title trims boundary whitespace
+
+HtmlUnit trims response header values, so the header assertion alone
+would not catch untrimmed whitespace.
+
+Co-Authored-By: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5a0f6d3e4c4a02aa50d37df9a85ad466f41404d2</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/5a0f6d3e4c4a02aa50d37df9a85ad466f41404d2"/>
+    <title>
+        Fix X-Dialog-Title header mangling uppercase letters, digits and &#39;?&#39;
+    </title>
+    <updated>2026-11-06T22:51:24Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Fix X-Dialog-Title header mangling uppercase letters, digits and &amp;#39;?&amp;#39;
+
+The regex in dialog.jelly reached java.util.regex with doubled backslashes,
+so the character class contained the range &amp;#39;0-\&amp;#39; (0x30-0x5C) and replaced
+digits, &amp;#39;?&amp;#39;, &amp;#39;@&amp;#39; and A-Z with spaces. A message starting or ending with one
+of those produced a header value with leading or trailing whitespace, which
+HTTP/2 rejects, so the dialog fetch failed outright.
+
+Build the title in Java and strip surrounding whitespace.
+
+Co-Authored-By: Claude Opus 5.5 &amp;lt;noreply@anthropic.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/ec1a14ff7627c573416e5b9664b1018fac60dcdd</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/ec1a14ff7627c573416e5b9664b1018fac60dcdd"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2250.va_d01d559…
+    </title>
+    <updated>2026-11-02T03:39:43Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2250.va_d01d559a_209 (#351)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9838c8879d9fd9d8cca63d6819ec703e6177ed1c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/9838c8879d9fd9d8cca63d6819ec703e6177ed1c"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2236.v12dd4c483…
+    </title>
+    <updated>2026-09-21T00:39:51Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2236.v12dd4c483242 (#349)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/5efbf85a0ef6cf7a3e98f13699c1f23b40206238</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/5efbf85a0ef6cf7a3e98f13699c1f23b40206238"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2221.va_0451304…
+    </title>
+    <updated>2026-08-10T12:46:31Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2221.va_045130417c9 (#345)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/d2b888dfb50da740ab3602588d0189808c1ab9c7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/d2b888dfb50da740ab3602588d0189808c1ab9c7"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2211.v27f680c93…
+    </title>
+    <updated>2026-07-13T20:15:12Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2211.v27f680c93c53 (#344)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/10d0a8989cb4ef95859ba948dab968b8cdc332d3</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/10d0a8989cb4ef95859ba948dab968b8cdc332d3"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2208.vb_6798604…
+    </title>
+    <updated>2026-07-13T01:42:05Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2208.vb_6798604237e (#343)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/56198a642157f4648edd05bee6470b729ec09df7</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/56198a642157f4648edd05bee6470b729ec09df7"/>
+    <title>
+        Merge pull request #258 from timja/dialog
+    </title>
+    <updated>2026-07-02T14:04:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/154109?s=30&amp;v=4"/>
+    <author>
+      <name>jglick</name>
+      <uri>https://github.com/jglick</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #258 from timja/dialog
+
+Add a dialog file for pipeline graph view to reuse&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/dadfa1cd130b39c1b50eae0cd650861712f9893e</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/dadfa1cd130b39c1b50eae0cd650861712f9893e"/>
+    <title>
+        Remove if block
+    </title>
+    <updated>2026-07-02T13:29:55Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Remove if block&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/6a38fcb42880d3d7312ecd81897df933079b5003</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/6a38fcb42880d3d7312ecd81897df933079b5003"/>
+    <title>
+        Update dependency org.jenkins-ci.plugins:plugin to v6.2189.v695a_c41f…
+    </title>
+    <updated>2026-07-02T12:42:27Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/2740?s=30&amp;v=4"/>
+    <author>
+      <name>renovate</name>
+      <uri>https://github.com/renovate</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Update dependency org.jenkins-ci.plugins:plugin to v6.2189.v695a_c41f5249 (#341)
+
+Signed-off-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;
+Co-authored-by: renovate[bot] &amp;lt;29139614+renovate[bot]@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/22bf440f1af2c0f90b475a291233365fbcd2e1fb</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/22bf440f1af2c0f90b475a291233365fbcd2e1fb"/>
+    <title>
+        Apply suggestion from @Copilot
+    </title>
+    <updated>2026-06-17T06:23:18Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Apply suggestion from @Copilot
+
+Co-authored-by: Copilot &amp;lt;175728472+Copilot@users.noreply.github.com&amp;gt;&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/26db0f7b2bf64e5eefba9ba96eff2d304d8c46e0</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/26db0f7b2bf64e5eefba9ba96eff2d304d8c46e0"/>
+    <title>
+        Revert changes
+    </title>
+    <updated>2026-06-16T21:45:49Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Revert changes&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/9928e7c8684ea22981db646ab0324c260a475051</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/9928e7c8684ea22981db646ab0324c260a475051"/>
+    <title>
+        Remove close for outside click
+    </title>
+    <updated>2026-05-04T14:15:34Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Remove close for outside click&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/928ccf19d6d50aa158402918c1627e7d1eec9dbb</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/928ccf19d6d50aa158402918c1627e7d1eec9dbb"/>
+    <title>
+        Set a min width
+    </title>
+    <updated>2026-05-04T13:58:55Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Set a min width&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/f6e71bc0f860f16af833c3d9f5220da59cba915f</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/f6e71bc0f860f16af833c3d9f5220da59cba915f"/>
+    <title>
+        More compatibility
+    </title>
+    <updated>2026-05-04T06:57:49Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;More compatibility&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/99bd858d9f7bae388e5eb83a9e81c462ed1e1223</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/99bd858d9f7bae388e5eb83a9e81c462ed1e1223"/>
+    <title>
+        Switch providing input for parameters to a dialog
+    </title>
+    <updated>2026-05-03T13:22:45Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/21194782?s=30&amp;v=4"/>
+    <author>
+      <name>timja</name>
+      <uri>https://github.com/timja</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Switch providing input for parameters to a dialog&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/dff487c5998cd174f2a78bbcf248a0b60f61d9cf</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/dff487c5998cd174f2a78bbcf248a0b60f61d9cf"/>
+    <title>
+        Merge pull request #257 from MarkEWaite/remove-redundant-release-draf…
+    </title>
+    <updated>2026-04-06T16:13:20Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/154109?s=30&amp;v=4"/>
+    <author>
+      <name>jglick</name>
+      <uri>https://github.com/jglick</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #257 from MarkEWaite/remove-redundant-release-drafter-config
+
+Rely on jenkinsci organization release drafter configuration&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/a3be8defd648d8f0649b30379cbef999cf38fd60</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/a3be8defd648d8f0649b30379cbef999cf38fd60"/>
+    <title>
+        Rely on jenkinsci organization release drafter configuration
+    </title>
+    <updated>2026-04-06T15:57:58Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/156685?s=30&amp;v=4"/>
+    <author>
+      <name>MarkEWaite</name>
+      <uri>https://github.com/MarkEWaite</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Rely on jenkinsci organization release drafter configuration
+
+Release drafter v7 dropped support for `_extends: .github` in the
+configuration.  It either needs to be removed or replaced with a more
+complete specification like:
+
+`_extends: github:jenkinsci/.github:/.github/release-drafter.yml`
+
+This pull request removes it because the &amp;quot;Enabling CD&amp;quot; instructions at
+https://www.jenkins.io/doc/developer/publishing/releasing-cd/#configure-release-drafter
+say:
+
+&amp;gt; You can delete any existing Release Drafter configuration ... as that
+&amp;gt; will be subsumed by the CD workflow
+
+Testing done
+
+* None.  Has worked well in many repositories, not expecting any issues in this repository&lt;/pre&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/e9ea31653b6809802b2214cc7ded81fdd842826c</id>
+    <link type="text/html" rel="alternate" href="https://github.com/jenkinsci/pipeline-input-step-plugin/commit/e9ea31653b6809802b2214cc7ded81fdd842826c"/>
+    <title>
+        Merge pull request #255 from jglick/update-parent-and-ci
+    </title>
+    <updated>2026-02-05T16:40:48Z</updated>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/154109?s=30&amp;v=4"/>
+    <author>
+      <name>jglick</name>
+      <uri>https://github.com/jglick</uri>
+    </author>
+    <content type="html">
+      &lt;pre style=&#39;white-space:pre-wrap;width:81ex&#39;&gt;Merge pull request #255 from jglick/update-parent-and-ci
+
+Update parent POM, switch to Renovate, enable dep automerge&lt;/pre&gt;
+    </content>
+  </entry>
+</feed>

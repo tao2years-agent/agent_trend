@@ -1,0 +1,108 @@
+{
+  "id": "buildkite",
+  "repo": "buildkite/agent",
+  "sha": "895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a",
+  "date": "2026-11-19",
+  "sources": [
+    {
+      "url": "https://github.com/buildkite/agent/commits/main.atom",
+      "path": "lanes/delivery/raw/buildkite/6d74fa2e1955-commits.atom",
+      "date": "2026-11-19",
+      "sha256": "6d74fa2e1955713fd376a1cd34427636f93b5b5ba1c9eefea1be8894db54912f",
+      "retrieved": "2026-11-20T03:14:54.585834+00:00",
+      "resolved_url": "https://github.com/buildkite/agent/commits/main.atom",
+      "bytes": 24162
+    },
+    {
+      "url": "https://github.com/buildkite/agent/releases.atom",
+      "path": "lanes/delivery/raw/buildkite/f722173efbdd-releases.atom",
+      "date": "",
+      "sha256": "f722173efbdd38c6d33eb5824e3e4064b5d8db02347a66e39d17a22a831dbc03",
+      "retrieved": "2026-11-20T03:14:56.569775+00:00",
+      "resolved_url": "https://github.com/buildkite/agent/releases.atom",
+      "bytes": 79482
+    },
+    {
+      "url": "https://raw.githubusercontent.com/buildkite/agent/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/agent/job_runner.go",
+      "path": "lanes/delivery/raw/buildkite/8169ce30dc1c-job_runner.go",
+      "date": "2026-11-19",
+      "sha256": "8169ce30dc1ce27a3eb2b37b20ff16de26a89e3db0df8220a8ac05cb266c9a14",
+      "retrieved": "2026-11-20T03:15:03.598523+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/buildkite/agent/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/agent/job_runner.go",
+      "bytes": 46983,
+      "repo_path": "agent/job_runner.go"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/buildkite/agent/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/README.md",
+      "path": "lanes/delivery/raw/buildkite/e0451dd23140-README.md",
+      "date": "2026-11-19",
+      "sha256": "e0451dd2314047d8db033316ba5fbb853f05c0f636e0792f5b59efbd63032941",
+      "retrieved": "2026-11-20T03:15:04.614215+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/buildkite/agent/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/README.md",
+      "bytes": 8113,
+      "repo_path": "README.md"
+    }
+  ],
+  "releases": [
+    {
+      "tag": "v4.12.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.12.0",
+      "updated": "2026-11-19T00:39:54Z",
+      "body": "What's Changed \n 🔒 Security \n \n \n Sign and verify artifact upload paths in signed jobs by  @buildkate  in  #4640  \n Older verifying agents may reject jobs signed by this version. Upgrade verifying agents before using this version to sign pipelines. \n \n \n ✨ Added \n \n Add OpenTelemetry span events for OSC 7501 reports with the  program-status  experiment enabled by  @mcncl  in  #4669  \n \n  Full Changelog :   v4.11.0...v4.12.0"
+    },
+    {
+      "tag": "v4.11.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.11.0",
+      "updated": "2026-11-17T05:34:58Z",
+      "body": "What's Changed \n 🔒 Security \n \n Prevent shell expansion of hook and temporary-directory paths in POSIX hook wrappers by  @buildkate  in  #4641  \n Prevent job environment variables from overriding the agent executable used by hook wrappers by  @swebb  in  #4645  \n Prevent repository URL normalization from bypassing  --allowed-repositories  by  @buildkate  in  #4643  \n \n ✨ Added \n \n Add  buildkite.pull_request_draft  to job spans and OpenTelemetry resources by  @jlisee  in  #4649  \n Add  buildkite.program_status.id  to hook and command spans when program-status reporting is active by  @mcncl  in  #4667  \n \n 🐛 Fixed \n \n Resume polling when the streaming connection drops during job execution by  @SarthakRawat-1  in  #4626  \n Recover GitHub pull request checkouts when the head ref is missing but the build commit is available by  @swebb  in  #4642  \n \n 🏠 Internal \n \n Isolate checksum files across concurrent E2E runs by  @mcncl  in  #4632  \n Dependency updates by  @dependabot [bot] in  #4633 ,  #4634 ,  #4635 ,  #4638 ,  #4652 ,  #4651 ,  #4653 ,  #4658 ,  #4660  and  #4657  \n \n New Contributors \n \n  @SarthakRawat-1  made their first contribution in  #4626  \n  @jlisee  made their first contribution in  #4649  \n \n  Full Changelog :   v4.10.2...v4.11.0"
+    },
+    {
+      "tag": "v4.10.2",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.10.2",
+      "updated": "2026-11-09T05:49:57Z",
+      "body": "What's Changed \n 🐛 Fixed \n \n Stop  program-status  experiment reports from coming before section headers in the job log, and redact secrets in report messages by  @wolfeidau  in  #4612  \n Flush buffered output after polyglot and binary hooks, so it no longer appears in a later log section or gets lost by  @wolfeidau  in  #4628  \n \n 🏠 Internal \n \n Clarify PR rationale and context visibility guidance by  @moskyb  in  #4627  \n Isolate coverage for process output test helpers by  @mcncl  in  #4630  \n \n  Full Changelog :   v4.10.1...v4.10.2"
+    },
+    {
+      "tag": "v4.10.1",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.10.1",
+      "updated": "2026-11-06T06:21:54Z",
+      "body": "What's Changed \n 🐛 Fixed \n \n Fix jobs hanging after a hidden command fails when debug logging is enabled by  @olihou  in  #4589  \n Correct agent token setup instructions after Linux package installation when a configuration already exists by  @omehegan  in  #4617  \n \n New Contributors \n \n  @olihou  made their first contribution in  #4589  \n \n  Full Changelog :   v4.10.0...v4.10.1"
+    },
+    {
+      "tag": "v3.138.3",
+      "url": "https://github.com/buildkite/agent/releases/tag/v3.138.3",
+      "updated": "2026-11-06T06:31:36Z",
+      "body": "What's Changed \n 🔒 Security \n \n Prevent case variants of Windows job environment variable names from bypassing signature verification and allowlist checks by  @CerealBoy  in  #4605  \n Reject pipeline YAML with excessive alias expansion instead of exhausting memory during  buildkite-agent pipeline upload  by  @dependabot [bot] in  #4579  \n \n 🐛 Fixed \n \n Prevent unnecessary ping-stream reconnections and keep paused agents paused when receiving keepalives or unknown stream actions by  @moskyb  in  #4616  \n \n 🏠 Internal \n \n Fix copying release binaries to the S3 latest directory in v3 release pipelines by  @moskyb  in  #4561  \n Dependency updates by  @dependabot [bot] in  #4575 ,  #4577 ,  #4578 ,  #4584 ,  #4581 ,  #4580 ,  #4582 ,  #4601 ,  #4603  and  #4604  \n \n  Full Changelog :   v3.138.2...v3.138.3"
+    },
+    {
+      "tag": "v4.10.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.10.0",
+      "updated": "2026-11-05T23:44:54Z",
+      "body": "What's Changed \n This release supports longer-lived job-dispatch streams and application-level keepalives, reducing unnecessary reconnections. \n 🔒 Security \n \n Prevent plugin cache collisions from running the wrong hooks by  @ss1909  in  #4610  \n \n 🐛 Fixed \n \n Fix shutdown hangs after failed job acceptance by  @tomanagle  in  #4556  \n Reject  --append  fetches with  BUILDKITE_COMMIT=HEAD  by  @ss1909  in  #4608  \n Respect  BUILDKITE_SKIP_CHECKOUT  during pipeline upload by  @CerealBoy  in  #4609  \n \n 🔧 Changed \n \n Let Buildkite control ping-stream lifetimes by  @moskyb  in  #4614  +  #4611  \n Spread registration retries with exponential backoff and jitter by  @ss1909  in  #4597  \n De-emphasise cache housekeeping logs by  @wolfeidau  in  #4606  \n \n 🏠 Internal \n \n Dependency updates by  @dependabot [bot] in  #4585 ,  #4598 ,  #4599  and  #4600  \n \n New Contributors \n \n  @tomanagle  made their first contribution in  #4556  \n \n  Full Changelog :   v4.9.0...v4.10.0"
+    },
+    {
+      "tag": "v4.9.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.9.0",
+      "updated": "2026-10-30T05:57:51Z",
+      "body": "What's Changed \n ✨ Added \n \n Add  buildkite-agent cache restore --download-timeout  to limit download time across selected caches by  @buildkate  in  #4533  \n \n 🐛 Fixed \n \n Embed fallback root certificates so the agent can verify TLS on hosts without system certificates by  @zhming0  in  #4571  \n Clean up temporary downloads when  buildkite-agent cache restore  receives SIGINT or SIGTERM by  @buildkate  in  #4569  \n Honor  Retry-After  when  buildkite-agent oidc request-token  retries a request by  @CerealBoy  in  #4590  \n Request JSON API responses to avoid parsing HTML error pages by  @moskyb  in  #4593  \n Avoid slow checks for missing commits in partial clones when skipping fetches for existing commits or using Git mirrors by  @zhming0  in  #4594  \n \n 🏠 Internal \n \n Update osc7501 to v0.3.0 under the Buildkite organization by  @wolfeidau  in  #4566  \n Dependency updates by  @dependabot [bot] in  #4573  and  #4574  \n Keep agent tracing from delaying stable release jobs by  @lucaswilric  in  #4532  \n \n  Full Changelog :   v4.8.1...v4.9.0"
+    },
+    {
+      "tag": "v4.8.1",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.8.1",
+      "updated": "2026-10-22T23:39:18Z",
+      "body": "What's Changed \n 🐛 Fixed \n \n Report the terminating signal instead of exit status -1 in hook and command status records by  @wolfeidau  in  #4563  \n Allow Kubernetes jobs with only the Kubernetes plugin to run when plugins are disabled by  @pujitha24  in  #4528  \n Remove outdated availability notices from  buildkite-agent cache save  and  cache restore  help by  @buildkate  in  #4564  \n \n New Contributors \n \n  @pujitha24  made their first contribution in  #4528  \n \n  Full Changelog :   v4.8.0...v4.8.1"
+    },
+    {
+      "tag": "v4.8.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.8.0",
+      "updated": "2026-10-22T02:54:41Z",
+      "body": "What's Changed \n ✨ Added \n \n Add the  program-status  experiment to show program status in job logs and report job and upload progress by  @wolfeidau  in  #4534  \n \n 🔧 Changed \n \n Upgrade to Go 1.27.3: macOS binaries now require macOS 13 or later; big-endian Linux  ppc64  binaries require ELFv2 support (kernel 3.13 or a compatible backport).  ppc64le  is unaffected by  @isaacsu  in  #4559  \n \n 🏠 Internal \n \n Check cancellation results in integration tests by  @isaacsu  in  #4558  \n Dependency updates by  @dependabot [bot] in  #4557  \n \n  Full Changelog :   v4.7.0...v4.8.0"
+    },
+    {
+      "tag": "v4.7.0",
+      "url": "https://github.com/buildkite/agent/releases/tag/v4.7.0",
+      "updated": "2026-10-20T22:59:38Z",
+      "body": "Important security update \n  Upgrade to v4.7.0 promptly.  This release addresses  compromised eMudhra certificate chains  ( CVE-2026-111943 ) by building the agent with Go 1.26.10, which rejects the affected chains, including alternate cross-signed paths. \n Installing the updated agent is required to receive this protection. It doesn't update OS, container or custom trust stores, or protect external tools run by jobs; remediate those separately. \n What's Changed \n 🔒 Security \n \n Reject compromised eMudhra certificate chains ( CVE-2026-111943 ) by building with Go 1.26.10 by  @duckalini  in  #4550  \n Prevent artifact downloads escaping their destination through directory symlinks by  @isaacsu  in  #4541  \n Add opt-in  --git-commit-verification=fail-closed  to reject checkouts when commit verification can't succeed by  @dahtey-bk  in  #4530  \n Protect  GIT_ALLOW_PROTOCOL  when  --protect-dangerous-git-environment-variables  is enabled and list the protected variables in help by  @moskyb  in  #4527  \n \n 🐛 Fixed \n \n Redact secrets containing apostrophes in  buildkite-agent secret get --format env  output in build logs by  @isaacsu  in  #4531  \n Honour the agent's  BUILDKITE_CAPTURE_AGENT_ERRORS  setting when it's protected from job overrides by  @123sarahj123  in  #4524  \n \n 🔧 Changed \n \n Show the  cache  command in  buildkite-agent --help  by  @ss1909  in  #4482  \n \n 🏠 Internal \n \n Replace deprecated HTTP/2 transport configuration by  @isaacsu  in  #4542  \n Add a pipeline to close stale issues and PRs by  @moskyb  in  #4544  \n Run stale issue and PR cleanup on elastic runners by  @moskyb  in  #4546  \n Dependency updates by  @dependabot [bot] in  #4536 ,  #4535 ,  #4419 ,  #4537 ,  #4447 ,  #4545 ,  #4504 ,  #4505 ,  #4540  and  #4416  \n \n New Contributors \n \n  @dahtey-bk  made their first contribution in  #4530  \n \n  Full Changelog :   v4.6.0...v4.7.0"
+    }
+  ]
+}

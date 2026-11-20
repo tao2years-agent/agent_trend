@@ -1,0 +1,1188 @@
+Mitigating the Risk of Defects and Improving Knowledge
+Distribution with Code Reviewer Recommenders
+MOHAMMADALI SEFIDI ESFAHANI, Concordia University, Canada
+PETER C. RIGBY, Concordia University, Canada
+Defects are inevitable in software projects, leading to increased maintenance costs, user dissatisfaction, and a
+diminished software reputation. Code review is one of the most critical software quality assurance activities
+that reduces software defects and improves software quality. Prior works have quantified the impact of
+reviewer recommenders on the risk of inducing new defects based on the highest level of expertise among the
+developers in the reviewer team. However, our analysis shows that prior work overestimates the safety of
+a change and ignores the defect-finding effectiveness of the diverse knowledge of reviewers. In this study,
+we incorporate the knowledge of the entire reviewer team into the author’s level of expertise and introduce
+the novel Contribution-aware Changeset Safety Ratio (CCSR) outcome to assess the impact of code reviewer
+recommenders on the risk of inducing defects more accurately.
+   When a pull request is risky, a natural mitigation is to add an expert reviewer. We are unaware of any works
+that have quantified the impact of adding a reviewer to risky PRs. We propose the novel AddExpertRec(𝐷𝑡 )
+strategy that recommends an additional expert reviewer for defect-prone pull requests to reduce the likelihood
+of introducing new defects when the risk is above the threshold 𝐷𝑡 . The simulation results show that
+AddExpertRec(𝐷𝑡 ) can enhance the defect finding effectiveness of existing recommenders while still balancing
+reviewer workload and spreading knowledge to reduce the impact of turnover. Ultimately, our results give
+managers the ability to select a recommender strategy that best suits their project needs based on their
+resource constraints. The scripts and data are available in our replication package.
+CCS Concepts: • Software and its engineering → Software organization and properties.
+Additional Key Words and Phrases: Defect Risk Management, Developer Turnover, Knowledge Distribution,
+Code Reviewer Recommendation
+ACM Reference Format:
+Mohammadali Sefidi Esfahani and Peter C. Rigby. 2026. Mitigating the Risk of Defects and Improving Knowl-
+edge Distribution with Code Reviewer Recommenders. Proc. ACM Softw. Eng. 3, FSE, Article FSE008 (July 2026),
+22 pages. https://doi.org/10.1145/3797070
+
+1   Introduction
+During software maintenance and evolution, developers constantly modify the source code to
+introduce new features or fix reported defects. However, these modifications may cause new defects
+in the software [30]. Software defects can slow down the development process [48], delay the
+release of projects [24], increase the maintenance cost [7], reduce the product quality [16, 42],
+diminish customer satisfaction [59], and undermine the software reputation [44].
+   Code review is one of the most critical software activities that reduces software defects and
+improves software quality [5, 34, 40, 65]. Despite the importance of Software Quality Assurance
+activities for software quality [25, 70], development teams have limited resources and must wisely
+allocate them to minimize the risk of incurring defects [27]. Finding reviewers with the time to
+Authors’ Contact Information: Mohammadali Sefidi Esfahani, Concordia University, Montreal, Canada, mohammadali.
+esfahani@concordia.ca; Peter C. Rigby, Concordia University, Montreal, Canada, peter.rigby@concordia.ca.
+
+
+
+This work is licensed under a Creative Commons Attribution 4.0 International License.
+© 2026 Copyright held by the owner/author(s).
+ACM 2994-970X/2026/7-ARTFSE008
+https://doi.org/10.1145/3797070
+
+
+                                     Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:2                                                                Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+review code changes and familiarity with the modified subsystems has been a challenge during code
+review [58, 63], especially in large projects with hundreds of developers and at large companies. In
+a large project, the author of a PR may not know which reviewer or team to select, and this can
+become an error-prone and time-consuming task [31]. Therefore, code reviewer recommendation
+systems accommodate a wide range of knowledge among developers in large-scale projects and
+help engineers find suitable reviewers for code changes [71].
+   Prior works [41, 55] demonstrate the inherent potential of reviewer recommenders in knowledge
+distribution and workload balancing in the development team. Moreover, Kononenko et al. [33]
+highlight that expert developers are more proficient and effective in identifying defects during
+the code review process. Upon this idea, Kazemi et al. [28] define the Changeset Safety Ratio (CSR)
+outcome to quantify the impact of code reviewer recommenders on the risk of inducing defects
+after integrating a patch to the codebase. However, their proposed CSR outcome only considers the
+top reviewer’s knowledge and fails to account for the author’s expertise and the knowledge of the
+entire reviewer team when measuring the risk reduction of inducing defects.
+   In this study, we introduce the Contribution-aware Changeset Safety Ratio (CCSR) outcome to
+assess the impact of code reviewer recommenders on the risk of inducing defects more accurately.
+While measuring the risk of inducing defects, the CCSR outcome considers the combined knowledge
+of the entire reviewer team and the author’s knowledge, rather than relying solely on the knowledge
+of the top expert reviewer. We also propose a novel recommendation strategy that suggests an
+additional expert reviewer for defect-prone pull requests to further enhance the defect-finding
+effectiveness of the reviewer team during the code review process.
+   Following prior works [20, 28, 41], we evaluate the efficacy of code reviewer recommenders with
+the Expertise, GiniWorkload, KRT , and Rev++ outcomes. The Expertise outcome ensures that there
+are still knowledgeable developers to review the code changes. The GiniWorkload outcome ensures
+that the top reviewers are not unreasonably overworked because they are highly knowledgeable.
+The Knowledge at Risk to Turnover (KRT ) outcome quantifies the knowledge distribution to ensure
+that knowledge is adequately distributed during review to mitigate the risk of developer turnover.
+The Rev++ outcome calculates the proportion of pull requests to which the recommenders add an
+extra reviewer. We also evaluate our novel CCSR outcome to ensure that the assigned reviewers
+are sufficiently expert to identify existing defects in a code change. Since each additional reviewer
+represents work for the development team, the ideal recommender mitigates the risk of inducing
+defects while minimizing knowledge loss and the amount of extra work for the team. To evaluate the
+efficacy of the recommenders, we run simulations on historical reviews of three large open-source
+projects.
+
+1.1    Research Questions
+We present our research questions and briefly summarize our findings below.
+RQ1. CSR vs. CCSR: Which developers should be included in the Changeset Safety Ratio?
+   Prior work [28] quantifies the impact of code reviewer recommenders on the risk of new defects
+based on the knowledge of the reviewer with the most expertise for a PR. However, reviewers of
+pull requests often have diverse types of expertise. For instance, one reviewer might be an expert
+in networking, while another might be an expert in the file system. In addition to reviewers, the
+authors’ knowledge is effective in reducing the risk of inducing future defects after integrating pull
+requests. In this research question, we investigate the impact of reviewer recommenders on the
+risk of inducing bugs by considering each developer’s expertise.
+   Result summary: The top expert reviewer poorly represents the aggregated knowledge needed
+for review, thereby overestimating the safety of the change. We introduce CCSR to factor in the
+diverse expertise of all the review participants. When we look at each recommender based on
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders           FSE008:3
+
+
+CCSR, we find that expertise-based cHRev [78] and AcHRev are the most effective recommenders
+in reducing the risk of new defects, increasing the safety ratio by an average of 19% and 20%,
+respectively.
+RQ2. Multiple Outcomes: In addition to the CCSR outcome, how well do the existing
+reviewer recommenders perform with respect to other outcomes?
+   In the first RQ, we developed a more representative measure of change safety, but we did not
+discuss the impact on reviewer outcomes. In this research question, we examine the performance of
+reviewer recommenders based on the reviewers’ level of Expertise, the GiniWorkload of reviewers,
+and the Knowledge at Risk to Turnover (KRT ).
+   Result summary: AcHRev and cHRev increase change safety but poorly distribute knowledge
+leading to higher turnover risk. The workload balancing recommenders perform poorly at reducing
+defect risk. RAR and Sofia provide a better balance of outcomes with the former targeting defect
+risk and the latter knowledge distribution.
+RQ3. AddExpertRec(𝐷𝑡 ): What is the impact of adding an extra reviewer to defect-prone
+pull requests?
+   In the defect prediction literature, researchers often suggest adding an extra reviewer to PRs that
+are high risk, e.g., [27, 67, 69]. We are unaware of a study that has quantified the impact of adding
+a reviewer. We present the novel AddExpertRec(𝐷𝑡 ) approach to mitigate the associated risk with
+developer turnover, while maintaining the defect finding effectiveness by adding a reviewer. In this
+approach, we leverage the RAR recommender [28] to suggest an expert reviewer for pull requests
+when the probability of the change introducing a defect is at or above the threshold 𝐷𝑡 . We also
+recommend replacing a reviewer with the top candidate for the other pull requests and show the
+trade-off between ΔCCSR, ΔKRT, and Rev++ outcomes by varying 𝐷𝑡 .
+   Results summary: The AddExpertRec(𝐷𝑡 ) approach can successfully balance the trade-off
+between change safety and knowledge distribution by assigning an extra expert reviewer to defect-
+prone PRs based on the likelihood of inducing new defects. By varying 𝐷𝑡 , we show how engineering
+managers can trade off the assignment of extra experts based on their available resources and the
+need to control the risk of field defects.
+   This paper is organized as follows. In Section 2, we provide background on existing code reviewer
+recommenders and their scoring function. In Section 3, we discuss our novel reviewer recommender
+strategies, dataset, outcome measures, and simulation methodology. Section 4 presents results for
+each research question. In Section 5, we discuss the trade-off between reducing the risk of new
+defects and reviewers’ extra work. In Section 6, we describe the threats to validity. In Section 7, we
+position our findings in the research literature. In Section 8, we conclude our study.
+
+2   Background
+Among the expertise-based, turnover-mitigating, and workload-aware code reviewer recommenda-
+tion systems in the literature, we provide an overview of the state-of-the-art recommenders in this
+section. We first introduce each reviewer recommender and then describe their scoring function
+and how they rank the reviewer candidates.
+    cHRev. The cHRev recommender [78] is a popular conventional reviewer recommender in
+the literature. It ranks candidates by the expertise, frequency, and recency of their past reviews.
+Zanjani et al. [78] define the 𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) as the measure of expertise for a developer 𝐷 on a file
+𝐹 . 𝑅 𝑓 , 𝑊 𝑓 , and 𝑇𝑓𝑟 respectively show the number of review comments contributed by 𝐷 for 𝐹 , the
+number of work days 𝐷 has dedicated to contributing comments on 𝐹 , and the last day that 𝐷
+worked on 𝐹 . To provide a denominator, 𝑅 𝑓 ′ ,𝑊 𝑓 ′ , and 𝑇𝑓𝑟 ′ indicate the total number of comments
+made on 𝐹 , the total number of work days spent commenting on 𝐹 , and the time of the most recent
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:4                                                                Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+comment on 𝐹 , respectively. To compute the score of a candidate reviewer 𝐷 for a given code
+change 𝐹 , cHRev sums the 𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) values over the files in code change 𝐹 .
+
+                                                       𝑅𝑓     𝑊𝑓          1
+                                   𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) =        +     +                                                (1)
+                                                       𝑅 𝑓 ′ 𝑊 𝑓 ′ |𝑇𝑓𝑟 − 𝑇𝑓𝑟 ′ | + 1
+  TurnoverRec. Mirsaeedi and Rigby [41] combine RetentionRec and LearnRec recommenders to
+create TurnoverRec. RetentionRec ranks the candidate reviewers based on their prior Contribution
+Ratio and Consistency Ratio in the past year, and aims to prevent knowledge loss by recommending
+committed reviewers who are likely to stay with a project. In contrast, the LearnRec recommender
+suggests reviewers who can learn the most from reviewing a code change. By combining these two
+reviewer recommenders, TurnoverRec aims to distribute knowledge among active developers who
+are likely to stay with the project and can gain the most knowledge from code review.
+
+                     TurnoverRec(𝐷, 𝑅) = 𝐶 1 · LearnRec(𝐷, 𝑅) × 𝐶 2 · RetentionRec(𝐷)                              (2)
+   Sofia. Sofia [41] is a combination of TurnoverRec and cHRev recommenders, whose objective is
+to distribute knowledge among more active team members whenever a code change includes files
+with a large risk of knowledge loss. Sofia ranks a candidate reviewer 𝐷 for a code review 𝑅 based
+on its scoring function:
+                               (
+                                   TurnoverRec(𝐷, 𝑅)       |Knowledgeable(𝑓 )| ≤ 2, any 𝑓 | 𝑓 ∈ 𝑅
+             Sofia(𝐷, 𝑅) =                                                                                         (3)
+                                   cHRev(𝐷, 𝑅)             otherwise
+  RAR. Kazemi et al. [28] combine the Sofia and cHRev recommenders to optimize the recommen-
+dation process based on the PRs’ defect likelihood. They suggest replacing a reviewer with an expert
+reviewer whenever the defect proneness of a code change exceeds a defect threshold, 𝐷𝑡 . Otherwise,
+they spread the knowledge among the development team by using Sofia’s recommendations. RAR
+ranks a candidate reviewer 𝐷 for a code review 𝑅 based on its scoring function where 𝐷𝑡 = 50%:
+                                              (
+                                                  Sofia(𝐷, 𝑅)     𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅) ≤ 𝐷𝑡
+                             RAR(𝐷, 𝑅) =                                                                           (4)
+                                                  cHRev(𝐷, 𝑅)     otherwise
+   WhoDo. Microsoft’s WhoDo recommender [4] ranks candidate reviewers based on their recent
+expertise and workload. It calculates an expertise score for each candidate reviewer, i.e. 𝑆𝑐𝑜𝑟𝑒 (𝐷, 𝑅),
+based on the frequency and recency of their commits and reviews on individual files and parent di-
+rectories. Reviewers with more recent contributions receive higher scores. To balance the workload,
+the 𝑆𝑐𝑜𝑟𝑒 (𝐷, 𝑅) is divided by a load factor, i.e. 𝐿𝑜𝑎𝑑 (𝐷), which accounts for the number of open
+reviews assigned to the reviewer. Following the original implementation, 𝐿𝑜𝑎𝑑 (𝐷) is controlled by
+a parameter, 𝜃 = 0.5.
+
+                                                                                       Score(D,R)
+                         𝐿𝑜𝑎𝑑 (𝐷) = 𝑒 𝜃 .𝑇 𝑜𝑡𝑎𝑙𝑂𝑝𝑒𝑛𝑅𝑒𝑣𝑖𝑒𝑤𝑠 , WhoDo(𝐷, 𝑅) =                                         (5)
+                                                                                        Load(D)
+  SofiaWL. To make Sofia aware of reviewers’ workload, Hajari et al. [20] replace the cHRev
+recommender with WhoDo. They define SofiaWL’s scoring function as follows:
+                                   (
+                                       TurnoverRec(𝐷, 𝑅)     |Knowledgeable(𝑓 )| ≤ 2, any 𝑓 | 𝑓 ∈ 𝑅
+           SofiaWL(𝐷, 𝑅) =                                                                                         (6)
+                                       WhoDo(𝐷, 𝑅)           otherwise
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders            FSE008:5
+
+
+3     Methodology
+This section outlines our proposed novel recommender strategies, the dataset, and outcome mea-
+sures.
+
+3.1    Novel Recommender Strategies
+AcHRev. Zanjani et al. [78] introduce cHRev recommender, which ranks candidate developers based
+on the xFactor metric (Equation 1). The xFactor measures the developer expertise based on their
+prior reviews, but it does not consider the knowledge they attain when authoring code, i.e. their
+commit history. In this study, we incorporate author commit history into the cHRev and introduce
+the novel Authorship-aware cHRev (AcHRev) recommender. To implement this recommender, we
+extend the conventional cHRev recommender by adding a file-authorship component to it and
+define the novel 𝐶𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) scoring function as the measure of expertise for a developer 𝐷
+on a file 𝐹 . In this scoring function, we retain the definition of 𝑅 𝑓 , 𝑅 𝑓 ′ , 𝑊 𝑓 , 𝑊 𝑓 ′ , 𝑇𝑓𝑟 , and 𝑇𝑓𝑟 ′ from
+cHRev [78], while 𝐶 𝑓 and 𝑇𝑓𝑐 respectively show the number of commits contributed by developer 𝐷
+on file 𝐹 and the last day that developer 𝐷 made a commit on file 𝐹 . Their denominator 𝐶 𝑓 ′ and
+𝑇𝑓𝑐′ capture the total number of commits made and the time of the most recent commit on file 𝐹 .
+To rank candidate reviewers for a pull request, AcHRev sums the 𝐶𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) over all files in a
+code change, and suggests the reviewer with the highest score.
+                                        𝑅𝑓     𝑊𝑓          1            𝐶𝑓          1
+                 𝐶𝑥𝐹𝑎𝑐𝑡𝑜𝑟 (𝐷, 𝐹 ) =          +     +                  +     +                                       (7)
+                                        𝑅 𝑓 ′ 𝑊 𝑓 ′ |𝑇𝑓𝑟 − 𝑇𝑓𝑟 ′ | + 1 𝐶 𝑓 ′ |𝑇𝑓𝑐 − 𝑇𝑓𝑐′ | + 1
+   AddExpertRec(𝐷𝑡 ). Unlike prior works that replace a reviewer, in this work, we study the impact
+of adding an extra reviewer. We introduce the AddExpertRec(𝐷𝑡 ) to balance the Changeset Safety
+Ratio and knowledge distribution among the team by suggesting an additional expert reviewer
+for defect-prone pull requests. In this approach, we leverage the RAR recommender to suggest
+an additional expert reviewer for PRs whose defect-inducing likelihood, 𝑃𝑑 , is at or above the
+defect risk threshold, i.e. 𝑃𝑑 ≥ 𝐷𝑡 . For the remaining pull requests, we follow the normal RAR
+implementation.
+                                       (
+                                         AddExpertReviewer(𝑃𝑅, RAR) if 𝑃𝑑 ≥ 𝐷𝑡
+                AddExpertRec(𝐷𝑡 ) =                                                             (8)
+                                         ReplaceReviewer(𝑃𝑅, RAR)        otherwise
+
+3.2    Dataset
+We conduct our simulations using a collection of active open-source projects derived from Mir-
+saeedi and Rigby’s study [41]. Using the Commit Guru tool [57], Kazemi et al. [28] apply the SZZ
+algorithm [60] on each project and add the defect probability of each code change to the dataset.
+This dataset contains the Rust and Kubernetes projects, which are community-driven, as well as the
+Roslyn project, an industry project developed openly on GitHub. These projects are over 4 years old,
+contain over 10k files, and developers have reviewed at least 25% of their commits. Table 1 provides
+summary statistics of each project, including the number of files, pull requests, and developers.
+
+Table 1. Summary statistics of software projects under study. We explicitly select the large, long-lived projects.
+
+                     Project         #Files    #Reviewed PRs         #Years     #Developers
+                     Roslyn          12,313         8,646              5            469
+                     Rust            12,472        17,499              9           2,720
+                     Kubernetes      12,792        32,400              5           2,617
+
+
+                                    Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:6                                                                Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+3.3    CCSR Outcome
+During the code review process, several factors are effective in detecting defects and reducing the
+risk of new bugs. Prior work [28] introduces the Changeset Safety Ratio (CSR) outcome (Equation 9)
+to quantify the impact of code review on the risk of inducing new defects after code integration.
+In this section, we examine the limitations of the CSR outcome and describe how we propose an
+updated version of Changeset Safety Ratio that enables a more accurate estimation of the risk of
+inducing defects.
+
+                                  ∑︁ (𝑄 )
+                              𝑅𝑒𝑣𝑖𝑒𝑤𝑠
+               CSR(𝑄) =                     (1 − 𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅)) × (𝑅𝑒𝑣𝑖𝑒𝑤𝑒𝑟 𝑀𝑎𝑥𝑋 𝐹𝑎𝑐𝑡𝑜𝑟 (𝑅))                    (9)
+                                  𝑅
+
+  The CSR outcome measures the safety ratio based on the maximum xFactor among the reviewer
+team. However, CSR ’s reliance on the xFactor metric overlooks developers’ commit history. In
+the first step, we replace the xFactor with the novel CxFactor metric (Equation 7) and measure
+the CSR outcome based on the ReviewerMaxCxFactor to cover their review and commit history
+simultaneously.
+
+                                  ∑︁ (𝑄 )
+                              𝑅𝑒𝑣𝑖𝑒𝑤𝑠
+                CSR(𝑄) =                    (1 − 𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅)) × (ReviewerMaxCxFactor(𝑅))                    (10)
+                                   𝑅
+
+   As shown in Figure 1, reviewers of pull requests often have diverse types of expertise. For
+instance, one reviewer might be an expert in networking, while another might be an expert in the
+file system. However, the reviewers’ maximum CxFactor for the given pull request fails to account
+for the diverse knowledge of the reviewers when a team collaborates on a pull request. In the
+next step, we replace the MaxCxFactor of reviewers with their SumCxFactor to capture the diverse
+expertise of the reviewer team while measuring the CSR outcome.
+
+                                  ∑︁ (𝑄 )
+                              𝑅𝑒𝑣𝑖𝑒𝑤𝑠
+                CSR(𝑄) =                    (1 − 𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅)) × (ReviewerSumCxFactor(𝑅))                    (11)
+                                   𝑅
+
+   The authors are often more familiar with their code than the reviewers, and their knowledge
+is effective in reducing the risk of inducing future defects after integrating pull requests. For
+example, a junior author needs an expert reviewer, while expert authors may be able to have a less
+experienced review of their code changes. In this study, we incorporate the AuthorCxFactor into
+the ReviewerSumCxFactor and define our novel Contribution-aware Changeset Safety Ratio (CCSR)
+outcome in Equation 12.
+
+
+                    ∑︁ (𝑄 )
+                𝑅𝑒𝑣𝑖𝑒𝑤𝑠
+ CCSR(𝑄) =                    (1 − 𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅)) × (ReviewerSumCxFactor(𝑅) + AuthorCxFactor(𝑅))
+                      𝑅
+                                                                                                  (12)
+   We design the CCSR outcome to account for the changeset safety brought by the diverse knowl-
+edge of all PR reviewers and the author’s knowledge simultaneously. We measure this outcome to
+assess the impact of code reviewer recommenders on the risk of inducing defects more accurately.
+In Section 4.1, we report the results for the impact of reviewer recommenders on the risk of inducing
+bugs based on the different levels of developers’ expertise, i.e. CSR vs. CCSR outcomes.
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders           FSE008:7
+
+
+
+
+        (a) MaxCxFactor                         (b) SumCxFactor                           (c) CCSR outcome
+
+Fig. 1. Developers have diverse types of knowledge, which can sometimes overlap with each other. Suppose
+the middle rectangle represents the knowledge required to review the given pull request. While working on
+this code change, the collective knowledge of the entire reviewer team and the author’s expertise are effective
+in identifying defects and should be considered in the Changeset Safety Ratio.
+
+
+
+3.4   Evaluation Outcomes
+To evaluate the performance of reviewer recommenders, prior works [6, 22, 51, 66, 72, 77, 79]
+make recommendations for each code change and compare their results with the reviewers who
+actually performed the code review based on the top-k accuracy and Mean Reciprocal Rank (MRR)
+metrics. However, Kovalenko et al. [35] highlight that reviewer recommenders rarely provide
+additional value because they often suggest an obvious reviewer. This issue arises from outcome
+measures that assume the actual reviewers are the best or ideal reviewers for the pull requests.
+Dogan et al. [12] further argue that team leaders may fail to assign the ideal reviewers due to
+unavailability or cognitive biases in decision-making. Kovalenko et al. [35] suggest considering
+alternative perspectives and evaluating outcomes beyond merely predicting the actual reviewers.
+Following this direction, researchers have proposed novel outcome measures, such as Expertise [41,
+43], GiniWorkload [20], CSR [28], and KRT [55] to assess reviewer recommenders from diverse
+perspectives. In this study, we measure five outcomes for each recommender to evaluate the impact
+of code reviewer recommenders: the degree of reviewers’ Expertise, the Knowledge at Risk to
+Turnover (KRT ), the GiniWorkload of reviewers, Contribution-aware Changeset Safety Ratio (CCSR),
+and the proportion of pull requests to which an extra reviewer added (Rev++ ).
+   Expertise outcome measure. We measure the Expertise for a code review as the proportion of
+under-review files that the selected reviewers have modified or reviewed. We sum the expertise
+across the code reviews per quarter, 𝑄.
+
+                                                 ∑︁ (𝑄 )
+                                             𝑅𝑒𝑣𝑖𝑒𝑤𝑠
+                                                           FilesReviewersKnow(R)
+                           Expertise(𝑄) =                                                                         (13)
+                                                   𝑅
+                                                            FilesUnderReview(R)
+
+   GiniWorkload outcome measure. The Gini Coefficient measures the inequality in a distribution.
+A Gini Coefficient of 0 reflects perfect equality, while a Gini Coefficient of 1 reflects maximal
+inequality among values. To capture the workload distribution among the development team,
+Hajari et al. [20] adapt the Gini Coefficient from economics [13] to measure workload concentration.
+Given the area under the development team workload distribution in quarter 𝑄, the Gini Workload
+of reviewers, GiniWorkload(𝑄), is formulated as:
+
+                  GiniWorkload(𝑄) = 1 − 2 × AUC(TeamWorkloadDistribution(𝑄))                                      (14)
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:8                                                                Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+   Knowledge at Risk to Turnover (KRT ) outcome measure. We examine the number of files at
+risk of knowledge loss due to developer turnover to assess the impact of the reviewer recommender
+systems on potential knowledge loss. We use the term Knowledge at Risk to Turnover, KRT , rather
+than the ambiguous term Files at Risk (FaR) used in prior work [41] because we are studying both
+turnover risk, KRT , and defect risk, CCSR, in this paper. The KRT outcome measures the number
+of files known by zero or one active developer within each quarter. Given the 𝐴𝑐𝑡𝑖𝑣𝑒𝐷𝑒𝑣𝑠 (𝑄, 𝑓 )
+function that returns the set of developers who have modified or reviewed file 𝑓 and remain active
+in the project by the end of quarter 𝑄, KRT(𝑄) is formulated as
+
+                       KRT(𝑄) = { 𝑓 | 𝑓 ∈ 𝐹𝑖𝑙𝑒𝑠 (𝑃𝑅) , |𝐴𝑐𝑡𝑖𝑣𝑒𝐷𝑒𝑣𝑠 (𝑄, 𝑓 )| ≤ 1}               (15)
+   Contribution-aware Changeset Safety Ratio (CCSR) outcome measure. We measure
+the CCSR outcome (Equation 12) for a code change to quantify the impact of code reviewer
+recommendations on the risk of inducing future defects after code integration. In this outcome,
+𝐷𝑒 𝑓 𝑒𝑐𝑡𝑃𝑟𝑜𝑏 (𝑅) is the likelihood of inducing future defects after integration of code change 𝑅,
+which is calculated using SZZ from CommitGuru [27, 28, 60]. The term ReviewerSumCxFactor(𝑅)
+is the sum of the CxFactor values for all suggested reviewers for code change 𝑅 (Equation 7), while
+AuthorCxFactor(𝑅) is the CxFactor value of the author of 𝑅. Increases in CCSR outcome indicate
+that the code change is less likely to induce new defects, as the suggested reviewer improves the
+defect-finding effectiveness of the reviewer team.
+   Rev++ outcome measure. To examine the trade-off between adding an additional reviewer and
+the change in other outcomes, we measure the Rev++ outcome for a project as the proportion of
+pull requests to which the given recommender adds an extra reviewer. We calculate this proportion
+over the project’s lifetime.
+
+                                      NumPRsWithExtraReviewer(project)
+                      Rev++ (𝑝𝑟𝑜 𝑗𝑒𝑐𝑡) =                                  × 100              (16)
+                                                 NumPRs(project)
+  Percentage change in the outcomes relative to their actual values. The raw outcome
+measures do not facilitate straightforward interpretation or comparison. Therefore, we report the
+percentage change for recommended reviewers relative to the actual reviewers over the standard
+quarterly period for Expertise, GiniWorkload, KRT , and CCSR outcomes [45, 55]. Since percentage
+change is a trivial formula, we illustrate it only for ΔCCSR:
+
+                                                   SimulatedCCSR(𝑄)
+                                ΔCCSR(𝑄) = (                        − 1) × 100                                   (17)
+                                                     ActualCCSR(𝑄)
+3.5    Simulation Setup
+To investigate the impact of our proposed strategies on the outcome measures, we perform simula-
+tions. The simulation involves sequentially making reviewer recommendations for each code review
+in a project. For each code change, reviewer recommenders examine the files under review and
+their full review history to rank the candidates based on their scoring functions. Furthermore, we
+either add the top-recommended reviewer to the review process or suggest a replacement with one
+of the actual reviewers. In this study, we replace only one developer to avoid drastically disrupting
+the peer review process, as PR authors usually already know at least one expert candidate [35] to
+review a code change. Some of the recommenders add an additional reviewer rather than replacing
+a reviewer.
+   Since alternative or additional reviewers do the code review, this change in the review process is
+reflected in our simulation and outcome measures. For example, when a recommender replaces
+DevA with DevB, we must transfer the workload and expertise from DevA to DevB, which will
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders           FSE008:9
+
+
+affect the project’s distributions for future recommendations. These changes in turn impact the
+outcome measures, e.g., by spreading knowledge. As a result, when DevA leaves the project, there
+may now actually be someone who has expertise about the files, i.e. DevB.
+   To run simulations, we extend SofiaWL’s replication package [21] and incorporate our strategies
+into it. While working on this replication package, we observe that it excludes inactive developers
+from the pool of potential developers and prevents recommenders from making stale recommen-
+dations [29]. However, how long the developer will stay with the project is unknown and is
+an inappropriate use of future information. After fixing this methodological issue, we run the
+simulations and release the scripts and data in our replication package [14].
+   The goal of this study is to compare the performance of reviewer recommenders and evaluate
+their impact on outcome measures. Following Hajari et al. [20], in our simulations, we use seeded
+random replacement of reviewers, which enables a fair comparison of reviewer recommenders
+by ensuring that the same randomly selected reviewer is replaced by all recommenders. We have
+over 58k reviews across three projects, making it unlikely that this random selection will lead to
+systematic bias.
+   In contrast to prior works [20, 28, 41] that maintain the same number of reviewers but randomly
+replace one with the top recommendation, our novel strategies in this study assign an additional
+expert reviewer for defect-prone pull requests. The simulation results for an ideal reviewer rec-
+ommender in mitigating the risk of inducing future defects substantially increase the PRs’ safety
+ratio (CCSR) and spread knowledge among the team by adding an extra reviewer to a minimal
+percentage of pull requests (Rev++ ) and with the lowest impact on the reviewers’ GiniWorkload.
+
+4   Results
+ 4.1 RQ1: CSR vs. CCSR
+ Which developers should be included in the Changeset Safety Ratio?
+    Prior work [28] introduces the Changeset Safety Ratio (CSR) outcome to quantify the risk of
+ inducing future defects based on the maximum level of expertise in the reviewer team. However,
+ reviewers have diverse levels of expertise, which can affect the risk of introducing new defects
+ after the code review process. In addition to reviewers, the author’s knowledge can also influence
+ the risk of inducing defects. In this research question, we examine the impact of code reviewer
+ recommenders on the risk of inducing new defects based on the CSR outcome (Equation 10) and
+ compare the values with our novel CCSR outcome (Equation 12). We compare the simulated
+ outcomes for each recommender to help us determine which type of developer knowledge should
+ be considered when calculating the Changeset Safety Ratio. We report the simulation results in
+Table 2.
+    Among the studied recommenders, Sofia, RAR, cHRev, and AcHRev have a positive defect finding
+ effectiveness. These recommenders achieve the average ΔCSR of 43.2%, 44%, 45.1%, and 48.5% and
+ the average ΔCCSR of 16.8%, 17.7%, 18.8%, and 19.6% respectively. A comparison of the ΔCSR and
+ ΔCCSR outcomes reveals percentage point differences of 26.4, 26.3, 26.3, and 28.9 for the values
+ of Sofia, RAR, cHRev, and AcHRev recommenders, respectively. Since the original CSR safety ratio
+ takes only the top reviewers expertise into account, it overestimates the relative safety of a change
+ by ignoring the other reviewers in Equation 10. In contrast, CCSR includes the expertise of everyone
+ involved in the PR and provides a more complete view of change risk. In the remainder of this
+ paper, we measure change safety using CCSR.
+    Examining the other recommenders, the TurnoverRec recommender yields the average ΔCSR of
+-47.7% and ΔCCSR of -18.1% across projects. The turnover-mitigating reviewer recommenders are
+ designed to spread the knowledge among the development team, but the results show that they
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:10                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+Table 2. RQ1: CSR vs. CCSR. CSR exaggerates the effectiveness of the recommenders because it only considers
+the expertise of the top expert. In contrast, CCSR provides a more representative PR changeset safety ratio by
+incorporating the expertise of everyone involved in the PR. With the exception of the turnover-mitigating
+and workload-aware recommenders, the recommenders reduce the risk of inducing defects.
+
+               Recommender            ΔCSR      ΔCCSR        Recommender Scoring Function
+               cHRev                 45.12%      18.81%      Recent Review History
+               AcHRev                48.50%      19.60%      Recent Review and Commit History
+               TurnoverRec           -47.72%    -18.09%      Spread Knowledge with High Retention
+               Sofia                 43.16%      16.80%      (cHRev) or (TurnoverRec)
+               RAR                   44.04%      17.69%      (cHRev) or (Sofia)
+               WhoDo                 -22.73%     -8.81%      Recent Ownership and Workload
+               SofiaWL               -43.30%    -16.28%      (TurnoverRec) or (WhoDo)
+
+
+ are not effective in reducing the risk of inducing defects. The workload balancing recommenders,
+ WhoDo and SofiaWL, reduce the CSR and CCSR outcomes by an average of -22.4% vs. -8.81% and
+-43.5% vs. -16.28%, respectively. These workload-aware recommenders aim to balance the workload
+ among the development team, but they have a negative impact on the risk of new defects.
+
+   The top expert reviewer poorly represents the aggregated knowledge needed for code review,
+   thereby overestimating the safety of the change. We introduce the CCSR outcome to factor in
+   the diverse expertise of all review participants.
+      When we look at each recommender based on CCSR, we find that cHRev and AcHRev are
+   the most effective recommenders in reducing the risk of new defects, increasing the safety
+   ratio by an average of 18.8% and 19.6%, respectively.
+
+
+4.2    RQ2: Multiple Outcomes
+In addition to the CCSR outcome, how well do the existing reviewer recommenders perform with respect
+to other outcomes?
+   The focus of this study is on the impact of code reviewer recommenders on mitigating the risk of
+inducing new defects after code integration. However, it is essential to examine their performance
+from diverse perspectives [35]. In addition to the CCSR outcome, we examine the performance of
+reviewer recommenders from other perspectives, including reviewer Expertise, the GiniWorkload
+of all reviewers, and the Knowledge at Risk to Turnover (KRT ). We report our simulation results in
+Table 3.
+   For cHRev and AcHRev recommenders, we see an average increase of 15.7% and 18.6% in the
+Expertise outcome, respectively. Although these recommenders suggest expert candidates to review
+the code changes, they are not successful in spreading knowledge among the development team,
+and substantially increase the KRT outcome by an average of 28% and 49.9% respectively.
+   For the turnover-mitigating recommenders, we see that TurnoverRec reduces the GiniWorkload,
+Expertise, and KRT outcomes by an average of -0.2%, -23.8%, and -26.3% across projects, respectively.
+However, this recommender is not effective in enhancing the changeset safety ratio and decreases
+the CCSR outcome by an average of -18.1% across projects.
+   For the workload distribution recommenders, WhoDo, reduces the average GiniWorkload of
+reviewers by -14%. However, it poorly distributes knowledge among the team and massively
+increases the KRT outcome by an average of 130.3%. SofiaWL is a hybrid recommender that leverages
+TurnoverRec for knowledge distribution and WhoDo for workload balancing. This recommender
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders         FSE008:11
+
+
+Table 3. RQ2. The impact of each recommender on Expertise, GiniWorkload, KRT , and CCSR outcomes.
+AcHRev has the highest CCSR but drastically increases KRT . RAR trades off KRT for additional CCSR. Sofia
+balances the outcomes well but does not have the highest CCSR.
+
+                  Recommender        ΔExpertise       ΔGiniWorkload          ΔKRT         ΔCCSR
+                  cHRev                15.69%              -0.73%             28.02%      18.81%
+                  AcHRev               18.62%              -0.87%             49.89%      19.60%
+                  TurnoverRec         -23.81%              -0.17%            -26.29%      -18.09%
+                  Sofia                11.50%              1.35%             -26.11%      16.80%
+                  RAR                  12.94%              0.23%              -4.96%      17.69%
+                  WhoDo                13.08%             -14.05%            130.34%       -8.81%
+                  SofiaWL               8.43%             -12.80%            -26.99%      -16.28%
+
+
+achieves an average ΔExpertise of 8.4%, ΔGiniWorkload of -12.8%, and ΔKRT of -27%. However,
+it does not perform well in reducing the risk of new defects, decreasing the CCSR outcome by
+an average of -16.3%. These recommenders are designed to distribute the workload among the
+development team, but can not achieve a high change safety ratio.
+   Among the reviewer recommenders, RAR and Sofia are the only recommenders that balance the
+Expertise, KRT , and CCSR outcome measures simultaneously. The RAR recommender achieves an
+average ΔExpertise of 12.9%, ΔKRT of -5%, and ΔCCSR of 17.7% with the cost of a slight increase
+in reviewers’ GiniWorkload with an average of 0.2%. Sofia spreads the knowledge among the
+development team more broadly and reduces the KRT outcome by an average of -26.1%. From the
+simulations, we observe an increase in Expertise, GiniWorkload, and CCSR outcomes by an average
+of 11.5%, 1.35%, and 16.8%, respectively.
+   The simulation results of this research question highlight the need to examine the effectiveness
+of code reviewer recommenders from diverse perspectives. The results show that recommenders
+with high defect finding effectiveness are not necessarily practical in knowledge distribution and
+workload balancing. In this context, the hybrid recommenders like RAR and Sofia can balance
+between knowledge distribution among the team and suggesting an expert for a higher defect
+finding effectiveness.
+
+  AcHRev and cHRev increase change safety but poorly distribute knowledge leading to higher
+  turnover risk. The workload balancing recommenders, WhoDo and SofiaWL, perform poorly
+  at reducing defect risk. RAR and Sofia provide a better balance of outcomes with the former
+  targeting defect risk and the latter knowledge distribution.
+
+
+4.3   RQ3: AddExpertRec(𝐷𝑡 )
+What is the impact of adding an extra reviewer to defect-prone pull requests?
+   A natural response to a defect-prone PR is to add an extra reviewer. We are unaware of any work
+that has quantified the trade-offs of adding another reviewer. We present the novel AddExpertRec(𝐷𝑡 )
+that adds an extra expert reviewer for PRs when the likelihood of inducing new defects is at or
+above the risk threshold of 𝐷𝑡 . For all other PRs, we use the RAR recommender to replace one
+of the actual reviewers with the top candidate. The PRs defect inducing likelihood is normalized
+between 0 and 1, so we investigate the results for the defect risk threshold of 𝐷𝑡 = {25%, 50%, 75%}
+and report our results in Table 4.
+   AddExpertRec(25) suggests an extra reviewer for the pull requests when the probability of
+inducing defects is at or above 25%. Given the low threshold, this approach drastically increases the
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:12                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+Table 4. RQ3: AddExpertRec(𝐷𝑡 ). We add an expert reviewer when the probability of a defect is at or above
+(𝐷𝑡 ). With a low threshold, many extra reviewers are added, but the safety is increased. AddExpertRec(75)
+balances the outcomes and has a high safety ratio while only adding an extra reviewer to 8% of PRs. Managers
+can adjust the trade-off by varying the 𝐷𝑡 threshold (See Figure 2 for a discussion).
+
+                                                 AddExpertRec(25)
+                Project         ΔExpertise       ΔGiniWorkload ΔKRT                    ΔCCSR    Rev++
+                Roslyn            26.13%             2.64%        -75.97%              18.55%   31.89%
+                Rust              13.23%             3.14%        -52.70%              36.95%   69.68%
+                Kubernetes        16.60%             1.46%        -60.59%              36.88%   77.12%
+                Average           18.65%             2.41%        -63.09%              30.80%   59.56%
+                                                 AddExpertRec(50)
+                Project         ΔExpertise       ΔGiniWorkload ΔKRT                    ΔCCSR    Rev++
+                Roslyn            22.35%             2.05%        -57.76%              14.01%   12.08%
+                Rust              10.24%             1.25%        -28.45%              25.22%   31.57%
+                Kubernetes        14.23%             0.00%        -40.04%              27.14%   28.13%
+                Average           15.60%             1.10%        -42.08%              22.12%   23.93%
+                                                 AddExpertRec(75)
+                Project         ΔExpertise       ΔGiniWorkload ΔKRT                    ΔCCSR    Rev++
+                Roslyn            21.43%             2.09%        -42.53%              12.79%    5.50%
+                Rust               8.19%             -0.26%        3.75%               19.25%    6.07%
+                Kubernetes        13.63%             -0.37%       -27.51%              24.43%   12.69%
+                Average           14.42%             0.49%        -22.10%              18.82%   8.09%
+
+
+
+number of extra reviewers by adding a reviewer to an average of 59.6% of all pull requests. Adding
+all these extra reviewers distributes knowledge and reduces KRT by an average of -63.1% and
+increases the GiniWorkload of reviewers by an average of 2.4% across projects. The massive number
+of expert reviewers also makes it the most effective recommender in improving the changeset
+safety ratio, increasing the CCSR by 18.5%, 36.9%, and 36.9% for the Roslyn, Rust, and Kubernetes
+projects, respectively, with an average of 30.8%. Additionally, it increases the overall Expertise by
+an average of 18.6%.
+   AddExpertRec(50) recommender suggests additional reviewers when the probability of intro-
+ducing new defects is at or above 50%. It suggests an extra reviewer for 23.9% of pull requests
+on average, and increases the overall Expertise and GiniWorkload of reviewers by an average of
+15.6% and 1.1% across projects. Since more expert developers participate in the code reviews, it
+can distribute the knowledge of risky files effectively and reduce the KRT outcome by an average
+of -42.1%, while increasing the PR’s safety ratio by 14%, 25.2%, and 27.1% in the Roslyn, Rust, and
+Kubernetes projects, with an average of 22.1%.
+   AddExpertRec(75) is the most conservative variation, which only suggests adding an extra
+reviewer when the likelihood of introducing new defects is at or above 75%. Compared to AcHRev,
+AddExpertRec(75) assigns an extra reviewer to 8.1% more pull requests and spreads the knowledge
+of risky files more broadly among the development team, improving the ΔKRT from 49.9% of
+AcHRev to -22.1%. It has a slight increase in the GiniWorkload of reviewers by an average of 0.5%.
+By suggesting more expert reviewers, this recommender achieves a comparable safety ratio to
+AcHRev with values of 12.8%, 19.2%, and 24.4% across the Roslyn, Rust, and Kubernetes projects,
+with an average of 18.8%.
+
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders         FSE008:13
+
+
+
+    The AddExpertRec(𝐷𝑡 ) approach can successfully balance the trade-off between ΔCCSR, ΔKRT,
+    and Rev++ outcomes by assigning an extra expert reviewer to defect-prone PRs based on the
+    likelihood of inducing new defects. With AddExpertRec(75), we add a reviewer to only 8.1% of
+    pull requests and balance the outcome measures while maintaining a comparable ΔCCSR of
+    18.8% and reducing ΔKRT by -22.1%. Ultimately, engineering managers can select a threshold,
+    𝐷𝑡 , that is appropriate for their needs.
+
+
+5    Discussion
+We discuss the trade-offs an engineering manager could consider between improving the Safety Ratio
+and knowledge distribution vs. the cost of adding extra reviewers. In Figure 2, we plot the tradeoff
+between safety ratio, ΔCCSR, and knowledge distribution, ΔKRT, relative to the proportion of extra
+reviews varying from 0% to 59.6% on average across projects. AcHRev and cHRev recommenders
+suggest expert reviewers for code changes and are effective in reducing the risk of new defects
+during the code review. However, the number of developers with high expertise is limited in
+software projects [81], and these recommenders can not effectively distribute the knowledge at risk
+among the development team. When we compare the simulation results for AcHRev with RAR in
+Table 3, we observe that the RAR recommender spreads the knowledge of risky files more broadly,
+ΔKRT of -5% vs. 49.9%, and achieves an acceptable increase in the safety ratio, ΔCCSR of 17.7% vs.
+19.6%. At the replacement level, the results show that hybrid recommenders, such as RAR and Sofia,
+which balance knowledge distribution and expert suggestion, are more effective in reducing the
+risk of new defects and knowledge loss simultaneously.
+   In this study, we leverage the RAR recommender in our novel AddExpertRec(𝐷𝑡 ) strategy to
+increase the safety ratio in defect-prone pull requests by suggesting an extra expert reviewer for
+them, while spreading the knowledge of risky files among the development team by replacing one of
+the reviewers with the committed learner. Among our proposed AddExpertRec(𝐷𝑡 ) recommenders,
+AddExpertRec(25) is the most aggressive recommender that achieves the ΔCCSR of 30.8% and
+ΔKRT of -63.1%. These results are the highest enhancement in the CCSR and KRT outcomes among
+all the studied recommenders. However, this enhancement comes with the cost of extra reviews
+for the average 59.6% of pull requests, making this recommender infeasible for projects with
+limited reviewers and budget constraints. Compared to the AcHRev recommender, AddExpertRec(50)
+achieves a higher value for the ΔCCSR outcome, 22.1% vs. 19.6%, and substantially reduces the
+KRT outcome with an average of -42.1% vs. 49.9% with the cost of adding an extra reviewer to the
+average 23.9% of pull requests. The reason for the effective performance of the AddExpertRec(𝐷𝑡 )
+strategy in knowledge distribution and mitigating the risk of new defects is that it balances between
+suggesting experts and committed reviewers who are less likely to leave the projects.
+   Our comparative analysis of the performance of the AddExpertRec(𝐷𝑡 ) strategy across projects
+in Table 4 indicates that the nature of the projects significantly influences the outcome measures.
+For instance, AddExpertRec(50) achieves the ΔCCSR of 27.1% and ΔKRT of -40% in the Kubernetes
+project by adding an extra reviewer to 28.1% of pull requests. In contrast, this recommender achieves
+the ΔCCSR of 25.2%, ΔKRT of -28.4%, and Rev++ of 31.6% in the Rust project. This comparison
+highlights that adding extra reviewers to more pull requests does not always lead to a higher safety
+ratio and more extensive knowledge distribution. Other aspects of projects, such as reviewers’
+level of expertise, dependencies on key developers, code complexity, and knowledge distribution
+cultures, are interesting avenues for future work.
+   Ultimately, it will be up to managers to determine which approach best suits their specific
+context, considering factors such as project importance, available budget, and resource constraints.
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:14                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+
+
+Fig. 2. The trade-off between knowledge distribution and additional reviewers is clearly non-linear, and it
+is possible to considerably enhance the KRT and CCSR outcome with relatively few extra reviews. Among
+the recommenders, AddExpertRec(25) performs the best in knowledge distribution and increasing the safety
+ratio, but it assigns an extra reviewer to a massive number of pull requests. AddExpertRec(75) and cHRev
+recommenders achieve the same changeset safety ratio. However, AddExpertRec(75) can spread the knowledge
+among the development team more effectively, by assigning an extra reviewer to only 8% of all pull requests.
+Ultimately, engineering managers should determine which approach suits their specific situation based on
+their strategies and available resources.
+
+
+Additionally, managers can use these strategies in a hybrid way. For example, during periods of high
+software use or when releasing a new version, managers want to ensure that code changes do not
+affect the end-user experience [1]. In these cases, they can leverage more aggressive recommenders,
+such as AddExpertRec(25) and AddExpertRec(50), to assign an extra expert reviewer for more code
+changes, ensuring a high changeset safety ratio. Once the safety is guaranteed, they can switch to
+hybrid recommenders like RAR to maintain the safety ratio, while distributing knowledge among
+the development team and assigning fewer extra reviews.
+
+6 Threats to Validity
+Construct Validity. Following prior works on code reviewer recommendation [17, 19, 45, 53, 55,
+66, 78], we just cover the most basic source of knowledge, i.e. source code files, and consider all files
+to be equally important in this study. However, knowledge is contained in other documents and at
+various unit levels, like commit messages and project documentation. Moreover, the knowledge
+acquired by a reviewer will be different from that of the author. The author will typically have
+more detailed knowledge, while an expert reviewer may have more expertise in other modules
+and dependencies. In this work, we follow prior studies [20, 28, 41] and assume that both authors
+and reviewers are knowledgeable about the files they have previously edited or reviewed. While
+measuring the CxFactor metric as a degree of developers’ expertise, we assign the same weights to
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders         FSE008:15
+
+
+their review comments, commits, and recency of their contributions. Understanding the importance
+of various types and degrees of knowledge that authors and reviewers gain from their contributions
+is outside the scope of this work and is an interesting future work.
+   Our novel CCSR outcome measures the Changeset Safety Ratio based on the reviewers knowledge,
+author level of expertise, and PRs defect proneness. In addition to the linear summation of reviewer
+and author knowledge, we also ran simulations using alternative aggregation functions, including
+max, mean, and median. We do not report these results in the main paper due to space limitations,
+but we provide the details in our replication package [14]. Nevertheless, defect detection during
+code review is also influenced by other factors, such as code complexity, change size, and project
+characteristics [23, 75]. Future work is necessary to incorporate these factors into the CCSR outcome
+and achieve a more accurate assessment of how code reviewer recommendation systems influence
+the risk of introducing new defects.
+   Internal Validity. Although Monte Carlo simulations are computationally expensive, they
+were initially considered necessary to examine the performance of reviewer recommenders [41].
+However, Monte Carlo simulations are typically used when an event is sporadic [55], e.g., a banking
+crisis, and require more processing power than we have available. The goal of our simulations is to
+directly compare the effectiveness of recommenders in mitigating the risk of inducing defects when
+developers integrate a change into the codebase. In our context, code reviews happen every day and
+are not a rare event, e.g., over 58k reviews across all projects in our data sample. When we replace
+one of the actual reviewers with the top candidate in simulations, each recommender replaces the
+same reviewer. By consistently choosing the same seeded random reviewer, the variation in outcome
+measures will only come from different recommenders, making it easier to interpret the outcomes.
+This seeded random approach achieves our goal of evaluating different recommenders and explicitly
+does not evaluate how randomly selected reviewers would have impacted the outcome measures.
+In this study, we examine the performance of reviewer recommenders across 58k reviews from
+three open-source projects, making it unlikely that this random selection will lead to systematic
+bias. Future work could run thousands of Monte Carlo simulations to understand the variations in
+outcome measures.
+   The goal of this study is to mitigate the risk of new defects rather than to predict them. As a
+result, our approach is less susceptible to the well-known limitations of SZZ [60] because we do
+not aim to improve defect prediction accuracy but to reduce the potential harm of defect-prone
+code changes. In this context, the exact accuracy of SZZ is less critical because our method does
+not rely on precise defect labeling. Instead, it shifts the distribution of review expertise toward
+changes that are more likely to induce defects. Although SZZ is not perfectly accurate, it provides
+a reasonable signal of defect risk. This signal enables us to focus reviewer expertise on higher-risk
+changes, unlike traditional recommenders that lack any notion of defect risk. In this study, we
+rely on an existing dataset to get the likelihood of defect induction [28]. Naturally, more accurate
+defect risk models would allow for even better targeting of reviewer expertise. However, given that
+SZZ is not entirely inaccurate, it establishes a practical lower bound on the safety improvements
+achievable through code reviewer recommendations. We are excited to see the future work of other
+researchers who tune highly accurate defect risk models.
+   Generalizability. We select large and long-lived open-source software projects led by an industry
+or a community. As noted in prior works, reviewer recommendations are not necessary for small
+projects because there are few potential candidates, and they are obvious to the development
+team [35, 41]. In this work, we assume that additional reviewers would be available in software
+projects. This assumption allows the AddExpertRec(𝐷𝑡 ) approach to add an extra expert reviewer
+to defect-prone pull requests. However, smaller software projects may lack sufficient resources to
+assign extra reviewers, limiting the feasibility of recommenders like AddExpertRec(25) that suggest
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:16                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+an additional reviewer for a higher number of pull requests. Future work is necessary to validate
+our results in other development contexts, like proprietary projects.
+   In addition to resource constraints, the code reviewer recommenders may suggest reviewers
+who have stopped contributing to the project, i.e. stale recommendation [29]. While working on
+SofiaWL’s replication package [21], we observe that it excludes developers who become inactive
+in later periods from the pool of potential developers and prevents recommenders from making
+stale recommendations. However, how long the developer will stay with the project is unknown
+and is an inappropriate use of future information. In this study, we correct this methodological
+issue, but do not explicitly address the problem of stale recommendations. Although predicting
+developer departures and mitigating stale recommendations are beyond the scope of this paper,
+handling stale suggestions and other forms of temporary unavailability, such as vacation periods,
+represents a promising direction for future research.
+   Replication and Reproducibility. Some of the existing recommenders in the literature, such as
+cHRev [78] and WhoDo [4], do not provide official replication packages or source code. Therefore,
+we extend the official replication package of SofiaWL [21], which implements the existing code
+reviewer recommender from the literature. We integrate our proposed strategies into this package to
+conduct simulations and evaluate their impact on outcome measures. In our replication package, we
+simulate the effect of more recommenders on the risk of new defects, including AuthorshipRec [8],
+RevOwnRec [64], RetentionRec [41], and LearnRec [41]. However, we only report the results of
+prior state-of-the-art recommenders in the body of the paper for clarity purposes. This replication
+package [14] is also available for future researchers who wish to replicate or extend our results.
+
+7     Literature
+We position our findings in the research literature and discuss how we advance our understanding
+of reviewer recommendations and their impact on the risk of introducing new defects during code
+review.
+
+7.1    Understanding Code Review Practice
+Fagan [15] introduced software inspection in 1976 by conducting a detailed experiment that
+conclusively demonstrated its effectiveness in detecting defects early in the design process. He also
+highlighted that design artifacts that were not reviewed would lead to defects slipping through
+to later stages, thereby increasing the overall effort of software development. Over the years,
+researchers have provided evidence of code inspection’s benefits, especially in terms of defect
+finding, but the cumbersome, time-consuming, and synchronous nature of this software inspection
+hinders its universal adoption in practice [5]. Current code review practices favor a lightweight,
+tool-based process known as Modern Code Review, which focuses on reviewing code changes
+through asynchronous discussions among reviewers [5, 58]. In this study, we examine the effect of
+code reviewer recommendations on defect detection during the code review process.
+
+7.2    Defect Detection During Code Review
+During software development and maintenance, developers modify the source code to add new
+features and enhance the performance, but these modifications may introduce more defects [16].
+Defects diminish the software quality [42] and reputation [49], and increase the maintenance
+cost [68]. Prior work [28] has demonstrated that through code review, engineering managers can
+naturally reduce the risk of inducing new defects and mitigate the adverse consequences of defects
+by assigning expert reviewers to defect-prone code changes. In that work, Kazemi et al. quantify the
+impact of reviewer recommenders on the risk of inducing new defects by randomly replacing one
+of the reviewers with the top recommended candidate. At the replacement level, our analysis shows
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders         FSE008:17
+
+
+that the expertise-based reviewer recommenders can effectively reduce the risk of introducing new
+defects, but fail to spread the knowledge at risk to turnover among the development team. In this
+study, we aim to spread knowledge among the development team and mitigate the risk of defects
+more effectively by adding an extra expert reviewer to defect-prone patches, instead of replacing
+existing reviewers.
+
+7.3   Code Reviewer Recommenders
+Identifying the right reviewers for a given code change is a challenging and critical step in the code
+review process [5, 6, 15, 19, 78]. Inappropriate selection of reviewers can slow down the review
+process [66] or lower its quality [5, 9]. The research on code reviewer recommenders focuses
+on the problem of automatically assigning review requests to developers who are most likely to
+provide expert feedback [6, 11]. Prior works leverage heuristic-based scoring functions [4, 20, 22, 28,
+32, 41, 51, 66, 78], genetic search algorithms [2, 10, 46, 52], matrix factorization and collaborative
+filtering [11, 61, 73], machine learning [3, 26, 47, 62], text mining [36, 37, 39, 72], and multiplex
+relationship graphs [38, 50, 56, 74, 76, 77, 80] to develop advanced reviewer recommendation
+systems.
+   Traditionally, researchers evaluate code reviewer recommenders by applying them to historical
+data and comparing recommended reviewer lists to actual reviewers who performed the review [29].
+This evaluation pipeline is based on the assumption that actual reviewers are the ideal candidates
+to review code changes. However, Kovalenko et al. [35] argue that developers often know the top
+recommendations and focusing on metrics like Top-K Accuracy and MRR rarely provides additional
+value for the development team. Moreover, prior work [18] found that recommended reviewers
+who did not perform the review would often have been appropriate assignees. These arguments
+suggest considering alternative perspectives and evaluating outcomes beyond merely predicting
+the actual reviewers.
+   Recent works expand the goals of code reviewer recommenders to include mitigating knowledge
+loss from turnover and avoiding overburdening the development team. Mirsaeedi and Rigby [41]
+evaluate review recommenders in the context of ensuring expertise during the review process,
+Expertise outcome, reducing the reviewer workload of the core team, CoreWorkload outcome, and
+reducing the number of files at risk to turnover, FaR outcome. Moreover, Asthana et al. [4] examine
+the performance of WhoDo recommender based on the average number of open reviews, average PR
+completion time, and average number of reviews per PR.
+   The historical analysis [20] reveals that the top 20% of reviewers do between 75% and 84% of the
+work in open-source projects. However, prior outcomes fail to capture the workload distribution
+across reviewers. Hajari et al. [20] adapt the Gini Coefficient and Lorenz curve from economics
+and introduce the GiniWorkload of reviewers to measure workload distribution across the team.
+In this study, we suggest an extra reviewer for defect-prone pull requests to further mitigate the
+risk of defects during the code review process. For example, the AddExpertRec(75) recommender
+adds an extra reviewer to 6.1% and 12.7% of pull requests in Rust and Kubernetes projects, but
+the GiniWorkload of reviewers is reduced by -0.3% and -0.4%. This is because the GiniWorkload
+outcome examines the distribution of work among the development team rather than focusing on
+the number of code reviews. When AddExpertRec(75) adds reviewers to defect-prone PRs in these
+projects, more developers from the team participate in the review process, and the work distributes
+better. Although the Rev++ outcome clearly presents an increase in the number of code reviews,
+future work is required to investigate other outcomes like the average active load [4] and average
+number of reviews [33, 54] for each reviewer.
+   To quantify the impact of reviewer recommenders on the risk of inducing defects after code
+integration, Kazemi et al. [28] have proposed the Changeset Safety Ratio (CSR) outcome. However,
+
+                                   Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:18                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+the CSR outcome fails to account for the knowledge of the entire reviewer team and the author’s
+level of expertise. In this work, we introduce the Contribution-aware Changeset Safety Ratio (CCSR)
+outcome, which measures the risk of inducing new defects during code merges based on aggregated
+knowledge of reviewers and the author’s level of expertise. In our simulations, we calculate the
+Expertise, GiniWorkload, KRT , CCSR, and Rev++ outcomes to provide a complete evaluation of our
+recommenders. Since our novel approach suggests an additional reviewer for defect-prone pull
+requests, the changes in CCSR and Rev++ outcomes, and their trade-off with the KRT outcome, are the
+most important measures in our work. The simulation results show that our novel AddExpertRec(𝐷𝑡 )
+strategy increases the CCSR outcome from an average of 18.8% to 30.8% and reduces the KRT
+outcome from an average of -22.1% to -63.1%, depending on the proportion of extra reviews varying
+from 8.1% to 59.6%.
+
+8 Concluding Remarks
+In this work, we aggregate the knowledge of all developers involved in a PR to create the accurate
+Contribution-aware Changeset Safety Ratio (CCSR). We also suggest an extra expert reviewer for
+defect-prone pull requests to reduce the likelihood of new defects more effectively when a developer
+integrates a change into the codebase. We evaluate the tradeoffs of a diverse set of outcomes.
+   The following are highlights and learning from our empirical results and simulations:
+
+    • The top expert reviewer does not represent the aggregated knowledge of the entire reviewer
+       team, and the prior work CSR outcome [28] overestimates the top reviewer’s defect-finding
+       effectiveness. We introduce CCSR, which accurately captures the knowledge of the engineers
+       involved in the review and the defect risk.
+    • Reviewer recommenders that suggest expert developers for code changes are the most
+       effective in reducing the risk of inducing defects. AcHRev and cHRev achieves the ΔCCSR of
+      19.6% and 18.8% across projects. Despite this effectiveness, they substantially increase KRT
+       by an average of 50% and 28%, respectively.
+    • It is essential to examine the performance of code reviewer recommenders from diverse
+       perspectives. The hybrid recommenders that trade off between knowledge distribution and
+       defect finding effectiveness, like RAR, can balance the outcome measures simultaneously. The
+       RAR recommender enhances the Expertise, KRT , and CCSR outcomes by an average of 13%,
+      -5%, and 17.7% with the cost of slightly increasing the average GiniWorkload of reviewers by
+       0.2%.
+    • Assigning an additional expert reviewer to defect-prone code changes can both prevent new
+       bugs and mitigate the risk of developer turnover. The AddExpertRec(75) is able to maintain
+       the same defect finding effectiveness as AcHRev but drastically reduces the average ΔKRT
+       from 50% to -22% with the cost of adding a reviewer to only 8% of PRs.
+
+   These findings highlight the potential of suggesting additional expert reviewers for defect-
+prone pull requests to prevent new defects after code integration and substantially mitigate the
+risk of knowledge loss from developer turnover. Ultimately, it is up to managers to determine
+which approach best suits their specific situation, taking into account project priorities, resource
+constraints, and available budgets.
+
+Data Availability
+We provide the dataset and scripts in our replication package [14] to facilitate reproducibility for
+future researchers who wish to replicate or extend our results in this study.
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders             FSE008:19
+
+
+Acknowledgments
+The authors gratefully acknowledge the support of the Natural Sciences and Engineering Research
+Council of Canada (NSERC) grant RGPIN/06807-2020.
+
+References
+ [1] Rui Abreu, Vijayaraghavan Murali, Peter C Rigby, Chandra Maddila, Weiyan Sun, Jun Ge, Kaavya Chinniah, Audris
+     Mockus, Megh Mehta, and Nachiappan Nagappan. 2024. Moving Faster and Reducing Risk: Using LLMs in Release
+     Deployment. arXiv preprint arXiv:2410.06351 (2024).
+ [2] Wisam Haitham Abbood Al-Zubaidi, Patanamon Thongtanunam, Hoa Khanh Dam, Chakkrit Tantithamthavorn, and
+     Aditya Ghose. 2020. Workload-aware reviewer recommendation using a multi-objective search-based approach. In
+     Proceedings of the 16th ACM international conference on predictive models and data analytics in software engineering.
+     21–30.
+ [3] Ishan Aryendu, Ying Wang, Farah Elkourdi, and Eman Abdullah Alomar. 2022. Intelligent code review assignment for
+     large scale open source software stacks. In Proceedings of the 37th IEEE/ACM International Conference on Automated
+     Software Engineering. 1–6.
+ [4] Sumit Asthana, Rahul Kumar, Ranjita Bhagwan, Christian Bird, Chetan Bansal, Chandra Maddila, Sonu Mehta, and
+     Balasubramanyan Ashok. 2019. Whodo: Automating reviewer suggestions at scale. In Proceedings of the 2019 27th ACM
+     joint meeting on European Software Engineering Conference and symposium on the foundations of Software Engineering.
+     937–945.
+ [5] Alberto Bacchelli and Christian Bird. 2013. Expectations, outcomes, and challenges of modern code review. In
+     Proceedings of the 2013 international conference on software engineering. IEEE Press, 712–721.
+ [6] Vipin Balachandran. 2013. Reducing human effort and improving quality in peer code reviews using automatic static
+     analysis and reviewer recommendation. In Proceedings of the 2013 International Conference on Software Engineering.
+     IEEE Press, 931–940.
+ [7] Rajiv D Banker, Srikant M Datar, Chris F Kemerer, and Dani Zweig. 1993. Software complexity and maintenance costs.
+     Commun. ACM 36, 11 (1993), 81–95.
+ [8] Christian Bird, Nachiappan Nagappan, Brendan Murphy, Harald Gall, and Premkumar Devanbu. 2011. Don’t touch my
+     code! Examining the effects of ownership on software quality. In Proceedings of the 19th ACM SIGSOFT symposium and
+     the 13th European conference on Foundations of software engineering. ACM, 4–14.
+ [9] Amiangshu Bosu, Michaela Greiler, and Christian Bird. 2015. Characteristics of useful code reviews: An empirical
+     study at microsoft. In 2015 IEEE/ACM 12th Working Conference on Mining Software Repositories. IEEE, 146–156.
+[10] Moataz Chouchen, Ali Ouni, Mohamed Wiem Mkaouer, Raula Gaikovina Kula, and Katsuro Inoue. 2021. WhoReview:
+     A multi-objective search-based approach for code reviewers recommendation in modern code review. Applied Soft
+     Computing 100 (2021), 106908.
+[11] Aleksandr Chueshev, Julia Lawall, Reda Bendraou, and Tewfik Ziadi. 2020. Expanding the number of reviewers in
+     open-source projects by recommending appropriate developers. In 2020 IEEE International Conference on Software
+     Maintenance and Evolution (ICSME). IEEE, 499–510.
+[12] Emre Doğan, Eray Tüzün, K Ayberk Tecimer, and H Altay Güvenir. 2019. Investigating the validity of ground truth in
+     code reviewer recommendation studies. In 2019 ACM/IEEE International Symposium on Empirical Software Engineering
+     and Measurement (ESEM). IEEE, 1–6.
+[13] Robert Dorfman. 1979. A formula for the Gini coefficient. The review of economics and statistics (1979), 146–149.
+[14] Mohammadali Sefidi Esfahani and Peter C. Rigby. 2025. Replication Package and Database. https://figshare.com/s/
+     e62f52f5550d0f373815.
+[15] M. E. Fagan. 1976. Design and Code Inspections to Reduce Errors in Program Development. IBM Systems Journal 15, 3
+     (1976), 182–211.
+[16] Matthieu Foucault, Marc Palyart, Xavier Blanc, Gail C Murphy, and Jean-Rémy Falleri. 2015. Impact of developer
+     turnover on quality in open-source software. In Proceedings of the 2015 10th Joint Meeting on Foundations of Software
+     Engineering. ACM, 829–841.
+[17] Thomas Fritz, Gail C Murphy, and Emily Hill. 2007. Does a programmer’s activity indicate knowledge of code?. In
+     Proceedings of the the 6th joint meeting of the European software engineering conference and the ACM SIGSOFT symposium
+     on The foundations of software engineering. ACM, 341–350.
+[18] Ian X Gauthier, Maxime Lamothe, Gunter Mussbacher, and Shane McIntosh. 2021. Is historical data an appropriate
+     benchmark for reviewer recommendation systems?: A case study of the gerrit community. In 2021 36th IEEE/ACM
+     International Conference on Automated Software Engineering (ASE). IEEE, 30–41.
+[19] Michaela Greiler, Christian Bird, Margaret-Anne Storey, Laura MacLeod, and Jacek Czerwonka. 2016. Code Reviewing
+     in the Trenches: Understanding Challenges, Best Practices and Tool Needs.
+
+
+                                      Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:20                                                                Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+[20] Fahimeh Hajari, Samaneh Malmir, Ehsan Mirsaeedi, and Peter C Rigby. 2024. Factoring Expertise, Workload, and
+     Turnover into Code Review Recommendation. IEEE Transactions on Software Engineering (2024).
+[21] Fahimeh Hajari, Ehsan Mirsaeedi, and Peter C. Rigby. 2021. SofiaWL Replication Package. https://github.com/rigbypc/
+     SofiaWL.
+[22] Christoph Hannebauer, Michael Patalas, Sebastian Stünkel, and Volker Gruhn. 2016. Automatically recommending
+     code reviewers based on their expertise: An empirical comparison. In Proceedings of the 31st IEEE/ACM international
+     conference on automated software engineering. 99–110.
+[23] Ahmed E Hassan. 2009. Predicting faults using the complexity of code changes. In 2009 IEEE 31st international conference
+     on software engineering. IEEE, 78–88.
+[24] James D. Herbsleb and Audris Mockus. 2003. An empirical study of speed and communication in globally distributed
+     software development. IEEE Transactions on software engineering 29, 6 (2003), 481–494.
+[25] Yuan Huang, Nan Jia, Xiangping Chen, Kai Hong, and Zibin Zheng. 2020. Code review knowledge perception: Fusing
+     multi-features for salient-class location. IEEE Transactions on Software Engineering 48, 5 (2020), 1463–1479.
+[26] Gaeul Jeong, Sunghun Kim, Thomas Zimmermann, and Kwangkeun Yi. 2009. Improving code review by predicting
+     reviewers and acceptance of patches. Research on software analysis for error-free computing center Tech-Memo (ROSAEC
+     MEMO 2009-006) (2009), 1–18.
+[27] Yasutaka Kamei, Takafumi Fukushima, Shane McIntosh, Kazuhiro Yamashita, Naoyasu Ubayashi, and Ahmed E Hassan.
+     2016. Studying just-in-time defect prediction using cross-project models. Empirical Software Engineering 21, 5 (2016),
+     2072–2106.
+[28] Farshad Kazemi, Maxime Lamothe, and Shane McIntosh. 2022. Exploring the Notion of Risk in Code Reviewer
+     Recommendation. In 2022 IEEE International Conference on Software Maintenance and Evolution (ICSME). 139–150.
+[29] Farshad Kazemi, Maxime Lamothe, and Shane McIntosh. 2024. Characterizing the Prevalence Distribution and Duration
+     of Stale Reviewer Recommendations. IEEE Transactions on Software Engineering (2024).
+[30] Sunghun Kim, E James Whitehead, and Yi Zhang. 2008. Classifying software changes: Clean or buggy? IEEE Transactions
+     on software engineering 34, 2 (2008), 181–196.
+[31] Ekrem Kocaguneli, Thomas Zimmermann, Christian Bird, Nachiappan Nagappan, and Tim Menzies. 2013. Distributed
+     development considered harmful?. In 2013 35th International Conference on Software Engineering (ICSE). IEEE, 882–890.
+[32] Dezhen Kong, Qiuyuan Chen, Lingfeng Bao, Chenxing Sun, Xin Xia, and Shanping Li. 2022. Recommending code
+     reviewers for proprietary software projects: A large scale study. In 2022 IEEE International Conference on Software
+     Analysis, Evolution and Reengineering (SANER). IEEE, 630–640.
+[33] Oleksii Kononenko, Olga Baysal, and Michael W Godfrey. 2016. Code review quality: how developers see it. In
+     Proceedings of the 38th International Conference on Software Engineering. 1028–1038.
+[34] Oleksii Kononenko, Olga Baysal, Latifa Guerrouj, Yaxin Cao, and Michael W Godfrey. 2015. Investigating code review
+     quality: Do people and participation matter?. In 2015 IEEE international conference on software maintenance and evolution
+     (ICSME). IEEE, 111–120.
+[35] Vladimir Kovalenko, Nava Tintarev, Evgeny Pasynkov, Christian Bird, and Alberto Bacchelli. 2018. Does reviewer
+     recommendation help developers? IEEE Transactions on Software Engineering (2018).
+[36] Ruiyin Li, Peng Liang, and Paris Avgeriou. 2023. Code reviewer recommendation for architecture violations: An
+     exploratory study. In Proceedings of the 27th International Conference on Evaluation and Assessment in Software
+     Engineering. 42–51.
+[37] Zhifang Liao, Zexuan Wu, Jinsong Wu, Yan Zhang, Junyi Liu, and Jun Long. 2019. TIRR: A code reviewer recommenda-
+     tion algorithm with topic model and reviewer influence. In 2019 IEEE Global Communications Conference (GLOBECOM).
+     IEEE, 1–6.
+[38] Jiahui Liu, Ansheng Deng, Qiuju Xie, and Guanli Yue. 2023. A code reviewer recommendation approach based on
+     attentive neighbor embedding propagation. Electronics 12, 9 (2023), 2113.
+[39] Jiahui Liu, Ansheng Deng, Qiuju Xie, and Guanli Yue. 2023. CsdRec: Accuracy and Diversity-Awarded Team Recom-
+     mendation for Collaborative Software Development. IEEE Access 11 (2023), 67613–67625.
+[40] Shane McIntosh, Yasutaka Kamei, Bram Adams, and Ahmed E Hassan. 2016. An empirical study of the impact of
+     modern code review practices on software quality. Empirical Software Engineering 21, 5 (2016), 2146–2189.
+[41] Ehsan Mirsaeedi and Peter C. Rigby. 2020. Mitigating Turnover with Code Review Recommendation: Balancing
+     Expertise, Workload, and Knowledge Distribution. In Proceedings of the ACM/IEEE 42nd International Conference on
+     Software Engineering (Seoul, South Korea) (ICSE ’20). Association for Computing Machinery, New York, NY, USA,
+     1183–1195. doi:10.1145/3377811.3380335
+[42] Audris Mockus. 2010. Organizational volatility and its effects on software defects. In Proceedings of the eighteenth
+     ACM SIGSOFT international symposium on Foundations of software engineering. ACM, 117–126.
+[43] Audris Mockus and James D Herbsleb. 2002. Expertise browser: a quantitative approach to identifying expertise. In
+     Proceedings of the 24th International Conference on Software Engineering. ICSE 2002. IEEE, 503–512.
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+Mitigating the Risk of Defects and Improving Knowledge Distribution with Code Reviewer Recommenders              FSE008:21
+
+
+[44] Issei Morita, Yutaro Kashiwa, Masanari Kondo, Jeongju Sohn, Shane McIntosh, Yasutaka Kamei, and Naoyasu Ubayashi.
+     2024. TraceJIT: Evaluating the Impact of Behavioral Code Change on Just-In-Time Defect Prediction. In 2024 IEEE
+     International Conference on Software Analysis, Evolution and Reengineering (SANER). IEEE, 580–591.
+[45] Mathieu Nassif and Martin P Robillard. 2017. Revisiting turnover-induced knowledge loss in software projects. In 2017
+     IEEE International Conference on Software Maintenance and Evolution (ICSME). IEEE, 261–272.
+[46] Ali Ouni, Raula Gaikovina Kula, and Katsuro Inoue. 2016. Search-based peer reviewers recommendation in modern
+     code review. In 2016 IEEE International Conference on Software Maintenance and Evolution (ICSME). IEEE, 367–377.
+[47] Prahar Pandya and Saurabh Tiwari. 2022. CORMS: a github and gerrit based hybrid code reviewer recommendation
+     approach for modern code review. In Proceedings of the 30th ACM joint European software engineering conference and
+     symposium on the foundations of software engineering. 546–557.
+[48] Luca Pascarella, Davide Spadini, Fabio Palomba, Magiel Bruntink, and Alberto Bacchelli. 2018. Information needs in
+     contemporary code review. Proceedings of the ACM on human-computer interaction 2, CSCW (2018), 1–27.
+[49] Kishan Patel and Sandeep Gupta. 2024. Prediction of Software Defects for Quality Assurance and Improvement Based
+     on Machine Learning Methods. In 2024 2nd International Conference on Advances in Computation, Communication and
+     Information Technology (ICAICCIT), Vol. 1. IEEE, 400–406.
+[50] Yu Qiao, Jian Wang, Can Cheng, Wei Tang, Peng Liang, Yuqi Zhao, and Bing Li. 2024. Code Reviewer Recommendation
+     Based on a Hypergraph with Multiplex Relationships. In 2024 IEEE International Conference on Software Analysis,
+     Evolution and Reengineering (SANER). IEEE, 417–428.
+[51] Mohammad Masudur Rahman, Chanchal K. Roy, and Jason A. Collins. 2016. CORRECT: Code Reviewer Recommenda-
+     tion in GitHub Based on Cross-Project and Technology Experience. In 2016 IEEE/ACM 38th International Conference on
+     Software Engineering Companion (ICSE-C). 222–231.
+[52] Soumaya Rebai, Abderrahmen Amich, Somayeh Molaei, Marouane Kessentini, and Rick Kazman. 2020. Multi-objective
+     code reviewer recommendations: balancing expertise, availability and collaborations. Automated Software Engineering
+     27 (2020), 301–328.
+[53] Peter C Rigby and Christian Bird. 2013. Convergent contemporary software peer review practices. In Proceedings of
+     the 2013 9th Joint Meeting on Foundations of Software Engineering. ACM, 202–212.
+[54] Peter C Rigby, Daniel M German, Laura Cowen, and Margaret-Anne Storey. 2014. Peer review on open-source software
+     projects: Parameters, statistical models, and theory. ACM Transactions on Software Engineering and Methodology
+     (TOSEM) 23, 4 (2014), 35.
+[55] P. C. Rigby, Y. C. Zhu, S. M. Donadelli, and A. Mockus. 2016. Quantifying and Mitigating Turnover-Induced Knowledge
+     Loss: Case Studies of Chrome and a Project at Avaya. In 2016 IEEE/ACM 38th International Conference on Software
+     Engineering (ICSE). 1006–1016. doi:10.1145/2884781.2884851
+[56] Guoping Rong, Yifan Zhang, Lanxin Yang, Fuli Zhang, Hongyu Kuang, and He Zhang. 2022. Modeling review history
+     for reviewer recommendation: A hypergraph approach. In Proceedings of the 44th international conference on software
+     engineering. 1381–1392.
+[57] Christoffer Rosen, Ben Grawi, and Emad Shihab. 2015. Commit guru: analytics and risk prediction of software commits.
+     In Proceedings of the 2015 10th joint meeting on foundations of software engineering. 966–969.
+[58] Caitlin Sadowski, Emma Söderberg, Luke Church, Michal Sipko, and Alberto Bacchelli. 2018. Modern code review: a
+     case study at google. In Proceedings of the 40th International Conference on Software Engineering: Software Engineering
+     in Practice. ACM, 181–190.
+[59] Emad Shihab, Ahmed E Hassan, Bram Adams, and Zhen Ming Jiang. 2012. An industrial study on the risk of software
+     changes. In Proceedings of the ACM SIGSOFT 20th International Symposium on the Foundations of Software Engineering.
+     1–11.
+[60] Jacek Śliwerski, Thomas Zimmermann, and Andreas Zeller. 2005. When do changes induce fixes? ACM sigsoft software
+     engineering notes 30, 4 (2005), 1–5.
+[61] Anton Strand, Markus Gunnarson, Ricardo Britto, and Muhmmad Usman. 2020. Using a context-aware approach to
+     recommend code reviewers: findings from an industrial case study. In Proceedings of the ACM/IEEE 42nd International
+     Conference on Software Engineering: Software Engineering in Practice. 1–10.
+[62] Anton Strand, Markus Gunnarson, Ricardo Britto, and Muhmmad Usman. 2020. Using a context-aware approach to
+     recommend code reviewers: findings from an industrial case study. In Proceedings of the ACM/IEEE 42nd International
+     Conference on Software Engineering: Software Engineering in Practice. 1–10.
+[63] Patanamon Thongtanunam, Raula Gaikovina Kula, Ana Erika Camargo Cruz, Norihiro Yoshida, and Hajimu Iida.
+     2014. Improving code review effectiveness through reviewer recommendations. In Proceedings of the 7th International
+     Workshop on Cooperative and Human Aspects of Software Engineering. 119–122.
+[64] Patanamon Thongtanunam, Shane McIntosh, Ahmed E Hassan, and Hajimu Iida. 2016. Revisiting code ownership
+     and its relationship with software quality in the scope of modern code review. In Proceedings of the 38th international
+     conference on software engineering. ACM, 1039–1050.
+
+
+                                      Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+FSE008:22                                                               Mohammadali Sefidi Esfahani and Peter C. Rigby
+
+
+[65] Patanamon Thongtanunam, Shane McIntosh, Ahmed E. Hassan, and Hajimu Iida. 2017. Review Participation in Modern
+     Code Review: An Empirical Study of the Android, Qt, and OpenStack Projects. Empirical Software Engineering 22, 2
+     (2017), 768–817.
+[66] Patanamon Thongtanunam, Chakkrit Tantithamthavorn, Raula Gaikovina Kula, Norihiro Yoshida, Hajimu Iida, and
+     Ken-ichi Matsumoto. 2015. Who should review my code? a file location-based code-reviewer recommendation approach
+     for modern code review. In 2015 IEEE 22nd International Conference on Software Analysis, Evolution, and Reengineering
+     (SANER). IEEE, 141–150.
+[67] Mahesh Kumar Thota, Francis H Shajin, P Rajesh, et al. 2020. Survey on software defect prediction techniques.
+     International Journal of Applied Science and Engineering 17, 4 (2020), 331–344.
+[68] Vinod Veeramachaneni, Pradeep Kumar Mallick, Subhashree Rout, and Piyush Kumar Pareek. 2025. Two-dimensional
+     multi-deep CNNs for accurate and robust software defect detection: A performance-driven approach. In 2025 Interna-
+     tional Conference on Emerging Systems and Intelligent Computing (ESIC). IEEE, 734–739.
+[69] Romi Satria Wahono. 2015. A systematic literature review of software defect prediction. Journal of Software Engineering
+     1, 1 (2015), 1–16.
+[70] Supatsara Wattanakriengkrai, Patanamon Thongtanunam, Chakkrit Tantithamthavorn, Hideaki Hata, and Kenichi
+     Matsumoto. 2020. Predicting defective lines using a model-agnostic technique. IEEE Transactions on Software Engineering
+     48, 5 (2020), 1480–1496.
+[71] Mairieli Wessel, Alexander Serebrenik, Igor Wiese, Igor Steinmacher, and Marco A Gerosa. 2020. Effects of adopting
+     code review bots on pull requests to OSS projects. In 2020 IEEE international conference on software maintenance and
+     evolution (ICSME). IEEE, 1–11.
+[72] Xin Xia, David Lo, Xinyu Wang, and Xiaohu Yang. 2015. Who should review this change?: Putting text and file location
+     analyses together for more accurate recommendations. In 2015 IEEE International Conference on Software Maintenance
+     and Evolution (ICSME). IEEE, 261–270.
+[73] Zhenglin Xia, Hailong Sun, Jing Jiang, Xu Wang, and Xudong Liu. 2017. A hybrid approach to code reviewer
+     recommendation with collaborative filtering. In 2017 6th International Workshop on Software Mining (SoftwareMining).
+     IEEE, 24–31.
+[74] Xinqiang Xie, Xiaochun Yang, Bin Wang, and Qiang He. 2022. DevRec: Multi-Relationship Embedded Software
+     Developer Recommendation. IEEE Transactions on Software Engineering 48, 11 (2022), 4357–4379. doi:10.1109/TSE.
+     2021.3117590
+[75] Kazuhiro Yamashita, Changyun Huang, Meiyappan Nagappan, Yasutaka Kamei, Audris Mockus, Ahmed E Hassan, and
+     Naoyasu Ubayashi. 2016. Thresholds for size and complexity metrics: A case study from the perspective of defect
+     density. In 2016 IEEE international conference on software quality, reliability and security (QRS). IEEE, 191–201.
+[76] Haochao Ying, Liang Chen, Tingting Liang, and Jian Wu. 2016. Earec: leveraging expertise and authority for pull-
+     request reviewer recommendation in github. In Proceedings of the 3rd international workshop on crowdsourcing in
+     software engineering. 29–35.
+[77] Yue Yu, Huaimin Wang, Gang Yin, and Tao Wang. 2016. Reviewer recommendation for pull-requests in GitHub: What
+     can we learn from code review and bug assignment? Information and Software Technology 74 (2016), 204–218.
+[78] Motahareh Bahrami Zanjani, Huzefa Kagdi, and Christian Bird. 2016. Automatically Recommending Peer Reviewers in
+     Modern Code Review. IEEE Trans. Softw. Eng. 42, 6 (June 2016), 530–543. doi:10.1109/TSE.2015.2500238
+[79] Motahareh Bahrami Zanjani, Huzefa Kagdi, and Christian Bird. 2016. Automatically Recommending Peer Reviewers in
+     Modern Code Review. IEEE Transactions on Software Engineering 42, 6 (2016), 530–543. doi:10.1109/TSE.2015.2500238
+[80] Jiyang Zhang, Chandra Maddila, Ram Bairi, Christian Bird, Ujjwal Raizada, Apoorva Agrawal, Yamini Jhawar, Kim
+     Herzig, and Arie van Deursen. 2023. Using large-scale heterogeneous graph representation learning for code review
+     recommendations at Microsoft. In 2023 IEEE/ACM 45th International Conference on Software Engineering: Software
+     Engineering in Practice (ICSE-SEIP). IEEE, 162–172.
+[81] Xin Zhou, DongGyun Han, and David Lo. 2025. Bridging expert knowledge with deep learning techniques for
+     just-in-time defect prediction. Empirical Software Engineering 30, 1 (2025), 37.
+
+Received 2025-09-02; accepted 2025-12-22
+
+
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE008. Publication date: July 2026.
+

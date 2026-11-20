@@ -1,0 +1,440 @@
+Risks and mitigations for GitHub Copilot cloud agent - GitHub Enterprise Cloud Docs (https://docs.github.com/en/enterprise-cloud%40latest/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations)
+citeturn10search0 [wordlim: 200] Crawled: 4 weeks ago; Draft pull requests created by Copilot cloud agent must be reviewed and merged by a human. ...   * Restricts GitHub Actions workflow runs. ... When Copilot cloud agent opens a pull request under its own app identity, one more approval is required before it can be merged, as long as the repository already requires at least one approval.
+Copilot cloud agent only has the ability to push to a single branch. When the agent is triggered by mentioning `@copilot` on an existing pull request, Copilot has write access to the pull request's branch. In other cases, a new `copilot/` branch is created for Copilot, and the agent can only push to that branch. The agent is also subject to any branch protections and required checks for the working repository.
+  * Limits the agent's credentials. Copilot cloud agent can only perform simple push operations. It cannot directly run `git push` or other Git commands.
+  * Requires human review before merging. Draft pull requests created by Copilot cloud agent must be reviewed and merged by a human. Copilot cloud agent cannot mark its pull requests as "Ready for review" and cannot approve or merge a pull request.
+  * Restricts GitHub Actions workflow runs. By default, workflows are not triggered until Copilot cloud agent's code is reviewed and a user with write access to the repository clicks the Approve and run workflows button. Optionally, you can configure Copilot to allow workflows to run automatically. See Review output from Copilot.
+  * Prevents the user who asked Copilot cloud agent to create a pull request from approving it. This maintains the expected controls in the "Required approvals" rule and branch protection. See Available rules for rulesets.
+  * Requires an additional approval when a pull request isn't attributed to a person. When Copilot cloud agent opens a pull request under its own app identity, one more approval is required before it can be merged, as long as the repository already requires at least one approval. This is enabled by default in rulesets, where administrators can turn it off, and always applies to branch protection rules. See Available rules for rulesets.
+--------------------------------------------------------------------------------
+Automations | Cursor Docs (https://prod.cursor.com/help/ai-features/automations)
+citeturn10search1 [wordlim: 200] Crawled: today; Cursor Automations run Cloud Agents in the background, either on a schedule or in response to events from GitHub, GitLab, Slack, webhooks, Linear, and more. ... PagerDuty  | An incident is triggered, acknowledged, or resolved ... An automation can have more than one trigger. ... Automations create Cloud Agent runs.
+
+# Automations
+
+Cursor Automations run Cloud Agents in the background, either on a schedule or in response to events from GitHub, GitLab, Slack, webhooks, Linear, and more.
+
+## What can Automations do?
+
+Automations let you run Cloud Agents without manual input. Common uses include:
+
+  * Reviewing pull requests when they're opened
+  * Cleaning up feature flags on a schedule
+  * Triaging bugs from Slack messages
+  * Running security scans after CI completes
+
+Browse templates in the Automations marketplace to get started.
+
+## How do I create an automation?
+
+Create a new automation in the Agents Window, at cursor.com/automations/new, or from a template in the Cursor Marketplace.
+
+  1. Choose a trigger (e.g. every hour, when a PR is opened, or when a Slack message arrives)
+  2. Write a prompt telling the agent what to do
+  3. Select optional tools the agent can use (Comment on PR, Send to Slack, MCP, and more)
+--------------------------------------------------------------------------------
+Application card: GitHub Copilot Agents - GitHub Docs (https://docs.github.com/en/copilot/responsible-use/agents?ref=aiposthub.com)
+citeturn10search2 [wordlim: 200] Crawled: 4 weeks ago; Actions workflows triggered by pull requests raised by the agent require approval from a user with write access before they will run. ...   * Constrained permissions: The cloud agent only has access to the repository where it is creating a pull request and cannot access other repositories. ... The agent does not have access to Actions organization or repository secrets—only secrets and variables specifically added to the `copilot` environment are passed to the agent. ...   * Ensuring traceability: The cloud agent's commits are authored by Copilot, with the human who started the task marked as the co-author. ... Like other agentic features, computer use has limitations. ...   * Application approval management: In the GitHub Copilot app, users can review and remove saved application approvals.
+
+## 9. Safety components and mitigations
+
+### Copilot cloud agent
+
+  * Privilege escalation controls: The cloud agent only responds to interactions from users with repository write access. Actions workflows triggered by pull requests raised by the agent require approval from a user with write access before they will run. The agent filters hidden characters that might allow users to hide harmful instructions in comments or issue contents.
+  * Constrained permissions: The cloud agent only has access to the repository where it is creating a pull request and cannot access other repositories. It can only push to a single branch: the existing pull request branch when triggered via `@copilot`, or otherwise to a new `copilot/` branch. This means that Copilot cannot push directly to your default branch (for example, `main`). The agent does not have access to Actions organization or repository secrets—only secrets and variables specifically added to the `copilot` environment are passed to the agent.
+--------------------------------------------------------------------------------
+GitHub Copilot code review - GitHub Enterprise Cloud Docs (https://docs.github.com/en/enterprise-cloud%40latest/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/code-review?utm_source=chatgpt.com)
+citeturn10search3 [wordlim: 200] Crawled: 2 weeks ago;   * Organization owners can configure Copilot to automatically review all pull requests in some or all of the repositories in the organization where the pull request is created by a Copilot user. ... This applies to repositories covered by a policy where automatic reviews are enabled. ... Every Copilot code review includes an approval assessment in the overview comment, indicating whether Copilot has determined the pull request ready to approve after reviewing it. ... Repository MCP configuration on GitHub applies to both Copilot cloud agent and Copilot code review.
+## Model usage
+
+Copilot code review is a purpose-built product that uses a carefully tuned mix of models, prompts, and system behaviors to deliver consistent, high-quality feedback across a wide range of codebases. Model switching is not supported, as changing the model is likely to compromise reliability, user experience, and the quality of review comments.
+
+Note
+
+Copilot code review may use models that are not enabled on your organization's "Models" settings page. The "Models" settings page only controls Copilot Chat.
+
+Since Copilot code review is generally available, all model usage will be subject to the generally available terms. See Managing policies and features for GitHub Copilot in your organization.
+
+## Automatic pull request reviews
+
+By default, Copilot only reviews a pull request if you assign it to the pull request. However, you can configure automatic reviews.
+
+  * Users can configure Copilot to automatically review the pull requests they create. This is available on the Copilot Pro, Copilot Pro+, and Copilot Max plans, and with a Copilot Business or Copilot Enterprise license. It is not available for managed user accounts.
+  * Repository owners can configure Copilot to automatically review all pull requests in the repository that are created by people with access to Copilot.
+  * Organization owners can configure Copilot to automatically review all pull requests in some or all of the repositories in the organization where the pull request is created by a Copilot user.
+
+Copilot evaluates pull requests against two separate configurations: a user's settings and any applicable ruleset. These configurations are not hierarchical; neither inherits from or overrides the other. A pull request is reviewed automatically when at least one configuration is enabled. If both configurations are enabled on a pull request, Copilot still posts only one review.
+
+If your organization has enabled Copilot code review without a Copilot license, automatic reviews also apply to pull requests created by organization members without a license. This applies to repositories covered by a policy where automatic reviews are enabled. ## Copilot approvals
+
+Every Copilot code review includes an approval assessment in the overview comment, indicating whether Copilot has determined the pull request ready to approve after reviewing it. By default, Copilot's reviews do not count toward required approvals for the pull request.
+
+When Copilot approvals are enabled in repository, organization, and enterprise settings, Copilot can submit an approving review that satisfies your repository's required-approval rule the same way a teammate's approval would. If new commits are pushed after Copilot approves, the approval is dismissed, and you can re-request a review.
+
+## MCP servers and agent skills for code review
+
+Copilot code review can use repository-level agent skills and MCP servers when they are relevant to the review.
+
+Copilot code review is more likely to use skills and MCP context when your repository or pull request gives clear signals, including review-focused skill directory names, custom instructions that reference MCP context, and pull request descriptions that include identifiers referencing configured MCP servers such as issue keys or incident IDs.
+
+### Agent skills
+
+If your repository includes agent skills, Copilot code review can automatically use relevant skills when reviewing a pull request, extending Copilot beyond its built-in analysis.
+
+When reviewing a pull request, Copilot reads repository custom instructions, agent instructions, and agent skills from the head branch (the branch with your changes), not the base branch. For example, when merging `my-feature-branch` into `main`, Copilot uses the instructions and skills in `my-feature-branch`, so you can test changes to them in the same pull request without merging them first.
+
+For setup details, see Adding agent skills for GitHub Copilot.
+
+### MCP servers
+
+Copilot code review can use MCP servers to pull context directly into the review from the third-party platforms and internal systems your team uses, including issue tracking, documentation, service catalogs, and incident tooling.
+
+The GitHub MCP server and Playwright MCP server are enabled by default.
+
+You can configure MCP servers in your repository settings. Repository MCP configuration on GitHub applies to both Copilot cloud agent and Copilot code review. Changes you make to repository MCP settings affect both features. For setup details, see Configure MCP servers for your repository.
+
+In repository settings, Allow Copilot to use MCP tools when reviewing pull requests is enabled by default. Disable this setting if you want MCP servers available only for Copilot cloud agent, and not for Copilot code review. For step-by-step instructions, see Configure MCP servers for your repository.
+
+--------------------------------------------------------------------------------
+What are background agents? | Cursor Docs (https://prod.cursor.com/help/ai-features/background-agents?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn10search4 [wordlim: 200] Crawled: today; Each Cloud Agent runs on its own dedicated virtual machine with a full development environment: your repository, dependencies, secrets, and network access. ... See the announcement blog post for real examples of agents demoing their work.
+
+## How do I start a background agent? ... You can also run them on a schedule or from events with Automations.
+
+# What are background agents?
+
+Background agents are coding agents that typically run for a very long time. In practice, that means moving a task from your local device to the cloud, where the agent takes it from start to finish without interruption and reports back with proof that the work is done. In Cursor, we call these Cloud Agents.
+
+These agents can build features, fix bugs, write tests, and automatically open pull requests when they finish.
+
+## How do background agents work?
+
+Each Cloud Agent runs on its own dedicated virtual machine with a full development environment: your repository, dependencies, secrets, and network access. It plans the task, edits code, runs commands, and tests its work over minutes or hours. Because it runs remotely, you can close your laptop and check the result later.
+
+The VM is sandboxed and isolated from your local machine, so the agent's commands never touch your environment. Cursor wraps each run in secret redaction, network policies, and credential management, and you control which repositories, secrets, and network access an environment gets. We share more in What we've learned building cloud agents.
+
+## How do background agents show their work?
+
+Background agents produce artifacts to demo their changes. As an agent works, it tests its changes and attaches videos, screenshots, and logs to the pull request, so you can validate the work without checking out the branch. You can also take control of the agent's remote desktop to use the software it built and make edits yourself.
+
+See the announcement blog post for real examples of agents demoing their work.
+
+## How do I start a background agent?
+
+  * In Cursor, select Cloud by the agent input
+  * On the web or mobile, go to cursor.com/agents
+  * In Slack, GitHub, or Linear, mention @Cursor
+
+You can also run them on a schedule or from events with Automations.--------------------------------------------------------------------------------
+Driving team adoption of agentic GitHub Copilot - GitHub Enterprise Cloud Docs (https://docs.github.com/en/enterprise-cloud%40latest/copilot/tutorials/roll-out-at-scale/enable-developers/drive-team-agentic-adoption)
+citeturn10search5 [wordlim: 200] Crawled: last week;   * Work that suits agentic tools, such as investigating a codebase, making coordinated changes across files, running tests, or preparing pull requests ... Work with the appropriate enterprise and organization owners to enable the separate policies for the GitHub Copilot app and Copilot CLI. ...   * Use the Copilot app to work from an issue, make changes in an agent session, and open a pull request. ... For each workflow, document the required human review, testing, and approval steps. ...   * Who will review access, policy behavior, agent activity, support issues, and spending during the sprint
+
+Do not use the amount of generated code as a success target. More generated code does not necessarily create more value and can increase review or maintenance work.
+
+### Prepare workflows, tracking, and safeguards
+
+Instead of asking participants to "use AI more," give the team two or three approved workflows that match their current work. For example:
+
+  * Use Copilot CLI to investigate a failure, plan a multi-file change, run tests, or review local changes.
+  * Use the Copilot app to work from an issue, make changes in an agent session, and open a pull request.
+  * Move between the tools when useful, for example by opening the Copilot app from Copilot CLI with `copilot app`.
+
+For each workflow, document the required human review, testing, and approval steps. If your enterprise uses custom instructions, agents, managed settings, or approved Model Context Protocol (MCP) servers, configure them before the sprint.
+
+Decide how the team will share examples and track progress. You can:
+
+  * Add a temporary pull request label, such as `copilot-pilot`, so participants can find and discuss relevant examples.
+--------------------------------------------------------------------------------
+GitHub Agentic Workflows - GitHub Docs (https://docs.github.com/en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/about-github-agentic-workflows?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn10search6 [wordlim: 200] Crawled: 4 weeks ago; Agentic workflows can generate reviewable outputs, such as issues, comments, and pull requests, while you control approvals and merges. ...   * An account with an AI engine (agent), such as GitHub Copilot, Anthropic Claude, OpenAI Codex, or Google Gemini. ... You specify which agent to use in the workflow frontmatter property `engine`. ... For GitHub Copilot agentic workflows in organization-owned repositories, if the organization has a GitHub Copilot plan, we strongly recommend using GitHub Actions' built-in `GITHUB_TOKEN`. ... An organization administrator to enable "Copilot CLI" and "Allow use of Copilot CLI billed to the organization" in GitHub Copilot policy settings.
+  * Generating daily or weekly repository status reports
+  * Keeping documentation up to date with code changes
+  * Improving test coverage
+
+## Benefits of using agentic workflows
+
+  * Automate repetitive repository work. Define issue triage, CI investigation, documentation updates, and reporting in natural language.
+  * Reduce workflow complexity. Write markdown instructions instead of building complex procedural scripts for every scenario.
+  * Keep human review in the loop. Agentic workflows can generate reviewable outputs, such as issues, comments, and pull requests, while you control approvals and merges.
+  * Run agents with layered security. Agents run in firewalled containers with read-only tokens by default. Write actions are limited to declared "safe outputs" that you have defined, and checked by agentic threat detection.
+
+## Requirements
+
+To create and use agentic workflows, you need:
+
+  * GitHub Actions enabled for your repository.
+  * An account with an AI engine (agent), such as GitHub Copilot, Anthropic Claude, OpenAI Codex, or Google Gemini.
+--------------------------------------------------------------------------------
+AI is hurting delivery performance (https://dora.dev/ai/gen-ai-report/dora-impact-of-generative-ai-in-software-development.pdf)
+citeturn10search12 [wordlim: 200] Published: 1.6 years ago; AI is hurting delivery performance ... Figure caption: “Figure 3: Impacts of AI adoption on delivery throughput and stability.” ... 2025.2
+AI is hurting delivery performance
+
+For the past few years, we have seen that software delivery throughput and software delivery stability indicators were starting to show some independence from one another. While the traditional association between throughput and stability has persisted, emerging evidence suggests these factors operate with sufficient independence to warrant separate consideration.
+
+If AI adoption increases by 25%...
+
+<visual_element id="e1">
+Chart with y-axis label “Outcome” and x-axis label “Estimated % change in outcome.” Two outcomes are plotted with horizontal error bars and orange point markers. “Delivery throughput” is at about -1.5% with an uncertainty interval spanning roughly from about -2.5% to 0.0%. “Delivery stability” is at about -7.2% with an uncertainty interval spanning roughly from about -8.5% to -5.5%. A dashed vertical reference line marks 0.0 on the x-axis. Note below the chart: “Point = estimated value” and “Error bar = 89% uncertainty interval.” Figure caption: “Figure 3: Impacts of AI adoption on delivery throughput and stability.”
+</visual_element>
+
+Point = estimated value  
+Error bar = 89% uncertainty interval  
+Figure 3: Impacts of AI adoption on delivery throughput and stability.
+
+DORA  
+v. 2025.2
+
+13
+
+Understanding the landscape: The impact of AI--------------------------------------------------------------------------------
+Introducing Cursor Automations - Release Discussions - Cursor - Community Forum (https://forum.cursor.com/t/introducing-cursor-automations/153733)
+citeturn10search7 [wordlim: 200] Published: 8 months ago; Crawled: yesterday; Blog · Docs · Try it out! ... When triggered, a cloud agent spins up, follows your instructions, and verifies its own output. ... Create a new automation at https://cursor.com/automations/new, or start from a template in the marketplace. ... Background Agent (GitHub, Slack, Web, Linear) Describe the Bug I have a custom Bugsnag MCP configured that I am able to use with the Agents that I trigger manually. ... Can we automate to send a slack message when a PR has not received any reviews for 24 hours?
+
+# Introducing Cursor Automations
+
+Colin (Colin) March 5, 2026, 5:22pm 1
+
+Blog · Docs · Try it out!
+
+* * *
+
+We’re excited to introduce Cursor Automations: always-on cloud agents that run a schedule or in response to events!
+
+Imagine an agent that reviews every PR for security vulnerabilities before you even open Slack. Or one that triages bug reports overnight, finds the root cause, and has a fix ready by morning. Or a weekly digest that summarizes everything your team shipped, all automatically. That’s what automations enable.
+
+Define a trigger, write a prompt, and choose which tools the agent can use. When triggered, a cloud agent spins up, follows your instructions, and verifies its own output. Agents can open PRs, comment on code, send Slack messages, call MCP servers, and use Memories to learn across runs.
+
+Create a new automation at https://cursor.com/automations/new, or start from a template in the marketplace. --------------------------------------------------------------------------------
+Creating automations with Copilot cloud agent - GitHub Docs (https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-automations)
+citeturn10search8 [wordlim: 200] Crawled: today; If you have Copilot Business or Copilot Enterprise, an administrator must enable the Copilot cloud agent policy. ...   * The organization must allow both Copilot cloud agent and automations in the repository (both are enabled by default). ... AI credits are charged to the organization or user that owns the repository, and actions taken on GitHub use Copilot's identity. ... Select the tools Copilot can use when the automation runs, such as pushing changes, updating issue labels, or creating a pull request.
+
+# Creating automations with Copilot cloud agent
+
+Create and manage automations to run Copilot cloud agent on a schedule, in response to events in a repository, or programmatically via the API.
+
+Copy markdown
+
+## Who can use this feature?
+
+Automations are available with the GitHub Copilot Pro, GitHub Copilot Pro+, GitHub Copilot Max, GitHub Copilot Business, and GitHub Copilot Enterprise plans. Automations are available in private and internal repositories only. They are not available where they have been disabled by a repository administrator, in repositories owned by managed user accounts, or where Copilot cloud agent is not enabled.
+
+## Introduction
+
+With automations, you can set up Copilot cloud agent to run automatically, either on a schedule, in response to an event in a repository or triggered via the API. Automations can take action within the repository where they are configured, such as opening a pull request or labeling an issue.
+
+You can create and manage automations from the Agents tab of a repository on GitHub.
+
+You can also create and manage automations from:
+
+  * The Automations tab in the GitHub Copilot app
+  * The Agents window in VS Code
+  * The REST API
+
+For an overview of automations, including triggers, tools, visibility, and security, see Copilot automations.
+
+## Prerequisites
+
+For automations to be available in a repository, all of the following must be true:
+
+  * The repository must be private or internal. Automations are not available in public repositories.
+  * Copilot cloud agent must be enabled for the repository. If you have Copilot Business or Copilot Enterprise, an administrator must enable the Copilot cloud agent policy. See Managing GitHub Copilot in the cloud for your enterprise or organization.
+  * The organization must allow both Copilot cloud agent and automations in the repository (both are enabled by default). See Managing GitHub Copilot in the cloud for your organization.
+
+Automations are available with the GitHub Copilot Pro, GitHub Copilot Pro+, GitHub Copilot Max, GitHub Copilot Business, and GitHub Copilot Enterprise plans.
+
+### Creating an automation with Copilot
+
+After you click Create with agent, a chat window will appear and Copilot will ask what you want to automate.
+
+You can work with Copilot to design your automation, setting up the triggers, tools and prompt.
+
+Copilot can even help you create self-improving groups of automations which learn from outcomes and suggest improvements to themselves.
+
+Group members with the same ownership share persistent artifact storage, while access to other information depends on each automation's tools and permissions. See Proposed improvements.
+
+### Creating an automation manually
+
+  1. Enter a name for the automation.
+
+  2. Under Type, choose the kind of automation you want to create:
+
+     * Personal: Only you can see the automation. AI credits are charged to you, and actions taken on GitHub use your identity.
+     * Shared: Everyone with access to the repository can see the automation. AI credits are charged to the organization or user that owns the repository, and actions taken on GitHub use Copilot's identity.
+`
+
+  2. Optionally, select the model and reasoning level you want Copilot to use. See Changing the AI model for GitHub Copilot cloud agent.
+
+  3. Select the tools Copilot can use when the automation runs, such as pushing changes, updating issue labels, or creating a pull request.
+
+You can select GitHub tools, and tools from any MCP servers configured in the repository's MCP settings. To make an external system's tools available, a repository administrator must first configure its MCP server for the repository. See Configure MCP servers for your repository.
+
+Select only the tools the task requires. The tools you select control what actions Copilot can take in your repository. Optionally, you can use the Suggest tools button to ask Copilot to suggest tools based on your prompt. See Copilot automations.
+
+  4. Optionally, under AI credit limits, set limits on how many AI credits the automation can consume. See Setting AI credits limits.
+
+  5. Save the automation by clicking Create automation.
+--------------------------------------------------------------------------------
+DORA | Download the Impact of Generative AI in Software Development (https://dora.dev/ai/gen-ai-report/report/)
+citeturn10search9 [wordlim: 200] Published: 7 months ago; Crawled: today; This report offers research-backed guidance for leaders and practitioners to effectively navigate this transformation, providing actionable insights to maximize AI's benefits while mitigating potential risks. ...   * AI currently hurts software delivery performance: Contrary to expectations, a 25% increase in AI adoption is associated with a 1.5% decrease in delivery throughput and a 7.2% decrease in delivery stability. Because AI allows developers to generate code much faster, it often leads to larger batch sizes, which are slower to review and more prone to creating system instability. ...   * Address job displacement fears transparently: Leaders must openly communicate their organizational AI strategy and address anxieties regarding job security.
+  * The “valuable work” paradox: Surprisingly, AI adoption leads to developers spending less time on valuable work, while time spent on toilsome, repetitive tasks remains unchanged. The report explains this through the “vacuum hypothesis”: AI successfully speeds up the valuable tasks developers enjoy, but it has not yet cracked the code on automating away drudgery like bureaucracy and meetings.
+  * AI currently hurts software delivery performance: Contrary to expectations, a 25% increase in AI adoption is associated with a 1.5% decrease in delivery throughput and a 7.2% decrease in delivery stability. Because AI allows developers to generate code much faster, it often leads to larger batch sizes, which are slower to review and more prone to creating system instability.
+  * Trust directly drives AI productivity: Developers who trust generative AI accept more suggestions, submit more change lists, and spend less time searching for information. However, 39% of developers still trust AI outputs “a little” or “not at all,” meaning many teams are missing out on potential productivity gains.
+--------------------------------------------------------------------------------
+Integrating Copilot cloud agent with Teams - GitHub Docs (https://docs.github.com/en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-teams?utm_campaign=universe25&utm_medium=changelog&utm_source=changelog-docs-copilot-coding-agent-slack)
+citeturn10search10 [wordlim: 200] Crawled: 2 days ago; GitHub Copilot uses AI. ... Before you @mention GitHub in Teams, consider that Copilot cloud agent captures the entire thread as context for your request, understanding and implementing solutions based on the discussion. ... If you use repository rulesets, because these pull requests aren't attributed to a person, one more approval is required before merging, as long as the repository already requires at least one approval.
+It uses the permissions of your linked GitHub personal account to take these actions.
+
+  * When you use Copilot in a shared context, such as a group thread or channel, Copilot creates artifacts, such as pull requests, under its app identity rather than your personal account.
+
+Note
+
+Pull requests created in a shared context by Copilot use the app's identity. If you use repository rulesets, because these pull requests aren't attributed to a person, one more approval is required before merging, as long as the repository already requires at least one approval. This is enabled by default. See Available rules for rulesets.
+
+Only users with write access to every repository selected for a session can trigger Copilot to make changes or steer that session, but any conversation participant can provide input. Guest members of a workspace, and outside collaborators to repositories are not able to start or steer a session with Copilot in Teams.
+
+Copilot uses all messages in the conversation to inform the work. The entire thread becomes the decision-making context for the artifact.
+
+When you ask Copilot to perform a task, it displays details about the session, such as the working repositories, issue or pull request links, model used, and a task status or summary.
+
+### Secure cloud sandboxes
+
+When Copilot cloud agent starts work on a task from Teams, Copilot continues working asynchronously in a secure cloud sandbox, and posts the result when it's ready.
+
+You can keep steering from Teams, or continue the work on the agent-generated artifacts in GitHub, the terminal, or your preferred code editor.
+
+--------------------------------------------------------------------------------
+Cursor · Cloud Agents (https://cursor.com/cloud)
+citeturn10search11 [wordlim: 200] Crawled: 3 weeks ago; Cursor Automations continuously monitor and improve your codebase. ... Agents run on schedules or are triggered by events from GitHub, Slack, Linear, webhooks, and more. ... Add trigger ... Learn about cloud agents→ ... Running terminal command Ran terminal command ... Added real-time collaboration to the note-taking app with WebSocket syncing, rich text editing, and version history. ... Interact with the software from the agent's remote desktop, without checking out the branch locally.
+
+## Save time with always-on agents
+
+Cursor Automations continuously monitor and improve your codebase.
+
+Learn about automations→
+
+### Runs automatically
+
+Agents run on schedules or are triggered by events from GitHub, Slack, Linear, webhooks, and more.
+
+Every hour
+
+
+
+New message in#bug-reports
+
+in cursor-website on main
+
+
+
+Add trigger
+
+### Works independently
+
+Automated agents follow instructions you define and use your tools through MCP.
+
+Instructions
+
+Enter prompt text... (type @ for tools & MCPs, / for skills and commands)
+
+Your task is to fix CI failures on main. Avoid racing other agents. Root cause by checking logs. Report with /apply-report-format
+
+Enter prompt text... (type @ for tools & MCPs, / for skills and commands)
+
+Grok 4.7
+
+Tools
+
+Send to Slack
+
+Add Tool or MCP
+
+### Learns from past runs
+
+Cursor can access a memory tool to learn from past runs and improve with repetition.
+
+Memories
+
+Fix flaky CI
+
+Last month
+
+Update test fixtures
+
+Last week
+
+Stabilize Playwright
+
+Yesterday
+--------------------------------------------------------------------------------
+DORA_ExecutiveSummary_1 (https://dora.dev/research/2024/2024-DORA-Report-Infographic.pdf)
+citeturn10search13 [wordlim: 200] Published: 2.1 years ago; The 2024 DORA report highlights the significant impact of AI on software development, explores platform engineering's promises and challenges, and emphasizes user-centricity and stable priorities for organizational success. ... Although platform engineering shows promise in boosting individual and team productivity and improving organizational performance, it may also lead to decreased throughput and stability, particularly when mandated for the entire application lifecycle. ... - 6% gain in productivity at the team level when organization has a dedicated platform team. ... However, it is associated with a decrease in delivery stability, suggesting a potential need for adapting change management practices in the age of AI-powered development. ... This year’s research reflects the same.
+DORA
+
+10  
+A decade with DORA
+
+The 2024 DORA report highlights the significant impact of AI on software development, explores platform engineering's promises and challenges, and emphasizes user-centricity and stable priorities for organizational success.
+
+Google Cloud
+
+Platform Engineering
+
+While 89% of respondents reported using an internal developer platform, the impact on software delivery performance is mixed. Although platform engineering shows promise in boosting individual and team productivity and improving organizational performance, it may also lead to decreased throughput and stability, particularly when mandated for the entire application lifecycle.
+
+Key metrics
+
+- 89% of respondents are using an internal developer platform.
+- 6% gain in productivity at the team level when organization has a dedicated platform team.
+- 5% improvement in productivity when users of the platform are able to complete their tasks without involving an enabling team.
+- 8% decrease in throughput among those using a platform compared to those who do not.
+
+AI Adoption
+
+The report finds that AI adoption is rapidly increasing, with 76% of respondents relying on AI for tasks like code writing, summarizing information, and code explanation. AI adoption is positively correlated with increased flow, productivity, job satisfaction, code quality, and internal documentation quality. However, it is associated with a decrease in delivery stability, suggesting a potential need for adapting change management practices in the age of AI-powered development.
+
+Key metrics
+
+- 81% of respondents say their company has shifted resources into developing AI.
+- 67% of respondents report that AI is helping them improve their code.
+- 39% of respondents reported having little or no trust in AI.
+- A 25% increase in AI adoption is associated with a...
+- 7.5% increase in documentation quality.
+- 3.4% increase in code quality.
+- 3.1% increase in code review speed.
+- 1.3% increase in approval speed.
+- 1.8% decrease in code complexity (this is a good thing!).
+
+Key Takeaways for Success
+
+The report emphasizes the importance of user-centricity for improved product performance, employee well-being, and organizational success. It also highlights the detrimental impact of unstable priorities on productivity and burnout, even in the presence of strong leadership and good documentation.
+
+Transformational leadership, a culture of continuous improvement, and data-driven decision-making remain crucial for driving successful transformations.
+
+Key metrics
+
+- In 2023 we saw user-centered teams have a 40% higher level of organizational performance compared to those that did not. This year’s research reflects the same.
+
+Leverage the research
+
+DORA's findings can serve as hypotheses for your next experiments. Learn more about how your team operates and identify areas for improvement which may be inspired by findings from the DORA research program.
+
+Share your experiences, learn from others, and get inspiration from other travelers on the continuous improvement journey by joining the DORA community at https://dora.community--------------------------------------------------------------------------------
+Why are unstable organizational priorities bad for employees’ well-being? (https://dora.dev/research/2024/dora-report/2024-dora-accelerate-state-of-devops-report.pdf)
+citeturn10search14 [wordlim: 200] Published: 2.0 years ago; Decades of academic research have shown the detrimental effects of chronic stress on health and well-being. ... Chronic instability increases uncertainty and decreases perceived control. ... We find that when priorities are stabilized, software delivery performance declines. ... Why do you think stabilizing organizational priorities decreases the speed and stability of software delivery?
+Why are unstable organizational priorities bad for employees’ well-being?
+
+We hypothesize that unstable organizational priorities increase employee burnout by creating unclear expectations, decreasing employees' sense of control, and increasing the size of their workloads.
+
+To be clear, we believe that the problem is not with changing priorities themselves. Business goals and product direction shift all the time. It can be good for organizational priorities to be malleable.
+
+We believe it is the frequency with which priorities change that has a negative impact on employees' well-being. The uncertainty that accompanies unstable priorities implies something chronic about the frequency with which priorities change.
+
+Decades of academic research have shown the detrimental effects of chronic stress on health and well-being.⁹ We see parallels between research on chronic stress and our findings. Chronic instability increases uncertainty and decreases perceived control. This combination is an excellent recipe for burnout.
+
+What happens when priorities stabilize?
+
+Our findings here are a little puzzling. We find that when priorities are stabilized, software delivery performance declines. It becomes slow and less stable in its delivery.
+
+We hypothesize that this might be because organizations with stable priorities might have products and services that are generally in good shape so changes are made less frequently. It is also possible that stability of priorities leads to shipping less and in larger batches than recommended.
+
+Nevertheless, we find this to be an unexpected finding. Why do you think stabilizing organizational priorities decreases the speed and stability of software delivery?

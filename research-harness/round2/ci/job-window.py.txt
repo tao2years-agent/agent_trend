@@ -1,0 +1,164 @@
+from collections import deque
+from telegram_notifier import handle_tasks, handle_exception
+import pandas as pd
+import ast
+from tqdm import tqdm
+import asyncio
+import os
+
+from config import (
+    WINDOW_SIZE,
+    recheck_builds_items,
+    one_run_builds_items,
+    recheck_builds_collection,
+    one_run_builds_collection,
+    jobs_occurrences_collection,
+)
+
+
+def get_bot_occurrences_query(bot_id):
+    return [
+        {
+            "$project": {
+                "key": 1,
+                "bot": {
+                    "$filter": {
+                        "input": "$bot",
+                        "as": "item",
+                        "cond": {"$and": [{"$ifNull": [f"$$item.{bot_id}", False]}]},
+                    }
+                },
+            }
+        },
+        {"$project": {"key": 1, "bot.recheck_number": 1, f"bot.{bot_id}": 1}},
+    ]
+
+
+def calculate_job_success_ratio_window(jobs_occurrences):
+    records_to_insert = []
+    for job_name, jobs_info in jobs_occurrences.items():
+        jobs_info.sort(key=lambda x: x["date_before"])
+
+        df_job_occurrences_window = deque()
+        df_job_occurrences_success_window = deque()
+
+        for job_info in jobs_info:
+            end_date = pd.to_datetime(job_info["date_before"])
+            start_date = end_date - WINDOW_SIZE
+
+            while (
+                df_job_occurrences_window and df_job_occurrences_window[0] < start_date
+            ):
+                df_job_occurrences_window.popleft()
+
+            while (
+                df_job_occurrences_success_window
+                and df_job_occurrences_success_window[0] < start_date
+            ):
+                df_job_occurrences_success_window.popleft()
+
+            num_all_occurences = len(df_job_occurrences_window)
+            num_success_occurences = len(df_job_occurrences_success_window)
+
+            df_job_occurrences_window.append(end_date)
+            if job_info["status"] == "success":
+                df_job_occurrences_success_window.append(end_date)
+
+            records_to_insert.append(
+                {
+                    **job_info,
+                    "num_success_occurences": num_success_occurences,
+                    "num_all_occurences": num_all_occurences,
+                }
+            )
+
+    if len(records_to_insert) != 0:
+        jobs_occurrences_collection.insert_many(records_to_insert)
+
+
+def get_jobs_success_ratio(bot_id):
+    jobs_occurrences = dict()
+
+    bot_occurrences_query = get_bot_occurrences_query(bot_id)
+
+    bots_recheck_builds = recheck_builds_collection.aggregate(bot_occurrences_query)
+    bots_one_run_builds = one_run_builds_collection.aggregate(bot_occurrences_query)
+
+    builds = list(bots_one_run_builds) + list(bots_recheck_builds)
+
+    for bots_builds in builds:
+        bots = bots_builds["bot"]
+        if len(bots) != 0:
+            key = ast.literal_eval(bots_builds["key"])
+        for bot in bots:
+            feature_key = (*key, int(bot["recheck_number"]))
+            bot_info = bot[bot_id]
+
+            for job in bot_info["jobs"]:
+                if job["voting"]:
+                    # do not mix jobs with the same name but different bots
+                    job_name = bot_id + "__" + job["name"]
+
+                    if not job_name in jobs_occurrences:
+                        jobs_occurrences[job_name] = []
+
+                    jobs_occurrences[job_name].append(
+                        {
+                            "feature_key": str(feature_key),
+                            "bot_id": bot_id,
+                            "job_name": job["name"],
+                            "voting": job["voting"],
+                            "status": job["status"],
+                            "date_before": bot_info["started_at"],
+                        }
+                    )
+
+    calculate_job_success_ratio_window(jobs_occurrences)
+
+    return
+
+
+def get_jobs_success_numbers(unique_bots):
+    for bot_id in tqdm(list(unique_bots)):
+        get_jobs_success_ratio(bot_id)
+
+
+def divide_array(arr, num_pieces):
+    # Calculate the size of each piece
+    k, m = divmod(len(arr), num_pieces)
+    return [
+        arr[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)] for i in range(num_pieces)
+    ]
+
+
+async def main():
+    file_name = os.path.basename(__file__).split(".")[0]
+    unique_bots = set()
+    try:
+        for document in tqdm(recheck_builds_items):
+            for bot in document["bot"]:
+                keys = bot.keys()
+                for key in keys:
+                    if key != "recheck_number" and key != "status" and key != "":
+                        unique_bots.add(key)
+
+        for document in tqdm(one_run_builds_items):
+            for bot in document["bot"]:
+                keys = bot.keys()
+                for key in keys:
+                    if key != "recheck_number" and key != "status" and key != "":
+                        unique_bots.add(key)
+        await handle_tasks(
+            (WINDOW_SIZE, file_name), get_jobs_success_ratio, list(unique_bots), 20
+        )
+
+    except Exception as e:
+        await handle_exception((WINDOW_SIZE, file_name), e)
+
+
+#         # with Pool(16) as p:
+#         # p.map(get_jobs_success_numbers, divide_array(list(unique_bots), 16))
+
+
+# if __name__ == "__main__":
+asyncio.run(main())

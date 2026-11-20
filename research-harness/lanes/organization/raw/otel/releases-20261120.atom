@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:https://github.com/open-telemetry/opentelemetry-collector/releases</id>
+  <link type="text/html" rel="alternate" href="https://github.com/open-telemetry/opentelemetry-collector/releases"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/open-telemetry/opentelemetry-collector/releases.atom"/>
+  <title>Release notes from opentelemetry-collector</title>
+  <updated>2026-11-06T23:41:48Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/v0.165.0</id>
+    <updated>2026-11-06T23:42:20Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.165.0"/>
+    <title>v1.71.0/v0.165.0</title>
+    <content type="html">&lt;h3&gt;Images and binaries here: &lt;a href=&quot;https://github.com/open-telemetry/opentelemetry-collector-releases/releases/tag/v0.165.0&quot;&gt;https://github.com/open-telemetry/opentelemetry-collector-releases/releases/tag/v0.165.0&lt;/a&gt;&lt;/h3&gt;
+&lt;h2&gt;End User Changelog&lt;/h2&gt;
+&lt;h3&gt;🛑 Breaking changes 🛑&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/confighttp&lt;/code&gt;: Remove deprecated fields &lt;code&gt;IdleConnTimeout&lt;/code&gt;, &lt;code&gt;MaxIdleConns&lt;/code&gt;, &lt;code&gt;MaxIdleConnsPerHost&lt;/code&gt;, &lt;code&gt;DisableKeepAlives&lt;/code&gt;. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5478415047&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15973&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/15973/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/15973&quot;&gt;#15973&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;🚀 New components 🚀&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/xreceiverhelper&lt;/code&gt;: Add xreceiverhelper with an &lt;code&gt;ObsReport&lt;/code&gt; that reports profile sample metrics per sample type. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6077494202&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16251&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16251/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16251&quot;&gt;#16251&lt;/a&gt;)&lt;br&gt;
+&lt;code&gt;ObsReport.EndProfilesOpBySampleType&lt;/code&gt; records the&lt;br&gt;
+&lt;code&gt;otelcol_receiver_{accepted,refused,failed}_profile_samples&lt;/code&gt; metrics with an additional&lt;br&gt;
+&lt;code&gt;sample_type&lt;/code&gt; attribute, formatted as &quot;type:unit&quot;, as a single payload can hold multiple profiles&lt;br&gt;
+with different sample types. Use &lt;code&gt;ProfileSampleCountsByType&lt;/code&gt; to compute the sample counts before&lt;br&gt;
+the profiles are passed to the next consumer, as the data may be mutated downstream.&lt;br&gt;
+The OTLP receiver now uses &lt;code&gt;EndProfilesOpBySampleType&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;💡 Enhancements 💡&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/configmiddleware&lt;/code&gt;: allow to override the dialer used by confighttp.ToClient and configgrpc.ToClient (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5564256839&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16019&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16019/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16019&quot;&gt;#16019&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/featuregate&lt;/code&gt;: Allow underscores in feature gate IDs. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6064125050&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16243&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16243/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16243&quot;&gt;#16243&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/pdata&lt;/code&gt;: Improve performance of pcommon.Map Get, Range, and All functions. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6151178899&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16282&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16282/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16282&quot;&gt;#16282&lt;/a&gt;, &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6245188884&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16321&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16321/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16321&quot;&gt;#16321&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/pdata&lt;/code&gt;: Reduce number of allocations when updating an oneof primitive (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6004756032&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16226&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16226/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16226&quot;&gt;#16226&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/service&lt;/code&gt;: Service now supports configuring additional resource detectors for internal telemetry as per the update to otelconf v0.26.0. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5306250901&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15869&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/15869/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/15869&quot;&gt;#15869&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/service&lt;/code&gt;: Warn at startup when a pipeline combines the batch processor with exporterhelper batching. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5468336247&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15965&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15965/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15965&quot;&gt;#15965&lt;/a&gt;)&lt;br&gt;
+Detection does not cross connectors or inspect exporter wrappers that hide exporterhelper&#39;s batching capability.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pkg/xprocessorhelper&lt;/code&gt;: Instrument &lt;code&gt;xprocessorhelper.NewProfiles&lt;/code&gt; with &lt;code&gt;otelcol_processor_incoming_items&lt;/code&gt;, &lt;code&gt;otelcol_processor_outgoing_items&lt;/code&gt;, and &lt;code&gt;otelcol_processor_internal_duration&lt;/code&gt;, consistent with the other signal constructors. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4783862438&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15523&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15523/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15523&quot;&gt;#15523&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;processor/memory_limiter&lt;/code&gt;: Add &lt;code&gt;garbage_collector&lt;/code&gt; config section to allow disabling forced garbage collection via &lt;code&gt;enabled&lt;/code&gt; field. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4230201166&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15081&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15081/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15081&quot;&gt;#15081&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;processor/queue_batch&lt;/code&gt;: Promote the queue_batch processor to beta for traces, metrics, and logs, and to alpha for profiles. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;2771029087&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/12022&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/12022/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/12022&quot;&gt;#12022&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;processor/queue_batch&lt;/code&gt;: Report queue and batch metrics as processor metrics (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;3518966663&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/14038&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/14038/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/14038&quot;&gt;#14038&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;🧰 Bug fixes 🧰&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cmd/mdatagen&lt;/code&gt;: Fix panic in &lt;code&gt;Attribute.TestValue()&lt;/code&gt; and &lt;code&gt;Attribute.TestValueTwo()&lt;/code&gt; when handling single-element or empty enum attributes. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4964147413&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15644&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15644/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15644&quot;&gt;#15644&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cmd/mdatagen&lt;/code&gt;: Fix generated metrics tests failing when a metric migration&#39;s &lt;code&gt;through_gates&lt;/code&gt; feature gates are promoted past alpha. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6074354467&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16249&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16249/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16249&quot;&gt;#16249&lt;/a&gt;)&lt;br&gt;
+The generated tests now explicitly set the migration feature gates for each test case and restore&lt;br&gt;
+their previous state on cleanup, instead of assuming the gates are disabled by default.&lt;br&gt;
+When a gate&#39;s stage forbids the state a case needs, such as disabling a stable gate, the metrics-builder&lt;br&gt;
+test skips only its gate-dependent count and warning assertions, and the per-combination versioned-metric&lt;br&gt;
+sub-tests for that combination are skipped.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cmd/mdatagen&lt;/code&gt;: Generate README configuration docs for &lt;code&gt;exported_configs&lt;/code&gt; definitions. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5830450037&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16164&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16164/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16164&quot;&gt;#16164&lt;/a&gt;)&lt;br&gt;
+Object definitions and scalar type aliases under &lt;code&gt;exported_configs&lt;/code&gt; are now rendered in the README after the &lt;code&gt;config:&lt;/code&gt; table.&lt;br&gt;
+Packages that only declare &lt;code&gt;exported_configs&lt;/code&gt; can now get generated docs once their README contains the config markers.&lt;br&gt;
+Components that only declare &lt;code&gt;exported_configs&lt;/code&gt; no longer get an empty configuration table.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;cmd/schemagen&lt;/code&gt;: Handle file-not-found errors when loading schemas (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5417042819&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15925&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15925/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15925&quot;&gt;#15925&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/configgrpc&lt;/code&gt;: Bound the zstd decoder window by the configured maximum receive message size instead of the library default. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6145667510&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16280&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16280/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16280&quot;&gt;#16280&lt;/a&gt;)&lt;br&gt;
+A zstd frame declares its window in the header and the decoder allocated it&lt;br&gt;
+before producing any output, so a small crafted message could drive a large&lt;br&gt;
+allocation regardless of &lt;code&gt;max_recv_msg_size_mib&lt;/code&gt;. The decoder is also&lt;br&gt;
+returned to its pool as soon as gRPC is done with a message.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/confighttp&lt;/code&gt;: Bound the zstd decoder window by &lt;code&gt;max_request_body_size&lt;/code&gt; instead of the library default. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6145667510&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16280&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16280/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16280&quot;&gt;#16280&lt;/a&gt;)&lt;br&gt;
+A zstd frame declares its window in the header and the decoder allocated it&lt;br&gt;
+before producing any output, so a small crafted body could drive a large&lt;br&gt;
+allocation regardless of the configured request body size.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/confighttp&lt;/code&gt;: Accept Content-Encoding: identity as equivalent to no encoding. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4270636421&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15122&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15122/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15122&quot;&gt;#15122&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/exporterhelper&lt;/code&gt;: Fix a &lt;code&gt;Cannot unref freed data&lt;/code&gt; panic when a persistent sending queue forwards requests into another pipeline (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4392127646&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15256&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15256/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15256&quot;&gt;#15256&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/exporterhelper&lt;/code&gt;: With &lt;code&gt;wait_for_result&lt;/code&gt;, canceling a request that the sending queue already accepted no longer returns early (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6086468327&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16255&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16255/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16255&quot;&gt;#16255&lt;/a&gt;)&lt;br&gt;
+Previously a canceled context made it return &lt;code&gt;context.Canceled&lt;/code&gt; while the request was still&lt;br&gt;
+delivered, so callers could report a failure for data that had been sent. Canceling still takes&lt;br&gt;
+effect while nothing has been done with the request.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/pdata&lt;/code&gt;: Add recursion depth limit (100) to proto unmarshalling of AnyValue, ArrayValue, KeyValueList, and KeyValue to prevent stack overflow from maliciously crafted deeply nested payloads. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;4446917731&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15301&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/15301/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/15301&quot;&gt;#15301&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pkg/service&lt;/code&gt;: Skip graph nodes that have not been built during shutdown to prevent a panic when a partial receiver reload fails to build a receiver. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6100351707&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16261&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/16261/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16261&quot;&gt;#16261&lt;/a&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;API Changelog&lt;/h2&gt;
+&lt;h3&gt;🚩 Deprecations 🚩&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/componentstatus&lt;/code&gt;: Deprecate componentstatus.Watcher in favour of extensioncapabilities.ComponentStatusWatcher (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6212064796&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16304&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16304/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16304&quot;&gt;#16304&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;🚀 New components 🚀&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/xreceiverhelper&lt;/code&gt;: Add xreceiverhelper with an &lt;code&gt;ObsReport&lt;/code&gt; that reports profile sample metrics per sample type. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;6077494202&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16251&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16251/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16251&quot;&gt;#16251&lt;/a&gt;)&lt;br&gt;
+&lt;code&gt;ObsReport.EndProfilesOpBySampleType&lt;/code&gt; records the&lt;br&gt;
+&lt;code&gt;otelcol_receiver_{accepted,refused,failed}_profile_samples&lt;/code&gt; metrics with an additional&lt;br&gt;
+&lt;code&gt;sample_type&lt;/code&gt; attribute, formatted as &quot;type:unit&quot;, as a single payload can hold multiple profiles&lt;br&gt;
+with different sample types. Use &lt;code&gt;ProfileSampleCountsByType&lt;/code&gt; to compute the sample counts before&lt;br&gt;
+the profiles are passed to the next consumer, as the data may be mutated downstream.&lt;br&gt;
+The OTLP receiver now uses &lt;code&gt;EndProfilesOpBySampleType&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;💡 Enhancements 💡&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pkg/confighttp&lt;/code&gt;: Mark confighttp as stable (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;2098709872&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/9380&quot; data-hovercard-type=&quot;issue&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/issues/9380/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/9380&quot;&gt;#9380&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;receiver/otlp&lt;/code&gt;: Migrate the OTLP receiver configuration to metadata.yaml and generate its config schema from the metadata. (&lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load title&quot; data-id=&quot;5959345919&quot; data-permission-text=&quot;Title is private&quot; data-url=&quot;https://github.com/open-telemetry/opentelemetry-collector/issues/16212&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/open-telemetry/opentelemetry-collector/pull/16212/hovercard&quot; href=&quot;https://github.com/open-telemetry/opentelemetry-collector/pull/16212&quot;&gt;#16212&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/service/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/service%2Fv0.165.0"/>
+    <title>service/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/service/telemetry/telemetrytest/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/service%2Ftelemetry%2Ftelemetrytest%2Fv0.165.0"/>
+    <title>service/telemetry/telemetrytest/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/service/hostcapabilities/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/service%2Fhostcapabilities%2Fv0.165.0"/>
+    <title>service/hostcapabilities/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/scraper/xscraper/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/scraper%2Fxscraper%2Fv0.165.0"/>
+    <title>scraper/xscraper/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/scraper/v0.165.0</id>
+    <updated>2026-11-06T23:41:59Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/scraper%2Fv0.165.0"/>
+    <title>scraper/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/scraper/scrapertest/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/scraper%2Fscrapertest%2Fv0.165.0"/>
+    <title>scraper/scrapertest/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/scraper/scraperhelper/xscraperhelper/v0.165.0</id>
+    <updated>2026-11-06T23:42:00Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/scraper%2Fscraperhelper%2Fxscraperhelper%2Fv0.165.0"/>
+    <title>scraper/scraperhelper/xscraperhelper/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/scraper/scraperhelper/v0.165.0</id>
+    <updated>2026-11-06T23:41:59Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/scraper%2Fscraperhelper%2Fv0.165.0"/>
+    <title>scraper/scraperhelper/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/185861173/receiver/xreceiver/v0.165.0</id>
+    <updated>2026-11-06T23:41:59Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/open-telemetry/opentelemetry-collector/releases/tag/receiver%2Fxreceiver%2Fv0.165.0"/>
+    <title>receiver/xreceiver/v0.165.0</title>
+    <content type="html">&lt;p&gt;Module set beta, Version v0.165.0&lt;/p&gt;</content>
+    <author>
+      <name>codeboten</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/u/223565?s=60&amp;v=4"/>
+  </entry>
+</feed>

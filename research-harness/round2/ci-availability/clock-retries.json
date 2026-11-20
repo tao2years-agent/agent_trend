@@ -1,0 +1,72 @@
+{
+  "followup_retry": [
+    {
+      "id": "0ac3e29d4e9aaf9c213b",
+      "published_roster": "changed",
+      "request_time": "2022-07-12 14:07:14",
+      "prior": {
+        "official_build": "https://zuul.opendev.org/api/tenant/openstack/build/71c49c1a78634aeba2a5af973bc12145",
+        "official_buildset": "https://zuul.opendev.org/api/tenant/openstack/buildset/ad18b0e8a1354d43b9dae34a8cb73488",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 52516,
+          "sha256": "f5c717167da25b462a3982b76a001491a6df6e5b227a1281b8b2d572682a3cdf"
+        },
+        "build_pipeline": "check",
+        "linked_job": "openstack-tox-pep8",
+        "build_event_timestamp": "2022-07-12T09:26:07",
+        "job_start": "2022-07-12T09:28:02",
+        "job_end": "2022-07-12T09:38:47",
+        "event_time": "2022-07-12T09:26:07",
+        "first_start": "2022-07-12T09:27:48",
+        "last_end": "2022-07-12T11:00:27",
+        "pipeline": "check",
+        "result": "FAILURE",
+        "buildset_ref_count": 1,
+        "build_count": 34,
+        "unique_voting_jobs": 33,
+        "voting_names_hash": "3a4c4cbebd6edc68dac4242b6d9b90b2360e897e7b24b7683c4007ab8964dfa4",
+        "request_to_event_seconds": -16867
+      },
+      "current": {
+        "official_build": "https://zuul.opendev.org/api/tenant/openstack/build/4c27384533154345a0aa50391eee8b5e",
+        "official_buildset": "https://zuul.opendev.org/api/tenant/openstack/buildset/923bd5b913634b5382ca6f3333eb2f69",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 46018,
+          "sha256": "bebdfb4692d3b3e65723ea8bd762e9f1e5a763b2a009db6aee0cacef73585451"
+        },
+        "build_pipeline": "gate",
+        "linked_job": "openstack-tox-pep8",
+        "build_event_timestamp": "2022-07-12T16:55:26",
+        "job_start": "2022-07-12T17:56:40",
+        "job_end": "2022-07-12T18:01:21",
+        "event_time": "2022-07-12T16:55:26",
+        "first_start": "2022-07-12T17:49:39",
+        "last_end": "2022-07-12T19:04:40",
+        "pipeline": "gate",
+        "result": "SUCCESS",
+        "buildset_ref_count": 1,
+        "build_count": 30,
+        "unique_voting_jobs": 30,
+        "voting_names_hash": "3ced785d51ed0664a430be1bd4ad862a2c4aef0e62618a829df0360e663b54fe",
+        "request_to_event_seconds": 10092
+      },
+      "actual_voting_name_set_changed": true,
+      "added_n": 0,
+      "removed_n": 3
+    }
+  ],
+  "completed_control": {
+    "url": "https://zuul.opendev.org/api/tenant/openstack/builds?complete=true&limit=1",
+    "request": {
+      "http": 200,
+      "media": "application/json; charset=utf-8",
+      "bytes": 888,
+      "sha256": "03385130606dab16d7443139b033a8de6ebcbb7aa5025d8196328c5d76e00af7"
+    },
+    "has_start_end": true
+  }
+}

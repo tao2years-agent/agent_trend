@@ -1,0 +1,258 @@
+Autonomous incident response - AWS DevOps Agent (https://docs.aws.amazon.com/devopsagent/latest/userguide/production-operations-autonomous-incident-response.html)
+citeturn123view0 [wordlim: 200] Crawled: 2 weeks ago; Content type: text/html; Source: open({"ref_id":"https://docs.aws.amazon.com/devopsagent/latest/userguide/production-operations-autonomous-incident-response.html","lineno":null}); Total lines: 255
+L0: 【0†View a markdown version of this page】
+L1: 
+L2: Autonomous incident response - AWS DevOps Agent
+L3: 
+L4: 【1†Starting Investigations】【2†Chat with an investigation】【3†Fork an investigation】【4†Incident triage】【5†Inline mitigation proposals】【6†Provide feedback on investigations】【7†Ask for human support】
+L5: 
+L6: # Autonomous incident response
+L7: ## Starting Investigations
+L8: 
+L9: Incident response investigations can be started in one of three ways.
+L10: 
+L11:   * Built-in integrations - You can connect a DevOps Agent Space to ticketing systems like ServiceNow using built-in integrations. Once connected, DevOps Agent incident response investigations will be automatically triggered from support tickets, and your DevOps Agent will provide updates of its key findings, root cause analyses, and mitigation plans into the originating ticket.
+L12:   * Webhooks - You can use webhooks to send events to AWS DevOps Agent. For example you can use webhooks to trigger incident response investigations from PagerDuty tickets or Grafana alarms.
+L13:   * Manually - You can manually start incident response investigations from the Incident Response tab of any DevOps Agent Space web app. You can either enter free form text that describes the incident you want your DevOps Agent to investigate, and it will create an investigation plan, collect findings, determine a root cause, and offer to generate a mitigation plan.
+L14: You can also choose from several pre-configured starting points to quickly begin your Investigation: Latest alarm to investigate your most recent triggered alarm and analyze the underlying metrics and logs to determine the root cause, High CPU usage to investigate high CPU utilization metrics across your compute resources and identify which processes or services are consuming excessive resources, or Error rate spike to investigate the recent increase in application error rates by analyzing metrics, application logs, and identifying the source of failures.
+L15: 【8†Image: Investigation form with description field, suggestion buttons, and Start Investigation button.】
+L16: 
+L17: Once you choose "Start Investigation" you'll be asked to provide some additional details to help the agent focus its work. The investigation dialog includes the following fields:
+L18: 
+L19:   * Investigation details – Pre-filled with your description. You can edit this to refine the investigation scope.
+L20:   * Investigation starting point – Optionally describe a specific alarm, metric, log snippet, or other starting point for the agent.
+L21: 
+L22:   * Date and time of incident – Auto-filled with the current time in UTC format. Adjust if the incident occurred earlier.
+L23: 
+L24:   * Name your investigation – Auto-generated with a timestamp. You can customize this (maximum 400 characters).
+L25: 
+L26:   * Priority – Select the investigation priority from the dropdown (Medium is the default).
+L27: Review and adjust these fields as needed, then choose "Start investigating..." to begin. You will then be taken to the investigation details page where you can see your DevOps Agent in action!
+L28: ### Viewing the investigation summary
+L29: 
+L30: The Summary tab provides a concise, live view of an investigation. It updates as AWS DevOps Agent collects evidence and refines its analysis.
+L31: 
+L32: Depending on the investigation and the available evidence, the summary can include:
+L33: 
+L34:   * The incident status, severity, and observed impact
+L35: 
+L36:   * The current cause hypothesis or confirmed root cause
+L37: 
+L38:   * The current investigation focus and next steps
+L39: 
+L40:   * Key metrics and an incident timeline
+L41:   * Investigation tasks and their status
+L42: 
+L43:   * Proposed or completed mitigation actions
+L44: 
+L45:   * Expandable findings and supporting evidence, including links to relevant resources
+L46: 
+L47: Choose the Timeline tab to review the full chronological record of the agent's investigation steps and tool activity.
+L48: ### Viewing authentication steps
+L49: 
+L50: When AWS DevOps Agent authenticates to a downstream system during an investigation, you can see that step directly in the investigation timeline. For each authentication step, you can see its success or error status. If authentication fails, you can see the failure message and the underlying browser steps the agent took. This replaces a silent gap with actionable detail.
+L51: ### Viewing sub-agent execution timelines
+L52: 
+L53: To investigate faster, AWS DevOps Agent can delegate parts of an investigation to parallel sub-agents. For example, it can gather CPU metrics for different compute services at the same time. Each sub-agent appears in the investigation timeline as its own entry, labeled with a name, the number of tool calls it made, and how long it ran, such as `ec2-cpu-metrics · 5 tool calls · 50s`.
+L54: You can expand any sub-agent entry to see its complete nested timeline, including the context and task it was given, its individual reasoning steps with timing, the tool calls it made, and its own findings. You can trace exactly how each part of a parallel investigation reached its conclusions. Collapse the entry again to keep the overall timeline readable.
+L55: ## Chat with an investigation
+L56: 
+L57: You can send a message directly to an investigation while it runs. Use this to redirect the agent's focus, give it information it does not have, or ask it to reconsider a hypothesis — without leaving the investigation and without starting a new one.
+L58: 
+L59: Messages you send this way go to the investigation agent itself, and it reads them alongside the evidence it has already collected.
+L60: ### Sending a message
+L61: 
+L62: To send a message to an investigation:
+L63: 
+L64:   1. Open an investigation from the Incident Response tab of your DevOps Agent Space web app.
+L65: 
+L66:   2. Choose Chat with investigation at the bottom of the page. This button is available from any tab of the investigation.
+L67: 
+L68:   3. AWS DevOps Agent switches to the Timeline tab and opens a message box below the timeline, so you can watch what the agent is doing as you write.
+L69:   4. Enter your message and send it. Press Enter to send, or Shift+Enter to start a new line.
+L70: 
+L71:   5. To close the message box, choose the button above it, such as Back to summary. It returns you to the tab you came from.
+L72: 
+L73: The message box shows Send as with your name. Every message is attributed to the identity you signed in with, so the investigation record shows who guided it.
+L74: A single message can be up to 32,768 characters. If your message is longer, AWS DevOps Agent tells you it is too long and does not send it.
+L75: ### Queued requests
+L76: 
+L77: Your message does not interrupt the agent in the middle of a step. AWS DevOps Agent queues it, and the agent reads the queue between its reasoning steps. This means a message never arrives partway through a tool call, and the agent applies it with a complete picture of what it was doing.
+L78: While a message is waiting, it appears in a numbered Queued requests list below the timeline. If you send several messages, they queue in order. Each request leaves the list when the agent picks it up, and the agent's response appears in the timeline.
+L79: ### Messaging a completed investigation
+L80: 
+L81: You can also message an investigation that has already finished. When you do, AWS DevOps Agent resumes it: the investigation returns to a running state and the agent continues with your message and its full prior context, in the same investigation.
+L82: 
+L83: This is useful when an investigation stops short of an answer, or when new information arrives after it completes.
+L84: ### When you can chat with an investigation
+L85: 
+L86: Chat with investigation is available while an investigation is queued, running, waiting, or completed. It is not available for investigations that were canceled, failed, or timed out.
+L87: 
+L88: You can also steer an investigation by talking to your DevOps Agent in Chat. For more information, see 【9†On Demand DevOps Tasks】.
+L89: ## Fork an investigation
+L90: 
+L91: A fork is a new investigation that starts from a message in an existing investigation's timeline. A fork inherits the history up to that message, then follows a new direction. The original investigation is not affected. Use a fork to test an alternative hypothesis without losing the original analysis.
+L92: ### Creating a fork
+L93: 
+L94: To create a fork:
+L95: 
+L96:   1. In an investigation's Timeline tab, choose Fork from here (the branch icon) beside an agent or user message.
+L97: 
+L98:   2. For Fork starting point, describe what the fork should investigate differently.
+L99: 
+L100:   3. Choose Create fork.
+L101: 
+L102: The fork opens with the original's priority and a Forked from link back to its parent. Choose Show parent steps to view the inherited history.
+L103: ### Viewing forks from a message
+L104: 
+L105: A forked message shows an N forks from this message control. Expand it to see each fork's name and status, and choose a fork to open it.
+L106: ## Incident triage
+L107: 
+L108: The triage phase is the first stage of AWS DevOps Agent's incident response system. When an external event triggers, such as an alarm from Datadog, an incident ticket from ServiceNow, or a problem from Dynatrace, AWS DevOps Agent automatically processes it within seconds to determine whether it should be investigated independently or linked to an existing investigation.
+L109: The primary function of the triage stage is incident correlation — identifying related incidents and consolidating them into a single investigation to avoid duplicate work and resource waste. When a new incident arrives, AWS DevOps Agent analyzes it alongside active investigations within a look-back window (typically 20 minutes). Using AI-powered analysis, it examines factors like component similarities, geographic region, and timing patterns to determine relationships between incidents.
+L110: AWS DevOps Agent makes one of three decisions:
+L111: 
+L112:   * Linked – Correlates the incident to an existing investigation and sends a steering message to that investigation with context about the new incident.
+L113: 
+L114:   * Skipped – The incident matches skip criteria defined in a skill and is automatically dismissed without investigation. For more information, see 【10†DevOps Agent Skills】.
+L115: 
+L116:   * Proceed – Schedules a new independent investigation for the incident.
+L117: ### Viewing triage decisions
+L118: When incidents are linked, the primary investigation receives a steering message containing the linked incident's details and correlation reasoning. On your AWS DevOps Agent Space web app, you'll see a status of LINKED along with correlation reasoning explaining why incidents were linked. The primary investigation displays a list of all linked incidents, allowing you to see the full scope of related issues being investigated together.
+L119: Your external ticket system (ServiceNow, PagerDuty, etc.) and communication channel (Slack) will receive a notification that the incident was linked along with correlation reasoning.
+L120: When incidents are skipped, the AWS DevOps Agent Space web app displays a status of SKIPPED along with the reason explaining why the incident was filtered. Your external ticket system and communication channel also receive a notification that the incident was skipped along with the skip reason.
+L121: ### Correcting triage decisions
+L122: 
+L123: If AWS DevOps Agent incorrectly links an incident, you can manually unlink it through the AWS DevOps Agent Space web app. This reschedules the unlinked incident as an independent investigation. You can also provide custom correlation rules by creating an AWS DevOps Agent Skill containing your correlation logic and associating it with the triage stage.
+L124: If AWS DevOps Agent incorrectly skips an incident, you can manually unskip it through the AWS DevOps Agent Space web app. This reschedules the incident for investigation. To adjust which incidents are skipped, modify or deactivate the skill that defines the skip criteria.
+L125: ## Inline mitigation proposals
+L126: 
+L127: When an alarm triggers an investigation, AWS DevOps Agent now presents mitigation proposals directly in the investigation view. The agent completes its root cause analysis and then surfaces the proposals inline. You do not need to start a separate mitigation step.
+L128: 
+L129: Each proposal describes the recommended action, its expected outcome, and any conditions or prerequisites. You can review each proposal, refine its parameters, and choose whether to apply it.
+L130: Investigation and mitigation run as a single automated flow. This eliminates the handoff between the two stages, so you spend less time switching between views.
+L131: ## Provide feedback on investigations
+L132: 
+L133: After an investigation completes, you can provide feedback on the root cause analysis. This feedback improves future investigation accuracy and enables reporting across your Agent Space.
+L134: 
+L135: When you mark an investigation incorrect and give the actual root cause, AWS DevOps Agent creates a memory in the 【11†reflections】 memory store, so future investigations of the alarm can avoid the same mistake.
+L136: ### How to provide feedback
+L137: 
+L138: You can provide feedback through two methods:
+L139: 
+L140:   * Web app – In a completed investigation, choose Add feedback from the investigation details. A feedback modal opens. You can rate the root cause as correct or incorrect. If incorrect, you can provide the actual root cause. You can also indicate whether steering was needed, assess mitigation correctness, and add additional notes.
+L141:   * Chat – Tell the agent that the investigation root cause was correct or incorrect during conversation. The agent collects structured feedback conversationally, asking follow-up questions one at a time.
+L142: ### Feedback fields
+L143: 
+L144: When providing feedback, you can specify the following:
+L145: 
+L146:   * Verdict (required) – Whether the root cause was correct or incorrect.
+L147: 
+L148:   * Actual root cause – The real root cause if the agent's analysis was wrong.
+L149: 
+L150:   * Steering needed – Whether the agent needed human guidance during the investigation.
+L151: 
+L152:   * Mitigation correctness – Whether the suggested mitigation was correct. If incorrect, you can describe what the correct mitigation was.
+L153:   * Additional notes – Free-form notes about the investigation quality.
+L154: ### Updating feedback
+L155: 
+L156: You can update previously submitted feedback at any time. The most recent submission replaces all prior feedback for that investigation.
+L157: 
+L158: ### Viewing accuracy metrics
+L159: 
+L160: You can ask the agent in chat to summarize your feedback history. The agent reports total feedback count, accuracy percentage, and breakdown by verdict.
+L161: ### Reporting to AWS
+L162: 
+L163: When providing feedback, you can opt in to share your feedback with AWS for troubleshooting purposes. Before submitting with this option enabled, the system shows the following disclaimer:
+L164: 
+L165: You must explicitly confirm before feedback is shared with AWS.
+L166: ## Ask for human support
+L167: 
+L168: AWS DevOps Agent can connect directly with AWS Support to streamline your incident response process. When you need additional help from AWS Support, from your DevOps Agent Space web app you can create support cases that automatically share investigation context with AWS Support engineers, reducing the time needed to explain your issue.
+L169: ### How it works
+L170: 
+L171: When investigating an incident, AWS DevOps Agent builds a comprehensive log of its analysis, including:
+L172: 
+L173:   * Root cause investigation findings
+L174: 
+L175:   * Metrics, logs, and traces analyzed
+L176: 
+L177:   * Code changes and deployment history reviewed
+L178: 
+L179:   * Remediation actions recommended
+L180: 
+L181:   * Timeline of events and system behavior
+L182: You can escalate your investigation to AWS Support directly from the AWS DevOps Agent Space web app. When you do, AWS DevOps Agent automatically passes its investigation log to AWS Support, providing the support engineer with full context about your investigation without requiring you to manually gather and explain the details.
+L183: ### Chatting with AWS Support
+L184: 
+L185: Once you create a support case, you can communicate with AWS Support in a separate chat window within your AWS DevOps Agent Space web app. This allows you to:
+L186: 
+L187:   * Discuss your issue with AWS Support engineers alongside your AWS DevOps Agent's investigation timeline
+L188: 
+L189:   * View both AWS DevOps Agent's automated analysis and AWS Support's expert guidance in the same interface
+L190: 
+L191:   * Seamlessly share additional information or clarification as needed
+L192: The chat experience keeps your AWS DevOps Agent investigation and AWS Support conversation readily accessible, enabling faster collaboration and resolution.
+L193: ### Support case language
+L194: 
+L195: When you create a support case through AWS DevOps Agent, the case is automatically created in the language configured in your Agent Space's Agent response language setting. This ensures that your support case is routed to a support engineer who speaks your preferred language.
+L196: For example, if your Agent Space language is set to Japanese, your support case will be routed to a Japanese-speaking support engineer. If no language is configured, or if the configured language is not supported by AWS Support for the selected case category, the case defaults to English.
+L197: AWS Support currently supports the following languages for case routing: Chinese, English, French, Japanese, Korean, Portuguese, and Spanish. To change the language used for support cases, update the Agent response language setting in your Agent Space configuration. For more information, see 【12†Creating an Agent Space】.
+L198: ### Support plan requirements
+L199: 
+L200: Your ability to create and interact with support cases through AWS DevOps Agent depends on your AWS Support plan. Please refer to the 【13†Support Plans user guide】 to learn more about your entitlements.
+L201: Note Basic Support customers cannot create technical support cases and therefore cannot escalate AWS DevOps Agent investigations to AWS Support Developer Support customers can create cases through AWS DevOps Agent, but must visit the 【14†AWS Support Center†console.aws.amazon.com】 to correspond with Support engineers, as Developer Support does not include chat-based support All other plans can use the integrated chat experience within AWS DevOps Agent.
+L202: For complete details about support plan entitlements, including response times and available case severities, see the 【13†AWS Support Plans User Guide】.
+L203: ### What information is shared with AWS Support
+L204: 
+L205: When you create a support case from AWS DevOps Agent Space web app, the following information is automatically shared with AWS Support:
+L206: 
+L207:   * Investigation timeline: Chronological record of AWS DevOps Agent's analysis
+L208: 
+L209:   * Resource information: Affected AWS resources
+L210: 
+L211:   * Observability data: Relevant metrics, logs, and traces from your integrated monitoring tools
+L212: 
+L213:   * Recent changes: Code deployments, infrastructure changes, and configuration updates
+L214:   * Remediation attempts: Actions AWS DevOps Agent recommended
+L215: 
+L216:   * Impact assessment: Scope and severity of the incident
+L217: 
+L218: All data shared with AWS Support follows your existing AWS data residency and security configurations. AWS DevOps Agent shares only information related to your specific investigation and respects your organization's data governance policies.
+L219: ### Getting started
+L220: 
+L221: To use AWS DevOps Agent's AWS Support integration:
+L222: 
+L223:   1. Ensure you have an active AWS Support plan.
+L224: 
+L225:   2. Verify that the IAM permissions for AWS DevOps Agent include support case creation (`support:CreateCase`, `support:DescribeCases`).
+L226: 
+L227:   3. When AWS DevOps Agent is investigating an issue and you need AWS Support assistance, choose Ask for human support from your DevOps Agent Space web app.
+L228: 
+L229:   4. Review the investigation summary that will be shared with AWS Support.
+L230:   5. Select the appropriate case severity based on your support plan entitlements.
+L231: 
+L232:   6. Submit the case - AWS DevOps Agent automatically includes your investigation log.
+L233: 
+L234: The chat window opens automatically, allowing you to begin collaborating with AWS Support immediately.
+L235: 
+L236: 【15†Image: Warning†d1ge0kk1l5kms0.cloudfront.net】 Javascript is disabled or is unavailable in your browser.
+L237: To use the Amazon Web Services Documentation, Javascript must be enabled. Please refer to your browser's Help pages for instructions.
+L238: 
+L239: 【16†Document Conventions】
+L240: 
+L241: Production operations
+L242: 
+L243: Proactive incident prevention
+L244: 
+L245: Did this page help you? - Yes
+L246: 
+L247: Thanks for letting us know we're doing a good job!
+L248: 
+L249: If you've got a moment, please tell us what we did right so we can do more of it.
+L250: 
+L251: Did this page help you? - No
+L252: 
+L253: Thanks for letting us know this page needs work. We're sorry we let you down.
+L254: If you've got a moment, please tell us how we can make the documentation better.
+

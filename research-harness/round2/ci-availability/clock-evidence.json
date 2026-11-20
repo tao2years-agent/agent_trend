@@ -1,0 +1,849 @@
+{
+  "queried_at_utc": "2026-11-20T04:35:37.096568+00:00",
+  "available_monthly_candidates": 56,
+  "sample_rule": "one lowest case hash per month and roster status, two build UUIDs present; latest eight months per status among candidates",
+  "current_api_control": {
+    "url": "https://zuul.opendev.org/api/tenant/openstack/builds?limit=1",
+    "query": {
+      "http": 200,
+      "media": "application/json; charset=utf-8",
+      "bytes": 848,
+      "sha256": "eb8bd57fe83cb345adc19255902d2521ba057f138efe22d1727f216d827e78ed"
+    },
+    "current_list_has_start_end": false
+  },
+  "cases": [
+    {
+      "id": "26a42c050c4983e93428",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2024-04-12 15:27:09",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/c175ae9d9f444eb6bcb09718538c8475",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 2030,
+          "sha256": "12f8487d0a7c007a857df36e5c1f950734bb3ee7eea20fc2bf67e0e362fed2d2"
+        },
+        "matched": true,
+        "start_time": "2024-04-12T02:46:49",
+        "end_time": "2024-04-12T03:39:46",
+        "job_name": "puppet-openstack-integration-7-scenario001-tempest-centos-9-stream",
+        "result": "FAILURE",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/0a6b948b73dd41a08917512b5df08a92",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 2025,
+          "sha256": "873def6d086507dec731d78bdb8dee0a7276128e57bc56b9e1335efe08e1bd38"
+        },
+        "matched": true,
+        "start_time": "2024-04-13T04:09:18",
+        "end_time": "2024-04-13T05:01:00",
+        "job_name": "puppet-openstack-integration-7-scenario001-tempest-centos-9-stream",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 13427,
+          "sha256": "8f81fe7f8b31cd198034dd04413e039336ca4b5af5b39fbde1c298c82467ae7e"
+        },
+        "official_url": "https://review.opendev.org/changes/915519/messages",
+        "patch_messages": 13,
+        "prior_reports": [
+          "2024-04-12 03:50:48.000000000"
+        ],
+        "current_reports": [
+          "2024-04-13 05:40:56.000000000"
+        ],
+        "request_posts": [
+          "2024-04-12 15:27:09.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "0ff644c0948fdbb5bca9",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2024-03-20 23:14:43",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/a013eb7058ab47e3aeb2e2209a8e54e9",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/44c3a24e311642a69530235e32668e10",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 19587,
+          "sha256": "918b1bf481de878562940073e153263a770e9b00e7ca0c7e3a2d8129936b0334"
+        },
+        "official_url": "https://review.opendev.org/changes/912817/messages",
+        "patch_messages": 8,
+        "prior_reports": [
+          "2024-03-20 23:12:54.000000000"
+        ],
+        "current_reports": [
+          "2024-03-21 00:31:27.000000000"
+        ],
+        "request_posts": [
+          "2024-03-20 23:14:43.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "079cab3e7614fb26e040",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2024-02-07 14:39:38",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/ec0c532381244d7eb20a9bcf2f5e5088",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/03e30e5bec4d4f8d8cd5c36458d75dbf",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 23600,
+          "sha256": "83d79f921ac3f71f7bbc65981dec12a4a7d5797c9ae2b8af7f86c89ec2d0a51a"
+        },
+        "official_url": "https://review.opendev.org/changes/907506/messages",
+        "patch_messages": 26,
+        "prior_reports": [
+          "2024-02-06 00:34:23.000000000"
+        ],
+        "current_reports": [
+          "2024-02-07 16:00:29.000000000"
+        ],
+        "request_posts": [
+          "2024-02-07 14:39:38.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "02a996700f759d1721cf",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2024-01-19 16:37:14",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/0e571145daef4b82bc70af48b2447077",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1686,
+          "sha256": "e55b99c9dcfa3c7fb49f757fa0ae3b78e68ed5d6373713e43b34b4ad93408788"
+        },
+        "matched": true,
+        "start_time": "2024-01-19T14:41:31",
+        "end_time": "2024-01-19T14:44:12",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/55cf9f7c902f40edb5905d133a924b7c",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1751,
+          "sha256": "a8167033432e3d8b50b2b21740396941caf43cc2fbf738d0e104f3e559b0c60a"
+        },
+        "matched": true,
+        "start_time": "2024-01-19T16:44:22",
+        "end_time": "2024-01-19T16:47:12",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 22983,
+          "sha256": "e0c50e7428e2dbb71deda17dfd33f25da4de856be5080f89c7686fa61e4064d0"
+        },
+        "official_url": "https://review.opendev.org/changes/906072/messages",
+        "patch_messages": 17,
+        "prior_reports": [
+          "2024-01-19 16:21:54.000000000"
+        ],
+        "current_reports": [
+          "2024-01-19 18:34:10.000000000"
+        ],
+        "request_posts": [
+          "2024-01-19 16:37:14.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "a26f6c5839f929062937",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2023-12-05 19:34:58",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/4a3cd47569794d50b30c7fbb2b594fb0",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/5311132355364a29b09b08af31d77aaf",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 11787,
+          "sha256": "5b894dbe13e078c90f8469a605d87005fd8fdc6be7b21531b9668132f31f273b"
+        },
+        "official_url": "https://review.opendev.org/changes/902601/messages",
+        "patch_messages": 8,
+        "prior_reports": [
+          "2023-12-05 00:09:05.000000000"
+        ],
+        "current_reports": [
+          "2023-12-05 20:53:20.000000000"
+        ],
+        "request_posts": [
+          "2023-12-05 19:34:58.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "59042fb8a2d9f25e3913",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2023-11-30 00:16:12",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/0bb8dd8bcda94144b8d003c85754f34b",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/445078f2b1e94ba2bb1755061cb89988",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 24123,
+          "sha256": "89ab8328736ab03f8157673c24f3d956065cc486d31d9b857656ae2f20a2e42a"
+        },
+        "official_url": "https://review.opendev.org/changes/902118/messages",
+        "patch_messages": 7,
+        "prior_reports": [
+          "2023-11-30 00:11:02.000000000"
+        ],
+        "current_reports": [
+          "2023-11-30 01:15:15.000000000"
+        ],
+        "request_posts": [
+          "2023-11-30 00:16:12.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "c12826e17e6d97f01ed2",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2023-10-25 21:53:52",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/87ff81ba33d34eaeb5d86830c4831518",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1672,
+          "sha256": "068dfae573d96e751cd3a5eab544b36773a33d5e1c512807ff13e34834a5a1c8"
+        },
+        "matched": true,
+        "start_time": "2023-10-25T19:40:35",
+        "end_time": "2023-10-25T19:43:57",
+        "job_name": "tox-linters",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/7a9307b3d48a4438a540ce87ed7d4eaa",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1732,
+          "sha256": "f10c4be7a861f218682755bd47051a0a951403c3bab341f662caf8b2e8b18a8d"
+        },
+        "matched": true,
+        "start_time": "2023-10-25T21:55:26",
+        "end_time": "2023-10-25T21:59:22",
+        "job_name": "tox-linters",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 18783,
+          "sha256": "72af0ed967d636f26180f8b439ca3dc50c47753ff2f47e438be23c604abb0cdd"
+        },
+        "official_url": "https://review.opendev.org/changes/899300/messages",
+        "patch_messages": 4,
+        "prior_reports": [
+          "2023-10-25 20:44:33.000000000"
+        ],
+        "current_reports": [
+          "2023-10-25 23:01:25.000000000"
+        ],
+        "request_posts": [
+          "2023-10-25 21:53:52.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "04934432b1ea587f0807",
+      "roster": "same",
+      "same_job": true,
+      "request_time": "2023-09-18 18:11:09",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/e52e97124ebf419eaee0da8a83647d32",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1697,
+          "sha256": "21e5f18288a19fd1084c8cafcf8bbae2c0ba2ac7005dfd8f5028c4e324520bf4"
+        },
+        "matched": true,
+        "start_time": "2023-09-18T15:48:30",
+        "end_time": "2023-09-18T15:53:30",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/e9e53e97585446118561b7c0251cc6ab",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1697,
+          "sha256": "121b8073f0418e95fa7a7298d1dd0911dbc77192e5eebfab51dd02cab580e37c"
+        },
+        "matched": true,
+        "start_time": "2023-09-18T18:18:24",
+        "end_time": "2023-09-18T18:22:29",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 98755,
+          "sha256": "411722cd47bfadba3cdb36a60b2a193597cd29531c4177006ac8da95dc32e4eb"
+        },
+        "official_url": "https://review.opendev.org/changes/889061/messages",
+        "patch_messages": 70,
+        "prior_reports": [
+          "2023-09-18 17:52:24.000000000"
+        ],
+        "current_reports": [
+          "2023-09-18 20:15:47.000000000"
+        ],
+        "request_posts": [
+          "2023-09-18 18:11:09.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "2e01e73e5faa42356e2c",
+      "roster": "changed",
+      "same_job": false,
+      "request_time": "2024-04-01 11:12:07",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/01cd3d998ab140cc92d6c844e37a5bb1",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 2188,
+          "sha256": "662bc5ae9f0fc8601845a013ae06ff76c823f20e17593f87c557d30c83853a21"
+        },
+        "matched": true,
+        "start_time": "2024-04-01T09:19:23",
+        "end_time": "2024-04-01T09:32:29",
+        "job_name": "build-openstack-releasenotes",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/876fe679a5b742b485ca31144de43452",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1814,
+          "sha256": "ae92a1b72f56b50683f78cbae6b23f57e0288cf0d94079cb93e8ab767ad703df"
+        },
+        "matched": true,
+        "start_time": "2024-04-19T17:54:52",
+        "end_time": "2024-04-19T17:55:36",
+        "job_name": "promote-openstack-releasenotes",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 202192,
+          "sha256": "18601ac1bd3b26c1d8924cdbda2f700e209fa8f92546699109b828a786d5033e"
+        },
+        "official_url": "https://review.opendev.org/changes/898199/messages",
+        "patch_messages": 34,
+        "prior_reports": [
+          "2024-04-01 11:06:04.000000000"
+        ],
+        "current_reports": [
+          "2024-04-19 17:55:45.000000000"
+        ],
+        "request_posts": [
+          "2024-04-01 11:12:07.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "0868f627fbbb87f96fe9",
+      "roster": "changed",
+      "same_job": false,
+      "request_time": "2024-03-26 00:53:58",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/9164184d420645619ab6e568773a10a2",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1758,
+          "sha256": "245101415c05a8c661c9bf6b20cf9b1b64d5ec1f49fa88abb06005b4e02cd65e"
+        },
+        "matched": true,
+        "start_time": "2024-03-13T13:16:07",
+        "end_time": "2024-03-13T13:21:55",
+        "job_name": "openstack-zuul-jobs-linters",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/c4fed81423e240a4a50565bc9d0ff621",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1964,
+          "sha256": "f7f4a5638c659bebdb3704038f042496700b009b54512e94979ab559482174fc"
+        },
+        "matched": true,
+        "start_time": "2024-03-26T01:18:26",
+        "end_time": "2024-03-26T01:27:07",
+        "job_name": "infra-prod-run-accessbot",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 4300,
+          "sha256": "a07229bcd14483855e098b8233f9fff18215ffe6ec169c84c6afef402f8fc3db"
+        },
+        "official_url": "https://review.opendev.org/changes/912767/messages",
+        "patch_messages": 9,
+        "prior_reports": [
+          "2024-03-13 13:24:48.000000000"
+        ],
+        "current_reports": [
+          "2024-03-26 01:27:08.000000000"
+        ],
+        "request_posts": [
+          "2024-03-26 00:53:58.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "07b9f9631e6b92fc511a",
+      "roster": "changed",
+      "same_job": false,
+      "request_time": "2024-02-09 18:48:27",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/183068e89cec4402bddcbb0c74364928",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/3d4507d2aa954402a3de1ea147610c01",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 48185,
+          "sha256": "d265e4f9f29b7240568adbffc7b9ff27f76028d671441cdd6ed60e821a0edf8f"
+        },
+        "official_url": "https://review.opendev.org/changes/906320/messages",
+        "patch_messages": 37,
+        "prior_reports": [
+          "2024-02-09 17:28:02.000000000"
+        ],
+        "current_reports": [
+          "2024-02-10 21:29:19.000000000"
+        ],
+        "request_posts": [
+          "2024-02-09 18:48:27.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "0308828edf5e6e56078d",
+      "roster": "changed",
+      "same_job": true,
+      "request_time": "2024-01-08 21:05:11",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/b824bd26e8e041629e89190b5c4b1533",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/ced59078ee0940469979e4249c279c2d",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 18098,
+          "sha256": "4e4fce8b4a4a6034eaeb362dbba6a6ea247e61408488b27d68b4b6f3a46b236e"
+        },
+        "official_url": "https://review.opendev.org/changes/899766/messages",
+        "patch_messages": 15,
+        "prior_reports": [
+          "2024-01-08 20:35:35.000000000"
+        ],
+        "current_reports": [
+          "2024-01-08 22:11:44.000000000"
+        ],
+        "request_posts": [
+          "2024-01-08 21:05:11.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "0acc81b178ab89310d48",
+      "roster": "changed",
+      "same_job": false,
+      "request_time": "2023-12-01 21:20:50",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/1ac90b17a7074afdad65ca93aa122d27",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 2831,
+          "sha256": "e4a435303653db566bdbabc7b91ae93fd97db22b4b7bb4f5f89bfbe3c381139b"
+        },
+        "matched": true,
+        "start_time": "2023-12-01T20:14:02",
+        "end_time": "2023-12-01T21:19:39",
+        "job_name": "system-config-run-gitea",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/9fcaa46a623d4ce58a8ac525f5017fed",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1965,
+          "sha256": "fbf3e5e0af7b7856eaa136c27de63011cca42709c41f3d532248abd161495dcb"
+        },
+        "matched": true,
+        "start_time": "2023-12-02T00:19:11",
+        "end_time": "2023-12-02T00:21:26",
+        "job_name": "infra-prod-service-review",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 14321,
+          "sha256": "c8bc7dba3322fa7c7182ecd6552a657a867ac35a956a6662f25d6715203c6670"
+        },
+        "official_url": "https://review.opendev.org/changes/902169/messages",
+        "patch_messages": 16,
+        "prior_reports": [
+          "2023-12-01 21:20:11.000000000"
+        ],
+        "current_reports": [
+          "2023-12-02 00:21:27.000000000"
+        ],
+        "request_posts": [
+          "2023-12-01 21:20:50.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "07667604fb13a35c45ca",
+      "roster": "changed",
+      "same_job": false,
+      "request_time": "2023-11-30 19:35:49",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/0b6d9232cf964dd8bb237c2e7063c7fe",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/1ac33edc4d3c49f9bbde1ef9db456de5",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 11133,
+          "sha256": "fbf2152396bdc6fb7577b4157d4e38336f4325068efb44040a28e6251164c473"
+        },
+        "official_url": "https://review.opendev.org/changes/902173/messages",
+        "patch_messages": 13,
+        "prior_reports": [
+          "2023-11-30 19:24:38.000000000"
+        ],
+        "current_reports": [
+          "2023-11-30 20:22:52.000000000"
+        ],
+        "request_posts": [
+          "2023-11-30 19:35:49.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "43dfd18115e2685f1154",
+      "roster": "changed",
+      "same_job": true,
+      "request_time": "2023-10-26 19:46:33",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/11d7d8a5e8d548a68d3296072857d1e1",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/6df5d15794d44200815bb1963bf6ea5b",
+        "query": {
+          "http": 404,
+          "media": "text/html;charset=utf-8",
+          "bytes": 722,
+          "sha256": "f5dde24bc65582f4dbc0c0cf578e9a73f85c1cd238869d1146feb5fa84f5dbeb"
+        },
+        "matched": false
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 9306,
+          "sha256": "986db1a8a6226240a94bee53ed747cd292078141ee6c587cd8c6430e72a1c715"
+        },
+        "official_url": "https://review.opendev.org/changes/899308/messages",
+        "patch_messages": 15,
+        "prior_reports": [
+          "2023-10-26 19:42:32.000000000"
+        ],
+        "current_reports": [
+          "2023-10-26 20:38:11.000000000"
+        ],
+        "request_posts": [
+          "2023-10-26 19:46:33.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    },
+    {
+      "id": "2da933200d75e659dccd",
+      "roster": "changed",
+      "same_job": true,
+      "request_time": "2023-09-22 14:44:24",
+      "prior": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/7210862fc35a431092393388794dc587",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1692,
+          "sha256": "ca021b5b4c02035af9bd0bae1b6e4589c403d175f0520740c6b09afe0ba6faba"
+        },
+        "matched": true,
+        "start_time": "2023-09-22T12:18:40",
+        "end_time": "2023-09-22T12:24:12",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "current": {
+        "official_url": "https://zuul.opendev.org/api/tenant/openstack/build/e6bc874f49e249f1b4814955f7564e6f",
+        "query": {
+          "http": 200,
+          "media": "application/json; charset=utf-8",
+          "bytes": 1757,
+          "sha256": "b781758e441789c30277c9dbc4d22588af73210caf9374cce10cdb2c1192e5cf"
+        },
+        "matched": true,
+        "start_time": "2023-09-22T14:50:04",
+        "end_time": "2023-09-22T14:54:48",
+        "job_name": "openstack-tox-pep8",
+        "result": "SUCCESS",
+        "voting": true,
+        "patch_matched": true
+      },
+      "gerrit": {
+        "query": {
+          "http": 200,
+          "media": "application/json;charset=utf-8",
+          "bytes": 63443,
+          "sha256": "b1a4e7dbe4de51a33dcde2f9656dd0a9de12a8428704874bdc45a423443b8da4"
+        },
+        "official_url": "https://review.opendev.org/changes/889068/messages",
+        "patch_messages": 45,
+        "prior_reports": [
+          "2023-09-22 14:28:48.000000000"
+        ],
+        "current_reports": [
+          "2023-09-22 16:55:02.000000000"
+        ],
+        "request_posts": [
+          "2023-09-22 14:44:24.000000000"
+        ],
+        "start_notices_between_request_and_report": []
+      }
+    }
+  ]
+}

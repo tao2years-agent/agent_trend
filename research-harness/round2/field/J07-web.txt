@@ -1,0 +1,162 @@
+AIOpsLab: Building AI agents for autonomous clouds - Microsoft Research (https://www.microsoft.com/en-us/research/blog/aiopslab-building-ai-agents-for-autonomous-clouds/)
+citeturn103view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://www.microsoft.com/en-us/research/blog/aiopslab-building-ai-agents-for-autonomous-clouds/","lineno":null}); Total lines: 159
+L0: 【0†Return to Blog Home】
+L1: 
+L2: ## Microsoft Research Blog
+L3: # AIOpsLab: Building AI agents for autonomous clouds
+L4: 
+L5: Published December 20, 2024
+L6: 
+L7: By 【1†Minghua Ma】 , Senior Researcher 【2†Gagan Somashekar】 , Senior Researcher 【3†Rujia Wang】 , Principal Research Product Manager 【4†Chetan Bansal】 , Partner Research Manager - Agentic Systems 【5†Saravan Rajmohan】 , Vice President and Distinguished Engineer, AI and Applied Research
+L8: 
+L9: 【6†Image: graphical user interface, application, icon】
+L10: In our increasingly complex digital landscape, enterprises and cloud providers face significant challenges in the development, deployment, and maintenance of sophisticated IT applications. The broad adoption of microservices and cloud-based serverless architecture has streamlined certain aspects of application development while simultaneously introducing a host of operational difficulties, particularly in fault diagnosis and mitigation.
+L11: These complexities can result in outages, which have the potential to cause major business disruptions, underscoring the critical need for robust solutions that ensure high availability and reliability in cloud services. As the expectation for five-nines availability grows, organizations must navigate the intricate web of operational demands to maintain customer satisfaction and business continuity.
+L12: To tackle these challenges, recent research on using AIOps agents for cloud operations—such as AI agents for incident root cause analysis (RCA) or triaging—has relied on proprietary services and datasets. Other prior works use frameworks specific to the solutions that they are building, or ad hoc and static benchmarks and metrics that fail to capture the dynamic nature of real-world cloud services.
+L13: Users developing agents for cloud operations tasks with Azure AI Agent Service can evaluate and improve them using AIOpsLab. Furthermore, current approaches do not agree on standard metrics or a standard taxonomy for operational tasks. This calls for a standardized and principled research framework for building, testing, comparing, and improving AIOps agents. The framework should allow agents to interact with realistic service operation tasks in a reproducible manner.
+L14: It must be flexible in extending to new applications, workloads, and faults. Importantly, it should go beyond just evaluating the AI agents and enabling users to improve the agents themselves; for example, by providing sufficient observability and even serving as a training environment (“gym”) to generate samples to learn on.
+L15: We developed AIOpsLab, a holistic evaluation framework for researchers and developers, to enable the design, development, evaluation, and enhancement of AIOps agents, which also serves the purpose of reproducible, standardized, interoperable, and scalable benchmarks. AIOpsLab is open sourced at 【7†GitHub (opens in new tab)†github.com】 with the MIT license, so that researchers and engineers can leverage it to evaluate AIOps agents at scale. We recently presented the 【8†AIOpsLab vision paper】 at SoCC ’24.
+L16: Please see the 【9†p】【10†reprint (opens in new tab)†nam06.safelinks.protection.outlook.com】 for more details about the AIOpsLab framework.
+L17: 【11†Image: Flowchart of an AIOpsLab system. The chart is divided into four main sections: AIOps Tasks, Orchestrator, Problem Cache, and Service. AIOps Tasks list various applications like SocialNetwork, HotelReservation, E-Commerce, and others, each with associated Data, Actions, Metrics. These tasks connect to the Orchestrator. The Orchestrator is the central element and interacts with various components: it receives a Problem Query Q, detailing Problem, Task T, Workload W, Fault F, and Solution S.
+L18: It is responsible for deploying or running the workload and injecting faults, as well as taking actions based on the Service State relayed by an Agent. The Problem Cache connects to a Workload Generator and a Fault Generator, creating Workload W for the Service. The Service component shows observability through Traces, Metrics, and Logs. It communicates with the Orchestrator to provide service state updates.
+L19: The components are connected with arrows that indicate the flow of data and control between each part of the system. 】Figure 1. System architecture of AIOpsLab.
+L20: ## Agent-cloud interface (ACI)
+L21: 
+L22: AIOpsLab strictly separates the agent and the application service using an intermediate orchestrator. It provides several interfaces for other system parts to integrate and extend. First, it establishes a session with an agent to share information about benchmark problems: (1) the problem description, (2) instructions (e.g., response format), and (3) available APIs to call as actions.
+L23: The APIs are a set of documented tools, e.g., get logs, get metrics, and exec shell, designed to help the agent solve a task. There are no restrictions on the agent’s implementation; the orchestrator poses problems and polls it for the next action to perform given the previous result. Each action must be a valid API call, which the orchestrator validates and carries out.
+L24: The orchestrator has privileged access to the deployment and can take arbitrary actions (e.g., scale-up, redeploy) using appropriate tools (e.g., helm, kubectl) to resolve problems on behalf of the agent. Lastly, the orchestrator calls workload and fault generators to create service disruptions, which serve as live benchmark problems. AIOpsLab provides additional APIs to extend to new services and generators.
+L25: * * *
+L26: ### Example shows how to onboard an agent to AIOpsLab
+L27: 
+L28:     from aiopslab import Orchestrator
+L29:     class Agent:
+L30:         def __init__(self, prob, instructs, apis):
+L31:             self.prompt = self.set_prompt(prob, instructs, apis)
+L32:             self.llm = GPT4()
+L33: 
+L34:         async def get_action(self, state: str) -> str:
+L35:             return self.llm.generate(self.prompt + state)
+L36: 
+L37:     #initialize the orchestrator
+L38:     orch = Orchestrator()
+L39:     pid = "misconfig_app_hotel_res-mitigation-1"
+L40:     prob_desc, instructs, apis = orch.init_problem(pid)
+L41: 
+L42:     #register and evaluate the agent
+L43:     agent = Agent(prob_desc, instructs, apis)
+L44:     orch.register_agent(agent, name="myAgent")
+L45:     asyncio.run(orch.start_problem(max_steps=10))
+L46: * * *
+L47: ## Service
+L48: 
+L49: AIOpsLab abstracts a diverse set of services to reflect the variance in production environments. This includes live, running services that are implemented using various architectural principles, including microservices, serverless, and monolithic.
+L50: We also leverage open-sourced application suites such as DeathStarBench as they provide artifacts, like source code and commit history, along with run-time telemetry. Adding tools like BluePrint can help AIOpsLab scale to other academic and production services.
+L51: ## Workload generator
+L52: The workload generator in AIOpsLab plays a crucial role by creating simulations of both faulty and normal scenarios. It receives specifications from the orchestrator, such as the task, desired effects, scale, and duration. The generator can use a model trained on real production traces to generate workloads that align with these specifications. Faulty scenarios may simulate conditions like resource exhaustion, exploit edge cases, or trigger cascading failures, inspired by real incidents.
+L53: Normal scenarios mimic typical production patterns, such as daily activity cycles and multi-user interactions. When various characteristics (e.g., service calls, user distribution, arrival times) can lead to the desired effect, multiple workloads can be stored in the problem cache for use by the orchestrator. In coordination with the fault generator, the workload generator can also create complex fault scenarios with workloads.
+L54: ## Fault generator
+L55: AIOpsLab has a novel push-button fault generator designed for generic applicability across various cloud scenarios. Our approach integrates application and domain knowledge to create adaptable policies and “oracles” compatible with AIOps scenarios. This includes fine-grained fault injection capable of simulating complex failures inspired by production incidents.
+L56: Additionally, it can inject faults at various system levels, exposing root causes while maintaining semantic integrity and considering interdependencies between cloud microservices. The fault injector’s versatility can enhance the reliability and robustness of cloud systems by enabling thorough testing and evaluation of AIOps capabilities.
+L57: Microsoft Research Story
+L58: ## New AI framework bridges a critical gap in mid-range weather forecasts
+L59: 
+L60: Probabilistic Bias Correction delivers more reliable two-to-six-week projections, unlocking big benefits for farmers, resource managers, and disaster responders.
+L61: 
+L62: 【12†Read more】
+L63: 
+L64: Opens in a new tab
+L65: ## Observability
+L66: AIOpsLab is equipped with an extensible observability layer designed to provide comprehensive monitoring capabilities across various system layers for any AIOps tool. AIOpsLab collects a wide array of telemetry data, including (1) traces from Jaeger detailing the end-to-end paths of requests through distributed systems, (2) application logs formatted and recorded by Filebeat and Logstash, and (3) system metrics monitored by Prometheus.
+L67: Additionally, AIOpsLab also captures lower-level system information such as syscall logs and cluster information. As mentioned, we handle potential data overload through flexible APIs to tune the telemetry data relevant to the AIOps tools.
+L68: AIOpsLab currently supports four key tasks within the AIOps domain. These tasks include incident detection, localization, root cause diagnosis, and mitigation. Additionally, we support several popular agent frameworks: React, Autogen, and TaskWeaver. Two key insights from the study emphasize the importance of observability and well-designed ACI. Observability is crucial for clear root-cause diagnosis, for instance, pinpointing a misconfigured API gateway can be vital in preventing service downtime.
+L69: Flexibility is another critical factor; the ability to execute arbitrary shell commands allowed for effective troubleshooting in real-time scenarios. Lastly, robust error handling is essential—providing agents with high-quality feedback on execution barriers, such as a failed database connection, ensures swift resolution and continuous improvement.
+L70: 
+L71: * * *
+L72: ### Example of ACI on diagnosis task
+L73: 
+L74:     `Agent: I need to first look at the logs to understand if there are any errors or warnings that could indicate problems.
+L75: 
+L76:     Action:
+L77: 
+L78:     ```
+L79: 
+L80:     get_logs("compose-post-service", "test-social-network")
+L81: 
+L82:     ```
+L83:     Service: [2024-Aug-04 23:18:49.365494] <info>:
+L84: 
+L85:     …
+L86: 
+L87:     Thrift: Sun Aug 4 23:19:19 2024 TSocket::open() connect()
+L88:     <Host: user-service Port: 9090>: Connection refused
+L89:     Agent: … unable to connect to the `user-service` at port 9090, even though the pod is running. This suggests a possible network issue or misconfiguration in service discovery`
+L90: * * *
+L91: ## Next steps
+L92: This research project adopts Microsoft security standards and Responsible AI principles, and we envision this research evolving into a vital resource for organizations aiming to optimize their IT operations. Additionally, we plan to collaborate with various generative AI teams to incorporate AIOpsLab as a benchmark scenario for evaluating state-of-the-art models. By doing so, we aim to foster innovation and encourage the development of more advanced AIOps solutions.
+L93: This research is essential not only for IT professionals but also for anyone invested in the future of technology, as it has the potential to redefine how organizations manage operations, respond to incidents, and ultimately serve their customers in an increasingly automated world.
+L94: ## Acknowledgements
+L95: 
+L96: We would like to thank Yinfang Chen, Manish Shetty, Yogesh Simmhan, 【13†Xuchao Zhang】, 【14†Jonathan Mace】, Dax Vandevoorde, 【15†Pedro Las-Casas】, Shachee Mishra Gupta, and 【16†Suman Nath】, for contributing to this project.
+L97: 
+L98: Opens in a new tab
+L99: 
+L100: ## Meet the authors
+L101: 
+L102: 【17†Image: Portrait of Minghua Ma】
+L103: 
+L104: ### Minghua Ma
+L105: 
+L106: Senior Researcher
+L107: 
+L108: 【1†Learn more】
+L109: 
+L110: 【18†Image: Portrait of Gagan Somashekar】
+L111: 
+L112: ### Gagan Somashekar
+L113: 
+L114: Senior Researcher
+L115: 
+L116: 【2†Learn more】
+L117: 
+L118: 【19†Image: Portrait of Rujia Wang】
+L119: ### Rujia Wang
+L120: 
+L121: Principal Research Product Manager
+L122: 
+L123: 【3†Learn more】
+L124: 
+L125: 【20†Image: Portrait of Chetan Bansal】
+L126: 
+L127: ### Chetan Bansal
+L128: 
+L129: Partner Research Manager - Agentic Systems
+L130: 
+L131: 【4†Learn more】
+L132: 
+L133: 【21†Image: Portrait of Saravan Rajmohan】
+L134: ### Saravan Rajmohan
+L135: 
+L136: Vice President and Distinguished Engineer, AI and Applied Research
+L137: 
+L138: 【5†Learn more】
+L139: 
+L140: Follow us:
+L141: 
+L142:   * 【22†Follow on X†x.com】
+L143:   * 【23†Like on Facebook†www.facebook.com】
+L144:   * 【24†Follow on LinkedIn†www.linkedin.com】
+L145:   * 【25†Subscribe on Youtube†www.youtube.com】
+L146:   * 【26†Follow on Instagram†www.instagram.com】
+L147:   * 【27†Subscribe to our RSS feed】
+L148: 
+L149: Share this page:
+L150:   * 【28†Share on X†x.com】
+L151:   * 【29†Share on Facebook†www.facebook.com】
+L152:   * 【30†Share on LinkedIn†www.linkedin.com】
+L153:   * 【31†Share on Reddit†www.reddit.com】
+L154: 【32†Surface Laptop Ultra】 【33†Surface Pro】 【34†Surface Laptop】 【35†Surface RTX Spark Dev Box】 【36†Explore Copilot】 【37†Explore Microsoft products】 【38†Windows 11 apps】 【39†Account profile†account.microsoft.com】 【40†Download Center】 【41†Microsoft Store support†go.microsoft.com】 【42†Returns】 【43†Order tracking】 【44†Certified Refurbished】 【45†Why buy from Microsoft Store】 【46†Flexible Payments】 【47†Microsoft in education】 【48†Devices for education】 【49†Microsoft Teams for Education】 【50†Microsoft 365 Education】 【51†How to buy for your school】 【52†Educator training and development†education.microsoft.com】 【53†Deals for students and parents】 【54†AI for education】
+L155: 【55†Microsoft AI】 【56†Microsoft Security】 【57†Dynamics 365】 【58†Microsoft 365】 【59†Microsoft Power Platform】 【60†Microsoft Teams】 【61†Microsoft Copilot】 【62†Small Business】 【63†Azure†azure.microsoft.com】 【64†Microsoft Developer†developer.microsoft.com】 【65†Microsoft Learn†learn.microsoft.com】 【66†Support for AI marketplace apps】 【67†Microsoft Tech Community†techcommunity.microsoft.com】 【68†Microsoft Marketplace†marketplace.microsoft.com】 【69†Software companies】 【70†Visual Studio†visualstudio.microsoft.com】 【71†Careers†careers.microsoft.com】 【72†About Microsoft】 【73†Company news†news.microsoft.com】 【74†Privacy at Microsoft】 【75†Investors】 【76†Diversity and inclusion】 【77†Accessibility】 【78†Sustainability】
+L156: 【79†Your Privacy Choices†aka.ms】 【79†Your Privacy Choices†aka.ms】
+L157: 
+L158: 【80†Consumer Health Privacy†go.microsoft.com】 【81†Sitemap】 【82†Contact Microsoft†support.microsoft.com】 【83†Privacy†go.microsoft.com】 【84†Manage cookies】 【85†Terms of use†go.microsoft.com】 【86†Trademarks†go.microsoft.com】 【87†Safety & eco†go.microsoft.com】 【88†Recycling】 【89†About our ads†choice.microsoft.com】
+

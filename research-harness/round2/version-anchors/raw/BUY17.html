@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="author" content="Bryan Friedman">
+<link rel="icon" href="/brand/moderne-symbol.svg" type="image/svg+xml">
+
+<meta property="og:site_name" content="Moderne">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Moderne Changelog: Change Intelligence for Coding Agents">
+<meta property="og:description" content="Moderne Changelog gives engineering teams and coding agents a unified view of pull requests, commits, and changesets across every repository and SCM system.">
+<meta property="og:url" content="https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence">
+
+<meta property="og:image" content="https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence/moderne-changelog-featured-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="627">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@moderneinc">
+<meta name="twitter:creator" content="@moderneinc">
+<meta name="twitter:title" content="Moderne Changelog: Change Intelligence for Coding Agents">
+<meta name="twitter:description" content="Moderne Changelog gives engineering teams and coding agents a unified view of pull requests, commits, and changesets across every repository and SCM system.">
+<meta name="twitter:image" content="https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence/moderne-changelog-featured-image.png">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://moderne.ai/#organization",
+      "name": "Moderne",
+      "url": "https://moderne.ai",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://moderne.ai/brand/moderne-logo.svg"
+      },
+      "founders": [
+        { "@type": "Person", "name": "Jonathan Schneider" },
+        { "@type": "Person", "name": "Olga Kundzich" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Miami",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/moderneinc/",
+        "https://twitter.com/moderneinc",
+        "https://www.youtube.com/@Moderne-and-OpenRewrite",
+        "https://www.g2.com/products/moderne-moderne/reviews",
+        "https://www.gartner.com/reviews/market/ai-augmented-code-modernization-tools/vendor/moderne"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://moderne.ai/#website",
+      "url": "https://moderne.ai",
+      "name": "Moderne",
+      "publisher": { "@id": "https://moderne.ai/#organization" }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Moderne Changelog: Change intelligence for multi-repository systems","description":"Moderne Changelog gives engineering teams and coding agents a unified view of pull requests, commits, and changesets across every repository and SCM system.","image":"https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence/moderne-changelog-featured-image.png","datePublished":"2026-05-19","author":[{"@type":"Person","name":"Bryan Friedman"}],"publisher":{"@type":"Organization","@id":"https://moderne.ai/#organization","name":"Moderne","logo":{"@type":"ImageObject","url":"https://moderne.ai/brand/moderne-logo.svg"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://moderne.ai"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://moderne.ai/blog"},{"@type":"ListItem","position":3,"name":"Moderne Changelog: Change intelligence for multi-repository systems","item":"https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence"}]}</script>
+
+<script>!function(){var e=location.hostname;if(!("moderne.ai"===e||"www.moderne.ai"===e)){var n=document.createElement("meta");n.name="robots",n.content="noindex,nofollow",document.head.appendChild(n)}}()</script>
+<link rel="alternate" type="application/rss+xml" title="Moderne Blog" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preload" href="https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2" as="font" type="font/woff2" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload='this.media="all"'>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+
+<script>!function(){var t=location.hostname;if("localhost"!==t&&"127.0.0.1"!==t&&"0.0.0.0"!==t&&"::1"!==t&&""!==t&&!/\.local$/.test(t)){window.dataLayer=window.dataLayer||[],window.gtag=window.gtag||function(){dataLayer.push(arguments)},gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",functionality_storage:"denied",personalization_storage:"denied",security_storage:"denied"}),window.OptanonWrapper=function(){};var e=document.createElement("script");e.src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js",e.type="text/javascript",e.charset="UTF-8",e.setAttribute("data-domain-script","0190cb61-822b-7b15-8cbc-563a8320e82a"),document.head.appendChild(e),function(t,e,a,n){t[n]=t[n]||[],t[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});var o=e.getElementsByTagName(a)[0],d=e.createElement(a);d.async=!0,d.src="https://www.googletagmanager.com/gtm.js?id=GTM-5P4GJBQ",o.parentNode.insertBefore(d,o)}(window,document,"script","dataLayer")}}()</script>
+<script type="module" src="/assets/SiteBaseline.astro_astro_type_script_index_0_lang.wU0dhIUr.js"></script>
+  <title>Moderne Changelog: Change Intelligence for Coding Agents</title>
+  <meta name="description" content="Moderne Changelog gives engineering teams and coding agents a unified view of pull requests, commits, and changesets across every repository and SCM system.">
+  <link rel="canonical" href="https://moderne.ai/blog/moderne-changelog-multi-repository-change-intelligence">
+  <meta property="og:type" content="article">
+  
+  
+<link rel="stylesheet" href="/assets/SiteBaseline.Cn_V3pa0.css">
+<link rel="stylesheet" href="/assets/_slug_.DVPYlVOX.css">
+<link rel="stylesheet" href="/assets/lh-gradients.D81a9bJ_.css">
+<link rel="stylesheet" href="/assets/VideoPlayer.CwfTf4_0.css">
+<link rel="stylesheet" href="/assets/blog.C4fZF0UP.css">
+<link rel="stylesheet" href="/assets/post.mn_S5L5e.css"></head>
+<body>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gr)" opacity="0.4"></rect></svg>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5P4GJBQ" height="0" width="0" style="visibility:hidden;display:none"></iframe></noscript>
+<aside class="site-announce" role="region" aria-label="Announcement" data-announce-id="asf-summit-early-bird">
+  <div class="wrap site-announce-inner">
+    <p class="site-announce-text"><span class="site-announce-hl">AI Software Factory Summit</span> | Feb 22-24, 2027</p>
+    <a class="site-announce-cta" href="/ai-software-factory/">Early Bird pricing <span aria-hidden="true">→</span></a>
+  </div>
+  <button class="site-announce-close" type="button" aria-label="Dismiss announcement">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
+</aside>
+<header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label="Moderne home">
+      <img class="logo logo-full" src="/brand/moderne-logo-light-r.png" alt="Moderne" width="165" height="24" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      <img class="logo logo-mark" src="/brand/moderne-icon-light.svg" alt="" aria-hidden="true" width="30" height="30">
+    </a>
+    <nav id="site-nav">
+      <div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-0" data-key="site.nav.0.label">Solutions</button>
+  <div class="nav-menu" id="nav-panel-0"><div class="nav-col">
+      
+      <a href="/solutions/reduce-cost-to-operate">
+          <span class="nav-lbl" data-lbl="Reduce cost to operate software estate">Reduce cost to operate software estate</span>
+          
+        </a><a href="/solutions/accelerate-cloud-modernization">
+          <span class="nav-lbl" data-lbl="Accelerate cloud modernization">Accelerate cloud modernization</span>
+          
+        </a><a href="/solutions/improve-security-posture">
+          <span class="nav-lbl" data-lbl="Improve security and risk posture">Improve security and risk posture</span>
+          
+        </a><a href="/solutions/increase-ai-development-efficiency">
+          <span class="nav-lbl" data-lbl="Increase AI development efficiency">Increase AI development efficiency</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-1" data-key="site.nav.1.label">Product</button>
+  <div class="nav-menu" id="nav-panel-1"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.0.title">Editions</p>
+      <a href="/platform">
+          <span class="nav-lbl" data-lbl="Moderne Platform">Moderne Platform</span>
+          
+        </a><a href="/moderne-dx">
+          <span class="nav-lbl" data-lbl="Moderne DX">Moderne DX</span>
+          
+        </a><a href="/managed-service">
+          <span class="nav-lbl" data-lbl="Managed Service">Managed Service</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.1.title">Features</p>
+      <a href="/moderne-agent-tools/code-search">
+          <span class="nav-lbl" data-lbl="Code Search">Code Search</span>
+          
+        </a><a href="/moderne-agent-tools/prethink">
+          <span class="nav-lbl" data-lbl="Prethink">Prethink</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="container" data-titles>
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-2" data-key="site.nav.2.label">Resources</button>
+  <div class="nav-menu" id="nav-panel-2"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.0.title">Technology foundations</p>
+      <a href="/platform/lst">
+          <span class="nav-lbl" data-lbl="Lossless Semantic Tree">Lossless Semantic Tree</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.1.title">Learning</p>
+      <a href="https://docs.moderne.io" target="_blank" rel="noopener">
+          <span class="nav-lbl" data-lbl="Documentation">Documentation</span>
+          <svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a><a href="/content-library#on-demand-webinars">
+          <span class="nav-lbl" data-lbl="On-demand webinars">On-demand webinars</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.2.title">Community</p>
+      <a href="/openrewrite">
+          <span class="nav-lbl" data-lbl="OpenRewrite">OpenRewrite</span>
+          
+        </a><a href="/events">
+          <span class="nav-lbl" data-lbl="Events">Events</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a><a href="/platform/code-genome">
+          <span class="nav-lbl" data-lbl="Code Genome Project">Code Genome Project</span>
+          
+        </a><a href="/ai-software-factory">
+          <span class="nav-lbl" data-lbl="AI Software Factory Summit">AI Software Factory Summit</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.3.title">Media</p>
+      <a href="/blog">
+          <span class="nav-lbl" data-lbl="Blog">Blog</span>
+          
+        </a><a href="/newsroom">
+          <span class="nav-lbl" data-lbl="Newsroom">Newsroom</span>
+          
+        </a><a href="/press-kit">
+          <span class="nav-lbl" data-lbl="Press kit">Press kit</span>
+          
+        </a><a href="/content-library#videos">
+          <span class="nav-lbl" data-lbl="Videos and podcasts">Videos and podcasts</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.4.title">Case studies</p>
+      <a href="/case-study">
+          <span class="nav-lbl" data-lbl="All case studies">All case studies</span>
+          
+        </a><a href="/case-study/soundhound-ai-automates-vulnerability-remediation-and-secure-code-transformation-with-moderne">
+          <span class="nav-lbl" data-lbl="Vulnerability remediation">Vulnerability remediation</span>
+          
+        </a><a href="/case-study/global-retailer-accelerates-spring-boot-migrations-at-massive-scale">
+          <span class="nav-lbl" data-lbl="Spring Boot at scale">Spring Boot at scale</span>
+          
+        </a><a href="/case-study/tackling-technical-debt-at-big-bank-scale">
+          <span class="nav-lbl" data-lbl="Technical debt">Technical debt</span>
+          
+        </a><a href="/case-study/choice-hotels-automates-secure-code-modernization-at-scale">
+          <span class="nav-lbl" data-lbl="Secure modernization">Secure modernization</span>
+          
+        </a>
+    </div></div>
+</div><a href="/partners" data-key="site.nav.3.label">Partners</a>
+      <span class="nav-foot"><a class="nav-cta" href="/pricing" data-key="site.navCta.label">Pricing</a></span>
+    </nav>
+    <button class="site-search-btn" type="button" aria-label="Search the site" data-search-open>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="20" height="20">
+        <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<script>!function(){var e="moderne.announce.dismissed",t=document.querySelector(".site-announce"),n=document.getElementById("site-header");n&&n.classList.add("nav-js");var r=t&&t.getAttribute("data-announce-id");try{r&&localStorage.getItem(e)===r&&(t.hidden=!0)}catch(e){}var o=t&&t.querySelector(".site-announce-close");if(o&&o.addEventListener("click",function(){t.hidden=!0;try{r&&localStorage.setItem(e,r)}catch(e){}}),n){var s=function(){var e=n.offsetHeight,r=document.documentElement.style;r.setProperty("--chrome-h",(t?t.offsetHeight:0)+e+"px"),r.setProperty("--header-h",e+"px")};if(document.styleSheets.length?s():requestAnimationFrame(s),"ResizeObserver"in window){var a=new ResizeObserver(s);a.observe(n),t&&a.observe(t)}}}()</script>
+  
+<script type="module" src="/assets/BlogPost.astro_astro_type_script_index_0_lang.BBo4jsKw.js"></script>
+  <main>
+  <article class="post">
+    <div class="post-grid">
+      <aside class="post-toc" aria-label="On this page">
+        <p class="toc-h">Contents</p>
+        <nav class="toc-nav">
+          <ol class="toc-list">
+            <li class="toc-item lvl2"><a href="#a-unified-view-of-change">A unified view of change</a></li>
+            <li class="toc-item lvl2"><a href="#automated-transformation-results-as-changesets">Automated transformation results as changesets</a></li>
+            <li class="toc-item lvl2"><a href="#agent-loops-across-repositories">Agent loops across repositories</a></li>
+            <li class="toc-item lvl2"><a href="#coordinating-change-across-dependency-boundaries">Coordinating change across dependency boundaries</a></li>
+            <li class="toc-item lvl2"><a href="#native-agent-infrastructure-via-mcp">Native agent infrastructure via MCP</a></li>
+            <li class="toc-item lvl2"><a href="#from-source-control-to-change-control">From source control to change control</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="post-main">
+        <header class="post-head">
+          <a class="post-back" href="/blog">← Blog</a>
+          <div class="pcats"><span class="pcat">Product</span></div>
+          <h1 class="post-title">Moderne Changelog: Change intelligence for multi-repository systems</h1>
+          
+          <p class="post-byline">
+  <span class="by-author">Bryan Friedman</span>
+  
+  <span class="by-meta">May 19, 2026</span><span class="by-meta">5 min read</span>
+</p>
+        </header>
+
+        <div class="post-body">
+          <details class="toc-mobile">
+            <summary>Contents</summary>
+            <ol class="toc-list"><li class="toc-item lvl2"><a href="#a-unified-view-of-change">A unified view of change</a></li><li class="toc-item lvl2"><a href="#automated-transformation-results-as-changesets">Automated transformation results as changesets</a></li><li class="toc-item lvl2"><a href="#agent-loops-across-repositories">Agent loops across repositories</a></li><li class="toc-item lvl2"><a href="#coordinating-change-across-dependency-boundaries">Coordinating change across dependency boundaries</a></li><li class="toc-item lvl2"><a href="#native-agent-infrastructure-via-mcp">Native agent infrastructure via MCP</a></li><li class="toc-item lvl2"><a href="#from-source-control-to-change-control">From source control to change control</a></li></ol>
+          </details>
+          <aside class="takeaways">
+  <p class="tk-h">Key takeaways</p>
+  <ul><li>Source control answers what changed inside a repository; Moderne Changelog answers what is changing across the organization. Changelog overlays existing GitHub, GitLab, and Bitbucket systems to give engineering teams a portfolio-wide view of every pull request, commit, and in-flight change, scoped to the organization structure defined in Moderne.</li><li>Changesets group every repository affected by a single transformation into one coordinated effort. Reviewers can distinguish recipe runs, agent-driven edits, and hand-written commits at a glance, so review effort matches the scrutiny each change actually requires.</li><li>Coding agents query Changelog through MCP and the Moderne GraphQL API. Instead of scanning repositories to figure out what is already in flight, agents read system-wide change context directly, which cuts token usage on rediscovery and helps them sequence changes correctly across dependency boundaries.</li><li>Bulk action across hundreds of repositories collapses the coordination overhead of large initiatives. Approve, merge, or close pull requests across any filtered set from a single view, with available actions updating based on the real-time state of what is selected.</li></ul>
+</aside>
+          <p>Most organizations have no unified view of what’s changing across their codebase. Pull requests, merge requests, and commits accumulate across GitHub organizations, Bitbucket instances, GitLab deployments, and internal VCS systems. Each one is a separate island of change.</p>
+<p>Add fleets of agents updating hundreds of repositories simultaneously, and the problem compounds fast. Progress, blockers, and initiative status are invisible when activity is scattered across disconnected repository systems. Engineering leaders can’t tell who’s using agents, who’s actually accelerating delivery with mergeable changes, and who’s just generating noise.</p>
+<p>The challenge isn’t generating code changes anymore. How are you supposed to understand and coordinate it all at scale?</p>
+<p>Moderne Changelog is that coordination layer that no other system gives you.</p>
+<h2 id="a-unified-view-of-change">A unified view of change</h2>
+<p>Changelog is the unified control plane that makes cross-repository change visible and manageable. It overlays your existing SCM systems and gives you a portfolio-wide view of change, scoped to your organization as defined in Moderne, whether that’s by business unit, team, or whatever structure makes sense for you.</p>
+<p>But this isn’t just passive visibility. Changelog also enables action. You can approve, merge, or close pull requests across repositories in bulk, with available actions updating dynamically based on the real-time state of what you’ve selected. Instead of navigating dozens of tabs, you coordinate change deliberately and at scale.</p>
+<p><img src="/blog/moderne-changelog-multi-repository-change-intelligence/image3.png" alt="Moderne Changelog: unified pull request feed across repositories with bulk action panel" sizes="(max-width: 1080px) 100vw, 740px" width="1834" height="1008" srcset="/assets/img/9eaafcd6a10d-9affb7-480.webp 480w, /assets/img/9eaafcd6a10d-9affb7-960.webp 960w, /assets/img/9eaafcd6a10d-9affb7-1600.webp 1600w, /assets/img/9eaafcd6a10d-9affb7-1834.webp 1834w"></p>
+<h2 id="automated-transformation-results-as-changesets">Automated transformation results as changesets</h2>
+<p>When Moderne runs transformation recipes across your repositories, the results surface in Changelog as a <strong>changeset</strong> — a logical unit of change that spans all affected repositories, tracked together as a single coordinated effort.</p>
+<p>Not all changes are equal: manual edits, agent-driven modifications, and automated transformations (like recipe runs or batch changes) each carry different review expectations. Changelog preserves that distinction, so reviewers can immediately see which parts of a changeset came from automation and which are more likely to require judgment calls, making large-scale review more manageable.</p>
+<p>For engineering leaders, this visibility extends further. Rather than piecing together activity across dozens of disconnected repository dashboards, Changelog surfaces who is driving change, what’s in flight, and where initiatives are stalling, across the entire codebase.</p>
+<h2 id="agent-loops-across-repositories">Agent loops across repositories</h2>
+<p>Changesets aren’t just the end result of an automated run. They’re a starting point for continued refinement.</p>
+<p>An agent can download changeset results, inspect changes across repositories, handle edge cases that the automation couldn’t, and push updates back as part of the same coordinated effort. Large transformations often evolve through multiple passes:</p>
+<ul>
+<li>
+<p>Automated transformation generates the bulk of the changes</p>
+</li>
+<li>
+<p>Agent refines edge cases and applies additional reasoning</p>
+</li>
+<li>
+<p>More automated passes to apply further cleanup</p>
+</li>
+<li>
+<p>Agent continues refining across repositories</p>
+</li>
+<li>
+<p>Manual changes fill in where human judgment is required</p>
+</li>
+</ul>
+<p>Agents can also initiate those automated passes directly, choosing which transformation to run, and even writing new ones when the right recipe doesn’t exist yet. The result is a fully agentic loop where deterministic automation and agent reasoning alternate as needed.</p>
+<p>Soon, it will also be possible to see which changes were specifically driven by agents, and the reasoning behind them. Capturing the full record of interactions allows agents to review in-progress work so they can see not just the code changes, but the sequence of decisions made by agents that came before them.</p>
+<h2 id="coordinating-change-across-dependency-boundaries">Coordinating change across dependency boundaries</h2>
+<p>Order of operations matters when changes span repositories, particularly when binary dependencies are involved. Updating a shared library requires it to build and publish before dependent services can be safely updated. Getting that wrong risks breaking downstream builds across teams that may not even be aware of the dependency.</p>
+<p>Changelog gives you visibility into what’s ready, what’s blocked, and what’s waiting, all across the entire changeset, not just within the individual repositories. Teams can manage the full lifecycle of a multi-repository initiative from one place:</p>
+<ul>
+<li>
+<p>Track pull requests and commits across repositories and VCS instances</p>
+</li>
+<li>
+<p>See which related changes are ready, blocked, or waiting on dependencies</p>
+</li>
+<li>
+<p>Approve, merge, or close pull requests across many repositories at once</p>
+</li>
+<li>
+<p>Identify and clean up stale PRs that accumulate during large initiatives</p>
+</li>
+</ul>
+<p>Instead of jumping between repository dashboards, teams can drive the entire effort from a single view.</p>
+<h2 id="native-agent-infrastructure-via-mcp">Native agent infrastructure via MCP</h2>
+<p>Moderne exposes multi-repository search, transformation, and analysis as agent tools through its MCP interface. Changelog extends that, giving agents operational awareness of what’s changing across the codebase, not just the ability to query or transform it. Agents can query active changesets, download results, and continue coordinated transformations without reconstructing context by scanning individual repositories.</p>
+<p>Rather than each agent invocation starting from scratch, agents operate on system-wide context, so they know what’s already been changed, what’s in review, and what’s still pending across the entire codebase.</p>
+<p>Software development at scale has always been a coordination problem. The tooling to generate changes has never been better, but visibility into what’s changing, why, and in what order has lagged behind. Moderne Changelog is the missing link.</p>
+<h2 id="from-source-control-to-change-control">From source control to change control</h2>
+<p>GitHub and other SCM tools are exceptional at showing what changed <em>inside</em> a repository. Moderne Changelog focuses on something different: what is changing <em>across</em> the organization. It bridges the gap between <em>source</em> control and <em>change</em> control.</p>
+<p>As workflows evolve toward greater autonomy, three capabilities become essential:</p>
+<ol>
+<li>
+<p><strong>Understanding the structure of code</strong> — what exists and how it fits together</p>
+</li>
+<li>
+<p><strong>Applying change safely and deterministically</strong> — transforming code at scale without breaking it</p>
+</li>
+<li>
+<p><strong>Maintaining awareness of system-wide change</strong> — knowing what’s in flight, who owns it, what needs to happen next, and making it happen</p>
+</li>
+</ol>
+<p>Moderne has long provided the first two. Now Changelog provides the third.</p>
+<p>It gives humans clarity across complex systems and gives agents the situational awareness they’ve been missing, turning fragmented pull requests into coordinated, portfolio-level evolution.</p>
+<p>Modern software isn’t a single repository, and in a world of accelerating human- and agent-driven change, your coordination layer matters as much as your code.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-grid post-foot">
+      <div class="post-signoff">
+        <div class="signoff-author">
+        <span class="signoff-avatar" aria-hidden="true"></span>
+        <span class="signoff-text">
+          <span class="signoff-eyebrow">Written by</span>
+          <span class="signoff-who">
+            <span class="signoff-name">Bryan Friedman</span>
+            
+          </span>
+        </span>
+        </div>
+        
+      </div>
+    </div>
+
+    <section class="related wrap">
+      <h2 class="vh">Related posts</h2>
+      <div class="related-grid">
+        <a class="pcard" href="/blog/github-copilot-modernization">
+<span class="thumb thumb--img"><img src="/blog/github-copilot-modernization/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/41a309697a67-9affb7-480.webp 480w, /assets/img/41a309697a67-9affb7-960.webp 960w, /assets/img/41a309697a67-9affb7-1600.webp 1600w, /assets/img/41a309697a67-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">GitHub Copilot and Moderne take code transformation from one repo to your whole estate</h3>
+          <p class="pmeta">November 10, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/moderne-code-search-launch">
+<span class="thumb thumb--img"><img src="/blog/moderne-code-search-launch/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/cb0bf9898d69-9affb7-480.webp 480w, /assets/img/cb0bf9898d69-9affb7-960.webp 960w, /assets/img/cb0bf9898d69-9affb7-1600.webp 1600w, /assets/img/cb0bf9898d69-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Code Search gives coding agents type-aware search across every repository.</h3>
+          <p class="pmeta">November 5, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/coding-agents-deterministic-context">
+<span class="thumb thumb--img"><img src="/blog/coding-agents-deterministic-context/hero.jpg" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/0d7bc25db189-9affb7-480.webp 480w, /assets/img/0d7bc25db189-9affb7-960.webp 960w, /assets/img/0d7bc25db189-9affb7-1600.webp 1600w, /assets/img/0d7bc25db189-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Coding agents get more out of every token when they start from deterministic context.</h3>
+          <p class="pmeta">October 30, 2026</p>
+        </a>
+      </div>
+    </section>
+  </article>
+  </main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <nav class="foot-grid" aria-label="Footer">
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.0.title">Product</p>
+        <a href="/platform">Moderne Platform</a><a href="/moderne-dx">Moderne DX</a><a href="/managed-service">Managed Service</a><a href="/moderne-agent-tools">Agent tools</a><a href="/pricing">Pricing</a><a href="/try-moderne">Try Moderne</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.1.title">Language support</p>
+        <a href="/solutions/java-upgrades-and-modernization">Java</a><a href="/solutions/spring-boot-migration-tool-enterprise-scale-upgrades">Spring Boot</a><a href="/solutions/csharp-dotnet-modernization">C# and .NET</a><a href="/solutions/python-change-and-transformation">Python</a><a href="/solutions/kotlin-modernization">Kotlin</a><a href="/solutions/javascript-typescript-modernization">JavaScript and TypeScript</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.2.title">Foundations</p>
+        <a href="/platform/lst">Lossless Semantic Tree</a><a href="/recipes">Recipes</a><a href="/openrewrite">OpenRewrite</a><a href="/platform/code-genome">Code Genome Project</a><a href="/backpatch-alliance">Backpatch Alliance</a><a href="https://docs.moderne.io" target="_blank" rel="noopener">Documentation<svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.3.title">Resources</p>
+        <a href="/blog">Blog</a><a href="/content-library">Resource Hub</a><a href="/case-study">Case studies</a><a href="/events">Events</a><a href="/openrewrite">Community</a><a href="/partners">Partners</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.4.title">Company</p>
+        <a href="/about">Meet Moderne</a><a href="/newsroom">Newsroom</a><a href="/press-kit">Press kit</a><a href="/careers">Careers</a><a href="/contact-us">Contact</a><a href="/ai-software-factory">AI Software Factory Summit</a>
+      </div>
+    </nav>
+    <div class="foot-bottom">
+      <a class="foot-logo" href="/" aria-label="Moderne home">
+        <img src="/brand/moderne-logo-light-r.png" alt="Moderne" width="151" height="22" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      </a>
+      <span class="foot-copy" data-key="site.footer.copyright">© Moderne, 2026</span>
+      <div class="foot-right">
+        <img class="foot-soc2" src="/brand/aicpa-soc.png" alt="AICPA SOC for Service Organizations" width="46" height="46" loading="lazy" decoding="async" srcset="/assets/img/59c0ae7ede1c-9affb7-138.webp">
+        <nav class="foot-legal">
+          <a href="/privacy-policy" data-key="site.footer.legal.0.label">Privacy</a><a href="/terms-of-service" data-key="site.footer.legal.1.label">Terms</a>
+          <button type="button" class="ot-settings" onclick="window.OneTrust&&OneTrust.ToggleInfoDisplay()">Cookie settings</button>
+        </nav>
+        <div class="foot-social">
+          <a href="https://twitter.com/moderneinc" target="_blank" rel="noopener" aria-label="Moderne on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/moderneinc/" target="_blank" rel="noopener" aria-label="Moderne on LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
+          </a>
+          <a href="https://www.youtube.com/@Moderne-and-OpenRewrite" target="_blank" rel="noopener" aria-label="Moderne on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer></body>
+</html>

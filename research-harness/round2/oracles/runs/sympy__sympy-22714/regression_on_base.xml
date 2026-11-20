@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="0.410" timestamp="2026-11-20T12:02:21.542353" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.geometry.tests.test_point" name="test_issue_22684" time="0.001"><failure message="ValueError: Imaginary coordinates are not permitted.">sympy\geometry\tests\test_point.py:459: in test_issue_22684
+    Point(1, 2)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.</failure></testcase><testcase classname="sympy.geometry.tests.test_point" name="test_Point2D" time="0.083" /><testcase classname="sympy.geometry.tests.test_point" name="test__normalize_dimension" time="0.001" /><testcase classname="sympy.geometry.tests.test_point" name="test_arguments" time="0.109" /><testcase classname="sympy.geometry.tests.test_point" name="test_concyclic_doctest_bug" time="0.002" /><testcase classname="sympy.geometry.tests.test_point" name="test_dot" time="0.001" /></testsuite></testsuites>

@@ -1,0 +1,82 @@
+​
+What are Qoder Credits?
+Credits are the resource quota for AI models in Qoder. They measure the computing resources consumed when Qoder products perform tasks.
+Supported products
+: Qoder, Qoder IDE, the Qoder JetBrains plugin, Qoder CLI, QoderWake, Qoder Cloud Agents, Qoder Mobile, the web version, and more.
+Actual consumption depends on task complexity and the model used. See the
+Task and Credits Consumption Guide
+below for usage estimates.
+​
+How to deduct the Credits?
+Credits acquired at different times have varying expiration dates. Our system automatically uses the credits that are set to expire first, ensuring you maximize the value of your credits.
+When Credits run out, you can continue using free basic models, subject to daily and monthly limits.
+​
+Error
+Failed Qoder model requests do not result in Credits deductions. Credits are only consumed when a model API call is successful.
+​
+Task and Credits Consumption Guide
+Different tasks require different models, each with its own associated costs. To address this, we've analyzed the resource consumption of our users' online activities. Based on this data, we've established a correlation between the usage of various models and credits consumption. This approach helps our users better understand how we calculate and deduct credits for different operations.
+For example, a single Ask Mode request in Editor might use a premium large language model, consuming a certain number of Input and Output Tokens. The credits deducted are calculated based on the model used and the total token consumption for both input and output. When a User sends an Agent Mode request in Editor, it often involves multiple premium model calls behind the scenes, using significantly more resources than a simple Ask request. For Knowledge, Repo Wiki resource consumption is measured based on the model inference required to generate a knowledge base for a specific code repository.
+The values shown in the table are just estimates based on our statistical analysis. Actual credits deductions may vary and will be based on real-time usage. We're also working on optimizations to ensure we can get the same work done while using fewer resources.
+Median (50K context window)
+Median (200K context window)
+Qoder - Agent Mode
+/
+~ 50 Credits / User Request
+Editor - Ask Mode
+~ 3 Credits / User Request
+~ 4 Credits / User Request
+Editor - Agent Mode
+~ 7 Credits / User Request
+~ 12 Credits / User Request
+Knowledge - Repo Wiki
+/
+~ 50 Credits / Repository
+Note:
+In the future, as we roll out new features, we may update our credits consumption rates based on the resources these features require. This means the number of credits deducted for certain actions might change to reflect the actual resource usage of new functionalities.
+​
+Checking Your Credits Usage
+​
+View Usage in IDE
+You can find the Credits usage button in the bottom-right corner of the IDE. Click it to view a usage preview and shared add-on credits status.
+​
+View Usage on Website
+Log in to the Qoder website. Click on your avatar in the top-right corner. Navigate to Settings > Usage.
+Here, you'll find your current Plan and a breakdown of available and used Credits:
+Plan Credits
+: Credits included in your subscription plan, valid for the current billing period. They reset to zero when the period ends.
+Add-on Credits
+: Acquired through purchases or promotional events, for personal use only. See
+Credit Packs
+for details.
+Usage Priority
+: The system always consumes Credits expiring soonest first. When expiration dates are the same, Plan Credits are used before Add-on Credits.
+Expiration
+: Different types of Credits have their own expiration dates. You can view the projected expiration in the Credits log. (Note that actual expiration may occur earlier due to factors like account upgrades. See the Credits log section below for details.)
+Lite / Pro / Pro+
+Ultra
+Get More Credits
+: When Credits run out, you can continue using free basic models, subject to daily and monthly limits. You can
+upgrade your plan
+or
+purchase a Credit Pack
+at any time.
+Get More Credits
+: When Credits run out, you can continue using free basic models, subject to daily and monthly limits. You can
+purchase a Credit Pack
+at any time.
+​
+Credits Log: Credits History and Tracking
+The credits acquisition history provides a comprehensive record of all credits received, including the reason for acquisition, the amount, and the effective and expiration dates. This allows you to easily track your credit sources.
+Common acquisition types:
+Description
+Details
+Plan Credits
+Credits included in your plan
+Credit Purchase
+Purchased via Credit Packs
+Bonus Credits
+Granted through events or promotions
+Important Note on Expiration Dates:
+Please be aware that the expiration dates shown in the credits log are based on the initial projection at the time of issuance. Actual expiration dates may change due to account upgrades or other factors. To determine the true expiration date, you'll need to consider your Plan change history.
+Remember, the credits log only shows the history of credits acquisitions. To check your current available credits usage, please refer to the 'Credits Usage' card in your account dashboard.

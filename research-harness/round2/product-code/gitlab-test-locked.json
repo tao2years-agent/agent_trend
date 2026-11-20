@@ -1,0 +1,22 @@
+{
+  "commit": "ed4ff2990049ace5c675203c70d41676fa55682c",
+  "packages": {
+    "langchain-core": "1.7.7",
+    "langgraph": "1.2.14",
+    "langgraph-checkpoint": "4.3.1",
+    "langgraph-prebuilt": "1.1.0",
+    "langgraph-sdk": "0.4.7",
+    "pytest": "9.2.0",
+    "pytest-asyncio": "1.5.0"
+  },
+  "driver": "pytest + pytest-asyncio",
+  "files": [
+    "tests/duo_workflow_service/checkpointer/test_node_lifecycle.py",
+    "duo_workflow_service/checkpointer/node_lifecycle.py",
+    "duo_workflow_service/agent_platform/node_naming.py",
+    "duo_workflow_service/agent_platform/constants.py"
+  ],
+  "exit": 0,
+  "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- C:\\Users\\taos\\AppData\\Local\\Temp\\product-code-gitlab-1120\\Scripts\\python.exe\ncachedir: .pytest_cache\nrootdir: <isolated-worktree>\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 13 items\n\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_event_to_dict_is_the_wire_shape PASSED [  7%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_log_records_in_order PASSED [ 15%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_records_started_on_node_boundary PASSED [ 23%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_records_ended_on_node_end PASSED [ 30%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_records_errored_on_non_interrupt_error PASSED [ 38%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_records_ended_not_errored_on_graph_interrupt PASSED [ 46%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_ignores_nested_runnable_starts PASSED [ 53%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_handles_legacy_node_without_role_suffix PASSED [ 61%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_tracks_concurrent_nodes_by_run_id PASSED [ 69%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_terminal_for_unopened_run_is_a_noop PASSED [ 76%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_ignores_start_with_no_component PASSED [ 84%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_against_real_langgraph_stream PASSED [ 92%]\ntests/duo_workflow_service/checkpointer/test_node_lifecycle.py::test_handler_against_real_langgraph_interrupt_and_resume PASSED [100%]\n\n============================= 13 passed in 0.87s ==============================\n",
+  "stderr": "C:\\Users\\taos\\AppData\\Local\\Temp\\product-code-gitlab-1120\\Lib\\site-packages\\pytest_asyncio\\plugin.py:306: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to \"function\" scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\". Set it to \"fixture-scope\" to keep the current behavior.\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))\n"
+}

@@ -1,0 +1,843 @@
+                                                   A Large-Scale Survey on the Usability of AI Programming
+                                                             Assistants: Successes and Challenges
+                                                            Jenny T. Liang                                             Chenyang Yang                                        Brad A. Myers
+                                                     Carnegie Mellon University                                  Carnegie Mellon University                             Carnegie Mellon University
+                                                        Pittsburgh, PA, USA                                         Pittsburgh, PA, USA                                    Pittsburgh, PA, USA
+                                                        jtliang@cs.cmu.edu                                          cyang3@cs.cmu.edu                                       bam@cs.cmu.edu
+
+                                         ABSTRACT                                                                                                               1. Usage Characteristics
+                                         The software engineering community recently has witnessed wide-                                 A   Usage patterns                    B   Motivation for using
+                                                                                                                                             Motivation for not using              Successful use cases
+arXiv:2303.17125v2 [cs.SE] 17 Sep 2023
+
+
+
+
+                                         spread deployment of AI programming assistants, such as GitHub                                  C                                     D
+
+                                         Copilot. However, in practice, developers do not accept AI program-
+                                                                                                                                                      2. Usability of AI Programming Assistants
+                                         ming assistants’ initial suggestions at a high frequency. This leaves
+                                                                                                                                         A   Usability issues                  B   Understanding outputted code
+                                         a number of open questions related to the usability of these tools.
+                                                                                                                                         C   Evaluating outputted code         D   Modifying outputted code
+                                         To understand developers’ practices while using these tools and the                             E   Giving up on outputted code
+                                         important usability challenges they face, we administered a survey
+                                         to a large population of developers and received responses from                                                         3. Additional Feedback
+                                         a diverse set of 410 developers. Through a mix of qualitative and                               A   General concerns                  B   User feedback
+                                         quantitative analyses, we found that developers are most motivated
+                                         to use AI programming assistants because they help developers
+                                                                                                                                     Figure 1: An overview of the topics covered in our usability
+                                         reduce key-strokes, finish programming tasks quickly, and recall
+                                                                                                                                     study of AI programming assistants.
+                                         syntax, but resonate less with using them to help brainstorm po-
+                                         tential solutions. We also found the most important reasons why
+                                         developers do not use these tools are because these tools do not                            1   INTRODUCTION
+                                         output code that addresses certain functional or non-functional
+                                                                                                                                     The recent widespread deployment of AI programming assistants,
+                                         requirements and because developers have trouble controlling the
+                                                                                                                                     such as GitHub Copilot [6] and ChatGPT [1], has introduced a new
+                                         tool to generate the desired output. Our findings have implications
+                                                                                                                                     paradigm to building software that has taken the software engi-
+                                         for both creators and users of AI programming assistants, such as
+                                                                                                                                     neering community by storm. Some current publications report
+                                         designing minimal cognitive effort interactions with these tools to
+                                                                                                                                     that AI programming assistants are powerful enough to produce
+                                         reduce distractions for users while they are programming.
+                                                                                                                                     high-quality code suggestions for developers [59, 61]. While some
+                                                                                                                                     recent studies do not find any significant difference in using AI pro-
+                                         CCS CONCEPTS                                                                                gramming assistants in terms of task completion [56, 60] and code
+                                         • Software and its engineering → Software notations and                                     quality [29], other studies find these tools are positively associated
+                                         tools; • Human-centered computing → Empirical studies in                                    with developers’ self-perceived productivity [62].
+                                         HCI; • Computing methodologies → Natural language process-                                     However, in practice, prior literature indicates that developers do
+                                         ing.                                                                                        not accept AI programming assistants’ initial suggestions at a high
+                                                                                                                                     frequency. Ziegler et al. [62] found that developers accepted 23.3%,
+                                         KEYWORDS                                                                                    27.9%, and 28.8% of GitHub Copilot’s suggestions for TypeScript,
+                                                                                                                                     JavaScript, and Python respectively. There are many potential rea-
+                                         AI programming assistants, usability study
+                                                                                                                                     sons for the lack of adoption of AI programming assistants’ sug-
+                                         ACM Reference Format:
+                                                                                                                                     gestions. One study shows that developers feel concerned that the
+                                         Jenny T. Liang, Chenyang Yang, and Brad A. Myers. 2024. A Large-Scale                       generated code may contain defects, may not adhere to the project’s
+                                         Survey on the Usability of AI Programming Assistants: Successes and Chal-                   coding style, or may be difficult to understand [56]. Other studies
+                                         lenges. In 2024 IEEE/ACM 46th International Conference on Software Engi-                    report that software developers face barriers in comprehending and
+                                         neering (ICSE 2024), April 14–20, 2024, Lisbon, Portugal. ACM, New York, NY,                debugging generated code to fit their use cases, because they need
+                                         USA, 13 pages. https://doi.org/10.1145/3597503.3608128                                      to have prior knowledge of the underlying programming principles,
+                                                                                                                                     frameworks, or APIs [12, 60].
+                                                                                                                                        While prior work has surfaced initial results about the usability
+                                         Permission to make digital or hard copies of part or all of this work for personal or       of state-of-the-art AI programming assistants, to our knowledge,
+                                         classroom use is granted without fee provided that copies are not made or distributed       they have not systematically investigated the prevalence of usabil-
+                                         for profit or commercial advantage and that copies bear this notice and the full citation
+                                         on the first page. Copyrights for third-party components of this work must be honored.      ity factors related to these tools. Quantifying the usability of AI
+                                         For all other uses, contact the owner/author(s).                                            programming assistants could help tool creators understand which
+                                         ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                              usability aspects are currently successful in practice. Further, it
+                                         © 2024 Copyright held by the owner/author(s).
+                                         ACM ISBN 979-8-4007-0217-4/24/04.                                                           could help tool creators prioritize features and improvements to the
+                                         https://doi.org/10.1145/3597503.3608128                                                     modeling and user interface of these tools in the future, potentially
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                          Liang et al.
+
+
+increasing the adoption of these tools and improving the produc-           2   RELATED WORK
+tivity of developers. Usability is an important factor to study in AI      We discuss work related to the usability of AI programming assis-
+programming assistants, since modeling improvements may not                tants. Since this field is rapidly developing, the papers discussed
+necessarily address the needs of developers, rendering these tools         are a snapshot of the current progress in the field as of March 2023.
+hard-to-use or even useless [45].                                             Prior work includes a few usability studies on various AI pro-
+   We performed an exploratory qualitative study in January 2023           gramming assistants using programming by demonstration ap-
+to understand developers’ practices when using AI programming              proaches [14, 20] and recurrent neural networks-based approaches
+assistants and the importance of the usability challenges that they        [39]. Lin et al. [39] reported that developers have difficulty in cor-
+face. We used a survey as a research instrument to collect large-          recting generated code, while Ferdowsifard et al. [20] showed that
+scale data on these phenomena to understand their importance to            a mismatch in the perceived versus actual capabilities of program
+the usability of AI programming assistants (see Figure 1).                 synthesizers may prevent the user from using them effectively.
+   In the end, we collected and analyzed responses from 410 devel-         Meanwhile, Jayagopal et al. [30] also conducted usability studies
+opers who were recruited from GitHub repositories related to AI            to understand the learnability of five of these tools with novices.
+programming assistants, such as GitHub Copilot and Tabnine [2].            Finally, McNutt et al. [43] enumerated a design space of interac-
+In summary, we find that:                                                  tions with code assistants, including how users can disambiguate
+                                                                           programs or refine generated code. Our study diverges from these
+Usage characteristics of AI programming assistants (Section 4)
+                                                                           works by evaluating AI programming assistants that are widely
+                                                                           used in practice by developers rather than evaluating these tools
+   (1) Developers who use GitHub Copilot report a median of 30.5%
+                                                                           in laboratory settings. In particular, we examine tools based on
+       of their code being written with help from the tool.
+                                                                           the transformer neural network architecture [58], such as GitHub
+   (2) Developers report the most important reasons why they use
+                                                                           Copilot and Tabnine. Transformer-based tools have shown strong
+       AI programming assistants are because of the tools’ ability
+                                                                           performance in working with both natural language and code in-
+       to help developers reduce key-strokes, finish programming
+                                                                           puts [59] compared to other types of these tools.
+       tasks quickly, and recall syntax.
+                                                                              Researchers have performed user studies on transformer-based
+   (3) The most important reasons why developers do not use these
+                                                                           AI programming assistants [e.g., 31, 60]. Both studies found users
+       tools at all are that the tools generate code that do not meet
+                                                                           may have trouble expressing the intent in their queries. In particular,
+       certain functional or non-functional requirements and that
+                                                                           Xu et al. [60] revealed a challenge their users faced was that the
+       it is difficult to control these tools to generate the desired
+                                                                           tool assumed background knowledge in underlying modules or
+       output.
+                                                                           frameworks.
+Usability of AI programming assistants (Section 5)                            Also related to our study are usability studies on how users
+                                                                           are using GitHub Copilot in practice. Vaithilingam et al. [56] per-
+   (4) Developers report the most prominent usability issues are           formed a user study of GitHub Copilot with 24 participants, where
+       that they have trouble understanding what inputs cause              they found users struggled with understanding and debugging the
+       the tool’s generated code, giving up on incorporating the           generated code. In a user study with 20 participants, Barke et al.
+       outputted code, and controlling the tool to generate helpful        [12] found that developers used GitHub Copilot in two different
+       code suggestions.                                                   modes–when they do not know what to do and explore different
+   (5) The most frequent reasons why users of these tools give up          options (i.e., exploration mode), or when they do know what to do
+       on using outputted code are that the code does not perform          but use GitHub Copilot to complete the task faster (i.e., accelera-
+       the correct action or it does not meet functional or non-           tion mode)–and that users are less willing to modify suggestions.
+       functional requirements.                                            Meanwhile, Mozannar et al. [44] identified 12 core activities asso-
+                                                                           ciated with using GitHub Copilot, such as verifying suggestions,
+Additional feedback about AI programming assistants from                   looking up documentation, and debugging code, which was then
+users (Section 6)                                                          validated on a user study with 21 developers. Finally, Ziegler et al.
+                                                                           [62] performed a large-scale user study of GitHub Copilot. They
+   (6) Developers would like to improve their experience with AI           analyzed telemetry data from the model and 2,631 survey responses
+       programming assistants by providing feedback to the tool to         on developers’ perceived productivity with the tool. They reported
+       correct or personalize the model as well as by having these         that 23.3%, 27.9%, and 28.8% of GitHub Copilot’s suggestions were
+       tools to learn a better understanding of code context, APIs,        accepted for TypeScript, JavaScript, and Python respectively, and
+       and programming languages.                                          22.2% for all other languages. We extend their user study by per-
+                                                                           forming a large scale study with a focus on the usability challenges
+   In this paper, we refer to tool creators as the individuals who build   of many AI programming assistants, including GitHub Copilot,
+and develop software related to AI programming assistants. Tool            which provides possible explanations for their findings.
+users are the people who use these tools while building software.             Other works have studied various design aspects of AI program-
+We use this term interchangeably with developers. Finally, we use          ming assistants. For instance, Vaithilingam et al. [55] suggested six
+the term inputs to refer to the code and natural language context          design principles of inline code suggestions from AI programming
+AI programming assistants use to produce outputted code, which             assistants, such as having glanceable suggestions. With the recent
+we also call generations.
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                           ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+popularity of transformer-based chatbots, such as ChatGPT [1],
+recent work [e.g., 48, 49] has investigated developers’ interactions                       Survey Questions
+with conversational chatbots. For example, Ross et al. [49] find that                       • For this software project, estimate what percent of your code
+developers are initially skeptical of chatbot programming assistants,                         is written with the help of the following code generation
+but are hopeful about their ability to improve their productivity                             tools.
+after using them.                                                                           • For each of the following reasons why you use code gener-
+   Many of the user studies enumerate potential usability chal-                               ation tools in this software project, rank its importance.
+lenges of using AI programming assistants. However, it is unclear                           • For each of the following reasons why you do not use code
+to what extent the enumerated challenges are important to devel-                              generation tools, rank its importance.
+opers in practice. Therefore, our study validates and extends these                         • For your software project, estimate how often you experi-
+works by quantifying to what extent these usability challenges are                            ence the following scenarios when using code generation
+encountered by developers in practice. Compared to prior work, we                             tools.
+also investigate a larger number of these tools and have a broader                          • For your software project, estimate how often the following
+focus on usability of both the tools and the tool’s outputted code.                           reasons are why you find yourself giving up on code created
+                                                                                              by code generation tools.
+3 METHODOLOGY                                                                               ⋆ What types of feedback would you like to give to code
+
+                                                                                              generation tools to make its suggestions better? Why?
+3.1 Participants
+We recruited a large number of participants in order to elicit a
+diverse range of programming experiences.                                                Figure 2: A subset of the actual survey questions about the
+                                                                                         usability of AI programming assistants. An open-ended ques-
+Sampling strategy. We recruited participants by selecting contribu-                      tion is indicated with a star (⋆). The complete survey instru-
+tors from GitHub repositories, following a sampling strategy similar                     ment is in the supplemental materials [37].
+to prior work [28, 38]. To recruit developers who are interested in
+AI programming assistants, we identified the three projects related
+to these tools. Two were from GitHub’s official GitHub account
+(i.e., github/copilot-docs [4] and github/copilot.vim [5]), while one
+was the official project repository for Tabnine [2], a popular AI                       (𝑛 = 131), hobby (𝑛 = 155), and/or school (𝑛 = 172). Additionally,
+programming assistant (i.e., codota/Tabnine [3]). To sample partic-                     they had a wide range of programming experience, ranging from 1
+ipants from the repositories, we used GitHub’s GraphQL API [8]                          to 41 years, with a median of 6 years. Survey participants reported
+to retrieve users who had forked or starred the repositories. 2,329                     using a variety of programming languages, such as Python (𝑛 =
+GitHub users forked, 21,302 GitHub users starred, and 396 GitHub                        199), JavaScript (𝑛 = 175), HTML/CSS (𝑛 = 157), TypeScript (𝑛 =
+users watched github/copilot-docs. 379 GitHub users forked, 6,299                       123), Bash/Shell (𝑛 = 134), and/or Java (𝑛 = 84). They also used
+GitHub users starred, and 87 GitHub users watched github/copi-                          AI programming assistants (see Table 1), such as GitHub Copilot,
+lot.vim. 420 GitHub users forked, 9,594 GitHub users starred, and                       Tabnine, Amazon CodeWhisperer, ChatGPT, and AI programming
+133 GitHub users watched codota/Tabnine. We then took the set                           assistants specific to an organization that was trained on proprietary
+union of the 9 sets of participants, removing all duplicates. This re-                  code.
+sulted in 33,983 unique GitHub users who had activities associated
+with the three repositories.                                                             3.2    Survey
+    Finally, we filtered the GitHub users by whether they had a
+publicly available email address, yielding 10,530 unique users who                      We designed a 15-minute Qualtrics survey to gather data for our
+we invited to take the survey. A random sample of 500 users was first                   research questions and distributed it to participants using the sam-
+sent the survey to verify the quality of the data. Email invitations                    pling strategy described in Section 3.1. After completing the survey,
+were sent to the remaining 10,030 users.                                                participants could join a sweepstakes to win one of four $100 elec-
+                                                                                        tronic gift certificates. All questions in the survey were optional.
+Demographics. The Qualtrics survey was sent to all 10,530 GitHub                        The study was approved by our institution’s institutional review
+users and received 410 responses, resulting in a response rate of                       board.
+around 4%. This response rate is comparable to other research                              The survey first asked participants how often they used AI pro-
+surveys in software engineering [e.g., 38, 52].                                         gramming assistants and whether they had any concerns about
+   We summarize the attributes of our participants. Questions on                        using these tools. If the participant used AI programming assis-
+their background were optional and thus may not sum up to 410.                          tants, they were asked to consider a specific project where they
+Overall, participants represented 57 unique countries. They were                        used AI programming assistants and were asked a set of questions
+from Africa (𝑛 = 9), Asia (𝑛 = 116), Europe (𝑛 = 77), North America                     regarding their experience with these tools. Survey topics included:
+(𝑛 = 77), Oceania (𝑛 = 4), and South America (𝑛 = 13). They also                        why participants use AI programming assistants, how often these
+represented multiple genders, such as man (𝑛 = 280), woman (𝑛 = 8),                     tools are used, strategies participants use to make AI programming
+and non-binary (𝑛 = 7). Participants programmed under a variety                         assistants work better, and why participants give up using gener-
+of contexts, including for their profession as a software engineer                      ated code. If the participant did not use AI programming assistants,
+(𝑛 = 203) or an end-user developer (𝑛 = 82), an open-source project                     they answered questions regarding why they did not.
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                          Liang et al.
+
+
+    The survey also collected information on the participants’ pro-         the shared codebook. The remaining codes were then added to or
+gramming backgrounds and demographics. Following best prac-                 removed from the codebook by a unanimous vote between the two
+tices, we used the HCI Guidelines for Gender Equity and Inclusivity         authors. Coding disagreements most frequently occurred due to
+to collect gender-related information [51]. We allowed participants         different scopes of codes rather than the meaning of participants’
+to select multiple responses for questions on gender. A subset of the       statements. The authors then jointly performed a second round
+survey questions is included in Figure 2; the full survey instrument        of coding on the original data by applying codes from the shared
+is included in the supplemental materials [37]. While developing            codebook onto each instance based on a unanimous vote. We do
+the survey, an external researcher reviewed and provided feedback           not report IRR because following best practices from Hammer and
+on the survey for clarity and topic coverage.                               Berland [26], each instance’s codes were unanimously agreed upon
+    We conducted pilots of the survey to identify and reduce con-           and because the codes were the process, not the product [42].
+founding factors, following the best practices for experiments with
+human subjects in software engineering research [33]. We piloted            4     USAGE CHARACTERISTICS
+drafts of the survey with 11 developers, who were recruited through         We present our findings on how developers use AI programming
+snowball sampling. These pilots helped clarify wording, ensure              assistants. We first present quantitative results on how developers
+data quality, and identify usability factors prior literature may have      use these tools (Section 4.1) and developers’ motivations for using
+missed. The survey was updated between each round of feedback.              them (Section 4.2). To elucidate the quantitative results, we describe
+The results from the pilots were not included in the data used in           qualitative results on successful use cases (Section 4.3) and users’
+this study.                                                                 strategies to generate helpful output (Section 4.4).
+
+3.3     Analysis                                                            4.1    Usage patterns
+To analyze the data, we used both quantitative and qualitative              In the survey, we asked participants to describe how often they used
+techniques. This is because survey questions were largely closed-           AI programming assistants and how much of their code was written
+ended but participants could also select an "other" option, and many        with the help of these tools (see Table 1). We report the median
+questions also provided space to enter open-ended responses. The            percentage of code written by each tool’s users. Unsurprisingly,
+choices are based on survey piloting and results from prior literature      GitHub Copilot was the most popular AI programming assistant by
+on human evaluations of AI programming assistants (i.e., [12, 15, 17,       the number of users (306), with 46% of its users reporting using the
+18, 29–31, 46, 56, 60, 62]). The first author reviewed these papers and     tool frequently. GitHub Copilot’s users reported writing 30.5% of
+extracted mentions of usability-related issues with AI programming          their code with the help of the tool. However, organization-specific
+assistants, resulting in a set of usability issues with these tools. This   AI programming assistants helped write the largest percentage of
+set of usability issues was then de-duplicated and used as choices          code for survey participants (37%). Interestingly, we found that
+for closed-ended questions in the survey. Below, we describe our            chatbot-based programming assistants (i.e., ChatGPT) were self-
+methods in further detail.                                                  reported by 25 participants. Even though ChatGPT had the highest
+                                                                            proportion of frequent users (59%), it was the penultimate tool in
+Quantitative analysis. To perform quantitative analysis on the closed-      terms of the amount of code it helped write for survey participants
+ended questions, we followed best practices for statistical analysis        (20%).
+techniques described by Kitchenham and Pfleeger on how to an-
+alyze survey data [32]. In particular, we report the frequencies of         4.2    Motivation
+how often an item was selected. We also report how frequently               Motivation for using. Participants who reported using an AI pro-
+participants rated statements as being important or very important,         gramming assistant on at least a monthly basis reported their moti-
+situations as occurring often or always, and feeling concerned or           vations for using these tools (see Table 2-A). Participants largely
+very concerned about a situation. Following best practices [45], we         used these tools for convenience in programming–86%, 76%, and
+report measurements on perceived frequency to understand the                68% of participants cited an important motivation for using these
+importance of a situation rather than an accurate measurement on            tools was autocompletion (M1), finishing tasks faster (M2), and
+how frequently a situation occurs.                                          skipping going online to recall syntax respectively (M3). On the
+                                                                            other hand, 50% and 36% of participants said an important reason
+Qualitative analysis. For qualitative analysis, the first two authors
+                                                                            for using these tools was finding potential code solutions (M4) or
+performed multiple rounds of open coding on each set of responses
+                                                                            edge cases respectively (M5).
+to the open-ended questions. We used general best practices [26, 50],
+such as interpreting generated codes as itemized claims about the           Motivation for not using. Participants who reported not using any
+data to be investigated in other work and shuffling responses to            AI programming assistant on at least a monthly basis reported
+reduce any ordering effects that could emerge during coding.                their motivations for not using these tools (see Table 2-B). Par-
+   In the first round of coding, the authors open-coded the same            ticipants seemed to not use these tools because the tools did not
+initial set of 100 responses. Each response was labeled with zero           provide useful or relevant output. Two important motivations were
+or more codes. Each code was given a unique identifier and brief            that the models did not write code that met certain functional or
+description. Then, the authors convened to discuss the resulting set        non-functional requirements (M6, 54%) and users had difficulty
+of codes and their scopes. To merge the codes, the authors identified       controlling the model (M7, 48%). 34% of participants cited these
+codes with similar themes and merged them into a single code in             tools not providing helpful suggestions as an important reason for
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                                ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+Table 1: Participants’ self-reported usage of popular AI programming assistants. An asterisk (*) denotes a write-in suggestion,
+which has limited information on its usage distribution. Percentages in italics on the chart (𝑁 %) represent the percent of the
+distribution that reported "Always"/"Often" (left) and "Rarely"/"Tried but gave up" (right).
+
+                                                                           Med. %
+  Tool                                                      # users                       Usage distribution
+                                                                        code written
+  Amazon CodeWhisperer                                          50            5%           24%                                                                  61%
+  ChatGPT*                                                      25           20%           59%                                                                  14%
+  GitHub Copilot                                               306          30.5%          46%                                                                  30%
+  TabNine                                                      118           20%           27%                                                                  66%
+  Organization-specific code generation tool trained            54           37%           29%                                                                  56%
+    on proprietary code
+                       Always (1+ times daily)        Often (once daily)       Sometimes (weekly)        Rarely (monthly)       Tried but gave up
+
+
+                          Table 2: Participants’ motivations for using and not using AI programming assistants.
+
+         Motivation                                                                        Distribution
+         A. For using
+ M1      To have an autocomplete or reduce the amount of keystrokes I make.                    86%                                                               6.2%
+ M2      To finish my programming tasks faster.                                                76%                                                               12%
+ M3      To skip needing to go online to find specific code snippets, programming              68%                                                               14%
+           syntax, or API calls I’m aware of, but can’t remember.
+ M4      To discover potential ways or starting points to write a solution to a                50%                                                               24%
+           problem I’m facing.
+ M5      To find an edge case for my code I haven’t considered.                                36%                                                               44%
+
+         B. For not using
+ M6      Code generation tools write code that doesn’t meet functional or non-                 54%                                                               34%
+             functional (e.g., security, performance) requirements that I need.
+ M7      It’s hard to control code generation tools to get code that I want.                   48%                                                               36%
+ M8      I spend too much time debugging or modifying code written by code                     38%                                                               45%
+             generation tools.
+ M9      I don’t think code generation tools provide helpful suggestions.                      34%                                                               46%
+ M10     I don’t want to use a tool that has access to my code.                                30%                                                               51%
+ M11     I write and use proprietary code that code generation tools haven’t seen              28%                                                               59%
+             before and don’t generate.
+ M12     To prevent potential intellectual property infringement.                              26%                                                               66%
+ M13     I find the tool’s suggestions too distracting.                                        26%                                                               51%
+ M14     I don’t understand the code written by code generation tools.                         16%                                                               76%
+ M15     I don’t want to use open-source code.                                                 10%                                                               89%
+
+                             Very important        Important         Moderately important        Slightly important   Not important at all
+
+
+not using them (M9). By having code that was not useful, users                             Repetitive code (78×). Participants were successful in using the
+engaged in the time-consuming process of modifying or debugging                         AI programming assistants to generate repetitive code, such as
+code (M8). This was also a salient motivation, as 38% of participants                   "boilerplate [code]" (P165), "repetitive endpoints for crud" (P164), and
+rated it as an important reason for not using these tools. Partici-                     "college assignments" (P265) that had repeated functionality or were
+pants resonated the least with not understanding generated code                         common programming tasks. This was the most frequent code in
+(M14) and not wanting to use open-source code (M15), as 76% and                         our data.
+89% of participants rated them as not important.                                               Complete code that is highly repetitive but cannot be copied
+                                                                                           and pasted directly." (P195)
+                                                                                            Code with simple logic (68×). Consistent with prior work [56],
+4.3      Successful use cases                                                            participants reported using AI programming assistants to success-
+Survey participants described situations where they were most                            fully generate code with simple logic. This was the second most
+successful in using AI programming assistants. We found 10 types                         mentioned code in the dataset. Examples include "small independent
+of situations, which we describe below. We report the frequencies                        utils functions" (P155), "sorting algorithms" (P177), and "small func-
+of the codes using the multiplication symbol (×).                                        tions like storing the training model into local file systems" (P255).
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                            Liang et al.
+
+
+Participants said that having the tool write more complex logic                Code consistency (4×). A few participants used these tools to im-
+often resulted in it not working:                                           prove style consistency in a codebase, which is a factor developers
+      It however, fails assisting me when I’m writing a more complex        consider while making implementation decisions [36]. Participants
+   algorithm (if not well known)." (P28)                                    applied these tools to "[follow]...standard clean code style" (P156),
+                                                                            such as "proper indentation in different [programming] languages"
+    Autocomplete (28×). We found participants also utilized AI              (P50). It also helped with consistency within a project:
+programming assistants to do short autocompletions of code, which                 To ensure consistency of code by quickly referencing sources
+is associated most with acceleration mode usages of these tools [12].          created within the project." (P36)
+This code was the third most mentioned code in the dataset.
+      I wrote s_1, a_1 = draw(’file_1’), then I want to complete            4.4    User input strategies
+    s_2, a_2 = draw(’file_2’). After I type s_2, copilot helps me           Finally, we asked participants to enumerate strategies they used
+    [with] this line." (P240)                                               to get AI programming assistants to output the best answers. We
+   Quality assurance (21×). Participants reported using AI pro-             found 7 strategies, which we describe below.
+gramming assistants for quality assurance, such as "[generating]               Clear explanations (99×). The most popular strategy partici-
+useful log messages" (P212) and "[producing] a lot of test cases quickly"   pants reported was providing very clear and explicit explanations
+(P356). As found in prior work [12], participants used these tools          of what the code should do in comments, which is a major activity
+to consider edge cases:                                                     while using AI programming assistants [44]. Participants wrote "a
+      This tool can almost instantly generate the code with good edge       docstring which tells the function of the function" (P22) or "outlining
+   case coverage." (P160)                                                   preconditions and postconditions and [writing a]...test case (P356).
+                                                                            Others opted to "use words (tags) rather than sentences" (P206).
+   Proof-of-concepts (20×). Similar to prior work [12, 56, 60], par-
+ticipants mentioned that using AI programming assistants helped                   Be incredibly specific with the instructions and write them as
+with brainstorming or building proof-of-concepts by helping gen-               precisely as I would for a stupid collaborator." (P170)
+erate multiple implementations for a given problem. Participants              No strategy (44×). Many participants reported not employing
+relied on this when they "need[ed] another solution" (P193) or "only        any strategy, as they found AI programming assistants to provide
+[had] a fuzzy idea about how to approach it" (P163), so these tools         helpful suggestions without needing to perform specific actions.
+also helped with provide a starting implementation to work off of:               Nothing, I just review the suggestions as they come up." (P268)
+      We most use these tools at the beginning as a start point or
+                                                                               Adding code (36×). Participants often reported consciously writ-
+   when we get stuck." (P21)
+                                                                            ing additional code as context for the AI programming assistant to
+   Learning (19×). Study participants also utilized these tools when        later complete. Participants did this to "make some context" (P117)
+"learning new programming languages" (P197) or "new libraries"              and provide a "hint to [improve] the code generation" (P93).
+(P140) they had limited to no experience with, rather than using                  Write a partial fragment of the code I think is...correct." (P166)
+online documentation [47] or video tutorials [40]. Participants re-            Following conventions (24×). Many participants also resorted
+ported that it was especially useful when a project used multiple           to following common conventions, such as "communities’ rules and
+programming languages:                                                      design patterns" (P157), "well-named variables" (P366), or "[giving]
+      Since [the codebase] is a polyglot project with golang, java, and     the function a very precise name" (P254). Participants even viewed
+   cpp implementations, I benefit a lot from...polyglot support." (P40)     the generated code as a source of code with proper conventions:
+   Recalling (19×). As found in prior work [60], participants lever-               Proper naming conventions also helps... Since these tools learn
+aged AI programming assistants to find syntax of programming                   from excellent code, I should also write code that follows conven-
+languages or API methods that they were familiar with, but could               tions, this can make tools easily find the right result." (P224)
+not recall. This replaced the traditional methods of using web                 Breaking down instructions (18×). Participants also reported
+search [47] to find online resources like StackOverflow [27, 41]            breaking down the code logic or prompts into shorter, more con-
+to recall code snippets or syntax:                                          cise statements by explaining the functionality step-by-step. Exam-
+      To skip needing to go online to find...code snippets." (P179)         ples include "break[ing] the problem into smaller parts" (P166) and
+                                                                            "split[ting] the sentence to be shorter" (P167).
+   Efficiency (18×). Study participants also echoed prior work [62]
+                                                                                   You have to break down what you’re trying to do and write it
+by describing an AI programming assistant’s ability to "speed up...work"
+                                                                               in steps, it can’t do too much at once." (P126)
+(P246). Participants reported that it helped them to "stay in the flow",
+an important aspect of developer productivity [23]:                            Existing code context (18×). Participants developed mental
+      Code generation will help the process go smoother and does not        models of these tools [15], as they reported leveraging existing
+   introduce unwanted interruptions." (P166)                                code as additional data for the AI programming assistant to use,
+                                                                            such as by "opening files for context" (P274). Participants reported
+   Documentation (6×). A few participants used AI programming               specifically using AI programming assistants only when there was
+assistants to generate documentation. One participant noted gener-          sufficient existing code context:
+ating documentation helped with collaboration:                                     I try to use it at advanced stages of my project, where it can
+      I mainly use it to...annotate my code for my colleagues." (P258)         give better suggestions based on my project’s history." (P111)
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                              ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+   Prompt engineering (13×). Some participants iteratively changed                       the outputted code’s logic in depth (S16, 64%). However, partici-
+their inputs to query the tool. such as "changing the prompt/com-                        pants reported frequently consulting API documentation at a lower
+ment to simpler sentences" (P82) or "tweak[ing] the comments...to [be                    rate (S17, 38%).
+more] interactive...for the specific task" (P80).
+      If the code generated does not satisfy me, I will edit the com-                    5.4      Modifying outputted code
+   ments." (P150)
+                                                                                        We asked participants how they modified the generated code (see
+    ○ Key findings: Participants who were GitHub Copilot users                          Table 3-D). Participants overall reported regularly having success
+    reported a median of 30.5% of their code being written with its                     with modifying the outputted code (S18, 63%), most often by chang-
+    help (#1). The most important reasons for using AI program-                         ing the generated code itself (S19, 62%) rather than by changing
+    ming assistants were for autocomplete, completing program-                          the input context (S20, 40%). Additionally, a smaller proportion of
+    ming tasks faster, or skipping going online to recall syntax (#2).                  participants (S21, 44%) often used the generated code as-is.
+    Participants successfully used these tools to generate code that
+    was repetitive or had simple logic. Participants reported the                        5.5      Giving up on outputted code
+    most important reasons for not using AI programming assis-
+                                                                                        We asked participants who reported giving up on outputted code to
+    tants were because the code that the tools generated did not
+                                                                                        rate the reasons why (see Table 3-E). The two major reasons were
+    meet functional or non-functional requirements and because it
+                                                                                        that the generated code did not perform the intended action (S22)
+    was difficult to control the tool (#3).
+                                                                                        and because the code did not meet functional or non-functional
+                                                                                        requirements (S23)–43% and 34% of participants frequently encoun-
+                                                                                        tered these situations respectively. The least salient reasons why
+5     USABILITY OF AI PROGRAMMING
+                                                                                        participants gave up on using generated code was that they did not
+      ASSISTANTS                                                                        understand the outputted code (S27), that they found the output
+In this section, we present our findings on what challenges devel-                      too complicated (S28), and that the outputted code used unfamiliar
+opers encounter while interacting with AI programming assistants.                       APIs (S29). This was regularly encountered by 12%, 10%, and 10%
+We first report the frequency of usability issues (Section 5.1). To bet-                of participants respectively.
+ter understand these challenges, we explore the practices of users
+in understanding (Section 5.2), evaluating (Section 5.3), modifying
+(Section 5.4), and giving up (Section 5.5) on outputted code.                                ○ Key findings: The most frequent usability challenges par-
+                                                                                             ticipants reported encountering were understanding what part
+5.1      Usability issues                                                                    of the input caused the outputted code, giving up on using the
+                                                                                             outputted code, and controlling the tool’s generations (#4). Par-
+We asked participants to rate how frequently certain usability issues
+                                                                                             ticipants most often gave up on outputted code because the
+occurred while they used AI programming assistants (see Table 3-
+                                                                                             code did not perform the intended action or did not account for
+A). The biggest challenges participants reported facing were not
+                                                                                             certain functional and non-functional requirements (#5).
+knowing what part of the input influenced the output (S1), giving
+up on using outputted code (S2), and having trouble controlling
+the model (S3), as 30%, 28%, and 26% of participants encountered
+                                                                                         6     ADDITIONAL FEEDBACK
+these situations often. Meanwhile, participants had the least trouble
+with understanding the code generated by the tool (S9)–only 5.6%                        We present our results on what additional feedback developers have
+of participants frequently encountered this issue, despite it being                     to improve their experiences with AI programming assistants. We
+discussed in prior literature [56].                                                     discuss general concerns that participants had about these tools
+                                                                                        (Section 6.1) and participants’ responses on how they would im-
+5.2      Understanding outputted code                                                   prove them (Section 6.2).
+We asked participants who reported having trouble understanding
+the outputted code to rate the reasons why (see Table 3-B). 25% of                       6.1      General concerns
+participants said it was often because the outputted code used unfa-                    We asked all participants to rate their level of concern on issues
+miliar APIs (S10). Meanwhile, 23% and 19% of participants stated it                     related to AI programming assistants (see Table 4), which were
+was often due to the code being too long to read quickly (S11) and                      derived from Cheng et al. [15] and our survey pilots. Participants
+the code having too many control structures (S12) respectively.                         overall seemed most concerned about their own and others’ intel-
+                                                                                        lectual property–they most frequently described feeling concerned
+5.3      Evaluating outputted code                                                      over AI programming assistants producing code that infringed on
+We asked participants how they evaluated generated code (see Ta-                        intellectual property (C1, 46%) and the tools having access to their
+ble 3-C). The order of the evaluation methods by frequency closely                      code (C2, 41%). In contrast, participants seemed less worried about
+related to how time-consuming each method was reported to be.                           concerns more specific to working in commercial contexts; 29% of
+Participants often reported using quick visual inspections of the                       participants reported feeling concerned about AI programming as-
+code (S13, 74%), static analysis tools like syntax checkers (S14,                       sistants not generating proprietary APIs (C3) as well as generating
+71%), executing the code (S15, 69%), and examining the details of                       outputted code that contained open-source code (C4).
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                                   Liang et al.
+
+
+          Table 3: How frequently participants report usability issues occurring while using AI programming assistants.
+
+        Situation                                                                         Distribution
+        A. Usability issues
+ S1     I don’t know what part of my code or comments the code generation tool             30%                                                      48%
+            is using to make suggestions.
+ S2     I give up on incorporating the code created by a code generation tool and          28%                                                      35%
+            write the code myself.
+ S3     I have trouble controlling the tool to generate code that I find useful.           26%                                                      48%
+ S4     I find the code generation tool’s suggestions too distracting.                     23%                                                      44%
+ S5     I have trouble evaluating the correctness of the generated code.                   23%                                                      52%
+ S6     I have difficulty expressing my intent or requirements through natural             22%                                                      36%
+            language to the tool.
+ S7     I find it hard to debug or fix errors in the code from code generation tools.      17%                                                      61%
+ S8     I rely on code generation tools too much to write code for me.                     15%                                                      67%
+ S9     I have trouble understanding the code created by a code generation tool.           5.6%                                                     45%
+
+        B. Reasons for not understanding code output
+ S10    The generated code uses APIs or methods I don’t know.                              25%                                                      43%
+ S11    The generated code is too long to read quickly.                                    23%                                                      45%
+ S12    The generated code contains too many control structures (e.g., loops, if-else      19%                                                      44%
+           statements).
+        C. Methods of evaluating code output
+ S13    Quickly checking the generated code for specific keywords or logic struc-          74%                                                      10%
+          tures
+ S14    Compilers, type checkers, in-IDE syntax checkers, or linters                       71%                                                      14%
+ S15    Executing the generated code                                                       69%                                                      14%
+ S16    Examining details of the generated code’s logic in depth                           64%                                                      15%
+ S17    Consulting API documentation                                                       38%                                                      28%
+
+        D. Methods of modifying code output
+ S18    When a code generation tool outputs something I don’t want, I’m able to            63%                                                      12%
+           modify it to something I want.
+ S19    I successfully incorporate the code created by a code generation tool by           62%                                                      9.1%
+           changing the generated code.
+ S20    I use the code created by a code generation tool as-is.                            44%                                                      24%
+ S21    I successfully incorporate the code created by a code generation tool by           40%                                                      30%
+           changing the code or comments around it and regenerating a new sug-
+           gestion.
+        E. Reasons for giving up on code output
+ S22    The generated code doesn’t perform the action I want it to do.                     43%                                                      22%
+ S23    The generated code doesn’t meet functional or non-functional (e.g., secu-          34%                                                      28%
+           rity, performance) requirements that I need.
+ S24    The generated code’s style doesn’t match my project’s.                             22%                                                      48%
+ S25    The generated code contains too many defects.                                      21%                                                      42%
+ S26    The generated code uses an API I know, but don’t want to use.                      17%                                                      55%
+ S27    I don’t understand the generated code well enough to use it.                       12%                                                      69%
+ S28    The generated code is too complicated.                                             10%                                                      68%
+ S29    The generated code uses an API I don’t know.                                       10%                                                      59%
+
+                                                      Always       Often      Sometimes           Rarely   Never
+
+
+6.2     Improving AI programming assistants                                             from. Some wanted to correct the outputted code as feedback, while
+We asked participants to describe feedback they would provide to AI                     others wanted to teach the model their personal coding style. While
+programming assistants to make their output better. We identified                       some participants wanted to directly provide feedback in natural
+8 types of feedback, which we elaborate on below.                                       language, others preferred code: "Maybe...code [of] my correct an-
+                                                                                        swer. I don’t...want to explain in natural language." (P201). Mean-
+                                                                                        while, others suggested rating the output with "like/dislike but-
+  User feedback (52×). Most frequently, participants wanted to
+                                                                                        tons...to not get distracted from actual work" (P52).
+provide feedback to the AI programming assistant for it to learn
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                                ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+                          Table 4: Participants’ level of concern on issues related to AI programming assistants.
+
+        Concern                                                                              Distribution
+ C1     Code generation tools produce code that infringe on intellectual property.             46%                                                               32%
+ C2     Code generation tools have access to my code.                                          41%                                                               38%
+ C3     Code generation tools do not generate proprietary APIs or code.                        29%                                                               46%
+ C4     Code generation tools may produce open-source code.                                    29%                                                               53%
+
+                            Very concerned        Concerned        Moderately concerned              Slightly concerned   Not concerned at all
+
+
+      Automatic feedback based on code correction made by the                                     These tools must show where the code snippet comes from and
+   developer." (P57)                                                                           include the code link of snippet, license, author name if available
+      Maybe more personaliz[ation]...I have my own code style, so I                            for better references for that specific code." (P281)
+   will need...time to modify the code into my style." (P102)
+                                                                                            More suggestions (9×). Consistent with prior work [12], a few
+   Better understanding of code context (20×). Participants also                         participants wanted to have the model regenerate or provide more
+reported wanting AI programming assistants to have additional                            than one suggestion, such as by having the "possibility to shuffle
+understanding of code context, such as learning from "context from                       between code snippets" (P177).
+other files on the same workspace" (P12). Others wanted these tools                            Maybe multiple suggestions and then I pick the best." (P149)
+to have a deeper understanding of certain nuances behind APIs
+                                                                                           Accounting for non-functional requirements (8×). Some par-
+and programming languages, such as when "the code is using [a]
+                                                                                        ticipants requested AI programming assistants to generate code that
+deprecated API" (P88).
+                                                                                        addressed non-functional requirements, such as "time complexity"
+      To be able to better describe the contexts of our projects during
+                                                                                        (P191). Other participants wanted more readable code:
+   creation. For a better understanding of our code generator." (P208)
+                                                                                              Sometimes AI suggest code [with] one lines or short hand logic,
+   Tool configuration (17×). A few participants wanted to change                           which is difficult to read and understand." (P98)
+the tool’s settings. This included "distinguish[ing when to do] long
+code generation and short code [generation]" (P240), having "ad-                             ○ Key findings: Participants were most concerned about poten-
+justable parameters" (P177), or reducing the frequency of sugges-                            tially infringing on intellectual property and having a tool have
+tions. This could assist the model in adapting to whether the devel-                         access to their code. Participants reported wanting to improve
+oper was in acceleration mode–associated with short completions–                             AI programming assistants’ output by having users directly pro-
+or exploration mode–associated with long completions [12].                                   vide feedback to correct or personalize the tool or by teaching
+      I’d like to be able to ask it to calm down sometimes instead of                        the underlying model to have a better understanding of code
+   constantly trying to suggest random stuff." (P122)                                        context (#6). They also wanted more opportunities for natural
+                                                                                             language interaction with these tools.
+  Natural language interactions (16×). Some participants wanted
+opportunities for interaction via natural language. Inspired by Chat-
+GPT [1], several participants mentioned chat-based interactions:                         7      THREATS TO VALIDITY
+"would be nice if we could give feedback to it like how we chat with                    Internal validity. Memory bias may influence the internal validity
+chatGPT" (P39).                                                                         of the study, as the survey questions required participants to recall
+     To comment on the resulting code the tool generates, and let                       their experiences with AI programming assistants. We addressed
+  the tool reiterate from such previously generated result, but with                    this threat by asking participants to consider their experiences with
+  my comments." (P166)                                                                  these tools with respect to a specific project in order to ground
+                                                                                        participant responses with a concrete experience.
+   Code analysis (13×). As discussed in prior work [12], some                              Study participants may also misunderstand the wording of some
+participants also wanted further analysis on the generated code                         of the survey questions. To reduce this threat, we piloted the survey
+for functional and syntactic correctness, as "[making] any basic                        11 times with developers with a focus on the clarity of the survey
+grammatical mistakes or spelling mistakes...would be considered un-                     questions and updated the survey based on their feedback.
+reliable" (P105).
+      Add extra checks to outputted code to ensure it resembles the                     External validity. Any empirical study may have difficulties in gen-
+   input given and that the outputted code is complete and can be                       eralizing [21]. To address this, we sample from a set of participants
+   run. Often the outputted code that I am given is incomplete, lacks                   who are diverse in terms of geographic location and software en-
+   the ability to run or [be] tested immediately." (P158)                               gineering experience. However, our study may still struggle with
+                                                                                        sampling bias. This is because we sampled from GitHub projects
+   Explanations (11×). Some participants wanted explanations                            that were related to AI programming assistants, such as GitHub
+for additional context of the generated code, such as "sourcing...the                   Copilot and Tabnine. Thus, our sample largely represents people
+suggestions" (P58) or "link[ing] direct[ly] to documentation" (156).                    who are enthusiastic about these tools. Further, our sample does
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                      Liang et al.
+
+
+not specifically sample individuals who are not interested in AI pro-     the developer is unsure of what to write and would like to visit po-
+gramming assistants, so this population may be underrepresented           tential options. Our results support this theory of AI programming
+within our study. Therefore, our sample may not be representative         assistant usage, as both acceleration mode and exploration mode
+of all users of AI programming assistants.                                emerge as themes in our results. In particular, these modes appear
+   Because the survey was deployed in January 2023, participants          when developers use AI programming assistants (e.g., repetitive
+provided responses based on their experiences with AI program-            code, code with simple logic, autocomplete, recalling versus
+ming assistants at the time. Thus, some aspects may not be relevant       proof-of-concepts), why developers use these tools (e.g., autocom-
+to future versions of these tools that perform differently.               pleting (M1), finishing programming tasks faster (M2), not needing
+                                                                          to go online to find code snippets (M3) versus discovering potential
+Construct validity. Many survey questions asked participants to pro-      ways to write a solution (M4), finding an edge case (M5)), and how
+vide subjective estimates of the frequency of encountering certain        developers interacted with the tool to produce better suggestions
+situations or using specific tools. Thus, these estimates may not be      (e.g., no strategy, following conventions, adding code versus
+accurate. Collecting in-situ data in future studies, such as in [44]      clear explanations).
+and [62], would be more appropriate to evaluate the frequency of             We further augment Barke et al. [12]’s theory by finding that
+these events. We report measurements on perceived frequency as a          aspects related to acceleration mode are represented within our data
+proxy for the importance of each usability challenge–following best       more than aspects related to exploration mode. For example, repeti-
+practices in human factors in software engineering research [45]–         tive code (78×), code with simple logic (68×), and autocomplete
+rather than the ground truth on the usability challenge’s frequency.      (28×), all occur more frequently than proof-of-concepts (20×) as
+                                                                          situations when participants successfully used AI programming
+Ethical Considerations. An important component of this research           assistants. Additionally, participants rated M1 (86%), M2 (76%), and
+study was gathering a sufficiently large number of responses to           M3 (68%) to be important reasons for using AI programming assis-
+our survey. Our goal was to receive 385 survey responses, so that         tants at higher rates than M4 (50%) and M5 (36%). This suggests
+we could achieve a 95% confidence level with a 5% margin of error         that developers may value acceleration mode over exploration mode.
+with our sample.
+   Given our recruitment method needed to result in a large number        Chatbots as AI programming assistants. Our results also indicate
+of responses from programmers, traditional methods of recruitment         a potential for AI programming assistant users to rely more on
+used in smaller-scale user studies were not practical for our study.      chat-based interactions, following the recent rise of powerful chat-
+Snowball sampling was unlikely to yield the scale of responses that       bots such as ChatGPT [1]. 6% of our participants explicitly wrote
+were necessary, while recruiting student programmers from our             that they used ChatGPT as an AI programming assistant, and a
+institution or using traditional crowd-sourcing platforms (e.g., Ama-     popular feedback was to provide more opportunities for natural
+zon Mechanical Turk) would not target a representative population         language interactions. While recent work shows promise in this
+of developers. Therefore, we followed prior research in the past          method of interaction with AI programming assistants [48, 49], it
+10 years published in top software engineering conferences ([e.g.,        also raises additional questions of when these interaction meth-
+24, 25, 28, 38]) that utilized large-scale participant recruitment from   ods should be applied. Understanding when developers should rely
+populations on GitHub that achieved a sufficient number of survey         on these interactions is fundamentally a usability question that
+responses. However, community standards following this recruit-           cannot be addressed through technological advances alone, as it is
+ment method have recently shifted. Recent work from Tahaei and            unclear how to balance this interaction mode with users’ cognitive
+Vaniea [54] has noted limitations in this method, as mining emails        load. While participants seemed to prefer acceleration mode over
+from GitHub is not encouraged by the platform. We advise future           exploration mode, our results also indicate that some users may be
+work to not use our recruitment strategy and instead follow Tahaei        amenable to using chat; this is because providing clear explana-
+and Vaniea [54]’s recommendation in using the crowdsourcing               tions, often in natural language, was the most cited strategy to
+platform, Prolific [7], as it is a more sustainable way of gathering      having AI programming assistants produce the best output.
+survey responses from developers at scale.
+                                                                          Developers using AI programming assistants to learn APIs and pro-
+                                                                          gramming languages. The findings from our study indicate the po-
+8     DISCUSSION & FUTURE WORK                                            tential for developers using AI programming assistants to learn
+The findings from our study overlap with prior usability studies of       APIs and programming languages. Learning is a fundamental ac-
+AI programming assistants [e.g., 12, 13, 56, 62]. In this section, we     tion in software engineering [22] and is independent of any tech-
+discuss these works in relation to our results. This produces several     nological innovation. Further, it is an important skill for devel-
+implications for future work, which we elaborate on further.              opers [11, 34, 35, 38]. While developers previously used online
+                                                                          resources, such as documentation [47], StackOverflow [27, 41], or
+                                                                          blogs [53] to learn how to use new technologies, our study partici-
+8.1     Implications
+                                                                          pants often favored AI programming assistants over these resources
+Acceleration mode versus exploration mode. Barke et al. [12] found        for both recalling and learning syntax of APIs and programming
+that users of AI programming assistants, such as GitHub Copilot,          languages.
+use the tools in two main modes: acceleration mode, where the de-
+veloper knows what code they would like to write and uses the             Aligning AI programming assistants to developers. Our results indi-
+tool to complete the code more quickly, or exploration mode, where        cate that there are several opportunities in aligning AI programming
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                            ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+assistants to the needs of developers. Giving up on incorporating                          Another line of research is to study how to improve AI pro-
+code (S2) was the most common usability issue encountered and                           gramming assistants’ alignment with developers. This is unlikely
+it often occurred because the code did not perform the correct ac-                      to be resolved entirely through modeling improvements, as human
+tion (S22). Future work could mitigate this issue by designing new                      developers must be able to articulate requirements and evaluate
+metrics (e.g., [19]) to increase developer-tool alignment.                              solutions for any given problem. However, this is challenging, as
+    Further, one emergent theme to align these tools with develop-                      software design and implementation are notoriously complex. Soft-
+ers is by giving developers more control over the tools’ outputs.                       ware solutions and problems can co-evolve with one another [57],
+In our study, the most frequent usability issues encountered were                       and software design knowledge can be implicit [36]. Thus, facilitat-
+not knowing why code was outputted (S1, 30%) and having trou-                           ing ways for developers to explicitly describe their software design
+ble controlling the tool (S3, 26%). Participants also often reported                    knowledge to these tools is a challenge to address.
+not using these tools due to difficulties controlling the tool (M7,                        Finally, future work should also investigate new interaction tech-
+48%). Additionally, the most frequent feedback provided was accept-                     niques to support acceleration mode specifically, given participants’
+ing user feedback to correct the tool. Thus, future work should                         emphasis on this type of usage of AI programming assistants. Fol-
+investigate techniques to allow users to better control AI program-                     lowing design recommendations for generative AI in creative writ-
+ming assistants, such as through interactive machine learning ap-                       ing contexts [16], these interaction techniques should require min-
+proaches [10].                                                                          imal cognitive effort for developers to prevent distracting them
+    Another theme that emerged was the need for AI programming                          from their tasks. Study participants described favoring implicit
+assistants to account for non-functional requirements in the gener-                     interactions with AI programming assistants over explicit ones:
+ation. It was mentioned within the feedback that study participants                            Automatic feedback. The tool knows whether I choose...to apply
+had for the tools (accounting for non-functional requirements)                             its suggestions. Because it won’t distract me." (P246)
+and was a reason why participants did not use them (M6, 54%) or                                Feedback...is important, but I’m not sure I want to invest time
+gave up on generated code (S23, 34%). Therefore, future work should                        in "teaching" the tool." (P111)
+investigate avenues for incorporating non-functional requirements–
+such as readability and performance–into the generation, which                           9     CONCLUSION
+could help increase developers’ adoption of these tools. One such
+                                                                                         In this study, we investigated the usability of AI programming
+example is GitHub’s recent project, Code Brushes [9].
+                                                                                         assistants, such as GitHub Copilot. We performed an exploratory
+                                                                                         qualitative study by surveying 410 developers on their usage of AI
+8.2     Takeaways                                                                        programming assistants to better understand their usage practices
+These implications affect both software engineering researchers                          and uncover important usability challenges they encountered.
+and practitioners. Below we describe how our findings apply to                              We find that developers are most motivated to use AI program-
+these populations and discuss opportunities for future work.                             ming assistants because of the tools’ ability to autocomplete, help
+                                                                                         finish programming tasks quickly, and recall syntax, rather than
+                                                                                         helping developers brainstorm potential solutions for problems they
+For practitioners & tool users. Our findings point to strategies for
+                                                                                         are facing. We also find that while state-of-the-art AI programming
+practitioners to use AI programming assistants more efficiently,
+                                                                                         assistants are highly performant, there is a gap between developers’
+which could potentially boost productivity. For instance, software
+                                                                                         needs and the tools’ output, such as accounting for non-functional
+practitioners could make additional efforts to provide clear ex-
+                                                                                         requirements in the generation.
+planations to prompt the AI programming assistant effectively.
+                                                                                            Our findings indicate several potential directions for AI pro-
+Practitioners could consider combining this with adding code or
+                                                                                         gramming assistants, such as designing interaction techniques that
+following conventions (e.g., programming conventions) to get the
+                                                                                         provide developers with more control over the tool’s output. To
+highest quality output possible.
+                                                                                         facilitate replication of this study, the survey instrument and code-
+   Additionally, our results reveal new use cases of AI program-
+                                                                                         books are included in the supplemental materials for this work [37].
+ming assistants for practitioners. Rather than using these tools for
+only autocompletion, software practitioners could consider using
+them for quality assurance (e.g., generating test cases) as well as                      ACKNOWLEDGMENTS
+learning new APIs or programming languages.                                             We thank our survey participants for their wonderful insights. We
+                                                                                        also thank Alex Cabrera, Samuel Estep, Vincent Hellendoorn, Kush
+For researchers & tool creators. The results from our study reveal                      Jain, Christopher Kang, Millicent Li, Christina Ma, Manisha Mukher-
+several interesting directions for future research, which could be                      jee, Soham Pardeshi, Daniel Ramos, Sam Rieg, and others for their
+incorporated into AI programming assistants. For example, given                         feedback on the study. We also give a special thanks to Mei , an
+participants’ reliance on ChatGPT and natural language inter-                           outstanding canine software engineering researcher, for provid-
+actions, future work could investigate methods for supporting                           ing support and motivation throughout this study. Jenny T. Liang
+chat-based interactions without impacting developers’ efficiency                        was supported by the National Science Foundation under grants
+and flow while programming [23]. Additionally, future work could                        DGE1745016 and DGE2140739. Brad A. Myers was partially sup-
+investigate how developers learn new technologies with AI pro-                          ported by NSF grant IIS-1856641. Any opinions, findings, conclu-
+gramming assistants and design experiences that help support de-                        sions, or recommendations expressed in this material are those of
+veloper learning.                                                                       the authors and do not necessarily reflect the views of the sponsors.
+ICSE 2024, April 14–20, 2024, Lisbon, Portugal                                                                                                                         Liang et al.
+
+
+REFERENCES                                                                                      802652
+ [1] 2023. ChatGPT | OpenAI. Retrieved March 11, 2023 from https://chat.openai.com/.       [27] James D Herbsleb and Deependra Moitra. 2001. Global software development.
+ [2] 2023. Code faster with AI code completions | Tabnine. Retrieved March 11, 2023             IEEE Software 18, 2 (2001), 16–20. https://doi.org/10.1109/52.914732
+     from https://www.tabnine.com/.                                                        [28] Yu Huang, Denae Ford, and Thomas Zimmermann. 2021. Leaving my fingerprints:
+ [3] 2023. codota/TabNine - AI code completions. Retrieved March 11, 2023 from                  Motivations and challenges of contributing to OSS for social good. In IEEE/ACM
+     https://github.com/codota/TabNine/.                                                        International Conference on Software Engineering (ICSE). 1020–1032. https://doi.
+ [4] 2023. github/copilot-docs - Documentation for GitHub Copilot. Retrieved March              org/10.1109/ICSE43902.2021.00096
+     11, 2023 from https://github.com/github/copilot-docs/.                                [29] Saki Imai. 2022. Is GitHub copilot a substitute for human pair-programming? An
+ [5] 2023. github/copilot.vim - Neovim plugin for GitHub Copilot. Retrieved March               empirical study. In ACM/IEEE International Conference on Software Engineering
+     11, 2023 from https://github.com/github/copilot.vim/.                                      (ICSE): Companion Proceedings. 319–321. https://doi.org/10.1145/3510454.3522684
+ [6] 2023. GitHub Copilot - Your AI pair programmer. Retrieved March 13, 2023 from         [30] Dhanya Jayagopal, Justin Lubin, and Sarah E Chasins. 2022. Exploring the
+     https://copilot.github.com/.                                                               learnability of program synthesizers by novice programmers. In ACM Symposium
+ [7] 2023. Prolific • Quickly find research participants you can trust. Retrieved               on User Interface Software and Technology (UIST). 1–15. https://doi.org/10.1145/
+     September 2, 2023 from https://prolific.co/.                                               3526113.3545659
+ [8] 2023. GitHub GraphQL API - GitHub Docs. Retrieved March 11, 2023 from                 [31] Ellen Jiang, Edwin Toh, Alejandra Molina, Kristen Olson, Claire Kayacik, Aaron
+     https://docs.github.com/en/graphql/.                                                       Donsbach, Carrie J Cai, and Michael Terry. 2022. Discovering the syntax and
+ [9] 2023. GitHub Next | Code Brushes. Retrieved March 11, 2023 from https:                     strategies of natural language programming with generative language models.
+     //githubnext.com/projects/code-brushes/.                                                   In ACM CHI Conference on Human Factors in Computing Systems. 1–19. https:
+[10] Saleema Amershi, Maya Cakmak, William Bradley Knox, and Todd Kulesza. 2014.                //doi.org/10.1145/3491102.3501870
+     Power to the people: The role of humans in interactive machine learning. AI           [32] Barbara A. Kitchenham and Shari Lawrence Pfleeger. 2008. Personal opinion
+     Magazine 35, 4 (2014), 105–120. https://doi.org/10.1609/aimag.v35i4.2513                   surveys. In Guide to advanced empirical software engineering, Forrest Shull, Janice
+[11] Sebastian Baltes and Stephan Diehl. 2018. Towards a theory of software de-                 Singer, and Dag I. K. Sjøberg (Eds.). Springer, 63–92. https://doi.org/10.1007/978-
+     velopment expertise. In ACM Joint Meeting on European Software Engineering                 1-84800-044-5_3
+     Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE).       [33] Amy J Ko, Thomas D LaToza, and Margaret M Burnett. 2015. A practical guide to
+     187–200. https://doi.org/10.1145/3236024.3236061                                           controlled experiments of software engineering tools with human participants.
+[12] Shraddha Barke, Michael B James, and Nadia Polikarpova. 2022. Grounded                     Empirical Software Engineering 20, 1 (2015), 110–141. https://doi.org/10.1007/
+     Copilot: How Programmers Interact with Code-Generating Models. arXiv preprint              s10664-013-9279-3
+     arXiv:2206.15000 (2022).                                                              [34] Paul Luo Li, Amy J Ko, and Andrew Begel. 2020. What distinguishes great
+[13] Christian Bird, Denae Ford, Thomas Zimmermann, Nicole Forsgren, Eirini                     software engineers? Empirical Software Engineering 25 (2020), 322–352. https:
+     Kalliamvakou, Travis Lowdermilk, and Idan Gazit. 2022. Taking flight with                  //doi.org/10.1007/s10664-019-09773-y
+     Copilot: Early insights and opportunities of AI-powered pair-programming tools.       [35] Paul Luo Li, Amy J Ko, and Jiamin Zhu. 2015. What makes a great software
+     Queue 20, 6 (2022), 35–57. https://doi.org/10.1145/3582083                                 engineer?. In IEEE/ACM International Conference on Software Engineering (ICSE),
+[14] Sarah E Chasins, Maria Mueller, and Rastislav Bodik. 2018. Rousillon: Scraping             Vol. 1. 700–710. https://doi.org/10.1109/ICSE.2015.335
+     distributed hierarchical web data. In ACM Symposium on User Interface Software        [36] Jenny T Liang, Maryam Arab, Minhyuk Ko, Amy J Ko, and Thomas D LaToza.
+     and Technology (UIST). 963–975. https://doi.org/10.1145/3242587.3242661                    2023. A Qualitative Study on the Implementation Design Decisions of Developers.
+[15] Ruijia Cheng, Ruotong Wang, Thomas Zimmermann, and Denae Ford. 2022. “It                   In IEEE/ACM International Conference on Software Engineering (ICSE). 435–447.
+     would work for me too": How online communities shape software developers’                  https://doi.org/10.1109/ICSE48619.2023.00047
+     trust in AI-powered code generation tools. arXiv preprint arXiv:2212.03491 (2022).    [37] Jenny T Liang, Chenyang Yang, and Brad A Myers. 2023. Supplemental Materials
+[16] Elizabeth Clark, Anne Spencer Ross, Chenhao Tan, Yangfeng Ji, and Noah A Smith.            to "A Large-Scale Study on the Usability of AI Programming Assistants: Successes
+     2018. Creative writing with a machine in the loop: Case studies on slogans and             and Challenges". https://doi.org/10.6084/m9.figshare.22355017
+     stories. In International Conference on Intelligent User Interfaces (IUI). 329–340.   [38] Jenny T Liang, Thomas Zimmermann, and Denae Ford. 2022. Understanding skills
+[17] Arghavan Moradi Dakhel, Vahid Majdinasab, Amin Nikanjam, Foutse Khomh,                     for OSS communities on GitHub. In ACM Joint European Software Engineering
+     Michel C Desmarais, Zhen Ming, et al. 2022. GitHub Copilot AI pair programmer:             Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE).
+     Asset or Liability? arXiv preprint arXiv:2206.15331 (2022).                                170–182. https://doi.org/10.1145/3540250.3549082
+[18] Paul Denny, Viraj Kumar, and Nasser Giacaman. 2023. Conversing with Copilot:          [39] Xi Victoria Lin, Chenglong Wang, Deric Pang, Kevin Vu, Luke Zettlemoyer, , and
+     Exploring prompt engineering for solving CS1 problems using natural language.              Michael D Ernst. 2017. Program synthesis from natural language using recurrent
+     In ACM Technical Symposium on Computer Science Education (SIGCSE). 1136–1142.              neural networks. University of Washington Department of Computer Science and
+     https://doi.org/10.1145/3545945.3569823                                                    Engineering, Seattle, WA, USA, Tech. Rep. UW-CSE-17-03-01 (2017).
+[19] Victor Dibia, Adam Fourney, Gagan Bansal, Forough Poursabzi-Sangdeh, Han              [40] Laura MacLeod, Margaret-Anne Storey, and Andreas Bergen. 2015. Code, camera,
+     Liu, and Saleema Amershi. 2022. Aligning offline metrics and human judgments               action: How software developers document and share program knowledge using
+     of value of AI-pair programmers. arXiv preprint arXiv:2210.16494 (2022).                   YouYube. In IEEE International Conference on Program Comprehension (ICPC).
+[20] Kasra Ferdowsifard, Allen Ordookhanians, Hila Peleg, Sorin Lerner, and Nadia               104–114. https://doi.org/10.1109/ICPC.2015.19
+     Polikarpova. 2020. Small-step live programming by example. In ACM Symposium           [41] Lena Mamykina, Bella Manoim, Manas Mittal, George Hripcsak, and Björn
+     on User Interface Software and Technology (UIST). 614–626. https://doi.org/10.             Hartmann. 2011. Design lessons from the fastest q&a site in the west. In
+     1145/3379337.3415869                                                                       ACM CHI Conference on Human Factors in Computing Systems (CHI). 2857–2866.
+[21] Bent Flyvbjerg. 2006. Five misunderstandings about case-study research. Quali-             https://doi.org/10.1145/1978942.1979366
+     tative Inquiry 12, 2 (2006), 219–245. https://doi.org/10.1177/1077800405284363        [42] Nora McDonald, Sarita Schoenebeck, and Andrea Forte. 2019. Reliability and
+[22] Denae Ford, Tom Zimmermann, Christian Bird, and Nachiappan Nagappan. 2017.                 inter-rater reliability in qualitative research: Norms and guidelines for CSCW and
+     Characterizing software engineering work with personas based on knowledge                  HCI practice. Proceedings of the ACM on human-computer interaction 3, CSCW
+     worker actions. In ACM/IEEE International Symposium on Empirical Software                  (2019), 1–23. https://doi.org/10.1145/3359174
+     Engineering and Measurement (ESEM). 394–403. https://doi.org/10.1109/ESEM.            [43] Andrew M McNutt, Chenglong Wang, Robert A DeLine, and Steven M Drucker.
+     2017.54                                                                                    2023. On the design of AI-powered code assistants for notebooks. In ACM
+[23] Nicole Forsgren, Margaret-Anne Storey, Chandra Maddila, Thomas Zimmermann,                 CHI Conference on Human Factors in Computing Systems (CHI). 1–16. https:
+     Brian Houck, and Jenna Butler. 2021. The SPACE of developer productivity:                  //doi.org/10.1145/3544548.3580940
+     There’s more to it than you think. Queue 19, 1 (2021), 20–48. https://doi.org/10.     [44] Hussein Mozannar, Gagan Bansal, Adam Fourney, and Eric Horvitz. 2022. Reading
+     1145/3454122.3454124                                                                       between the lines: Modeling user behavior and costs in AI-assisted programming.
+[24] Georgios Gousios, Margaret-Anne Storey, and Alberto Bacchelli. 2016. Work prac-            arXiv preprint arXiv:2210.14306 (2022).
+     tices and challenges in pull-based development: The contributor’s perspective.        [45] Brad A Myers, Amy J Ko, Thomas D LaToza, and YoungSeok Yoon. 2016. Pro-
+     In ACM/IEEE International Conference on Software Engineering (ICSE). 285–296.              grammers are users too: Human-centered methods for improving programming
+     https://doi.org/10.1145/2884781.2884826                                                    tools. Computer 49, 7 (2016), 44–52. https://doi.org/10.1109/MC.2016.200
+[25] Georgios Gousios, Andy Zaidman, Margaret-Anne Storey, and Arie Van Deursen.           [46] Ben Puryear and Gina Sprint. 2022. GitHub Copilot in the classroom: Learning
+     2015. Work practices and challenges in pull-based development: The integrator’s            to code with AI assistance. Journal of Computing Sciences in Colleges 38, 1 (2022),
+     perspective. In IEEE/ACM International Conference on Software Engineering (ICSE),          37–47.
+     Vol. 1. 358–368. https://doi.org/10.1109/ICSE.2015.55                                 [47] Nikitha Rao, Chetan Bansal, Thomas Zimmermann, Ahmed Hassan Awadallah,
+[26] David Hammer and Leema K Berland. 2014. Confusing claims for data: A critique              and Nachiappan Nagappan. 2020. Analyzing web search behavior for software
+     of common practices for presenting qualitative research on learning. Journal of            engineering tasks. In IEEE International Conference on Big Data (Big Data). 768–
+     the Learning Sciences 23, 1 (2014), 37–46. https://doi.org/10.1080/10508406.2013.          777. https://doi.org/10.1109/BigData50022.2020.9378083
+A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges                                    ICSE 2024, April 14–20, 2024, Lisbon, Portugal
+
+
+[48] Peter Robe, Sandeep K Kuttal, Jake AuBuchon, and Jacob Hart. 2022. Pair pro-             programming: A systematic design exploration to improve Visual Studio In-
+     gramming conversations with agents vs. developers: challenges and opportuni-             telliCode’s user experience. In IEEE/ACM International Conference on Software
+     ties for SE community. In ACM Joint European Software Engineering Conference             Engineering: Software Engineering in Practice (ICSE-SEIP).
+     and Symposium on the Foundations of Software Engineering (ESEC/FSE). 319–331.       [56] Priyan Vaithilingam, Tianyi Zhang, and Elena L Glassman. 2022. Expectation
+     https://doi.org/10.1145/3540250.3549127                                                  vs. experience: Evaluating the usability of code generation tools powered by
+[49] Steven I Ross, Fernando Martinez, Stephanie Houde, Michael Muller, and Justin D          large language models. In ACM CHI Conference on Human Factors in Computing
+     Weisz. 2023. The programmer’s assistant: Conversational interaction with a large         Systems (CHI). 1–7. https://doi.org/10.1145/3491101.3519665
+     language model for software development. In ACM Conference on Intelligent User      [57] Hans Van Vliet and Antony Tang. 2016. Decision making in software architecture.
+     Interfaces (IUI). 491–514. https://doi.org/10.1145/3581641.3584037                       Journal of Systems and Software 117 (2016), 638–644. https://doi.org/10.1016/j.jss.
+[50] Johnny Saldaña. 2009. The Coding Manual for Qualitative Researchers. SAGE                2016.01.017
+     Publications.                                                                       [58] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+[51] Morgan Klaus Scheuerman, Katta Spiel, Oliver L Haimson, Foad Hamidi, and                 Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all
+     Stacy M Branham. 2020. HCI guidelines for gender equity and inclusivity. In              you need. Advances in neural information processing systems 30 (2017).
+     UMBC Faculty Collection.                                                            [59] Frank F Xu, Uri Alon, Graham Neubig, and Vincent Josua Hellendoorn. 2022.
+[52] Edward Smith, Robert Loftin, Emerson Murphy-Hill, Christian Bird, and Thomas             A systematic evaluation of large language models of code. In ACM SIGPLAN
+     Zimmermann. 2013. Improving developer participation rates in surveys. In                 International Symposium on Machine Programming (MAPS). 1–10. https://doi.
+     International workshop on cooperative and human aspects of software engineering          org/10.1145/3520312.3534862
+     (CHASE). 89–92. https://doi.org/10.1109/CHASE.2013.6614738                          [60] Frank F Xu, Bogdan Vasilescu, and Graham Neubig. 2022. In-IDE code generation
+[53] Margaret-Anne Storey, Leif Singer, Brendan Cleary, Fernando Figueira Filho, and          from natural language: Promise and challenges. ACM Transactions on Software
+     Alexey Zagalsky. 2014. The (r)evolution of social media in software engineering.         Engineering and Methodology (TOSEM) 31, 2 (2022), 1–47. https://doi.org/10.1145/
+     Future of Software Engineering (2014), 100–116. https://doi.org/10.1145/2593882.         3487569
+     2593887                                                                             [61] Burak Yetistiren, Isik Ozsoy, and Eray Tuzun. 2022. Assessing the quality of
+[54] Mohammad Tahaei and Kami Vaniea. 2022. Lessons Learned From Recruiting                   Github Copilot’s code generation. In International Conference on Predictive Models
+     Participants With Programming Skills for Empirical Privacy and Security Stud-            and Data Analytics in Software Engineering (PROMISE). 62–71. https://doi.org/10.
+     ies. In International Workshop on Recruiting Participants for Empirical Software         1145/3558489.3559072
+     Engineering (RoPES).                                                                [62] Albert Ziegler, Eirini Kalliamvakou, X Alice Li, Andrew Rice, Devon Rifkin, Shawn
+[55] Priyan Vaithilingam, Elena L Glassman, Peter Groenwegen, Sumit Gulwani,                  Simister, Ganesh Sittampalam, and Edward Aftandilian. 2022. Productivity assess-
+     Austin Z Henley, Rohan Malpani, David Pugh, Arjun Radhakrishna, Gustavo                  ment of neural code completion. In ACM SIGPLAN International Symposium on
+     Soares, Joey Wang, and Aaron Yim. 2023. Towards more effective AI-assisted               Machine Programming (MAPS). 21–29. https://doi.org/10.1145/3520312.3534864
+

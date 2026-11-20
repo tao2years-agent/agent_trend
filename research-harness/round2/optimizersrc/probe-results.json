@@ -1,0 +1,221 @@
+[
+  {
+    "case": "Meta-Harness baseline",
+    "trial_rewards": {
+      "A": [
+        1,
+        1
+      ],
+      "B": [
+        0,
+        0
+      ]
+    },
+    "avg": 0.5,
+    "overall": "baseline",
+    "best_by_task": {
+      "A": "baseline",
+      "B": "baseline"
+    }
+  },
+  {
+    "case": "Meta-Harness tied_mean",
+    "trial_rewards": {
+      "A": [
+        1,
+        0
+      ],
+      "B": [
+        1,
+        0
+      ]
+    },
+    "avg": 0.5,
+    "overall": "baseline",
+    "best_by_task": {
+      "A": "baseline",
+      "B": "tied_mean"
+    }
+  },
+  {
+    "case": "Meta-Harness worse_mean",
+    "trial_rewards": {
+      "A": [
+        0,
+        0
+      ],
+      "B": [
+        1,
+        0
+      ]
+    },
+    "avg": 0.25,
+    "overall": "baseline",
+    "best_by_task": {
+      "A": "baseline",
+      "B": "tied_mean"
+    }
+  },
+  {
+    "case": "Meta-Harness better_mean",
+    "trial_rewards": {
+      "A": [
+        1,
+        1
+      ],
+      "B": [
+        1,
+        0
+      ]
+    },
+    "avg": 0.75,
+    "overall": "better_mean",
+    "best_by_task": {
+      "A": "baseline",
+      "B": "tied_mean"
+    }
+  },
+  {
+    "case": "AHE lower_than_baseline",
+    "base": 0.8,
+    "variants": [
+      {
+        "idx": 0,
+        "stats": {
+          "pass_rate": 0.5,
+          "n_exception": 0
+        }
+      },
+      {
+        "idx": 1,
+        "stats": {
+          "pass_rate": 0.6,
+          "n_exception": 1
+        }
+      }
+    ],
+    "selected": 1,
+    "warned": true
+  },
+  {
+    "case": "AHE tie_exception",
+    "base": 0.8,
+    "variants": [
+      {
+        "idx": 0,
+        "stats": {
+          "pass_rate": 0.8,
+          "n_exception": 2
+        }
+      },
+      {
+        "idx": 1,
+        "stats": {
+          "pass_rate": 0.8,
+          "n_exception": 0
+        }
+      }
+    ],
+    "selected": 1,
+    "warned": false
+  },
+  {
+    "case": "AHE equal_rate_exception_ordered",
+    "base": 0.8,
+    "variants": [
+      {
+        "idx": 0,
+        "stats": {
+          "pass_rate": 0.8,
+          "n_exception": 0
+        }
+      },
+      {
+        "idx": 1,
+        "stats": {
+          "pass_rate": 0.8,
+          "n_exception": 0
+        }
+      }
+    ],
+    "selected": 0,
+    "warned": false
+  },
+  {
+    "case": "AHE manifest declared_risk",
+    "changes": [
+      {
+        "predicted_impact": {
+          "expected_fixes": [
+            "intended"
+          ],
+          "at_risk_regressions": [
+            "r1"
+          ]
+        }
+      }
+    ],
+    "passed": [
+      "intended"
+    ],
+    "failed": [
+      "r1"
+    ],
+    "verdict": "revert"
+  },
+  {
+    "case": "AHE manifest unlisted_failures",
+    "changes": [
+      {
+        "predicted_impact": {
+          "expected_fixes": [
+            "intended"
+          ],
+          "at_risk_regressions": []
+        }
+      }
+    ],
+    "passed": [
+      "intended"
+    ],
+    "failed": [
+      "r1",
+      "r2"
+    ],
+    "verdict": "keep"
+  },
+  {
+    "case": "AHE manifest missing_observations",
+    "changes": [
+      {
+        "predicted_impact": {
+          "expected_fixes": [
+            "intended"
+          ],
+          "at_risk_regressions": []
+        }
+      }
+    ],
+    "passed": [],
+    "failed": [],
+    "verdict": "partial"
+  },
+  {
+    "case": "AHE manifest intended_not_fixed",
+    "changes": [
+      {
+        "predicted_impact": {
+          "expected_fixes": [
+            "intended"
+          ],
+          "at_risk_regressions": []
+        }
+      }
+    ],
+    "passed": [],
+    "failed": [
+      "intended"
+    ],
+    "verdict": "revert"
+  }
+]

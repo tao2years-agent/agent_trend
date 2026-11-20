@@ -1,0 +1,259 @@
+检索参数 {"search_query":[{"q":"Expertise Recommender A Flexible Recommendation System and Architecture McDonald Ackerman author pdf"}],"response_length":"short"}
+Expertise Recommender: A Flexible (https://web.eecs.umich.edu/~ackerm/pub/00b30/cscw00.er.pdf)
+citeturn46search12 [wordlim: 200] Published: 26.2 years ago; Expertise Recommender: A Flexible
+Recommendation System and Architecture ... McDonald and Mark S. Ackerman ... Recommendation systems, collaborative filtering, expert
+Expertise Recommender: A Flexible
+Recommendation System and Architecture
+David W. McDonald and Mark S. Ackerman
+Department of Information and Computer Science
+University of California, Irvine
+Irvine, CA 92697-3425
+{dmcdonal, ackerman}@ics.uci.edu
+havior in organizations. A recommendation system that
+suggests people who have some expertise with a problem
+holds the promise to provide, in a very small way, a service
+similar to that provided by key people. Expertise recom-
+mendation systems can reduce the load on people in these
+roles and provide alternative recommendations when these
+people are unavailable.
+ABSTRACT
+Locating the expertise necessary to solve difficult problems
+is a nuanced social and collaborative problem. In organiza-
+tions, some people assist others in locating expertise by
+making referrals. People who make referrals fill key orga-
+nizational roles that have been identified by CSCW and
+affiliated research. Expertise locating systems are not de-
+signed to replace people who fill these key organizational
+roles. Instead, expertise locating systems attempt to de-
+crease workload and support people who have no other
+options. Recommendation systems are collaborative soft-
+ware that can be applied to expertise locating. This work
+describes a general recommendation architecture that is
+grounded in a field study of expertise locating. Our exper-
+tise recommendation system details the work necessary to
+fit expertise recommendation to a work setting. The archi-
+tecture and implementation begin to tease apart the techni-
+cal aspects of providing good recommendations from social
+and collaborative concerns.
+Keywords
+Recommendation systems, collaborative filtering, expert
+locators, expertise location, expertise finding, information
+seeking, CSCW, computer-supported cooperative work.
+This work presents an architecture and implementation of
+the Expertise Recommender system (ER). ER offers several
+advances over previously existing systems:
+• The architecture is open and flexible enough to address
+different organizational environments. If CSCW sys-
+tems, and specifically recommender systems, are situ-
+ated in their activity, organizationally specific compo-
+nents will be necessary within any general-purpose
+framework. Recommender systems, to date, have been
+“one size fits all”.
+•  Organizationally specific implementations are more
+robust by teasing apart technical aspects of making
+good recommendations from the social and collabora-
+tive aspects of matching individuals. We do this based
+on findings from an earlier field study.
+•  The work proposes an alternative approach to the
+creation and maintenance of user profiles than ratings.
+This approach uses organizationally relevant data
+sources to create profiles that are more suited for
+automated expertise location.
+INTRODUCTION
+Everyday, people face difficult problems that they cannot
+solve alone. In these situations the right people are the ones
+who have the expertise to answer a specific question or in
+some other way move the problem toward resolution.
+Each of these claims will be covered below.
+In organizational settings, people fill key roles that assist in
+solving problems or initiating important collaborations.
+Managers, senior employees, gurus, information mediators
+[4], and expertise concierges [13] are sought because of
+their ability to solve problems directly or make well in-
+formed referrals. The ability to fill this role makes these
+individuals valuable to the organization and makes it ap-
+parent when they are unavailable.
+We begin this paper with an overview of prior systems that
+support expertise locating. Next, we consider what it means
+to seek expertise socially, in order to firmly ground the
+requirements of our system. We follow with a description
+of our system, Expertise Recommender (ER). A small sce-
+nario demonstrates how a user interacts with our system.
+Our last sections include the details of the architecture and
+of an implementation.
+Recommendation systems are one possible technology that
+can augment and assist the natural expertise locating be-
+EXPERTISE LOCATING SYSTEMS AND CSCW
+CSCW and adjacent literatures provide examples of sys-
+tems that help people find others with suitable expertise.
+Systems that assist with expertise location are similar to a
+broad class of systems known as recommendation systems.
+Recommendation systems are commonly used to recom-
+mend documents based on user preferences [17]. This defi---------------------------------------------------------------------------------
+Expertise Recommender: A Flexible (https://citeseerx.ist.psu.edu/document?doi=11844ed0fdb50726f40bc3b4144d3ee65530176d&repid=rep1&type=pdf)
+citeturn46search13 [wordlim: 200] Published: 10 months ago; Expertise Recommender: A Flexible 
+Recommendation System and Architecture ... McDonald and Mark S. Ackerman ... Recommendation systems, collaborative filtering, expert
+Expertise Recommender: A Flexible 
+Recommendation System and Architecture 
+ 
+David W. McDonald and Mark S. Ackerman 
+Department of Information and Computer Science  
+University of California, Irvine  
+Irvine, CA 92697-3425  
+{dmcdonal, ackerman}@ics.uci.edu 
+ 
+Recommendation systems are one possible technology that 
+can augment and assist the natural expertise locating behav-
+ior in organizations. A recommendation system that sug-
+gests people who have some expertise with a problem holds 
+the promise to provide, in a very small way, a service simi-
+lar to that provided by key people. Expertise recommenda-
+tion systems can reduce the load on people in these roles 
+and provide alternative recommendations when these peo-
+ple are unavailable. 
+ABSTRACT 
+Locating the expertise necessary to solve difficult problems 
+is a nuanced social and collaborative problem. In organiza-
+tions, some people assist others in locating expertise by 
+making referrals. People who make referrals fill key organ-
+izational roles that have been identified by CSCW and af-
+--------------------------------------------------------------------------------
+Expertise Recommender: A Flexible Recommendation System and Architecture | SocialWorlds Research Group @ University of Michigan (https://www.socialworldsresearch.org/publications/expertise-recommender-flexible-recommendation-system-and-architecture)
+citeturn46search0 [wordlim: 200] Crawled: 2 weeks ago; # Expertise Recommender: A Flexible Recommendation System and Architecture
+
+Title  | Expertise Recommender: A Flexible Recommendation System and Architecture ... Authors  | McDonald, DW, Ackerman, MS
+
+# Expertise Recommender: A Flexible Recommendation System and Architecture
+
+Title  | Expertise Recommender: A Flexible Recommendation System and Architecture
+Publication Type  | Conference Paper
+Authors  | McDonald, DW, Ackerman, MS
+
+Image: application/pdf cscw00.er_.pdf
+
+  * BibTex
+  * XML
+  * RIS--------------------------------------------------------------------------------
+Published in the Proceedings of the 2000 ACM Conference on Computer Supported Cooperative Work (CSCW’00), Philadelphia, PA, December 2 – 6, 2000. (https://www.pensivepuffin.com/dwmcphd/papers/McDonald.CSCW00.pdf)
+citeturn46search14 [wordlim: 200] Crawled: today; # Expertise Recommender: A Flexible Recommendation System and Architecture ... McDonald and Mark S. Ackerman** ... Recommendation systems, collaborative filtering, expert locators, expertise location, expertise finding, information seeking, CSCW, computer-supported cooperative work.
+Published in the Proceedings of the 2000 ACM Conference on Computer Supported Cooperative Work (CSCW’00), Philadelphia, PA, December 2 – 6, 2000.
+
+# Expertise Recommender: A Flexible Recommendation System and Architecture
+
+**David W. McDonald and Mark S. Ackerman**
+
+Department of Information and Computer Science  
+University of California, Irvine  
+Irvine, CA 92697-3425  
+{dmcdonal, ackerman}@ics.uci.edu
+
+## ABSTRACT
+
+Locating the expertise necessary to solve difficult problems is a nuanced social and collaborative problem. In organizations, some people assist others in locating expertise by making referrals. People who make referrals fill key organizational roles that have been identified by CSCW and affiliated research. Expertise locating systems are not designed to replace people who fill these key organizational roles. Instead, expertise locating systems attempt to decrease workload and support people who have no other options. Recommendation systems are collaborative software that can be applied to expertise locating. --------------------------------------------------------------------------------
+dblp: Expertise recommender: a flexible recommendation system and architecture. (https://dblp.org/rec/conf/cscw/McDonaldA00.html)
+citeturn46search1 [wordlim: 200] Crawled: 2 months ago; # "Expertise recommender: a flexible recommendation system and architecture." ... Expertise recommender: a flexible recommendation system and architecture.
+
+# "Expertise recommender: a flexible recommendation system and architecture."
+
+  * help us
+
+    * How can I correct errors in dblp?
+    * contact dblp
+
+David W. McDonald, Mark S. Ackerman (2000)
+
+
+## Details and statistics
+
+  * show external API response
+
+    * JSON @ openalex.org
+
+see also:
+
+    * API doc @ openalex.org
+
+DOI: 10.1145/358916.358994
+
+access: closed
+
+type: Conference or Workshop Paper
+
+metadata version: 2018-11-06
+
+  * Image: Conference and Workshop Papers
+
+    * view
+
+      * electronic edition via DOI
+      * unpaywalled version
+
+
+dblp key:
+
+      * conf/cscw/McDonaldA00
+
+    * ask others
+
+      * Google
+      * Google Scholar
+      * Semantic Scholar
+      * Internet Archive Scholar
+      * CiteSeerX
+      * PubPeer
+
+    * share record
+
+      * Bluesky
+      * Reddit
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/conf/cscw/McDonaldA00
+
+David W. McDonald, Mark S. Ackerman:
+Expertise recommender: a flexible recommendation system and architecture. CSCW 2000: 231-240
+
+
+last updated on 2018-11-06 16:57 CET by the dblp team
+
+ all metadata released as open data under CC0 1.0 license--------------------------------------------------------------------------------
+Expertise recommender: a flexible recommendation system and architecture | Sciweavers (https://www.sciweavers.org/publications/expertise-recommender-flexible-recommendation-system-and-architecture)
+citeturn46search2 [wordlim: 200] Published: 26.9 years ago; Crawled: last month; # Expertise recommender: a flexible recommendation system and architecture ... McDonald, Mark S. Ackerman
+--------------------------------------------------------------------------------
+Published in the Proceedings of the ACM 2001 International Conference on Supporting Group Work (GROUP'01), (https://www.pensivepuffin.com/dwmcphd/papers/McDonald.Group01.pdf)
+citeturn46search15 [wordlim: 200] Crawled: 5 days ago; McDonald** ... This work describes a systematic evaluation of the Expertise Recommender (ER), a system that recommends people who are likely to have expertise in a specific problem. ... The paper concludes by summarizing these arguments and contrasting the prevalent approaches to expertise recommendation with the approach used in ER which blends factual aspects of an individuals’ expertise with the social and contextual aspects of making a good recommendation.
+--------------------------------------------------------------------------------
+Expertise Recommender: A Flexible Recommendation System and Architecture (https://www.researchgate.net/publication/2374561_Expertise_Recommender_A_Flexible_Recommendation_System_and_Architecture)
+citeturn46search3 [wordlim: 200] Crawled: 3 months ago; # Expertise Recommender: A Flexible Recommendation System and Architecture ... Mcdonald ... Keywords Recommendation systems, collaborative filtering, expert locators, expertise location, expertise finding, information seeking, CSCW, computer-supported cooperative work. ... Image: Request Full-text Paper PDF
+--------------------------------------------------------------------------------
+Publications | David W. McDonald (https://pensivepuffin.com/dwmcphd/pubs/index.html)
+citeturn46search4 [wordlim: 200] Crawled: 2 months ago;    | McDonald, D.W. ... Journal  | Ackerman M. ... Expertise Recommender: A Flexible Recommendation Architecture. ... Paper in the Workshop on "Recommender Systems: Algorithms and Evaluation" at the 1999 ACM International Conference on Research and Development in Information Retrieval (SIGIR '99), 1999.
+--------------------------------------------------------------------------------
+SocialWorlds Publications | SocialWorlds Research Group @ University of Michigan (https://www.socialworldsresearch.org/publications?f%5Bkeyword%5D=244)
+citeturn46search5 [wordlim: 200] Crawled: 2 weeks ago; McDonald and Ackerman, M. S., “Expertise Recommender: A Flexible Recommendation System and Architecture”, in Proceedings of the 2000 ACM Conference on Computer Supported Cooperative Work (CSCW'00), 2000, pp.
+--------------------------------------------------------------------------------
+SocialWorlds Publications | SocialWorlds Research Group @ University of Michigan (https://www.socialworldsresearch.org/publications?f%5Bauthor%5D=138&o=desc&page=2&s=type)
+citeturn46search6 [wordlim: 200] Crawled: 2 months ago; McDonald and Ackerman, M. S., “Expertise Recommender: A Flexible Recommendation System and Architecture”, in Proceedings of the 2000 ACM Conference on Computer Supported Cooperative Work (CSCW'00), 2000, pp.
+--------------------------------------------------------------------------------
+David McDonald | Human Centered Design & Engineering (https://www.hcde.washington.edu/mcdonald)
+citeturn46search7 [wordlim: 200] Published: 12.4 years ago; Crawled: 2 weeks ago; Let's Shack Up: Getting Serious about GIM. in Erickson, and McDonald, (eds). ... In Sharing Expertise: Beyond Knowledge Management, Ackerman, Pipek, & Wulf (eds). ... Expertise Locating: a Challenge for Recommender Systems. ... (2000) Supporting Nuance in Groupware Design: Moving from Naturalistic Expertise Location to Expertise Recommendation.
+--------------------------------------------------------------------------------
+SocialWorlds Publications | SocialWorlds Research Group @ University of Michigan (https://www.socialworldsresearch.org/publications?o=asc&page=1&s=type)
+citeturn46search8 [wordlim: 200] Crawled: 2 months ago; McDonald and Ackerman, M. S., “Expertise Recommender: A Flexible Recommendation System and Architecture”, in Proceedings of the 2000 ACM Conference on Computer Supported Cooperative Work (CSCW'00), 2000, pp.
+--------------------------------------------------------------------------------
+Expertise recommender: a flexible recommendation system and architecture (https://scispace.com/papers/expertise-recommender-a-flexible-recommendation-system-and-4rov40l13t)
+citeturn46search9 [wordlim: 200] Published: 26.0 years ago; Crawled: last month; # Expertise recommender: a flexible recommendation system and architecture ... McDonald,Mark S. Ackerman +1 more ... TL;DR: The architecture and implementation of the expertise recommendation system details the work necessary to fit expertise recommendation to a work setting, and begins to tease apart the technical aspects of providing good recommendations from social and collaborative concerns.
+--------------------------------------------------------------------------------
+dblp: David W. McDonald (https://dblp1.uni-trier.de/pid/24/1547.html)
+citeturn46search10 [wordlim: 200] Crawled: last week; McDonald: ... Ackerman, David W. ... Expertise recommender: a flexible recommendation system and architecture. ... Desktop Underwriter: Fannie Mae's Automated Mortgage Underwriting Expert System.
+--------------------------------------------------------------------------------
+Expert Finding Systems - The MITRE Corporation - nanotechnology (https://doczz.net/doc/4257640/expert-finding-systems---the-mitre-corporation)
+citeturn46search11 [wordlim: 200] Published: 20.2 years ago; Crawled: today; In Ackerman, M., Cohen, A., Pipek, V. and Wulf, V. (eds.). ...     McDonald, D. ... Expertise Recommender: A Flexible
+    Recommendation System and Architecture.
+--------------------------------------------------------------------------------
+Recommender system (https://en.wikipedia.org/wiki/Recommender_system)
+citeturn46search16 [wordlim: 200] Crawled: yesterday; "ReChorus2.0: A Modular and Task-Flexible Recommendation Library". 18th ACM Conference on Recommender Systems. ... "GroupLens: an open architecture for collaborative filtering of netnews." ... "A comparative analysis of offline and online evaluations and discussion of research paper recommender system evaluation" ( (PDF)). ... "Research paper recommender system evaluation: A quantitative literature survey" (PDF).
+

@@ -1,0 +1,890 @@
+=== PDF PAGE 1 ===
+      Developer Interaction Patterns with Proactive AI: A Five-Day
+                                Field Study
+
+                        Nadine Kuo∗                              Agnia Sergeyuk∗
+                                      JetBrains                                              JetBrains Research
+                         Amsterdam, Netherlands                                       Belgrade, Serbia
+                          nadine.kuo@jetbrains.com                             agnia.sergeyuk@jetbrains.com
+
+                             Valerie Chen                                Maliheh Izadi
+                         Carnegie Mellon University                               Delft University of Technology
+                            Pittsburgh, PA, United States                                        Delft, Netherlands
+2026                   vchen2@andrew.cmu.edu                                     m.izadi@tudelft.nl
+
+                        1                                2                               3                                4Jan
+15
+
+
+                      Initial Prototype               Contextual Inquiries           System Refinement              In-The-Wild Study
+
+                   Integration of proactive AI                   Refinement with                 Enhancement of user control                Field deployment revealing
+                        into production IDE                    professional developers                and context integration               timing-dependent receptivity[cs.HC]
+                  3 intervention types                      7 developers                                                                       15 developers
+
+                                                      4 design principles                                                              5 days
+
+
+
+          Figure 1: Study Overview. We developed and iteratively refined ProAIDE, a proactive feature for code quality of an in-IDE AI
+           assistant (Phases 1-3), then conducted a 5-day field study with 15 professional developers (Phase 4). Analysis of 229 interventions
+          across 5,732 interaction points revealed that timing critically impacts receptivity: post-commit suggestions were more readily
+          accepted than mid-task interventions.
+
+        Abstract                                                                 offers code quality suggestions based on in-IDE developer activity.
+          Current in-IDE AI coding tools typically rely on time-consuming    We examined 229 AI interventions across 5,732 interaction points
+         manual prompting and context management, whereas proactive       to understand how proactive suggestions are received across work-
+            alternatives that anticipate developer needs without explicit invo-      flow stages, how developers experience them, and their perceived
+           cation remain underexplored. Understanding when humans are      impact. Our findings reveal systematic patterns in human receptiv-arXiv:2601.10253v1           receptive to such proactive AI assistance during their daily work       ity to proactive suggestions: interventions at workflow boundaries
+          remains an open question in human-AI interaction research. We         (e.g., post-commit) achieved 52% engagement rates, while mid-task
+           address this gap through a field study of proactive AI assistance      interventions (e.g., on declined edit) were dismissed 62% of the time.
+            in professional developer workflows. We present a five-day in-the-      Notably, well-timed proactive suggestions required significantly
+           wild study with 15 developers who interacted with a proactive fea-       less interpretation time than reactive suggestions (45.4s versus
+            ture of an AI assistant integrated into a production-grade IDE that       101.4s, 𝑊= 109.00, 𝑟= 0.533, 𝑝= 0.0016), indicating enhanced
+                                                                                cognitive alignment. This study provides actionable implications
+             ∗Both authors contributed equally to this research.
+                                                                                        for designing proactive coding assistants, including how to time in-
+                                                                                      terventions, align them with developer context, and strike a balance
+                                                                      between AI agency and user control in production IDEs.
+              This work is licensed under a Creative Commons Attribution 4.0 International License.
+               IUI ’26, Paphos, Cyprus
+         © 2026 Copyright held by the owner/author(s).
+         ACM ISBN 979-8-4007-1984-4/2026/03
+               https://doi.org/10.1145/3742413.3789148
+=== PDF PAGE 2 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+CCS Concepts                                                  are critical [69, 70]. We aim to develop proactive assistance that
+• Software and its engineering →Integrated and visual de-       is timely and non-obtrusive to help developers resolve problems
+velopment environments; • Human-centered computing →      before they might escalate.
+Empirical studies in HCI; • Computing methodologies →       To this end, we design, implement, and evaluate through a field
+Artificial intelligence.                                           study ProAIDE, a proactive feature of an AI assistant, that offers
+                                                                    suggestions for code quality improvements. ProAIDE is integrated
+Keywords                                                            into Fleet1, a production-grade, polyglot IDE with built-in AI capa-
+                                                                                      bilities used by professional developers, and owned by JetBrains2,
+Human-AI Interaction, Proactive Assistance, Intelligent User Inter-
+                                                                a major software vendor specializing in the creation of intelligent
+faces, Software Development, Large Language Models, Field Study
+                                                            development tools. The development of ProAIDE followed an it-
+ACM Reference Format:                                                    erative, human-centered design process comprising four phases
+Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi. 2026. De-
+                                                                       (Figure 1): in Phase 1, we built an initial prototype with three trig-
+veloper Interaction Patterns with Proactive AI: A Five-Day Field Study. In
+                                                                  ger types for proactive interventions based on established guide-
+31st International Conference on Intelligent User Interfaces (IUI ’26), March
+                                                                             lines [1, 13, 24, 52]; in Phase 2, we conducted contextual inquiries23–26, 2026, Paphos, Cyprus. ACM, New York, NY, USA, 14 pages. https:
+//doi.org/10.1145/3742413.3789148                                    with seven professional developers to refine the system’s timing
+                                                                         heuristics and interface design, extracting four design principles;
+1  Introduction                                                    in Phase 3, we refined the system based on these insights, resulting
+                                                                          in the final ProAIDE implementation; and, in Phase 4, we deployedProgramming tools powered by large language models (LLMs) have
+                                                        ProAIDE in a five-day in-the-wild study with 15 professional de-changed how developers interact with code in IDEs [19, 29, 32, 60,
+                                                                   velopers working on authentic development tasks spanning 1267]. These tools evolved from simple code completions [43, 61] to
+                                                         programming languages. This integration enabled an in situ eval-collaborative assistants that support various software development
+                                                                  uation of proactive support in realistic workflows. Our analysistasks [21, 26, 31]. Despite these advancements, existing LLM-based
+                                                                     takes a mixed-methods approach, combining telemetry logs withtools often face practical limitations when adopted in real-world
+                                                                      structured daily and post-study surveys. This setup allowed us todeveloper workflows [7, 47, 59]. Most tools require explicit prompts
+                                                                    analyze not only how developers interact with in-IDE proactive AIfrom developers, creating cognitive overhead through the need
+                                                                        suggestions, but also how developers experience these interactionsto craft precise queries, supply context, interpret responses, and
+                                                           and the impact of proactive assistance on their work.integrate suggestions [32, 45, 67]. These costs diminish productivity
+                                                          Our results offer a deeper understanding of how, when, and whygains, especially in complex or urgent tasks, where frequent context
+                                                                       proactive suggestions can support adoption and usefulness in real-switching between coding, prompting, and interpreting outputs
+                                                             world developer workflows. Across 5, 732 interaction points, weinterrupts developers’ flow and increases mental fatigue.
+                                                             found that suggestions triggered at natural workflow boundaries,  To reduce such cognitive overhead, both researchers and practi-
+                                                                         particularly after commits, were significantly more likely to betioners have begun exploring proactive AI programming assistance,
+                                                                       accepted. On a System Usability Scale (SUS) [36], developers ratedcapable of anticipating developer needs and offering suggestions
+                                                         ProAIDE as easy to use (SUS = 72.8 out of 100, 95% CI [64.1, 81.5])without explicit requests [13, 17, 21, 42, 52, 58, 68]. Yet, a key chal-
+                                                          and appreciated its integration into the IDE, but varied in theirlenge persists: when prompts are poorly timed or perceived as
+                                                                    preferences for timing, control, and granularity of suggestions.intrusive, they risk undermining the user experience. Existing re-
+                                                           While alignment with task intent shaped trust and receptiveness,sults highlight a critical open problem: how to accurately identify
+                                                                                     utility declined when the AI failed to capture lower-level contextualsuitable moments for intervention that support, rather than disrupt,
+                                                                 understanding of the developer’s source code, including technicalthe user’s workflow. Moreover, existing evaluations of proactive as-
+                                                                  design choices or domain-specific patterns. Compared to reactivesistants have been confined to controlled, web-based environments
+                                                                  use of AI, proactive suggestions were interpreted significantly fasterwith predefined tasks and monolingual settings [13, 52]. These limita-
+                                     (𝑊= 109.00, 𝑟= 0.533, 𝑝= .002), revealing the potential fortions restrict our understanding of how proactive assistants perform
+                                                             enhanced workflow efficiency. Based on our empirically groundedunder real-world conditions, where timing, contextual relevance,
+                                                                           findings, we present design implications for integrating proactiveand code maintainability are critical concerns.
+                                                            AI assistance with real-world IDEs to guide future systems toward   In this work, we investigate how proactive capabilities can be in-
+                                                        more developer-aligned support.tegrated into in-IDE assistants, advancing toward practical, context-
+                                                         Our contributions are as follows.aware developer support. We focus on providing proactive assis-
+tance to improve code quality, a particularly relevant developer         • Empirical characterization of developer interaction
+concern that often goes unnoticed during development [71] de-           patterns with proactive AI suggestions across workflow
+spite its direct impact on code review efficiency, production de-             contexts, revealing timing-dependent receptivity patterns in
+fect rates, and deployment velocity [4, 48, 63]. While developers             authentic professional environments.
+have shown strong interest in AI tools that help with code quality,         • Quantitative evidence of proactive assistance efficiency,
+including bug detection, refactoring, and adherence to best prac-           showing significantly reduced interpretation time compared
+tices [12, 13, 62], many existing tools addressing code quality are             to reactive AI use through deployment in production IDE.
+offline or reactive [9, 30, 65]. Reactive tools provide limited useful-        1Fleet: https://www.jetbrains.com/fleet/
+ness in fast-paced development settings where timing and context         2JetBrains: https://www.jetbrains.com/
+=== PDF PAGE 3 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+
+    • Empirically grounded implications for building proac-       editors, controlled settings, or Python-only environments [13, 52].
+       tive assistants: when to surface suggestions, what makes      These design considerations limit what we know about how proac-
+     them effective, how trust and context influence adoption.         tive assistance behaves in full-featured IDEs with realistic work-
+    • We share our study material via a replication package3 [34].      flows, diverse programming languages, and authentic time pres-
+                                                                             sures. Building on prior work, we integrate proactive support into a
+2  Background                                                production-ready in-IDE AI assistant and conduct a five-day in-the-
+2.1  Developer-AI Interaction and Proactive           wild deployment with professional developers. Through this deploy-
+                                                                 ment, we capture developer interactions with proactive suggestions
+     Assistance
+                                                                      triggered at three AI-driven workflow-grounded points [10, 11]:
+Understanding how developers interact with proactive AI assistants     ambiguous prompt detection, declined AI edit follow-up, and post-
+in the real-world IDE is lacking in current human-AI interaction     commit review.
+research, compared to developer interactions with reactive systems.
+For example, Ross et al. [53] demonstrated the value of extended     2.2  Code Quality as a Domain for Proactive
+conversational interactions with AI systems for complex tasks,         Assistance
+showing that multi-turn dialogues can enhance productivity com-
+                                                               Developers increasingly expect AI tools to support not just their
+pared to single-invocation approaches. Relatedly, Barke et al. [7]
+                                                                       productivity (e.g., how quickly they can write code), but also make
+showed through a grounded theory that user interactions with AI
+                                                                 meaningful edits to existing code to improve the code quality [8, 57].
+can be classified into two modes akin to the two systems of thought
+                                                            Poor code quality has direct business consequences: it increases
+in dual-process theories of cognition: acceleration and exploration.
+                                                                  time spent in code review [4], leads to higher defect rates in produc-
+For interactions with reactive assistants, Mozannar et al. [46] sug-
+                                                                       tion [48], and reduces deployment frequency [63]. Despite these
+gested categorization of 12 programming states, including the most
+                                                                       impacts, code quality issues frequently escape detection during ini-
+prominent time-wise verifying suggestions, prompt crafting, and
+                                                                                          tial development [71], making them ideal candidates for proactive
+editing code. In the recent work of Sarkar and Drosos [54], it was
+                                                             AI intervention. While recent work shows that LLMs can help with
+found that vibe coding with AI follows cycles: set a goal, prompt the
+                                                                       refactoring [51], bug fixing [9, 65], review [15], optimization [20],
+AI, test results, refine, and sometimes edit manually. As these works
+                                                            and smell detection [69], the aforementioned tools are largely reac-
+primarily investigate reactive scenarios where humans explicitly
+                                                                                   tive. Developers must spot a problem, switch tasks, and phrase a
+seek AI assistance, they place the cognitive burden of recognizing
+                                                                            suitable prompt, which are multiple barriers that can limit adoption.
+assistance opportunities entirely on the developer. This interac-
+                                                                       Proactive support can reduce the friction of reactive tools by
+tion model introduces cognitive load and often limits real-time
+                                                                           offering timely, relevant improvements without requiring initiation.
+utility [14, 47, 49].
+                                                                Moreover, code quality suggestions often involve changes that do
+   Proactive tools take a different approach. These systems antic-
+                                                                 not affect program behavior, such as style improvements or small
+ipate developer needs and offer assistance without the need for
+                                                                            refactorings. These suggestions can still be helpful even when they
+explicit prompting. However, a fundamental challenge persists: de-
+                                                                       are not directly related to the developer’s current task. Developers
+termining when AI systems should proactively intervene without
+                                                                        also appreciate support that enhances clarity and maintainability,
+disrupting developers’ workflow and cognitive state [1, 24]. The
+                                                                    as long as it is not disruptive [13, 52]. Our work builds on these
+timing challenge is particularly critical in real-world professional
+                                                                     observations by exploring how proactive AI can surface code quality
+developers’ workflow because poorly timed interventions can dis-
+                                                           improvements in real workflows. Note that we do not focus on
+rupt focused work and reduce trust, while well-timed assistance can
+                                                                       building new quality assessment tools and instead study how such
+enhance workflow efficiency without cognitive overhead [5, 27].
+                                                              improvements can be integrated into natural developer workflows.
+  While research on more proactive assistants has been studied
+in forms ranging from physical robots [6, 50] to virtual chat assis-
+                                               3  Proactive System Design and Iterative
+tants [37, 38], the actual capabilities of prior deployed proactive
+                                                Refinementassistants do not always meet user expectations [39]. Moreover, the
+effectiveness of proactive AI in professional software development     To investigate how professional developers interact with proactive
+contexts remains underexplored. Only some research investigated     AI assistance across workflow contexts in situ, we created a pro-
+how to improve the timing and scope of proactive code comple-      totype of a feature that provided proactive suggestions for code
+tions [18, 44] and several works explored proactive chat-based       quality improvements inside a production in-IDE AI assistant. We
+agents for professional coding [13, 74]. As many of the previous      developed ProAIDE through an iterative, human-centered design
+systems relied on simple models or preset messaging, with the      process spanning three phases (Figure 1). First, we created an ini-
+advent of modern LLMs and their growing usage in agents for soft-        tial prototype with three workflow-grounded intervention triggers
+ware engineering [72], there is significant potential to design more      based on prior work (Section 3.1). Second, we conducted contextual
+capable proactive coding assistants.                                     inquiries with seven professional developers to refine the system
+   Furthermore, a critical limitation of existing proactive AI re-     and extract four design principles (Section 3.2). Third, we refined
+search in software development is the reliance on controlled evalu-      the prototype based on these insights, resulting in the final ProAIDE
+ation environments. Most of these systems were evaluated in toy      implementation (Section 3.3).
+
+3We share recruitment texts, survey instruments, and contextual inquiry protocol. Note
+that the collected user data cannot be made public due to user privacy considerations.
+=== PDF PAGE 4 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+
+
+
+                                                                                                                             b
+
+
+
+
+
+                                                                                                                                                       b1
+
+
+                                                                                                                                                                                    b2
+
+
+                                                                                                                                                                                    b3
+
+
+
+
+
+                                                                          a
+
+
+
+
+Figure 2: User interface for proactive intervention at an ambiguous prompt. (a) Lightweight in-editor cue indicating AI activity.
+(b) Opened chat panel with: (b1) suggestion title, (b2) rationale, and (b3) code snippet. The UI for declined AI edit followed
+the same structure. For post-commit, the interaction interface remained, but the visual cue (a) appeared as a popup in the
+upper-right corner after a successful commit.
+
+
+3.1  Initial Prototype                                               prompts, such as lack of context (e.g., requesting a fix with-
+For the initial user interface, the in-IDE’s AI chat served as the            out providing error details) or inconsistent references (e.g.,
+central communication channel (see Figure 2), specifically designed            using undefined variables). Upon detecting such ambiguity,
+to minimize context switching while preserving developer focus             the system intervened to offer additional guidance and code
+and workflow continuity based on guidelines from prior work [13,             quality targeted suggestions to enhance their code further.
+52, 64, 66]. When the system detected intervention opportunities,           This heuristic is motivated by prior work showing that ac-
+which are described below, it displayed a minimal inline banner             curately formulating specifications is non-trivial, imposes
+providing options to dismiss or engage with the suggestion. Upon              substantial cognitive overhead, and has a significant impact
+engagement, the chat panel presented suggestions with associated           on both the efficiency and quality of generated code [49, 73].
+                                                               • Executing Idea: Developers declining AI code edits wascode patches. For automatically integrating suggestions, diffs were
+directly displayed in the editor for review. Developers could sub-             treated as a heuristic signal that the proposed solution may
+sequently accept or reject changes. The initial interface remained            not have fully aligned with their intent. To explore whether
+virtually unchanged in the final system, with the exception of de-            follow-up assistance could be valuable, ProAIDE proactively
+tailed specifications and interaction flows described in Section 3.3.             offered suggestions in such cases with focus on code qual-
+   Unlike prior work, our in-IDE assistant is present throughout                 ity. These could include the reasoning behind the original
+the entire developer workflow. In particular, the system triggers             solution or alternative implementation approaches, aiming
+proactive suggestions across three conceptual stages of the code             to reduce the need for developers to reformulate requests
+improvement process, depicted in Figure 3. These trigger points              after an unsuccessful attempt.
+                                                               • Getting Feedback on Written Code: the system also proac-were informed by prior studies on developer workflow patterns [10,
+11] and were refined through contextual inquiries:                               tively provided suggestions after developers committed their
+                                                                              changes, representing a natural checkpoint [28, 52]. Commit-    • Formulating Need: When developers submitted a prompt
+                                                                              ting code generally indicates that a developer has finished
+      through the IDE’s built-in inline AI action “Edit Code”, the
+                                                                                 iterating on a logical unit of work, potentially creating a
+      system evaluated this request by making LLM-as-judge as-
+      sessments against predefined criteria to identify ambiguous
+=== PDF PAGE 5 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+                                            Formulating need:
+                                        ambiguous prompts                Finished
+                                                                                        writing code
+
+                                                Executing idea:
+                                                   declined AI edits
+
+
+
+                  Implement           Start iterating          Stop iterating       Commiting /
+                     functionality          on code             on code        pushing changes
+
+
+Figure 3: Main stages of the code iteration workflow and corresponding points where ProAIDE triggers proactive suggestions.
+
+
+       receptive moment for review. Hence, upon successful com-      in their workflow, such as after commits. One participant noted: “I
+       mits, developers were proactively presented with an option      separate writing code and optimizing it. When I optimize, I want to
+       to “Review Changes with AI” which invoked the AI chat      do it later. Reviewing should happen after I’ve written something and
+     where they received feedback on best practices and code        feel it’s ready for review.” [Pilot2]. We returned to this distinction
+       quality in terms of criteria, including modularity, efficiency,     between task stages and boundary-triggered interventions in our
+      and robustness.                                                 analysis of how developers engaged with proactive suggestions
+  Due to proprietary constraints, complete system prompts could      across workflow phases (see Section 5).
+not be disclosed. However, relevant prompt segments are provided       DP2. Contextually relevant suggestions are important for en-
+in supplementary materials [34].                                     suring that the assistant supports, rather than interrupts, existing
+                                                                in-IDE workflows. Instead of general-purpose proactive sugges-
+3.2  Contextual Inquiries                                      tions [13, 74], we specifically targeted code-quality improvements.
+                                                            These improvements spanned optimizations based on best prac-We conducted contextual inquiries [23] with seven professional
+                                                                               tices and general code quality criteria, tailored to the developer’sdevelopers at JetBrains to refine approach described above.
+                                                                        context. Whereas the LLM underlying the AI assistant by default
+3.2.1  Procedure. Participants were chosen to be professional de-     had access to tools to dynamically fetch code artifacts across the
+velopers (more than 1 year of experience), regular (at least once per       repository, we augmented its context with potential problems de-
+week) users of the IDE under study, who frequently (daily) used       tected by the IDE (e.g. language servers) and the relevant portions
+in-IDE AI features. Each remote session lasted approximately one       of code the user was actively working on. In case of interventions
+hour and was both recorded and transcribed. Participants interacted     on commits, the corresponding git diffs were provided. Participants
+with the early prototype described in Section 3.1, addressing code       of the contextual inquiries appreciated that ProAIDE inferred their
+quality issues in any familiar project of their choosing. The setting      intent without requiring explicit prompts or manual context aug-
+characterized their daily work, with participants elaborating on      mentation. However, they occasionally perceived suggestions as
+their thought processes aloud. We concluded each session with a      redundant, overly generic or not aligned with their initial intent.
+semi-structured interview to gather feedback about participants’       DP3. Explainability and transparency of proactive sugges-
+impressions, preferences, and suggestions for improvement. The       tions are crucial to build developer trust, particularly in industrial
+script and transcripts of contextual inquiries are included in the       settings. Earlier work had highlighted how over-reliance and subse-
+supplementary materials [34]. Recordings were transcribed, and      quent limited understanding of proactive AI suggestions could lead
+through collaborative discussion, the first two authors extracted       to long-term maintenance and extensibility issues [52]. Addressing
+prominent and common themes to inform the refinement of the        this, our design included clear explanations of suggestions and ra-
+early prototype.                                                        tionales behind AI intervention. Additionally, an in-chat context
+                                                                 panel provided transparency into the AI’s working context (e.g.3.2.2  Analysis of Themes. Combining these insights with existing
+                                                                        relevant files, commits or other manual attachments from the user).literature, we identify four Design Principles (DPs) that guided the
+                                                                       Participants valued the ability to preview changes in the editorrefinement for our resulting implementation of ProAIDE.
+                                                    when receiving patches, but requested inline diffs within snippets  DP1. Timely, proactive AI assistance emphasizes anticipating
+                                                                      themselves, without them being integrated directly. Suggestions feltdeveloper needs without causing disruptions. In prior work, peri-
+                                                        more trustworthy when users could inspect edits before applyingodic suggestions had been shown to interrupt workflow and reduce
+                                                               them: “Maybe smaller suggestions or steps would help. Right now itfocus [13, 74]. To address this, our initial prototype triggered sug-
+                                                                                      feels too risky to accept all at once.” [Pilot3]. Hence, offering multiplegestions at two code iteration stages (Figure 3): formulating needs
+                                                                    small patches was preferred over single large edits.and executing their ideas. However, participants of the contextual
+inquiries recommended including triggers at task boundaries later
+=== PDF PAGE 6 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+  DP4. Preserving user control balances proactive assistance                 Table 1: Participant Demographics
+with the developer’s autonomy in decision-making. From the con-
+textual inquiries, it became evident that automatic invocation of         ID  Role          Languages      Exp.  AI Use Freq.
+the AI chat upon intervention points was seen as intrusive. De-
+                                                                       P1  Dev, DevOps    C#, Groovy, Py   6–10y      Multi/day
+velopers preferred lightweight, in-editor pop-ups to confirm chat                                                                       P2  Dev              Kt, TS          11–16y       1/week
+invocation, noting that suggestion rejection often stemmed from          P3  Dev, Researcher  Dart, Py, Shell    3–5y      Multi/day
+task switching rather than disapproval. We found that signaling AI          P4  Dev          C#              16+y      Multi/day
+activity close to the user’s current interaction scope within the IDE          P5  Dev, DevOps     Dart, Kt, Py      3–5y     Few/week
+was necessary to minimize distraction. One participant commented:          P6  Dev              Java, Kt, SQL    11–16y     Multi/day
+“I would expect some confirmation before running a new request to          P7  Dev, Analyst     Py, SQL, TS      6–10y      Multi/day
+the chat, otherwise it would be quite unexpected.” [Pilot5].                   P8  Dev            Go, JS          11–16y     Multi/day
+                                                                       P9  Architect       Go, Kt, Py        16+y      Multi/day
+3.3  ProAIDE                                                      P10 Dev          HTML, JS, Kt     1–2y          1/day
+                                                                        P11 Dev             C#, TS           3–5y      Multi/day
+Based on findings from contextual inquiries with the early proto-          P12 Dev              Dart, Rust, Swift  6–10y      Multi/day
+type, we refined ProAIDE to address the identified issues as de-          P13  Dev, ML Eng    Py              6–10y      Multi/day
+scribed above (see Figure 2 for the resulting user interface):                P14  Dev, Architect   Go, PHP, TS      16+y      Multi/day
+    • When intervening on ambiguous prompts and declined AI          P15  Dev, Architect    Kt, Py          11–16y     Multi/day
+         edits, we additionally augmented the assistant’s context with
+       the corresponding user’s request, to enhance alignment with
+                                                         4.1  Participants       their initial intent. We also refined the system prompt to
+      avoid suggestions that may be repetitive given previous at-    We recruited participants through JetBrains’ research panel using
+      tempts (as inferred from the user request or code context).       a comprehensive screening survey, requiring active use of the Fleet
+    • We implemented lightweight visual cues (see Figure 2) with     IDE and the JetBrains AI assistant 4 under study, regular AI tool
+       optional expansion directly in the IDE near the user’s cur-     usage (at least weekly), and professional development experience.
+       rent cursor position (a), providing users with the option to     The screening process yielded 29 qualified participants who met all
+      invoke the chat panel (b), where the AI suggestions would       selection criteria. According to the daily and post-study surveys,
+      be displayed. Each suggestion contained a concise title (b1),     15 participants were actively engaging with the tool. The number
+      a brief explanation of the issue and the rationale behind the       of participants is in line with prior studies of proactive AI [52] and
+      improvement (b2), and a relevant code snippet (b3).              in-the-wild studies of software developers [35, 40, 41]. All partic-
+    • We added an explicit option to apply suggested patches from      ipants indicated familiarity with JetBrains’ products and in-IDE
+      within the AI chat, rather than directly displaying inline diffs     AI tools, minimizing potential confounding variables. Participants
+      within the editor. This on-demand model gave developers full     were required to have regular experience with AI tools in day-to-
+       control over the integration of suggestions while avoiding      day development work. Out of the participants, 80% indicated using
+      unnecessary computational cost for LLM requests in the     AI tools multiple times daily, with 66.7% using GitHub Copilot and
+      background to apply these patches.                           46.7% using JetBrains AI Assistant. The participant pool consisted
+                                                                          of 93.3% identifying as Developer/ Programmer/ Software Engineer  Our iterative design process resulted in an enhanced version of
+                                                                                  roles, and 33.3% as DevOps/ Architects. Regarding professional ex-ProAIDE to be used in our systematic in-the-wild study of developer
+                                                                          perience, 46.7% indicated having over 11 years of coding experienceinteractions with proactive AI assistance across authentic workflow
+                                                          and 26.7% having 6-10 years of experience. In terms of primarycontexts, which we describe next.
+                                                          programming languages used by the participants, Python (46.7%),
+4  In-the-wild Study Design                                 Kotlin (40%), and TypeScript (26.7%) were the most common. Full
+                                                             demographic details are in Table 1.
+To investigate developer interaction patterns with proactive AI
+assistance in real-world professional contexts, we conducted an in-     4.2  Data collection procedure
+the-wild study that employed a mixed-methods approach, combin-
+                                                       The study followed a structured timeline spanning four weeksing quantitative telemetry data with qualitative survey responses.
+                                                           from 7 May 2025 to 3 June 2025. Participants were recruited onThe study was conducted in line with institutional ethical standards,
+                                                                a rolling basis and enrolled in batches. Eligible participants, iden-adhering to the values and guidelines outlined in the ICC/ESOMAR
+                                                                                   tified through a screening survey, received an invitation to startInternational Code [25]. The research questions we aim to address
+                                                                   the study in the following week. The core study period requiredare as follows:
+                                                                                five active days of Fleet IDE use. This duration balanced capturing
+    • RQ1. How do developers interact with in-IDE proactive AI
+                                                                          interactions with ProAIDE beyond initial novelty [33, 40] with the
+       suggestions across workflow stages?
+                                                                            practical constraints of professional developers. To further accom-
+    • RQ2. How do developers experience the interaction with
+                                                          modate participant schedules, we allowed a ten-day window for
+      in-IDE proactive AI suggestions?
+    • RQ3. How do developers perceive the impact of in-IDE proac-        4JetBrains AI Assistant: https://www.jetbrains.com/ai-assistant/. This product is a
+                                                                                    general-purpose in-IDE AI assistant that integrates code completion, AI chat, code
+        tive AI suggestions on their work?                                      generation, and documentation features, capturing a diverse range of interaction
+                                                                                           patterns with AI inside IDEs.
+=== PDF PAGE 7 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+
+completing these five active days. Participants received a reminder     skewness inconsistent with normality assumptions in both con-
+midway through the study and a final survey prompt at the end of       ditions, the Wilcoxon signed-rank test provided robust inference
+the participation window. This design provided flexibility for par-     without requiring the parametric assumptions necessary for t-tests.
+ticipants while maintaining structured, consistent data collection.    We combine the telemetry and survey data to derive contextualized
+Supplementary materials [34] provide detailed texts used for that.       insights into the usability and perceived usefulness of ProAIDE.5
+
+4.2.1  Capturing in-the-wild usage and daily surveys. During the                                               5  Results
+study, participants engaged in self-directed programming tasks
+                                                      Our analysis combines in-IDE telemetry (N=18 machines, withrepresentative of their routine professional activities (i.e. “worked
+                                                                          active usage declining to 8 machines by day five) and a post-studyas usual”). There were no constraints on programming languages,
+                                                                     questionnaire with open-ended feedback (N=15).frameworks, or project types for this reason. With participants’
+informed consent, we collected anonymous IDE usage statistics as
+                                                         5.1  RQ1: Interaction Patterns Across Workflowtelemetry data. Importantly, we did not collect personal data, source
+code, file names, or full inputs and outputs exchanged between     To answer the RQ1, we analyzed 229 interactions (Figure 4) across
+the IDE and LLMs. To prevent fraudulent participation, in-IDE      three workflow-triggered intervention types: (1) Ambiguous Prompt,
+notifications prompted participants to complete short daily surveys.       (2) Declined AI Edit, and (3) Commit Changes over the study period
+These surveys appeared five minutes after interactions with any      of five days. Each intervention provided developers with options
+proactive feature, limited to once per IDE session. Surveys captured      to either engage with the AI for code improvement suggestions,
+the specific proactive feature used, the relevant development task,      dismiss the notification, or ignore it entirely.
+and perceptions of feature behavior, along with an open-ended         • Ambiguous Prompt interventions (N=35) saw moderate en-
+question for additional feedback. Daily surveys also helped track           gagement (46%), with 23% dismissals and 31% ignores. This
+participation, as telemetry data were anonymous and thus not            balanced distribution may reflect a mix of situations: in some
+linked to individual participants.                                                cases, developers appeared to be in an exploratory mode,
+                                                                 open to proactive suggestions. In others, they seemed to have
+4.2.2  Post-study survey. After completing at least five active days
+                                                                     a clear intent in mind but preferred efficiency over detail,
+and corresponding daily surveys, participants filled out a post-study
+                                                                        being surprised that “simplify was insufficient context for the
+survey. This survey included Likert-scale items from the System
+                                                                    AI to act upon” [P1].
+Usability Scale (SUS) [36]. Additional questions evaluated partic-
+                                                               • Declined AI Edit interventions (N=39) achieved the lowest
+ipants’ perceptions of the assistant’s reliability, intent alignment,
+                                                                 engagement rates at 31% and highest dismissal rates at 62%.
+intrusiveness, and impact on efficiency. Two open-ended questions
+                                                                        Despite signaling unmet needs, these interventions appear
+encouraged participants to describe specific effects on code quality
+                                                                              to feel “like advertisement” [P3], indicating unnecessary in-
+and suggest improvements to better support their workflow.
+                                                                            trusion when developers have already formulated specific
+4.3  Data Analysis                                                     task intentions. Moreover, context-switching between differ-
+                                                                         ent AI interaction modalities appears to be causing cogni-
+We applied both quantitative and qualitative analysis methods to                                                                                     tive overload, with participants expressing confusion about
+address our research questions. To examine developer interac-                                                                “when to use inline AI and chat” [P15].
+tions with the proactive feature of AI assistant across workflow                                                               • Commit Changes interventions (N=155) achieved highest
+stages 3.1 (RQ1), we analyzed 5,732 data points and 229 interven-                                                               engagement rates (52%). This timing is based on natural
+tions in telemetry logs. Specifically, we focused on three interaction                                                                  workflow boundary points when developers complete logi-
+types for each AI intervention: engage (user opted for viewing                                                                                   cal units of work and are “still in the mindset of wanting to
+the suggestions in chat), dismiss (user actively closed the notifi-                                                                       submit good code” [P5]. This suggests that developers, hav-
+cation), or ignore (no user response). We processed raw teleme-                                                                           ing finished writing code and entered an evaluative mindset,
+try events by filtering for proactive intervention triggers, then                                                                        experience reduced cognitive switching costs and thus are
+categorized subsequent user actions following each intervention.                                                             more receptive to proactive AI.
+Descriptive statistics, including engagement patterns and tempo-
+                                                 An analysis of interaction patterns over the study period re-
+ral patterns across the five-day study period, were computed to
+                                                                     vealed stability across all intervention types (See Fig. 4). For Commit
+characterize interaction behaviors for each intervention type (am-
+                                                               Changes interventions, the consistent engagement rates throughout
+biguous prompt, declined AI edit, commit changes). To evaluate
+                                                                   the study period indicate that the utility of boundary-point inter-
+developer perceptions of the assistant (RQ2) and its perceived
+                                                                    ventions is not diminished by repeated exposure. The daily survey
+impact (RQ3), we mainly analyzed post-study survey responses.
+                                                                 feedback confirmed that having AI review changes after commits
+This included quantitative data summarized through frequency
+                                                                 remains helpful, with users expressing a desire to “continue using it
+distributions for Likert-scale items, and qualitative insights from
+                                                                  once the feature becomes available” [P5]. In contrast, engagement
+open-ended questions. Moreover, we employed a Wilcoxon signed-
+                                                                           rates for Declined AI Edit interventions remained consistently low,
+rank test [56] to compare interpretation times (from the moment
+                                                                  suggesting that the poor reception was not necessarily due to an
+a suggested snippet appeared in the chat interface until the user’s
+first response to it) between proactive and reactive chat sessions.       5Survey data supporting the findings of this study may be shared upon reasonable
+Given the moderate sample sizes and the observed distributional        request. Due to privacy and confidentiality concerns, telemetry data collected from
+                                                                                    in-IDE usage cannot be made publicly available.
+=== PDF PAGE 8 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+
+
+
+
+Figure 4: Rates of interaction with proactive AI interventions across various development stages: formulating needs (Ambiguous
+Prompt), executing the idea (Declined Edit) and finishing writing code (Commit Changes). Users had the option to Engage,
+Dismiss, or Ignore AI interventions. Active participation decreased from 18 to 8 users between Day 1 and Day 5, yet interaction
+patterns remained stable across intervention types. Commit Changes interventions achieve the highest engagement (52%),
+while Declined Edit interventions show consistently low engagement (31%). In total, we recorded 229 proactive AI interventions
+over the 5-day study period.
+
+
+initial learning curve, but rather reflects a more fundamental disrup-      presence contributed to helping developers feel like they “always
+tion to their workflow. Moreover, 8 out of 18 participants chose to     knew what the suggestions were talking about” [P3].
+continue using ProAIDE beyond the mandatory 5-day study period,
+                                                                                  5.2.2  Developers Had Varying Needs and Preferences. In terms of
+suggesting that its value extended beyond initial curiosity. This
+                                                  how proactive interventions were triggered, many expressed a de-
+sustained engagement indicates that the proactive feature was not
+                                                                                  sire for control, as [P5] noted: “I prefer to use hotkeys where possible
+merely perceived as a novel experimental tool, but had begun to
+                                                                           or a command that can be used”. Conversely, some preferred greater
+integrate meaningfully into participants’ regular workflows.
+                                                             AI autonomy, with another participant stating “[They] would like to
+ Summary of RQ1. Proactive AI’s utility depends on developers’       immediately move context to ’Chat’ without even asking me, since
+  cognitive context and thus readiness to receive assistance. The        [they] didn’t accomplish what [they] tried to do” [P15]. Moreover,
+  most accepted interventions occur at natural workflow boundaries        opinions regarding the degree of proactiveness and granularity
+ when developers are in the mindset of reviewing submitted code,        of suggestions differed. Some participants indicated that “it would
+  while interventions during focused implementation tasks often       be good if the ’Review Commit’ option could be triggered automat-
+  feel disruptive and intrusive.                                               ically on any commit” [P5], or anchored to “any changes made in
+                                                                                  git” [P10]. Others found intervention frequency excessive, stating
+                                                                        that suggestions were “not always necessary [...] dismissing the di-5.2  RQ2: User Experience
+                                                                     alog is annoying” [P15]. Regarding suggestion granularity, some
+Having identified when proactive AI interventions are most inter-                                                                       participants sought detailed, “fine-grained comments in code and
+acted with, we now examine how developers experienced these                                                                 documentation” [P3], while others preferred concise suggestions,
+interventions (RQ2). The findings below are primarily based on                                                                          stating “no need for explanation text” [P15]. Also, participants also
+analysis of qualitative post-study survey responses (Figure 5).                                                            wished to select suggestion types explicitly, such as those related
+5.2.1  ProAIDE was Easy to Use and Learn. Participants generally      to “performance, readability, security” [P4].
+rated ProAIDE positively in terms of usability, reflected by an above-                                                                                  5.2.3  Alignment Between AI and Mental Model Was Key. An im-
+average SUS score of 72.8 out of 100 (95% CI: [64.1, 81.5]). This indi-                                                                   portant factor influencing developers’ receptiveness to proactive
+cates good usability, though with room for improvement, suggesting                                                                    suggestions was how well the AI’s behavior aligned with their ex-
+users hold favorable but not strongly promotional views [16, 55].                                                                        pectations and mental models. Survey responses indicated that 66%
+The majority found the system quick to learn (93%), likely due to its                                                                       of participants easily understood how the suggestions related to
+seamless integration within the already familiar IDE environment.                                                                            their intended tasks. One participant noted, “In most cases, sugges-
+Additionally, participants considered the proactive feature easy to                                                                               tions were exactly what I wanted” [P6]. Interestingly, one participant
+use (87%). Explicit confirmation mechanisms were particularly ap-                                                               emphasized the role of developer context, stating, “I did not feel that
+preciated, with one participant noting the system was “even better                                                           any suggestion was misleading [...] so perhaps the coder’s perception
+than some other IDEs [...] offering custom UI in form of buttons when                                                            and friction with the code they are writing is an important factor here.”
+asking for confirmation” [P12]. Furthermore, the transparency in AI                                                                This suggests that perceived alignment may depend not only on
+                                                                     the AI but also on the developer’s experience with the task at hand.
+=== PDF PAGE 9 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+
+             SUS: Quick to learn   7%                           60%                                       33%
+
+               SUS: Easy to use   7%    7%                           60%                                    27%
+
+       SUS: Would use frequently     13%                                    73%                                    14%
+
+            SUS: Well integrated   7%          20%         7%                           60%                         7%
+
+           SUS: Confident to use   7%    7%               33%                                 47%                    7%
+
+             SUS: Cumbersome                     47%                              27%                  20%         7%
+
+              SUS: Inconsistent     13%                     40%                        20%                  27%
+
+      SUS: Unnecessarily complex            27%                              47%                        13%         13%
+
+        SUS: Needed to learn a lot                  40%                                       53%                      7%
+
+          SUS: Need tech support                                73%                                          27%
+
+     Helped complete tasks quickly         20%            13%                           54%                           13%
+
+               Clear relation to task   7%    7%          20%                              53%                           13%
+
+      Helped complete tasks easily            27%               13%                        47%                        13%
+
+ Comfortable accepting suggestions            27%                     27%                              47%
+
+         Well-timed and unobtrusive                       53%                                          47%
+
+                            Reliable   7%                   40%                           27%                     27%
+
+                              0                    20                    40                    60                    80                   100
+                                                                                 Percentage of Responses
+                                                 Strongly disagree          Disagree          Neither agree nor disagree         Agree          Strongly agree
+
+
+Figure 5: System Usability Scale and user experience responses from 15 participants who completed the entire study period.
+Results show above-average usability (𝑆𝑈𝑆= 72.8).
+
+
+5.2.4  Perceived Utility was Shaped by the AI’s Contextual Under-      “instead of reviewing my commit, it summarizes the changes I made
+standing. The usefulness of proactive AI suggestions was strongly     and presents them as its ‘suggestions’ ”.
+influenced by the AI’s ability to understand the developer’s code
+                                               Summary of RQ2. Developers rated the proactive feature ascontext. However, only 27% of participants rated AI chat sugges-
+                                                                    easy to use (SUS = 72.8), expressing ease of learning and goodtions as reliable, and just 47% felt comfortable accepting them. In
+                                                                             integration. However, preferences varied widely regarding userfact, the perceived reliability diminished when intent behind de-
+                                                                                   control, degree of proactivity, and granularity of suggestions. Per-sign choices was not understood; in some cases “repetitiveness was
+                                                                            ceived usefulness was influenced by how well the AI’s suggestionsnecessary and unavoidable for the specific functionality intended to
+                                                                        aligned with developers’ mental models and workspace context.achieve” [P3]. Others experienced frustration when the “AI failed to
+account for domain-specific syntax and patterns” [P13]. We note that
+LLM training data here plays a substantial role, as P3 observed: “at     5.3  RQ3: Impact of Proactive Suggestions
+least half of the times this happened [...] other LLM chats [...] would     While RQ2 focused on the experience of using ProAIDE, we now
+get it wrong in their first try as well.” Another described the effort re-      turn to RQ3, which investigates how its suggestions influenced
+quired to manually adjust inaccurate suggestions: “The suggestions      developers’ perception of impact on their work. The study reveals
+were sort of helpful, but messed up the code file. I manually copied      that proactive AI assistance generates overall positive effects on
+suggestions, undid changes, then pasted suggestions into the correct      perceived productivity. We find that the majority of participants
+place” [P4], disrupting their workflow.                                indicated that using the proactive suggestions helped them com-
+5.2.5   Specific Friction Points. Beyond contextual understanding,       plete tasks more quickly (66%) and easily (60%), as seen in Figure 5.
+                                                                            Interestingly, from qualitative responses, we find that developerssession length also affected reliability. Participant [P7] observed
+that “if a particular chat session gets long, then the model would     engaged with ProAIDE for various underlying purposes.
+start glitching out”, entering loops where it would “list out the entire        5.3.1  The Proactive AI Served Exploratory Purposes. Our ProAIDE
+plan as is and not actually implement the plan”. This degradation      served as a code quality gate, with participants appreciating its
+over extended interactions forced developers to start fresh sessions,      role as a second pair of eyes for identifying overlooked issues or
+disrupting workflow continuity. Finally, some participants noted      general enhancements. P3 noted: “There were a few suggestions
+that commit review suggestions sometimes restated changes rather      around safety ... an aspect that actually is really important in order
+than critiquing them. Participant [P13] provided feedback that
+=== PDF PAGE 10 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+                                                               a medium-to-large effect size (𝑟= 0.533). These findings suggest
+                           =45.4s                                                                          that proactively delivered suggestions, whether accepted as patches                        N=33
+                                                                  or adapted as snippets, were substantially easier and faster for
+                                                                   developers to interpret than reactively requested ones.
+                                                             Examining the types of suggestions reveals differences in user  Proactive                                                            engagement. In the reactive condition, users encountered relatively
+                                                 =101.4s                                                       more exemplary code snippets (21/50; 42%) than in the proactive                                           N=50
+                                                                    condition (5/33; 15%), where patches dominated. This discrepancy
+                                                                   suggests that reactive use was more information-seeking, while
+                                                                       proactive suggestions provided more actionable code. This distinc-  Reactive                                                                         tion likely contributed to the reduced interpretation time observed
+     0       100      200      300      400                                                                          for proactive suggestions, as users were presented with ready-to-
+                         Time                                                                  apply patches that generated diffs directly in the editor. In contrast,
+                                                               exemplary snippets were displayed only as in-chat code fragments,
+Figure 6: Interpretation time comparison between proac-       likely requiring more effort to interpret and adapt.
+tively triggered chat sessions (𝜇= 45.4𝑠, 𝑁= 33) and reac-
+tively triggered ones (𝜇= 101.4𝑠, 𝑁= 50). Proactive sugges-     Summary of RQ3. Developers engage with proactive AI for
+                                                                   both exploratory and accelerative purposes, achieving high per-tions demonstrate significantly faster interpretation times
+(𝑝= 0.0016, Wilcoxon signed-rank test), suggesting improved        ceived productivity and workflow efficiency. In fact, we observe
+                                                                                significantly lower interpretation times for proactive suggestionsefficiency when AI assistance is tailored to the user’s work-
+                                                               compared to reactive AI use.flow context.
+
+to catch senseless errors when speed coding and did improve my code    6  Discussion
+significantly.” Similarly, P5 mentioned how “[They] didn’t catch     6.1  Design Implications for in-IDE Proactive AI
+that loading the asset might throw an error as [they were] following
+                                                      Our study provides empirical evidence for how developers inter-
+an implementation guide from the library docs.” Participants also
+                                                                        act with proactive AI assistance in authentic professional work-
+seemed to get an intuition for the AI’s strengths over time: “the AI
+                                                                          flows, revealing timing-dependent patterns that inform the design
+is helpful for identifying repetitive code and extracting it to improve
+                                                                       of context-aware coding assistants. While prior work explored
+modularity. It also handles typing well.” [P13].
+                                                                       proactivity in controlled environments and limited contexts, our
+5.3.2  The Proactive AI Served Accelerative Purposes. Beyond ex-      in-the-wild study reveals how real-world developers engage with
+ploratory purposes, we observed that ProAIDE served accelerative     and evaluate proactive interventions over time, spanning various
+purposes by alleviating the manual burden of context management     programming languages and frameworks. We also revisit findings
+and switching between different AI modalities, especially on De-     from earlier studies, contrasting them with our observations based
+clined AI Edit interventions. While developers generally rejected     on real-world behavior. Building on these insights, we offer design
+proactive suggestions after declining AI edits, some participants      implications and recommendations grounded in the four design
+appreciated that the system automatically escalated to the AI chat       principles introduced in Section 3.
+with relevant context (e.g. when inline AI failed to produce the       DP1. Timely, proactive AI assistance. Our findings reveal that
+desired result), “offering proactive code editing while [they were]      timing is a crucial aspect impacting developer engagement with
+writing code so that [they wouldn’t] have to open a chat window or      proactive AI. Unlike static recommendation systems, LLM-based
+go somewhere else to fill in what’s missing” [P12].                      proactive assistants must dynamically align their understanding
+   Interestingly, users spent significantly less time interpreting      with developer mental models through contextual reasoning. Work-
+suggestions in proactively-triggered chat sessions (𝜇= 45.4𝑠, 𝑁=      flow boundary interventions (e.g., after commits) were consistently
+33) compared to reactively-triggered sessions (𝜇= 101.4𝑠, 𝑁= 50),      well-received, due to natural blending into developer workflows.
+as shown in Figure 6.                                             This reinforces prior findings from Pu et al. [52], now ecologi-
+  We compared interpretation times (i.e., the time between the       cally validated in a production environment. On the other hand,
+moment a suggested patch or snippet was presented in the chat      mid-task interventions (e.g., after declined edits) were frequently
+until the user responded using either “Accept” or “Copy”) between      dismissed or ignored. This pattern aligns with Iqbal and Bailey’s
+proactive and reactive chat sessions using data from the same set      Index of Opportunity framework [27], which demonstrates that
+of 18 participants. Given the paired nature of the data and the      mental workload decreases at task boundaries, creating natural
+observed distributional skewness (see Figure 6), we employed the     windows for interruption. Post-commit moments represent such
+Wilcoxon signed-rank test as a non-parametric alternative to the      boundaries: developers have externalized their working memory
+paired 𝑡-test. To address the unequal group sizes (50 reactive vs.      into the commit, freeing attentional resources for evaluating new
+33 proactive sessions), we created balanced subsets by randomly      information. Mid-task interventions, by contrast, compete for cog-
+sampling 33 observations from each condition. The test revealed       nitive resources engaged in active implementation. This theoretical
+a statistically significant difference (𝑊= 109.00, 𝑝= 0.0016) with
+=== PDF PAGE 11 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+
+lens suggests that receptivity to proactive AI depends on the un-      participants indicated that it “would be helpful if each suggestion
+derlying cognitive state that different workflow moments reflect.      came with a confidence level”.
+   Implication and Recommendation: Developers’ workflow context         Implication and Recommendation: Proactive suggestions must be
+and cognitive state must guide when interventions are triggered      understandable at a glance, predictable in behavior, and verifiable
+to ensure effectiveness. As such, anchor proactive suggestions to      before application. As such, enhance developer decision-making
+clear task boundaries (e.g., failed builds or test runs). For mid-task     by increasing transparency, e.g., showing clear inline diffs when
+interventions, we recommend tuning down the AI’s prominence      presenting patches (i.e. before application onto the editor) or confi-
+in the IDE or providing configuration options to respect individ-     dence indicators with suggestions.
+ual workflows. 6 Overall, we highlight the need for more accurate       DP4. Preserving user control. Control over when and how to
+intent modeling to adapt triggers dynamically based on developer     engage with AI suggestions was a recurring theme. In fact, pref-
+behavior and context. Reinforcement learning (RL), for instance,      erences varied across individuals; some preferred more autonomy,
+can be used to learn optimal interruption moments to balance      while others favored greater manual control via hotkeys or menu
+relevance and flow disruption [22]. Our study contributes the em-      actions. Beyond interaction modalities, users expressed a desire to
+pirical foundation such approaches require: the engagement and      have control over the type and granularity of suggestions.
+dismissal outcomes we observed provide ground truth labels for         Implication and Recommendation: To accommodate diverse user
+developer receptivity, which could serve as reward signals in fu-     workflows and preferences, adaptive human-AI interaction strate-
+ture RL formulations. On the other hand, in-IDE telemetry events       gies are needed. As such, combine user-configurable settings for
+offer candidate state representations. However, learning such poli-      intervention timing, frequency, and suggestion types with adap-
+cies requires larger-scale deployments with appropriate privacy       tive assistance that learns from both explicit feedback and implicit
+safeguards, which we leave to future work.                            behavioral signals to provide personalized support.
+  DP2. Contextually relevant suggestions. Developers valued
+suggestions that reflected their current task, responding positively     6.2  Threats to Validity
+when suggestions felt well-aligned. Moreover, our findings support     While our findings provide strong real-world insights into proactive
+Chen et al. [13]’s framing of proactive AI as a “second pair of eyes”     AI use, several limitations must be acknowledged.
+to catch overlooked issues. Nonetheless, we identify that the per-       External Validity. Participants were recruited from JetBrains’
+ceived value of suggestions diminished when they were perceived      research panel and were familiar with its IDEs and AI tools, which
+as irrelevant, for instance, due to unawareness of domain-specific      allowed us to study ecologically valid use cases. However, the find-
+patterns, which can be attributed to both context integration and      ings may not generalize to developers unfamiliar with these tools
+LLM training data.                                                  or those with limited AI experience. While the findings likely gen-
+   Implication and Recommendation: Suggestion quality is largely       eralize to similar in-IDE AI assistance tools, future studies should
+influenced by the AI’s understanding of developer intent and their     broaden the participant pool to assess representativeness across
+workspace, highlighting the importance of enhanced integration       diverse contexts. Due to the limited sample size, we did not stratify
+with workspace context. As such, adopt more effective heuristics       participants by role, experience level, or language. Some findings
+for integrating in-IDE context sources, prioritizing signals that re-      in our study may be shaped by language-specific workflows or by
+flect the developer’s immediate focus i.e. “possibly using nearby      domain-specific factors. For languages with limited tool support or
+open tabs or recently edited files” [P3], ideally grounding these sig-       different compilation models (e.g., C++), tailored designs or fallback
+nals in a broader semantic representation of the codebase through       strategies may be necessary to achieve similar outcomes. Future
+repository indexing. Notably, recent standardized protocols for con-      studies should examine whether timing-dependent receptivity pat-
+necting LLMs to external data sources such as Anthropic’s MCP [3]      terns vary systematically across developer categories.
+exemplify a shift toward structured, tool-mediated context retrieval        Construct Validity. Participants interacted with a full-featured
+enabling real-time personalized augmentation of model context.       AI assistant, of which our proactive feature was one component. As
+  DP3. Explainability and transparency. Transparency in the      such, post-study perceptions may have been shaped by the assis-
+AI’s in-IDE presence was essential for establishing reliability. Devel-      tant as a whole. We see this as a strength of ecological integration,
+opers needed to understand not just what the AI suggested, but why      yet it introduces ambiguity in interpreting usability scores. Still,
+it triggered at that moment and how it interpreted the code context.      qualitative data confirms that the proactive feature contributed
+This differs from traditional recommendation systems, where the      to the observed user experience, making these responses relevant.
+underlying logic is more predictable. Developers appreciated con-      Controlled A/B testing may complement in-the-wild studies by
+cise rationales, previewable changes, and minimal in-editor cues       isolating specific feature effects. Our assessment of proactive sug-
+that respected their workflow. Notably, while Pu et al. [52] found       gestions’ impact relies on self-report rather than objective metrics.
+that flexible interaction scopes improved transparency, our findings      Preserving participant privacy in enterprise settings precluded col-
+show they can cause distraction due to context switching. This high-      lecting source code or LLM outputs, preventing direct measure-
+lights the need for careful coordination of concurrent AI features in     ment of code quality improvements. Future work could address this
+real-world IDEs to reduce cognitive load. To further enhance trust,     through controlled studies with open-source repositories where
+6Examples of such customization mechanisms include custom slash commands and      code artifacts and peer review outcomes can be analyzed, or by
+hooks in the CLI-based AI coding tool Claude Code [2].                             integrating privacy-preserving quality signals into telemetry with
+                                                                         participant consent.
+=== PDF PAGE 12 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+   Internal Validity. Participants were exposed to all intervention    References
+types, but engagement varied by individual workflow, IDE usage in-         [1] Saleema Amershi, Dan Weld, Mihaela Vorvoreanu, Adam Fourney, Besmira Nushi,
+tensity, and day-to-day conditions. As telemetry data were collected           Penny Collisson, Jina Suh, Shamsi Iqbal, Paul N Bennett, Kori Inkpen, et al. 2019.
+                                                                                             Guidelines for human-AI interaction. In Proceedings of the 2019 chi conference on
+anonymized and separately from surveys, we could not link behav-          human factors in computing systems. 1–13.
+ioral data to subjective perceptions at the individual level. While          [2] Anthropic. 2024. Claude. https://code.claude.com/docs.
+both datasets are independently reliable, they cannot be precisely          [3] Anthropic. 2024. Model Context and the Case for an Open Protocol.  https:                                                                                        //www.anthropic.com/news/model-context-protocol Accessed: 2025-07-19.
+mapped to the same individuals. Moreover, telemetry includes data          [4] Alberto Bacchelli and Christian Bird. 2013. Expectations, outcomes, and chal-
+from all participants who engaged with the system, even if they did             lenges of modern code review. In 2013 35th International Conference on Software
+                                                                                             Engineering (ICSE). IEEE, 712–721.
+not complete the full five-day protocol (N=18 machines with active          [5] Brian P Bailey, Joseph A Konstan, and John V Carlis. 2000. Measuring the ef-
+usage declining to 8 machines by day five). On the contrary, survey              fects of interruptions on task performance in the user interface. In Smc 2000
+analyses were restricted to participants who met the five-day filled              conference proceedings. 2000 ieee international conference on systems, man and cy-
+                                                                                                              bernetics.’cybernetics evolving to systems, humans, organizations, and their complex
+daily survey protocol criteria (N=15). This preserves privacy and               interactions’(cat. no. 0, Vol. 2. IEEE, 757–762.
+maximizes available data but may have introduced noise.                      [6] Jimmy Baraglia, Maya Cakmak, Yukie Nagai, Rajesh Rao, and Minoru Asada.
+   Statistical Conclusion Validity. The sample size, variability in             2016. Initiative in robot assistance during collaborative task execution. In 2016                                                                                             11th ACM/IEEE international conference on human-robot interaction (HRI). IEEE,
+daily engagement, and non-uniform exposure to intervention types             67–74.
+limit the power of inferential statistical tests. Where applicable, we          [7] Shraddha Barke, Michael B James, and Nadia Polikarpova. 2023. Grounded
+                                                                                                            copilot: How programmers interact with code-generating models. Proceedings of
+use non-parametric tests to account for data specifics. While our              the ACM on Programming Languages 7, OOPSLA1 (2023), 85–111.
+findings point to meaningful patterns, results should be interpreted          [8] Christian Bird, Denae Ford, Thomas Zimmermann, Nicole Forsgren, Eirini
+with caution due to the limited power.                                            Kalliamvakou, Travis Lowdermilk, and Idan Gazit. 2023. Taking flight with
+                                                                                                          copilot. Commun. ACM 66, 6 (2023), 56–62.
+                                                                                                  [9] Islem Bouzenia, Premkumar Devanbu, and Michael Pradel. 2025. RepairAgent:
+7  Conclusion                                               An Autonomous, LLM-Based Agent for Program Repair. In Proceedings of the
+                                                                                              47th International Conference on Software Engineering (ICSE).
+We investigated how professional developers interact with proac-        [10] Nick C Bradley, Thomas Fritz, and Reid Holmes. 2022.  Sources of software
+tive AI assistance in authentic workflow contexts through a five-day            development task friction. Empirical Software Engineering 27, 7 (2022), 175.
+in-the-wild study with 15 developers within a production IDE. We        [11] Souti Chattopadhyay, Nicholas Nelson, Yenifer Ramirez Gonzalez, Annel Amelia                                                                                           Leon, Rahul Pandita, and Anita Sarma. 2019. Latent patterns in activities: A field
+demonstrated that timing is key: suggestions presented at natural            study of how developers manage context. In 2019 IEEE/ACM 41st International
+workflow boundaries (e.g., immediately post-commit) garnered the             Conference on Software Engineering (ICSE). IEEE, 373–383.
+                                                                                            [12] Tianyi Chen. 2024. The Impact of AI-Pair Programmers on Code Quality and
+highest engagement rates, whereas mid-task interventions were            Developer Satisfaction: Evidence from TiMi studio. In Proceedings of the 2024
+often dismissed. Importantly, we observed sustained engagement              International Conference on Generative Artificial Intelligence and Information Secu-
+patterns over the course of the study, indicating a potential for long-               rity (Kuala Lumpur, Malaysia) (GAIIS ’24). Association for Computing Machinery,
+                                                                New York, NY, USA, 201–205. doi:10.1145/3665348.3665383
+term integration of proactive assistance into everyday development        [13] Valerie Chen, Alan Zhu, Sebastian Zhao, Hussein Mozannar, David Sontag, and
+workflows. Participants consistently valued ProAIDE’s ability to          Ameet Talwalkar. 2025. Need Help? Designing Proactive AI Assistants for Pro-
+surface overlooked issues, particularly when it functioned as a           gramming. arXiv:2410.04596 [cs.HC] https://arxiv.org/abs/2410.04596                                                                                            [14] Bhavya Chopra, Ananya Singha, Anna Fariha, Sumit Gulwani, Chris Parnin,
+lightweight code quality gate. These interventions also supported            Ashish Tiwari, and Austin Z. Henley. 2023.   Conversational Challenges
+perceived productivity and efficiency, given the observation that              in AI-Powered Data Science: Obstacles, Needs, and Design Opportunities.
+                                                                                             arXiv:2310.16164 [cs.HC] https://arxiv.org/abs/2310.16164
+proactive suggestions were interpreted and applied significantly        [15] Umut Cihan, Arda İçöz, Vahid Haratian, and Eray Tüzün. 2025. Evaluating Large
+faster than reactive ones. Our findings bridge the gap between           Language Models for Code Review. arXiv:2505.20206 [cs.SE] https://arxiv.org/
+conceptual AI prototypes and production-ready IDE integration.             abs/2505.20206
+                                                                                            [16] Nicholas Clark, Matthew Dabkowski, Patrick J Driscoll, Dereck Kennedy, Ian
+We offer design insights and empirical evidence for embedding              Kloo, and Heidy Shi. 2021. Empirical decision rules for improving the uncertainty
+proactive AI into daily software engineering workflows, empha-             reporting of small sample system usability scale scores. International Journal of
+sizing adaptive support and user-configurable behavior to lay the           Human–Computer Interaction 37, 13 (2021), 1191–1206.
+                                                                                            [17] Cursor. 2023. Cursor: The AI-first Code Editor. https://cursor.sh.
+groundwork for future research. While our five-day study revealed        [18] Aral de Moor, Arie van Deursen, and Maliheh Izadi. 2024. A Transformer-Based
+adoption patterns, longer-term research is needed to understand           Approach for Smart Invocation of Automatic Code Completion. In Proceedings of
+                                                                                                   the 1st ACM International Conference on AI-Powered Software (AIware ’24). ACM,
+retention, evolving perceptions, and lasting impact.                              28–37. doi:10.1145/3664646.3664760
+                                                                                            [19] Fabrizio Dell’Acqua, Charles Ayoubi, Hila Lifshitz, Raffaella Sadun, Ethan Mollick,
+8  GenAI Usage Disclosure                                                 Lilach Mollick, Yi Han, JeffGoldman, Hari Nair, Stewart Taub, et al. 2025. The
+                                                                                                      cybernetic teammate: A field experiment on generative AI reshaping teamwork and
+Portions of this manuscript were revised using OpenAI’s ChatGPT               expertise. Technical Report. National Bureau of Economic Research.
+for grammar and clarity improvements. The authors reviewed and        [20] Shuzheng Gao, Cuiyun Gao, Wenchao Gu, and Michael Lyu. 2024. Search-Based
+                                                                     LLMs for Code Optimization. arXiv:2408.12159 [cs.SE] https://arxiv.org/abs/
+edited all suggestions and take full responsibility for the content.              2408.12159
+                                                                                            [21] GitHub. 2021. GitHub Copilot. https://github.com/features/copilot.
+Acknowledgments                                                            [22] Bo-Jhang Ho, Bharathan Balaji, Mehmet Koseoglu, Sandeep Sandha, Siyou Pei,
+                                                                                  and Mani Srivastava. 2020. Quick Question: Interrupting users for microtasks with
+This work was supported by JetBrains as part of the AI for Soft-            reinforcement learning. (2020). https://www.amazon.science/publications/quick-
+ware Engineering (AI4SE) collaboration with Delft University of             question-interrupting-users-for-microtasks-with-reinforcement-learning
+                                                                                            [23] Karen Holtzblatt and Hugh Beyer. 1997. Contextual design: defining customer-
+Technology.                                                                                   centered systems. Elsevier.
+                                                                                            [24] Eric Horvitz. 1999. Principles of mixed-initiative user interfaces. In Proceedings
+                                                                                                          of the SIGCHI conference on Human Factors in Computing Systems. 159–166.
+                                                                                            [25] ICC/ESOMAR. 2022. ICC/ESOMAR International Code on Market, Opinion and
+                                                                                                      Social Research and Data Analytics.  https://esomar.org/codes-and-guidelines
+=== PDF PAGE 13 ===
+Developer Interaction Patterns with Proactive AI: A Five-Day Field Study                                                         IUI ’26, March 23–26, 2026, Paphos, Cyprus
+
+
+
+     Accessed on: June 09, 2025.                                                        on Software engineering. 452–461.
+[26] Andrei Cristian Ionescu, Sergey Titov, and Maliheh Izadi. 2025. A Multi-agent        [49] Daye Nam, Andrew Macvean, Vincent Hellendoorn, Bogdan Vasilescu, and
+    Onboarding Assistant based on Large Language Models, Retrieval Augmented            Brad Myers. 2024.   Using an LLM to Help With Code Understanding.
+     Generation, and Chain-of-Thought. arXiv preprint arXiv:2503.23421 (2025).                  arXiv:2307.08177 [cs.SE] https://arxiv.org/abs/2307.08177
+[27] Shamsi T Iqbal, Piotr D Adamczyk, Xianjun Sam Zheng, and Brian P Bailey. 2005.        [50] Zhenhui Peng, Yunhwan Kwon, Jiaan Lu, Ziming Wu, and Xiaojuan Ma. 2019.
+    Towards an index of opportunity: understanding changes in mental workload            Design and evaluation of service robot’s proactivity in decision-making support
+     during task execution. In Proceedings of the SIGCHI conference on Human factors              process. In proceedings of the 2019 CHI conference on human factors in computing
+      in computing systems. 311–320.                                                              systems. 1–13.
+[28] Shamsi T. Iqbal, Piotr D. Adamczyk, Xianjun Sam Zheng, and Brian P. Bailey. 2005.        [51] Dorin Pomian, Abhiram Bellur, Malinda Dilhara, Zarina Kurbatova, Egor Bogo-
+    Towards an index of opportunity: understanding changes in mental workload dur-            molov, Andrey Sokolov, Timofey Bryksin, and Danny Dig. 2024. EM-Assist: Safe
+     ing task execution. In Proceedings of the SIGCHI Conference on Human Factors in           Automated ExtractMethod Refactoring with LLMs. In Companion Proceedings of
+     Computing Systems (Portland, Oregon, USA) (CHI ’05). Association for Computing              the 32nd ACM International Conference on the Foundations of Software Engineering
+     Machinery, New York, NY, USA, 311–320. doi:10.1145/1054972.1055016                    (FSE ’24). ACM, 582–586. doi:10.1145/3663529.3663803
+[29] Maliheh Izadi, Jonathan Katzy, Tim Van Dam, Marc Otten, Razvan Mihai Popescu,        [52] Kevin Pu, Daniel Lazaro, Ian Arawjo, Haijun Xia, Ziang Xiao, Tovi Grossman,
+    and Arie Van Deursen. 2024. Language models for code completion: A practical           and Yan Chen. 2025. Assistance or Disruption? Exploring and Evaluating the
+     evaluation. In Proceedings of the IEEE/ACM 46th International Conference on            Design and Trade-offs of Proactive AI Programming Support. In Proceedings of
+     Software Engineering. 1–13.                                                                   the 2025 CHI Conference on Human Factors in Computing Systems (CHI ’25). ACM,
+[30] Imen Jaoua, Oussama Ben Sghaier, and Houari Sahraoui. 2025.  Combining             1–21. doi:10.1145/3706598.3713357
+     Large Language Models with Static Analyzers for Code Review Generation.        [53] Steven I Ross, Fernando Martinez, Stephanie Houde, Michael Muller, and Justin D
+     arXiv:2502.06633 [cs.SE] https://arxiv.org/abs/2502.06633                                  Weisz. 2023. The programmer’s assistant: Conversational interaction with a large
+[31] JetBrains. 2025. JetBrains AI Assistant. https://www.jetbrains.com/junie/.                 language model for software development. In Proceedings of the 28th International
+[32] Ellen Jiang, Edwin Toh, Alejandra Molina, Kristen Olson, Claire Kayacik, Aaron             Conference on Intelligent User Interfaces. 491–514.
+     Donsbach, Carrie J Cai, and Michael Terry. 2022. Discovering the Syntax and        [54] Advait Sarkar and Ian Drosos. 2025. Vibe coding: programming through conver-
+      Strategies of Natural Language Programming with Generative Language Models.             sation with artificial intelligence. arXiv preprint arXiv:2506.23253 (2025).
+     In Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems        [55] JeffSauro and James R Lewis. 2016. Quantifying the user experience: Practical
+    (New Orleans, LA, USA) (CHI ’22). Association for Computing Machinery, New                statistics for user research. Morgan Kaufmann.
+     York, NY, USA, Article 386, 19 pages. doi:10.1145/3491102.3501870                     [56] SciPy Developers. 2023. scipy.stats.wilcoxon – SciPy v1.11.3 Manual.  https:
+[33] Genovefa Kefalidou and Sarah Sharples. 2016. Encouraging serendipity in re-             //docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wilcoxon.html  Ac-
+     search: Designing technologies to support connection-making. International              cessed: 2025-07-18.
+     Journal of Human-Computer Studies 89 (2016), 1–23.                                   [57] Agnia Sergeyuk, Yaroslav Golubev, Timofey Bryksin, and Iftekhar Ahmed. 2025.
+[34] Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi. 2025. Supplemen-           Using AI-based coding assistants in practice: State of affairs, perceptions, and
+     tary Materials: Proactive AI Assistant Study. OSF. https://osf.io/f98h3/?view_           ways forward. Information and Software Technology 178 (2025), 107610.
+     only=f53356ba505e43f0bae1bc66b1fdcb01 Accessed: 2026-01-12.                       [58] Agnia Sergeyuk, Ekaterina Koshchenko, Ilya Zakharov, Timofey Bryksin, and
+[35] Thomas D LaToza and Brad A Myers. 2010. Developers ask reachability ques-           Maliheh Izadi. 2024.  The Design Space of in-IDE Human-AI Experience.
+      tions. In Proceedings of the 32Nd ACM/IEEE International Conference on Software             arXiv:2410.08676 [cs.SE] https://arxiv.org/abs/2410.08676
+     Engineering-Volume 1. 185–194.                                                        [59] Agnia Sergeyuk, Ilya Zakharov, Ekaterina Koshchenko, and Maliheh Izadi. 2025.
+[36] James R Lewis. 2018. The system usability scale: past, present, and future. Inter-          Human-AI Experience in Integrated Development Environments: A Systematic
+     national Journal of Human–Computer Interaction 34, 7 (2018), 577–590.                       Literature Review. arXiv:2503.06195 [cs.SE] https://arxiv.org/abs/2503.06195
+[37] Q Vera Liao, Matthew Davis, Werner Geyer, Michael Muller, and N Sadat Shami.        [60] Benyamin Tabarsi, Heidi Reichert, Ally Limke, Sandeep Kuttal, and Tiffany Barnes.
+     2016. What can you do? Studying social-agent orientation and agent proactive             2025. LLMs’ Reshaping of People, Processes, Products, and Society in Software
+      interactions with an agent for employees. In Proceedings of the 2016 acm conference            Development: A Comprehensive Exploration with Early Adopters. arXiv preprint
+     on designing interactive systems. 264–275.                                                   arXiv:2503.05012 (2025).
+[38] Tianjian Liu, Hongzheng Zhao, Yuheng Liu, Xingbo Wang, and Zhenhui Peng.        [61] Tabnine. 2020. Tabnine. https://docs.tabnine.com/main.
+     2024. Compeer: A generative conversational agent for proactive peer support. In        [62] Xin Tan, Xiao Long, Xianjun Ni, Yinghao Zhu, Jing Jiang, and Li Zhang. 2024. How
+     Proceedings of the 37th Annual ACM Symposium on User Interface Software and               far are AI-powered programming assistants from meeting developers’ needs?
+     Technology. 1–22.                                                                       arXiv:2404.12000 [cs.SE] https://arxiv.org/abs/2404.12000
+[39] Christian Meurisch, Cristina A Mihale-Wilson, Adrian Hawlitschek, Florian        [63] Adam Tornhill and Markus Borg. 2022. Code red: the business impact of code
+     Giger, Florian Müller, Oliver Hinz, and Max Mühlhäuser. 2020. Exploring user              quality-a quantitative study of 39 proprietary production codebases. In Proceed-
+     expectations of proactive AI systems. Proceedings of the ACM on Interactive,              ings of the International Conference on Technical Debt. 11–20.
+     Mobile, Wearable and Ubiquitous Technologies 4, 4 (2020), 1–22.                         [64] Priyan Vaithilingam, Elena L Glassman, Peter Groenwegen, Sumit Gulwani,
+[40] André N Meyer, Laura E Barton, Gail C Murphy, Thomas Zimmermann, and            Austin Z Henley, Rohan Malpani, David Pugh, Arjun Radhakrishna, Gustavo
+    Thomas Fritz. 2017. The work life of developers: Activities, switches and perceived              Soares, Joey Wang, et al. 2023. Towards more effective ai-assisted programming:
+      productivity. IEEE Transactions on Software Engineering 43, 12 (2017), 1178–1193.         A systematic design exploration to improve visual studio intellicode’s user expe-
+[41] André N Meyer, Thomas Fritz, Gail C Murphy, and Thomas Zimmermann. 2014.              rience. In 2023 IEEE/ACM 45th International Conference on Software Engineering:
+     Software developers’ perceptions of productivity. In Proceedings of the 22nd ACM             Software Engineering in Practice (ICSE-SEIP). IEEE, 185–195.
+    SIGSOFT international symposium on foundations of software engineering. 19–29.         [65] Nalin Wadhwa, Jui Pradhan, Atharv Sonwane, Surya Sahu, Nagarajan Natara-
+[42] Microsoft. 2018. Visual Studio IntelliCode. https://visualstudio.microsoft.com/               jan, Aditya Kanade, Suresh Parthasarathy, and Sriram Rajamani. 2024. CORE:
+      services/intellicode/.                                                                  Resolving Code Quality Issues using LLMs. Proceedings of the ACM on Software
+[43] Microsoft. 2023. IntelliSense. https://learn.microsoft.com/en-us/visualstudio/ide/             Engineering 1 (07 2024), 789–811. doi:10.1145/3643762
+     using-intellisense?view=vs-2022.                                                      [66] Justin D Weisz, Michael Muller, Jessica He, and Stephanie Houde. 2023. Toward
+[44] Hussein Mozannar, Gagan Bansal, Adam Fourney, and Eric Horvitz. 2023. When            General Design Principles for Generative AI Applications. In Joint Workshops on
+      to Show a Suggestion? Integrating Human Feedback in AI-Assisted Programming.          Human-AI Co-Creation with Generative Models and User-Aware Conversational
+     In AAAI Conference on Artificial Intelligence.  https://api.semanticscholar.org/             Agents.
+     CorpusID:259108906                                                                  [67] Justin D. Weisz, Michael Muller, Stephanie Houde, John Richards, Steven I. Ross,
+[45] Hussein Mozannar, Gagan Bansal, Adam Fourney, and Eric Horvitz. 2024. Reading            Fernando Martinez, Mayank Agarwal, and Kartik Talamadupula. 2021. Perfection
+    Between the Lines: Modeling User Behavior and Costs in AI-Assisted Program-           Not Required? Human-AI Partnerships in Code Translation. In 26th International
+     ming. arXiv:2210.14306 [cs.SE] https://arxiv.org/abs/2210.14306                           Conference on Intelligent User Interfaces (IUI ’21). ACM, 402–412. doi:10.1145/
+[46] Hussein Mozannar, Gagan Bansal, Adam Fourney, and Eric Horvitz. 2024. Reading             3397481.3450656
+     between the lines: Modeling user behavior and costs in AI-assisted programming.        [68] Windsurf. 2023. Windsurf AI Code Editor. https://windsurf.ai.
+     In Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems.        [69] Di Wu, Fangwen Mu, Lin Shi, Zhaoqiang Guo, Kui Liu, Weiguang Zhuang, Yuqi
+     1–16.                                                                        Zhong, and Li Zhang. 2024. iSMELL: Assembling LLMs with Expert Toolsets
+[47] Hussein Mozannar, Valerie Chen, Mohammed Alsobay, Subhro Das, Sebastian              for Code Smell Detection and Refactoring. In Proceedings of the 39th IEEE/ACM
+     Zhao, Dennis Wei, Manish Nagireddy, Prasanna Sattigeri, Ameet Talwalkar, and              International Conference on Automated Software Engineering (Sacramento, CA,
+    David Sontag. 2024. The RealHumanEval: Evaluating Large Language Models’          USA) (ASE ’24). Association for Computing Machinery, New York, NY, USA,
+      Abilities to Support Programmers. arXiv:2404.02806 [cs.SE] https://arxiv.org/            1345–1357. doi:10.1145/3691620.3695508
+     abs/2404.02806                                                                        [70] Yisen Xu, Feng Lin, Jinqiu Yang, Tse-Hsun, Chen, and Nikolaos Tsantalis. 2025.
+[48] Nachiappan Nagappan, Thomas Ball, and Andreas Zeller. 2006. Mining metrics         MANTRA: Enhancing Automated Method-Level Refactoring with Contextual
+     to predict component failures. In Proceedings of the 28th international conference         RAG and Multi-Agent LLM Collaboration. arXiv:2503.14340 [cs.SE] https://arxiv.
+=== PDF PAGE 14 ===
+IUI ’26, March 23–26, 2026, Paphos, Cyprus                                                          Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+
+
+
+     org/abs/2503.14340                                                                    [73] Zhongzhi Yu, Mingjie Liu, Michael Zimmer, Yingyan Celine Lin, Yong Liu, and
+[71] Aiko Yamashita and Leon Moonen. 2013. Do developers care about code smells?           Haoxing Ren. 2025. Spec2RTL-Agent: Automated Hardware Code Generation
+   An exploratory survey. In 2013 20th working conference on reverse engineering            from Complex Specifications Using LLM Agent Systems. arXiv:2506.13905 [cs.AR]
+    (WCRE). IEEE, 242–251.                                                                      https://arxiv.org/abs/2506.13905
+[72] John Yang, Carlos E Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik        [74] Sebastian Zhao, Alan Zhu, Hussein Mozannar, David Sontag, Ameet Talwalkar,
+     Narasimhan, and Ofir Press. 2024. Swe-agent: Agent-computer interfaces enable           and Valerie Chen. 2025. CodingGenie: A Proactive LLM-Powered Programming
+     automated software engineering. Advances in Neural Information Processing              Assistant. arXiv:2503.14724 [cs.HC] https://arxiv.org/abs/2503.14724
+     Systems 37 (2024), 50528–50652.

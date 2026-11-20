@@ -1,0 +1,27 @@
+{
+  "name": "react-dom",
+  "version": "18.2.0",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./server": {
+      "deno": "./server.browser.js",
+      "worker": "./server.browser.js",
+      "browser": "./server.browser.js",
+      "default": "./server.node.js"
+    },
+    "./server.browser": "./server.browser.js",
+    "./server.node": "./server.node.js",
+    "./profiling": "./profiling.js",
+    "./test-utils": "./test-utils.js",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "dependencies": {
+    "loose-envify": "^1.1.0",
+    "scheduler": "^0.23.0"
+  }
+}

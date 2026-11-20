@@ -1,0 +1,614 @@
+[
+  {
+    "name": "escaped_braces.py",
+    "tool": "ruff",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'{5}'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'{5}'"
+      ],
+      []
+    ],
+    "transformed": "return f'{{{5}}}'",
+    "second_change": 0
+  },
+  {
+    "name": "format_side_effect.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a b'"
+      ],
+      [
+        "eval:a",
+        "eval:b",
+        "format:a",
+        "format:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a b'"
+      ],
+      [
+        "eval:a",
+        "eval:b",
+        "format:a",
+        "format:b"
+      ]
+    ],
+    "transformed": "return '{} {}'.format(mark('a'),mark('b'))",
+    "second_change": 0
+  },
+  {
+    "name": "keywords.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'infra/17'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'infra/17'"
+      ],
+      []
+    ],
+    "transformed": "return '{team}/{id}'.format(team='infra', id=17)",
+    "second_change": 0
+  },
+  {
+    "name": "missing_key.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "exception",
+        "KeyError",
+        "'absent'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "exception",
+        "KeyError",
+        "'absent'"
+      ],
+      []
+    ],
+    "transformed": "return '{absent}'.format(present=3)",
+    "second_change": 0
+  },
+  {
+    "name": "nested_width.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'   2'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'   2'"
+      ],
+      []
+    ],
+    "transformed": "return '{num:{width}}'.format(num=2,width=4)",
+    "second_change": 0
+  },
+  {
+    "name": "precision.py",
+    "tool": "ruff",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'2.35'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'2.35'"
+      ],
+      []
+    ],
+    "transformed": "return f'{2.345:.2f}'",
+    "second_change": 0
+  },
+  {
+    "name": "reorder_args.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'b:a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'b:a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "transformed": "return '{1}:{0}'.format(next_value('a'),next_value('b'))",
+    "second_change": 0
+  },
+  {
+    "name": "repeat_position.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a:a'"
+      ],
+      [
+        "eval:a"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a:a'"
+      ],
+      [
+        "eval:a"
+      ]
+    ],
+    "transformed": "return '{0}:{0}'.format(next_value('a'))",
+    "second_change": 0
+  },
+  {
+    "name": "same_object_twice.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a-a'"
+      ],
+      [
+        "eval:a",
+        "format:a",
+        "format:a"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a-a'"
+      ],
+      [
+        "eval:a",
+        "format:a",
+        "format:a"
+      ]
+    ],
+    "transformed": "return '{0}-{0}'.format(mark('a'))",
+    "second_change": 0
+  },
+  {
+    "name": "simple.py",
+    "tool": "ruff",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'value=42'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'value=42'"
+      ],
+      []
+    ],
+    "transformed": "return f'value={42}'",
+    "second_change": 0
+  },
+  {
+    "name": "spread_list.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a/b'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a/b'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "transformed": "return '{}/{}'.format(*[next_value('a'),next_value('b')])",
+    "second_change": 0
+  },
+  {
+    "name": "unused_arg.py",
+    "tool": "ruff",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "transformed": "return '{0}'.format(next_value('a'),next_value('b'))",
+    "second_change": 0
+  },
+  {
+    "name": "escaped_braces.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'{5}'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'{5}'"
+      ],
+      []
+    ],
+    "transformed": "return f'{{{5}}}'",
+    "second_change": 0
+  },
+  {
+    "name": "format_side_effect.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": false,
+    "before": [
+      [
+        "value",
+        "'a b'"
+      ],
+      [
+        "eval:a",
+        "eval:b",
+        "format:a",
+        "format:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a b'"
+      ],
+      [
+        "eval:a",
+        "format:a",
+        "eval:b",
+        "format:b"
+      ]
+    ],
+    "transformed": "return f\"{mark('a')} {mark('b')}\"",
+    "second_change": 0
+  },
+  {
+    "name": "keywords.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'infra/17'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'infra/17'"
+      ],
+      []
+    ],
+    "transformed": "return f'infra/{17}'",
+    "second_change": 0
+  },
+  {
+    "name": "missing_key.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "exception",
+        "KeyError",
+        "'absent'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "exception",
+        "KeyError",
+        "'absent'"
+      ],
+      []
+    ],
+    "transformed": "return '{absent}'.format(present=3)",
+    "second_change": 0
+  },
+  {
+    "name": "nested_width.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'   2'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'   2'"
+      ],
+      []
+    ],
+    "transformed": "return '{num:{width}}'.format(num=2,width=4)",
+    "second_change": 0
+  },
+  {
+    "name": "precision.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'2.35'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'2.35'"
+      ],
+      []
+    ],
+    "transformed": "return f'{2.345:.2f}'",
+    "second_change": 0
+  },
+  {
+    "name": "reorder_args.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": false,
+    "before": [
+      [
+        "value",
+        "'b:a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'b:a'"
+      ],
+      [
+        "eval:b",
+        "eval:a"
+      ]
+    ],
+    "transformed": "return f\"{next_value('b')}:{next_value('a')}\"",
+    "second_change": 0
+  },
+  {
+    "name": "repeat_position.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a:a'"
+      ],
+      [
+        "eval:a"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a:a'"
+      ],
+      [
+        "eval:a"
+      ]
+    ],
+    "transformed": "return '{0}:{0}'.format(next_value('a'))",
+    "second_change": 0
+  },
+  {
+    "name": "same_object_twice.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a-a'"
+      ],
+      [
+        "eval:a",
+        "format:a",
+        "format:a"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a-a'"
+      ],
+      [
+        "eval:a",
+        "format:a",
+        "format:a"
+      ]
+    ],
+    "transformed": "return '{0}-{0}'.format(mark('a'))",
+    "second_change": 0
+  },
+  {
+    "name": "simple.py",
+    "tool": "flynt",
+    "changed": 1,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'value=42'"
+      ],
+      []
+    ],
+    "after": [
+      [
+        "value",
+        "'value=42'"
+      ],
+      []
+    ],
+    "transformed": "return f'value={42}'",
+    "second_change": 0
+  },
+  {
+    "name": "spread_list.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a/b'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a/b'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "transformed": "return '{}/{}'.format(*[next_value('a'),next_value('b')])",
+    "second_change": 0
+  },
+  {
+    "name": "unused_arg.py",
+    "tool": "flynt",
+    "changed": 0,
+    "behavior_matches": true,
+    "before": [
+      [
+        "value",
+        "'a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "after": [
+      [
+        "value",
+        "'a'"
+      ],
+      [
+        "eval:a",
+        "eval:b"
+      ]
+    ],
+    "transformed": "return '{0}'.format(next_value('a'),next_value('b'))",
+    "second_change": 0
+  }
+]

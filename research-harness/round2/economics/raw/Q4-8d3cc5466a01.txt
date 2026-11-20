@@ -1,0 +1,301 @@
+Details on Enterprise plans pricing, seat management, and shared add-on credits.
+The Enterprise plans are designed for businesses and teams, providing centralized management, collaboration, and security capabilities, including:
+Centralized billing
+: Organization billing is managed and paid centrally by admins, with support for limiting resource usage quotas.
+Admin console
+: Manage member access permissions, model usage restrictions, data privacy modes, and more.
+Domain control
+: Restrict access to specific email domains.
+Single Sign-On (SSO)
+: Support for enterprise-grade authentication.
+Analytics & Insights
+: Data metrics and analysis.
+Capability management and distribution
+: Plugin/Skill management and sharing.
+Knowledge engine
+: Maximize team knowledge value.
+​
+Plan Comparison
+Capability
+Teams
+Enterprise
+Supported products
+Qoder IDE
+✓
+✓
+QoderWake
+✓
+✓
+Qoder JetBrains Plugin
+✓
+✓
+Qoder CLI
+✓
+✓
+Cloud Agents
+✓
+✓
+Qoder Mobile
+✓
+✓
+Identity & access
+SSO (SAML/OIDC)
+✓
+✓
+Role management
+✓
+✓
+Groups
+✓
+Centralized billing
+Resource quota management
+✓
+✓
+Shared Add-on Credits pooling
+✓
+✓
+Group-based billing
+✓
+Knowledge engine
+RepoWiki / Knowledge Cards
+✓
+✓
+Personal knowledge base cloud storage
+✓
+✓
+AI extensibility
+Plugin/Skill sharing
+✓
+✓
+Plugin/Skill centralized distribution
+✓
+Plugin Marketplace
+✓
+AI governance
+Model routing policy control
+✓
+Content security policy
+✓
+Analytics
+Resource usage statistics
+✓
+✓
+AI coding metrics
+✓
+✓
+Security & compliance
+Privacy mode management
+✓
+✓
+Audit log
+✓
+Openness
+OpenAPI
+Basic APIs
+Extended APIs
+Teams and Enterprise plans are independently isolated and do not support smooth upgrade/downgrade between each other. Please choose based on your team size and requirements.
+​
+Subscription Pricing & Seat Quotas
+The Enterprise plans are priced per seat, with support for purchasing Shared Add-on Credits for organization-wide consumption.
+Seat pricing
+Teams
+$40 / seat / month
+Each seat includes a fixed AI compute quota (Credits):
+3,000 Credits per month
+: Each seat includes a fixed monthly quota of 3,000 Credits for accessing advanced models.
+Monthly reset & non-transferable
+: Seat Credits are only valid for the current monthly cycle. Unused Credits reset to zero at the end of the cycle and cannot be transferred or shared among members.
+Enterprise
+$20 / seat / month
+Each seat does not include any AI compute quota
+(Credits).
+Credits are billed separately via Shared Add-on Credits.
+​
+Seat Management
+When a user in the organization is assigned a billable role, they occupy a seat. Once occupied, the seat is billed for the current billing cycle. If the user is later removed from the organization, any seat charges already incurred are non-refundable. For details about adding and removing members, see
+Members and Roles
+.
+Enterprise
+: After a member is removed from the organization, their seat is automatically released and returned to the unassigned pool. It can be reassigned to another member within the current billing cycle at no additional charge.
+Teams
+: Seats include Credits. Once any Credits from a seat have been used, the seat is bound to that member's account and cannot be reassigned to another user during the current billing cycle.
+Enterprise plan subscriptions support adjusting seat counts at any time, with bills calculated immediately:
+Adding seats
+Reducing seats
+For organizations that purchased on the official website, admins can go to the
+Members
+page >
+Adjust seat count
+to adjust the number of seats as needed.
+For organizations that purchased through the cloud marketplace, use the purchasing Alibaba Cloud account to go to the corresponding
+Service Details
+>
+Upgrade/Downgrade
+in the cloud marketplace to adjust seats as needed.
+When adding a new seat, charges are applied on a
+prorated basis
+for the remainder of the current billing cycle. For Teams plans, the included 3,000 Credits for the new seat are also prorated accordingly.
+For renewal instructions by purchase channel, see the
+Renewal Guide
+.
+Purchased but
+unassigned
+seats can be reduced at any time during the current billing cycle. The price difference is refunded on a prorated basis.
+Teams plan:
+The refund for reduced seats is credited to the organization's balance and automatically applied to future invoices. The balance can only be used within the Qoder platform — it is non-transferable, cannot be exchanged for cash, and does not accrue interest.
+Enterprise plan:
+When downgrading through the cloud marketplace, fees are settled based on the remaining time in the cycle and refunded to the original payment method.
+​
+Shared Add-on Credits
+Administrators can purchase
+Shared Add-on Credits
+to supplement model compute capacity. These credits form a shared pool available to all organization members.
+Feature
+Details
+Pricing
+$40 USD for 3,000 Credits (one-time purchase, stackable).
+Validity
+Valid for
+1 year
+from the date of purchase or redemption.
+Refunds
+Non-refundable and non-transferable.
+How to purchase
+Administrators can purchase credits by navigating to
+Organization Settings > Organization Usage > Shared Add-on Credits
+.
+Purchases made through a cloud marketplace can be redeemed using a redemption code. See
+About Redemption Codes
+.
+Consumption priority
+When a member generates a request, Credits are deducted in the following order:
+The monthly
+seat quota
+Any
+personal add-on Credits
+purchased by the user
+The organization's
+Shared Add-on Credits
+Note: If multiple packs of the same type exist, the one expiring first is consumed first.
+Usage limits
+Administrators can set a maximum shared credit usage limit per member under
+Organization Settings > Members
+to manage resource consumption.
+For complete details, see the
+Shared Add-on Credits guide
+.
+​
+Billing & Payment Management
+Enterprise plans support centralized billing.
+For organizations that purchased on the official website:
+Order management
+: Navigate to
+Organization Settings > Subscription & Billing > Orders
+to review past orders, pay outstanding invoices, or cancel pending orders.
+Payment methods
+: Manage credit cards, set a default payment method, and update billing addresses under
+Organization Settings > Subscription & Billing > Manage Payment Information
+.
+Note: Updates apply to future transactions only.
+For organizations that purchased through the cloud marketplace:
+Billing and payment methods are managed within the Alibaba Cloud marketplace account. Please
+go to Alibaba Cloud Marketplace
+to manage.
+​
+Billing Cycle
+The following billing cycle rules apply to all plans except the Cloud Marketplace Teams Edition. For the Cloud Marketplace Teams Edition, see the special note below.
+​
+New Purchase Scenarios
+Subscriptions are billed monthly or annually. A monthly subscription cycle is calculated as follows:
+Add one calendar month to the purchase time.
+If the target month does not have the corresponding day, use the same time on the last day of that month.
+Move the resulting time forward to the next midnight (00:00). This is the subscription cycle end time.
+Auto-renewal charges are deducted 9 days before the cycle expires. If the auto-renewal payment fails, the subscription for the next cycle will be unavailable.
+Monthly billing cycle examples:
+Purchase scenario
+Start time
+Calculation
+End time
+Purchased at 05:00 on September 30
+September 30 at 05:00
+Add one calendar month to get October 30 at 05:00, then move forward to midnight
+October 31 at 00:00
+Purchased at 05:00 on October 1
+October 1 at 05:00
+Add one calendar month to get November 1 at 05:00, then move forward to midnight
+November 2 at 00:00
+Purchased at 05:00 on October 30
+October 30 at 05:00
+Add one calendar month to get November 30 at 05:00, then move forward to midnight
+December 1 at 00:00
+Purchased at 05:00 on October 31
+October 31 at 05:00
+Add one calendar month; because November has no 31st, use November 30 at 05:00, then move forward to midnight
+December 1 at 00:00
+Purchased at 05:00 on November 1
+November 1 at 05:00
+Add one calendar month to get December 1 at 05:00, then move forward to midnight
+December 2 at 00:00
+Non-leap-year February (28 days): purchased at 05:00 on January 28, 29, 30, or 31
+January 28, 29, 30, or 31 at 05:00
+Add one calendar month; when the target day exceeds the last day of February, use month-end. Each case results in February 28 at 05:00, then moves forward to midnight
+March 1 at 00:00
+Leap-year February (29 days): purchased at 05:00 on January 29, 30, or 31
+January 29, 30, or 31 at 05:00
+Add one calendar month; when the target day exceeds the last day of February, use month-end. Each case results in February 29 at 05:00, then moves forward to midnight
+March 1 at 00:00
+Leap-year February (29 days): purchased at 05:00 on January 28
+January 28 at 05:00
+Add one calendar month to get February 28 at 05:00, then move forward to midnight
+February 29 at 00:00
+Annual billing cycle examples:
+Regular subscription:
+If you subscribe on August 16, 2025, the current billing cycle ends at midnight on August 17, 2026.
+Month-end subscription:
+If you subscribe on January 31, 2025, the current billing cycle ends at midnight on February 1, 2026.
+Shared Add-on Credits are a one-time prepaid purchase and do not involve auto-renewal. When a subscription or Shared Add-on Credits pack expires, any unused Credits are automatically cleared.
+​
+Renewal Scenarios
+Renewals do not apply the new-purchase rule of moving the calculated time forward to midnight. Instead, each renewal cycle advances by one calendar month from the previous cycle's end time. For a monthly subscription, the renewal cycle is calculated as follows:
+The start time is the end time of the previous cycle.
+The end time is midnight on the same date one calendar month after the start time. If the next month does not have the corresponding date, use midnight on the last day of that month.
+Monthly renewal cycle examples:
+Renewal scenario
+Start time
+Calculation
+End time
+Previous cycle ends on October 31 at 00:00
+October 31 at 00:00
+Add one calendar month; because November has no 31st, use November 30
+November 30 at 00:00
+Previous cycle ends on October 30 at 00:00
+October 30 at 00:00
+Add one calendar month to get November 30
+November 30 at 00:00
+Previous cycle ends on October 29 at 00:00
+October 29 at 00:00
+Add one calendar month to get November 29
+November 29 at 00:00
+Previous cycle ends on October 15 at 00:00
+October 15 at 00:00
+Add one calendar month to get November 15
+November 15 at 00:00
+Non-leap-year February (28 days): previous cycle ends on January 31 at 00:00
+January 31 at 00:00
+Add one calendar month; because February has no 31st, use February 28
+February 28 at 00:00
+Across calendar years: previous cycle ends on December 31 at 00:00
+December 31 at 00:00
+Add one calendar month to get January 31 of the following year
+January 31 of the following year at 00:00
+Transition from new purchase to renewal:
+If you purchase a monthly subscription on September 30 at 05:00, the first cycle ends on October 31 at 00:00. After renewal, the next cycle runs from October 31 at 00:00 to November 30 at 00:00, not December 1 at 00:00.
+Continuous renewal example:
+Because each renewal is calculated from the previous cycle's end date, the expiration date moves earlier after a shorter month and does not automatically return to the original date. For example, if the previous cycle ends on July 31 at 00:00, subsequent cycles end at 00:00 on August 31, September 30, October 30, November 30, December 30, and January 30 of the following year. If the following year is not a leap year, the next cycle ends on February 28 at 00:00, and subsequent cycles use the 28th as their reference date. If it is a leap year, the next cycle ends on February 29 at 00:00, and subsequent cycles use the 29th until a non-leap-year February shifts the reference date to the 28th; all later cycles then use the 28th.
+​
+Special Note: Cloud Marketplace Teams Edition Billing Cycle Rules
+The Cloud Marketplace Teams Edition uses a redemption-code balance top-up model. The expiration time is not normalized to midnight; instead, it falls on the exact order time on the corresponding date of the next month.
+Annual and monthly payments for the Cloud Marketplace Teams Edition differ only in the redemption code payment mode. They do not affect how the Teams subscription cycle is calculated; both consume the balance and allocate seats on a monthly subscription cycle.
+Teams subscriptions activated via cloud marketplace redemption codes follow these rules:
+Upon first redemption and activation, the subscription cycle is calculated as one calendar month from the activation time; if the next month does not have the same date, the expiration falls on the last day of that month.
+Example: First activation on August 5 at 10:00 — the current cycle runs until September 5 at 10:00; if first activation is on January 31 at 10:00 — since February has no 31st, the expiration is February 28 at 10:00, and subsequent cycles continue on the 31st, 30th, etc., of each month.

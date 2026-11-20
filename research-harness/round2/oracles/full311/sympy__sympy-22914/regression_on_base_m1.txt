@@ -1,0 +1,13 @@
+F......s.............                                                    [100%]
+================================== FAILURES ===================================
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:61: in test_PythonCodePrinter
+    assert prntr.doprint(Min(x, y)) == "min(x, y)"
+E   AssertionError: assert '((x) if (x <= y) else (y))' == 'min(x, y)'
+E     - min(x, y)
+E     + ((x) if (x <= y) else (y))
+- generated xml file: F:\dongcha\research-harness\round2\oracles\full311\sympy__sympy-22914\regression_on_base_m1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - Assertio...
+1 failed, 19 passed, 1 skipped in 0.30s

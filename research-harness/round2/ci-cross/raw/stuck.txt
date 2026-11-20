@@ -1,0 +1,729 @@
+                                                              Stuck on Red?
+                                                Understanding GitHub Actions Failing Streaks
+                                                  Aref Talebzadeh Bardsiri∗ , Tom Mens∗ , Alexandre Decan∗ , Thomas Degueule† , Jean-Rémy Falleri†
+                                                                            ∗ Software Engineering Lab, University of Mons, Mons, Belgium
+
+                                                          aref.talebzadehbardsiri@umons.ac.be, tom.mens@umons.ac.be, alexandre.decan@umons.ac.be
+                                                                   † Univ. Bordeaux, Bordeaux INP, CNRS, LaBRI, UMR 5800, Bordeaux, France
+
+                                                                                     thomas.degueule@labri.fr, falleri@labri.fr
+
+
+                                            Abstract—GitHub Actions is the de facto CI/CD service for       what starts or ends a failure, nor what happens while the
+                                         GitHub repositories. Its workflows should not fail when they are   workflow keeps failing.
+arXiv:2610.41863v1 [cs.SE] 30 Oct 2026
+
+
+
+
+                                         not expected to, nor keep on failing too long. We empirically
+                                         study failing streaks, i.e., uninterrupted series of failing runs of aWhen a workflow fails, maintainers have to decide whether
+                                         workflow, in 30.9M+ runs of 154K+ workflows of 43K+ GitHub         the last commit broke it, whether the fault lies in the workflow
+                                         repositories over 238 days. We study how failing streaks begin     itself or in its environment, whether the failure will go away
+                                         and end, and what happens during them, based on the trigger and    by itself, and whether anyone is taking care of it. Making such
+                                         the commit of each run. We also classify all workflows by their    decisions requires looking beyond individual failing runs. We
+                                         purposes, such as building, testing or deploying, and we inspect
+                                         the logs of a small sample of failing streaks. Failing runs mostly therefore study uninterrupted series of failing runs of the same
+                                         come in streaks: three quarters of them follow another failing     workflow, from its first failing run until the workflow succeeds
+                                         run, and half of the workflows with at least three runs have at    again, referred to as failing streaks hereafter. We analyse the
+                                         least one failing streak. Workflows serving multiple purposes have failing streaks of 30,923,432 runs across 154,846 workflows
+                                         failing streaks more often, even at the same size. Most failing    in 43,936 GitHub repositories for a period of 238 days.
+                                         streaks end within hours, but the one in five that last more than
+                                         a day account for the lion’s share of the time that workflows         We also consider the fact that not all workflow failures
+                                                                                                            carry the same meaning. A failing run of a workflow executing
+                                         spend failing. A third of the failing streaks start, and two in five
+                                         end, without any change to the repository. In a sample of 100      a test suite may signal that a genuine regression has been
+                                         failing streaks, those that end this way most often fail because   caught, as intended, whereas a failing run of a workflow that
+                                         of network issues or an external service. These findings suggest
+                                         that maintainers should not assume that a failure comes from       merely assigns labels to pull requests may signal a problem
+                                         the last commit. GitHub and tool builders could flag failures that with the workflow itself (e.g., misconfiguration or insufficient
+                                         occur without any change to the repository, and alert the active   permissions). To account for this difference, we use an LLM
+                                         maintainers when a workflow stays failing for more than a day.     to classify the purposes of each workflow (e.g., building,
+                                                                                                            testing, or deploying). This enables us to compare failure
+                                                                I. I NTRODUCTION                            and recovery patterns across workflow purposes. It also lets us
+                                                                                                            distinguish simple workflows that serve a few purposes from
+                                            Continuous Integration and Delivery (CI/CD) is an essential more complex workflows that serve many purposes. To the
+                                         practice in collaborative software development, enabling teams best of our knowledge, this is the first classification of GHA
+                                         to develop and deliver high-quality software rapidly and reliably. workflow purposes at this scale.
+                                         CI/CD workflows automate the process of building, testing, and
+                                                                                                               Our research addresses four research questions:
+                                         deploying code changes, allowing developers to detect issues
+                                         early and ensure that their software is always in a deployable RQ1 How prevalent are failing runs and failing streaks? One
+                                         state [1]. Many CI/CD platforms provide such automation              run in ten fails, and three in four repositories have at least one
+                                         (e.g., GitHub Actions, Travis, Jenkins, GitLab CI, CircleCI).        failing run. Failing runs rarely come alone: 75.8% directly
+                                         On GitHub, GitHub Actions (hereafter GHA) has emerged as             follow another failing run. Half of the workflows that can have
+                                         the dominant CI/CD service [2]. Repository maintainers can           a failing streak, and two out of three repositories, have at least
+                                         configure GHA workflow files to meet project-specific needs,         one failing streak. Workflows with multiple purposes have
+                                         streamline the development process, and improve characteristics      failing streaks more often than those with a single purpose,
+                                         such as efficiency, maintainability, quality, and reliability.       even when they exhibit a similar size.
+                                            In practice, GHA workflow runs regularly fail [3], [4]. RQ2 How do failing streaks begin? More than half of the
+                                         Dealing with such failures increases maintenance effort and          failing streaks start with a push of new commits. The new
+                                         reduces the overall reliability of the CI/CD pipeline [5], [6].      commits at the start touch the failing workflow file in 7.2%
+                                         Several studies have examined workflow failure dynamics,             of the cases, against only 2.8% for commits between two
+                                         including the causes of failing runs, reruns, and flaky runs [3],    successful runs. 33.8% of the failing streaks start on the same
+                                         [7]–[9]. These studies analyse failing runs one at a time, or        commit as the last successful run, mostly with triggers other
+                                         measure the time to recover from a failure, but do not show          than push, so they are not associated with a new commit.
+RQ3 What happens during a failing streak? Two thirds of            length of five failing builds, and last seven days on average
+ the failing streaks have a single failing run, and the median     before they are fixed. Jin and Servant [22] also observed that
+ failing streak lasts about two hours. However, the one in five    failures that come right after another failure make up a large
+ failing streaks that last more than a day account for 91.7%       part of all failed builds (a median of 52% per project). They
+ of the time that workflows spend failing. Three in five failing   developed SmartBuildSkip, which skips the builds that are
+ streaks with several failing runs receive new commits while       predicted to pass, but runs every build after a failure until the
+ the workflow keeps failing.                                       build passes again.
+RQ4 How do failing streaks end? Almost all failing streaks            Shirakawa et al. [23] studied Test Alert Snooze, where the
+ end with the trigger that started them, and 41.8% end on the      same test keeps failing over multiple consecutive commits, in
+ same commit as the last failing run, without any repository       27 Python and Java projects on GHA. Such snoozes occurred in
+ change. When a new commit ends a failing streak, it touches       only four projects, but they covered 42.9% of the test failures,
+ the failing workflow more than three times as often as in         and the commits made while a test kept failing were rarely
+ normal development. In the logs of 100 sampled failing            bug fixes. Khatami et al. [24] studied how developers respond
+ streaks, those ending on a new commit most often fail because     to failing GHA workflow runs, through an in-depth analysis
+ of tests, while those ending on the same commit most often        of 21 repositories. They found three response patterns: the
+ fail because of a network issue or an external service.           most common was immediate fixing within minutes or hours;
+                                                                   followed by deferred fixing a day or more later; and ignoring or
+                       II. R ELATED WORK                           abandoning the failure altogether. These patterns were derived
+   Prior studies showed that CI/CD is widely used in open- from only 21 repositories, so it remains unclear how common
+source projects and changes how these projects are devel- they are across GHA. In RQ3 , we measure at scale how long
+oped [5], [10]. Since its public release in 2019, GitHub Actions failing streaks last, which relates to the first two patterns.
+(GHA) became the dominant CI/CD solution on GitHub,                   Not every failure needs a code change to resolve it. Huang et
+overtaking Travis in less than 18 months [2]. Practitioners al. [7] found that nearly a quarter of 9K+ GHA workflows
+named the higher reliability of GHA as one of the two main of Java projects were rerun as a whole at least once, and that
+reasons for migrating from Travis [11], and rated reliability rerunning changed the outcome in about a third of these cases,
+as the most important characteristic of GHA [12]. This mostly because of flaky tests and external dependencies, at a
+underscores the need for large-scale empirical studies of the cost of about 3.7 years of waiting time. Ge et al. [8] found
+extent to which GHA workflows are confronted with reliability that more than two thirds of the rerun builds of 1,960 Java
+issues, such as failing (sequences of) workflow runs.              projects showed flaky behaviour, mostly because of flaky tests,
+   Many studies have analysed the characteristics of GHA network problems and problems with resolving dependencies.
+workflow configuration files, such as their structure, complexity,    Although these studies provide valuable insights into the
+evolution, and usage patterns [13]–[18], but fewer studies have causes and consequences of CI/CD failures, none of them
+analysed workflow run failures. On Travis, failing tests were studies how sequences of failing runs begin, what happens
+the main reason for broken builds [19], [20], and the outcome while they last, and how they end across a large number of
+of a build can itself be misleading, for 9% of the builds on GHA workflows and a long time duration.
+average [21]. Zheng et al. [3] manually analysed 375 failed
+                                                                                            III. M ETHOD
+GHA workflow runs of Java projects: failing tests were again
+the most common reason of failure (32%), and most failures A. Terminology
+(84%) were caused by the project itself rather than its workflow      A GitHub repository can contain any number of workflows
+configuration. Talebzadeh et al. [9] observed that larger GHA to automate tasks such as building, testing, and deploying code.
+workflows are more likely to exhibit failing runs, a higher Workflow configuration files are encoded in YAML format in
+downtime, and a longer time to return to a successful run, the .github/workflows directory of the repository. We measure
+based on 74K+ runs triggered by workflow file changes. These the size of a workflow file as its number of paths, where a
+studies count failing runs, or measure the time until a workflow path is an element of the YAML structure of the workflow
+passes again, but they do not study what starts a sequence of file [9]. Both measurements are taken from the workflow file
+failing runs, what happens during it, and what ends it.            at its last run in our observation window.
+   The failure rate of a CI/CD build history only paints a partial    A run corresponds to a single workflow execution, regardless
+picture. In complement, it is also useful to know whether of its outcome. A run is triggered by a specific trigger event.
+failures are flaky (i.e., they go away on the next rerun without Typical examples of events are push (a commit is pushed
+any change to the workflow or code) or persist over consecutive to the branch), schedule (a scheduled time specified with
+runs. This second category of failures may take more time and cron syntax in the workflow file), workflow run (a run of
+effort to resolve.                                                 another workflow starts or completes), workflow dispatch
+   Rausch et al. [20] observed that Travis build failures mostly (starting the workflow manually), issues (an issue is opened
+occur in sequence: in ten out of fourteen projects, more than or changed), and issue comment (someone comments on an
+half of the failed builds came right after another failed build. issue or pull request) [25]. Each run has a conclusion that is
+Gallaba et al. [21] observed that such sequences have a median either success, failure, startup failure, skipped, cancelled
+  A             B                     C        D                    E            history containing 11 runs, including a failing streak S1 =
+                                                                                 [R3 , R4 , R5 ] of length 3 and a single-run failing streak S2 =
+ ✓     ✓        ✗          ✗          ✗        ✓    ✓     ✗    ✓    ✓    ✗       [R8 ]. Failing streak S1 starts with run R3 , triggered by a push
+ R1 R2         R3         R4         R5       R6 R7 R8 R9 R10 R11                of a new commit B (the previous runs were on commit A). The
+             push      workflow     push    push
+                       dispatch
+                                                                                 streak continues on commit B with a manual run R4 (trigger
+                                                                                 workflow dispatch) and with another failing run R5 on a
+                          S1                              S2
+                                                                                 new commit C. Successful run R6 , triggered by a push of
+              duration(S1 ) = finish(R6 ) − finish(R3 )                          a new commit D, ends the streak. So a new commit may or
+                                                                                 may not change the outcome of a run. Note that the analyses
+Fig. 1. Example of a workflow run history with a failing streak S1 of length 3   hereafter ignore “incomplete” failing streaks for which the first
+and a single-run failing streak S2 . An arrow marks each run on a new commit
+(A to E). The run’s trigger event is provided below the runs of S1 and its       or last observed run in the run history is ✗, because we cannot
+successor run.                                                                   observe their predecessor or successor run to determine the
+                                                                                 actual length and streak duration. This excludes 42,219 of the
+or action required. A workflow can specify and run one or                        752,873 failing streaks that we found (5.6%). For example,
+more jobs. The finish time of a run is the latest completed at                   [R11 ] in Figure 1 is excluded as a failing streak since its
+timestamp among its jobs.                                                        successor run falls outside the observed run history.
+   The run history of a workflow is the finite sequence of all
+its observed runs, ordered by start time. Because we focus on                    B. Data Extraction
+failing runs and their transitions to and from successful runs, we                  To study failing streaks, we rely on a recent dataset of GHA
+restrict the run history to successful runs ✓ (i.e., conclusion                  workflow-run metadata by Talebzadeh et al. [4], collected
+= success) and failing runs ✗ (i.e., conclusion = failure or                     from GitHub-hosted development repositories. We use version
+startup failure) only. Moreover, we only consider runs on the                    2026-10-19 of the dataset [26], containing 130,338,516 runs of
+default branch of the repository because the focus of the study                  226,797 workflows in 47,695 repositories observed during 238
+is on how the mainline of a repository breaks and recovers, and                  days (from 2026-02-01 to 2026-09-26). The dataset contains
+failing streaks only make sense in the context of this mainline.                 all runs of all workflows of its repositories, on all branches
+   Given a workflow run history r, we define a run streak                        and for all trigger events.
+as a contiguous subsequence s = [Ri . . . Rk ] of r, with 1 <                       We applied the following filters to make it suitable for
+i ≤ k < length(r). The length of a streak is the number of                       studying failing streaks of workflow runs: (1) we only consider
+runs contained in the streak. A streak of length 1 is called a                   runs that are executed on the default branch of the repository
+single-run streak, streaks of longer length are called multi-                    (e.g., main or master branch), which we retrieved with the
+run streaks. A failing streak s is a run streak in which the                     GitHub API for each repository; (2) we remove runs whose
+run conclusion transitions from ✓ to ✗ and back:                                 code comes from another repository (a fork), even if its branch
+conclusion(Ri−1 ) = ✓, ∀R ∈ s : conclusion(R) = ✗, and                           has the same name as the default branch; (3) we remove
+conclusion(Rk+1 ) = ✓.                                                           runs triggered by a pull request (trigger events pull request
+   The duration of a failing streak is computed as                               and pull request target), since they consider proposed code
+finish(Rk+1 ) − finish(Ri ), i.e., the difference between the                    changes rather than the default branch itself;1 (4) we only keep
+timestamps at which the workflow history transitions between                     runs whose conclusion is ✓ or ✗, where ✗ also includes the
+✓ and ✗. When Ri finishes we know that the streak has started                    runs that could not start (startup failure represents 2.3% of
+because the conclusion has changed to ✗. Similarly, when                         the failing runs).
+Rk+1 finishes we know that the streak has ended because the                         When a run fails, developers can rerun it on GitHub, which
+conclusion has changed to ✓.                                                     creates a new attempt of the same run [27]. The dataset of [4]
+   Each run is executed on a specific commit of the repository.                  only contains the last attempt of each run, as returned by the
+Commits contain file changes (i.e., add, remove or modify)                       GitHub API. If the rerun succeeds, the run therefore looks
+that touch either workflow files (in the .github/workflows                       successful, and the failing attempt before it disappears, together
+directory), project files (i.e., all other files of the repository), or          with the failing streak that it forms. We therefore completed the
+both. We refer to own workflow file as the workflow file of the                  dataset by using the GitHub REST API to retrieve all earlier
+workflow run itself. Commits may change the run conclusion,                      attempts of rerun workflows. For each of the 147,638 runs
+i.e., they may cause a previously successful run to fail, or a                   with more than one attempt, we retrieved the conclusion and
+previously failing run to succeed. Consecutive runs in a streak                  start time of each attempt, as well as its job timestamps, to
+can run on the same commit, when no files were pushed to the                     compute its finish time. In total, we retrieved 204,106 earlier
+repository between both runs (e.g., for a scheduled or manually                  attempts. 182,871 of those concluded with ✓ or ✗ and were
+triggered run). The next run in a streak can also be on a new                    therefore added to the dataset.
+commit (e.g., when a push event triggers the workflow). A
+                                                                                   1 For a pull-request run, GitHub records the branch that the pull request
+run can be re-run on the same commit (e.g., with “Re-run all
+                                                                                 comes from (its head branch), not the branch it merges into (its base branch). A
+jobs” or “Re-run failed jobs” in the GitHub GUI).                                pull request from main into a staging branch therefore produces runs recorded
+   Figure 1 provides a synthetic example of a workflow run                       on main, which filter (1) alone would keep.
+# runs per workflow                                                                                         TABLE I
+                                                                                   W ORKFLOW PURPOSES IN OUR DATASET: % WORKFLOWS HAVING THIS
+                                1      10        100   1,000 10,000 100,000         PURPOSE AND % WORKFLOWS HAVING IT AS THEIR ONLY PURPOSE .
+
+                                                                                   Purpose          Description                                  % only (%)
+run duration                                                                       build            Compile, build, or package artefacts       45.6     5.1
+                                                                                   test             Run tests, benchmarks, etc.                43.3    11.8
+                               1s           1m          1h      1d      30d        quality          Lint, analyse, or review code              27.9    19.1
+                                                                                   release          Version and publish distributables         23.4     7.7
+Fig. 2. Distribution of workflow run characteristics. Box plots use a log scale    report           Publish results (e.g., coverage), badges   17.9     2.0
+(orange line = median; blue line = mean). Run durations below 1 second are         pr-and-issues    Act on pull requests and issues            16.1    35.4
+drawn at 1 second.                                                                 docs             Build or publish documentation             12.7    36.1
+                                                                                   workflow         Trigger or reuse other workflows           11.3     6.9
+   The above filtering and data completion process resulted in a                   security         Scan for vulnerabilities, secrets, etc.     8.9    41.9
+                                                                                   dependency       Update, pin, find unused dependencies       4.5     4.3
+dataset of 30,923,432 runs across 154,846 workflows related                        chore            Repository housekeeping                     4.4    30.3
+to 43,936 repositories. Figure 2 reports the distribution (in                      communication    Notify outside GitHub (e.g., Slack)         2.8    13.4
+the form of boxplots in log scale) of the number of runs per                       deploy           Deploy to a runtime environment             1.7    13.0
+                                                                                   licence          Check licence or CLA compliance             1.5    17.0
+workflow and the run duration. Workflows have a median of                          infrastructure   Provision infrastructure                    0.6    19.1
+38 runs, while the mean is much higher (199.7). The median                         other            None of the above                           0.8   100.0
+run duration is 60 seconds, and the mean is again much higher
+(832.9 seconds). The large difference between median and                          itself. To compare failing streaks across workflow purposes,
+mean values signals heavily skewed distributions, in which                        we classify each workflow according to the set of purposes it
+a few workflows run far more often, and a few runs last far                       serves.
+longer, than the others.                                                                Taxonomy and manual labeling: We started from an initial
+   To answer RQ2 , RQ3 and RQ4 we further extend the                              taxonomy of 15 workflow purposes introduced by Onsori
+dataset with commit information, in order to associate runs                       Delicheh et al. [12]. We randomly selected 100 workflows
+to commits that might have caused or fixed a failing run. For                     from our dataset, and three authors independently assigned
+RQ2 , we gather the commit associated to the last successful run                  purposes from this taxonomy to each workflow by manually
+preceding each failing streak as well as the commit associated to                 reviewing the workflow file contents. Since a workflow can
+the streak’s first failing run. For RQ3 , we gather new commits                   have several purposes, we measure inter-rater agreement with
+if consecutive failing runs inside the streak are associated to                   Krippendorff’s α [28], using the MASI distance between sets of
+different commits. For RQ4 , we gather the commit associated                      labels. Krippendorff’s α supports multiple labels, any number
+to the first successful run of each failing streak as well as the                 of raters, and corrects for chance agreement; the MASI distance
+commit associated to the streak’s last failing run. This gives                    gives partial credit to overlapping sets. The initial multi-author
+469,033 pairs of commits at the start of failing streaks, 592,153                 agreement was α = 0.53. The three raters discussed all
+during them, and 411,596 at their end, whose changed files                        disagreements and agreed on a final set of purposes for each
+we compare with a baseline.                                                       workflow. During this consolidation phase, the PR management
+   This baseline is inspired by Rausch et al. [20] who studied                    and issue management purposes were merged into a single
+breaking, broken and fixing builds. The baseline is composed                      pr-and-issues purpose, and two missing purposes were added
+of commits corresponding to successful runs taken from those                      to the taxonomy: chore, for repository housekeeping (e.g.,
+workflows containing failing streaks. We took a random sample                     deleting stale branches, cleaning old artefacts); and workflow,
+of 100,000 pairs of consecutive successful runs on different                      for workflows that delegate their work to other workflows,
+commits. For each pair, we analysed the files changed between                     either by triggering them (e.g., with gh workflow run) or
+the two commits, which covers all the commits pushed between                      by calling a reusable workflow. Table I lists the consolidated
+the two runs (a single push can contain several commits), and                     taxonomy used in this paper.
+classified the changes as affecting only workflow files, only                           Automated classification: To scale the classification to
+project files, both, or none (e.g., empty commits). We also                       all workflows, we used OpenAI’s gpt-6-luna model, with a
+recorded whether the changes affected the own workflow file                       medium reasoning effort, to classify each workflow according to
+(i.e., the file of the workflow containing the failing streak).                   the consolidated taxonomy. The prompt contains the taxonomy
+                                                                                  with a description of each purpose, the contents of the workflow
+C. Workflow classification                                                        file to label, and labeling instructions. The LLM is tasked
+   Workflows are used to automate various tasks and serve                         to assign every purpose for which a concrete job, step, or
+different purposes, such as building, testing, or deploying                       command performs the corresponding task, ignoring steps
+code, or handling issues and pull requests [12]. Depending                        that only support other tasks (e.g., checkout, toolchain setup,
+on its purpose, a failure may be the expected outcome of a                        or caching). We ran Luna on the 100 manually classified
+workflow. For example, a workflow that runs a test suite fulfils                  workflows and compared the inferred purposes with our
+its job when it fails because it caught a regression, whereas                     consolidated ones. Considering Luna as an additional rater,
+the failure of a workflow that triages issues or publishes a                      the agreement between Luna and our consolidated labels is
+documentation website might signal a problem in the workflow                      α = 0.76. Luna assigns 179 of our 187 purposes (recall of
+0.96), and 179 of the 219 purposes it assigns are ours (precision                              TABLE II
+of 0.82). Luna tends to assign more purposes than we did,              FAILING STREAKS OF THE WORKFLOWS , GROUPED BY RUN HISTORY
+                                                                                                LENGTH .
+in particular workflow (14 times, against 3). A second look
+                                                                                                                with a             # failing streaks
+at the 32 workflows with disagreements revealed that, for
+                                                                     # runs                 # workflows   failing streak (%)           (median)
+18 of them, the purpose set of Luna was the correct one
+                                                                     1–2 ∗                      15,144                    0.0                     0
+and our consolidated labels had missed a purpose (e.g., a            3–7                        17,715                   11.2                     1
+call to a reusable workflow). Another independent evaluation         8–25                       29,661                   33.3                     1
+following the same protocol with gpt-6.1-sol as the rater            26–65                      30,703                   49.6                     2
+                                                                     66–212                     30,745                   66.3                     3
+yielded similar results. This made us confident that Luna can        213+                       30,878                   76.9                     6
+label all workflows in our dataset.
+                                                                     all with 3+ runs         139,702                    51.0                     3
+      Classification results: We classified each workflow file at    ∗ A failing streak needs at least three runs.
+
+its last run in the observation window (Section III-A). Luna
+returned a valid set of purposes for all of them. Workflows have
+                                                                                              TABLE III
+a mean of 2.23 purposes (median 2, maximum 13): 33.0% have              FAILING STREAKS BY NUMBER OF PURPOSES , FOR THE 139,049
+a single purpose, 34.0% have two, 18.5% have three, and 14.5%       WORKFLOWS WITH AT LEAST THREE RUNS AND A PURPOSE LABEL , WITH
+have four or more. build (45.6%) and test (43.3%) are by far        THE THREE MOST COMMON PURPOSE SETS OF EACH GROUP. T HE MEDIAN
+                                                                          COUNTS ONLY THE WORKFLOWS WITH A FAILING STREAK .
+the most common purposes, and {build, release} and {build,
+                                                                                                                     with a failing failing streaks
+test} are the most common purpose sets (7.3% and 7.2%).
+                                                                     purpose set                    # workflows       streak (%)       (median)
+Some purposes are rarely the only purpose of a workflow,
+such as build (5.1%) and report (2.0%), whereas others are           1 purpose                            47,055                38.2               2
+                                                                       pr-and-issues                       9,145                35.0               2
+often served by a dedicated workflow, such as security (41.9%),        quality                             7,602                35.9               2
+docs (36.1%), and pr-and-issues (35.4%). Only 0.8% of the              test                                6,780                48.6               2
+workflows fit none of the purposes of the taxonomy.                  2 purposes                           46,693                50.0               2
+                                                                       build+test                          9,631                52.8               2
+                                                                       build+release                       8,748                50.9               2
+    IV. RQ1 : H OW PREVALENT ARE FAILING RUNS AND                      report+test                         3,221                55.6               3
+                    FAILING STREAKS ?
+                                                                     3 purposes                           25,251                60.4               3
+                                                                       build+report+test                   4,010                63.7               4
+   To motivate the study of failing streaks, we first assess how       build+quality+test                  3,876                60.3               3
+often runs fail and whether failures occur alone or in streaks.        build+release+test                  2,848                61.4               3
+      Failing runs: 10.1% of all runs in the dataset fail. They      4+ purposes                          20,050                72.1               5
+belong to 59.2% of the workflows and 76.3% of the repositories.        build+quality+report+test           1,979                69.0               4
+These workflows with failing runs have a median run history            build+quality+release+test          1,196                67.3               3
+                                                                       build+docs+quality+test               789                66.4               4
+length of 70. 40.8% of the workflows never fail, have shorter
+run histories than the workflows with failing runs (median
+length of 17), and together account for only 12.0% of all runs.     already failing when the window began, or were still failing
+Most workflows whose only purpose is security (63.5%) or            when it ended.
+licence (68.2%) never fail, possibly because they inspect the          To understand the relationship between the number of
+repository and provide reports rather than build or run its code.   observed runs and the number of failing streaks, we group the
+   6.0% of all workflows fail on every run, but have short run      workflows in Table II by run history length. Since more runs
+histories (median length of 5). Most failing runs do not occur      imply more chances to fail, both the proportion of workflows
+alone: 75.8% directly follow another failing run of the same        with at least one failing streak and the median number of failing
+workflow. This shows why studying individual failing runs           streaks increase with the number of observed runs: from 11.2%
+is not sufficient. A failing run may simply repeat an earlier       (median 1) for the group of 3–7 runs to 76.9% (median 6) for
+failure, and the number of failing runs depends on how often        the group of 213+ runs. The median number of failing streaks
+a workflow runs while it remains broken. This motivated us to       grows much more slowly than the number of runs, for two
+study and quantify the failing streaks.                             reasons. First, workflows that run more often fail on a smaller
+                                                                    proportion of their runs (from 21.6% of runs for workflows
+      Failing streaks: A failing streak requires a run history
+                                                                    with 3–7 runs to 9.4% for those with 213+ runs), which aligns
+containing at least one failing run and two successful runs
+                                                                    with Khatami et al. [24]. Second, when they fail, their failing
+(one before and one after the failure), so the 15,144 workflows
+                                                                    streaks contain more failing runs (a mean of 1.3 for workflows
+with fewer than three runs cannot have failing streaks. Of the
+                                                                    with 3–7 runs, compared to 2.9 for those with 213+ runs).
+remaining 139,702 workflows, 71,231 (51.0%) have at least
+one failing streak, as do 68.0% of the repositories containing       One run in ten fails, and three in four failing runs directly
+them. Our dataset contains 710,654 failing streaks in total. A       follow another failing run of the same workflow. Half of the
+workflow with failing streaks has a median of 3 of them. Some        workflows with at least three runs, and two in three of their
+workflows with a failing run have no failing streak, because         repositories, have at least one failing streak.
+they never succeeded during our observation window, were
+                          TABLE IV                                                              TABLE V
+ % WORKFLOWS WITH A FAILING STREAK , BY SIZE GROUP ( NUMBER OF       C HARACTERISTICS OF FAILING STREAKS , GROUPED BY TRIGGER OF THE
+              PATHS ) AND NUMBER OF PURPOSES .                                      FIRST RUN OF THE FAILING STREAK .
+
+                               number of purposes of the workflow                             # failing   % failing   % streaks starting
+                                                                        trigger                streaks     streaks    on same commit
+      workflow size (#paths)     1     2     3                 4+
+                                                                        push                  378,701         53.3                  0.2
+      small (≤20)              32.4 41.2 46.4                 54.8      schedule              130,199         18.3                 68.7
+      medium (21–40)           43.4 49.0 54.9                 58.7      workflow run          100,846         14.2                 78.6
+      large (41+)              59.4 61.6 68.4                 75.9      workflow dispatch      64,040          9.0                 67.6
+                                                                        other                  36,868          5.2                 74.0
+      Workflow purposes: Finally, we compare how prevalent              all                   710,654        100.0                 33.8
+failing streaks are across workflows with different purposes.
+Table III reveals that workflows serving multiple purposes have
+failing streaks more often. More than a third of the single-         their causes may lie outside it, for example in flaky builds or
+purpose workflows (38.2%) have at least one failing streak,          tests, unavailable external services, or incompatible external
+with a median of 2. More than two-thirds of the workflows that       dependencies.
+serve four or more purposes (72.1%) have at least one failing
+                                                                        Table V reports the triggers that start failing streaks, together
+streak, with a median of 5. This difference is not explained by
+                                                                     with the number and proportion of failing streaks whose first
+how often the workflows run: within each run history length
+                                                                     run it triggered, and the proportion of these streaks that start
+group of Table II, the proportion of workflows with a failing
+                                                                     on the same commit as the previous successful run. The most
+streak still increases with the number of purposes. Workflow
+                                                                     common trigger by far is push, accounting for 53.3% of the
+size (measured as the number of paths in the workflow file;
+                                                                     first runs of failing streaks. push nearly always starts a failing
+see Section III-A) does not explain the difference either.
+                                                                     streak on a different commit than the previous run, which is
+Talebzadeh et al. [9] found that larger workflows tend to fail
+                                                                     expected since a push event corresponds to new commits.
+more often. Workflows with more purposes are generally larger
+(a median of 18 paths for one purpose, compared with 76 for             Other popular triggers are schedule (18.3%), workflow run
+four or more; Spearman’s ρ = 0.56). However, when splitting          (14.2%), and workflow dispatch (9.0%). All remaining trig-
+workflows into three equally sized groups, the share with a          gers bundled together start only 5.2% of the failing streaks.
+failing streak still increases with the number of purposes in each   All triggers other than push start most of their failing streaks
+group (Table IV). The same observation holds when restricting        on the same commit as the last successful run, from 67.6%
+the analysis to workflows that run mainly on push (65.3% of          for workflow dispatch and 68.7% for schedule to 78.6% for
+them) or mainly on schedule (21.0%): within the same size            workflow run. These triggers are therefore more likely to start
+group, workflows with more purposes break more often.                failing streaks without new commits pushed to the repository,
+   As Table III also shows, single-purpose test workflows have       i.e., without any change to the repository, which points to
+a higher proportion of failing streaks than those involving other    causes outside the repository or to flaky failures.
+purposes. For example, 48.6% of test workflows have a failing         More than half of the failing streaks start with a push of a
+streak, compared with 35.0% of pr-and-issues workflows. This          new commit, but one in three starts on the same commit as
+is plausible because test workflows are expected to fail when         the last successful run, almost always from a trigger other
+a change breaks a test. As the log analysis in RQ4 will show,         than a push, so their failure does not come from a new
+such failures often point to a problem in the code rather than        commit.
+in the workflow.
+  Workflows with more purposes have failing streaks more                   Commit analysis: Next, for the failing streaks that start
+  often, even when they share a similar size.                        on a new commit, we study which files changed between
+                                                                     the last successful run and the first failing run: workflow
+        V. RQ2 : H OW DO FAILING STREAKS BEGIN ?                     files, other project files, or both. To do so, we compare
+   RQ1 showed that failing streaks are common. RQ2 aims              these pairs of ⟨commit, failing run⟩ against the baseline of
+to explore how they begin by focusing on the trigger event,          pairs of consecutive successful runs on different commits
+commit and workflow purposes associated with each streak’s           (Section III-B). Most failing streaks start with a change to
+first failing run.                                                   project files only (82.4%, compared to 87.5% in the baseline).
+      Trigger analysis: First, we identify the commit associated     Commits that change both project and workflow files are more
+with the first failing run of each failing streak and its trigger,   common at the start of a failing streak (12.9%, compared to
+to determine whether the streak started on a new commit or           7.4% in the baseline). The changes at the start of 7.2% of these
+on the same commit as the last successful run. Most failing          failing streaks touch the file defining the failing workflow itself,
+streaks (66.2%) start on a new commit, different from that of        more than twice as often as in the baseline (2.8%). Still, most
+the previous successful run, so one or more commits came             failing streaks start without any change to the workflow itself,
+between the two runs, which may have caused the failure. The         so a failing streak usually starts from a change in the project or
+other 33.8% start without any change to the repository, so           in its environment, rather than in the workflow configuration.
+            66.1 67.3
+                                                           all failing streaks     a workflow runs, for example if the workflow is scheduled to
+                                                           one per workflow        run once a day, it cannot recover in less than a day, even if
+                           15.5 14.5
+                                           6.3       5.9
+                                                               12.0 12.3           the fix takes only minutes.
+                                                                                      The time that workflows spend failing is very skewed. If
+                1              2                 3                 4+              we add up the durations of all failing streaks of all workflows,
+                            length of failing streak
+                                                                                   only 19.5% of all failing streaks have a duration of more than
+Fig. 3. Share of failing streaks (%) containing 1, 2, 3, or 4+ failing runs, for   a day, but they make up 91.7% of this total time. Only 4.5%
+all failing streaks and for one random failing streak per workflow.                of all failing streaks last more than a week, but still account
+                                                                                   for 67.7% of this total time.
+all failing streaks (710,654)                                                        Two thirds of the failing streaks end at the next run, but the
+one per workflow (71,231)                                                            one in five that last more than a day make up more than
+                                   1m                1h         1d      1w 30d       90% of the time that workflows spend failing.
+
+Fig. 4. Distribution of the duration for all failing streaks, and for one random         Trigger analysis: Next, we study the run triggers of failing
+failing streak per workflow. Box plots in log scale, median = orange line,         streaks, focusing on the subset of 240,609 multi-run failing
+mean = blue line.
+                                                                                   streaks. If a run in a failing streak has a different trigger
+ Most commits that start a failing streak change project files                     than the failing run that initiated the streak, this could signal
+ only, but they change the file of the failing workflow itself                     attempts to fix the failure. However, 92.8% of the multi-run
+ more than twice as often as in normal development.                                failing streaks keep the same trigger for all their runs. For
+                                                                                   example, a workflow that fails on a schedule keeps failing on
+      Workflow purposes: Finally, we examine whether the                           its schedule, and a workflow that fails on a push keeps failing
+number of purposes of a workflow (Section III-C) is associated                     on the next pushes. So a change of trigger, such as a manual
+with how its failing streaks begin. Workflows with more                            run, rarely shows a reaction to the failure.
+purposes start a larger share of their failing streaks with a                            Commit analysis: We also analyse whether new commits
+push than workflows with fewer purposes. However, among                            are made during a multi-run failing streak. These commits
+failing streaks started by the same trigger (for example, push),                   could be attempts to fix the failure, either in the workflow
+the number of purposes makes little difference: about the same                     file or in the project (e.g., a failing test). As in RQ2 , we
+share starts without a new commit, and new commits change                          compare pairs of consecutive failing runs on different commits
+similar kinds of files.                                                            against the baseline of consecutive successful runs on different
+  How a failing streak begins goes with its trigger rather than                    commits. 62.7% of the multi-run failing streaks receive at least
+  with the number of purposes of the workflow.                                     one new commit between two consecutive runs. Most of these
+                                                                                   commits change project files only (83.7%, against 87.5% in
+  VI. RQ3 : W HAT HAPPENS DURING A FAILING STREAK ?                                the baseline), 10.5% change both project and workflow files
+   While RQ2 analysed how failing streaks begin, RQ3 studies                       (against 7.4%), and the failing workflow itself is touched in
+what happens while a workflow keeps failing. Ideally, a                            5.7% of these commits, about twice as often as in the baseline
+workflow that fails should succeed upon its next run, so that                      (2.8%). So development goes on while a workflow is failing,
+failing streaks are single-run streaks at best. Multi-run failing                  and the more frequent changes to the workflow’s own file
+streaks cost more compute time and maintainers’ effort, and                        suggest that some of these commits try to fix it. Development
+while a workflow keeps failing, it can hide new problems, so a                     goes on even in the scheduled failing streaks that last more
+new bug pushed during the failing streak stays hidden behind                       than a week: 74.4% of them receive new commits while the
+the ongoing failure [23].                                                          workflow keeps failing. So the project is not abandoned, yet
+      Length and duration: We start by analysing the length                        the scheduled workflow stays broken, whether or not these
+(Figure 3) and duration (Figure 4) of failing streaks. We do this                  commits try to fix it. A possible reason is that the commit
+for all failing streaks, as well as for a subset of one random                     authors are not even aware that the workflow is broken: GitHub
+failing streak per workflow, in order to avoid possible bias                       sends notifications of a scheduled workflow only to the author
+induced by workflows that contain a high number of failing                         who last changed its cron schedule [29], and only if this author
+streaks. Figure 3 shows that most failing streaks have few                         has opted in to them [30].
+failing runs: about two thirds are single-run streaks (i.e., the
+                                                                                    Three in five failing streaks with several failing runs receive
+next run already succeeds), and only 12.0% (resp. 12.3%) have
+                                                                                    new commits while the workflow keeps failing, and so do
+four or more runs.
+                                                                                    three quarters of the scheduled failing streaks that last more
+   The median duration of a failing streak is 1.9 hours (or 7.7
+                                                                                    than a week.
+hours when we randomly select only one failing streak per
+workflow). This low median is mainly due to the single-run                              Workflow purposes: We checked whether workflow pur-
+failing streaks that have a median duration of 1.0 hour, whereas                   poses affect how long failing streaks last by comparing single-
+failing streaks of length 2 or more have a median duration of                      purpose workflows with workflows that have four or more
+6.8 hours. Note that the duration also depends on how often                        purposes. Across all failing streaks, single-purpose workflows
+recover faster (a median of 0.8 hours, against 2.4 hours).
+However, this comes from a small group of workflows: the 1%
+of single-purpose workflows with the most failing streaks (180                                                              ended on
+                                                                               started on    51.4%
+                                                                                                                            a new commit
+workflows) produce 44.2% of their failing streaks, which last              a new commit
+                                                                                                                            58.2%
+                                                                                   66.2%
+a median of 9 minutes. With one random failing streak per
+workflow, both groups stay in the failure state about equally                                14.9%
+long (a median of 6.5 and 7.2 hours). Workflows whose only                                   6.8%                           ended on
+                                                                                started on
+purpose is dependency, communication, or chore stay failing              the same commit
+                                                                                                                            the same commit
+                                                                                             27.0%                          41.8%
+longest: with one random failing streak per workflow, they                          33.8%
+stay failing for a median of 18.2, 15.8, and 14.1 hours, against
+6.1 hours for workflows with any other single purpose. This
+                                                                   Fig. 5. The four groups of failing streaks. The commit at their start (left) and
+is consistent with their trigger where 47.1% of these failing      at their end (right) is either a new commit or the same commit as the run
+streaks start with a schedule (against 20.5%). A scheduled         before. Each band shows its share of all failing streaks.
+workflow only runs again at its next scheduled time, so it
+cannot pass sooner even if the cause is fixed quickly. At the        Third, we look further into how failing streaks end, by
+same trigger, they last as long as the other workflows.           relating how they start to how they end. A failing streak can
+                                                                  start on a new commit or on the same commit as the last
+         VII. RQ4 : H OW DO FAILING STREAKS END ?                 successful run, and it can end on a new commit or on the same
+                                                                  commit as the last failing run. This gives four groups of failing
+   Having looked at how failing streaks start and what happens streaks, shown in Figure 5. About half of the failing streaks
+during them, we now analyse how they end, from three different (51.4%) start and end on a new commit. More than a quarter
+viewpoints: (1) which trigger ends a failing streak and whether (27.0%) start and end on the same commit, so they do not
+it ends on a new commit, compared to how the streak started; coincide with changes to the repository. These streaks are the
+(2) for the failing streaks that end on a new commit, whether shortest (a median of 0.6 hours). 14.9% of the failing streaks
+this commit touched the workflow file or other project files; and start on a new commit but end on the same commit. Finally,
+(3) whether a failing streak starts and ends on a new commit 6.8% start on the same commit but end on a new commit.
+or on the same commit, and, for a sample of failing streaks, They last the longest (a median of 8.5 hours, with 31.0%
+what caused the failure.                                          above 24 hours), which suggests that an external change broke
+   First, we find that failing streaks almost always end with the the workflow and that a new commit was needed to fix it. We
+trigger that started them (93.7%); for example, only 13.6% of observe similar proportions between single-run and multi-run
+the failing streaks started by a schedule end with a push. A failing streaks. Overall, about two thirds of the failing streaks
+push ends 55.0% of the failing streaks. Of these, only 13.5% start on a new commit. However, 41.8% of all failing streaks
+end on the same commit, almost always after a rerun of the eventually recover on the same commit, so the failure might be
+failed run. On the other hand, the other triggers end most of due to external factors (e.g., missing permissions). Conversely,
+their failing streaks on the same commit as the last failing a failing streak ending on a new commit does not necessarily
+run, from 72.6% for schedule to 82.0% for workflow run. imply that this commit is a direct fix to the failure.
+Overall, 41.8% of the failing streaks end on the same commit,        To understand what causes failures and how workflows
+while 33.8% start on the same commit.                             recover, we inspect the logs of a sample of failing streaks.
+  Failing streaks almost always end with the trigger that started We randomly draw 25 failing streaks from each of the four
+  them, and two in five end on the same commit as the last        groups (100 in total), selecting at most one failing streak from
+  failing run, without any change to the repository.              each repository in each group, among those with available logs
+                                                                  (the retention period is 90 days [31]). Two authors analysed
+   Second, we consider the failing streaks that end on a new 50 of these streaks each, following the same methodology. For
+commit, and compare the files changed between the last failing each failing streak, they identified (1) the cause of the first
+run and the first successful run against the same baseline as failing run, using the failure categories of Zheng et al. [3],
+in RQ2 . 81.2% of these commits change project files only and (2) the cause of the last failing run for multi-run failing
+(against 87.5% in the baseline), and 12.4% change both project streaks. To compare logs, they used CiDiff [32] to inspect the
+and workflow files (against 7.4%). The failing workflow itself diff between two logs. For (1), they inspected the diff between
+is changed in 9.2% of these commits, more than three times the logs of the first failing run of the streak and its previous
+as often as in the baseline (2.8%), and more often than at the successful run. For (2), they inspected the diff between the
+start (7.2%) or during a failing streak (5.7%).                   logs of the last failing run of the streak and its next successful
+                                                                  run.
+  When a failing streak ends on a new commit, this commit
+                                                                     Table VI shows the cause of the first failing run of each
+  most often changes project files only, but it changes the
+                                                                  sampled failing streak. The last run failed for the same cause
+  failing workflow itself more than three times as often as in
+                                                                  as the first one in 29 of the 38 multi-run failing streaks, so a
+  normal development.
+                                                                  failing streak usually fails for the same reason from its first
+                              TABLE VI                                                        VIII. D ISCUSSION
+   C AUSE OF THE FIRST FAILING RUN OF THE 100 SAMPLED FAILING
+STREAKS , PER GROUP : THE COMMIT AT THE START ( TOP ) AND AT THE END
+         ( BOTTOM ), WITH 25 FAILING STREAKS IN EACH GROUP.               We presented preliminary results to the GitHub product
+                                          new new same same            development team. They confirmed that they regularly face
+                                           ↓    ↓   ↓    ↓             issues identified in our study, such as flakiness, needless reruns,
+    cause                                 new same new same all
+                                                                       and scheduled workflows that keep running while failing, but
+    project                               14   10   12    6   42       noted that no large-scale study of these problems was available.
+      tests fail                          7    3    8    3    21
+      other project causes                7    7    4    3    21       This confirmed the need for the analyses we report. Our results
+    workflow / infrastructure              8   13    8   16   45       have several implications for GitHub, for tool builders, for
+      network issue or external service   3    8    4    7    22       maintainers of workflow files, and for researchers.
+      workflow configuration              1    2    3    5    11
+      other workflow causes               4    3    1    4    12          Most failing streaks are short, but the 19.5% that last more
+    other / cannot tell                    3   2    5    3    13       than a day make up 91.7% of the time that workflows spend
+                                                                       failing (RQ3 ), and 6.0% of workflows fail on every run (RQ1 ).
+to its last failing run. When a failing streak ends on a new           Rerunning on the same commit rarely helps after it has failed
+commit, the most common cause is failing tests (7 and 8 of             several times. After a first failure in a failing streak, the next
+25 in these two groups). When it ends on the same commit,              run on the same commit passes in 57.7% of cases; after six
+the workflow or its infrastructure causes most failing streaks         or more failures, it passes in only 3.5% of cases. One might
+(13 and 16 of 25), most often due to a network issue or an             expect long failing streaks to belong to abandoned projects,
+external service failure. Failing tests also appear in the three       but 74.4% of the scheduled failing streaks that last more than a
+groups where the same commit both passed and failed (14                week received new commits while they were still failing (RQ3 ).
+failing streaks): these tests failed without any change to the         However, GitHub notifies the failures of a scheduled workflow
+repository, which points to flaky tests. Workflows that build or       only to the user who last changed its cron schedule [29], who
+test code make up most of the first three groups (17 to 22 of          may no longer be active in the project.
+their 25 failing streaks), and their failing streaks mostly come         GitHub could therefore warn the active developers of a
+from the project, above all from failing tests. In contrast, 16 of      repository when a workflow is still failing after a day, and
+the 25 failing streaks that start and end on the same commit            pause the scheduled runs that keep failing on the same
+come from workflows that neither build nor test code, mostly            commit until the code or the workflow changes. Alternatively,
+(9 out of 16) workflows that handle pull requests and issues,           maintainers can expose such failures themselves, for example
+and these mostly fail for workflow or infrastructure reasons. As        with a step that opens an issue when a scheduled run fails.
+in RQ2 , this goes together with the trigger, where 13 of these
+16 failing streaks start with a workflow run or a schedule.               More than one in three failing streaks start on the same
+As in the study of Zheng et al. [3], failing tests are the most        commit as the last successful run (RQ2 ), and two in five end
+common project cause. However, the authors found that the              on the same commit as the last failing run (RQ4 ). In these
+project itself caused 84% of the failed runs they analysed,            cases, the same commit both failed and passed, so repository
+whereas in our sample the workflow or its infrastructure causes        changes alone do not explain the failure. In our log sample,
+about as many failing streaks as the project (45 against 42).          failing streaks that end on the same commit mostly fail due to
+Part of this difference comes from workflows that neither build        the workflow or its infrastructure, often due to a network issue
+nor test code, which mostly fail for workflow or infrastructure        or an external service (RQ4 ). Tests can also fail and then pass
+reasons. It might also be due to differences in the studied            on unchanged code (RQ4 ), suggesting flaky tests [8].
+populations: we only consider runs on the default branch and
+                                                                        Maintainers could check whether the same commit has
+include all programming languages, whereas Zheng et al. only
+                                                                        passed before and rerun the failed jobs. Tool builders could
+studied Java projects.
+                                                                        identify flaky failures from their logs and suggest reruns
+   We observe that workflow or infrastructure issues are most           rather than fixes. GitHub could retry these failing runs
+often related to network issues or external services (22 failing        automatically or show what changed since the last successful
+streaks), rather than the workflow configuration (11). This             run beyond the code, such as the runner image or action
+matches the low share of commits that change workflow files             versions. Runs of the same commit that both fail and pass
+at the start and end of failing streaks (RQ2 and the commit             provide tool builders and researchers with many examples
+analysis above).                                                        of flaky failures.
+ More than a quarter of the failing streaks start and end on
+ the same commit, without any change to the repository. In                Most commits at the start and end of failing streaks change
+ a sample of 100 failing streaks, those that end on a new              project files only. Still, the file defining the workflow is changed
+ commit most often fail on tests, while those that end on              in 7.2% of the commits that start a failing streak and in 9.2% of
+ the same commit mostly fail because of the workflow or                those that end one, compared with 2.8% of the changes between
+ its infrastructure, most often a network issue or an external         two successful runs (RQ2 , RQ4 ). Changing a workflow is thus
+ service.                                                              more common at the start and end of failing streaks.
+ Maintainers could check workflow changes with a linter such       fixing anything, and a failure on an unchanged commit may
+ as actionlint [33] before merging them, or run the changed        still come from an earlier change, such as a flaky test.
+ workflow on a branch first. GitHub could facilitate this              Relying on an LLM is another choice that may affect our
+ process, e.g., by letting maintainers test a changed workflow     results. Its run-to-run variation does not depend on the failing
+ before it reaches the default branch.                             streaks, since the LLM only sees the workflow file, so it would
+                                                                   tend to blur rather than create the differences between purposes
+   Finally, our results have implications for researchers. Failing
+                                                                   that we report; the effect of our prompt is assessed by the
+runs mostly occur in streaks, since 75.8% of them follow
+                                                                   comparison with our manual labels (Section III-C).
+another failing run of the same workflow (RQ1 ), and a failing
+                                                                       Conclusion validity. Our results on failing streaks count
+streak usually keeps the same cause until it ends (RQ4 ).
+                                                                   each failing streak once, so workflows with many failing streaks
+A random sample of failing runs therefore mostly contains
+                                                                   weigh more. With one random failing streak per workflow, the
+repeated failures, making the failing streak a more natural
+                                                                   median duration rises from 1.9 to 7.7 hours, which is why
+unit for studying workflow failures. Workflow purpose also
+                                                                   RQ3 reports both views.
+matters: workflows that build or test code mostly fail because
+                                                                       Apart from the log analysis of RQ4 (100 failing streaks,
+of the project, while workflows with other purposes mostly fail
+                                                                   25 per group), our results cover all runs in scope. Its pooled
+because of the workflow or its infrastructure, partly explaining
+                                                                   counts over-represent the failing streaks that start or end on
+why our findings on causes differ from those of Zheng et
+                                                                   the same commit, which make up three quarters of the sample
+al. [3]. Multi-purpose workflows also have failing streaks more
+                                                                   but about half of all failing streaks. Weighting each group by
+often, even at the same size (RQ1 ); whether splitting them into
+                                                                   its share of all failing streaks gives about the same picture as
+single-purpose workflows would reduce failing streaks remains
+                                                                   the raw counts (42 and 45 of 100): 44.4% project causes and
+an open question. In addition, because the GitHub API only
+                                                                   43.6% workflow or infrastructure causes. Each failing streak
+lists the last attempt of a run, we retrieved 204,106 earlier
+                                                                   was labelled by one author, but both authors followed the
+attempts. Without them, we would have missed failing streaks
+                                                                   same guide, used the failure categories of Zheng et al. [3], and
+ending with a rerun.
+                                                                   compared each failing log with the log of the successful run
+  Empirical studies of workflow failures should analyse failing    before it.
+  streaks in complement to individual failing runs. They should        External validity. The GHARuns dataset only covers
+  account for workflow purpose, and include rerun attempts.        public GitHub repositories with at least 100 stars and 300
+                                                                   commits [26], and we applied further filters (Section III-B).
+                  IX. T HREATS TO VALIDITY                         Our findings may therefore not generalise to other repositories
+   We discuss the threats to validity of our research following (e.g., private, less popular, or less active ones), other runs (e.g.,
+the structure recommended by Wohlin et al. [34].                   pull-request runs), or periods other than our 238 days.
+   Construct validity. We keep only runs that succeeded or
+failed. After applying filters (1) to (3) in Section III-B, 23.4%                                X. C ONCLUSION
+of the completed runs had been skipped and 0.1% were waiting           We    studied   failing  streaks   in 30.9M+ runs of 154K+ GHA
+for approval; these runs did not execute, so removing them does    workflows       in  43K+     repositories.    Three in four failing runs
+not change the failing streaks. Another 3.3% were cancelled        follow     another   failing   run  of  the  same   workflow, and the one
+before completion; some of them may hide a failure, so we          in   five  failing   streaks   that  last  more    than  a day account for
+may miss some failing runs.                                        over    90%    of the   time  that  workflows     spend  failing. A third of
+   The LLM may assign wrong purposes to some workflows.            failing    streaks   start, and   two   in five  end,  without   any change
+Its agreement with our consolidated labels of 100 workflows is     to  the   repository.    Multi-purpose     workflows    have  failing streaks
+α = 0.76, and for 18 of the 32 workflows where we disagreed,       more     often.
+its purpose set was the correct one (Section III-C). We also           In future work, we plan to classify failure causes automati-
+labelled each workflow from the latest version of its file, whose  cally    from the jobs, steps, and logs of the runs, to reveal at
+purposes may differ from those it had during a failing streak.     scale   why   workflows fail. Linking failing streaks to the contents
+   Internal validity. We excluded the 5.6% of failing streaks      and    changes     of workflow files would show which parts of a
+that were already underway when data collection started or still   workflow       make     failures more likely, and whether splitting
+underway when it ended, because we cannot observe their start      a  multi-purpose        workflow into single-purpose ones reduces
+or end. Long failing streaks are more likely to be excluded,       failing    streaks.   Finally,   we plan to survey the maintainers of
+which matters most for durations (RQ3 ). We therefore also         workflows      with   long  failing  streaks, to learn whether they knew
+counted the excluded failing streaks over the part of the window   that   the  workflow      was  failing,  what caused the failure in their
+that we observe: the failing streaks longer than a day then hold   view,    and   whether    a  warning    after  a day would have helped.
+97.6% of the failing time instead of 91.7%, so excluding them                               XI. DATA AVAILABILITY
+makes this result an underestimate.
+   Whether a failing streak starts or ends on a new commit             Our replication package [35] contains all data and code
+does not show that this commit caused or fixed the failure:        needed     to replicate our results, including the LLM prompt and
+a new commit may simply come with the next run without             its  output,   our manual labels, and the log analysis data.
+                               R EFERENCES                                          [19] M. Beller, G. Gousios, and A. Zaidman, “Oops, my tests broke the build:
+                                                                                         An explorative analysis of Travis CI with GitHub,” in Int’l Conf. Mining
+ [1] F. Zampetti, S. Geremia, G. Bavota, and M. Di Penta, “CI/CD pipelines
+                                                                                         Software Repositories, 2017, pp. 356–367.
+     evolution and restructuring: A qualitative and quantitative study,” in Int’l
+                                                                                    [20] T. Rausch, W. Hummer, P. Leitner, and S. Schulte, “An empirical analysis
+     Conf. Software Maintenance and Evolution (ICSME), 2021.
+                                                                                         of build failures in the continuous integration workflows of Java-based
+ [2] M. Golzadeh, A. Decan, and T. Mens, “On the rise and fall of CI
+                                                                                         open-source software,” in International Conference on Mining Software
+     services in GitHub,” in Int’l Conf. Software Analysis, Evolution and
+                                                                                         Repositories (MSR), 2017, pp. 345–355.
+     Reengineering. IEEE, 2022.
+                                                                                    [21] K. Gallaba, C. Macho, M. Pinzger, and S. McIntosh, “Noise and
+ [3] L. Zheng, S. Li, X. Huang, J. Huang, B. Lin, J. Chen, and J. Xuan,
+                                                                                         heterogeneity in historical build data: An empirical study of Travis
+     “Why do GitHub Actions workflows fail? An empirical study,” ACM
+                                                                                         CI,” in International Conference on Automated Software Engineering
+     Trans. Softw. Eng. Methodol., Jul. 2025.
+                                                                                         (ASE), 2018, pp. 87–97.
+ [4] A. Talebzadeh Bardsiri, T. Mens, and A. Decan, “GHARuns: A large
+                                                                                    [22] X. Jin and F. Servant, “A cost-efficient approach to building in
+     dataset of github actions workflow execution metadata,” in Int’l Conf.
+                                                                                         continuous integration,” in International Conference on Software
+     Software Maintenance and Evolution (ICSME). IEEE, 2026. [Online].
+                                                                                         Engineering (ICSE). ACM, 2020, pp. 13–25. [Online]. Available:
+     Available: https://orbi.umons.ac.be/handle/20.500.12907/56424
+                                                                                         https://doi.org/10.1145/3377811.3380437
+ [5] M. Hilton, T. Tunnell, K. Huang, D. Marinov, and D. Dig, “Usage,               [23] A. Shirakawa, T. Shirai, Y. Kashiwa, M. Kondo, Y. Kamei, and H. Iida,
+     costs, and benefits of continuous integration in open-source projects,” in          “Test alert snooze: An empirical study of consecutive test failures on
+     Int’l Conf. Automated Software Engineering (ASE). IEEE, 2016, pp.                   CI,” in International Symposium on Empirical Software Engineering
+     426–437.                                                                            and Measurement (ESEM), ser. Leibniz International Proceedings
+ [6] F. Zampetti, C. Vassallo, S. Panichella, G. Canfora, H. Gall, and                   in Informatics (LIPIcs), vol. 394, 2026. [Online]. Available: https:
+     M. Di Penta, “An empirical characterization of bad practices in continuous          //drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ESEM.2026.24
+     integration,” Empirical Software Engineering, vol. 25, 2020.                   [24] A. Khatami, C. Brandt, and A. Zaidman, “Beyond the YAML file:
+ [7] J. Huang and B. Lin, “On the reruns of GitHub Actions workflows,”                   Understanding real-world GitHub Actions workflow adoption,” in Int’l
+     ACM Trans. Softw. Eng. Methodol., Feb. 2026.                                        Conf. Evaluation and Assessment in Software Engineering. IEEE, 2026.
+ [8] W. Ge and C. Zhang, “Understanding and detecting flaky builds                  [25] GitHub, “Events that trigger workflows,” https://docs.github.com/en/a
+     in GitHub Actions,” 2026, arXiv preprint. [Online]. Available:                      ctions/reference/workflows-and-actions/events-that-trigger-workflows,
+     https://doi.org/10.48550/arXiv.2602.02307                                           accessed: 2026-10-23.
+ [9] A. Talebzadeh Bardsiri, A. Decan, and T. Mens, “On the GitHub Actions          [26] A. Talebzadeh Bardsiri, T. Mens, and A. Decan, “Gharuns: A large
+     language: Usage, evolution, and workflow reliability,” in Int’l Conf.               dataset of github actions workflow execution metadata,” Oct. 2026.
+     Software Maintenance and Evolution. IEEE, 2026.                                     [Online]. Available: https://doi.org/10.5281/zenodo.23458821
+[10] Y. Zhao, A. Serebrenik, Y. Zhou, V. Filkov, and B. Vasilescu, “The             [27] GitHub, “Re-run workflows and jobs,” https://docs.github.com/en/actions
+     impact of continuous integration on other software development practices:           /how-tos/manage-workflow-runs/re-run-workflows-and-jobs, accessed:
+     A large-scale empirical study,” in Int’l Conf. Automated Software                   2026-10-21.
+     Engineering (ASE), 2017, pp. 60–71.                                            [28] A. F. Hayes and K. Krippendorff, “Answering the call for a standard
+[11] P. Rostami Mazrae, T. Mens, M. Golzadeh, and A. Decan, “On the usage,               reliability measure for coding data,” Communication methods and
+     co-usage and migration of CI/CD tools: A qualitative analysis,” Empir.              measures, vol. 1, no. 1, pp. 77–89, 2007.
+     Softw. Eng., vol. 28, no. 2, p. 52, 2023.                                      [29] GitHub, “Notifications for workflow runs,” https://docs.github.com/en/a
+[12] H. Onsori Delicheh, G. Cardoen, A. Decan, and T. Mens, “Automation                  ctions/concepts/workflows-and-actions/notifications-for-workflow-runs,
+     and reuse practices in GitHub Actions workflows: A practitioner’s                   accessed: 2026-10-17.
+     perspective,” ACM Trans. Softw. Eng. Methodol., 2026.                          [30] ——, “Managing GitHub Actions notifications,” https://docs.github.com/
+[13] T. Kinsman, M. Wessel, M. A. Gerosa, and C. Treude, “How do software                en/subscriptions-and-notifications/how-tos/managing-github-actions-n
+     developers use GitHub Actions to automate their workflows?” in Int’l                otifications, accessed: 2026-10-18.
+     Conf. Mining Software Repositories, 2021.                                      [31] ——, “Configuring the retention period for artifacts, and logs,” https:
+[14] A. Decan, T. Mens, P. Rostami Mazrae, and M. Golzadeh, “On the use                  //docs.github.com/en/organizations/managing-organization-settings/conf
+     of GitHub Actions in software development repositories,” in Int’l Conf.             iguring-the-retention-period-for-github-actions-artifacts-and-logs-in-y
+     Software Maintenance and Evolution. IEEE, 2022.                                     our-organization, accessed: 2026-10-21.
+[15] A. Decan, T. Mens, and H. Onsori Delicheh, “On the outdatedness of             [32] N. Hubner, J.-R. Falleri, R. Uricaru, T. Degueule, and T. Durieux, “What
+     workflows in the GitHub Actions ecosystem,” J. Systems and Software,                happened in this pipeline? Diffing build logs with CiDiff,” Proc. ACM
+     vol. 206, 2023.                                                                     Softw. Eng., vol. 2, no. ISSTA089, Jun. 2025.
+[16] A. Khatami, C. Willekens, and A. Zaidman, “Catching smells in the act:         [33] rhysd, “actionlint: Static checker for GitHub Actions workflow files,”
+     A GitHub Actions workflow investigation,” in Int’l Conf. Source Code                https://github.com/rhysd/actionlint, accessed: 2026-10-23.
+     Analysis and Manipulation. IEEE, 2024.                                         [34] C. Wohlin, P. Runeson, M. Höst, M. C. Ohlsson, B. Regnell, and
+[17] T. Ghaleb, O. Abduljalil, and S. Hassan, “CI/CD configuration practices             A. Wesslén, Experimentation in Software Engineering. Springer, 2012.
+     in open-source Android apps: An empirical study,” ACM Trans. Softw.            [35] Anonymous, “Replication package,” https://figshare.com/s/fb59be9661cb
+     Eng. Methodol., May 2025.                                                           01975555, 2026.
+[18] P. Rostami Mazrae, A. Decan, T. Mens, and M. Wessel, “An empirical
+     study of the evolution of GitHub Actions workflows,” Journal of Systems
+     and Software, vol. 236, 2026.
+

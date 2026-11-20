@@ -1,0 +1,13 @@
+id	field	old_value	new_value	status	reason	locator
+BUY01	human_takeover	开发者决定是否把失败交回修复，可撤销一次变更	开发者可决定是否重试；/undo 可撤回本会话由 Aider 创建的最后一个 Git 提交。	部分支持	/undo 只接受当前会话由 Aider 创建的最后一个 Git 提交，用户提交和任意外部变更不在这个入口内。	E04-3@553-575
+BUY03	human_takeover	开发者选择恢复范围，HEAD 变化时需核对再操作	开发者可选恢复文件、会话或二者；HEAD 偏离检查点基准时拒绝文件恢复，可仅恢复会话，或另行有意调整分支。	部分支持	文件级恢复遇到当前 HEAD 偏离基准时直接拒绝；查看后确认并不能绕过，聊天恢复是另一条路径。	E07-2@403-425;E07-3@51-58
+BUY05	availability_version	现行 Qoder 产品；2026-10-15 旧 IDE Quest 视窗退场，不另计 SKU	旧 IDE Quest 公告列出的退场节点为 2026-10-15 23:59（UTC+8）；当前说明新用户无入口、既有用户分批关闭。新版 Qoder 独立验收。	部分支持	公告同时保留原定截止时间和当前分批关闭说明，不能把预定节点视作所有老用户同日消失。	CN01@1-20
+BUY06	human_takeover	lead 可让成员退回改计划或发出停止；GitLab 保留独立评审人	团队 lead 可批准或退回成员计划并发出关停；操作者可停止成员，MR 是否需独立人工批准取决于 GitLab 仓库规则。	部分支持	批准计划和发出关停的是团队 lead 角色，不能算独立人审；CI 文档介绍安装和 MR 工作流，没有为每个仓库强制配置指定人工评审者。	CN05@167-176;CN06@12-23;CN08@1-38
+BUY14	availability_version	2026-04-14 以 Routines 发布；现行 Scheduled tasks，旧称与 SDK 不另计	2026-04-14 以 Routines 进入 research preview；现行文档名为 Scheduled tasks，旧称与 SDK 不重复计数。	明确	日期正确；原公告明说 research preview。表述补上初始阶段，以免被理解为当日正式可用。	F04-2@meta:article:published_time;F04-2@1-6
+BUY18	human_takeover	团队定义标准、参考件和验证方法，并在 registry 中管理定义及所学规则	团队定义标准并验证结果；从 transformation registry 选择转换，用 def learnings 查看和管理该转换从历史运行提取的 lessons。	部分支持	文档分别说 registry 列出 transformations 和 def learnings 管理某个 transformation 的 lessons；没有声称 lessons 有独立 registry 记录或所有反馈均需批准。	P14@76-84;P14@430-435
+BUY20	unknown_or_boundary	源码反映分片过滤，不提供准确率。自动批准设置归宿主，该版本路径仍禁用	v0.50.0 发布说明称自动批准配置只归宿主且该版执行路径仍禁用。另一个固定源码提交含有条件批准分支，版本分别记录。	明确	v0.50.0 发布说明明确该版路径禁用；另一个固定源码提交已含有条件调用 provider 的分支，不可拿它证明该版默认可用。	D07-3@95-100;D07-2@123-134;D07-1@2762-2781
+BUY24	human_takeover	管理员调并发、批大小、拆分次数并可暂停队列	有相应配置权限的操作者可调整队列并发、批大小和失败拆分次数，必要时暂停队列；细粒度角色权限需按安装复核。	部分支持	配置与暂停功能有证，所列页面并未证明所有这些动作在每种安装中都是相同的管理员专属权限。	P21@25-36;P22@147-150
+BUY32	human_takeover	响应者检查竞争假设，保持部分规则为人工；外部修复交给有权限的人或其他产品	响应者审查证据并决定哪些规则保持人工。原生工具不回滚或重启；自动调查使用团队连接器凭据，连接器或 Private Agent 是否可外写需按授权核对。	冲突	原生工具不能回滚或重启是事实；同一产品的自动调查可使用团队连接器和 Private Agent，具体暴露的能力可能具有写入权限。	P05@249-261;P07@110-119
+BUY33	human_takeover	值班者可纠正原因并给证据，管理员可管理或删除由反馈产生的 memories	值班者可纠正原因并附遥测证据；有相应权限者可在 Monitor Management 查看、删除反馈生成的 memories。该页未列具体角色要求。	未证	已证实反馈可形成记忆，Monitor Management 有查看和删除入口；本页未指明所需角色必须或仅为管理员。	P09@2018-2035
+BUY34	human_takeover	负责人选停止点、补 user_context、按 run ID 接续，对 PR 做原有验收	负责人选停止点并补 user_context；续跑首选 sentry_run_id（UUID），旧数值 run_id 仅作兼容；对生成的 PR 仍走仓库验收。	部分支持	两个标识含义不同。旧数值 run_id 仅保兼容，优先字符串 UUID sentry_run_id；都不传即新建。	P10@48-61
+BUY35	availability_version	CircleCI Cloud + GitHub App 的适用组织；当前文档标 beta，2026-02-26 增加 inline Fix Job	CircleCI Cloud + GitHub App 的适用组织；当前文档标 beta，2026-02-27 增加 inline Fix Job	冲突	原提交表日期与正文、网页时间标签及发布元数据差一天；主线程已在本次审稿前半程回写为 02-27。	P02@2-5;P02@meta:article:published_time;P02@time:0

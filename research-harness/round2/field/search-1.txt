@@ -1,0 +1,222 @@
+AIOpsLab: A Holistic Framework for Evaluating AI Agents for Enabling Autonomous Cloud (https://www.microsoft.com/en-us/research/publication/aiopslab-a-holistic-framework-for-evaluating-ai-agents-for-enabling-autonomous-cloud/?lang=zh-cn)
+citeturn76search0 [wordlim: 200] Published: 1.6 years ago; Crawled: 2 months ago; AI for IT Operations (AIOps) aims to automate complex operational tasks, such as fault localization and root cause analysis, to reduce human workload and minimize customer impact. ... To this end, we present AIOPSLAB, a framework that not only deploys microservice cloud environments, injects faults, generates workloads, and exports telemetry data but also orchestrates these components and provides interfaces for interacting with and evaluating agents. ... Through evaluations of state-of-the-art LLM agents within the benchmark created by AIOPSLAB, we provide insights into their capabilities and limitations in handling complex operational tasks in cloud environments.
+
+# AIOpsLab: A Holistic Framework for Evaluating AI Agents for Enabling Autonomous Cloud
+
+  * Yinfang Chen ,
+  * Manish Shetty ,
+  * Gagan Somashekar ,
+  * Minghua Ma ,
+  * Yogesh Simmhan ,
+  * Jonathan Mace ,
+  * Chetan Bansal ,
+  * Rujia Wang ,
+  * Saravan Rajmohan
+
+MLSys '25 | May 2025
+
+下载 BibTex
+
+AI for IT Operations (AIOps) aims to automate complex operational tasks, such as fault localization and root cause analysis, to reduce human workload and minimize customer impact. While traditional DevOps tools and AIOps algorithms often focus on addressing isolated operational tasks, recent advances in Large Language Models (LLMs) and AI agents are revolutionizing AIOps by enabling end-to-end and multitask automation. This paper envisions a future where AI agents autonomously manage operational tasks throughout the entire incident lifecycle, leading to self-healing cloud systems, a paradigm we term AgentOps. Realizing this vision requires a comprehensive framework to guide the design, development, and evaluation of these agents. To this end, we present AIOPSLAB, a framework that not only deploys microservice cloud environments, injects faults, generates workloads, and exports telemetry data but also orchestrates these components and provides interfaces for interacting with and evaluating agents. We discuss the key requirements for such a holistic framework and demonstrate how AIOPSLAB can facilitate the evaluation of next-generation AIOps agents. Through evaluations of state-of-the-art LLM agents within the benchmark created by AIOPSLAB, we provide insights into their capabilities and limitations in handling complex operational tasks in cloud environments. The source code for AIOPSLAB is publicly available at https://aka.ms/aiopslab-repo.
+
+Publication--------------------------------------------------------------------------------
+Investigate Issues (https://docs.datadoghq.com/bits_ai/bits_investigation/investigate_issues/?trk=article-ssr-frontend-pulse_little-text-block)
+citeturn76search1 [wordlim: 200] Crawled: 6 days ago; Docs  >  Bits AI  >  Bits Investigation  >  Investigate Issues ... When a Synthetic Browser or API test monitor triggers, you can launch a Bits investigation to identify the root cause. ... At the end of an investigation, Bits either presents a clear, evidence-backed conclusion or marks the investigation as inconclusive when the available data is insufficient to support a defensible conclusion.
+
+## How Bits investigates
+
+When Bits investigates an issue, it operates in a continuous loop of observation, reasoning, and action. It begins by forming hypotheses about the potential root cause, then uses its tools to query telemetry data to validate or invalidate those hypotheses. Each step builds on prior findings. As new evidence emerges, Bits updates its understanding, refines its reasoning, and chains together additional investigative steps—adapting and course-correcting until it converges on the most likely root cause.
+
+At the end of an investigation, Bits either presents a clear, evidence-backed conclusion or marks the investigation as inconclusive when the available data is insufficient to support a defensible conclusion.
+
+When Bits reaches a conclusion, it suggests next steps, such as a code fix, a triage action, or an infrastructure action. For details, see Bits Remediation.
+
+### Supported data sources
+
+Bits uses the following data sources during investigations:
+
+#### Datadog products
+--------------------------------------------------------------------------------
+Investigate Errors with Bits AI (https://docs.datadoghq.com/error_tracking/bits_investigation/?lang_pref=en)
+citeturn76search2 [wordlim: 200] Crawled: today; Bits Investigation is an autonomous AI agent that investigates production issues. ...      * Root cause: The most likely cause of the error, based on the evidence Bits gathered. ... If the available data is insufficient to support a conclusion, Bits marks the investigation as inconclusive. ... When the root cause is in your code, Bits Investigation uses Bits Code to generate a fix.
+Bits can investigate without source code access, but the root cause analysis is less precise.
+  * To generate code fixes, set up Bits Code, which needs write access to your repository and the Bits Code Write permission.
+
+## Investigate an Error Tracking issue
+
+To investigate an Error Tracking issue with Bits Investigation:
+
+  1. In the Error Tracking Explorer, click an issue to open the issue panel.
+
+  2. On the Review tab, click Investigate this issue in the Bits Investigation banner.
+
+While the investigation runs, the banner shows its progress and who triggered it. An investigation usually takes a few minutes.
+
+  3. When the investigation completes, review the findings in the banner:
+
+     * Root cause: The most likely cause of the error, based on the evidence Bits gathered.
+     * Impact: How the error affects your users and services.
+
+For a completed investigation, the banner displays the root cause and impact side by side:
+
+If the available data is insufficient to support a conclusion, Bits marks the investigation as inconclusive.
+--------------------------------------------------------------------------------
+AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds (https://www.microsoft.com/en-us/research/wp-content/uploads/2024/10/AIOpsLab-672458b635d2d.pdf)
+citeturn76search12 [wordlim: 200] Published: 2.0 years ago; Crawled: last week; Our approach ensures that evaluation scenarios go beyond simple performance or crash failures (that cannot be further analyzed or mitigated by the agents), incorporating fine-grained root causes to fully assess the diagnostic and mitigation abilities of AIOps agents. ... - We develop a framework, AIOpsLAB, which can not only deploy microservice cloud environments, inject faults, generate workloads, and export telemetry data but also orchestrate these components and provide agent-cloud interfaces for interacting with and evaluating agents.
+- We leverage the AIOpsLAB framework to construct a benchmark suite with 48 problems across different AIOps tasks in an interactive environment and evaluate six LLM-based agents.
+# AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds
+
+‘Dev’ side of DevOps by accelerating software development. However, progress in AI for ‘Ops’, particularly AgentOps, remains limited, due to the lack of high-quality benchmarks for diverse, realistic scenarios. Addressing this gap requires *a framework that aids the design, development, and evaluation of AIOps agents* within an interactive environment, a key contribution of this paper.
+
+## Challenges and contributions.
+
+Building a holistic benchmark framework that can allow agents to interact dynamically with the cloud poses several challenges. The first challenge is to manage an evaluation flow that is generally applicable to diverse agents and clouds, powerful enough to evaluate agents by complex and realistic operational tasks, and valuable enough to provide different feedback or observability, together with extensibility that make it possible to accommodate new tasks and agents by the users. While existing tools address individual components of the AIOps evaluation, such as observability (He et al., 2023; Simonsson et al., 2021), application suites (Gan et al., 2019; Zhou et al., 2021; Sriraman and Wenisch, 2018) and chaos engineering (Netflix, 2011; ChaosBlade Team, 2019; ChaosMesh Authors, 2022), they lack the integration necessary to support a unified AIOps evaluation.
+
+We present **AIOpsLAB**, a holistic framework that can automatically manage the entire end-to-end evaluation process for AIOps solutions. This involves deploying services, fault injection, workload generation, orchestrating the agent-cloud interaction, and analyzing results. Specifically, AIOpsLAB features the *Agent-Cloud Interface (ACI)*, a unified interface that enables agents to interact with the cloud. ACI allows agents to communicate, take action, and receive feedback, orchestrating these interactions to detect and resolve issues in dynamic and interactive environments.
+
+Moreover, a common challenge in operation benchmarks is the lack of realistic evaluation scenarios, as existing approaches often rely on static datasets, such as system metrics (Han et al., 2022; Jacob et al., 2020) that are typically time series data, or on fixed question-answer format (Liu et al., 2023). Such setups do not capture the dynamic, unpredictable, and evolving nature of real-world cloud environments, where workloads and incidents fluctuate over time. To make matters worse, recent efforts on AgentOps (Wang et al., 2023; Zhang et al., 2024a) use proprietary services and datasets. Furthermore, existing AIOps approaches and their benchmarks often focus only on isolated aspects of the incident lifecycle, such as anomaly detection (Yu et al., 2024b) or fault localization (Sun et al., 2024). This lacks a cohesive framework to evaluate AIOps agents comprehensively. Moreover, it limits support for decision-making that could assist in chaining algorithms or selecting the most suitable agent for a given operation scenario.
+
+To address these limitations, we designed a set of evaluation scenarios, referred to as *problems*, which replicates realistic incidents within the microservice system. AIOpsLAB’s problem pool is structured around a task-level taxonomy that categorizes tasks of different problems across the incident management lifecycle. Our approach ensures that evaluation scenarios go beyond simple performance or crash failures (that cannot be further analyzed or mitigated by the agents), incorporating fine-grained root causes to fully assess the diagnostic and mitigation abilities of AIOps agents.
+
+## Implementation.
+
+We developed AIOpsLAB, an innovative framework for building AgentOps benchmarks to evaluate LLM-based AIOps agents. AIOpsLAB utilizes two microservice applications from DeathStarBench (Gan et al., 2019) as testbeds, along with their workload generators. An extensible fault library, integrated with ChaosMesh (ChaosMesh Authors, 2022), enables diverse fault injections into the system. A telemetry observer, incorporating Prometheus (Prometheus Authors, 2024) for metrics, Jaeger (Jaeger Authors, 2024) for tracing, and Filebeat (Elasticsearch, 2024b) and Logstash (Elasticsearch, 2024a) for logging, supports on-disk storage of telemetry data, facilitating evaluations of both traditional AIOps algorithms and agentic solutions. We also integrate Helm and Kubernetes APIs into the AIOpsLAB’s orchestrator implementation.
+
+To demonstrate the application of our framework in evaluating LLM-based agents as the benchmark, we use AIOpsLAB to create 48 problems as evaluation scenarios covering different types of AIOps tasks, and register six agents from different types on those problems. The agent registration is lightweight, with 41-91 lines of code to implement. Our evaluation process reveals distinct challenges agents face across tasks.
+
+## Summary.
+
+This paper makes the following contributions:
+
+- We unravel the requirements and challenges of achieving a holistic framework that supports the design, development, and evaluation of autonomous AIOps agents;
+- We develop a framework, AIOpsLAB, which can not only deploy microservice cloud environments, inject faults, generate workloads, and export telemetry data but also orchestrate these components and provide agent-cloud interfaces for interacting with and evaluating agents.
+- We leverage the AIOpsLAB framework to construct a benchmark suite with 48 problems across different AIOps tasks in an interactive environment and evaluate six LLM-based agents.
+- We provide a detailed analysis of the agents’ performance and limitations by evaluating them on AIOpsLAB.
+- We will make AIOpsLAB publicly available.¹
+
+---
+
+¹The link will be provided.--------------------------------------------------------------------------------
+AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds (https://www.microsoft.com/en-us/research/wp-content/uploads/2024/10/AIOpsLab-1.pdf)
+citeturn76search13 [wordlim: 200] Published: 1.6 years ago; AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds ... We show the lines of code (LoC) to register the agent in AIOPSLAB, average running time in seconds, average number of steps taken, average tokens used, and accuracy across all problems. ... The RCA task (Level 3) requires the agents to identify (1) the system layer the fault affects and (2) the type of the fault, e.g., misconfiguration or operation error. ... The RCA and mitigation tasks prove to be the most challenging for the agents. ... Despite showing promise in addressing realistic operational tasks, none of the agents consistently achieve high problem-solving accuracy across four task categories in AIOPSLAB benchmark.
+AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds
+
+Table 3. Overall performance of different agents. We show the lines of code (LoC) to register the agent in AIOPSLAB, average running time in seconds, average number of steps taken, average tokens used, and accuracy across all problems.
+
+<table id="e1">
+| Agent | LoC | Time (s) | # Steps | Tokens | Acc. |
+|---|---:|---:|---:|---:|---:|
+| GPT-4-w-SHELL | 41 | 28.61 | 6.44 | 6,394.5 | 49.15% |
+| GPT-3.5-w-SHELL | 41 | 12.44 | 14.70 | 2,557.95 | 15.25% |
+| REACT | 49 | 43.79 | 11.50 | 16,941.46 | 55.93% |
+| FLASH | 60 | 99.64 | 8.48 | 6,484.25 | 59.32% |
+</table>
+
+tasks to other levels. The localization (Level 2) task asks the agents to specify the exact location of the fault, e.g., a service or pod name in Kubernetes. The RCA task (Level 3) requires the agents to identify (1) the system layer the fault affects and (2) the type of the fault, e.g., misconfiguration or operation error. The mitigation task (Level 4) requires the agents to interact with the environment to fix the fault with a series of actions, such as updating the configuration, or rollback to a previous version, etc.
+To evaluate their accuracy, we consider both the top 1 and top 3 answers. In Table 4(b), REACT performs best when evaluated using the top 3 answers, but its accuracy drops when considering the top 1. The RCA and mitigation tasks prove to be the most challenging for the agents. For instance, GPT-3.5-w-SHELL fails to recover any failure in its mitigation attempts.
+
+Problem difficulty differs across task levels. Despite showing promise in addressing realistic operational tasks, none of the agents consistently achieve high problem-solving accuracy across four task categories in AIOPSLAB benchmark. Even the top-performing agents, such as FLASH, exhibit limitations, particularly when tackling more complex tasks like mitigation. In Section 3.6, we will explore in detail the failure modes and challenges contributing to these performance limitations of agents, and opportunities for improvement.
+
+3.5 Influence of the Step Limit
+
+We examine the impact of the maximum number of allowed steps on the agent’s performance, with the results shown in Figure 5. --------------------------------------------------------------------------------
+AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds (https://www.microsoft.com/en-us/research/wp-content/uploads/2024/10/arxiv_AIOpsLab.pdf)
+citeturn76search14 [wordlim: 200] Published: 1.8 years ago; AIOpsLab: A Holistic Framework to Evaluate AI Agents for Enabling Autonomous Clouds ... To support a wide range of evaluation scenarios (referred to as problems), which replicate realistic incidents within the microservice system, we first formalize an AIOps problem \(P\) as a tuple: \(P = \langle T, C, S \rangle\), where \(T\) represents a task, \(C\) represents a context, and \(S\) represents the expected solution (oracle). ... The task \(T\) defines the specific AIOps operation to be performed, categorized into four types: detection, localization, (root cause) analysis, and mitigation. ... The operational environment includes the cloud service, the fault model, and the workload model used to generate the problem, which is not shared with the agent. ... AIOPSLAB makes it easy to define this problem in just a few lines by extending the LocalizationTask interface.
+The task \(T\) defines the specific AIOps operation to be performed, categorized into four types: detection, localization, (root cause) analysis, and mitigation. We define these tasks in Table 1. Each task type is associated with success criteria and evaluation metrics. For instance, the detection task employs Time-to-Detect (TTD) to measure the time taken to detect a fault.
+
+The context \(C\) can be further formalized as a tuple: \(C = \langle E, I \rangle\), where \(E\) is the operational environment in which the problem occurs, and \(I\) is the problem information used to describe the problem to the agent. The operational environment includes the cloud service, the fault model, and the workload model used to generate the problem, which is not shared with the agent. The problem information comprises information such as service descriptions, task descriptions, and documentation about available APIs that is directly shared with the agent. It also subsumes indirect information (including logs, metrics, and traces observed in the operational environment) that is queryable by the agent at runtime. Finally, \(S\) is the expected outcome of the task, which is used to evaluate the agent’s performance. The solution is typically problem and task-specific and is carefully designed for evaluation. Note that some problems, e.g., mitigation tasks, can be solved in multiple ways. In such cases, AIOPSLAB evaluates the general state of the entire system, e.g., check whether all the services are up and running, after the problem is resolved, rather than solely on the targeted resource where the fault was injected, because other services or resources may have been inadvertently affected during the mitigation process.
+
+**Example 2.1.** Consider the problem of localizing a Kubernetes target port misconfiguration in a social network application. AIOPSLAB makes it easy to define this problem in just a few lines by extending the LocalizationTask interface.
+
+<visual_element id="e2">
+Code snippet showing a Python example: imports LocalizationTask, SocialNetwork, Wrk, VirtFaultInjector; defines class K8STargetPortMisconf(LocalizationTask) with init setting self.app = SocialNetwork() and self.ans = "user-service"; start_workload uses Wrk(rate=100, duration=10) and wrk.start_workload(url=self.app.frontend_url); inject_fault creates VirtFaultInjector(self.app.ns) and injects [self.ans], "misconfig_k8s"; eval sets res["TTL"] = duration and res["success"] = is_exact_match(soln, self.ans), then returns res.
+--------------------------------------------------------------------------------
+AIOPSLAB: A HOLISTIC FRAMEWORK TO EVALUATE AI AGENTS FOR (https://www.microsoft.com/en-us/research/uploads/prod/2024/10/arxiv_AIOpsLab.pdf)
+citeturn76search15 [wordlim: 200] Published: 1.1 years ago; AIOPSLAB: A HOLISTIC FRAMEWORK TO EVALUATE AI AGENTS FOR ... end, we present AIOPSLAB, a framework that not only deploys microservice cloud environments, injects faults, ... demonstrate how AIOPSLAB can facilitate the evaluation of next-generation AIOps agents. ... of state-of-the-art LLM agents within the benchmark created by AIOPSLAB, we provide insights into their ... propose a new paradigm called AgentOps (Agent for Opera- ... ponents, not just monolithic models ... compound ... 3Microsoft, Redmond, USA 4IISc, Bengaluru, India.
+AIOPSLAB: A HOLISTIC FRAMEWORK TO EVALUATE AI AGENTS FOR
+ENABLING AUTONOMOUS CLOUDS
+Yinfang Chen 1 Manish Shetty 2 Gagan Somashekar 3 Minghua Ma 3 Yogesh Simmhan 4 Jonathan Mace 3
+Chetan Bansal 3 Rujia Wang 3 Saravan Rajmohan 3
+ABSTRACT
+AI for IT Operations (AIOps) aims to automate complex operational tasks, such as fault localization and root
+cause analysis, to reduce human workload and minimize customer impact. While traditional DevOps tools
+and AIOps algorithms often focus on addressing isolated operational tasks, recent advances in Large Language
+Models (LLMs) and AI agents are revolutionizing AIOps by enabling end-to-end and multitask automation.
+This paper envisions a future where AI agents autonomously manage operational tasks throughout the entire
+incident lifecycle, leading to self-healing cloud systems, a paradigm we term AgentOps. Realizing this vision
+requires a comprehensive framework to guide the design, development, and evaluation of these agents. To this
+end, we present AIOPSLAB, a framework that not only deploys microservice cloud environments, injects faults,
+generates workloads, and exports telemetry data but also orchestrates these components and provides interfaces
+for interacting with and evaluating agents. We discuss the key requirements for such a holistic framework and
+demonstrate how AIOPSLAB can facilitate the evaluation of next-generation AIOps agents. Through evaluations
+of state-of-the-art LLM agents within the benchmark created by AIOPSLAB, we provide insights into their
+capabilities and limitations in handling complex operational tasks in cloud environments. The source code for
+AIOpsLab is publicly available at https://aka.ms/aiopslab-repo.
+1
+INTRODUCTION
+agents have brought this vision closer to reality (Zhao et al.,
+2023; He et al., 2022; Ma et al., 2018; Zhang et al., 2018;
+Ganatra et al., 2023; Somashekar et al., 2024; Zhang et al.,
+2024a; Chen et al., 2024). Large Language Model (LLM)
+agents (Mialon et al., 2023; Schick et al., 2024) integrate
+external tools to dynamically interact with their environ-
+ment (Wei et al., 2022a), enabling them to autonomously
+--------------------------------------------------------------------------------
+ITBench: Evaluating AI Agents across Diverse Real-World IT Automation Tasks (https://research.ibm.com/publications/itbench-evaluating-ai-agents-across-diverse-real-world-it-automation-tasks)
+citeturn76search3 [wordlim: 200] Published: 1.4 years ago; Crawled: 3 days ago; ICML 2025 ... # ITBench: Evaluating AI Agents across Diverse Real-World IT Automation Tasks ... Our initial release targets three key areas: Site Reliability Engineering (SRE), Compliance and Security Operations (CISO), and Financial Operations (FinOps).
+ICML 2025
+
+Conference paper
+
+13 Jul 2025
+
+# ITBench: Evaluating AI Agents across Diverse Real-World IT Automation Tasks
+
+## Abstract
+
+Realizing the vision of using AI agents to automate critical IT tasks depends on the ability to measure and understand effectiveness of proposed solutions. We introduce ITBench, a framework that offers a systematic methodology for benchmarking AI agents to address real-world IT automation tasks. Our initial release targets three key areas: Site Reliability Engineering (SRE), Compliance and Security Operations (CISO), and Financial Operations (FinOps). The design enables AI researchers to understand the challenges and opportunities of AI agents for IT automation with push-button workflows and interpretable metrics. ITBench includes an initial set of 94 real-world scenarios, which can be easily extended by community contributions. Our results show that agents powered by state-of-the-art models resolve only 13.8% of SRE scenarios, 25.2% of CISO scenarios, and 0% of FinOps scenarios. --------------------------------------------------------------------------------
+AIOpsLab: Building AI agents for autonomous clouds - Microsoft Research (https://www.microsoft.com/en-us/research/blog/aiopslab-building-ai-agents-for-autonomous-clouds/)
+citeturn76search4 [wordlim: 200] Published: 1.9 years ago; Crawled: today; AIOpsLab has a novel push-button fault generator designed for generic applicability across various cloud scenarios. ... The fault injector’s versatility can enhance the reliability and robustness of cloud systems by enabling thorough testing and evaluation of AIOps capabilities. ... These tasks include incident detection, localization, root cause diagnosis, and mitigation. Additionally, we support several popular agent frameworks: React, Autogen, and TaskWeaver.
+
+## Service
+
+AIOpsLab abstracts a diverse set of services to reflect the variance in production environments. This includes live, running services that are implemented using various architectural principles, including microservices, serverless, and monolithic.
+
+We also leverage open-sourced application suites such as DeathStarBench as they provide artifacts, like source code and commit history, along with run-time telemetry. Adding tools like BluePrint can help AIOpsLab scale to other academic and production services. 
+
+## Workload generator
+
+The workload generator in AIOpsLab plays a crucial role by creating simulations of both faulty and normal scenarios. It receives specifications from the orchestrator, such as the task, desired effects, scale, and duration. The generator can use a model trained on real production traces to generate workloads that align with these specifications. Faulty scenarios may simulate conditions like resource exhaustion, exploit edge cases, or trigger cascading failures, inspired by real incidents. Normal scenarios mimic typical production patterns, such as daily activity cycles and multi-user interactions. When various characteristics (e.g., service calls, user distribution, arrival times) can lead to the desired effect, multiple workloads can be stored in the problem cache for use by the orchestrator. In coordination with the fault generator, the workload generator can also create complex fault scenarios with workloads.  
+
+## Fault generator
+
+AIOpsLab has a novel push-button fault generator designed for generic applicability across various cloud scenarios. Our approach integrates application and domain knowledge to create adaptable policies and “oracles” compatible with AIOps scenarios. This includes fine-grained fault injection capable of simulating complex failures inspired by production incidents. Additionally, it can inject faults at various system levels, exposing root causes while maintaining semantic integrity and considering interdependencies between cloud microservices. The fault injector’s versatility can enhance the reliability and robustness of cloud systems by enabling thorough testing and evaluation of AIOps capabilities. 
+
+## Observability
+
+AIOpsLab is equipped with an extensible observability layer designed to provide comprehensive monitoring capabilities across various system layers for any AIOps tool. AIOpsLab collects a wide array of telemetry data, including (1) traces from Jaeger detailing the end-to-end paths of requests through distributed systems, (2) application logs formatted and recorded by Filebeat and Logstash, and (3) system metrics monitored by Prometheus. Additionally, AIOpsLab also captures lower-level system information such as syscall logs and cluster information. As mentioned, we handle potential data overload through flexible APIs to tune the telemetry data relevant to the AIOps tools. 
+
+AIOpsLab currently supports four key tasks within the AIOps domain. These tasks include incident detection, localization, root cause diagnosis, and mitigation. Additionally, we support several popular agent frameworks: React, Autogen, and TaskWeaver. Two key insights from the study emphasize the importance of observability and well-designed ACI. --------------------------------------------------------------------------------
+AIOpsLab: Building AI agents for autonomous clouds - Microsoft Research (https://www.microsoft.com/en-us/research/blog/aiopslab-building-ai-agents-for-autonomous-clouds/?msockid=3a6df8703bae643d3433eefb3a0d6576)
+citeturn76search5 [wordlim: 200] Published: 1.9 years ago; Crawled: 2 months ago; ## Microsoft Research Blog ... The broad adoption of microservices and cloud-based serverless architecture has streamlined certain aspects of application development while simultaneously introducing a host of operational difficulties, particularly in fault diagnosis and mitigation. ... To tackle these challenges, recent research on using AIOps agents for cloud operations—such as AI agents for incident root cause analysis (RCA) or triaging—has relied on proprietary services and datasets. ... Users developing agents for cloud operations tasks with Azure AI Agent Service can evaluate and improve them using AIOpsLab. ... The framework should allow agents to interact with realistic service operation tasks in a reproducible manner. ... We developed AIOpsLab, a holistic evaluation framework for researchers and developers, to enable the design, development, evaluation, and enhancement of AIOps agents, which also serves the purpose of reproducible, standardized, interoperable, and scalable benchmarks.
+As the expectation for five-nines availability grows, organizations must navigate the intricate web of operational demands to maintain customer satisfaction and business continuity. 
+
+To tackle these challenges, recent research on using AIOps agents for cloud operations—such as AI agents for incident root cause analysis (RCA) or triaging—has relied on proprietary services and datasets. Other prior works use frameworks specific to the solutions that they are building, or ad hoc and static benchmarks and metrics that fail to capture the dynamic nature of real-world cloud services. Users developing agents for cloud operations tasks with Azure AI Agent Service can evaluate and improve them using AIOpsLab. Furthermore, current approaches do not agree on standard metrics or a standard taxonomy for operational tasks. This calls for a standardized and principled research framework for building, testing, comparing, and improving AIOps agents. The framework should allow agents to interact with realistic service operation tasks in a reproducible manner. --------------------------------------------------------------------------------
+Can LLMs Really Recover Microservice Failures? A Recovery-Aware Evaluation of Diagnosis-to-Action Reasoning (https://www.microsoft.com/en-us/research/publication/can-llms-really-recover-microservice-failures-a-recovery-aware-evaluation-of-diagnosis-to-action-reasoning/?lang=ko-kr)
+citeturn76search6 [wordlim: 200] Published: 4 months ago; Crawled: 3 weeks ago; Large language models (LLMs) are increasingly used to interpret operational evidence and assist incident response in cloud-native microservice systems. ... After observing symptoms and diagnosing a fault, an operator or agent must translate the diagnosis into a concrete recovery action, apply it to an admissible target, and verify that service health has been restored. Existing RCA and log-analysis evaluations are well-suited to diagnosis, but they do not characterize this subsequent action decision. ... We instantiate the framework as a benchmark dataset of 302 quality-audited Kubernetes incidents from system. ... We evaluate heuristic, supervised, RCA-oriented, deep log, and LLM-based methods. ... This work provides a reproducible, simplified starting point for research and evaluation.
+--------------------------------------------------------------------------------
+Get a Bits AI investigation - Bits AI - Datadog API (https://docs.datadoghq.com/api/latest/bits-ai/get-a-bits-ai-investigation/?code-lang=typescript)
+citeturn76search7 [wordlim: 200] Crawled: 2 days ago; # Get a Bits AI investigation ... GET`https://api.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.us3.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.us5.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.datadoghq.eu/api/v2/bits-ai/investigations/{id}``https://api.ap1.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.ap2.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.uk1.datadoghq.com/api/v2/bits-ai/investigations/{id}``https://api.ddog-gov.com/api/v2/bits-ai/investigations/{id}``https://api.us2.ddog-gov.com/api/v2/bits-ai/investigations/{id}` ... A full explanation of the finding, including root cause analysis and supporting evidence.
+--------------------------------------------------------------------------------
+Developing AI Agents for IT Automation Tasks with ITBench (https://research.ibm.com/publications/developing-ai-agents-for-it-automation-tasks-with-itbench)
+citeturn76search8 [wordlim: 200] Published: 10 months ago; Crawled: 3 weeks ago; AAAI 2026 ... We will guide attendees to use both ITBench_static and ITBench_live to develop baseline multi-agent systems and benchmark their performance. No prior IT or site reliability engineering (SRE) experience is required.
+--------------------------------------------------------------------------------
+Security Risks in Tool-Enabled AI Agents: A Systematic Analysis of Privileged Execution Environments (https://www.microsoft.com/en-us/research/publication/security-risks-in-tool-enabled-ai-agents-a-systematic-analysis-of-privileged-execution-environments/?lang=ko-kr)
+citeturn76search9 [wordlim: 200] Published: 6 months ago; Crawled: today; Tool-enabled AI agents are increasingly deployed in cloud-hosted environments and offered as services, where they perform side-effecting operations through privileged tools within execution environments. ... We introduce a taxonomy of risk categories, illustrate these risks through three representative agent scenarios, and discuss mitigation strategies along with their tradeoffs. ... Our analysis suggests that many risks in autonomous cloud agents arise not from novel vulnerabilities, but from over-privileged tools, capability-intent mismatches, and ambient authority leakage in execution environments.
+--------------------------------------------------------------------------------
+Incident AI (https://docs.datadoghq.com/incident_response/incident_management/investigate/incident_ai/)
+citeturn76search10 [wordlim: 200] Crawled: today; It then posts updates back to the channel as a thread reply, with a final root cause summary and recommended next steps surfaced to the broader channel when the investigation completes. ... Learn about Bits Investigation DOCUMENTATION Generate AI-assisted postmortems DOCUMENTATION Configure AI variables in notification and postmortem templates DOCUMENTATION Accelerate investigations with AI in Datadog Incident Response BLOG
+--------------------------------------------------------------------------------
+Using AI for tiered cloud platform operation - Microsoft Research (https://www.microsoft.com/en-us/research/blog/using-ai-for-tiered-cloud-platform-operation/)
+citeturn76search11 [wordlim: 200] Published: 3.2 years ago; Crawled: 2 months ago; Any agent that can use data about current workload characteristics or system state to guide dynamic adjustment of their behavior can potentially take advantage of machine learning (ML). ... As an example of how AI systems can enable the second tier, we are exploring how LLMs can help in mitigating and finding the root cause of incidents in cloud operations. ... In a recent paper published in ISCE (2023), the Microsoft 365 Systems Innovation research group demonstrated the usefulness of LLMs in determining the root cause of incidents from the title and summary of the incident. ... They can assist on-call engineers, enable junior engineers to be much more effective in handling more incidents, reduce the time to mitigation, and, finally, give room for the most expert engineers to work on the third tier, focusing on complex, atypical, and novel incidents. ... For example, it could query devices with a knowledge of the datacenter topology that the expert does not have; interpret, summarize, and sanitize the results (with or without the help of the generalist, on-site operators) (③); and send the interpretation of the results back to the experts, again in natural language (④).
+

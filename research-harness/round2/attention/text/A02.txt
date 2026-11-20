@@ -1,0 +1,720 @@
+=== PDF PAGE 1 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+
+ Evaluating Cues for Resuming Interrupted Programming
+                       Tasks
+
+
+                  Chris Parnin                          Robert DeLine
+                College of Computing                        Microsoft Research
+           Georgia Institute of Technology                Redmond, WA U.S.A.
+                   Atlanta, GA U.S.A.                      rob.deline@microsoft.com
+               chris.parnin@gatech.edu
+
+
+ABSTRACT                                                    In order to resume incomplete programming tasks, develop-
+Developers, like all modern knowledge workers, are frequently    ers must recall their previous working state and refresh their
+interrupted and blocked in their tasks. In this paper we present    knowledge of the software and tasks.  Details of working
+a contextual inquiry into developers’ current strategies for       state include plans, intentions, and goals; details of knowl-
+resuming interrupted tasks and investigate the effect of auto-     edge include relevant artifacts, component mechanisms, and
+mated cues on improving task resumption. We surveyed 371     domain representations. Unfortunately, the nature of the knowl-
+programmers on the nature of their tasks, interruptions, task     edge and program artifacts does not make this process any
+suspension and resumption strategies and found that they       easier.  First, much knowledge used for the programming
+rely heavily on note-taking across several types of media.      task is tacit and ephemeral. Therefore, an interruption can
+We then ran a controlled lab study to compare the effects     be detrimental to retaining this type of knowledge. Second,
+of two different automated cues to note taking when resum-     a software program, unlike a novel or television series, does
+ing interrupted programming tasks. The two cues differed in      not have a simple linear structure – a recap or rescanning
+(1) whether activities were summarized in aggregate or pre-      the last few paragraphs of text is not enough to allow the
+sented chronologically and (2) whether activities were pre-      developer to resume work. Instead, the relevant information
+sented as program symbols or as code snippets. Both cues      exists across various artifacts and locations and must be ac-
+performed well: developers using either cue completed their      tively sought and restored in the mind.
+tasks with twice the success rate as those using note-taking
+alone. Despite the similar performance of the cues, develop-     Developers are certainly not alone in facing problems with
+ers strongly preferred the cue that presents activities chrono-      interruptions. Several psychological studies of simple tasks
+logically as code snippets.                                 and observational studies of knowledge workers have char-
+                                                                  acterized the effects of interruptions on people. Researchers
+Author Keywords                                                         have characterized the effects on performance [4] and mental
+interruptions, task resumption, cues                                                                   fatigue [22] as well as understanding the contribution of in-
+ACM Classiﬁcation Keywords                                   terruption frequency [20] and interruption length, task sim-
+                                                                                  ilarity, and complexity [9] on performance. Despite effortsH.5.2 Information Interfaces and Presentation: Miscellaneous
+                                                                    for managing interruptions, in situ studies suggest interrup-
+General Terms                                                    tions remain problematic.  Czerwinski’s study [5] showed
+Human Factors                                                      that tasks resumed after an interruption were more difﬁcult
+                                                                    to perform and took twice as long. O’Conaill’s study [21]
+INTRODUCTION                                          found 40% of interrupted tasks are not resumed at all. Fur-
+Professional developers must frequently resume unﬁnished      ther research by Mark et al. [17] observed that 57% of tasks
+programming tasks from where they left off. The interrup-     were interrupted – as a result, work on a task often was frag-
+tions may be due to unexpected requests from co-workers,     mented into many small work sessions. In a ﬁeld study of
+scheduled meetings, or task blockages due to unavailable     27 people, Iqbal and Horvitz [12] found that people had dif-
+colleagues or resources.  Regardless of the source, the ef-      ﬁculty in recovering state from suspended tasks due to loss
+fects are often the same: When resuming work, developers      of context and low visibility of suspended windows.
+experience increased time to perform the task, increased er-
+rors, increased loss of knowledge, and increased failure to      Studies examining software companies have replicated sim-
+remember to perform critical tasks.                                     ilar results from previous workplace studies. Solingen [35]
+                                                                  characterizes interruptions at several industrial software com-
+                                                              panies and observed that an hour a day was spent managing
+                                                                     interruptions, and developers typically required 15 minutes
+Permission to make digital or hard copies of all or part of this work for
+personal or classroom use is granted without fee provided that copies are      to recover from an interruption. Ko et al. [16] observed soft-
+not made or distributed for proﬁt or commercial advantage and that copies     ware developers at Microsoft and found that they were com-
+bear this notice and the full citation on the ﬁrst page. To copy otherwise, or     monly blocked from completing tasks because of failure to
+republish, to post on servers or to redistribute to lists, requires prior speciﬁc      acquire essential information from busy co-workers. Parnin
+permission and/or a fee.
+                                                       and Rugaber [26] analyzed interaction logs from 10,000 pro-CHI 2010, April 10-15, 2010, Atlanta, Georgia, USA.
+Copyright 2010 ACM 978-1-60558-929-9/10/04...$10.00.
+
+                                            93
+=== PDF PAGE 2 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+gramming sessions from 85 programmers and found that in a      dressing the interruption (e.g.  writing down a note before
+typical day, developers program in many short sessions (15-      picking up the telephone). Taking prospective measures at
+30 minutes) with an additional one or two longer sessions      the time of interruption has both negative and positive ef-
+(1-2 hours). At the start of each session, a programmer of-      fects [33] on task resumption. Prospective measures are pri-
+ten spends a signiﬁcant amount of time rebuilding working      marily successful when users have environmental cues about
+context before resuming coding.                            working state (e.g. an open code editor) that are present dur-
+                                                              ing both the interruption lag and the resumption lag. When
+To resume an interrupted task, a programmer needs to re-     comparing written notes versus mental notes, written notes
+cover both the task’s working context (the applications, win-     were found to be effective in assisting recall, but negatively
+dows and documents needed for the task) and her mental      effected the ability to recall contextual details about the task
+context (knowledge about the program, goals, plans). There    when compared to mental notes.
+has been a considerable line of research, summarized below,
+to discover and organize the working contexts that comprise     With external interruptions such as an email notiﬁcation, there
+a knowledge worker’s tasks and provide visual cues for as-      are several strategies for negotiating the moment of inter-
+sisting recovery from interruptions. The hope is that if a      ruption, often referred to as the breakpoint. McFarlane has
+tool is able to persist the working context and provide visual      evaluated and compared the different strategies for setting
+cues, when a task is resumed the user will have an easier     a breakpoint:  immediately addressed interruption, sched-
+time recovering the corresponding mental state. Of these,      uled (deﬁned time limit), negotiated (user decides), medi-
+Mylyn [14], has emerged to become an integrated feature of      ated (third party decides if busy user looks interruptible)
+the Eclipse development environment and a standard for rep-      [18].  In our controlled study, we focus our on negotiated
+resenting task context. Researchers propose that maintain-      (interruptions with warning) which are common in software
+ing task context would help reduce mental workload during     development [16].
+development [25, 14, 7].Although there is some evidence
+these task context tools reduce navigation cost for program-     Miyata and Norman [19] suggest that people seek break-
+mers [25, 14, 31], these tools have yet not been evaluated      points at moments where the current task requires low men-
+with interrupted programming tasks.  With an interrupted       tal workload.  Indeed, studies of interrupted tasks such as
+programming task, these tools may be reducing workspace     document editing or route planning have demonstrated that
+clutter, but not supporting recovery of mental context.           breakpoints at moments of higher mental workload cause
+                                                              longer resumption lag than breakpoints at lower mental work-
+In this paper, we investigate how programming environments      load [11]. A less disruptive interruption arose when the break-
+can be enhanced to assist developers when resuming inter-      point could be delayed by a few seconds.
+rupted programming tasks. First, we surveyed 371 develop-
+ers to learn about their current habits for coping with inter-      Forgarty et. al performed an experiment [8] to predict the
+ruption and their preferences for potential treatments to help       interruptibility of programmers and the time needed to reach
+them recover from interruption. We then ran a controlled     a breakpoint.  In the experiment, programmers were inter-
+study looking at the effect of three different interruption re-      rupted every 3 minutes with a multiplication problem. The
+covery conditions on task completion and errors. Our base     programmer had the choice to delay addressing the interrup-
+condition, note taking, represents the most prevalent exist-      tion until a good breakpoint was reached. For most inter-
+ing practice for preserving mental state, based on our pre-      ruptions, the programmers would address the interruption
+liminary study. The other two conditions represent different      within 10 seconds; however, when more deeply engaged,
+automated cues, which the subjects could combine with note      they would defer for a mean of 43 seconds.
+taking. The ﬁrst automated cue replicates Mylyn’s design;
+the second integrates the most highly rated features from our
+preliminary study.                                         Studies Evaluating Environmental Cues
+                                                         Recent research has identiﬁed a strong connection between
+                                                                    internalizing environmental cues and reducing resumption
+BACKGROUND
+                                                                  costs [10]. In these experiments, the availability of cues dur-
+Interruptions and Related Concepts                          ing task resumption reduces the time to restart the task. Con-
+The nature of an interruption is an important determinate      versely, if the cue is removed or tampered with, then this
+on the extent of the interruption’s impact. The worst type     beneﬁt is removed. This even holds for implicit cues such as
+of interruption often comes at an inopportune moment and      the location of a mouse cursor. For example, in one experi-
+gives insufﬁcient time to a programmer for preserving men-     ment when the mouse cursor location was moved from hov-
+tal working state. These inopportune moments tend to align      ering over the last button clicked to be in the corner of the
+with programmers using large amounts of intermediate knowl-    screen, the resulting resumption lag was higher than when
+edge that does not yet have any physical representation nor      the implicit cue was present.
+have a ﬁrm foothold in the programmer’s mind.
+                                                            Observations of developers suggest they frequently rely on
+Programmers can mitigate the effects of interruption by tak-     cues for maintaining context during programming. For ex-
+ing prospective measures before addressing the interruption.     ample, Ko et al. [15] observed programmers using open doc-
+The interruption lag [1] describes the time between when     ument tabs as aids for maintaining context during their pro-
+the user stop working on a task and when they begin ad-     gramming task. However environmental cues often do not
+
+
+                                            94
+=== PDF PAGE 3 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+provide sufﬁcient context to sufﬁciently trigger memories:     can better organize their working context. These approaches
+In studies of developer navigation histories, a common ﬁnd-      focus on reducing the clutter associated with the mixed land-
+ing is that developers frequently visit many locations in rapid     scape of the computing desktop.  Group Bar [27] allows
+succession in a phenomenon known as navigation jitter [31].      users to organize windows and documents located in the task
+Navigation jitter has been commonly attributed to develop-      bar of Windows OS into similar groups based on their tasks.
+ers ﬂipping through open tabs and ﬁle lists when trying to     Other tools such as CAAD [28], attempt to do this automat-
+recall a location [31, 25]. Environmental cues such as open      ically by clustering related work items based on interaction
+tabs may be insufﬁcient because what a developer remem-      coupling. Rather than organize the documents and windows
+bers may be spatial and textual cues within the code doc-      into deﬁnitive task categories, another approach allows users
+ument (what they work directly with) and not the seman-      to associate personal tags with documents and activities [23]
+tic or structural location of the code element when auto-      or shared work items [34]. For programmers, Mylyn 1, a tool
+matically encoding working state [33]. An initial experi-      available with Eclipse, allows users to ﬁlter code documents
+ment by Safer and Murphy [30] supports the insufﬁciency     based on a selected task and recent interaction history.
+of semantic-based cues: Using a screenshot-based cue, users
+were able to identify details about recently performed tasks     Another direction of research has investigated various ways
+quicker and with less errors than with a semantic-based cue.      of augmenting temporal, spatial, and contextual cues in the
+                                                            environment.  Scalable Fabric [29] using a zoomable or-
+                                                               ganization of windows and documents to leverage spatialStudies of Task Management
+                                                memory for facilitating task switching. A similar effort hasResearchers have investigated how information workers man-
+                                                        been made for viewing source code through Code Thumb-age general tasks for insights into improving task manage-
+                                                                      nails [6]. Window Scape [32] introduced temporal snapshotsment. Bellotti [2] studied the various media employed by 9
+                                                               of windows where users can return to recent contexts. In adifferent managers and found in addition to using paper me-
+                                                             study of searching open documents and windows [24], thedia such as sticky notes – 50% of the tasks could be linked
+                                                                 researchers found improved performance for switching be-to emails. Brush [3] observed 8 workers who needed to fre-
+                                                       tween interrupted tasks by introducing temporal and objectquently ﬁle status reports of their weekly activity. 5 out of
+                                                                     similarity cues to the preview windows of the Alt-Tab inter-the 8 workers attempted to continually track information in
+                                                                face of Windows OS.a centralized location: e.g. notepad, ongoing email draft –
+but all participates also complemented their tracking strategy
+                                                              Successful organization of work items through tools can re-with memory triggers to retrieve details needed for compos-
+                                                        duce the friction between switched tasks; however, we be-ing the report. In a diary and ﬁeld study of web tasks, tasks
+                                                                     lieve it does not fully address the problems of recovering lostthat required multi-sessions were common: 33% of web ses-
+                                                        working state. Other than Mylyn, previous resumption aidssions involved at least one long-running task [13].  Users
+                                                         have not taken advantage of the structure of the task con-wanted more support for managing their tasks between ses-
+                                                                           tent. That is, previous treatments focus on the gross-levelsions, restoring viewed pages, managing information asso-
+                                                                    structure of the tasks – windows and documents – not theciated with a task, and cleaning up content after completion.
+                                                                ﬁne-level structure of the task – methods or lines of code.
+                                                                      Finally, many designs have been proposed, but few evaluateUnfortunately, knowledge workers, such as programmers,
+                                                                        their performance on recovering from interruptions, espe-face a different set of problems than previously studied. For
+                                                                       cially knowledge-intensive tasks like programming. In thisexample, many of the tasks previously studied by Bellotti
+                                                                 paper, we are concerned with evaluating the role and perfor-involved managing a high volume of prospective tasks that
+                                                   mance of resumption aids on interrupted programming tasks.could often be individually resolved with short-term activi-
+ties or delegation. Many of the tasks were also typically as-
+sociated with requests from clients or ofﬁce mates; a factor     INVESTIGATIVE STUDY
+likely contributing to the success of the email-centered ap-     While several previous studies have documented the frag-
+proach. However, software developers are instead assigned     mented nature of software developers’ work, there is no ex-
+a low volume of highly complex work items from a smaller      isting survey of the strategies developers use to resume inter-
+network of people.  Email-centered approaches would not      rupted tasks. We wanted to conduct a survey that would help
+be as likely successful for programming tasks.  Like web     us prioritize the conditions we would later test in the lab.
+tasks, programming tasks often involve long periods of in-     Because the number of interesting conditions is too large to
+vestigation, but with several key differences: the documents       test exhaustively, we wanted to determine one experimental
+are with more structure and are usually more complex, the      condition to represent current practice (our base line) and
+documents are actively edited by the programmer and other      another to represent developers’ preferred treatments.
+teammates, and where searching on the web potentially is
+asking every expert on a subject, much programming knowl-     Method and Procedure
+edge is tacit and only available from other busy co-workers.    We conducted a survey of 371 programmers at Microsoft,
+                                                       and 43 programmers from a variety of companies includ-
+                                                              ing small startups as well as defense, ﬁnancial, and gameTools for Task Management
+                                                                      industries. We initially conducted the external study and en-There have been many proposed tool designs for maintaining
+                                                          couraged by the feedback, distributed the survey with slightcontext during task-switching or recovering from interrup-
+tions. One proposed line of work has focused on how users      1www.eclipse.org/mylyn
+
+
+                                            95
+=== PDF PAGE 4 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+modiﬁcations to employees at Microsoft. Overall, we ﬁnd                                                              Question                                   Frequency
+general agreement with the external survey and internal sur-
+vey, but only report the internal results for this paper.             Work assignments
+                                                                        Task is well-deﬁned and includes some details of code     11%
+As we were primarily interested with professional software        implementation.
+development, we selected our population from full-time soft-        Purpose of task is clear, but does not include plan on how     58%
+ware developers – excluding interns or roles such as testers         to code it.
+or project managers. We also excluded developers that had        Task broad in scope and needs to be reﬁned into many     55%
+been recently surveyed by our research group to avoid over-         subtasks.
+sampling. Respondents were compensated by a chance to                                                                        Task tracking
+win a $200 gift certiﬁcate. From our participant pool, we
+randomly sampled 2,000 developers and invited them to par-      Do you take notes to track your progress in programming     77%
+                                                                                          tasks, for example, notes on paper, sticky notes, OneNote
+ticipate through email.                                                                                pages, documents in Notepad, etc.?
+
+Participants answered ﬁfteen ﬁxed- and open-response ques-         physical notes (post-it, notebook, whiteboard)            47%
+tions about interruptions. The participants were asked to de-         electronic notes (notepad, OneNote, Excel, Word)         40%
+scribe in detail the cost of interruptions, the steps they took         task database (bugs, scrum tasks, work items)            16%
+to prepare for an interruption, the resumption strategies they
+used, factors that made resumption difﬁcult, and feedback on        email (ﬂags, outlook tasks, notes to self, draft email)       15%
+future tools. We drew the selection of future tools from cur-        Suspension Strategies
+rent research proposals for improvements to programming        Write a physical note.                           36%
+environments and wanted to determine if programmers were
+                                                           Make a mental note.                            58%
+primarily interested if tools help them manage task state or
+tools augment cues within the programming environment.          Leave a reminder cue such as text selection or window.      50%
+
+                                                                      Resumption Strategies
+Findings and Discussion
+                                                                          Return to last method modiﬁed, and navigate to related     58%
+The results are as follow: We present our ﬁndings of typical        code to jog your memory.
+work practices of our participants in Table 1.  Finally, we
+                                                                 Use compile or build errors. (When available)            43%
+obtained ratings of proposed tools as shown in Table 2.
+                                                                 Use a list of issues or a task description                42%
+Negative factors included both commonly known aspects of       View source code difference.                       39%
+tasks: complexity, concreteness, completeness; and factors
+                                                             Run program and examine its output or UI.             33%
+speciﬁc to software development: low understanding of code,
+number and size of artifacts, and difﬁculty setting up and re-
+producing state.                                                                    Table 1. Frequency of work practices.
+
+The participants’ free responses about tracking tasks indicate
+that note taking is by far the most prevalent practice for man-     response to an interruption. For self-interruptions, the par-
+aging knowledge about a task. Taking personal notes about      ticipants typically try to reach a breakpoint, save and prune
+tasks was often necessary because the originally assigned       their working context, jot down high-level notes about out-
+task was often vague or required many unspeciﬁed subtasks      standing issues, and leave markers in the code. When partic-
+to accomplish. The participants consistently reported using      ipants anticipate a short interruption or are pressed for time,
+a mix of media to record notes, including the bug tracking      they typically use a more light-weight strategy by leaving
+system (TFS or Product Studio), the note-taking product Mi-      the necessary context visible when they return to work with
+crosoft OneNote, the source code itself, as well as traditional     a quick note in the code.
+paper media. The choice of media often reﬂects whether the
+task is long-term and/or shared.                            Here are how some participants suspend their working state:
+
+Several participants described their personal working style:        Write a short note of the next one or two steps to do.
+                                                         Save my work and leave one or more windows open at
+   I track my progress in OneNote, but small issues that           the tasks to be done.
+   I notice and don’t want to forget frequently end up as
+   post-it notes or emails to myself.  I’d like to be more             I use comments and TODO’s in my code, coupled with
+   consistent about where these things go.                        a precise reminder of where I am in my notebook.
+
+  Paper if personal tasks, or notes in Project Studio if        Several participants expressed frustration about the ineffec-
+  public/shared, etc.                                              tiveness of note taking:
+
+  Steno Pad and Post Its - Lots and lots of Post Its.                     I take notes on random scraps of paper. Sometimes I
+                                                                         refer to them again, but often they migrate to odd cor-
+Participants used various strategies for suspending a task in        ners of my ofﬁce where they are never looked at again,
+
+
+                                            96
+=== PDF PAGE 5 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+  Instant Diff (Highlighted code showing how I changed a   3.9                         SpaceInvaders
+ method body as well as a global view.)                                                            SpaceInvaders
+ Change Summary (Short natural language summary of my   3.4                                References
+  changes.)                                                                                                  App.ico
+ Code Thumbnails (Thumbnails of recent places I navigated   3.2                                 AssemblyInfo.cs
+  or edited.)                                                                                       Bomb.cs
+  Activity Explorer (Historical list of actions such as search,   3.1                                       Bullet.csForm1.cs
+  navigating, refactoring. Expanding item gives thumbnail of
+                                                                                                                 Form1.resx
+  tool window or code location)                                                                 Form1
+ Runtime Information (Visualizations of variables or ex-   3.0                                        TestBulletCollision
+  pressions from previous execution or debugging sessions)                                             MoveInvaders
+ Snapshots/Instant Replay (Timeline of screen-shot thumb-   3.0                                  HandleKeys
+  nails or an instant replay of my past work.)                                                                     timer1_Tick
+ Task Sketches (Light-weight annotations of a task break-   2.9                              GameObject.cs
+ down: steps, objectives, and plans.)                                                                     HighScore.cs
+ Automatic Tags (A tag cloud of links to recent source code   2.8                                Invader.cs
+ symbols and names inside method bodies.)                                                      InvaderRow.cs
+  Prospective Cues (Contextual reminders that are displayed   2.7                                 InvaderRow
+                                                                                                                         CollisionTest
+ when a condition is true)
+                                                                                        MoveDown
+                                                                                                                             LivesIndicator.cs
+Table 2. Average ratings of possible resumption features, on a 5-point                     Man.cs
+Likert scale.                                                                       Man
+                                                                                                                                GetBulletStart
+                                                                                                                     Saucer.cs
+                                                                                                                       Score.cs
+  except right before I throw them away the next time we                                Shield.cs
+  change ofﬁces.  ... When I don’t throw the notes away
+   I invariably leave them at home and then I don’t have         Figure 1. The experimental cues: DOI treeview (left) and content time-
+  them at the ofﬁce the next day.                                          line (right).
+
+When returning to a programming task, notes, if available,
+                                                      management, we allowed subjects in all three conditions toand task description were commonly re-read to restore a
+                                                                take notes during task interruption and to review their noteshigh-level sense of the task. A common strategy was to nav-
+                                                             during task resumption. Our base condition consists of noteigate the source code to restore working state: participants
+                                                               taking alone, representing current practice. In the other twomentioned how they attempted to work their way backward
+                                                                  conditions, the subjects supplemented their note taking byin time and task and formulate the next step before return-
+                                                            reviewing two different environmental cues that summarizeing to the task. However, many times simply navigating was
+                                                                        their activities before interruption. The ﬁrst of these cues isinsufﬁcient to restoring working context; participants would
+                                                          based on Mylyn, the most widely used research tool for de-often have to use tools to ﬁnd the recent changes to code.
+                                                              veloper task management; the second is based on develop-
+                                                                      ers’ rating of task resumption features from our preliminary  Review any notes left and then re-read the recent changes
+                                                                   study. Our controlled study uses a within-subject protocol to   to the project. Not only does this get me back in the
+                                                            allow subjects to compare the three conditions, as well as to  frame of mind to work on the project, I also ﬁnd a good
+                                                                 mitigate differences due to subjects’ varying programming  number of logic bugs.
+                                                       and problem solving skills.
+   I try to remind myself what it was that I was working
+                                                   The two experimental cues feed from the same interaction  on and continue where I left off. If I’m don’t remember,
+                                                              log of developer activities and are shown in separate win-   I’ll run the app and look at the code diff in order to see
+                                                   dows in the Microsoft Visual Studio 2008 development en-  what state it was in before I left it.
+                                                             vironment. The two cues, shown in Figure 1, differ only in
+                                               how the developer’s activities are presented. The ﬁrst, calledThe developers’ ratings in Table 2 are notably consistent in
+                                                                 the degree-of-interest (DOI) treeview, consists of a treeviewwhat help they want when resuming tasks.  The top four
+                                                               of names of the program’s parts, namely, its projects, ﬁleschoices show that they want to see a summary of the content
+                                                              within projects, types within ﬁles, members within types. Inthat they edited or inspected before the interruption, whether
+                                                                 the style of Mylyn, these are ﬁltered by a degree-of-interestit is shown from recent changes (Instant Diff), in concise
+                                                     model over recently visited or edited source code. The DOIform (Change Summary), from recent locations (Code Thumb-
+                                                     model uses three levels: unvisited parts of the code are innails), or organized by actions (Activity Explorer). Based
+                                                                   gray, occasionally visited parts are in normal font, and oftenon these ratings, we designed one of our experimental con-
+                                                                     visited parts are in black boldface. The second cue, calledditions to show the content of a developer’s activities.
+                                                                 the content timeline, shows a chronologically sorted list of
+                                                                 the developer’s activities (code selections, code edits, saves,
+CONTROLLED STUDY                                   and builds). A code selection is presented as the text that
+Based on the results of our preliminary survey, we ran a con-     was selected (in black), a code insertion is shown with the
+trolled study to test the effects of three different experimental    new code in green, and a code change is shown as a pair of
+conditions on developers’ abilities to recover from task in-      before and after text. In both cues, clicking on a program
+terruptions. Because of a prevalence of note taking for task      part causes the editor to navigate to the corresponding part.
+
+
+                                            97
+=== PDF PAGE 6 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+                          Warm Up    Task 1    Task 2    Task 3  20:00                      For our tasks, we used source code from three simple games
+                                   Game                                    (Tetris 2, Pacman 3, and Space Invaders 4). The games are C#
+                                                                                 Tetris                              implementations of classic arcade games. Our motivation
+                                                                    for using these games was based on the familarity games of-
+                                                                       fer and the nontrivial complexity of game source code. Fur-
+                                                                           ther, we were assured from our previous user studies we con-
+                                                           ducted with Tetris and pilot studies that tasks involving these
+                                                    games were challenging yet feasible.
+                                                Instructions
+
+                                       Change the game so that hitting the space key
+                                             during game play causes the current figure to fall
+                                             immediately as far down as it can. This feature                     Each subject started with a warm-up period in which the ex-
+                                               spares the player from having to hit the down arrow
+                                            key                                       many                                                       times                                                                        in                                                                    succession.                                                                  The                                                                                            figure's                                                                                                       fast                                                                                                                                   fall                       perimenter demonstrated the DOI treeview cue and content
+                                         does                                                 not need                                                              to                                                      be                                                                 animated.                                                                   The                                                                                        figure can                                                                                          simply
+                                              disappear from its current position and reappear at                                              the bottom of the grid.                                   timeline cue. Then, each subject ran a small application that
+                                             we provided to coordinate the subject’s activities over the
+                                                                  three programming tasks, shown in Figure 2. For each task,
+                                                                 the application automatically interrupted the subject several
+Figure 2.  Application used for controlling interruptions and task     minutes after beginning the task, as described below.  At
+switches in the experiment.                                          the point of interruption, the subject would review the cue
+                                                                    for that task (if any) and take notes, for up to one minute.
+                                                   The application would then start the subject on the next task.
+Mylyn also includes the ability to decay the DOI model as                                                               After all three tasks were interrupted, the application then
+time passes and segregate different task contexts. For our                                                          asked the subject to resume each task, in turn. Upon resum-
+study, we did not implement these aspects because the task                                                              ing a task, the subject was given the opportunity to review
+duration was not long enough to trigger the time-decay and                                                                      that task’s cue (if any) and his/her notes. The subject had
+we were already isolating workspaces for the different tasks.                                                     up to 20 minutes to complete the task (in total), with an ad-
+                                                                     ditional 5 minutes, if the subject requested it. In short, the
+The two cues differ in two dimensions. First, the DOI tree-                                                               order of activities was this:
+view presents program parts by name (project names, ﬁle
+names, type names, member names); the content timeline                                                                      1. start Tetris;
+presents program parts by content (the program text). Sec-
+                                                                      2. get interrupted and review with condition 1;
+ond, the DOI treeview organizes the developer’s activities by
+the code’s structure; the content timeline organizes the ac-      3. start Pacman;
+tivities by time. These dimensions are independent, so two      4. get interrupted and review with condition 2;
+other cues are possible, namely, content changes shown in      5. start Space Invaders;
+a treeview and program names shown in a timeline. Testing                                                                      6. get interrupted and review with condition 3;
+two other conditions, however, would have made the exper-
+                                                                      7. ﬁnish Tetris, resuming with condition 1;
+imental sessions too long and fatiguing. Hence we tested
+                                                                      8. ﬁnish Pacman, resuming with condition 2;opposite corners of this two-by-two design quadrant in the
+hopes of maximizing the measured effects.                        9. ﬁnish Space Invaders, resuming with condition 3;
+
+                                                     Each subject was given the three conditions (no cue, DOI
+Participants                                                              treeview cue, content timeline cue) exactly once. We coun-
+Fifteen professional programmers (one female), average age                                                               terbalanced the conditions across subjects to account for or-
+of 39 years (range 31 to 56), participated in this study for                                                              dering effects. Each session ended with a questionnaire to
+receipt of 2 copies of Microsoft software. The programmers                                                                      rate the two cue and gather general feedback.
+were screened and then selected based on a series of pro-
+ﬁle questions. The proﬁle questions were designed to recruit     To provide use a consist and automated mechanism for in-
+developers experienced with the development tools and en-      terrupting the subjects, we used the following criteria: 15
+vironment used in the study (Visual Studio, C# and .NET,     seconds after a non-comment edit, after more than three non-
+and GUI Software). In addition, we screened developers for     comment edits, or after a twelve-minute timeout if no changes
+experience with debugging and modifying the code of other     were made. We based these criteria on the factors Fogarty
+developers and working in teams of at least 3 people.            previously found to be associated with inopportune moments
+                                                                    for interruption [8] and the nature of our tasks. The solu-
+Methods and Procedure                                          tions for the programming tasks typically required changes
+                                                                    to multiple parts of the source code. By setting the inter-Each subject was run individually in our user study labo-
+                                                                ruption point to be several moments after making a change,ratory. An experimenter was present for the entire session.
+                                                     upon returning, the developer must ensure the change is com-The experimenter instructed the subjects to the goals of the
+                                                                 pleted correctly and then recall the next steps and relevantstudy.  Subjects were told that we were interested in how
+                                                                    parts of code needed for the next change.they would multi-task between several programming tasks
+and how they utilized different tools given to them. In addi-            2http://www.codeproject.com/csharp/csgatetris.asp
+tion, we stressed that we were not interested a perfect solu-           3https://www.planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=5669&lngWId=10#zip
+tion, but in completing as much of task as possible.                           4http://www.c-sharpcorner.com/UploadFile/mgold/SpaceInvaders06292005005618AM/SpaceInvaders.aspx
+
+
+                                            98
+=== PDF PAGE 7 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+Tasks                                                           the DOI treeview condition, and 2 where in the content time-
+Each programming task was to add a small feature to each      line condition. (The low task completion rates in this study
+game:                                                           are consistent with a previous study using the Tetris task on
+                                                                 the same code base [7, 6].)
+1. Tetris: Change the game so that hitting the space key dur-
+   ing game play causes the current ﬁgure to fall immediately      Error Rates
+   as far down as it can. This feature spares the player from     To better understand why some subjects failed to complete
+   having to hit the down arrow key many times in succes-      the tasks in the allocated time, we categorize the type of error
+   sion. The ﬁgure’s fast fall does not need to be animated.      that lead to the failure:
+  The ﬁgure can simply disappear from its current position
+  and reappear at the bottom of the grid.                          1. Problem solving: The subject had all the pieces, he or she
+                                                         were stuck on the problem part.
+2. Pacman: In the existing game, if a power pellet is col-
+   lected, the ghosts turn blue, slow down, and can be eaten      2. Domain knowledge: The did not understand WinForms,
+   for points. Change the game so that if a power pellet is        event handler syntax, etc.
+   collected, the ghosts instead freeze in place until the timer
+                                                                      3. Relocation: The subject had difﬁculty relocating relevant   runs out.
+                                                                       parts of the code.
+3. Space Invaders: In the existing implementation, when the
+                                                                      4. Programming: The subject had misunderstandings about
+   player ﬁres a shot, it either hits an enemy or reaches the
+                                                                    the program or the changes he or she made.
+   top of the screen. Change the game so that whenever the
+   player ﬁres a shot that misses an enemy, a new enemy is                                                       Note that we kept the 20-minute deadline ”soft” to avoid fail-
+   created. The new enemy is placed in the lowest row of an                                                                ures due to arbitrary cut-offs. The subjects who did not suc-
+   existing enemy, ﬁlling in an empty position if possible. If                                                          ceed in a task were not close, even after 25 - 30 minutes. The
+    all enemies positions are ﬁlled, no new enemy is created.                                                                data in Table 4 categorizes the failures of the seven subjects
+                                                           completing at least one task.
+We used separate games, with separate code bases, for the
+ tasks to keep the subject from polluting one task with the                       Problem Solving    Relocation    Errors    Total
+changes from another. For example, if the subject changed     DOI treeview            1              0         1       2
+the Tetris code to the point where it would no longer com-       content timeline          2              0         0       2
+ pile, this did not prevent the subject from making progress       notes-only              1              2         2       5
+on the next two tasks. The subject would have to ﬁx the bro-       Total                   4              2         3
+ken compilation after resuming the Tetris task. Using differ-
+ent code bases for all three tasks also ensured that there was      Table 4. When developers only had notes, they were more likely to
+no learning effect across tasks. Finally, the use of three un-     make errors or to take longer to relocate necessary task context.
+ familiar code bases served to overload the subject’s memory,                                                As one example of a programming error, one subject was in-
+maximizing the detrimental effect of interruption.
+                                                                  terrupted in the middle of hooking the space key event for
+                                                                 the Tetris task. When the subject later resumed the task, he
+Dependent Measures                                     completed deﬁning the space key event, but forgot to con-
+During the study, an error in the experiment tools prevented      nect the event with the handler. The subject moved on to
+one subject from completing the tasks. In total, data from      the next part of the task, making the tetris block fall down,
+fourteen subjects was collected.                            and quickly implemented the functionality much faster than
+                                                                 other subjects. However, when the subject tested the solu-
+Task completion                                                       tion, the missing association prevented the new feature from
+Subjects completed tasks more frequently when one of the     working. The subject spent the remaining 10 minutes ﬁd-
+cues was available when resuming a task with a weak signif-      dling with the logic of the code, without realizing that the
+ icant difference (chi-square, p <0.1).                             subject had simply forgotten to associate the handler with the
+                                                            space key event. This was the only task the subject failed.
+             Task Completion Rate
+                        Task 1      Task 2      Task 3      Total    As an example of a relocation error, a subject was interrupted
+  DOI treeview           3          2          2          7
+                                                                    in the Space Invaders task in the notes-only condition. The content timeline           1          4          2          7
+      notes-only           1          2          1          4        subject located the code for resetting the bullet. Next, the
+            Total           5          8          5                   subject needed to ﬁnd out how to create a new invader – but
+                                                    was interrupted during the search. The subject took notes for
+ Table 3. When developers had any form of activity history available,      the search, but did not jot down the code location for reset-
+ they were about twice as likely to complete a task than otherwise.           ting the bullet. After resumption, the subject found how to
+                                                                   create an invader,and now needed to return to the previously
+Breaking the data down by subject, 5 people did not com-     found code for resetting the bullet. Unfortunately without
+ plete any tasks, 2 completed all tasks, and 7 completed some      sufﬁcient notes or cues to rely on, the subject took 5 minutes
+ tasks. Of the 7 people who completed some tasks, 5 of the      to relocate this code. The subject was frustrated that they
+incomplete tasks were in the notes-only condition, 2 were in    knew what code they wanted, but could not ﬁnd its location:
+
+
+                                             99
+=== PDF PAGE 8 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+    I remember ﬁnding that code, I just can’t remember        Subjective Ratings
+  where it is!                                                  After the tasks were over, we asked the subjects to rate, on
+                                                            a 5-point Likert scale, four aspects of the three conditions
+Unfortunately, by the time the subject had reached the code,      (the DOI treeview, the content timeline, and note taking): (1)
+the subject had used up most of their time and could not    how quickly it helped them resume their tasks (speed); (2)
+complete the task within the allocated time. Experts could    how well it reminds them of details from the interrupted task;
+ward against these problems by proactively using markers,      (3) how useful they feel it would be after a week (durability);
+but might fail to do so when the necessary code is several     and (4) how well they liked it overall. Their average ratings
+subtasks away or when they did not anticipate being side-      are shown in Figure 3. Their ratings are notably consistent:
+tracked on a subtask.                                              in all four areas, they rated the content timeline higher than
+                                                              note taking and note taking higher than the DOI treeview.
+Lag Measures                                           These differences are statistically signiﬁcant by one-tailed
+To understand the cost of resuming tasks in the three condi-       t-test (p <0.001).
+ tions, we used two measures of lag:
+                                                                                                   5.0
+1. Resumption lag: the time between clicking the ”play” but-
+   ton to restart a task and the ﬁrst event initiated in the IDE.           4.0
+
+2. Edit lag: the time between clicking the ”play” button and
+   the ﬁrst code edit.                                                                     3.0                                                          DOI
+
+                                                                                                                                                              content
+The resumption lags were quite similar in all conditions. The           2.0                                                                 notes
+mean resumption lags (N=14) for each condition were: 20
+ sec, for the DOI treeview; 21 sec, for the content timeline;           1.0
+and 23 sec, for notes-only condition. These differences are
+not statistically signiﬁcant by a one-tailed t-test.  For edit           0.0
+ lag, we took out the 5 subjects that did not complete any                  speed           details         durability        overall
+ tasks because for at least one task, these subjects did even not
+make an edit after resuming their task. The edit lags (N=9)
+                                                                       Figure 3.  Subjects consistently preferred the content timeline over
+ for each condition, in minutes and seconds, were: 2:30, for                                                                           notes and notes over the DOI treeview.
+the DOI treeview; 3:26, for the content timeline; and 4:28,
+ for notes-only. These differences are also not statistically     User Feedback
+signiﬁcant by a one-tailed t-test.                       When asked what they liked or disliked about the presenta-
+                                                                    tion of the cues, the subjects enjoyed the bolding of items in
+Note Taking                                                     the treeview and the presentation of the code difference in
+All subjects took some form of notes. We categorize note-      the content timeline. Several subjects felt the DOI treeview
+taking into two categories: situated: The notes are placed     was not granular enough and the method names was not as
+within the source code and unsituated: The notes are writ-      effective for triggering their memory about tasks. One sub-
+ten on paper or electronically within a notepad.exe window.       ject said during the task, “[DOI treeview] does not show me
+Most of the subjects’ notes were unsituated (75%).            where I just was. I would not remember this location if I had
+                                                                    to come back in ten minutes”. Another subject suggested the
+The content of the notes would generally refer to either ac-    DOI treeview could be improved by distinguishing between
+ tions and objectives (“investigate where bullet goes off-screen”)   items that were navigated to versus items that were edited.
+or speciﬁc code symbols (such as method names, or line
+numbers). During task suspension, subjects wrote down sev-      Subjects felt the cues would offer interesting opportunities to
+ eral types of information. Several subjects would summarize     complement their future note-taking habits. In our survey of
+the task description into a simple one-line sentence (“Mod-      developers, the developers said they placed temporary place-
+ ify tetris so piece falls to bottom”) or summarize what they      holders in the code that would be removed as soon as they re-
+had previously worked on. Most subjects tended to write      turned to work. Most subjects enjoyed the synergy between
+notes about the most immediate subtask and would neglect      the content timeline and TODO notes because it would be an
+ to record other locations needed later for the task, that is they     automated place to view scattered notes in one place. They
+would tend to repeat the last location they were working on,      also mentioned wanting to directly enter or associate per-
+but not where they might need to go next. Not surprisingly,      sisted TODO notes with items in the content timeline be-
+65% of the lines of unsituated notes would refer to code sym-     cause many TODO personal comments are deleted right be-
+ bols, while only 14% of the lines of situated notes refered to      fore checking in code. Subjects also talked about how they
+code symbols. This suggests that when subjects write un-     would change some of what they wrote down:
+ situated notes on paper, they need to spend several lines of
+ text recreating the context in order to adequately record their          I wouldn’t have to write down the location, just what
+ note. The types of code symbols subjects wrote varied in the       needs to be done.
+amount of code referred to: ﬁles (15 occurrences); methods
+ (20); variables (9); code expressions (9); or line numbers (4).      Subjects also had many general suggestions and ideas for in-
+
+
+                                            100
+=== PDF PAGE 9 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+teracting with the cues. Better support for ﬁltering and dif-      riod for studying an environmental cue for during interrup-
+ferent options for clustering the content (for example group-      tion makes the cue for valuable during resumption [1]. Our
+ing changes by method or by ﬁle); quick gestures to select,      focus in this study was to measure differences in the cues.
+save, and tag snippets of code that could be published to
+a personal repository and in the content timeline; and pin      Finally, an additional threat to external validity is the na-
+down or remove content from the content timeline.                ture of programming tasks we selected. Programmers en-
+                                                              countering new code may not be able to as effectively utilize
+Finally, subjects enjoyed using the content timeline during    memory cues such as the DOI treeview because they are not
+the feedback portion of the study to explain their thought      as familiar with the speciﬁc names within the program and
+processes and approach to the recently completed task. They      they have less opportunity to explore. However, our tasks are
+were excited about the possibilities for using this to facilitate      representative of many maintenance and bug ﬁx tasks where
+communication with other team members about their work.      developers need to understand someone else’s code enough
+                                                                    to make a corrective change.
+
+Discussion
+Subjects used the cues in different ways. For the DOI tree-    CONCLUSIONS
+view, subjects treated them like tabs in a multi-document    We have presented an investigative study that provides new
+interface.  That is, when they could not remember which      insight into how programmers currently recover from inter-
+method contained the code they had in mind, they would      ruptions and a controlled study that evaluates how cues could
+use the names as information scent and click from one to       assist resumption of programming tasks. The results pro-
+another until they found the desired code. Many subjects      vide a strong motivation for the need for tool support for
+with the content timeline would use it in two stages. They      helping developers resume tasks. Today, note taking is the
+looked at the most recent entries for context, completing any     most common way for developers to cope with task suspen-
+work within their open document. Then, they would return      sion and resumption, yet subjects in the note-taking condi-
+to the activity timeline to rewind further back to review their      tion had half the success rate as those using the automatic
+previous actions before their last stopping point. From this      task resumption cues.
+review, subjects would often see the next place they wanted
+to return to.                                          The two cues performed well, but subjects preferred the con-
+                                                                      tent timeline over the DOI treeview. This has important im-
+Although our study found no difference between the DOI      plications for knowledge workers beyond developers. The
+treeview and content timeline, subjects rated the DOI tree-    DOI treeview works well for source code, where the docu-
+view much lower. One explanation is the code was new to     ments contain a hierarchy of named parts, but may not work
+them, and therefore they were less familiar with the symbol      as well for unstructured documents. The content timeline, on
+names with which the DOI treeview refers to the code; they      the other hand, does not take advantage of the code structure
+preferred the content timeline because it presents the code     and would work equally well for unstructured documents.
+directly as they saw it in the editor. If the subjects had been     For example, ofﬁce workers could use a content timeline to
+previously familiar with these code bases, their subjective      see changes to a spreadsheet by showing formula changes
+ratings might be different.                                 and cell changes in the timeline. Hence, using the content
+                                                                timeline for task resumption may be as effect for general
+Although subjects did use the cues when resuming tasks,     knowledge workers as it is for developers.
+they did not use them much when preparing to suspend tasks.
+Instead, subjects focused on reaching a good stopping point      Presenting information in an episodic fashion can also be
+or leaving a quick note. This suggests notes remain an im-      useful for communicating work to others or for providing
+portant mechanism for suspending interrupted tasks.             context when handing off a task from one person to another.
+                                                          For example, Mylyn already allows developers to store DOI
+                                                                      trees with work items in bug database, as a form of guid-
+Threats to Validity
+                                                          ance for the next developer who takes on the work item. To
+We choose a time limit for tasks that made it possible to                                                             provide a similar capability for the content timeline creates
+conduct our experiment within a 2 hour time frame with-                                                               privacy concerns, however, since the timeline contains the
+out exhausting participants. However, this time limit may                                                                   history of work activities. A developer, for example, may
+have excluded less experienced participants who need much                                                              not want a coworker to see his “mistakes” when viewing his
+longer time to complete the tasks. Our study has focused on                                                                   timeline. Yet, there is a ﬁne line between showing “mistake”
+experts, many of which could complete the tasks within a                                                       and providing the rationale behind the code (e.g. showing
+few minutes, and may not generalize to novice users.                                                                     alternate rejected designs). A persistent form of the content
+                                                                timeline would have to be designed with these privacy con-
+We believe that the minute to prepare for interruption that                                                               cerns in mind.
+we gave each subject makes our study unrepresentative of
+interruptions without warning but adequately representative
+                                         ACKNOWLEDGEMENTSof interruptions with warnings and self-interruptions, both of
+                                        We gratefully thank Mary Czerwinski and Brian Bailey forwhich frequently occur among professional developers [16].
+                                                                        their helpful suggestions and feedback for our study.We included this minute to prepare, despite the threat, be-
+cause previous psychology studies show that having a pe-
+
+
+                                            101
+=== PDF PAGE 10 ===
+CHI 2010: Multitasking                                                  April 10–15, 2010, Atlanta, GA, USA
+
+
+REFERENCES                                                             17. G. Mark, V. M. Gonzalez, and J. Harris. No task left behind?
+ 1. E. M. Altmann and J. G. Trafton. Task interruption: Resumption lag            Examining the nature of fragmented work. In CHI ’05: Proceedings
+    and the role of cues. In Proceedings of the 26th annual conference of              of the SIGCHI conference on Human factors in computing systems,
+    the Cognitive Science Society, 2004.                                         pages 321–330, New York, NY, USA, 2005. ACM Press.
+ 2. V. Bellotti, B. Dalal, N. Good, P. Flynn, D. G. Bobrow, and                  18. D. McFarlane. Comparison of four primary methods for coordinating
+    N. Ducheneaut. What a to-do: studies of task management towards the            the interruption of people in human-computer interaction.
+    design of a personal task list manager. In CHI ’04: Proceedings of the          Hum.-Comput. Interact., 17(1):63–139, 2002.
+   SIGCHI conference on Human factors in computing systems, pages          19. Y. Miyata and D. A. Norman. Psychological issues in support of
+    735–742, New York, NY, USA, 2004. ACM.                                    multiple activities. In D. A. Norman and S. W. Draper, editors, User
+                                                                             Centered System Design: New Perspectives on Human-Computer 3. A. B. Brush, B. R. Meyers, D. S. Tan, and M. Czerwinski.
+                                                                                         Interaction, pages 265–284. Erlbaum, Hillsdale, NJ, 1986.    Understanding memory triggers for task tracking. In CHI ’07:
+    Proceedings of the SIGCHI conference on Human factors in                 20. C. A. Monk. The efffect of frequent versus infrequent interruptions on
+    computing systems, pages 947–950, New York, USA, 2007. ACM.              primary task resumption. In Proceedings of the Human Factors and
+                                                                         Ergonomics Society 48th Annual Meeting, 2004.
+ 4. E. Cutrell, M. Czerwinski, and E. Horvitz. Notiﬁcation, disruption and
+                                                                               21. B. O’Conaill and D. Frohlich. Timespace in the workplace: dealing    memory: Effects of messaging interruptions on memory and
+                                                                              with interruptions. In CHI ’95: Conference companion on Human    performance. 2001.
+                                                                                        factors in computing systems, pages 262–263, New York, NY, USA,
+ 5. M. Czerwinski, E. Horvitz, and S. Wilhite. A diary study of task                1995. ACM Press.
+    switching and interruptions. In CHI ’04: Proceedings of the SIGCHI
+                                                                               22. M. Offner. Mental Fatigue. Warwick & York, 1911.
+    conference on Human factors in computing systems, pages 175–182,
+   New York, NY, USA, 2004. ACM Press.                                    23. G. Oleksik, M. L. Wilson, C. Tashman, E. Mendes Rodrigues,
+                                                                        G. Kazai, G. Smyth, N. Milic-Frayling, and R. Jones. Lightweight
+ 6. R. DeLine, M. Czerwinski, B. Meyers, G. Venolia, S. Drucker, and               tagging expands information and activity management practices. In
+    G. Robertson. Code thumbnails: Using spatial memory to navigate           CHI ’09: Proceedings of the 27th international conference on Human
+    source code. In VLHCC ’06: Proceedings of the Visual Languages                factors in computing systems, pages 279–288. ACM, 2009.
+    and Human-Centric Computing, pages 11–18, Washington, DC, USA,
+                                                                               24. N. Oliver, M. Czerwinski, G. Smith, and K. Roomp. Relalttab:
+    2006. IEEE Computer Society.
+                                                                                           assisting users in switching windows. In IUI ’08: Proceedings of the
+ 7. R. DeLine, M. Czerwinski, and G. Robertson. Easing program                  13th international conference on Intelligent user interfaces, pages
+    comprehension by sharing navigation data. In VLHCC ’05:                    385–388, New York, NY, USA, 2008. ACM.
+    Proceedings of the 2005 IEEE Symposium on Visual Languages and                                                                               25. C. Parnin and C. G¨org. Building usage contexts during program
+    Human-Centric Computing, pages 241–248, Washington, DC, USA,            comprehension. In ICPC ’06: Proceedings of the 14th IEEE
+    2005. IEEE Computer Society.                                                   International Conference on Program Comprehension, pages 13–22,
+ 8.  J. Fogarty, A. J. Ko, H. H. Aung, E. Golden, K. P. Tang, and S. E.               2006.
+    Hudson. Examining task engagement in sensor-based statistical              26. C. Parnin and S. Rugaber. Resumption strategies for interrupted
+    models of human interruptibility. In CHI ’05: Proceedings of the              programming tasks. In ICPC ’09: Proceedings of the 17th IEEE
+   SIGCHI conference on Human factors in computing systems, pages               International Conference on Program Comprehension, Washington,
+    331–340, New York, NY, USA, 2005. ACM.                            DC, USA, 2009. IEEE Computer Society.
+ 9. T. Gillie and D. Broadbent. What makes interruptions disruptive? a          27. G. S. Patrick, P. Baudisch, G. Robertson, M. Czerwinski, B. Meyers,
+    study of length, similiarity, and complexity. Psychological Research,           D. Robbins, and D. Andrews. Groupbar: The taskbar evolved. In
+    50:243–250, 1998.                                                         Proceedings of OZCHI 2003, pages 34–43, 2003.
+10. H. M. Hodgetts and D. M. Jones. Contextual cues aid recovery from         28. T. Rattenbury and J. Canny. Caad: an automatic task support system.
+     interrruption: The role of associative activitation. Journal of                      In CHI ’07: Proceedings of the SIGCHI conference on Human factors
+    Experimental Psychology: Learning, Memory, and Cognition,                     in computing systems, pages 687–696, New York, USA, 2007. ACM.
+    32(5):1120–1132, 2006.                                                    29. G. Robertson, E. Horvitz, M. Czerwinski, P. Baudisch, D. R.
+                                                                                Hutchings, B. Meyers, D. Robbins, and G. Smith. Scalable fabric:
+11. S. T. Iqbal and B. P. Bailey. Investigating the effectiveness of mental
+                                                                                  ﬂexible task management. In AVI ’04: Proceedings of the working
+    workload as a predictor of opportune moments for interruption. In
+                                                                                conference on Advanced visual interfaces, pages 85–89, New York,
+   CHI ’05: CHI ’05 extended abstracts on Human factors in computing
+                                                                   NY, USA, 2004. ACM.
+    systems, pages 1489–1492, New York, NY, USA, 2005. ACM.
+                                                                               30.  I. Safer and G. C. Murphy. Comparing episodic and semantic
+12. S. T. Iqbal and E. Horvitz. Disruption and recovery of computing                                                                                          interfaces for task boundary identiﬁcation. In CASCON ’07:
+     tasks: ﬁeld study, analysis, and directions. In CHI ’07: Proceedings of           Proceedings of the 2007 conference of the center for advanced studies
+    the SIGCHI conference on Human factors in computing systems,              on Collaborative research, pages 229–243. ACM, 2007.
+    pages 677–686, New York, NY, USA, 2007. ACM.
+                                                                               31.  J. Singer, R. Elves, and M.-A. Storey. Navtracks: Supporting
+13. B. M. Kay and C. Watters. Exploring multi-session web tasks. In CHI            navigation in software maintenance. In ICSM ’05: Proceedings of the
+    ’08: Proceeding of the twenty-sixth annual SIGCHI conference on                21st IEEE International Conference on Software Maintenance, pages
+   Human factors in computing systems, pages 1187–1196, New York,             325–334, Washington, DC, USA, 2005. IEEE Computer Society.
+   NY, USA, 2008. ACM.                                                                               32. C. Tashman. Windowscape: a task oriented window manager. In UIST
+14. M. Kersten and G. C. Murphy. Using task context to improve                    ’06: Proceedings of the 19th annual ACM symposium on User
+    programmer productivity. In SIGSOFT ’06/FSE-14: Proceedings of               interface software and technology, pages 77–80. ACM, 2006.
+    the 14th ACM SIGSOFT international symposium on Foundations of         33.  J. G. Trafton, E. M. Altmann, D. P. Brock, and F. E. Mintz. Preparing
+    software engineering, pages 1–11, New York, NY, USA, 2006. ACM.             to resume an interrupted task: effects of prospective goal encoding
+15. A. J. Ko, H. Aung, and B. A. Myers. Eliciting design requirements for          and retrospective rehearsal. International Journal of
+    maintenance-oriented ides: a detailed study of corrective and                 Human-Computer Studies, 58:583–603, 2003.
+     perfective maintenance tasks. In ICSE ’05: Proceedings of the 27th          34. C. Treude and M.-A. Storey. How tagging helps bridge the gap
+     international conference on Software engineering, pages 126–135,             between social and technical aspects in software development. In
+   New York, NY, USA, 2005. ACM.                                    ICSE ’09: Proceedings of the 2009 IEEE 31st International
+                                                                            Conference on Software Engineering, pages 12–22, Washington, DC,
+16. A. J. Ko, R. DeLine, and G. Venolia. Information needs in collocated
+                                                              USA, 2009. IEEE Computer Society.
+    software development teams. In ICSE ’07: Proceedings of the 29th
+     international conference on Software Engineering, pages 344–353,          35. R. van Solingen, E. Berghout, and F. van Latum. Interrupts: Just a
+    Washington, DC, USA, 2007. IEEE Computer Society.                        minute never is. IEEE Software, 15(5):97–103, 1998.
+
+
+                                            102

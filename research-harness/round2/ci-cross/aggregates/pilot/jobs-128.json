@@ -1,0 +1,80 @@
+{
+  "table": "jobs",
+  "group": 128,
+  "rows": 1048576,
+  "frequencies": [
+    {
+      "status": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "count_all": 792480
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "FAILURE",
+      "count_all": 42207
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "SKIPPED",
+      "count_all": 163715
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "CANCELLED",
+      "count_all": 50105
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "NEUTRAL",
+      "count_all": 46
+    },
+    {
+      "status": "QUEUED",
+      "conclusion": "CANCELLED",
+      "count_all": 3
+    },
+    {
+      "status": "IN_PROGRESS",
+      "conclusion": "FAILURE",
+      "count_all": 1
+    },
+    {
+      "status": "IN_PROGRESS",
+      "conclusion": "SUCCESS",
+      "count_all": 3
+    },
+    {
+      "status": "IN_PROGRESS",
+      "conclusion": null,
+      "count_all": 4
+    },
+    {
+      "status": "QUEUED",
+      "conclusion": null,
+      "count_all": 6
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "ACTION_REQUIRED",
+      "count_all": 3
+    },
+    {
+      "status": "COMPLETED",
+      "conclusion": "TIMED_OUT",
+      "count_all": 3
+    }
+  ],
+  "ranges": [
+    {
+      "table": "jobs",
+      "group": 128,
+      "columns": [
+        "status",
+        "conclusion"
+      ],
+      "start": 1685129778,
+      "end": 1685249284,
+      "sha256": "e22fdc907a8785466eb3eb20596fe3ad6c16d2495550b2603168c8dd87753dc4"
+    }
+  ]
+}

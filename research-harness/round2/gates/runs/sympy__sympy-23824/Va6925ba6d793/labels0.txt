@@ -1,0 +1,37 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+____________________________ test_kahane_simplify1 ____________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:265: in test_kahane_simplify1
+    assert r.equals(4*G(rho)*G(sigma))
+E   assert False
+E    +  where False = <bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])>(((4 * GammaMatrix(rho)) * GammaMatrix(sigma)))
+E    +    where <bound method RepMatrix.equals of Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]])> = Matrix([\n[4, 0, 0, 0],\n[0, 4, 0, 0],\n[0, 0, 4, 0],\n[0, 0, 0, 4]]).equals
+E    +    and   GammaMatrix(rho) = G(rho)
+E    +    and   GammaMatrix(sigma) = G(sigma)
+___________________________ test_gamma_matrix_class ___________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:285: in test_gamma_matrix_class
+    execute_gamma_simplify_tests_for_function(simplify_gamma_expression, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:120: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(st, (D*(-2*D + 4))*G(m2))
+sympy\physics\hep\tests\test_gamma_matrices.py:14: in _is_tensor_eq
+    return arg2.equals(arg1)
+sympy\tensor\tensor.py:3512: in equals
+    assert not self.components
+E   AssertionError
+____________________________ test_kahane_algorithm ____________________________
+sympy\physics\hep\tests\test_gamma_matrices.py:192: in test_kahane_algorithm
+    execute_gamma_simplify_tests_for_function(tfunc, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:120: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(st, (D*(-2*D + 4))*G(m2))
+sympy\physics\hep\tests\test_gamma_matrices.py:14: in _is_tensor_eq
+    return arg2.equals(arg1)
+sympy\tensor\tensor.py:3512: in equals
+    assert not self.components
+E   AssertionError
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-23824\Va6925ba6d793\labels0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_simplify1
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_gamma_matrix_class
+FAILED sympy/physics/hep/tests/test_gamma_matrices.py::test_kahane_algorithm
+3 failed in 0.70s

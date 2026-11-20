@@ -1,0 +1,177 @@
+检索参数 {"search_query":[{"q":"developer information foraging software debugging Lawrance Piorkowski questions developers ask Sillito LaToza hard to answer questions information needs code review Bacchelli Sadowski Google code search developers"}],"response_length":"medium"}
+Hard-to-Answer Questions about Code (https://cs.gmu.edu/~tlatoza/papers/plateau2010.pdf)
+citeturn18search12 [wordlim: 200] Published: last year; Hard-to-Answer Questions about Code ... LaToza ... Debugging (26):  How did this runtime state occur? ... it easier for professional software developers to create, de- ... proposals relevant to the developer’s current task and men- ... opers’ questions to focus and filter the information they ... answer the questions developers ask. ... concurrency question “What threads reach this code?” ... search areas – e.g., what is the policy for doing this, or how ... needs and reported them using lists of questions developers
+Hard-to-Answer Questions about Code 
+Thomas D. LaToza 
+Brad A. Myers 
+Institute for Software Research 
+Human Computer Interaction Institute 
+School of Computer Science 
+School of Computer Science 
+Carnegie Mellon University 
+Carnegie Mellon University 
+tlatoza@cs.cmu.edu 
+bam@cs.cmu.edu 
+Abstract 
+ 
+Rationale (42):  Why wasn’t it done this other way? (15) 
+Intent and implementation (32):  What does this do (6) in this 
+case (10)? (16) 
+Debugging (26):  How did this runtime state occur? (12) 
+Refactoring (25):  How can I refactor this (2) without breaking 
+existing users(7)? (9) 
+History (23):  Who, when, how, and why was this code changed 
+or inserted? (13) 
+Figure 1. The 5 most frequently reported question categories, 
+each category’s most frequent question, and the number of re-
+ports in parenthesis. 
+To build new tools and programming languages that make 
+it easier for professional software developers to create, de-
+bug, and understand code, it is helpful to better understand 
+the questions that developers ask during coding activities. 
+We surveyed professional software developers and asked 
+them to list hard-to-answer questions that they had recently 
+asked about code. 179 respondents reported 371 questions. 
+We then clustered these questions into 21 categories and 94 
+distinct questions. The most frequently reported categories 
+dealt with intent and rationale – what does this code do, 
+what is it intended to do, and why was it done this way? 
+Many questions described very specific situations – e.g., 
+what does the code do when an error occurs, how to refac-
+tor without breaking callers, or the implications of a spe-
+cific change on security. These questions revealed 
+opportunities for both existing research tools to help devel-
+opers and for developing new languages and tools that 
+make answering these questions easier. 
+Categories and Subject Descriptors 
+ D.2.6 [Software 
+Engineering]: Programming Environments; D.2.7 [Soft-
+ware Engineering]: Distribution, Maintenance, and En-
+hancement. 
+General Terms Experimentation, Human Factors 
+Keywords  program comprehension, developer questions 
+1. Introduction 
+opers to discover questions about code that developers per-
+ceive to be hard-to-answer. Respondents reported 371 ques-
+tions. We then grouped these questions into 94 distinct 
+questions spanning 21 categories. Figure 1 lists the five 
+most frequently reported categories. Many questions were 
+highly focused around specific hypotheses, situations, or 
+proposals relevant to the developer’s current task and men-
+tal model of the code. For example, rationale questions 
+asked why a specific decision was made or even why a 
+specific alternative was not chosen. Questions about what 
+code does were often scoped to a situation – e.g., what hap-
+pens when an exception occurs or an operation times out. 
+Thus, our results suggest that a key design goal for tools or 
+languages is to better use the situations described in devel-
+opers’ questions to focus and filter the information they 
+provide to developers. 
+In some cases, we found research tools that might help 
+--------------------------------------------------------------------------------
+How Developers Search for Code: A Case Study (https://research.google/pubs/how-developers-search-for-code-a-case-study/)
+citeturn18search0 [wordlim: 200] Published: 11.2 years ago; Crawled: 3 weeks ago; Caitlin Sadowski ... With the advent of large code repositories and sophisticated search capabilities, code search is increasingly becoming a key software development activity. In this work we shed some light into how developers search for code through a case study performed at Google, using a combination of survey and log-analysis methodologies.
+
+# How Developers Search for Code: A Case Study
+
+Caitlin Sadowski
+
+Kathryn T. Stolee
+
+Sebastian Elbaum
+
+Joint Meeting of the European Software Engineering Conference and the Symposium on the Foundations of Software Engineering (ESEC/FSE ), 1600 Amphitheatre Parkway (2015)
+
+## Abstract
+
+With the advent of large code repositories and sophisticated search capabilities, code search is increasingly becoming a key software development activity. In this work we shed some light into how developers search for code through a case study performed at Google, using a combination of survey and log-analysis methodologies. Our study provides insights into what developers are doing and trying to learn when performing a search, search scope, query properties, and what a search session under different contexts usually entails. Our results indicate that programmers search for code very frequently, conducting an average of five search sessions with 12 total queries each workday. The search queries are often targeted at a particular code location and programmers are typically looking for code with which they are somewhat familiar. Further, programmers are generally seeking answers to questions about how to use an API, what code does, why something is failing, or where code is located.
+
+## Research Areas
+
+  * Software engineering
+  * Human-computer interaction and visualization--------------------------------------------------------------------------------
+ANSWERING REACHABILITY QUESTIONS (https://citeseerx.ist.psu.edu/document?doi=75615dbe32a9b2bc999e8a93c633b7848893c424&repid=rep1&type=pdf)
+citeturn18search13 [wordlim: 200] Published: 9 months ago; 4.3 Hard-to-answer questions about code ... A better understanding of the nature of these questions suggests information needs ... after the change, and the debugging question “what caused this state to occur” to understand what ... Developers understanding code during coding tasks ask questions about code and its behavior. ... After traversing, developers skim the method text in search of
+--------------------------------------------------------------------------------
+An Information Foraging Theory Perspective on Tools for Debugging, Refactoring, and Reuse Tasks (https://www.academia.edu/52732488/An_Information_Foraging_Theory_Perspective_on_Tools_for_Debugging_Refactoring_and_Reuse_Tasks)
+citeturn18search1 [wordlim: 200] Published: 13.9 years ago; Crawled: 2 months ago; FLEMING, Oregon State University and University of Memphis CHRIS SCAFFIDI, Oregon State University DAVID PIORKOWSKI, Oregon State University MARGARET BURNETT, Oregon State University RACHEL BELLAMY, IBM Research JOSEPH LAWRANCE, Massachusetts Institute of Technology IRWIN KWAN, Oregon State University Theories of human behavior are an important but largely untapped resource for software engineering research. ... 3.3.2 Information foraging when integrating reusable code Having located relevant code for reuse, the developer must adapt it for integration into another context, initiating another round of foraging to answer the question, “What must be done to integrate this code?” ... Therefore, this pattern can be used when all the following conditions are true:  valuable patches contain textual features  the value of a patch is highly related to which textual features it contains  the text in patches can be indexed  when a developer visits a particular patch, it is possible to display links to a set of patches with textually-similar features 4.1.3.5 Known Uses Traditional code search tools that allow developers to enter natural language queries (e.g., Eclipse’s search utilities, the CodeFinder tool [Henninger 1994], and the Hill et al.’s contextual search tool [Hill et al. 2009]) use the Lexical Similarity pattern, often augmented with additional features, for example, for eliciting high-scent words from developers that coincide with high-value patches.
+--------------------------------------------------------------------------------
+plat07-latoza (https://cs.gmu.edu/~tlatoza/papers/plateau2011.pdf)
+citeturn18search14 [wordlim: 200] Crawled: last year; Data is used before, during, and after design to understand developer’s work and how it is affected by a tool. ... This paper begins by examining the structure of software development work and how tools may support work. ... These can be decomposed into *sub-activities* – e.g., debugging, editing code, reusing code, understanding code. ... For the designer, the key challenge is to determine exactly what question developers ask and what information is sufficient to answer it. ... Studies of the WhyLine provided evidence of its usefulness by demonstrating that developers frequently ask why and why not questions during debugging, that many of the hypotheses developers formulate are wrong [23], that developers can use the WhyLine to answer their why and why not questions, and that the WhyLine helps developers work quantitatively more effectively [19].
+--------------------------------------------------------------------------------
+Answering Developer Questions with Annotated Agent-Discovered Program Traces (https://www.cs.columbia.edu/~chilton/web/my_publications/TrailBlazer_UIST2025.pdf)
+citeturn18search15 [wordlim: 200] Published: 1.3 years ago; While these tools accelerate tracing code flow, they require a great deal of judgment from the user for search to progress. ... These tools reduce constant judgment calls to wording a question and reviewing an answer. ... In this paper, we develop Trailblazer, an intelligent interface for the IDE that answers developer questions with annotated, replayable, agent-discovered program traces. ... For example, they ask questions like “What is the original source of this data?” ... Reachability questions are common in many development tasks, including debugging, implementation, code review, and refactoring [24, 26, 42]. ... In our work, we describe information foraging theory (IFT) as providing a template for designing autonomous components of tools for answering reachability questions. ... Structural information can also be brought to where developers need it.
+--------------------------------------------------------------------------------
+ICSE ’18, May 27-June 3, 2018, Gothenburg, Sweden (https://andrewhead.info/assets/pdf/when-not-to-comment.pdf)
+citeturn18search16 [wordlim: 200] Published: 8.8 years ago; Crawled: 2 weeks ago; Recently, information foraging theory has been used to describe how software developers search for information, and tradeoffs in designing software engineering tools (see [11] for a primer). In information foraging, a developer searches to satisfy a *goal* (e.g., a piece of code with desired functionality). ... Sillito et al. describe 44 such questions arising during software change tasks, which belonged to four categories: finding initial focus points, building on these points, building a model connecting found information, and integrating an understanding across such models [34]. Sadowski et al. observed developers’ queries to a code search tool, grouping them into questions of how to do something, what code does, why it is behaving the way it is, finding where something is, who did something, and when they did it [32].
+--------------------------------------------------------------------------------
+The Road to Live Programming: Insights From the Practice (https://repositorio.uchile.cl/bitstream/handle/2250/169413/The_road_to_live.pdf?sequence=1)
+citeturn18search17 [wordlim: 200] Published: 10 months ago; Sadowski et al. [52] summarized these studies, finding code search-
+ing prevalent at Google. ... found that developers preferred to use search tools that required ... the Whyline (with extensive runtime information) relied much less ... stance, a Java code snippet found on Stack Overflow, as it needs ... tools do not handle well, according to Sillito: “A programmer’s ... context [...], and so programmers ask questions more globally than ... A developer can focus on an application’s ... Some “hard questions” are easier to answer using liveness.
+--------------------------------------------------------------------------------
+Using information fragments to answer the questions developers ask (https://www.researchgate.net/publication/221554132_Using_information_fragments_to_answer_the_questions_developers_ask)
+citeturn18search2 [wordlim: 200] Published: 16.6 years ago; Crawled: 2 months ago; Although developers want to ask these questions, existing ... To answer this question, existing develop- ... how the change set information maps to the source code. ... ciﬁc for software development, allowing a developer to step ... Sillito and colleagues described 44 questions that de- ... LaToza and colleagues ... questions that the developer needs answered.
+--------------------------------------------------------------------------------
+Cooperative Software Development - Comprehension (https://faculty.washington.edu/ajko/books/cooperative-software-development/comprehension)
+citeturn18search3 [wordlim: 200] Crawled: last month; LaToza, Brad A. ... Jonathan Sillito, Gail C. ... Questions programmers ask during software evolution tasks. ... Here are nearly forty common questions that developers ask: ... Where in the code is the text in this error message or UI element?
+--------------------------------------------------------------------------------
+The road to live programming: insights from the practice (https://www.researchgate.net/publication/325730367_The_road_to_live_programming_insights_from_the_practice)
+citeturn18search4 [wordlim: 200] Crawled: 2 months ago; tools do not handle well, according to Sillito: “A programmer’s ... context [...], and so programmers ask questions more globally than ... The broadened scope makes information more likely ... A developer can focus on an ... Some “hard questions” are easier to answer using liveness. ... describes 44 questions developers asked during his sessions. ... Question 27 (how does this data structure look ... two code snippets (one correct, one incorrect), or P11 contrasting
+--------------------------------------------------------------------------------
+Immediacy through Interactivity: Online Analysis of Run-time Behavior (https://www.researchgate.net/publication/224198176_Immediacy_through_Interactivity_Online_Analysis_of_Run-time_Behavior)
+citeturn18search5 [wordlim: 200] Published: 16.1 years ago; Crawled: 5 months ago; program comprehension and software maintenance tasks. ... collected run-time information to support developers. ... of run-time data into IDEs, debugging tools, and call graph ... Sillito et al. [13] focused on source code related questions ... Latoza et al. [14] presented three studies concerning ... developers ask over nine of these questions in day-to-day
+
+work, and that they are often hard to answer.
+--------------------------------------------------------------------------------
+Software search is not a science, even among scientists (https://www.researchgate.net/publication/302575323_Software_search_is_not_a_science_even_among_scientists)
+citeturn18search6 [wordlim: 200] Published: 10.5 years ago; Crawled: 2 months ago; ] surveyed and analyzed search behaviors of 40 software developers at Google, Inc. ... They investigated why developers searched and what questions they tried to answer with their ... information about an API library or examples of its use. ... Sadowski et al. also investigated the contexts in which code search is used. ... other methods to examining developer behavior.
+--------------------------------------------------------------------------------
+Lost while searching: Difficulties in information seeking among end-user programmers (https://asistdl.onlinelibrary.wiley.com/doi/10.1002/meet.14505001059)
+citeturn18search7 [wordlim: 200] Published: 12.5 years ago; Crawled: 3 weeks ago; We find that users were largely unsuccessful in their foraging activities, with few information seeking events resulting in noticeable changes to participants' source code. ... Programming and debugging can be daunting tasks, especially when one has minimal experience with the language syntax and one's knowledge of the underlying principles is incomplete. ... RQ1 What foraging and search behaviors are employed by end-user programmers to overcome learning barriers? ... First we provide an overview of related work in information seeking behaviors, particularly those tied to answering questions about source code.
+--------------------------------------------------------------------------------
+Live Programming and Software Evolution: Questions during a Programming Change Task (https://www.researchgate.net/publication/332802010_Live_Programming_and_Software_Evolution_Questions_during_a_Programming_Change_Task)
+citeturn18search8 [wordlim: 200] Published: 7.6 years ago; Crawled: 2 months ago; Studies on Developer Information Needs ... LaToza et al. focus on answering reachability questions and ... ers spent the most of the time debugging or proposing changes ... ware developers and provide 94 hard-to-answer developer ... support that involve information integration from codebases, ... more understanding why developer question occurrences vary
+
+contrasting it with Sillito et al.
+--------------------------------------------------------------------------------
+How do developers decide where to look in code when debugging? · SEResearch (https://fundamentalseresearch.github.io/questions/how-developers-navigate-code/)
+citeturn18search9 [wordlim: 200] Crawled: yesterday; Law or theory  | Type  | Evidence on this question ...   * supports Lawrance et al. (2013) modifies ... Adapted the theory to debugging; ten professional programmers debugging a real open source program talked far more about following scent than about hypotheses, and an executable model based on scent and topology predicted their navigation better than models without scent.
+
+How Programmers Debug, Revisited: An Information Foraging Theory Perspective, IEEE Transactions on Software Engineering 39(2) · Method: Case study, Simulation modeling · Laboratory, professionals, software
+--------------------------------------------------------------------------------
+Research | Irwin Kwan (https://irwinkwan.com/category/research/)
+citeturn18search10 [wordlim: 200] Crawled: last month; We tried to identify their overall diet by identifying if they asked questions (and received answers) belonging to one of four categories: (1) finding a place to start in code, (2) expanding on that initial starting point, (3) understanding a group of code, or (4) understanding groups of groups of code. ... For example, Participant 2 asked mostly about groups of groups, Participant 3 asked about finding a place to start, Participant 5 didn’t really ask about anything at all, and Participant 6 also looked for a place to start. ... Surprisingly, search was not a very popular strategy, accounting for less than 15% of participants’ information foraging – and not used at all by 4 of our 9 participants—suggesting that tool support is still critical for non-search strategies in debugging! ... This emphasizes a key difference between software development and other foraging domains: the highly selective nature of programmers’ dietary needs!
+--------------------------------------------------------------------------------
+Podcast 347: Information foraging - the tactics great developers use to find solutions - Stack Overflow (https://stackoverflow.blog/2021/06/15/podcast-347-information-foraging-the-tactics-great-developers-use-to-find-solutions/)
+citeturn18search11 [wordlim: 200] Published: 5.4 years ago; Crawled: last week; What are some of the things you've discovered when it comes to sharing foraging? ... And so developers spend a large portion of their time just looking for information in code or in documentation. And so we were trying to model how they go about doing that, when they say they're on Stack Overflow and they see a couple search results that are relevant to them, how do they decide to go to one over the other, you know, are they gonna search all of it, that's, that's probably not going to happen, you'll, you'll spend forever, and you get into the madness of opening too many tabs, and so forth. ... And we would try to tease out their decision making that's going on while they're, they're looking at code or documentation, one of the things we would do is we would actually play back their video of from them working, we would jump to certain points in the video and ask them, what were you looking for in this point of time? ... BP I had another question, which was like, as you, you know, talk to these developers trying to solve you know, a particular puzzle, unpack what the code is, maybe you trying to get familiar with an open source project you want to work on, or you're a new joiner at a company and you you know, have to dive into the code base and understand what all the spaghetti means.
+--------------------------------------------------------------------------------
+Generating Clarifying Questions for Query Refinement in Source Code Search (https://arxiv.org/abs/2201.09974)
+citeturn18academia18 [wordlim: 200] Published: 4.8 years ago; In source code search, a common information-seeking strategy involves providing a short initial query with a broad meaning, and then iteratively refining the query using terms gleaned from the results of subsequent searches. This strategy requires programmers to spend time reading search results that are irrelevant to their development needs.
+--------------------------------------------------------------------------------
+Evaluating How Developers Use General-Purpose Web-Search for Code Retrieval (https://arxiv.org/abs/1803.08612)
+citeturn18academia19 [wordlim: 200] Published: 8.7 years ago; Search is an integral part of a software development process. ... Developers tend to prefer general-purpose search engines like Google, which are often not optimized for code related documents and use search strategies and ranking techniques that are more optimized for generic, non-code related information.
+--------------------------------------------------------------------------------
+Using Hypotheses as a Debugging Aid (https://arxiv.org/abs/2005.13652)
+citeturn18academia20 [wordlim: 200] Published: 6.5 years ago; LaToza ... To better understand the role of hypotheses in debugging, we conducted two studies. In a preliminary study, we found that, even with the benefit of modern internet resources, incorrect hypotheses can cause developers to investigate irrelevant information and block progress.
+--------------------------------------------------------------------------------
+Code Search: A Survey of Techniques for Finding Code (https://arxiv.org/abs/2204.02765)
+citeturn18academia21 [wordlim: 200] Published: 4.6 years ago; The immense amounts of source code provide ample challenges and opportunities during software development. To handle the size of code bases, developers commonly search for code, e.g., when trying to find where a particular feature is implemented or when looking for code examples to reuse.
+--------------------------------------------------------------------------------
+Code review (https://en.wikipedia.org/wiki/Code_review)
+citeturn18search22 [wordlim: 200] Crawled: last month; In formal code reviews, software developers attend a series of meetings to examine code line by line, often using printed copies. ... Software development teams typically adopt a more lightweight review process in which the scope of each review relates to changes to the codebase corresponding to a ticket, user story, commit, or some other unit of work. ... Major software corporations known to use changed-based code review include Microsoft, Google, and Facebook.
+--------------------------------------------------------------------------------
+Information foraging (https://en.wikipedia.org/wiki/Information_foraging)
+citeturn18search23 [wordlim: 200] Crawled: 5 months ago; Information foraging is a theory that applies the ideas from optimal foraging theory to understand how human users search for information. ... Chi worked with Pirolli, Card, and others at PARC to further develop information scent ideas and algorithms to actually use these concepts in real interactive systems, including the modeling of web user browsing behavior, the inference of information needs from web visit log files, and the use of information scent concepts in reading and browsing interfaces. ... These models assume that users perceive relevance of information based on some measures of information scent, which are usually derived based on statistical techniques that extract semantic relatedness of words from large text databases. ... "Information Foraging: Why Google Makes People Leave Your Site Faster".
+--------------------------------------------------------------------------------
+Algorithmic program debugging (https://en.wikipedia.org/wiki/Algorithmic_program_debugging)
+citeturn18search24 [wordlim: 200] Crawled: 4 months ago; Program debugging is an extremely common part of software development. ... Some algorithmic debuggers also accept the answer "I don't know" when the programmer cannot give an answer (e.g., because the question is too complex). Thus, the answers of the programmer guide the search for the bug until it is isolated by discarding correct parts of the program. ... The research and development in the field of algorithmic debugging has made major improvements over the original algorithms for debugging Prolog and other and extended the ideas to other language paradigms such as functional languages and object oriented languages.
+--------------------------------------------------------------------------------
+Stack Overflow (https://en.wikipedia.org/wiki/Stack_Overflow)
+citeturn18search25 [wordlim: 200] Crawled: last week; Based on the type of tags assigned to questions, the top eight most-discussed topics on the site are JavaScript, Java, C#, PHP, Android, Python, jQuery, and HTML. ... The sister site softwareengineering.stackexchange.com is intended to be a venue for broader queries, e.g. general questions about software development. ... The mechanism was overhauled in 2013; questions edited after being put "on hold" now appear in a review queue. Jeff Atwood stated in 2010 that duplicate questions are not seen as a problem but rather they constitute an advantage if such additional questions drive extra traffic to the site by multiplying relevant keyword hits in search engines. ... A 2013 study has found that 75% of users only ask one question, 65% only answer one question, and only 8% of users answer more than 5 questions.
+--------------------------------------------------------------------------------
+Requirements elicitation (https://en.wikipedia.org/wiki/Requirements_elicitation)
+citeturn18search26 [wordlim: 200] Crawled: last month;  The requirements elicitation process may appear simple: ask the customer, the users and others what the objectives for the system or product are, what is to be accomplished, how the system or product fits into the needs of business, and finally, how the system or product is to be used on a day-to-day basis. ... The customers/users are not completely sure of what is needed, have a poor understanding of the capabilities and limitations of their computing environment, don’t have a full understanding of the problem domain, have trouble communicating needs to the system engineer, omit information that is believed to be “obvious,” specify requirements that conflict with the needs of other customers/users, or specify requirements that are ambiguous or untestable. ... The Quest for Software Requirements: Probing Questions to Bring Nonfunctional Requirements Into Focus; Proven Techniques to Get the Right Stakeholder Involvement.
+--------------------------------------------------------------------------------
+Software development (https://en.wikipedia.org/wiki/Software_development)
+citeturn18search27 [wordlim: 200] Crawled: 2 weeks ago; Since the popularization of large language models, AI-assisted software development has been used to augment human programming by having an AI handle syntax and write code. ... Debugging is performed by each software developer on their own code to confirm that the code does what it is intended to. ... Code reviews by other developers are often used to scrutinize new code added to the project, and according to some estimates dramatically reduce the number of bugs persisting after testing is complete.
+

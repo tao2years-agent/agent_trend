@@ -1,0 +1,83 @@
+This page explains how Devin’s work is metered. The mechanics are the same regardless of pricing model. The only difference is the unit:
+Enterprise
+customers consume
+Agent Compute Units (ACUs)
+against the volume in their order form.
+Self-serve
+customers consume their plan’s included quota first, then draw from prepaid
+on-demand credits
+.
+Throughout this page, “usage” refers to whichever unit applies to your account.
+What counts toward usage
+Usage accrues based on the work Devin actually performs in a session, including:
+Number and complexity of actions Devin takes (planning, context gathering, task execution, browser actions, code execution, and so on)
+Virtual machine time (typically a small fraction of total usage)
+Windows sessions
+Windows sessions consume approximately
+9% more
+usage than equivalent Linux (Ubuntu) sessions.
+macOS sessions
+macOS sessions
+currently consume the
+same
+usage as equivalent Linux (Ubuntu) sessions — there is no macOS surcharge.
+This is
+promotional launch pricing
+and is subject to change.
+Aside from the few units required to keep the Devin VM running, Devin will not consume usage when:
+Waiting for your response
+Waiting for a test suite to run
+Setting up and cloning repositories
+Sleep and idle behavior
+When a session is idle, Devin goes to sleep. While sleeping, Devin does not consume usage. You can wake the session up at any time by sending another message. Devin sleeps automatically after 5 minutes of inactivity by default. Some sessions, such as those on Windows or GPU machines, may sleep after 30 minutes of inactivity instead. Enterprise customers can ask their Cognition account team to set a different timeout (between 5 and 120 minutes), which then applies to every session type.
+Managing usage effectively
+A number of variables affect how much Devin consumes:
+Task complexity
+Prompt quality (or specificity)
+Size of context or codebase
+Number of files being touched or modified
+Session runtime
+Length of conversation
+Frequency of back-and-forth messaging
+A few tips to keep usage under control:
+Delegate clearly scoped tasks with a well-defined end goal
+Keep prompts and sessions short
+Avoid asking Devin to do a lot of different tasks in the same session
+Split big projects into sub-tasks across sessions and run them in parallel. The number of sessions you can run at once depends on your plan
+On self-serve Pro, Max, or Teams plans, link an eligible ChatGPT Go, Plus, or Pro subscription and
+use your ChatGPT plan
+so GPT model usage is billed there instead of your Devin quota
+These tips also tend to improve the quality of Devin’s work, so it’s a win-win.
+Devin Coach
+reinforces them automatically by flagging inefficient prompts in the input box before they’re sent.
+Enterprise admins can additionally cap each member’s monthly consumption with
+usage policies
+.
+Frequently asked questions
+Does Devin consume usage while sleeping?
+No, Devin does not consume any usage while sleeping.
+Will Devin keep consuming while awake but idling?
+Devin sleeps automatically after 5 minutes of inactivity by default, so awake-but-idle time generally adds up to very little.
+How do I see how much I've consumed in a specific session?
+Any user can see per-session usage from
+Session Insights
+, regardless of pricing model.
+Where do I see my account's overall usage?
+Self-serve
+: Current month’s usage, quota remaining, and on-demand credit balance live at
+Settings > Usage & limits
+.
+Enterprise
+: Enterprise and per-Organization ACU consumption are available from the
+Consumption
+and
+Consumption Analytics
+pages in Enterprise and Organization Settings respectively.
+Can individual users see their own usage across the enterprise?
+Yes. If your enterprise enables
+Personal Analytics
+, users with the
+View Personal Analytics
+permission can see their own ACU consumption across every organization from the
+My analytics
+page in their settings.

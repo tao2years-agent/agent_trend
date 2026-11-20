@@ -1,0 +1,38 @@
+F......s.......F.....                                                    [100%]
+================================== FAILURES ===================================
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:33: in test_PythonCodePrinter
+    assert prntr.doprint(-Mod(x, y)) == '-(x % y)'
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+________________________________ test_Integral ________________________________
+sympy\printing\tests\test_pycode.py:294: in test_Integral
+    assert prntr.doprint(single) == 'scipy.integrate.quad(lambda x: numpy.exp(-x), 0, numpy.PINF)[0]'
+sympy\printing\codeprinter.py:110: in doprint
+    lines = self._print(expr).splitlines()
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\numpy.py:453: in _print_Integral
+    self._print(e.args[0]),
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\pycode.py:68: in _print_known_func
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\pycode.py:68: in <lambda>
+    args=', '.join(map(lambda arg: self._print(arg), expr.args)))
+sympy\printing\printer.py:330: in _print
+    return getattr(self, printmethod)(expr, **kwargs)
+sympy\printing\codeprinter.py:495: in _print_Mul
+    a_str = [self.parenthesize(a[0], 0.5*(PRECEDENCE["Pow"]+PRECEDENCE["Mul"]))]
+E   NameError: name 'PRECEDENCE' is not defined
+- generated xml file: F:\dongcha\research-harness\round2\oracles\full311\sympy__sympy-22080\without-1_m2.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - NameErro...
+FAILED sympy/printing/tests/test_pycode.py::test_Integral - NameError: name '...
+2 failed, 18 passed, 1 skipped in 0.31s

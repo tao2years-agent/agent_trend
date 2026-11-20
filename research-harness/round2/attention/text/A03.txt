@@ -1,0 +1,625 @@
+=== PDF PAGE 1 ===
+           Information Needs in Collocated Software Development Teams
+
+                 Amy J. Ko                            Robert DeLine and Gina Venolia 
+              Human-Computer Interaction Institute                          Microsoft Research 
+                      Carnegie Mellon University                            One Microsoft Way 
+                5000 Forbes Ave, Pittsburgh PA 15213                      Redmond, WA  
+                          ajko@cs.cmu.edu                              {rdeline, ginav}@microsoft.com 
+
+
+                       Abstract                               While these studies provide several concrete insights 
+                                                                       about  aspects  of  software  development  work,  we  still 
+            Previous research has documented the fragmented na-     know little about what information developers look for 
+            ture of software development work. To explain this in      and why they look for it. For example, what information 
+             more detail, we analyzed software developers’ day-to-day      do developers use to triage bugs? What knowledge do 
+            information needs. We observed seventeen developers at      developers seek from their coworkers? What are develop-
+             a large software company and transcribed their activities      ers looking for when they search source code or use a 
+            in -minute sessions. We analyzed these logs for the      debugger? By identifying the types of information that 
+             information that developers sought, the sources that they      developers seek, we might better understand what tools, 
+             used, and the situations that prevented information from      processes and practices could help them more easily find 
+            being acquired. We identified twenty-one information      such information. 
+            types and cataloged the outcome and source when each        To understand these information needs in more de-
+            type of information was sought. The most frequently      tail, we performed a two-month field study of software 
+            sought information included awareness about artifacts      developers at Microsoft. We took a broad look, observing 
+          and coworkers. The most often deferred searches in-         groups  across  the  corporation,  focusing  on  three 
+            cluded knowledge about design and program behavior,      speciﬁc questions: 
+            such as why code was written a particular way, what a            ·  What information do soware developers’ seek? 
+            program was supposed to do, and the cause of a program            ·  Where do developers seek this information? 
+              state. Developers often had to defer tasks because the            ·  What prevents them from ﬁnding information? 
+            only source of knowledge was unavailable coworkers.        In our observations, we found several information needs. 
+                                                                         The most diﬃcult to satisfy were design questions: for 
+           1. Introduction                                     example, developers needed to know the intent behind 
+                                                                           existing code and code yet to be written. Other informa-
+             Soware development is an expensive and time-intensive      tion seeking was deferred because the coworkers who had 
+             endeavor. Projects ship late and buggy, despite develop-      the knowledge were unavailable. Some information was 
+             ers’ best eﬀorts, and what seem like simple projects be-      nearly impossible to ﬁnd, like  bug reproduction steps 
+           come  diﬃcult  and  intractable [2].  Given  the  complex       and the root causes of failures. 
+             work involved, this should not be surprising. Designing          In this paper, we discuss prior ﬁeld studies of soware 
+             soware with a consistent vision requires the consensus      development, and then describe our study’s methodol-
+             of many people, developers exert great eﬀorts at under-      ogy. We then discuss the information needs that we iden-
+             standing a system’s dependencies and behaviors [11], and       tiﬁed in both qualitative and quantitative terms. We then 
+             bugs can arise from large chasms between the cause and      discuss our ﬁndings’ implications on soware design and 
+             the symptom, oen making tools inapplicable [6].            engineering. 
+               One approach to understanding why these activities 
+            are so diﬃcult is to understand them from an informa-     2. Related Work 
+             tion perspective. Some studies have investigated informa-
+             tion sources, such as people [13], code repositories [5],      Several previous studies have documented the social na-
+             and bug reports [16]. Others have studied means of ac-       ture  of  development  work.  Perry,  Staudenmayer  and 
+             quiring  information,  such  as  email,  instant  messages      Votta  reported  that  over  half  of  developers’  time  was 
+             (), and informal conversations [16]. Studies have even      spent  interacting  with  coworkers  [15].  Much  of  this 
+              characterized developers’ strategies [9], for example, how      communication  is  to  maintain  awareness.  De  Souza, 
+             they decide whom to ask for help.                             Redmiles, Penix and Sierhuis found that developers send 
+                                                                                emails before check-ins to allow their peers to prepare for 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 2 ===
+              changes [5]. Collocation is a central factor in determining       that developers asked during their daily work (designing, 
+             the quality of awareness information. Seaman and Basili      coding, debugging, bug triage). Our  questions cover a 
+             found that local mobility facilitates awareness in ways      broader scope of work and are therefore more abstract 
+              that are unavailable in distributed situations [18]. Simi-      than their  questions. Unifying these results is future 
+             larly, coordination problems can be exaggerated across      work. 
+             sites because of the lack of spontaneous communication 
+              channels [8].                                          3. Method 
+               Developers  also  communicate  to  obtain  knowl-
+             edge [9]. LaToza, Venolia and DeLine describe the role of      Our method was to record notes while observing devel-
+             the “team historian,” who possesses knowledge about the      opers’ normal work. To recruit developers, we surveyed 
+             origins of a project and its architecture [13]. To deter-        developers  from  the  corporate  address  book.  Of 
+            mine who to ask, developers  oen  gauge  expertise by      these,  responded and  volunteered for observation.  
+             inspecting check-in logs [5], but such information is not         Each observation session was about  minutes and 
+             always accurate [12].                                         involved a single observer taking handwritten notes. To 
+               One consequence of developers’ frequent communi-      encourage the participant to narrate his work, we asked 
+             cation is the fragmentation of time. Gonzalez, Mark and       the participant to think of us as a newcomer to the team, 
+             Harris found that developers average about  minutes on      doing a “job shadow.” We focused on recording goal-
+             a task and about  minutes in an area of work before      oriented events like “ﬁnding the method that computed 
+             switching [7]. These switches occur due to changing task      the wrong value” rather than low-level events like key-
+             priorities and getting blocked [15]. Perlow related how      strokes or menu selections. Since we shared the partici-
+            one  soware  group's  frequent  interruptions  created  a      pants programming background, we understood much of 
+             sense of a "time famine”—having too much to do and not      the work and where and how information was obtained, 
+             enough time [14].                                           without inquiry. In some cases, we prompted with ques-
+                Dependencies are also a central factor in soware de-      tions like “what are you looking for?” to learn their in-
+            velopment. Developers use bug reports, content man-      formation  needs,  but  most  developers  thought  aloud 
+             agement systems, and version control systems to manage      without prompting. We timestamped the recorded events 
+            dependencies and notify coworkers of new dependen-      and  conversations each minute. After  minutes,  we 
+                cies [5].   Teams    will   clone   soware   to   avoid       looked for a good stopping point and wrapped up. Im-
+             dependencies, even though they later have to duplicate      mediately  after  each  observation,  we  transcribed  the 
+             ﬁxes to the cloned code [13]. Developers also rush their      handwritten notes, as in the excerpt shown in Figure 1. 
+             activities to minimize dependencies between their code          During the allotted time for the study we were able to 
+             and recently committed changes in the repository [5].        observe  developers, which was enough to see common 
+                These previous studies provide a general sense of the       patterns in their information needs. (Section 6.2 touches 
+            importance  of  communication  among  developers  to      on the  potential value of observing more developers.) 
+            maintain awareness, share knowledge, and manage de-      Figure 2 describes these developers’  experience levels, 
+             pendencies. Using similar methods, both this study and a      types of work, and phases of development and introduces 
+             recent study by Sillito, Murphy and De Volder [1] dissect       the initials we use to refer to them in this paper. In Mi-
+            this communication from an information needs perspec-      crosoft's terminology, dev leads manage software devel-
+             tive by cataloging the questions that arise during devel-      opment engineers (s or devs) while also performing a 
+             opment tasks. Sillito, Murphy and De Volder present       development role. 
+             questions about code that developers asked during pro-
+             gramming tasks. In this study, we present  questions      4. Task Structure 
+
+                                                                      Our observations spanned  hours of work. We parti-
+               9:41 am  So this copies the files onto the server, then allocates a
+                                                                            tioned the logged activities into work categories common 
+                     machine to do the setup. In the meantime, I'm going to
+                                                                            across the  participants: writing code; submitting code 
+                       get this local fix [of this other bug] over [checked in].
+                                                                           (check-ins); triaging bugs; reproducing failures; under-
+               9:41 am  [opens diff tool to see changes he’s made to code]           standing  program  behavior;  reasoning  about  design; 
+               9:43 am  Oh damn, I have some mixed changes. Some are part of      maintaining  awareness;  and  non-work  activities  (e.g. 
+                            this DCR [design change request] I'm working on and         personal phone calls). We also identified causes of task 
+                   some are part of a bug fix, so I have to mix it out.              switching: face-to-face dialogue; phone calls; instant mes-
+                                                                                sages (); email alerts; meetings; task avoidance; getting 
+           Figure 1. An excerpt from J’s observation log.                 blocked; and task  completion. We annotated the logs 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 3 ===
+           Figure 2. The backgrounds and task structures of the 17 observed developers. The right edge of each task block indicates the
+            reason for the task switch (thin line for done, thick line for blocked, jagged line for interrupted). When a task gets broken up by
+              interruptions or blocking, we draw its fragments at the same vertical level to show resumption.
+
+
+             with these switches, based on remarks like “I want to get      about changes to the bug database. Developers experi-
+             back to my repro…” All of these causes of task switches       enced from  to  notifications per session (median of ).  
+              are forms of interruption, except getting blocked and task          Blocking, shown in Figure 2 as dark vertical bars, oc-
+             completion. When the participant voluntarily switched      curred when information was unavailable. Some blocks 
+              activities, we label the switch as blocked if the participant      were about waiting for the results of compilations and 
+             could no longer make progress on the current activity       tests suites. Developers also waited for email replies and 
+             (typically due to an information need) and task avoid-      for  other  teams  to  submit  changes  or  x  bugs.  Other 
+             ance if she could make progress but chose to switch any-      blocks were due to missing knowledge, like when a de-
+             way.                                                        veloper stops coding to learn about an . Developers 
+                 Figure 2 visualizes these task switches, which occurred      were blocked a median of  times per session and be-
+             an average of every  minutes (± .), mirroring the rate       tween  and  times overall.   
+            reported in Gonzales, Mark and Harris [7]. Time frag-
+             mentation varied considerably per participant. For ex-     5. Information Needs 
+             ample,    reproduced  failures  without  interruption, 
+            whereas  was frequently blocked. Many interruptions      During our observations, there were  instances of in-
+            were  due  to  face-to-face,  ,  or  phone  conversations,      formation seeking, which we abstracted from the particu-
+             which occurred  from  to  times per session (median of        lars  of  the  work  context  into    general  information 
+             ), each lasting for much of the session. Developers were      needs. Here we present these information needs clustered 
+              also interrupted by notifications, such as email and alerts      by the work category in which they arose. Throughout, 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 4 ===
+            we  list  within braces the initials of the developers  for             K: I think I'm ready to check in, so I'm just making sure I didn't do any-
+                                                                                               thing stupid. Like, I forgot to write those tests! Yeah, stupid like that.
+            whom we observed an information need or other trend. 
+                                                                            One developer wrote assertions {}, but these interfered 
+            5.1  Writing Code                                        with other developers’ work {}: 
+                                                                                                         A: I never want to see [that product’s] asserts but they always pop up.
+            Developers  had several questions  situated in the code          They have nothing to do with my work!
+             they were writing:                                             Three developers used static analysis tools to check for 
+                                                                            fault-prone design patterns {}, but expressed disdain 
+               (c1)  What data structures or functions can be used to 
+                                                                                for such tools’ false positives or could not understand the 
+                   implement this behavior? 
+                                                                       tools’ recommendations. 
+               (c2)  How do I use this data structure of function? 
+                                                                            Developers also considered their team’s conventions 
+               (c3)  How can I coordinate this code with this other 
+                                                                        (s). Some teams required tags or other documentation 
+                     data structure or function? 
+                                                                    to be embedded in method headers, which developers 
+            Although the first of these questions was uncommon,      were careful to remember, often with the help of tools 
+            when it occurred, developers searched  documenta-      {}. Sometimes two submissions intersected (like in 
+              tion  {}  and  inspected  other  code  for  examples  {}.      the transcript in Figure ) or developers had to merge 
+             These searches can be thought of as a search through the      their code with another’s and developers had to deter-
+              space of existing reusable code; for example,  looked for      mine which differences were part of the current submis-
+             an appropriate serialization  by searching a large da-       sion (s) {}.  
+             tabase of public documentation. 
+              Once  a  developer  had  a  candidate  in  mind,  they      5.3  Triaging Bugs 
+             sought its syntactic usage rules (c). For example, which 
+             method is appropriate to call? What data structures does      Most developers were swamped with bug reports from 
+               this  require?  What  constructors  does  this  class  have?       tests, customers, and internal employees. Triage occurred 
+            Developers used documentation when it was available       in  isolation  as  a  developer  partitioned  their  time 
+            {}, but sometimes needed to use code that was      {}, but also in triage meetings {}. For each 
+             only fully understood by its author {}. Others found       report, the goal was to determine: 
+             example code from which to infer rules {}. 
+                                                                         (b1)  Is this a legitimate problem? 
+                Because developers had to coordinate s with their 
+                                                                         (b2)  How difficult will this problem be to fix? 
+             own code, they also sought behavioral usage rules (c), 
+                                                                         (b3)  Is the problem worth fixing? 
+              implicit in the  design. For example, is it legal to call 
+             this method after calling this other method? What state      Assessing legitimacy (b) involved deciding whether a 
+             do I have to be in before this call? Such information was      failure was due to a problem with the code or an unreal-
+              rarely  explicit.  Developers  used  their  colleagues  {},       istic configuration of a test {}: 
+             documentation {}, and example code {} to infer these             B: It might but not really be a failure. It might just be a setup problem.
+               rules.                                                                              This particular component doesn't depend on anything. Probably
+                                                                                             locked a file, so it’s returning an exit code. Not a real failure.
+
+            5.2  Submitting a Change                               Legitimacy also depended on whether a report was a du-
+                                                                              plicate. People reported similar failure symptoms {}, but 
+            Developers had three primary questions when exposing      also different failure symptoms that developers believed 
+             their code to their teammates:                              had a common cause {}: 
+
+                (s1)  Did I make any mistakes in my new code?                   A: These subjects are just busted! I have a feeling I'm seeing the same
+                                                                                          bug. I'm going to do a quick search to see if there are busted subjects
+                (s2)  Did I follow my team’s conventions?                              [in the bug database]—this one kinda sounds like it, blah blah, cate-
+                (s3)  Which changes are part of this submission?               gory name is corrupted? Ooh, screenshots are the same!
+
+              Besides building their code to assess its syntactic correct-      Bug triage is a cost/benefit analysis. To assess a the cost 
+             ness, developers answered questions of correctness (s)      of repair (b), developers considered whether a redesign 
+             by considering the scenarios and range of input that they      would be necessary {}, whether other teams might be 
+             intended to cover. They used debuggers {}, diff tools       affected  {},  and  whether  a  fix  could  be  written  and 
+              {} and unit tests {}, but primarily relied on their own      tested by a deadline {}. Teams also close bugs “by de-
+            reasoning {}. Another common filter for mistakes       sign,” treating them as work items for later releases: 
+              was code reviews. Before a review, developers first looked             V’s teammate: I think the best thing is a new overlay to indicate some-
+              for mistakes:                                                                      thing's going on.
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 5 ===
+                       V: We can't do that by the release. Looks like a work item.               load balancing {}; or when debugging, with unfamiliar 
+             Another factor affecting the repair cost was a reports’      code on the call stack {}. Each time, they addressed 
+              clarity {}. Does it have detailed reproduction steps? Is       three basic questions: 
+             the failure clearly described? Does it have hints about                                                                         (u1)  What code could have caused this behavior? 
+             possible causes or an error message? Reports with inade-                                                                        (u2)  What’s statically related to this code? 
+              quate clarity were rejected {}.                                                                         (u3)  What code caused this program state? 
+                On the benefit side of the analysis (b), developers 
+             considered the number of users affected {} and the      Developers began these tasks with a why question and a 
+             user experience {}. For example,  discussed a fix:         hypothesis about the cause of the failure: 
+
+                      V’s teammate: If we want to push it back, we can, but I think an overlay            A: Why did  I get gibberish? Storing field, given PPack, what is an
+                            is easiest.                                                               MPField? I have no idea what this data structure contains. SPSField? I
+                                                                                              suspect SPS is just busted.
+                       V: But it's a totally broken experience for the user.
+            If there was a known workaround, developers might fo-      Developers acquired their hypotheses (u) by using their 
+             cus on more severe bugs {}.                               intuition {}, asking coworkers for opinions {}, 
+                                                                              looking execution logs {}, scouring bug reports for hints 
+            5.4  Reproducing a Failure                              {}, and using the debugger {}. Although developers 
+                                                                           used many sources to obtain hypotheses, only a few gath-
+             To reproduce a failure, developers asked:                    ered and considered more than one at a time {}. The 
+                                                                         accuracy of developers’ hypotheses was only obvious in 
+                (r1)  What does the failure look like?                                                                              hindsight. 
+                (r2)  In what situations does this failure occur?                                                                       To  test  and  refine  hypotheses,  developers  asked  a 
+             The primary source for both of these types of informa-      broad array of questions with a variety of tools. Many of 
+             tion was bug reports. Reports would often include screen       these questions were about the structure of the code (u), 
+             shots {}, but more often developers relied on the de-       like  what is the definition of this? and what calls this 
+              scriptions of the failure to help them imagine its appear-      method? Such questions were easy to answer with tools. 
+            ance {}.                                          Other, more broadly scoped questions, like what code 
+                Developers relied heavily on bug report’s reproduc-      does a similar operation?, has no tool support, but devel-
+              tion steps to understand the situations in which a failure      opers were good at answering them with search tools. 
+            occurred  (r).  Given  the  complex  configurations  that         Developers answered questions about causality (u) 
+            were necessary to reproduce some problems, even de-      such as where did this value come from? {} and how 
+              tailed steps omitted crucial state {}. In other cases, the      did the program arrive at this method? {}, by a series 
+             state was known, but difficult to reproduce {}:              of lower level questions, such as what thread is the pro-
+                      A: Originally, the repro steps said I need a blog count [as a test case]      gram in right now? {}, what is the value of this variable 
+                  but I couldn't set one up, so I went back and forth.                    or data structure now? {}. (Sillito, Murphy and De 
+             To overcome this, some developers set up a remote desk-      Volder report similar indirect questioning [1].) This was 
+             top connection with the report’s author, so that the full      done  primarily  with  breakpoint  debuggers,  which  re-
+             configuration was available for debugging {}. Develop-      quired  developers  to  translate  their  questions  into  an 
+               ers  would also guess what state was wrong and begin      awkward series of actions: 
+             modifying their environment and test cases until repro-            A: Here we're formatting WSTValue…I can't do highlighting, so I go to
+              ducing the failure:                                                      Source Insight. Find where I am in devns—this is the guy that screwed
+                                                                                               up. Shift F8, highlight all occurrences, where it gets its value from.
+                      A: I'm looking at [the report] to see if I have this configured the same            Here's where we set it. So I want a breakpoint here.
+                  way, but I'm not getting the problem. Maybe we've changed it in the
+                    past half year this has been open.                               As  developers  refined  their  hypotheses,  they  changed 
+             In one situation a failure could not be reproduced and       their concern from the behavior of the existing system, to 
+              the  bug  had  to  be  deferred  {}.  The  developer  docu-      the hypothetical behavior after some change: 
+             mented his attempts in the report for the sake of other              T: There's no file there, so something forgot it and I have a suspicion of
+                                                                               what it is. Might mean that the free code has to get moved later.
+             testers and developers. 
+                                                                          Intuition was essential in answering all of these ques-
+            5.5  Understanding Execution Behavior              tions. The cost of testing hypotheses and the risk of a 
+                                                                            false hypothesis often prevented developers from finding 
+             Developers had to understand unfamiliar code in several       a root cause. Instead, developers frequently assessed the 
+            circumstances: using vendor code {}; joining a new      value in continuing their investigation, stopping when 
+             team {}; obtaining ownership of code {}; during work-      they were satisfied {}. 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 6 ===
+            5.6  Reasoning about Design                           comments sometimes contained design rationale {}, but 
+                                                                             developers hesitated to write them because of the cost of 
+             Developers sought four kinds of design knowledge:           submitting  code  changes.  Developers  rarely  searched 
+                                                                         these sources, because such sources were thought to be 
+              (d1)  What is the purpose of this code? 
+                                                                             inaccurate and out of date: 
+              (d2)  What is the program supposed to do?  
+              (d3)  Why was this code implemented this way?                  H: Given that I'll be the one fixing the bugs, I need to make sure I know
+                                                                                          not what we are doing, but why we are doing it. We have these big
+              (d4)  What are the implications of this change?                                                                                            long design meetings, and everybody states their ideas, and we come
+                                                                                                  to a consensus, but what never gets written in the spec is why we de-
+             The purpose of code (d) was often unclear when devel-                                                                                              cided on that. Keeping track of that is really hard.
+             opers found an  to use: Is it a public artifact or in-
+             tended only for a particular component? Is it regularly       These problems led all but two developers to defer  deci-
+             maintained or no longer used? Some developers inferred      sions because of missing design knowledge. 
+            purpose by finding example  uses {}; sometimes 
+              they directly asked the code’s author {}.                   5.7  Maintaining Awareness 
+              Developers needed to know what the program was 
+              supposed to do (d), for example, to evaluate the correct-      Developers worked to keep track of hardware, people and 
+             ness of a variable’s value {}:                          information needed for their tasks: 
+
+                    D, yelling across the hall: Is 'B' not a legal license key letter?               (a1)  How have resources I depend on changed? 
+             Sometimes this assessment was obvious. For example, a         (a2)  What have my coworkers been doing? 
+             crash in a basic use case must be unintended. In other         (a3)  What information was relevant to my task? 
+            cases, what a program was supposed to do was an ex-                                                                        Some awareness information was “pushed” to developers 
+             plicit, documented decision:                                                                      through    clients  and  alert  tools  {},  and 
+                 M: I just want to double check and make sure the convert key only      through check-in emails {}. Developers obtained other 
+                 shows up in languages that it's supposed to, based on the spec.
+                                                                            types of awareness by actively seeking it. One group had 
+              It was rarely sufficient to understand the cause of a pro-       brief  meetings  throughout  the  day,  to  keep  aware  of 
+             gram behavior. Developers also needed to know the his-      problems that teammates were working on and issues on 
+               torical  reason  for  its  current  implementation  (d)      which they were blocked {}; other groups had weekly 
+            {}. For example, when assessing whether a vari-      meetings  to  keep  awareness  about  triage  and  design 
+               able’s  value  was  “wrong,”  developers  had  to  consider      choices. Developers would stop by coworkers’ offices to 
+             whether the value was anticipated by the designer and      update them on problems or to see what problems they 
+             explicitly ignored or whether it was overlooked. They      were facing {}: 
+             would do this by investigating the code’s change history              F: I talked to [Joe] a bit about the execution, and gather objects is on
+             {} or by looking for bug reports that contained hints             track, but I still need to make the base class.
+             about its current design {}. Developers would seek this             F’s boss: Yeah, [Joe] talked to me about it. We need to make sure files
+             design  rationale from the author of the  code through            are not delay assigned. He's in this big whoop-de-doo about it.
+             face-to-face conversation or some other means {}, but       Developers tracked their time and others’, checking their 
+             in one case the author was unavailable {}. Even when      calendars, glancing at schedules and asking their manag-
+             developers found a person to ask, identifying the infor-      ers about priorities {}. Managers communicated to 
+             mation that they sought was hard to express, as develop-      their developers about upcoming changes in informal 
+             ers struggled to translate detailed and complex runtime      meetings, email announcements, or planning meetings 
+            scenarios into words and diagrams.                           {}. Because developers were often interrupted, they also 
+               The consequences of decisions were also important      sought awareness about their own work (a): 
+             (d). For example, when triaging, developers often dis-            G: Sometimes I have like 20 windows, 5 or 6 build windows, each one is
+             cussed hypothetical scenarios {}:                            a state that I'm working on and I lose it! If I could just save it…I would
+                                                                                be really happy! I hate those midnight reboots.
+                      V’s teammate: Let’s go ahead and block and make it into a single op-
+                      eration.
+
+                       V: But the upgrade script needs to look for individualization.
+
+            Design knowledge of all types was scattered among de-
+            sign documents {}, bug reports {}, and  personal 
+            notebooks {}. Email threads sometimes contained 
+              design rationale {}, but were not shared globally. Code 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 7 ===
+           Figure 3. Types of information developers sought, with search times in minutes; perceptions of the information’s importance,
+                availability, and accuracy; frequencies and outcomes of searches; and sources, with the most common in boldface.
+
+           6. Quantifying Information Needs           deferred searches because they depended on a  person 
+                                                                            known to be unavailable. They were also expert at assess-
+            The information needs we have discussed are summa-      ing the likelihood of the search succeeding and would 
+             rized in Figure 3. The time spent searching, search fre-     abandon a search if the information was not important 
+            quencies, search outcomes, and source frequencies are      enough. 
+             based on our observational data. The outcomes include 
+             when developers acquired information, deferred a search      6.1  Rating Information Needs 
+             with the intent of resuming it, or gave up with no intent 
+             of resuming it; a few searches continued beyond our ob-      The percentages in the middle of  come from a survey of 
+             servations. Also, in two cases, a need was initially de-       different developers (of  contacted), asking them to 
+               ferred,  then  satisfied  afterward  by  a  coworker’s  email      rate their agreement with statements about each of these 
+             response; we coded these as acquired.                         information types, based on a -point scale from strongly 
+                The most frequently sought and acquired information       disagree to strongly agree. The bars represent the percent 
+             includes  whether  any  mistakes  (syntax  or  otherwise)      of developers who agreed or strongly agreed that the in-
+            were made in code and what a developers’  coworkers      formation was (from le to right) important to making 
+            have been doing. The most often deferred information      progress, unavailable or difficult to obtain, and had ques-
+              was the cause of a particular program state and the situa-      tionable accuracy. 
+              tions in which a failure occurs. Developers rarely gave up          The survey results reveal interesting trends. The ma-
+             searching. There was no relationship between deferring a       jority of developers rated the most frequently sought in-
+             search and whether the source involved people (bug re-      formation in our observations as more important, and 
+              ports, face-to-face, , email) (χ()=., p > .).              they also rated frequently deferred information as more 
+               Based  on  medians,  the  information  that  took  the       unavailable.  One  discrepancy  is  that  developers  rated 
+             longest to acquire was  whether  conventions were  fol-     coworker  awareness  (a)  as  relatively  unimportant, 
+             lowed (s); based on maximums, the longest to acquire       which conflicts with its frequency in our observations. It 
+             was knowledge about design (d, d) and behavior (u,      may be that coworker awareness is so frequent sought 
+             u). No one source of information took longer to acquire      and successfully obtained that developers do not think 
+              than another (F(, )=., p>.), nor was there a dif-      about it. We also observed developers successfully obtain 
+             ference in search times between sources involving people      knowledge  about  the  implications  of  a  change  (d), 
+             and sources that did not (F(, )=.,  p>.). These       whereas developers rated it relatively difficult to acquire. 
+             times  are  misleading,  however,  as  many  of  the  maxi-      The survey also begins to reveal which information types 
+         mums  were  on  deferred  searches,  so  they  were  likely      have  more  questionable  accuracy,  namely  knowledge 
+             longer than shown here. Further, developers gave up or       about design (d, d), behavior (u), and triage (b, b). 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 8 ===
+            6.2 Most Common Information Needs                a2  What have my coworkers been doing?          15   
+                                                                             u3  What code caused this program state?          11   
+                                                                                    a1  How have resources I depend on changed?     10   
+             For each information need, Figure 4 lists those partici-                                                                             u1  What code could have caused this behavior?    9   
+             pants who had that need at least once during their obser-      c3  How do I use this data structure or function?    9   
+             vations. The most common need across participants was      s1  Did I make any mistakes in my new code?       9   
+            coworker awareness. Most of the information needs oc-     d2  What is the program supposed to do?            7   
+             curred among several developers from different  teams in      r2  In what situations does the failure occur?        7   
+                                                                              b3  Is this problem worth fixing?                      7   
+              different business divisions, which suggests that these are                                                                              u2  What's statically related to this code?             6   
+             representative of development work in general. A few of      d3  Why was this code implemented this way?       6   
+             the information needs occurred for only a few partici-     d4  What are the implications for this change?       6   
+             pants, which suggests that this list is not complete. Ob-      r1  What does the failure look like?                   5   
+             serving  more  developers  over  longer  periods  of  time      c3  How can I coordinate this with the other code? 4   
+                                                                                          s2  Did I follow my team's conventions?             4   
+             could reveal other less frequent needs. (Had we not ob-                                                                              d1  What is the purpose of this code?                 4   
+             served , for instance, we would not have seen need a3.)       b2  Is this a legitimate problem?                       3   
+                                                                                          s3  What changes are part of this submission?       2   
+            6.3  Unsatisfied Information Needs                    b2  How difficult will this problem be to fix?         2   
+                                                                                    a3  What information was relevant to my task?      1   
+             Many of the frequent information needs are problematic,     Figure 4. Information needs per participant.
+             in that searches for the information were often satisfied                                                                                                                                           
+             (deferred or abandoned) and had long search times. The      probably explains why coworker awareness is the second 
+             most frequently unsatisfied information needs were the      most frequent information need. (Developers checked on 
+              following,  with their  percentage of unsatisfied queries      coworker  availability  almost  as  many  times  as  they 
+            and maximum observed search times:                         looked at output from the compiler or debugger.) This is 
+                                                                          consistent with prior work on awareness in software de-                       What code caused this program state?        %    min 
+                                                                          velopment, with regard to sources, strategies, and fre-                   Why was the code implemented this way?    %    min 
+                                                                           quency of information seeking [5][9][15].                      In what situations does this failure occur?    %   min 
+                                                                         Why should developers turn so often to coworkers?                What code could have caused this behavior?  %    min 
+                                                                             One possibility is the topics being discussed. Outside of                  How have the resources I depend on changed? %    min 
+                                                                        awareness, the information needs where coworkers were                What is the program supposed to do?        %    min 
+                                                                            most often consulted were either about design, i.e.                 What have my coworkers been doing?       %    min 
+                                                                                                                                        ·  What are the implications of this change? ( times) 
+             This ranking may reflect that  of the  participants’             · What is the program supposed to do? () 
+             teams were in a bug fixing phase. In particular, the in-             · Why was the code implemented this way? () 
+             formation needs ranked ,  and  are largely about bug       or about execution behavior, i.e. 
+            reproduction and the ones ranked  and  are largely             ·  Is this problem worth fixing? () 
+              about evaluating possible fixes for bugs. Nonetheless, the             ·  In what situations does this failure occur? () 
+              fact that these information needs are so often unsatisfied             ·  What code could have caused this behavior? () 
+            and take  such a long time clearly  hindered developer       In several instances coworkers were unavailable for these 
+              productivity.                                                questions, and the developers’ tasks were blocked once 
+                                                                            they sent their questions via email {}. 
+           7. Discussion                                            Developers consulted coworkers about design because 
+                                                                           in most cases, design knowledge was only in cowork-
+             Our motivation for this study was to identify and charac-      ers’ minds. The lack of design documentation may be due 
+             terize software developers’ information needs. While the      to inadequate notations,  particularly  for design intent 
+              list we have identified may not be complete, it has several      and rationale. Two of our observed developers did have 
+             implications.                                                design documentation—a prototype for a user interface, 
+                                                                      a syntax grammar for a parser—which answered some of 
+            7.1  Coworkers as Information Sources               their questions {}. However, they still turned to co-
+                                                                         workers when they questioned the accuracy of the docu-
+            Coworkers were the most frequent source of informa-      ments.  
+             tion, accessed at least once for  of the  information         Questions about program behavior were difficult to 
+             needs and in  of the  instances of information seek-      acquire because of the number of possible explanations. 
+             ing. The importance of coworkers as information sources      Developers had to use primitive tools to search this ex-
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 9 ===
+             planation space, and so searches were driven by intuition      ods. The frequent need to consult coworkers for informa-
+             or expert opinion. Developers also went to great lengths      tion is an important motivation for Scrum meetings and 
+             to learn behavior information. As one example, tofix a      radical collocation. Chong and Siino recently compared 
+             bug recently assigned to him,  had a tester nine times      interruptions among radically collocated pair program-
+             zones away reproduce the bug (at  am) since no one else      mers versus cubicle-base solo programmers and found 
+             had the right machine configuration. Because behavior      that the Agile team’s interruptions were shorter, more 
+             information was hard to acquire, developers made triage       on-topic, and less disruptive [4]. Our data about the im-
+             decisions quickly based on implementation concerns and      portance of design knowledge provide evidence about the 
+              resource availability, rather than the organization’s over-      value of prototyping in software design, as well as the 
+             all goals {}. That is, developers would favor those      value of prototypes during implementation. Our observa-
+             tasks with the fewest information needs.                     tions about the importance of error checking, coupled 
+                                                                          with the distributed  nature  of design  knowledge, also 
+            7.2  Automating Information Sources                 support the claims of pair programming: with two devel-
+                                                                          opers, with slightly different design knowledge, errors 
+             One approach to reducing this communication burden is      seem more likely to be caught or even prevented. 
+             to automate the acquisition of information. Given the          Last  is  the  issue  of  notations  for  software  design. 
+             frequent desire for awareness information, it is no sur-      While there is already considerable research on architec-
+              prise that researchers are already creating awareness dis-      ture description languages, , and various forms of 
+              plays  for  development  teams,  like  FASTDash  [1]  and      model checking, our observations raise several pertinent 
+              Palantír [17].                                               questions. What can be written down cost-effectively? 
+                For  example,  many  of  developers’  questions  about      How can it be written to be searchable and so that its 
+             static relationships depended on metadata such as build      accuracy and trustworthiness are assessable by develop-
+             numbers and version histories, but developers manually       ers who consult it? It is worth noting that several partici-
+              incorporated such data in their searches. Similarly, tools       pants perceived that face-to-face meetings to be a pleas-
+             for analyzing programs’ dynamic behavior only partially      ant and efficient way to transfer design knowledge. The 
+             helped with determining the cause of a program state; the      frequent  conversations  promote  camaraderie  and  no 
+            rest had to be determined by hand using a breakpoint       effort is wasted recording  design information that might 
+             debugger and through guesswork. Task-specific applica-      never be read or might go stale before being read. Hence, 
+              tions  of  program slicing  would be a  way to automate      a demand-driven approach to recording design knowl-
+             some of this searching [19]. Implementation questions      edge might succeed over an eager “record everything” 
+              (c, c, c) also lacked adequate tools (it is worth noting      approach. 
+              that these needs have also been discussed relative to end-
+             user programming [10]). Tools were often appropriated      7.3  Study Limitations 
+              for unanticipated uses, so it is within tool designers’ in-
+              terests to design tools that are amenable to appropriation.      Because we performed this study in the context of devel-
+             This might entail using standards, so that information       opers’ real work, the external validity of our results are 
+             may be passed between tools and transformed as needed.      high. The diversity of our sample gives us confidence in 
+               Some information seeking cannot be automated be-      generalizing across different products, team structures 
+             cause the information is currently unavailable. For ex-      and  development  phases  within  the  organization  we 
+             ample, when developers could not reproduce a failure,       studied. We were unable to control for corporate culture, 
+              there was little they could do to find it. Tracing tools that      although the communication patterns and development 
+             can record the failure context would be a major advance.      processes  we  observed  are  consistent  with  studies  of 
+             Failures could be debugged separately from their original      other  corporations.  Other  variations,  such  as  testing 
+             context and the trace could be analyzed by multiple peo-      practices, the talent and expertise of a company’s devel-
+              ple. Design intent was also difficult to find. Information      opers, and more or less formal development processes, 
+            about  rationale  and  intent  existed  sometimes  in  un-      may have biased our findings. 
+             searchable  places  like whiteboards and  personal  note-         Studies that rely on observations are subject to ob-
+            books or in unexpected places like bug reports. Some       servers’ biases, so it was essential that we have multiple 
+             awareness information is difficult to acquire, for exam-      observers.  For  example,  we  may  have  misunderstood 
+             ple, developers often wondered who is reading their code.      what developers were looking for. To minimize intru-
+             Tools could make this available.                               sion, we chose to have a single observer per session, who 
+                Aside from tools, one could address these information       took only written notes. (In several cases, the participants 
+            needs through process change, for example Agile meth-      worked in shared or noisy offices.) Even with a single 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.
+=== PDF PAGE 10 ===
+              observer, there were several instances of missed interrup-     References 
+             tions, where a visitor peeked inside the office, saw the 
+             observer, and chose to leave rather than interrupt. There        [1]   Biehl, J.T., Czerwinski, M., Smith, G., Robertson, G.G., Bailey, B. 
+             were also many information seeking tasks that we could             (). FASTDash: A Visual Dashboard for Fostering Awareness 
+                                                                                               in Software Teams. To appear at CHI . 
+             not  observe  because  they  were  either  too  subtle,  like 
+                                                                                            [2]   Brooks,  F.P.  Jr.  ().  The Mythical Man-Month: Essays on 
+              glancing at a coworker’s  status, or invisible, like the            Software Engineering. Addison Wesley, Reading, . 
+             use of memory to recall facts about the code. Our data        [3]   Cataldo, M., P. Wagstrom, J.D. Herbsleb, K. Carley (). Iden-
+             was also biased by those issues that developers chose to              tification of Coordination Requirements: Implications for the De-
+             mention during think aloud.                                             sign of Collaboration and Awareness Tools. Computer Supported 
+               The timestamps in our logs are accurate within the             Cooperative Work , Banﬀ, Alberta, –. 
+                                                                                            [4]  Chong, J., Rosanne Siino. Interruptions on Software Teams: A 
+             minute, but are subject to typical clerical errors during 
+                                                                                      Comparison of Paired and Solo Programmers. Computer Sup-
+            transcription and copying. Also, some time was spent             ported Cooperative Work , Banﬀ, Alberta. p.–. 
+              talking to the observers, but this bias was likely distrib-       [5]   de Souza, C.R.B., D.F. Redmiles, G. Mark, J. Penix, M. Sierhuis 
+             uted throughout our observations. We only had a single             () Management of Interdependencies in Collaborative Soft-
+             coder categorize our logs, which affects our quantitative             ware Development: A Field Study. ISESE, Rome, Italy, –. 
+             data; however, we feel the orders of magnitude in our        [6]  Eisenstadt, M. (). “My Hairiest Bug” War Stories. CACM, 
+                                                                                                       (), –. 
+              data are accurate. 
+                                                                                            [7]   Gonzalez, V., G. Mark. , J. Harris (). No Task Le Behind? 
+                                                                                            Examining the Nature of Fragmented Work. CHI, Portland, , 
+           8. Conclusions                                                        –. 
+                                                                                            [8]   Gutwin, C., R. Penner, K. Schneider, K. (). Group Awareness 
+              Our goals in this study were to identify software develop-             in Distributed Software Development. CSCW, Chicago, , –. 
+             ers’ information needs and characterize the role of these        [9]  Hertzum, M. (). The Importance of Trust in Software Engi-
+            needs in developers’ decision making. What we found             neers’ Assessment of Choice of Information Sources. Information 
+                                                                                                      and Organization, (), –. 
+             were  types of information. Some of these were easy to 
+                                                                                      [10] Ko, A.J., B.A. Myers, H.H. Aung (). Six Learning Barriers in 
+             satisfy accurately (awareness) but others with only ques-            End-User Programming Systems. VL/HCC, Rome, Italy, –. 
+              tionable accuracy (the value of a fix and the implications       [11] Ko, A.J., B.A. Myers, M.J. Coblenz, H.H. Aung (). An Ex-
+            of a change). Other needs were deferred often (knowl-             ploratory  Study  of  How  Developers  Seek,  Relate,  and  Collect 
+             edge  about behavior  and design),  whereas some were             Relevant Information during Software Maintenance Tasks. TSE, 
+              impossible to satisfy in certain cases (reproduction steps).             –. 
+                                                                                      [12] McDonald, D.W., M.S. Ackerman (). Just Talk to Me: A Field 
+            Not only do these needs  call for innovations in tools, 
+                                                                                                Study of Expertise Location. CSCW, Seattle, WA, –. 
+             processes, and notations, but they also reveal how the                                                                                       [13] LaToza, T.D., G. Venolia, R. DeLine. (). Maintaining Mental 
+              collective responsibility for design knowledge can lead to            Models: A Study of  Developer  Work Habits. ICSE, Shanghai, 
+             intense awareness and communication needs observed in             China, –. 
+              this study and others.                                               [14] Perlow, L.A. (). The Time Famine: Toward a Sociology of 
+                There are many future directions for this work. One             Work Time. Administrative Science Quarterly, (), –. 
+             issue we did not investigate were the decisions that de-       [15] Perry, D.E., N.A. Staudenmayer, L.G. Votta (). People, Orga-
+                                                                                                 nizations and Process Improvement. IEEE Software, July, –. 
+             velopers made and the true accuracy of the information 
+                                                                                      [16] Sandusky, R.J., L. Gasser (). Negotiation and Coordination of 
+            on which they were based. We have also proposed some             Information and Activity in Distributed Software Problem Man-
+             explanations for the needs we observed, which should be             agement. GROUP, Sanibel Island, , –. 
+             tested. There are other populations, namely testers and       [17] Sarma, A., Z. Noroozi, A. van der Hoek, Palantír: Raising Aware-
+               architects,  whose  roles  and  information  needs  should             ness among Configuration Management Workspaces. ICSE, , 
+             also be studied. We hope that these investigations and             Portland, , –. 
+                                                                                      [18] Seaman, C.B., V.R. Basili (). Communication and Organiza-
+             others will bring us a more complete understanding of 
+                                                                                                 tion: An Empirical Study of Discussion in Inspection Meetings. 
+            software  development work and eventual improvements             TSE. (), –. 
+              in software quality.                                                  [19] Sridharan, M., S.J. Fink, R. Bodik. Thin Slicing. To appear at PLDI 
+                                                                                                . 
+         Acknowledgements                                     [20] Sillito, J., G. Murphy, K. De Volder (). Questions Program-
+                                                                                             mers Ask During Software Evolution Tasks. SIGSOFT/FSE, Port-
+                                                                                                          land, , –. 
+             We extend our thanks to the developers who participated 
+             in our study for their valuable time. We also thank the 
+            ,  and Visual Studio User Experience teams at 
+             Microsoft for their feedback. The first author was an in-
+             tern at Microsoft Research over the summer of . 
+
+
+
+
+
+29th International Conference on Software Engineering (ICSE'07)
+0-7695-2828-7/07 $20.00 © 2007
+
+                     Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.

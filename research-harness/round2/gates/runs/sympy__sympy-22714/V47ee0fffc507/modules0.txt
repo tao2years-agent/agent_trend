@@ -1,0 +1,109 @@
+FFFFFFFFFFFFF                                                            [100%]
+================================== FAILURES ===================================
+_________________________________ test_point __________________________________
+sympy\geometry\tests\test_point.py:26: in test_point
+    p3 = Point(0, 0)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+________________________________ test_point3D _________________________________
+sympy\geometry\tests\test_point.py:180: in test_point3D
+    p3 = Point3D(0, 0, 0)
+sympy\geometry\point.py:1122: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+________________________________ test_Point2D _________________________________
+sympy\geometry\tests\test_point.py:312: in test_Point2D
+    p1 = Point2D(1, 5)
+sympy\geometry\point.py:915: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+_______________________________ test_issue_9214 _______________________________
+sympy\geometry\tests\test_point.py:330: in test_issue_9214
+    p1 = Point3D(4, -2, 6)
+sympy\geometry\point.py:1122: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+______________________________ test_issue_11617 _______________________________
+sympy\geometry\tests\test_point.py:338: in test_issue_11617
+    p1 = Point3D(1,0,2)
+sympy\geometry\point.py:1122: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+_______________________________ test_transform ________________________________
+sympy\geometry\tests\test_point.py:346: in test_transform
+    p = Point(1, 1)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+_________________________ test_concyclic_doctest_bug __________________________
+sympy\geometry\tests\test_point.py:357: in test_concyclic_doctest_bug
+    p1, p2 = Point(-1, 0), Point(1, 0)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+_______________________________ test_arguments ________________________________
+sympy\geometry\tests\test_point.py:368: in test_arguments
+    singles2d = ((1,2), [1,2], Point(1,2))
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+__________________________________ test_unit __________________________________
+sympy\geometry\tests\test_point.py:441: in test_unit
+    assert Point(1, 1).unit == Point(sqrt(2)/2, sqrt(2)/2)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+__________________________________ test_dot ___________________________________
+sympy\geometry\tests\test_point.py:445: in test_dot
+    raises(TypeError, lambda: Point(1, 2).dot(Line((0, 0), (1, 1))))
+sympy\geometry\tests\test_point.py:445: in <lambda>
+    raises(TypeError, lambda: Point(1, 2).dot(Line((0, 0), (1, 1))))
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+__________________________ test__normalize_dimension __________________________
+sympy\geometry\tests\test_point.py:449: in test__normalize_dimension
+    assert Point._normalize_dimension(Point(1, 2), Point(3, 4)) == [
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+______________________________ test_issue_22684 _______________________________
+sympy\geometry\tests\test_point.py:459: in test_issue_22684
+    Point(1, 2)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+____________________________ test_direction_cosine ____________________________
+sympy\geometry\tests\test_point.py:463: in test_direction_cosine
+    p1 = Point3D(0, 0, 0)
+sympy\geometry\point.py:1122: in __new__
+    args = Point(*args, **kwargs)
+sympy\geometry\point.py:156: in __new__
+    raise ValueError('Imaginary coordinates are not permitted.')
+E   ValueError: Imaginary coordinates are not permitted.
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22714\V47ee0fffc507\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/geometry/tests/test_point.py::test_point - ValueError: Imaginary...
+FAILED sympy/geometry/tests/test_point.py::test_point3D - ValueError: Imagina...
+FAILED sympy/geometry/tests/test_point.py::test_Point2D - ValueError: Imagina...
+FAILED sympy/geometry/tests/test_point.py::test_issue_9214 - ValueError: Imag...
+FAILED sympy/geometry/tests/test_point.py::test_issue_11617 - ValueError: Ima...
+FAILED sympy/geometry/tests/test_point.py::test_transform - ValueError: Imagi...
+FAILED sympy/geometry/tests/test_point.py::test_concyclic_doctest_bug - Value...
+FAILED sympy/geometry/tests/test_point.py::test_arguments - ValueError: Imagi...
+FAILED sympy/geometry/tests/test_point.py::test_unit - ValueError: Imaginary ...
+FAILED sympy/geometry/tests/test_point.py::test_dot - ValueError: Imaginary c...
+FAILED sympy/geometry/tests/test_point.py::test__normalize_dimension - ValueE...
+FAILED sympy/geometry/tests/test_point.py::test_issue_22684 - ValueError: Ima...
+FAILED sympy/geometry/tests/test_point.py::test_direction_cosine - ValueError...
+13 failed in 0.37s

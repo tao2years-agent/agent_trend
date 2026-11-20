@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.170" timestamp="2026-11-20T12:07:54.544108" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_smith_normal" time="0.063" /><testcase classname="sympy.polys.matrices.tests.test_normalforms" name="test_hermite_normal" time="0.001"><failure message="assert DomainMatrix(...], (3, 0), ZZ) == DomainMatrix(...], (3, 1), ZZ)&#10;  Use -v to get more diff">sympy\polys\matrices\tests\test_normalforms.py:66: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+E   assert DomainMatrix(...], (3, 0), ZZ) == DomainMatrix(...], (3, 1), ZZ)
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

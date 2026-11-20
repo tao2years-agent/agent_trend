@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="author" content="Bryan Friedman and Patricia Johnson">
+<link rel="icon" href="/brand/moderne-symbol.svg" type="image/svg+xml">
+
+<meta property="og:site_name" content="Moderne">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Introducing the New Moderne DevCenter Dashboard | Real-Time Code Modernization">
+<meta property="og:description" content="See how the Moderne DevCenter helps teams coordinate migrations, track vulnerabilities, and align modernization goals at scale with new OpenRewrite recipe-based dashboards and real-time insights.">
+<meta property="og:url" content="https://moderne.ai/blog/new-moderne-devcenter">
+
+<meta property="og:image" content="https://moderne.ai/blog/new-moderne-devcenter/devcenter-blog.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="627">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@moderneinc">
+<meta name="twitter:creator" content="@moderneinc">
+<meta name="twitter:title" content="Introducing the New Moderne DevCenter Dashboard | Real-Time Code Modernization">
+<meta name="twitter:description" content="See how the Moderne DevCenter helps teams coordinate migrations, track vulnerabilities, and align modernization goals at scale with new OpenRewrite recipe-based dashboards and real-time insights.">
+<meta name="twitter:image" content="https://moderne.ai/blog/new-moderne-devcenter/devcenter-blog.jpg">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://moderne.ai/#organization",
+      "name": "Moderne",
+      "url": "https://moderne.ai",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://moderne.ai/brand/moderne-logo.svg"
+      },
+      "founders": [
+        { "@type": "Person", "name": "Jonathan Schneider" },
+        { "@type": "Person", "name": "Olga Kundzich" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Miami",
+        "addressRegion": "FL",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/moderneinc/",
+        "https://twitter.com/moderneinc",
+        "https://www.youtube.com/@Moderne-and-OpenRewrite",
+        "https://www.g2.com/products/moderne-moderne/reviews",
+        "https://www.gartner.com/reviews/market/ai-augmented-code-modernization-tools/vendor/moderne"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://moderne.ai/#website",
+      "url": "https://moderne.ai",
+      "name": "Moderne",
+      "publisher": { "@id": "https://moderne.ai/#organization" }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Get your front row seat to the new Moderne DevCenter","description":"See how the Moderne DevCenter helps teams coordinate migrations, track vulnerabilities, and align modernization goals at scale with new OpenRewrite recipe-based dashboards and real-time insights.","image":"https://moderne.ai/blog/new-moderne-devcenter/devcenter-blog.jpg","datePublished":"2025-09-30","author":[{"@type":"Person","name":"Bryan Friedman"},{"@type":"Person","name":"Patricia Johnson"}],"publisher":{"@type":"Organization","@id":"https://moderne.ai/#organization","name":"Moderne","logo":{"@type":"ImageObject","url":"https://moderne.ai/brand/moderne-logo.svg"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://moderne.ai/blog/new-moderne-devcenter"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://moderne.ai"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://moderne.ai/blog"},{"@type":"ListItem","position":3,"name":"Get your front row seat to the new Moderne DevCenter","item":"https://moderne.ai/blog/new-moderne-devcenter"}]}</script>
+
+<script>!function(){var e=location.hostname;if(!("moderne.ai"===e||"www.moderne.ai"===e)){var n=document.createElement("meta");n.name="robots",n.content="noindex,nofollow",document.head.appendChild(n)}}()</script>
+<link rel="alternate" type="application/rss+xml" title="Moderne Blog" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="preload" href="https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2" as="font" type="font/woff2" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload='this.media="all"'>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+
+<script>!function(){var t=location.hostname;if("localhost"!==t&&"127.0.0.1"!==t&&"0.0.0.0"!==t&&"::1"!==t&&""!==t&&!/\.local$/.test(t)){window.dataLayer=window.dataLayer||[],window.gtag=window.gtag||function(){dataLayer.push(arguments)},gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",functionality_storage:"denied",personalization_storage:"denied",security_storage:"denied"}),window.OptanonWrapper=function(){};var e=document.createElement("script");e.src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js",e.type="text/javascript",e.charset="UTF-8",e.setAttribute("data-domain-script","0190cb61-822b-7b15-8cbc-563a8320e82a"),document.head.appendChild(e),function(t,e,a,n){t[n]=t[n]||[],t[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});var o=e.getElementsByTagName(a)[0],d=e.createElement(a);d.async=!0,d.src="https://www.googletagmanager.com/gtm.js?id=GTM-5P4GJBQ",o.parentNode.insertBefore(d,o)}(window,document,"script","dataLayer")}}()</script>
+<script type="module" src="/assets/SiteBaseline.astro_astro_type_script_index_0_lang.wU0dhIUr.js"></script>
+  <title>Introducing the New Moderne DevCenter Dashboard | Real-Time Code Modernization</title>
+  <meta name="description" content="See how the Moderne DevCenter helps teams coordinate migrations, track vulnerabilities, and align modernization goals at scale with new OpenRewrite recipe-based dashboards and real-time insights.">
+  <link rel="canonical" href="https://moderne.ai/blog/new-moderne-devcenter">
+  <meta property="og:type" content="article">
+  
+  
+<link rel="stylesheet" href="/assets/SiteBaseline.Cn_V3pa0.css">
+<link rel="stylesheet" href="/assets/_slug_.DVPYlVOX.css">
+<link rel="stylesheet" href="/assets/lh-gradients.D81a9bJ_.css">
+<link rel="stylesheet" href="/assets/VideoPlayer.CwfTf4_0.css">
+<link rel="stylesheet" href="/assets/blog.C4fZF0UP.css">
+<link rel="stylesheet" href="/assets/post.mn_S5L5e.css"></head>
+<body>
+  <svg class="grain" xmlns="http://www.w3.org/2000/svg"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#gr)" opacity="0.4"></rect></svg>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5P4GJBQ" height="0" width="0" style="visibility:hidden;display:none"></iframe></noscript>
+<aside class="site-announce" role="region" aria-label="Announcement" data-announce-id="asf-summit-early-bird">
+  <div class="wrap site-announce-inner">
+    <p class="site-announce-text"><span class="site-announce-hl">AI Software Factory Summit</span> | Feb 22-24, 2027</p>
+    <a class="site-announce-cta" href="/ai-software-factory/">Early Bird pricing <span aria-hidden="true">→</span></a>
+  </div>
+  <button class="site-announce-close" type="button" aria-label="Dismiss announcement">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
+</aside>
+<header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label="Moderne home">
+      <img class="logo logo-full" src="/brand/moderne-logo-light-r.png" alt="Moderne" width="165" height="24" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      <img class="logo logo-mark" src="/brand/moderne-icon-light.svg" alt="" aria-hidden="true" width="30" height="30">
+    </a>
+    <nav id="site-nav">
+      <div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-0" data-key="site.nav.0.label">Solutions</button>
+  <div class="nav-menu" id="nav-panel-0"><div class="nav-col">
+      
+      <a href="/solutions/reduce-cost-to-operate">
+          <span class="nav-lbl" data-lbl="Reduce cost to operate software estate">Reduce cost to operate software estate</span>
+          
+        </a><a href="/solutions/accelerate-cloud-modernization">
+          <span class="nav-lbl" data-lbl="Accelerate cloud modernization">Accelerate cloud modernization</span>
+          
+        </a><a href="/solutions/improve-security-posture">
+          <span class="nav-lbl" data-lbl="Improve security and risk posture">Improve security and risk posture</span>
+          
+        </a><a href="/solutions/increase-ai-development-efficiency">
+          <span class="nav-lbl" data-lbl="Increase AI development efficiency">Increase AI development efficiency</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="start">
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-1" data-key="site.nav.1.label">Product</button>
+  <div class="nav-menu" id="nav-panel-1"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.0.title">Editions</p>
+      <a href="/platform">
+          <span class="nav-lbl" data-lbl="Moderne Platform">Moderne Platform</span>
+          
+        </a><a href="/moderne-dx">
+          <span class="nav-lbl" data-lbl="Moderne DX">Moderne DX</span>
+          
+        </a><a href="/managed-service">
+          <span class="nav-lbl" data-lbl="Managed Service">Managed Service</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.1.sections.1.title">Features</p>
+      <a href="/moderne-agent-tools/code-search">
+          <span class="nav-lbl" data-lbl="Code Search">Code Search</span>
+          
+        </a><a href="/moderne-agent-tools/prethink">
+          <span class="nav-lbl" data-lbl="Prethink">Prethink</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div></div>
+</div><div class="nav-group" data-align="container" data-titles>
+  <button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-panel-2" data-key="site.nav.2.label">Resources</button>
+  <div class="nav-menu" id="nav-panel-2"><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.0.title">Technology foundations</p>
+      <a href="/platform/lst">
+          <span class="nav-lbl" data-lbl="Lossless Semantic Tree">Lossless Semantic Tree</span>
+          
+        </a><a href="/recipes">
+          <span class="nav-lbl" data-lbl="Recipes">Recipes</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.1.title">Learning</p>
+      <a href="https://docs.moderne.io" target="_blank" rel="noopener">
+          <span class="nav-lbl" data-lbl="Documentation">Documentation</span>
+          <svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a><a href="/content-library#on-demand-webinars">
+          <span class="nav-lbl" data-lbl="On-demand webinars">On-demand webinars</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.2.title">Community</p>
+      <a href="/openrewrite">
+          <span class="nav-lbl" data-lbl="OpenRewrite">OpenRewrite</span>
+          
+        </a><a href="/events">
+          <span class="nav-lbl" data-lbl="Events">Events</span>
+          
+        </a><a href="/backpatch-alliance">
+          <span class="nav-lbl" data-lbl="Backpatch Alliance">Backpatch Alliance</span>
+          
+        </a><a href="/platform/code-genome">
+          <span class="nav-lbl" data-lbl="Code Genome Project">Code Genome Project</span>
+          
+        </a><a href="/ai-software-factory">
+          <span class="nav-lbl" data-lbl="AI Software Factory Summit">AI Software Factory Summit</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.3.title">Media</p>
+      <a href="/blog">
+          <span class="nav-lbl" data-lbl="Blog">Blog</span>
+          
+        </a><a href="/newsroom">
+          <span class="nav-lbl" data-lbl="Newsroom">Newsroom</span>
+          
+        </a><a href="/press-kit">
+          <span class="nav-lbl" data-lbl="Press kit">Press kit</span>
+          
+        </a><a href="/content-library#videos">
+          <span class="nav-lbl" data-lbl="Videos and podcasts">Videos and podcasts</span>
+          
+        </a>
+    </div><div class="nav-col">
+      <p class="nav-col-title" data-key="site.nav.2.sections.4.title">Case studies</p>
+      <a href="/case-study">
+          <span class="nav-lbl" data-lbl="All case studies">All case studies</span>
+          
+        </a><a href="/case-study/soundhound-ai-automates-vulnerability-remediation-and-secure-code-transformation-with-moderne">
+          <span class="nav-lbl" data-lbl="Vulnerability remediation">Vulnerability remediation</span>
+          
+        </a><a href="/case-study/global-retailer-accelerates-spring-boot-migrations-at-massive-scale">
+          <span class="nav-lbl" data-lbl="Spring Boot at scale">Spring Boot at scale</span>
+          
+        </a><a href="/case-study/tackling-technical-debt-at-big-bank-scale">
+          <span class="nav-lbl" data-lbl="Technical debt">Technical debt</span>
+          
+        </a><a href="/case-study/choice-hotels-automates-secure-code-modernization-at-scale">
+          <span class="nav-lbl" data-lbl="Secure modernization">Secure modernization</span>
+          
+        </a>
+    </div></div>
+</div><a href="/partners" data-key="site.nav.3.label">Partners</a>
+      <span class="nav-foot"><a class="nav-cta" href="/pricing" data-key="site.navCta.label">Pricing</a></span>
+    </nav>
+    <button class="site-search-btn" type="button" aria-label="Search the site" data-search-open>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" width="20" height="20">
+        <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<script>!function(){var e="moderne.announce.dismissed",t=document.querySelector(".site-announce"),n=document.getElementById("site-header");n&&n.classList.add("nav-js");var r=t&&t.getAttribute("data-announce-id");try{r&&localStorage.getItem(e)===r&&(t.hidden=!0)}catch(e){}var o=t&&t.querySelector(".site-announce-close");if(o&&o.addEventListener("click",function(){t.hidden=!0;try{r&&localStorage.setItem(e,r)}catch(e){}}),n){var s=function(){var e=n.offsetHeight,r=document.documentElement.style;r.setProperty("--chrome-h",(t?t.offsetHeight:0)+e+"px"),r.setProperty("--header-h",e+"px")};if(document.styleSheets.length?s():requestAnimationFrame(s),"ResizeObserver"in window){var a=new ResizeObserver(s);a.observe(n),t&&a.observe(t)}}}()</script>
+  
+<script type="module" src="/assets/BlogPost.astro_astro_type_script_index_0_lang.BBo4jsKw.js"></script>
+  <main>
+  <article class="post">
+    <div class="post-grid">
+      <aside class="post-toc" aria-label="On this page">
+        <p class="toc-h">Contents</p>
+        <nav class="toc-nav">
+          <ol class="toc-list">
+            <li class="toc-item lvl2"><a href="#recipe-based-devcenter-customizable-configuration">Recipe-based DevCenter: Customizable configuration</a></li>
+            <li class="toc-item lvl2"><a href="#get-the-full-picture-fast">Get the full picture, fast</a></li>
+            <li class="toc-item lvl2"><a href="#parliament-charts-a-clear-way-to-see-progress">Parliament charts: A clear way to see progress</a></li>
+            <li class="toc-item lvl2"><a href="#prioritize-and-fix-security-issues">Prioritize and fix security issues</a></li>
+            <li class="toc-item lvl2"><a href="#set-it-up-your-way">Set it up your way</a></li>
+            <li class="toc-item lvl2"><a href="#see-your-modernization-story-in-real-time">See your modernization story in real time</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="post-main">
+        <header class="post-head">
+          <a class="post-back" href="/blog">← Blog</a>
+          <div class="pcats"><span class="pcat">Product</span></div>
+          <h1 class="post-title">Get your front row seat to the new Moderne DevCenter</h1>
+          
+          <p class="post-byline">
+  <span class="by-author">Bryan Friedman and Patricia Johnson</span>
+  
+  <span class="by-meta">September 30, 2025</span><span class="by-meta">6 min read</span>
+</p>
+        </header>
+
+        <div class="post-body">
+          <details class="toc-mobile">
+            <summary>Contents</summary>
+            <ol class="toc-list"><li class="toc-item lvl2"><a href="#recipe-based-devcenter-customizable-configuration">Recipe-based DevCenter: Customizable configuration</a></li><li class="toc-item lvl2"><a href="#get-the-full-picture-fast">Get the full picture, fast</a></li><li class="toc-item lvl2"><a href="#parliament-charts-a-clear-way-to-see-progress">Parliament charts: A clear way to see progress</a></li><li class="toc-item lvl2"><a href="#prioritize-and-fix-security-issues">Prioritize and fix security issues</a></li><li class="toc-item lvl2"><a href="#set-it-up-your-way">Set it up your way</a></li><li class="toc-item lvl2"><a href="#see-your-modernization-story-in-real-time">See your modernization story in real time</a></li></ol>
+          </details>
+          <p>As codebases grow and modernization becomes a constant, teams need more than just reports—they need visibility, coordination, and control. They need to know what’s in their code, what needs to change, and how to move fast without breaking things.</p>
+<p>That’s exactly what the Moderne DevCenter delivers.</p>
+<p>The DevCenter is your interactive dashboard for driving change across your software portfolio. It brings together real-time insights, progress tracking, and the ability to take action directly so you can:</p>
+<ul>
+<li>
+<p>Coordinate complex migrations and upgrades</p>
+</li>
+<li>
+<p>Track and fix security vulnerabilities</p>
+</li>
+<li>
+<p>Align teams on shared modernization goals</p>
+</li>
+<li>
+<p>Keep code moving forward, issuing PRs across repos</p>
+</li>
+</ul>
+<p>DevCenter isn’t just for individual contributors or isolated projects. It’s built for coordination at scale. Whether you’re a platform engineer managing fleet-wide migrations, a security lead tracking remediation progress, or a leader aligning priorities across BUs, DevCenter gives every stakeholder a shared view into what’s happening and what needs to happen next. With support for multiple organizations and cascading sub-organizations, leadership can track progress across organizations while teams can customize priorities based on their needs.</p>
+<p>It’s the command center for software that never stops evolving, and now, it’s more powerful and flexible than ever. Let’s walk through some of the latest improvements and how to make the most of the DevCenter.</p>
+<h2 id="recipe-based-devcenter-customizable-configuration">Recipe-based DevCenter: Customizable configuration</h2>
+<p>DevCenter dashboards are now defined using standard OpenRewrite recipes. That means no more static JSON files—just clean, version-controlled configuration you can reuse across environments or organizations. Because they run like any other recipe, creating or updating a DevCenter view is fast, even across a large amount of repos.</p>
+<p>Each organization (and sub-organization) can <a href="https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/creating-a-devcenter-recipe" rel="noopener" target="_blank">define its own dashboard</a> to reflect its unique priorities. Any recipe that meets the following requirements can be displayed as a DevCenter card:</p>
+<ul>
+<li>
+<p>Requires no input options</p>
+</li>
+<li>
+<p>Outputs the <code>UpgradesAndMigrations</code> and/or <code>SecurityIssues</code> data tables (either or both)</p>
+</li>
+<li>
+<p>Includes the correct columns for those tables (<a href="https://codegenomeproject.org/recipes/io.moderne.devcenter.DevCenterStarter" rel="noopener" target="_blank">see documentation for details</a>)</p>
+</li>
+</ul>
+<p>You can define a declarative YAML recipe to pass parameters to an existing DevCenter-compatible recipe like <a href="https://codegenomeproject.org/recipes/io.moderne.devcenter.LibraryUpgrade" rel="noopener" target="_blank"><code>LibraryUpgrade</code></a>, or choose from other recipes in the <a href="https://codegenomeproject.org/recipes?q=io.moderne.devcenter" rel="noopener" target="_blank">DevCenter recipe catalog</a>. You can also create custom imperative recipes, as long as they output one or both of the supported data tables with the correct structure.</p>
+<p>You can treat DevCenter setup just like any other codified automation in your workflow. Update your DevCenter on demand with a simple click, or use the API to schedule it on a cadence that works best for your team. With this approach, DevCenter makes it easy to surface the most relevant data and actions for each part of the business without losing sight of the bigger picture.</p>
+<p><img src="/blog/new-moderne-devcenter/2502cbc7.png" alt="" sizes="(max-width: 1080px) 100vw, 740px" width="1303" height="89" srcset="/assets/img/c947eea6a771-9affb7-480.webp 480w, /assets/img/c947eea6a771-9affb7-960.webp 960w, /assets/img/c947eea6a771-9affb7-1303.webp 1303w"></p>
+<h2 id="get-the-full-picture-fast">Get the full picture, fast</h2>
+<p>Modernization campaigns often stall because there’s no shared source of truth. DevCenter fixes that by giving everyone, from developers to execs, a real-time view into upgrade progress.</p>
+<p>At the top of the DevCenter, you’ll find a summary of your organization’s software footprint: total lines of code, number of repositories, and how many developers are contributing. It’s a simple way to visualize the scope of what you’re managing and who’s involved in building and maintaining it.</p>
+<p>This view helps platform and engineering leaders align on ownership, track adoption, and drive visibility across distributed orgs.</p>
+<p><img src="/blog/new-moderne-devcenter/3fa64071.png" alt="" sizes="(max-width: 1080px) 100vw, 740px" width="1281" height="189" srcset="/assets/img/273d9a4482e1-9affb7-480.webp 480w, /assets/img/273d9a4482e1-9affb7-960.webp 960w, /assets/img/273d9a4482e1-9affb7-1281.webp 1281w"></p>
+<h2 id="parliament-charts-a-clear-way-to-see-progress">Parliament charts: A clear way to see progress</h2>
+<p>You can define multiple change campaigns per org and visualize the status with parliament charts. Each seat in the chart represents one or more repositories. See which version each repo is on, how many have completed the migration, and where action is needed. Better yet, you can trigger upgrade recipes directly from the dashboard, then track pull requests through to approval.</p>
+<p><img src="/blog/new-moderne-devcenter/8304508b.png" alt="" sizes="(max-width: 1080px) 100vw, 740px" width="1288" height="553" srcset="/assets/img/1661ea162900-9affb7-480.webp 480w, /assets/img/1661ea162900-9affb7-960.webp 960w, /assets/img/1661ea162900-9affb7-1288.webp 1288w"></p>
+<p>This view helps platform and engineering leaders align on ownership, track adoption, and drive visibility across distributed orgs.</p>
+<p>Upgrades become a matter of execution, not escalation.</p>
+<h2 id="prioritize-and-fix-security-issues">Prioritize and fix security issues</h2>
+<p>DevCenter doesn’t just surface vulnerabilities, it helps you act on them. Security cards show how often specific issues appear across your codebase, making it easy to prioritize what matters most. Whether you’re addressing OWASP Top 10 risks, patching something like log4shell, or remediating internal issues, you can trigger bulk fixes with a single click and track progress as changes roll out.</p>
+<p>Security cards are powered by a special DevCenter recipe pattern. By combining detection recipes (like OwaspA01, ZipSlip, or SecureTempFileCreation) with the <a href="https://codegenomeproject.org/recipes/io.moderne.devcenter.ReportAsSecurityIssues" rel="noopener" target="_blank"><code>ReportAsSecurityIssues</code></a> recipe, you can generate a dashboard card that summarizes findings and connects them to a fix. The <code>fixRecipe</code> property tells DevCenter which remediation recipe to run when users click “Fix.”</p>
+<p>You can use the <a href="https://codegenomeproject.org/recipes/io.moderne.devcenter.SecurityStarter" rel="noopener" target="_blank"><code>SecurityStarter</code></a> recipe out of the box, or create your own card targeting the vulnerabilities most relevant to your organization.</p>
+<p><img src="/blog/new-moderne-devcenter/b6a3e61c.png" alt="" sizes="(max-width: 1080px) 100vw, 740px" width="1257" height="411" srcset="/assets/img/31f18fcce935-9affb7-480.webp 480w, /assets/img/31f18fcce935-9affb7-960.webp 960w, /assets/img/31f18fcce935-9affb7-1257.webp 1257w"></p>
+<p>Every DevCenter card also includes access to structured data tables you can download and analyze—ideal for reporting, audits, or custom workflows.</p>
+<h2 id="set-it-up-your-way">Set it up your way</h2>
+<p>DevCenter dashboards are scoped to organizations within Moderne and configured via recipe, making them easy to tailor for different teams. Whether you’re defining dashboards for security, platform engineering, or product groups, each org can track its own initiatives while still contributing to broader campaigns. That means visibility across boundaries and alignment without chaos.</p>
+<p><img src="/blog/new-moderne-devcenter/60c4bec1.png" alt="" sizes="(max-width: 1080px) 100vw, 740px" width="1210" height="499" srcset="/assets/img/a22858803ee7-9affb7-480.webp 480w, /assets/img/a22858803ee7-9affb7-960.webp 960w, /assets/img/a22858803ee7-9affb7-1210.webp 1210w"></p>
+<p>You can start with a preconfigured DevCenter recipe to get up and running quickly, or <a href="https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/creating-a-devcenter-recipe" rel="noopener" target="_blank">create your own</a> using the <a href="https://github.com/moderneinc/rewrite-devcenter/blob/main/src/main/resources/META-INF/rewrite/devcenter-starter.yml" rel="noopener" target="_blank">devcenter-starter recipe</a> as a template. DevCenter recipes can even be automatically applied to sub-organizations, ensuring consistency across nested teams while still allowing for scoped views and priorities.</p>
+<p>You define the priorities. DevCenter brings them to life.</p>
+<p><a href="https://www.youtube.com/watch?v=FQs048JKXVw" rel="noopener" target="_blank">▶ Watch on YouTube</a></p>
+<h2 id="see-your-modernization-story-in-real-time">See your modernization story in real time</h2>
+<p>The Moderne DevCenter isn’t just a dashboard. It’s a real-time view of your organization’s momentum and how your code is evolving. It helps teams stay aligned, get clarity on what’s done and what’s next, and take meaningful action across their portfolio.</p>
+<p>Get your front row seat for code transformation at scale.</p>
+<p>And bring the whole organization with you.</p>
+<p>Learn more:</p>
+<ul>
+<li>
+<p><a href="https://docs.moderne.io/user-documentation/moderne-platform/getting-started/dev-center/" rel="noopener" target="_blank">Getting Started with DevCenter</a></p>
+</li>
+<li>
+<p><a href="https://docs.moderne.io/administrator-documentation/moderne-platform/how-to-guides/creating-a-devcenter-recipe" rel="noopener" target="_blank">Creating a DevCenter Recipe</a></p>
+</li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-grid post-foot">
+      <div class="post-signoff">
+        <div class="signoff-author">
+        <span class="signoff-avatar" aria-hidden="true"></span>
+        <span class="signoff-text">
+          <span class="signoff-eyebrow">Written by</span>
+          <span class="signoff-who">
+            <span class="signoff-name">Bryan Friedman and Patricia Johnson</span>
+            
+          </span>
+        </span>
+        </div>
+        
+      </div>
+    </div>
+
+    <section class="related wrap">
+      <h2 class="vh">Related posts</h2>
+      <div class="related-grid">
+        <a class="pcard" href="/blog/github-copilot-modernization">
+<span class="thumb thumb--img"><img src="/blog/github-copilot-modernization/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/41a309697a67-9affb7-480.webp 480w, /assets/img/41a309697a67-9affb7-960.webp 960w, /assets/img/41a309697a67-9affb7-1600.webp 1600w, /assets/img/41a309697a67-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">GitHub Copilot and Moderne take code transformation from one repo to your whole estate</h3>
+          <p class="pmeta">November 10, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/moderne-code-search-launch">
+<span class="thumb thumb--img"><img src="/blog/moderne-code-search-launch/hero.png" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/cb0bf9898d69-9affb7-480.webp 480w, /assets/img/cb0bf9898d69-9affb7-960.webp 960w, /assets/img/cb0bf9898d69-9affb7-1600.webp 1600w, /assets/img/cb0bf9898d69-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Code Search gives coding agents type-aware search across every repository.</h3>
+          <p class="pmeta">November 5, 2026</p>
+        </a>
+        <a class="pcard" href="/blog/coding-agents-deterministic-context">
+<span class="thumb thumb--img"><img src="/blog/coding-agents-deterministic-context/hero.jpg" alt="" sizes="(max-width: 760px) 100vw, 440px" loading="lazy" srcset="/assets/img/0d7bc25db189-9affb7-480.webp 480w, /assets/img/0d7bc25db189-9affb7-960.webp 960w, /assets/img/0d7bc25db189-9affb7-1600.webp 1600w, /assets/img/0d7bc25db189-9affb7-2400.webp 2400w"></span>          <div class="pcats"><span class="pcat">AI/ML</span></div>
+          <h3 class="ptitle">Coding agents get more out of every token when they start from deterministic context.</h3>
+          <p class="pmeta">October 30, 2026</p>
+        </a>
+      </div>
+    </section>
+  </article>
+  </main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <nav class="foot-grid" aria-label="Footer">
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.0.title">Product</p>
+        <a href="/platform">Moderne Platform</a><a href="/moderne-dx">Moderne DX</a><a href="/managed-service">Managed Service</a><a href="/moderne-agent-tools">Agent tools</a><a href="/pricing">Pricing</a><a href="/try-moderne">Try Moderne</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.1.title">Language support</p>
+        <a href="/solutions/java-upgrades-and-modernization">Java</a><a href="/solutions/spring-boot-migration-tool-enterprise-scale-upgrades">Spring Boot</a><a href="/solutions/csharp-dotnet-modernization">C# and .NET</a><a href="/solutions/python-change-and-transformation">Python</a><a href="/solutions/kotlin-modernization">Kotlin</a><a href="/solutions/javascript-typescript-modernization">JavaScript and TypeScript</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.2.title">Foundations</p>
+        <a href="/platform/lst">Lossless Semantic Tree</a><a href="/recipes">Recipes</a><a href="/openrewrite">OpenRewrite</a><a href="/platform/code-genome">Code Genome Project</a><a href="/backpatch-alliance">Backpatch Alliance</a><a href="https://docs.moderne.io" target="_blank" rel="noopener">Documentation<svg class="nav-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.3.title">Resources</p>
+        <a href="/blog">Blog</a><a href="/content-library">Resource Hub</a><a href="/case-study">Case studies</a><a href="/events">Events</a><a href="/openrewrite">Community</a><a href="/partners">Partners</a>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title" data-key="site.footer.columns.4.title">Company</p>
+        <a href="/about">Meet Moderne</a><a href="/newsroom">Newsroom</a><a href="/press-kit">Press kit</a><a href="/careers">Careers</a><a href="/contact-us">Contact</a><a href="/ai-software-factory">AI Software Factory Summit</a>
+      </div>
+    </nav>
+    <div class="foot-bottom">
+      <a class="foot-logo" href="/" aria-label="Moderne home">
+        <img src="/brand/moderne-logo-light-r.png" alt="Moderne" width="151" height="22" srcset="/assets/img/a0044350bde3-9affb7-468.webp">
+      </a>
+      <span class="foot-copy" data-key="site.footer.copyright">© Moderne, 2026</span>
+      <div class="foot-right">
+        <img class="foot-soc2" src="/brand/aicpa-soc.png" alt="AICPA SOC for Service Organizations" width="46" height="46" loading="lazy" decoding="async" srcset="/assets/img/59c0ae7ede1c-9affb7-138.webp">
+        <nav class="foot-legal">
+          <a href="/privacy-policy" data-key="site.footer.legal.0.label">Privacy</a><a href="/terms-of-service" data-key="site.footer.legal.1.label">Terms</a>
+          <button type="button" class="ot-settings" onclick="window.OneTrust&&OneTrust.ToggleInfoDisplay()">Cookie settings</button>
+        </nav>
+        <div class="foot-social">
+          <a href="https://twitter.com/moderneinc" target="_blank" rel="noopener" aria-label="Moderne on X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/moderneinc/" target="_blank" rel="noopener" aria-label="Moderne on LinkedIn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
+          </a>
+          <a href="https://www.youtube.com/@Moderne-and-OpenRewrite" target="_blank" rel="noopener" aria-label="Moderne on YouTube">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.55 15.57V8.43L15.82 12z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer></body>
+</html>

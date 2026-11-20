@@ -1,0 +1,432 @@
+检索参数 {"open":[{"ref_id":"turn12view0","lineno":1000},{"ref_id":"turn12view2","lineno":106},{"ref_id":"turn40view0","lineno":255}],"response_length":"medium"}
+Custom instructions with AGENTS.md | ChatGPT Learn (https://developers.openai.com/codex/guides/agents-md ; rewritten summary of https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+citeturn54view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn12view0","lineno":1000}); Redirected to URL: https://learn.chatgpt.com/docs/agent-configuration/agents-md; Total lines: 1112
+L974:   1. Global scope: In your Codex home directory (defaults to `~/.codex`, unless you set `CODEX_HOME`), Codex reads `AGENTS.override.md` if it exists. Otherwise, Codex reads `AGENTS.md`. Codex uses only the first non-empty file at this level.
+L975:   2. Project scope: Starting at the project root (typically the Git root), Codex walks down to your current working directory. If Codex cannot find a project root, it only checks the current directory. In each directory along the path, it checks for `AGENTS.override.md`, then `AGENTS.md`, then any fallback names in `project_doc_fallback_filenames`. Codex includes at most one file per directory.
+L976:   3. Merge order: Codex concatenates files from the root down, joining them with blank lines. Files closer to your current directory override earlier guidance because they appear later in the combined prompt.
+L977: Codex skips empty files and stops adding files once the combined size reaches the limit defined by `project_doc_max_bytes` (32 KiB by default). For details on these knobs, see 【572†Project instructions discovery】. Raise the limit or split instructions across nested directories when you hit the cap.
+L978: ## Create global guidance
+L979: 
+L980: Create persistent defaults in your Codex home directory so every repository inherits your working agreements.
+L981: 
+L982:   1. Ensure the directory exists:
+L983: 
+L984:     `mkdir -p ~/.codex`
+L985:   2. Create `~/.codex/AGENTS.md` with reusable preferences:
+L986: 
+L987:     `# ~/.codex/AGENTS.md
+L988: 
+L989:     ## Working agreements
+L990: 
+L991:     - Always run `npm test` after modifying JavaScript files.
+L992:     - Prefer `pnpm` when installing dependencies.
+L993:     - Ask for confirmation before adding new production dependencies.`
+L994: 
+L995:   3. Run Codex anywhere to confirm it loads the file:
+L996: 
+L997:     `codex --ask-for-approval never "Summarize the current instructions."`
+L998: Expected: Codex quotes the items from `~/.codex/AGENTS.md` before proposing work.
+L999: 
+L1000: Use `~/.codex/AGENTS.override.md` when you need a temporary global override without deleting the base file. Remove the override to restore the shared guidance.
+L1001: ## Layer project instructions
+L1002: 
+L1003: Repository-level files keep Codex aware of project norms while still inheriting your global defaults.
+L1004: 
+L1005:   1. In your repository root, add an `AGENTS.md` that covers basic setup:
+L1006: 
+L1007:     `# AGENTS.md
+L1008: 
+L1009:     ## Repository expectations
+L1010: 
+L1011:     - Run `npm run lint` before opening a pull request.
+L1012:     - Document public utilities in `docs/` when you change behavior.`
+L1013:   2. Add overrides in nested directories when specific teams need different rules. For example, inside `services/payments/` create `AGENTS.override.md`:
+L1014: 
+L1015:     `# services/payments/AGENTS.override.md
+L1016: 
+L1017:     ## Payments service rules
+L1018: 
+L1019:     - Use `make test-payments` instead of `npm test`.
+L1020:     - Never rotate API keys without notifying the security channel.`
+L1021:   3. Start Codex from the payments directory:
+L1022: 
+L1023:     `codex --cd services/payments --ask-for-approval never "List the instruction sources you loaded."`
+L1024: 
+L1025: Expected: Codex reports the global file first, the repository root `AGENTS.md` second, and the payments override last.
+L1026: 
+L1027: Codex stops searching once it reaches your current directory, so place overrides as close to specialized work as possible.
+L1028: 
+L1029: Here is a sample repository after you add a global file and a payments-specific override:
+L1030:   * AGENTS.md Repository expectations
+L1031: 
+L1032:   * services/
+L1033: 
+L1034:     * payments/
+L1035: 
+L1036:       * AGENTS.md Ignored because an override exists
+L1037: 
+L1038:       * AGENTS.override.md Payments service rules
+L1039: 
+L1040:       * README.md
+L1041: 
+L1042:     * search/
+L1043: 
+L1044:       * AGENTS.md
+L1045: 
+L1046:       * …
+L1047: ## Add code review rules
+L1048: 
+L1049: For 【573†Codex code review in GitHub】, add a `## Code Review Rules` section to the `AGENTS.md` closest to the code the rules govern. Put repository-wide checks at the root and service-specific checks in a nested file.
+L1050: 
+L1051:     `## Code Review Rules
+L1052: 
+L1053:     ### Experiment cohorts
+L1054: 
+L1055:     - Do not filter treatment comparisons on post-exposure behavior, including conversion or retention.
+L1056:       Safe path: build cohorts from assignment or exposure; report conversion as an outcome.`
+L1057: Keep rules concise, explain the behavior to flag and any safe path or exception, and reserve formatting and lint checks for CI. See 【573†Customize what Codex reviews】 for setup and rule-writing guidance.
+L1058: ## Customize fallback filenames
+L1059: 
+L1060: If your repository already uses a different filename (for example `TEAM_GUIDE.md`), add it to the fallback list so Codex treats it like an instructions file.
+L1061: 
+L1062:   1. Edit your Codex configuration:
+L1063: 
+L1064:     `# ~/.codex/config.toml
+L1065:     project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
+L1066:     project_doc_max_bytes = 65536`
+L1067: 
+L1068:   2. Restart Codex or run a new command so the updated configuration loads.
+L1069: Now Codex checks each directory in this order: `AGENTS.override.md`, `AGENTS.md`, `TEAM_GUIDE.md`, `.agents.md`. Filenames not on this list are ignored for instruction discovery. The larger byte limit allows more combined guidance before truncation.
+L1070: 
+L1071: With the fallback list in place, Codex treats the alternate files as instructions:
+L1072: 
+L1073:   * TEAM_GUIDE.md Detected via fallback list
+L1074: 
+L1075:   * .agents.md Fallback file in root
+L1076: 
+L1077:   * support/
+L1078: 
+L1079:     * AGENTS.override.md Overrides fallback guidance
+L1080: 
+L1081:     * playbooks/
+L1082:       * …
+L1083: 
+L1084: Set the `CODEX_HOME` environment variable when you want a different profile, such as a project-specific automation user:
+L1085: 
+L1086:     `CODEX_HOME=$(pwd)/.codex codex exec "List active instruction sources"`
+L1087: 
+L1088: Expected: The output lists files relative to the custom `.codex` directory.
+L1089: ## Verify your setup
+L1090:   * Run `codex --ask-for-approval never "Summarize the current instructions."` from a repository root. Codex should echo guidance from global and project files in precedence order.
+L1091:   * Use `codex --cd subdir --ask-for-approval never "Show which instruction files are active."` to confirm nested overrides replace broader rules.
+L1092:   * To audit which instruction files Codex loaded, opt into a plaintext TUI log with `codex -c log_dir=./.codex-log` and check `./.codex-log/codex-tui.log`, or inspect the most recent `session-*.jsonl` file if you enabled session logging.
+L1093:   * If instructions look stale, restart Codex in the target directory. Codex rebuilds the instruction chain on every run (and at the start of each TUI session), so there is no cache to clear manually.
+--------------------------------------------------------------------------------
+Project-Level Memory for Coder Agents in 2.39 - Coder Changelog (https://coder.com/changelog/project-level-memory-for-coder-agents-in-239)
+citeturn54view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn12view2","lineno":106}); Total lines: 157
+L15: Ecosystem Integrations
+L16: 
+L17: 【9†Backstage†github.com】
+L18: 
+L19: 【10†VS Code】
+L20: 
+L21: 【11†JetBrains】
+L22: 
+L23: 【12†Cursor】
+L24: 
+L25: 【13†Kiro†registry.coder.com】
+L26: 
+L27: 【14†Devin Desktop】
+L28: 
+L29: 【15†Dev Containers】
+L30: 
+L31: 【16†View all†registry.coder.com】
+L32: 
+L33: AI-native Development
+L34: 
+L42: 【19†Technology】
+L43: 
+L44: 【20†All industries】
+L45: 
+L46: 【21†Secure Environments for 2,500+ Developers How a U.S. defense intelligence organization centralized ATO compliance and established the military's first multi-tenant Coder deployment.】
+L47: 
+L48: Insights
+L49: 
+L50: 【22†Resource Center†resources.coder.com】
+L51: 
+L52: 【23†Blog】
+L53: 
+L54: 【24†[Dev]olution Podcast】
+L55: 
+L56: 【25†Coder Academy】
+L57: 
+L58: 【26†Events & Webinars】
+L59: 
+L60: 【27†Success Stories】
+L61: 
+L62: 【28†Newsletter】
+L63: 
+L64: Company
+L65: 
+L66: 【29†Partnerships】
+L67: 
+L68: 【30†Careers】
+L69: 
+L70: 【31†About Coder】
+L71: 
+L72: 【32†Security】
+L73: 
+L74: Join the Coder Community
+L75: Connect, contribute, and get recognized. Explore the registry, become a Coder Champion, claim a free homelab license, and tune into the podcast.
+L76: 
+L77: Get Involved
+L78: 
+L79: 【33†Coder Registry†registry.coder.com】
+L80: 
+L81: 【34†Coder Champions】
+L82: 
+L83: 【35†Homelab Licenses†form.asana.com】
+L84: 
+L85: 【24†[Dev]olution Podcast】
+L86: 
+L87: 【36†Coder Community Connect with developers worldwide through Discord, meetups, and GitHub discussions.】
+L88: 
+L89: 【7†129.6K†github.com】
+L90: 
+L91: 【37†Image: Changelog Masthead Background】
+L92: 
+L93: 【5†Back to changelog】
+L94: 
+L95: v2.39 November 3, 2026
+L96: # Project-Level Memory for Coder Agents in 2.39
+L97: 
+L98: ### What's new in 2.39
+L99: 
+L100: Give Coder Agents your conventions, context, and skills once, at the project or organization level, and every chat builds on them. Platform teams can also trace any workspace connection end to end and see every editor their developers use.
+L101: ### Coder Agents: Shared context and admin controls
+L102: 
+L103: Set conventions, skills, and model access once instead of repeating them in every chat or organization.
+L104:   * Organization skills and instructions: Admins publish 【38†skills】 and 【39†instructions】 once per organization, can limit them to specific groups, and every change is recorded in the 【40†audit log】.
+L105:   * Manage model access in Terraform: The coderd Terraform provider can now set which users and groups can use each Coder Agents model, and configure Claude Platform for AWS. 【41†View the provider release†github.com】.
+L106:   * Projects: Group related chats in 【42†projects】 with shared memory, instructions, and 【43†skills】, so each new chat builds on the last one.
+L107: 【44†Image†www.datocms-assets.com】
+L108: ### Script ordering for templates
+L109: 
+L110: Template authors can set the order `coder_script` resources run with the new 【45†`coder_script_order`】 data source, so dependencies install before an IDE or AI coding agent starts. It's in beta, opt-in, and requires Coder Terraform provider v2.20.0 or later. 【46†Learn more in our documentation】.
+L111: ### More improvements
+L112:   * Trace any workspace connection end to end: VS Code, JetBrains Toolbox, `coder ssh` and the web terminal tag each session with one ID across client, server and agent logs, so platform teams can find why a connection dropped in a single SIEM search, without debug flags. 【47†Learn how to trace workspace connections】.
+L113:   * See every editor your developers use: Template Insights, connection logs, and Prometheus now track each editor by name, including VS Code forks such as Cursor. See the 【48†connection logs】 and 【49†Prometheus】 docs.
+L114:   * VS Code extension 1.17: Developers now see a warning when a startup script fails or times out. Version 1.17.0 also includes a 【50†security fix†github.com】, so we recommend updating. Learn more in our 【51†documentation】.
+L115: ### Security updates
+L116: 
+L117: We've recently patched several disclosed vulnerabilities. Check our 【52†security advisories†github.com】, and 【53†watch for new releases†github.com】 on GitHub to hear about patches first. For updates on vulnerabilities we have patched, visit the 【54†Coder Trust Center†trust.coder.com】.
+L118: ### Breaking Changes
+L119:   * 【55†#30466†github.com】: A migration rewrites the `connection_logs` table under a lock that blocks reads and writes, about 50 seconds per 10 million rows. Plan a maintenance window for large deployments.
+L120:   * 【56†#29796†github.com】, 【57†#29906†github.com】: Template insights and the `coderd_insights_applications_usage_seconds` metric now report per app. In the API, `type` is replaced by `method`. In the metric, `application_name` is now `display_name`. Update dashboards, alerts and scripts.
+L121:   * 【58†#30150†github.com】, 【59†#30140†github.com】, 【60†#30199†github.com】: `coder update` and `coder users edit-roles --roles` now ask for confirmation, so scripts need `-y`. `coder update` also returns an error if the restart fails.
+L122:   * 【61†#31262†github.com】: Template builds fail if a `coder_app` URL uses an unsafe scheme such as `javascript:`. Check templates before upgrading.
+L123:   * 【62†#30256†github.com】: API keys created from a scoped token can't go beyond that token's scopes.
+L124: View the 【63†full changelog†github.com】 on GitHub. If you have questions or feedback, join the conversation on 【64†Discord†discord.gg】!
+L125: ## Freedom builders want. Control enterprises require.
+L126: 
+L127: 【65†I n s t a l l C o d e r】【66†S t a r t a t r i a l】
+L128: 
+L129: Solutions
+L130: 
+L131: 【65†Install Coder】【67†Coder Premium】【5†Changelog】【6†Compare】【33†Integrations†registry.coder.com】【68†Pricing】
+L132: 
+L133: Resources
+L134: 
+L135: 【22†Resource Center†resources.coder.com】【23†Blog】【24†[Dev]olution Podcast】【25†Coder Academy】【26†Events & Webinars】【27†Success Stories】【36†Community】
+L136: 
+L137: Company
+L138: 【29†Partnerships】【30†Careers】【31†About Coder】【69†Brand Guidelines】【27†Success Stories】【70†Swag Store†swag-coder.myshopify.com】【32†Security】
+L139: 
+L140: Sales & Support
+L141: 
+L142: 【71†Contact Sales】【72†Request a Demo】【66†Start a trial】【73†Discord Community】
+L143: 
+L144: 【74†Terms of Service】
+L145: 
+L146: 【75†Privacy Policy】
+L147: 
+L148: 【76†Licenses】
+L149: 
+L150: [Button: Manage Cookies]
+L151: 
+L152: 【77†Image: AICPA SOC badge for a SOC 2 Type II audit based on AICPA's Trust Services Criteria】SOC 2 Type II audited
+L153: 
+L154: © 2026 Coder Technologies
+L155: 
+L156: All Rights Reserved
+--------------------------------------------------------------------------------
+Claude Tag now reads even more of the room | Claude by Anthropic (https://claude.com/resources/articles/claude-tag-now-reads-even-more-of-the-room)
+citeturn54view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn40view0","lineno":255}); Total lines: 354
+L187: ## Resources
+L188: 
+L189:   * 【3†Overview】
+L190:   * 【4†Articles】
+L191:   * 【6†Webinars】
+L192:   * 【75†Claude partner network】
+L193:   * 【76†Claude Academy†academy.claude.com】
+L194:   * 【77†Customer stories】
+L195:   * 【78†Events†www.anthropic.com】
+L196:   * 【79†Powered by Claude】
+L197:   * 【80†Service partners】
+L198: ## Help and security
+L199: 
+L200:   * 【81†Availability†www.anthropic.com】
+L201:   * 【82†Check files】
+L202:   * 【83†Regional compliance】
+L203:   * 【84†Report abuse】
+L204:   * 【85†Security and compliance†trust.anthropic.com】
+L205:   * 【86†Status†status.anthropic.com】
+L206:   * 【87†Support center†support.claude.com】
+L207: ## Company
+L208: 
+L209:   * 【88†Anthropic†www.anthropic.com】
+L210:   * 【89†Careers†www.anthropic.com】
+L211:   * 【90†Policy†www.anthropic.com】
+L212:   * 【91†Research†www.anthropic.com】
+L213:   * 【92†Anthropic news†www.anthropic.com】
+L214:   * 【93†Policy on the AI Exponential†www.anthropic.com】
+L215:   * 【94†Responsible Scaling Policy†www.anthropic.com】
+L216:   * 【95†Transparency†anthropic.com】
+L217: ## Terms and policies
+L218: 
+L219:   * [Button: Privacy choices]
+L220:   * 【96†Privacy policy†www.anthropic.com】
+L221:   * 【97†Responsible disclosure policy†www.anthropic.com】
+L222:   * 【98†Terms of service: Commercial†www.anthropic.com】
+L223:   * 【99†Terms of service: Consumer†www.anthropic.com】
+L224:   * 【100†Terms of Service: US K-12†anthropic.com】
+L225:   * 【101†Data Processing Agreement: US K-12†anthropic.com】
+L226:   * 【102†Usage Policy†www.anthropic.com】
+L227: ## Products
+L228: 
+L229:   * 【24†Claude】
+L230:   * 【25†Claude Code】
+L231:   * 【26†Claude Cowork】
+L232:   * 【27†Claude Duet】
+L233:   * 【18†Claude Tag】
+L234:   * 【28†Claude Science】
+L235:   * 【29†Claude Security】
+L236:   * 【30†Code Review】
+L237:   * 【31†Download app】
+L238:   * 【32†Pricing】
+L239:   * 【0†Log in†claude.ai】
+L240: 
+L241: ## Capabilities
+L242: 
+L243:   * 【33†Artifacts】
+L244:   * 【34†Design】
+L245:   * 【35†Connectors】
+L246:   * 【36†Plugins】
+L247:   * 【37†Skills】
+L248: 
+L249: ## Extensions
+L250: 
+L251:   * 【38†Claude in Chrome】
+L252:   * 【39†Claude for Google Workspace】
+L253:   * 【40†Claude for Microsoft 365】
+L254: ## Models
+L255: 
+L256:   * 【41†Mythos (including Fable)†www.anthropic.com】
+L257:   * 【42†Opus†www.anthropic.com】
+L258:   * 【43†Sonnet†www.anthropic.com】
+L259:   * 【44†Haiku†www.anthropic.com】
+L260: 
+L261: ## Enterprise
+L262: 
+L263:   * 【45†Overview】
+L264:   * 【46†Claude Code for Enterprise】
+L265: 
+L266: ## Departments
+L267: 
+L268:   * 【47†Customer support】
+L269:   * 【48†Cybersecurity】
+L270:   * 【49†Legal】
+L271:   * 【50†Sales】
+L272: ## Industries
+L273: 
+L274:   * 【51†Financial advisors】
+L275:   * 【52†Financial services】
+L276:   * 【53†Government】
+L277:   * 【54†Healthcare】
+L278:   * 【55†Higher education】
+L279:   * 【56†K-12 teachers】
+L280:   * 【57†Life sciences】
+L281:   * 【58†Nonprofits】
+L282:   * 【59†Small business】
+L283: 
+L284: ## Programs
+L285: 
+L286:   * 【60†Campus】
+L287:   * 【61†Frontier Academy】
+L288:   * 【62†Scientists】
+L289:   * 【63†Startups】
+L290: ## Developers
+L291: 
+L292:   * 【64†Developer docs†code.claude.com】
+L293:   * 【65†Developer blog†claude.dev】
+L294:   * 【66†Community】
+L295:   * 【67†Console†platform.claude.com】
+L296:   * 【68†Engineering at Anthropic†www.anthropic.com】
+L297: 
+L298: ## Platform
+L299: 
+L300:   * 【69†Overview】
+L301:   * 【70†Marketplace】
+L302:   * 【71†Claude on AWS】
+L303:   * 【72†Google Cloud】
+L304:   * 【73†Microsoft Foundry】
+L305:   * 【74†Managed Agents】
+L306: ## Resources
+L307: 
+L308:   * 【3†Overview】
+L309:   * 【4†Articles】
+L310:   * 【6†Webinars】
+L311:   * 【75†Claude partner network】
+L312:   * 【76†Claude Academy†academy.claude.com】
+L313:   * 【77†Customer stories】
+L314:   * 【78†Events†www.anthropic.com】
+L315:   * 【79†Powered by Claude】
+L316:   * 【80†Service partners】
+L317: ## Help and security
+L318: 
+L319:   * 【81†Availability†www.anthropic.com】
+L320:   * 【82†Check files】
+L321:   * 【83†Regional compliance】
+L322:   * 【84†Report abuse】
+L323:   * 【85†Security and compliance†trust.anthropic.com】
+L324:   * 【86†Status†status.anthropic.com】
+L325:   * 【87†Support center†support.claude.com】
+L326: ## Company
+L327: 
+L328:   * 【88†Anthropic†www.anthropic.com】
+L329:   * 【89†Careers†www.anthropic.com】
+L330:   * 【90†Policy†www.anthropic.com】
+L331:   * 【91†Research†www.anthropic.com】
+L332:   * 【92†Anthropic news†www.anthropic.com】
+L333:   * 【93†Policy on the AI Exponential†www.anthropic.com】
+L334:   * 【94†Responsible Scaling Policy†www.anthropic.com】
+L335:   * 【95†Transparency†anthropic.com】
+L336: ## Terms and policies
+L337: 
+L338:   * [Button: Privacy choices]
+L339:   * 【96†Privacy policy†www.anthropic.com】
+L340:   * 【97†Responsible disclosure policy†www.anthropic.com】
+L341:   * 【98†Terms of service: Commercial†www.anthropic.com】
+L342:   * 【99†Terms of service: Consumer†www.anthropic.com】
+L343:   * 【100†Terms of Service: US K-12†anthropic.com】
+L344:   * 【101†Data Processing Agreement: US K-12†anthropic.com】
+L345:   * 【102†Usage Policy†www.anthropic.com】
+L346: 
+L347: © 2026 Anthropic PBC
+L348: 
+L349: * * *
+L350: 
+L351: 【103†Add to Preferred Sources†www.google.com】
+L352: 
+L353: English
+

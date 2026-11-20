@@ -1,0 +1,464 @@
+[
+  {
+    "family": "Flask",
+    "consumer": "2.2.2",
+    "dependency": "Werkzeug",
+    "provider": "2.2.3",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.2.2",
+    "dependency": "Werkzeug",
+    "provider": "2.3.8",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": [
+        "DeprecationWarning: 'werkzeug.urls.URL' is deprecated and will be removed in Werkzeug 3.0. Use the 'urllib.parse' library instead.",
+        "DeprecationWarning: 'werkzeug.urls.url_parse' is deprecated and will be removed in Werkzeug 3.0. Use 'urllib.parse.urlsplit' instead."
+      ]
+    },
+    "upstream": {
+      "exit_code": 1,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.2.2",
+    "dependency": "Werkzeug",
+    "provider": "3.0.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": false,
+      "error": "ImportError: cannot import name 'url_quote' from 'werkzeug.urls' (C:\\Users\\taos\\AppData\\Local\\Temp\\compat-harness-gw1d6hbn\\env\\Lib\\site-packages\\werkzeug\\urls.py)",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 4,
+      "module": "tests/test_testing.py"
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.3.3",
+    "dependency": "Werkzeug",
+    "provider": "2.2.3",
+    "installed": false
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.3.3",
+    "dependency": "Werkzeug",
+    "provider": "2.3.8",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "2.3.3",
+    "dependency": "Werkzeug",
+    "provider": "3.0.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Flask",
+    "consumer": "3.0.0",
+    "dependency": "Werkzeug",
+    "provider": "2.2.3",
+    "installed": false
+  },
+  {
+    "family": "Flask",
+    "consumer": "3.0.0",
+    "dependency": "Werkzeug",
+    "provider": "2.3.8",
+    "installed": false
+  },
+  {
+    "family": "Flask",
+    "consumer": "3.0.0",
+    "dependency": "Werkzeug",
+    "provider": "3.0.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testing.py",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.36.3",
+    "dependency": "httpx",
+    "provider": "0.26.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.36.3",
+    "dependency": "httpx",
+    "provider": "0.27.2",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": [
+        "DeprecationWarning: The 'app' shortcut is now deprecated. Use the explicit style 'transport=WSGITransport(app=...)' instead."
+      ]
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.36.3",
+    "dependency": "httpx",
+    "provider": "0.28.1",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": false,
+      "error": "TypeError: Client.__init__() got an unexpected keyword argument 'app'",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 1,
+      "module": "tests/test_testclient.py",
+      "tests": 39,
+      "failures": 39,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.37.2",
+    "dependency": "httpx",
+    "provider": "0.26.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.37.2",
+    "dependency": "httpx",
+    "provider": "0.27.2",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.37.2",
+    "dependency": "httpx",
+    "provider": "0.28.1",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.38.6",
+    "dependency": "httpx",
+    "provider": "0.26.0",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.38.6",
+    "dependency": "httpx",
+    "provider": "0.27.2",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "family": "Starlette",
+    "consumer": "0.38.6",
+    "dependency": "httpx",
+    "provider": "0.28.1",
+    "installed": true,
+    "import_and_build": {
+      "ok": true,
+      "value": null,
+      "warnings": []
+    },
+    "wsgi_asgi_request": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "framework_testclient": {
+      "ok": true,
+      "value": "ready",
+      "warnings": []
+    },
+    "upstream": {
+      "exit_code": 0,
+      "module": "tests/test_testclient.py",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+]

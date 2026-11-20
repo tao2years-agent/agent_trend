@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="0.563" timestamp="2026-11-20T12:24:47.047856" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_algorithm" time="0.004"><failure message="TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;">sympy\physics\hep\tests\test_gamma_matrices.py:192: in test_kahane_algorithm
+    execute_gamma_simplify_tests_for_function(tfunc, D=4)
+sympy\physics\hep\tests\test_gamma_matrices.py:41: in execute_gamma_simplify_tests_for_function
+    assert _is_tensor_eq(tfunc(t), -4*G(mu11)*G(mu31)*G(mu21) - 4*G(mu31)*G(mu11)*G(mu21))
+sympy\physics\hep\tests\test_gamma_matrices.py:190: in tfunc
+    return _simplify_single_line(e)
+sympy\physics\hep\gamma_matrices.py:218: in _simplify_single_line
+    t1 = kahane_simplify(t1)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_kahane_simplify1" time="0.003"><failure message="TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;">sympy\physics\hep\tests\test_gamma_matrices.py:204: in test_kahane_simplify1
+    r = kahane_simplify(t)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_gamma_matrix_class" time="0.001"><failure message="TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;">sympy\physics\hep\tests\test_gamma_matrices.py:274: in test_gamma_matrix_class
+    ts = simplify_gamma_expression(t)
+sympy\physics\hep\gamma_matrices.py:77: in simplify_gamma_expression
+    res_expr = _simplify_single_line(extracted_expr)
+sympy\physics\hep\gamma_matrices.py:218: in _simplify_single_line
+    t1 = kahane_simplify(t1)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;</failure></testcase><testcase classname="sympy.physics.hep.tests.test_gamma_matrices" name="test_gamma_matrix_trace" time="0.002"><failure message="TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;">sympy\physics\hep\tests\test_gamma_matrices.py:307: in test_gamma_matrix_trace
+    t1 = gamma_trace(t)
+sympy\physics\hep\gamma_matrices.py:195: in gamma_trace
+    t = _simplify_single_line(t)
+sympy\physics\hep\gamma_matrices.py:218: in _simplify_single_line
+    t1 = kahane_simplify(t1)
+sympy\physics\hep\gamma_matrices.py:703: in kahane_simplify
+    temp_expr *= GammaMatrix(j)
+sympy\tensor\tensor.py:1887: in __call__
+    tensor = Tensor(self, updated_indices, **kw_args)
+sympy\tensor\tensor.py:2783: in __new__
+    indices = cls._parse_indices(tensor_head, indices)
+sympy\tensor\tensor.py:2873: in _parse_indices
+    raise TypeError("wrong type for index: %s is %s" % (index, type(index)))
+E   TypeError: wrong type for index: None is &lt;class 'NoneType'&gt;</failure></testcase></testsuite></testsuites>

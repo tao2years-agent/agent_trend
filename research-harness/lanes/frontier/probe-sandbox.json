@@ -1,0 +1,50 @@
+{
+  "commit": "b71264afc2a32048b7d7a1fe7b876c8a07a03493",
+  "now_ms": 10000,
+  "threshold_seconds": 5,
+  "scope": "single pure function, no Redis, ingress or cluster",
+  "trials": [
+    {
+      "case": "recent",
+      "last_active_ms": 9500,
+      "tombstone_ms": null,
+      "verdict": "not_idle",
+      "create_tombstone": false
+    },
+    {
+      "case": "old",
+      "last_active_ms": 1000,
+      "tombstone_ms": null,
+      "verdict": "idle",
+      "create_tombstone": false
+    },
+    {
+      "case": "no_signal",
+      "last_active_ms": null,
+      "tombstone_ms": null,
+      "verdict": "unknown",
+      "create_tombstone": true
+    },
+    {
+      "case": "fresh_tombstone",
+      "last_active_ms": null,
+      "tombstone_ms": 9000,
+      "verdict": "unknown",
+      "create_tombstone": false
+    },
+    {
+      "case": "expired_tombstone",
+      "last_active_ms": null,
+      "tombstone_ms": 5000,
+      "verdict": "idle",
+      "create_tombstone": false
+    },
+    {
+      "case": "recent_signal_overrides_old_tombstone",
+      "last_active_ms": 9900,
+      "tombstone_ms": 0,
+      "verdict": "not_idle",
+      "create_tombstone": false
+    }
+  ]
+}

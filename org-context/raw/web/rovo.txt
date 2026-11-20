@@ -1,0 +1,456 @@
+检索参数 {"search_query":[{"q":"site:support.atlassian.com rovo permissions search connector synced permissions"}],"response_length":"medium"}
+Manage your Teamwork Graph connectors | Atlassian Support (https://support.atlassian.com/rovo/docs/manage-rovo-connectors/)
+citeturn34search0 [wordlim: 200] Crawled: 4 months ago; Teamwork Graph connectors enable you to connect third-party app s outside Atlassian to enhance Rovo Agents, Search, and Chat. ... Synced connectors: Providing the highest quality for your search and chat, these connectors are setup by an Admin to sync all your workspace content. ... Users may need to connect to the external apps to ensure they see only the data they have permission to access. ...   * How Teamwork Graph connector permissions are kept in sync How Teamwork Graph connectors permissions are kept in sync View topic
+
+# Manage your Teamwork Graph connectors
+
+Teamwork Graph connectors enable you to connect third-party app s outside Atlassian to enhance Rovo Agents, Search, and Chat. Before connecting to a third-party app, we recommend reviewing the types of data stored in that app, and confirming that connecting the data aligns with your internal data use policies and practices.
+
+## Types of connectors
+
+There are three types of connectors:
+
+  1. Synced connectors: Providing the highest quality for your search and chat, these connectors are setup by an Admin to sync all your workspace content.
+
+  2. Direct connectors: Direct connector content is retrieved live through the provider's search APIs. Content is not stored or indexed by Atlassian.
+
+  3. Smart Link connectors: Don’t need to be setup by an admin, and instead use Smart Link data to show results based on an individual user’s permissions and history.
+
+For more details on the differences between these connectors, see Teamwork Graph connector types.
+
+## Permissions
+
+The Teamwork Graph relies on and respects the permissions that are set in your third-party apps. Content that isn’t restricted may appear for all users in search results, or can be used by Agents or Chat. More on how permissions are kept in sync
+
+## Connectors that require an admin to setup
+
+To set up connectors, you need to have organization admin permissions in admin.atlassian.com. Learn about permissions
+
+### Connectors per site
+
+On each site, most connectors can only be used to connect to a single workspace. This means that:
+
+  * On a single site with Rovo (for example, yoursite.atlassian.net), you can only connect each app once (Google Drive)
+
+  * Each different site with Rovo can connect to a different app workspace (your company's Google Drive) using its own connector.
+
+The only connectors that can be set up multiple times on a single site with Rovo are the Custom website connector and the Jira Data Center Connector.
+
+### How to set up connectors
+
+To connect your third-party app, see support guides for connecting the Teamwork Graph to:
+
+  * Adobe Sign
+
+  * Aha!
+
+  * Airtable
+
+  * Asana
+
+  * Azure DevOps
+
+  * Box
+
+  * Confluence Data Center
+
+  * Custom website
+
+  * Docusign
+
+  * Dropbox
+
+  * GitHub
+
+  * GitLab
+
+  * Gmail
+
+  * Google Calendar
+
+  * Google Drive
+
+  * Jira Data Center(includes Jira Service Management Data Center)
+
+  * Lucid
+
+  * Microsoft Outlook Calendar
+
+  * Microsoft Outlook Mail
+
+  * Microsoft SharePoint (includes OneDrive)
+
+  * Microsoft Teams
+
+  * Miro
+
+  * Monday
+
+  * Notion
+
+  * Salesforce
+
+  * ServiceNow
+
+  * Slack
+
+  * Smartsheet
+
+  * Workday
+
+  * Zendesk
+
+ 
+
+If you’d like to disconnect an app, see Disconnect an app from Teamwork Graph.
+
+### After admin setup
+
+Users may need to connect to the external apps to ensure they see only the data they have permission to access. They might not have to perform this step if they have previously connected their Atlassian account to the app.
+
+Once the connector is set up and the user has connected it with the app, that data can be used and shown in Search, Chat, and Agents.
+
+### Monitor connector health
+
+You can easily see if your connectors are syncing, disconnecting or require attention. Just select the status icon for more info and steps to fix any issues, like re-authenticating or updating permissions. We suggest checking your connectors page often to keep everything running smoothly.
+
+--------------------------------------------------------------------------------
+Rovo data, privacy, and usage guidelines | Rovo | Atlassian Support (https://support.atlassian.com/rovo/docs/rovo-data-privacy-and-usage-guidelines/)
+citeturn34search1 [wordlim: 200] Crawled: today; Rovo synchronises with access controls and permission settings from connected third-party app s and your Atlassian app s. ... When this setting is on, users may see that connector's results in Rovo Search, Chat, and Agents without connecting their account. Access permissions are still respected, using permissions synced from the connected app. ... When the Use current tab as context toggle is enabled, and you ask Rovo to use the content of the active tab (for example, you ask it to “Summarize this page”), the extension can read the contents of that page to answer the user’s request.
+For example, if you use an agent purchased by your organization from Atlassian Marketplace, your use of that agent is subject to the third-party’s terms and policies.
+
+For more detail, see “Third Party Services” in Atlassian’s Privacy Policy.
+
+## Permissions
+
+Rovo synchronises with access controls and permission settings from connected third-party app s and your Atlassian app s. This helps ensure that users only see content they have access to.
+
+Because Rovo relies on these permissions you have set, before connecting a third-party app you should check and remind users to check the permissions set up for that app.
+
+For example, if you connect Google Drive to Rovo, users need to log in and connect their Atlassian account to Google Drive to see any Google Drive results in Rovo. Once authorized, users will be able to see public documents and private documents that they already had access to.
+
+For supported synced connectors, an admin can also turn on Allow users to see results without connecting their account.
+
+When this setting is on, users may see that connector's results in Rovo Search, Chat, and Agents without connecting their account. Access permissions are still respected, using permissions synced from the connected app.
+
+We ‘listen’ for permission changes, and update the Rovo index with changes. More about permissions
+
+## Deleted data
+
+For admin managed connectors, we ‘listen’ for content deletion, and update the Rovo index with changes. For example, once the Rovo index is updated, content that’s deleted from a connected third-party app will not appear in Rovo results. For more information on permissions and connectors, see Manage Rovo connectors.
+
+For Smart Link connectors, deleted Smart Links may still show up in Search Results. However, if a user clicks on a link to deleted content or clicks on a link they no longer have access to, the link will appear broken. See Search with Smart Links for more information.
+
+If an organization admin disconnects a third-party app from Rovo, we will delete the content we've indexed from the third-party app within 30 days. --------------------------------------------------------------------------------
+How Teamwork Graph connector permissions are kept in sync | Atlassian Support (https://support.atlassian.com/organization-administration/docs/how-connector-permissions-are-kept-in-sync/)
+citeturn34search2 [wordlim: 200] Crawled: 3 weeks ago; Once you’ve set up an admin-managed connector, Rovo sets up a secure sync with the third-party app. When new content is created or removed in that app, the relevant information is synced with Rovo. ...   * Only shows up in search results for those with permissions
+
+# How Teamwork Graph connector permissions are kept in sync
+
+Once you’ve set up an admin-managed connector, Rovo sets up a secure sync with the third-party app. When new content is created or removed in that app, the relevant information is synced with Rovo.
+
+This means restricted data in your connected third-party app s (for example, a private file or folder in Google Drive) can only be seen and used in Rovo by those users who already have access to that content in such third-party app s.
+
+## Example scenarios
+
+Included below are some scenarios to help you better understand how Rovo handles permissions and changes:
+
+Scenario  | Access
+Adding a new document without access restrictions to Google Drive, Confluence or Microsoft SharePoint  | 
+
+  * Visible in Search for everyone using Rovo on your site
+  * Can be accessed through Rovo Chat and Agents by anyone on your site
+Adding a private document (only you have access) to Google Drive, Confluence or SharePoint  | 
+
+  * Only shows up in search results for you
+  * Can be accessed through Rovo Chat and Agents by only you
+Adding a document to Google Drive, Confluence or Sharepoint and giving access to select people  | 
+
+  * Only shows up in search results for those who have access
+  * Can be accessed through Rovo Chat and Agents by those who have access
+Deleting a document (Google Drive, SharePoint, Confluence)  | 
+
+  * Removed from Rovo, including Search, Chat, and Agents
+  * Cannot be accessed
+Adding restrictions to a previously unrestricted document (Google Drive, SharePoint, Confluence)  | 
+
+  * Only shows up in search results for those with permissions
+  * Can be accessed through Rovo Chat and Agents by those with permissions
+Removing restrictions from a previously restricted document (Google Drive, SharePoint, Confluence)  | 
+
+  * Visible in Search for everyone using Rovo on your site
+  * Can be accessed through Rovo Chat and Agents by anyone on your site
+A Jira project is made private and only accessible by a team  | 
+
+  * Visible in Search for everyone in the team
+  * Can be accessed through Rovo Chat and Agents by anyone on that team--------------------------------------------------------------------------------
+Manage included tools for connectors | Atlassian Support (https://support.atlassian.com/organization-administration/docs/manage-included-tools-for-connectors/)
+citeturn34search3 [wordlim: 200] Crawled: today; People are asked to sign in to the third-party app before a tool can run, and they only see data they already have permission to access in that app. ... When Allow users to see results without connecting their account is on, users may see that connector's results in Rovo Search, Chat, and Agents without connecting their account. Rovo still enforces access using permissions synced from the connected app.
+
+Some synced connectors have a separate setting that can show connector results without each user connecting their account.
+
+When Allow users to see results without connecting their account is on, users may see that connector's results in Rovo Search, Chat, and Agents without connecting their account. Rovo still enforces access using permissions synced from the connected app.
+
+This setting applies to connector results. It doesn't change sign-in requirements for included tools.
+
+## Set the organization setting for included tools
+
+  1. Go to Atlassian Administration. Select your organization if you have more than one.
+
+  2. Select Connectors.
+
+  3. Select the Settings tab.
+
+  4. Under Included capabilities, select Included tools.
+
+  5. Under Organization setting, choose a setting.
+
+  6. Select Save.
+
+  * Enable tools: Included actions and MCP tools are available, unless a connector is manually configured to turn them off. This is the default.
+
+  * Enable read-only tools: Read tools stay available. Tools that can make changes are blocked, unless a connector is manually configured to turn them on.
+--------------------------------------------------------------------------------
+Admin Enabled Authentication for synced Teamwork Graph connectors | Atlassian Support (https://support.atlassian.com/organization-administration/docs/adminenabledauthentication/)
+citeturn34search4 [wordlim: 200] Crawled: today; Admin Enabled Authentication lets organization admins allow users to see results from supported synced Teamwork Graph connectors without connecting their own account to the third-party app first. ... Each supported connector has a permission freshness threshold: the maximum time a permission change in the third-party app may take to be reflected in Rovo. ... If Rovo cannot confirm that a connector's permissions are complete and current, results from that connector stop appearing in Rovo Search, Chat, and Agents until permissions can be confirmed again.
+
+# Admin Enabled Authentication for synced Teamwork Graph connectors
+
+Admin Enabled Authentication lets organization admins allow users to see results from supported synced Teamwork Graph connectors without connecting their own account to the third-party app first.
+
+Rovo still respects each user's existing permissions. Users only see content they are allowed to access in the connected app.
+
+The connector setting is called Allow users to see results without connecting their account.
+
+## Where Admin Enabled Authentication applies
+
+Admin Enabled Authentication applies when Rovo reads content from the Teamwork Graph, including Rovo Search, Chat, and Agents.
+
+It does not apply to tools and actions that act in a third-party app. Tools and actions still require each user to connect and authenticate with their own account, because they act on that user's behalf.
+
+Smart Link connectors and other non-synced connectors are not covered by this setting. Users still need to connect their own account for those connectors.
+
+
+## What happens if permissions are not current
+
+For connectors with a permission freshness window, Rovo checks that permission updates from the connected app are received and applied within that window.
+
+If Rovo cannot confirm that a connector's permissions are complete and current, results from that connector stop appearing in Rovo Search, Chat, and Agents until permissions can be confirmed again.
+
+Results return automatically when syncing recovers. No admin or user action is needed.
+
+Salesforce works differently. Salesforce permissions are validated for each query, so a permission freshness window does not apply.
+
+## What users see
+
+When the setting is on, matched users can see results from the connector without a separate connection step. Results are limited to content they are permitted to see.
+
+Users may still be prompted to connect their own account when:
+
+  * the connector does not support Admin Enabled Authentication
+
+  * the setting is off for that connector
+
+  * Rovo cannot match the user's Atlassian account to their third-party account
+--------------------------------------------------------------------------------
+Teamwork Graph connector types | Atlassian Support (https://support.atlassian.com/organization-administration/docs/teamwork-graph-connector-types/)
+citeturn34search5 [wordlim: 200] Crawled: today; Objects indexed using a Synced connector count towards Rovo’s Indexed objects allowance. ... When you turn on Allow users to see results without connecting their account, Rovo uses synchronized permissions to enforce access across Rovo Search, Chat, and Agents.
+
+Atlassian admin controls manage data synced from third-party apps for indexing and search. Some Rovo features (such as Chat) can also fetch third-party data at runtime, using the user’s access to the third-party app. To manage this access, configure permissions in the third-party app alongside your Atlassian administration controls.
+
+### Index
+
+Objects indexed using a Synced connector count towards Rovo’s Indexed objects allowance. To understand the allowances for your organization, see Rovo indexed objects.
+
+### Setup
+
+These connectors require an admin to set up within admin.atlassian.com, and sometimes also require end users to authenticate to ensure they only see content they already have access to.
+
+Some synced connectors support admin-controlled access without end-user authentication. When you turn on Allow users to see results without connecting their account, Rovo uses synchronized permissions to enforce access across Rovo Search, Chat, and Agents.
+
+Not all synced connectors support this setting. --------------------------------------------------------------------------------
+Check status of indexed content | Atlassian Support (https://support.atlassian.com/organization-administration/docs/check-status-of-indexed-content/)
+citeturn34search6 [wordlim: 200] Crawled: today; When you connect a third-party app to Teamwork Graph using a synced connector, Teamwork Graph indexes content from that app. This makes the content available in Rovo Search, Chat, and Agents for people who have permission to see it in the third-party app. ... Indexed  | The content is in your site's index, so it can appear in Rovo Search, Chat, and Agents for people who have permission to see it in the third-party app. ... Whether a specific person sees the content in Search depends on their permissions in the third-party app, plus the query, filters, and ranking. ... Google Drive file  | `https://docs.google.com/document/d/1AbC-dEfG_hIjK/edit`  | Open the file, then select Share and Copy link.
+
+# Check status of indexed content
+
+When you connect a third-party app to Teamwork Graph using a synced connector, Teamwork Graph indexes content from that app. This makes the content available in Rovo Search, Chat, and Agents for people who have permission to see it in the third-party app.
+
+Use Check index status to confirm whether a specific file, document, or record is in the Teamwork Graph index. Paste a link to the item to see whether it's indexed and, when available, the date the indexed version was last modified.
+
+This helps you investigate content someone expects to find but can't, validate a newly connected app, or check whether a recent change to your content has taken effect.
+
+## Before you begin
+
+  * You need to have organization admin permissions in admin.atlassian.com. Learn about permissions
+
+  * The connector needs to be set up already. See Manage your Teamwork Graph connectors
+
+  * The index check is available for synced connectors. Direct connectors retrieve results live and don't store or index content with Atlassian, so there's nothing to check. See Teamwork Graph connector types
+
+## Check index status
+
+  1. Go to admin.atlassian.com. If you have more than one organization, select the one you want.
+
+  2. Select Connectors, then open the connector that holds the content.
+
+  3. Go to the Check index status section.
+
+  4. Paste the link to the content you want to check. Use the link you'd normally copy from the third-party app — for example, the Copy link or Share link for a Google Drive file, or the address bar URL for a ServiceNow incident.
+
+  5. Select Check status.
+
+The check is read-only. It doesn't start a sync, change any content, or change anyone's permissions.
+--------------------------------------------------------------------------------
+What is Rovo? | Rovo | Atlassian Support (https://support.atlassian.com/rovo/docs/what-is-rovo)
+citeturn34search7 [wordlim: 200] Crawled: today; Image: Screenshot of full-page Search results in Rovo, with different Atlassian and third-party app filters ... Rovo respects your user permissions, so users can only see what they already have access to. ...   * perform specialized skills (with your permission) like organize, create, or edit Jira work items or Confluence pages.
+
+Rovo is a leap forward in how teams work together and collaborate with AI. It unleashes the potential in teams by helping them make better decisions and take impactful actions faster.
+
+When we use the term “Atlassian Rovo” or “Rovo” in this documentation, we mean the bundle of features listed on Explore Rovo features, as well as any other “Rovo” branded features.
+
+## Rovo Search
+
+Rovo Search allows you to search across multiple tools at once without context-switching.
+
+Image: Screenshot of full-page Search results in Rovo, with different Atlassian and third-party app filters
+
+Search combines results from your Atlassian app s (like Jira and Confluence) with connected third-party apps (like Google Drive and Slack). Rovo respects your user permissions, so users can only see what they already have access to.
+
+Over time, we'll add more tools and app s to Rovo Search.
+
+More about Search
+
+How to connect third-party apps
+
+## Rovo Chat
+--------------------------------------------------------------------------------
+Search | Rovo | Atlassian Support (https://support.atlassian.com/rovo/docs/search/)
+citeturn34search8 [wordlim: 200] Crawled: today;   * In case of multiple Confluence Data Center connectors, in the filter options on the right, you’ll only see the Connect option for the most recent connector. ... If this is the first time you’re searching for a connected third-party app, Rovo may ask you to connect your account to give permission. ... To make it easy for you to access Rovo Search from anywhere you’re working, you can install the Rovo browser extension.
+
+## Filters
+
+If you’d like to narrow down your search to a single app, or specifics (like a space in Confluence, or a particular contributor), advanced search filters allow you to get specific.
+
+Image: Screenshot of product specific filters appearing as user chooses to show Jira results
+
+To see app-specific filters, start by selecting the app on the right side. If this is the first time you’re searching for a connected third-party app, Rovo may ask you to connect your account to give permission.
+
+## Knowledge cards
+
+Knowledge cards (people, definitions) provide a single view of how your information is connected and related across data sources.
+
+### People cards
+
+When you’ve searched for a teammate’s name, Search provides important details including their photo, role, location, team, collaborators, and what they’ve been working on. You’ll only see what you have access to.
+
+Image: Screenshot of a search for a teammate's name, and a people card showing details about them
+
+### Team cards
+
+Team cards summarize key information about a team, such as members, roles, and current projects.
+
+Image: Screenshot of a search for 'Wombats' with a Team card of the Wombats team showing people and recent work
+
+### Definition cards
+
+When you ask in Search for a meaning (for example, “What is PTO?”), Rovo looks in Confluence on your current site for the most likely definition.
+
+Image: Screenshot of user searching for 'What is PTO' and the definition showing up as a card in search results
+
+If you search directly for an acronym (“PPQ”), it will also display any definitions other people have added.
+
+More about definitions
+--------------------------------------------------------------------------------
+Unexpected MCP Apps (GitHub, Sentry, New Relic, Notion) Appearing in Connected Apps | Rovo | Atlassian Support (https://support.atlassian.com/rovo/kb/unexpected-mcp-apps-github-sentry-new-relic-notion-appearing-in-connected-apps/)
+citeturn34search9 [wordlim: 200] Published: 3 months ago; Crawled: today; Adjust access by permission type (Read, Write, Search) or by specific product. ... Note: The permissions set in the Rovo MCP server tab take precedence over any settings found directly within the Connected Apps page. ...   * Configure Atlassian Rovo MCP server permission
+
+## Solution
+
+Administrators have full oversight and control over these connections through Atlassian Administration.
+
+### 1. Monitor Activity
+
+To see when and which users authorized these connections:
+
+  1. Go to Atlassian Administration > Insights > Audit log.
+
+  2. Filter the log for "Rovo MCP" to view user authorization events.
+
+### 2. Manage Permissions
+
+You can restrict or disable access to these MCP servers:
+
+  1. Navigate to Atlassian Administration > Rovo > Rovo MCP server > Permissions.
+
+  2. Adjust access by permission type (Read, Write, Search) or by specific product.
+
+  3. You can also disable the MCP server entirely for your organization if required.
+
+Note: The permissions set in the Rovo MCP server tab take precedence over any settings found directly within the Connected Apps page.
+
+### Related Articles
+
+  * Getting started with the Atlassian Rovo MCP Server
+
+  * Monitor Atlassian Rovo MCP server activity
+
+  * Configure Atlassian Rovo MCP server permission
+
+Updated on August 19, 2026--------------------------------------------------------------------------------
+Connect Salesforce to Teamwork Graph | Atlassian Support (https://support.atlassian.com/organization-administration/docs/connect-salesforce-to-teamwork-graph/)
+citeturn34search10 [wordlim: 200] Crawled: today;   * Synced connector indexes your Salesforce data into Teamwork Graph and supports Salesforce across search, chat, and agents.
+
+  * Direct connector does not index any data into Teamwork Graph; instead it relies on real-time calls to Salesforce's MCP, and it works only in Rovo Chat and agents (it does not support search). ... Rovo enforces access using object and record permissions from Salesforce.
+
+For Salesforce, a permission freshness window doesn't apply because permissions are validated for each query.
+
+# Connect Salesforce to Teamwork Graph
+
+You can use Teamwork Graph Connectors to search or chat across Salesforce data alongside your company knowledge.
+
+Salesforce offers two connector options:
+
+  * Synced connector indexes your Salesforce data into Teamwork Graph and supports Salesforce across search, chat, and agents.
+
+  * Direct connector does not index any data into Teamwork Graph; instead it relies on real-time calls to Salesforce's MCP, and it works only in Rovo Chat and agents (it does not support search). Choose the option that best fits your needs.
+
+### Compare connector options
+
+   | Synced connector  | Direct connector
+--- | --- | ---
+Data handling  | Indexes Salesforce data into Teamwork Graph  | Does not index any data; makes real-time calls to Salesforce's MCP
+Where it works  | Search, Chat, and Agents  | Rovo Chat and Agents only (no Search)
+Permissions  | Salesforce permissions respected; integration account used for indexing  | Salesforce permissions respected; uses each user's own Salesforce access at runtime
+--------------------------------------------------------------------------------
+Explore Rovo features | Rovo | Atlassian Support (https://support.atlassian.com/rovo/docs/explore-rovo-features/)
+citeturn34search11 [wordlim: 200] Crawled: today; Rovo Search gives you a single interface to get results from Atlassian app s (such as Confluence and Jira) and connected third-party app s (such as Google Drive and Slack).
+
+Search respects your permissions in your Atlassian and connected third-party app s, to give you personalized results based on what you have access to. ...   * perform specialized skills (with your permission) like organize, create, or edit Jira work items or Confluence pages ... When you’ve come across some company jargon or a project you’ve never heard of, Rovo can help you find out what it means.
+
+# Explore Rovo features
+
+Rovo is a powerful app designed to optimize teamwork. Many of its features use AI, but a few don’t. Knowing which features use AI is important so that you know what to expect depending on your app’s settings.
+
+Manage Rovo access
+
+Feature  | Rovo without AI activated  | Rovo with AI activated
+--- | --- | ---
+Rovo Search (including third party connectors)  |  | 
+Bookmarks  |  | 
+Atlassian Studio to create your own Agents, Automations and Apps  |    | 
+Rovo Chat  |    | 
+Out-of-the-Box agents  |    | 
+Answers and knowledge cards in Search  |    | 
+Definitions  |    | 
+
+## Rovo features that don’t use AI
+
+### Find what you need
+
+Rovo Search gives you a single interface to get results from Atlassian app s (such as Confluence and Jira) and connected third-party app s (such as Google Drive and Slack).
+
+Search respects your permissions in your Atlassian and connected third-party app s, to give you personalized results based on what you have access to.
+
+More about Search
+

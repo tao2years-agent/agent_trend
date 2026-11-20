@@ -1,0 +1,15 @@
+F.....                                                                   [100%]
+================================== FAILURES ===================================
+___________________________ test_PythonCodePrinter ____________________________
+sympy\printing\tests\test_pycode.py:61: in test_PythonCodePrinter
+    assert prntr.doprint(Min(x, y)) == "min(x, y)"
+E   AssertionError: assert 'max(x, y)' == 'min(x, y)'
+E     - min(x, y)
+E     ?  ^^
+E     + max(x, y)
+E     ?  ^^
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22914\V7f453cfd5184\labels0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/printing/tests/test_pycode.py::test_PythonCodePrinter - Assertio...
+1 failed, 5 passed in 0.26s

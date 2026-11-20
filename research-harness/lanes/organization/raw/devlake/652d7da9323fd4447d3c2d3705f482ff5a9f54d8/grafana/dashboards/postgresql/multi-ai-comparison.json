@@ -1,0 +1,744 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Kiro Usage",
+      "type": "link",
+      "url": "/d/kiro_user_report"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Copilot Adoption",
+      "type": "link",
+      "url": "/d/copilot_adoption"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Cursor Usage",
+      "type": "link",
+      "url": "/d/cursor_usage"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Claude Code Adoption",
+      "type": "link",
+      "url": "/d/claude_code_adoption"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## Multi-AI Tool Comparison: Copilot vs Kiro vs Cursor vs Claude Code\nCompare GitHub Copilot, Kiro, Cursor, and Claude Code adoption and activity side by side.\n\n**Semantic boundary:** Copilot and Cursor export IDE code-generation and tab completion events. Kiro exports completion logs. Claude Code is an agentic CLI tool; its activity tracks tool execution approvals (accepted vs rejected edit/write tool actions) and lines added. Returned Kiro lines, Copilot LOC added, Cursor LOC Added, and Claude LOC Added are displayed with explicit labels and must not be treated as equivalent productivity measures.",
+        "mode": "markdown"
+      },
+      "title": "About",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "panels": [],
+      "title": "Active Users",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Weekly active users for both tools",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' AS time, COUNT(DISTINCT user_id) AS \"Kiro Active Users\" FROM _tool_kiro_user_report WHERE $__timeFilter(date) GROUP BY CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' AS time, MAX(daily_active_users) AS \"Copilot Active Users\" FROM _tool_copilot_enterprise_daily_metrics WHERE ('${copilot_connection_id}' = '' OR connection_id::text = '${copilot_connection_id}') AND scope_id = '${copilot_scope_id}' AND $__timeFilter(day) GROUP BY CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' AS time, COUNT(DISTINCT user_id) AS \"Cursor Active Users\" FROM _tool_cursor_daily_usage WHERE ('${cursor_connection_id}' = '' OR connection_id::text = '${cursor_connection_id}') AND scope_id = '${cursor_scope_id}' AND is_active = TRUE AND $__timeFilter(usage_date) GROUP BY CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' AS time, COUNT(DISTINCT user_id) AS \"Claude Code Active Users\" FROM _tool_claude_code_user_activity WHERE ('${claude_code_connection_id}' = '' OR connection_id::text = '${claude_code_connection_id}') AND scope_id = '${claude_code_scope_id}' AND $__timeFilter(date) AND (cc_session_count > 0 OR cc_commit_count > 0 OR cc_pull_request_count > 0 OR cc_lines_added > 0 OR cc_lines_removed > 0 OR edit_tool_accepted + edit_tool_rejected + multi_edit_tool_accepted + multi_edit_tool_rejected + write_tool_accepted + write_tool_rejected + notebook_edit_tool_accepted + notebook_edit_tool_rejected > 0) GROUP BY CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "D"
+        }
+      ],
+      "title": "Weekly Active Users Comparison",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Assistant Activity",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Kiro completion requests and requests returning suggestions. Returned does not mean accepted.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(timestamp AS DATE) - (EXTRACT(ISODOW FROM CAST(timestamp AS DATE)) - 1) * INTERVAL '1 day' AS time, COUNT(*) AS \"Kiro: Completion Requests\", SUM(CASE WHEN completions_count > 0 THEN 1 ELSE 0 END) AS \"Kiro: Requests with Results\" FROM _tool_kiro_completion_log WHERE $__timeFilter(timestamp) GROUP BY CAST(timestamp AS DATE) - (EXTRACT(ISODOW FROM CAST(timestamp AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "A"
+        }
+      ],
+      "title": "Kiro Completion Requests & Results",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Weekly Copilot code generation and acceptance events",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' AS time, SUM(code_generation_activity_count) AS \"Copilot: Suggestions\", SUM(code_acceptance_activity_count) AS \"Copilot: Accepted\" FROM _tool_copilot_enterprise_daily_metrics WHERE ('${copilot_connection_id}' = '' OR connection_id::text = '${copilot_connection_id}') AND scope_id = '${copilot_scope_id}' AND $__timeFilter(day) GROUP BY CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "A"
+        }
+      ],
+      "title": "Copilot: Code Suggestions & Acceptance",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Weekly Cursor tab completions: shown vs accepted",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' AS time, SUM(tabs_shown) AS \"Cursor: Suggestions\", SUM(tabs_accepted) AS \"Cursor: Accepted\" FROM _tool_cursor_daily_usage WHERE ('${cursor_connection_id}' = '' OR connection_id::text = '${cursor_connection_id}') AND scope_id = '${cursor_scope_id}' AND $__timeFilter(usage_date) GROUP BY CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "A"
+        }
+      ],
+      "title": "Cursor: Tab Completions",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Weekly Claude Code tool modification actions: accepted vs rejected (edit, write, and notebook tools)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' AS time, SUM(edit_tool_accepted + write_tool_accepted + multi_edit_tool_accepted + notebook_edit_tool_accepted) AS \"Claude: Accepted Actions\", SUM(edit_tool_rejected + write_tool_rejected + multi_edit_tool_rejected + notebook_edit_tool_rejected) AS \"Claude: Rejected Actions\" FROM _tool_claude_code_user_activity WHERE ('${claude_code_connection_id}' = '' OR connection_id::text = '${claude_code_connection_id}') AND scope_id = '${claude_code_scope_id}' AND $__timeFilter(date) GROUP BY CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' ORDER BY time NULLS FIRST",
+          "refId": "A"
+        }
+      ],
+      "title": "Claude Code: Tool Actions",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 20,
+      "panels": [],
+      "title": "Returned Lines & Acceptance Availability",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Different semantics: Kiro counts lines returned to the IDE; Copilot counts LOC added. Do not interpret as an acceptance comparison.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT time, SUM(kiro_lines) AS \"Kiro Returned Lines\", SUM(copilot_loc) AS \"Copilot LOC Added\", SUM(cursor_loc) AS \"Cursor LOC Added\", SUM(claude_loc) AS \"Claude LOC Added\" FROM (SELECT CAST(timestamp AS DATE) - (EXTRACT(ISODOW FROM CAST(timestamp AS DATE)) - 1) * INTERVAL '1 day' AS time, SUM(returned_line_count) AS kiro_lines, 0 AS copilot_loc, 0 AS cursor_loc, 0 AS claude_loc FROM _tool_kiro_completion_log WHERE $__timeFilter(timestamp) GROUP BY CAST(timestamp AS DATE) - (EXTRACT(ISODOW FROM CAST(timestamp AS DATE)) - 1) * INTERVAL '1 day' UNION ALL SELECT CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' AS time, 0 AS kiro_lines, SUM(loc_added_sum) AS copilot_loc, 0 AS cursor_loc, 0 AS claude_loc FROM _tool_copilot_enterprise_daily_metrics WHERE ('${copilot_connection_id}' = '' OR connection_id::text = '${copilot_connection_id}') AND scope_id = '${copilot_scope_id}' AND $__timeFilter(day) GROUP BY CAST(day AS DATE) - (EXTRACT(ISODOW FROM CAST(day AS DATE)) - 1) * INTERVAL '1 day' UNION ALL SELECT CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' AS time, 0 AS kiro_lines, 0 AS copilot_loc, SUM(lines_added) AS cursor_loc, 0 AS claude_loc FROM _tool_cursor_daily_usage WHERE ('${cursor_connection_id}' = '' OR connection_id::text = '${cursor_connection_id}') AND scope_id = '${cursor_scope_id}' AND $__timeFilter(usage_date) GROUP BY CAST(usage_date AS DATE) - (EXTRACT(ISODOW FROM CAST(usage_date AS DATE)) - 1) * INTERVAL '1 day' UNION ALL SELECT CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day' AS time, 0 AS kiro_lines, 0 AS copilot_loc, 0 AS cursor_loc, SUM(cc_lines_added) AS claude_loc FROM _tool_claude_code_user_activity WHERE ('${claude_code_connection_id}' = '' OR connection_id::text = '${claude_code_connection_id}') AND scope_id = '${claude_code_scope_id}' AND $__timeFilter(date) GROUP BY CAST(date AS DATE) - (EXTRACT(ISODOW FROM CAST(date AS DATE)) - 1) * INTERVAL '1 day') AS combined GROUP BY time ORDER BY time NULLS FIRST",
+          "refId": "A"
+        }
+      ],
+      "title": "Kiro Returned Lines vs Copilot/Cursor/Claude LOC Added",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "devlake-postgres-api"
+      },
+      "description": "Kiro exports no suggestion-acceptance event, so its value is NULL. Copilot acceptance remains available.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 30
+      },
+      "id": 22,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.5,
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "devlake-postgres-api"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 'Kiro (not exported)' AS \"Tool\", CAST(NULL AS DECIMAL(10, 2)) AS \"Acceptance Rate\" UNION ALL SELECT 'Copilot' AS \"Tool\", ROUND(CAST(SUM(code_acceptance_activity_count) * 100.0 AS NUMERIC) / NULLIF(NULLIF(SUM(code_generation_activity_count), 0), 0), 1) AS \"Acceptance Rate\" FROM _tool_copilot_enterprise_daily_metrics WHERE ('${copilot_connection_id}' = '' OR connection_id::text = '${copilot_connection_id}') AND scope_id = '${copilot_scope_id}' AND $__timeFilter(day) UNION ALL SELECT 'Cursor' AS \"Tool\", ROUND(CAST(SUM(tabs_accepted) * 100.0 AS NUMERIC) / NULLIF(NULLIF(SUM(tabs_shown), 0), 0), 1) AS \"Acceptance Rate\" FROM _tool_cursor_daily_usage WHERE ('${cursor_connection_id}' = '' OR connection_id::text = '${cursor_connection_id}') AND scope_id = '${cursor_scope_id}' AND $__timeFilter(usage_date) UNION ALL SELECT 'Claude Code' AS \"Tool\", ROUND(CAST(SUM(edit_tool_accepted + write_tool_accepted + multi_edit_tool_accepted + notebook_edit_tool_accepted) * 100.0 AS NUMERIC) / NULLIF(NULLIF(SUM(edit_tool_accepted + write_tool_accepted + multi_edit_tool_accepted + notebook_edit_tool_accepted + edit_tool_rejected + write_tool_rejected + multi_edit_tool_rejected + notebook_edit_tool_rejected), 0), 0), 1) AS \"Acceptance Rate\" FROM _tool_claude_code_user_activity WHERE ('${claude_code_connection_id}' = '' OR connection_id::text = '${claude_code_connection_id}') AND scope_id = '${claude_code_scope_id}' AND $__timeFilter(date)",
+          "refId": "A"
+        }
+      ],
+      "title": "Acceptance Rate Availability",
+      "type": "bargauge"
+    }
+  ],
+  "preload": false,
+  "refresh": "5m",
+  "schemaVersion": 41,
+  "tags": [
+    "kiro",
+    "copilot",
+    "cursor",
+    "claude",
+    "comparison"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT connection_id FROM _tool_copilot_scopes ORDER BY connection_id DESC NULLS LAST",
+        "hide": 0,
+        "label": "Copilot Connection",
+        "name": "copilot_connection_id",
+        "options": [],
+        "query": "SELECT DISTINCT connection_id FROM _tool_copilot_scopes ORDER BY connection_id DESC NULLS LAST",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT id FROM _tool_copilot_scopes WHERE connection_id = CAST('${copilot_connection_id}' AS BIGINT)",
+        "hide": 0,
+        "label": "Copilot Scope",
+        "name": "copilot_scope_id",
+        "options": [],
+        "query": "SELECT DISTINCT id FROM _tool_copilot_scopes WHERE connection_id = CAST('${copilot_connection_id}' AS BIGINT)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT connection_id FROM _tool_cursor_scopes ORDER BY connection_id DESC NULLS LAST",
+        "hide": 0,
+        "label": "Cursor Connection",
+        "name": "cursor_connection_id",
+        "options": [],
+        "query": "SELECT DISTINCT connection_id FROM _tool_cursor_scopes ORDER BY connection_id DESC NULLS LAST",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT id FROM _tool_cursor_scopes WHERE connection_id = CAST('${cursor_connection_id}' AS BIGINT)",
+        "hide": 0,
+        "label": "Cursor Scope",
+        "name": "cursor_scope_id",
+        "options": [],
+        "query": "SELECT DISTINCT id FROM _tool_cursor_scopes WHERE connection_id = CAST('${cursor_connection_id}' AS BIGINT)",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT connection_id FROM _tool_claude_code_scopes ORDER BY connection_id DESC NULLS LAST",
+        "hide": 0,
+        "label": "Claude Code Connection",
+        "name": "claude_code_connection_id",
+        "options": [],
+        "query": "SELECT DISTINCT connection_id FROM _tool_claude_code_scopes ORDER BY connection_id DESC NULLS LAST",
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "devlake-postgres-api"
+        },
+        "definition": "SELECT DISTINCT id FROM _tool_claude_code_scopes WHERE connection_id = CAST('${claude_code_connection_id}' AS BIGINT)",
+        "hide": 0,
+        "label": "Claude Code Scope",
+        "name": "claude_code_scope_id",
+        "options": [],
+        "query": "SELECT DISTINCT id FROM _tool_claude_code_scopes WHERE connection_id = CAST('${claude_code_connection_id}' AS BIGINT)",
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Multi-AI Tool Comparison: Copilot vs Kiro vs Cursor vs Claude Code",
+  "uid": "multi_ai_comparison-pg",
+  "version": 3
+}

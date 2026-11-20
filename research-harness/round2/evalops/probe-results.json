@@ -1,0 +1,150 @@
+{
+  "utc": "2026-11-20T04:16:23.263698+00:00",
+  "python": "3.12.3",
+  "node": "v24.14.0",
+  "langsmith_sdk": "0.2.11",
+  "promptfoo_sha": "cbf602f0a02691ccf3eb11d3574ae57160f50cc3",
+  "opik_sha": "a64b914047597f2693d4073fbe8a31b4e0a794e4",
+  "blocked_network_requests": {
+    "GET api.smith.langchain.com/info": 1
+  },
+  "rows_raw": 8,
+  "unique": 7,
+  "disagreements": [
+    "q1"
+  ],
+  "source_ids": [
+    "T-code1",
+    "T-code4",
+    "O-code1"
+  ],
+  "execution": "LangSmith evaluate(upload_results=False), Promptfoo handleEquals through Node permission mode, Opik TestSuiteResult.pass_rate",
+  "per_case_agreement": [
+    [
+      "e1",
+      "before",
+      1
+    ],
+    [
+      "e1",
+      "candidate",
+      1
+    ],
+    [
+      "e1",
+      "control",
+      1
+    ],
+    [
+      "e2",
+      "before",
+      0
+    ],
+    [
+      "e2",
+      "candidate",
+      1
+    ],
+    [
+      "e2",
+      "control",
+      1
+    ],
+    [
+      "e3",
+      "before",
+      0
+    ],
+    [
+      "e3",
+      "candidate",
+      0
+    ],
+    [
+      "e3",
+      "control",
+      1
+    ],
+    [
+      "e4",
+      "before",
+      0
+    ],
+    [
+      "e4",
+      "candidate",
+      0
+    ],
+    [
+      "e4",
+      "control",
+      1
+    ],
+    [
+      "s1",
+      "before",
+      1
+    ],
+    [
+      "s1",
+      "candidate",
+      1
+    ],
+    [
+      "s1",
+      "control",
+      1
+    ],
+    [
+      "s2",
+      "before",
+      0
+    ],
+    [
+      "s2",
+      "candidate",
+      1
+    ],
+    [
+      "s2",
+      "control",
+      1
+    ]
+  ],
+  "per_split": {
+    "before": {
+      "dev": [
+        1,
+        2
+      ],
+      "blind": [
+        1,
+        4
+      ]
+    },
+    "candidate": {
+      "dev": [
+        2,
+        2
+      ],
+      "blind": [
+        2,
+        4
+      ]
+    },
+    "control": {
+      "dev": [
+        2,
+        2
+      ],
+      "blind": [
+        4,
+        4
+      ]
+    }
+  },
+  "opik_candidate_all_assertions": 0.5,
+  "opik_candidate_omit_both_failed_assertions": 1.0,
+  "threshold": "research fixture only: all blind rows must pass; any duplicate external write blocks",
+  "external_writes": 0
+}

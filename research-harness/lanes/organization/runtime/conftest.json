@@ -1,0 +1,49 @@
+{
+  "app": "conftest",
+  "version": "v0.71.0",
+  "artifact": "https://github.com/open-policy-agent/conftest/releases/download/v0.71.0/conftest_0.71.0_Windows_x86_64.zip",
+  "checksums": "https://github.com/open-policy-agent/conftest/releases/download/v0.71.0/checksums.txt",
+  "archive_sha256": "a9228097e6f827dac7fee48f5cf0baa42ebd88454560de26bbb531d65ae0f448",
+  "tested_at": "2026-11-20T03:20:28.968681+00:00",
+  "os": "Windows x86_64",
+  "runs": [
+    {
+      "mode": "pass",
+      "argv": [
+        "conftest",
+        "test",
+        "service.json",
+        "--policy",
+        "policy",
+        "--output",
+        "json"
+      ],
+      "input": {
+        "policy/gate.rego": "package main\nimport rego.v1\ndeny contains msg if {\n  input.owner == \"\"\n  msg := \"owner required\"\n}\n",
+        "service.json": "{\"owner\": \"platform\"}"
+      },
+      "returncode": 0,
+      "stdout": "[\n\t{\n\t\t\"filename\": \"service.json\",\n\t\t\"namespace\": \"main\",\n\t\t\"successes\": 1\n\t}\n]\n",
+      "stderr": ""
+    },
+    {
+      "mode": "fail",
+      "argv": [
+        "conftest",
+        "test",
+        "service.json",
+        "--policy",
+        "policy",
+        "--output",
+        "json"
+      ],
+      "input": {
+        "policy/gate.rego": "package main\nimport rego.v1\ndeny contains msg if {\n  input.owner == \"\"\n  msg := \"owner required\"\n}\n",
+        "service.json": "{\"owner\": \"\"}"
+      },
+      "returncode": 1,
+      "stdout": "[\n\t{\n\t\t\"filename\": \"service.json\",\n\t\t\"namespace\": \"main\",\n\t\t\"successes\": 0,\n\t\t\"failures\": [\n\t\t\t{\n\t\t\t\t\"msg\": \"owner required\",\n\t\t\t\t\"metadata\": {\n\t\t\t\t\t\"query\": \"data.main.deny\"\n\t\t\t\t}\n\t\t\t}\n\t\t]\n\t}\n]\n",
+      "stderr": ""
+    }
+  ]
+}

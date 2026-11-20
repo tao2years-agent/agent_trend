@@ -1,0 +1,247 @@
+diff --git a/docs/docs/usage-guide/configuration_reference.md b/docs/docs/usage-guide/configuration_reference.md
+index d0e4db0891..da4b4bf17a 100644
+--- a/docs/docs/usage-guide/configuration_reference.md
++++ b/docs/docs/usage-guide/configuration_reference.md
+@@ -300,8 +300,6 @@ verify the status-changing actor or historical defaults. Dismissed findings shar
+ | --- | --- | --- |
+ | `demand_code_suggestions_self_review` | false | add a checkbox for the author to self-review the code suggestions |
+ | `code_suggestions_self_review_text` | "**Author self-review**: I have reviewed the PR code suggestions, and addressed the relevant ones." |  |
+-| `approve_pr_on_self_review` | false | no effect: the self-review checkbox is a visual marker only, and PR-Agent does not approve PRs (see the improve docs and the FAQ) |
+-| `fold_suggestions_on_self_review` | true | no effect: the self-review checkbox is a visual marker only, and suggestions are not folded when it is ticked |
+ 
+ 
+ ## `[pr_add_docs]` — /add_docs {#pr_add_docs-add_docs}
+diff --git a/pr_agent/algo/cli_args.py b/pr_agent/algo/cli_args.py
+index 7fc9849a90..9b0528fe13 100644
+--- a/pr_agent/algo/cli_args.py
++++ b/pr_agent/algo/cli_args.py
+@@ -174,7 +174,7 @@ def validate_user_args(args: list) -> (bool, str):
+             _encoded_args = (
+                 'c2hhcmVkX3NlY3JldA==:dXNlcg==:c3lzdGVt'
+                 ':ZW5hYmxlX2NvbW1lbnRfYXBwcm92YWw=:ZW5hYmxlX21hbnVhbF9hcHByb3ZhbA=='
+-                ':ZW5hYmxlX2F1dG9fYXBwcm92YWw=:YXBwcm92ZV9wcl9vbl9zZWxmX3Jldmlldw=='
++                ':ZW5hYmxlX2F1dG9fYXBwcm92YWw='
+                 ':YmFzZV91cmw=:dXJs:d2ViX3VybA==:YXBwX25hbWU=:c2VjcmV0X3Byb3ZpZGVy'
+                 ':Z2l0X3Byb3ZpZGVy:c2tpcF9rZXlz:b3BlbmFpLmtleQ==:QU5BTFlUSUNTX0ZPTERFUg=='
+                 ':dXJp:YXBwX2lk:d2ViaG9va19zZWNyZXQ=:YmVhcmVyX3Rva2Vu'
+diff --git a/pr_agent/config_security.py b/pr_agent/config_security.py
+index 2d8834832b..2d50e00168 100644
+--- a/pr_agent/config_security.py
++++ b/pr_agent/config_security.py
+@@ -180,10 +180,9 @@ def should_skip_config_key(section: str, key: str, skip_keys=()) -> bool:
+ # bypass the operator's choice of which PR fields the bot edits. Ticket extraction
+ # (require_ticket_analysis_review) stays root-controlled too: enabling it from a nested
+ # file would make the bot run authenticated Jira lookups the root config already disabled.
+-# Self-review workflow controls (demand_code_suggestions_self_review and
+-# approve_pr_on_self_review) stay root-controlled as well: a nested file must not be able
+-# to make /improve demand a checklist and then auto-approve the pull request when the
+-# author ticks it. Thread-history collection (pr_questions.use_conversation_history) is
++# The self-review workflow control (demand_code_suggestions_self_review) stays
++# root-controlled as well: a nested file must not be able to make /improve demand a
++# checklist. Thread-history collection (pr_questions.use_conversation_history) is
+ # also root-controlled so a nested file cannot re-enable sending private review-thread
+ # discussion bodies to the model after the operator opted out.
+ # Similarly, budget/call-count controls (max_number_of_calls, max_ai_calls, parallel_calls,
+@@ -212,7 +211,7 @@ def should_skip_config_key(section: str, key: str, skip_keys=()) -> bool:
+         # hand a nested file the very control the canonical name is denied.
+         "commitable_code_suggestions",
+         "max_number_of_calls", "parallel_calls", "max_discussion_context_chars",
+-        "approve_pr_on_self_review", "demand_code_suggestions_self_review",
++        "demand_code_suggestions_self_review",
+     }),
+     "pr_similar_issue": frozenset({"force_update_dataset", "max_issues_to_scan", "vectordb", "skip_comments"}),
+ }
+diff --git a/pr_agent/settings/configuration.toml b/pr_agent/settings/configuration.toml
+index 3527271035..48caf5dece 100644
+--- a/pr_agent/settings/configuration.toml
++++ b/pr_agent/settings/configuration.toml
+@@ -293,8 +293,6 @@ decouple_hunks = false
+ # self-review checkbox
+ demand_code_suggestions_self_review=false # add a checkbox for the author to self-review the code suggestions
+ code_suggestions_self_review_text= "**Author self-review**: I have reviewed the PR code suggestions, and addressed the relevant ones."
+-approve_pr_on_self_review=false # no effect: the self-review checkbox is a visual marker only, and PR-Agent does not approve PRs (see the improve docs and the FAQ)
+-fold_suggestions_on_self_review=true # no effect: the self-review checkbox is a visual marker only, and suggestions are not folded when it is ticked
+ 
+ [pr_add_docs] # /add_docs #
+ extra_instructions = ""
+diff --git a/pr_agent/tools/pr_code_suggestions.py b/pr_agent/tools/pr_code_suggestions.py
+index cceb68506f..b15d3ad87c 100644
+--- a/pr_agent/tools/pr_code_suggestions.py
++++ b/pr_agent/tools/pr_code_suggestions.py
+@@ -81,6 +81,23 @@
+ _deprecated_spellings_warned = False
+ 
+ 
++# Self-review marker keys were removed from configuration.toml; keep warning users who still
++# set either one, once per process.
++def _warn_deprecated_self_review_marker_keys() -> None:
++    if getattr(_warn_deprecated_self_review_marker_keys, "_warned", False):
++        return
++    settings = get_settings().pr_code_suggestions
++    if (settings.get("approve_pr_on_self_review", None) is None
++            and settings.get("fold_suggestions_on_self_review", None) is None):
++        return
++    _warn_deprecated_self_review_marker_keys._warned = True
++    get_logger().warning(
++        "pr_code_suggestions.approve_pr_on_self_review and "
++        "pr_code_suggestions.fold_suggestions_on_self_review are deprecated and have no effect; "
++        "remove them from your configuration"
++    )
++
++
+ def _as_threshold(setting_name: str, default: int, minimum: int) -> int:
+     """Read a score threshold as an int, so a quoted or unusable value cannot fail the run."""
+     value = get_settings().get(setting_name, default)
+@@ -373,6 +390,7 @@ def _setup_incremental_scope(self):
+ 
+     async def run(self):
+         init_run_details()
++        _warn_deprecated_self_review_marker_keys()
+         self._output_published = False
+         self._progress_base_body = None
+         self._chunk_progress = None
+@@ -607,16 +625,10 @@ async def run(self):
+                 raise
+ 
+     async def add_self_review_text(self, pr_body):
++        _warn_deprecated_self_review_marker_keys()
+         text = get_settings().pr_code_suggestions.code_suggestions_self_review_text
+         pr_body += f"\n\n- [ ]  {text}"
+-        approve_pr_on_self_review = get_settings().pr_code_suggestions.approve_pr_on_self_review
+-        fold_suggestions_on_self_review = get_settings().pr_code_suggestions.fold_suggestions_on_self_review
+-        if approve_pr_on_self_review and not fold_suggestions_on_self_review:
+-            pr_body += ' <!-- approve pr self-review -->'
+-        elif fold_suggestions_on_self_review and not approve_pr_on_self_review:
+-            pr_body += ' <!-- fold suggestions self-review -->'
+-        else:
+-            pr_body += ' <!-- approve and fold suggestions self-review -->'
++        pr_body += ' <!-- fold suggestions self-review -->'
+         return pr_body
+ 
+     def _get_suggestions_coverage_footer(self, suggestions_present: bool = True) -> str:
+diff --git a/tests/unittest/test_cli_args_security.py b/tests/unittest/test_cli_args_security.py
+index 1bf34b5688..25ba18a918 100644
+--- a/tests/unittest/test_cli_args_security.py
++++ b/tests/unittest/test_cli_args_security.py
+@@ -43,7 +43,6 @@
+     "--config.enable_auto_approval=true",
+     "--config.enable_manual_approval=true",
+     "--config.enable_comment_approval=true",
+-    "--config.approve_pr_on_self_review=true",
+     "--config.override_deployment_type=app",
+     # local cache
+     "--config.enable_local_cache=true",
+@@ -169,6 +168,7 @@
+     "--skills.enabled=true",
+     "--skills.max_skills_tokens=1000",
+     "--config.response_language=zh-tw",
++    "--config.approve_pr_on_self_review=true",
+     "--pr_description.publish_labels=false",
+     # a mapping value whose nested keys are all allowed stays accepted
+     "--qdrant={timeout: 5, prefer_grpc: true}",
+diff --git a/tests/unittest/test_config_reference.py b/tests/unittest/test_config_reference.py
+index ac02b339a9..865b068576 100644
+--- a/tests/unittest/test_config_reference.py
++++ b/tests/unittest/test_config_reference.py
+@@ -27,7 +27,7 @@ def _documented_keys(text: str) -> Counter:
+ 
+ def test_config_reference_covers_every_active_key():
+     keys = _toml_keys(CONFIG_TOML.read_text(encoding="utf-8"))
+-    assert sum(keys.values()) == 307
++    assert sum(keys.values()) == 305
+ 
+     assert {
+         "model",
+diff --git a/tests/unittest/test_per_directory_settings.py b/tests/unittest/test_per_directory_settings.py
+index 016d1a482f..2bbfec807a 100644
+--- a/tests/unittest/test_per_directory_settings.py
++++ b/tests/unittest/test_per_directory_settings.py
+@@ -673,7 +673,6 @@ def test_write_or_url_trigger_keys_are_dropped_in_per_directory(self, per_dir_se
+ parallel_calls = true
+ max_discussion_context_chars = 999999
+ demand_code_suggestions_self_review = true
+-approve_pr_on_self_review = true
+ 
+ [pr_similar_issue]
+ force_update_dataset = true
+@@ -738,11 +737,10 @@ def test_budget_and_call_count_controls_stay_trusted(self, host_only_keys_applie
+         assert get_settings().pr_code_suggestions.parallel_calls is True
+         assert get_settings().pr_code_suggestions.max_discussion_context_chars != 999999
+ 
+-    def test_self_review_approval_workflow_stays_root_controlled(self, host_only_keys_applied):
+-        # The self-review approval workflow stays root-controlled: a nested file cannot
+-        # demand a self-review checklist and then auto-approve on the author's tick.
++    def test_self_review_demand_stays_root_controlled(self, host_only_keys_applied):
++        # The self-review workflow stays root-controlled: a nested file cannot make
++        # /improve demand a self-review checklist.
+         assert get_settings().pr_code_suggestions.demand_code_suggestions_self_review is False
+-        assert get_settings().pr_code_suggestions.approve_pr_on_self_review is False
+ 
+     def test_ask_conversation_history_stays_root_controlled(self, host_only_keys_applied):
+         # Thread-history collection for /ask is root-controlled: a nested file cannot
+diff --git a/tests/unittest/test_pr_code_suggestions_self_review_marker.py b/tests/unittest/test_pr_code_suggestions_self_review_marker.py
+new file mode 100644
+index 0000000000..bdac3d7ee4
+--- /dev/null
++++ b/tests/unittest/test_pr_code_suggestions_self_review_marker.py
+@@ -0,0 +1,60 @@
++"""Deprecated self-review marker keys."""
++
++from unittest.mock import MagicMock
++
++import pytest
++
++from pr_agent.config_loader import get_settings
++from pr_agent.tools import pr_code_suggestions as module
++from pr_agent.tools.pr_code_suggestions import PRCodeSuggestions
++from tests.unittest._settings_helpers import restore_settings, snapshot_settings
++
++KEYS = (
++    "pr_code_suggestions.approve_pr_on_self_review",
++    "pr_code_suggestions.fold_suggestions_on_self_review",
++)
++
++
++@pytest.fixture(autouse=True)
++def clean_self_review_keys():
++    snapshot = snapshot_settings(KEYS)
++    module._warn_deprecated_self_review_marker_keys._warned = False
++    yield
++    restore_settings(snapshot)
++    module._warn_deprecated_self_review_marker_keys._warned = False
++
++
++def _warnings(monkeypatch):
++    logger = MagicMock()
++    monkeypatch.setattr("pr_agent.tools.pr_code_suggestions.get_logger", lambda: logger)
++    return logger
++
++
++async def _add_self_review_text():
++    return await PRCodeSuggestions.add_self_review_text(None, "body")
++
++
++async def test_default_output_always_uses_fold_marker(monkeypatch):
++    logger = _warnings(monkeypatch)
++
++    body = await _add_self_review_text()
++
++    assert body.endswith("<!-- fold suggestions self-review -->")
++    logger.warning.assert_not_called()
++
++
++@pytest.mark.parametrize("key", KEYS)
++@pytest.mark.parametrize("value", [True, False])
++async def test_setting_either_key_warns_once(key, value, monkeypatch):
++    logger = _warnings(monkeypatch)
++    get_settings().set(key, value)
++
++    for _ in range(3):
++        body = await _add_self_review_text()
++
++    assert body.endswith("<!-- fold suggestions self-review -->")
++    logger.warning.assert_called_once()
++    message = str(logger.warning.call_args[0][0])
++    assert "deprecated" in message
++    assert "approve_pr_on_self_review" in message
++    assert "fold_suggestions_on_self_review" in message

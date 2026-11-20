@@ -1,0 +1,15 @@
+..........F....................                                          [100%]
+================================== FAILURES ===================================
+_________________________________ test_String _________________________________
+sympy\codegen\tests\test_ast.py:269: in test_String
+    assert st.func(**st.kwargs()) == st
+E   AssertionError: assert None == String('foobar')
+E    +  where None = <function String.func.<locals>.<lambda> at 0x000001FB5CC47740>(**{})
+E    +    where <function String.func.<locals>.<lambda> at 0x000001FB5CC47740> = String('foobar').func
+E    +    and   {} = <bound method String.kwargs of String('foobar')>()
+E    +      where <bound method String.kwargs of String('foobar')> = String('foobar').kwargs
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22456\V73649ef047ab\modules0.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/codegen/tests/test_ast.py::test_String - AssertionError: assert ...
+1 failed, 30 passed in 0.38s

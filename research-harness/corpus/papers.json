@@ -1,0 +1,646 @@
+[
+  {
+    "id": "P01",
+    "locator": "正文 PDF pp.2–4、9–11；Study Design、Discussion",
+    "finding": "新加坡管理大学 RISE 的研究者将 8 个 agent 在 SWE-bench Verified 500 道题上的 3,977 条求解轨迹与 3,931 份测试日志拆开读。执行期的 Python 错误与较低解决率、较多推理开销相关，并发现 3 个得到维护者确认的评测平台错误。",
+    "implication": "失败分类应单列环境、工具、评测器和补丁。保存原始失败与重放记录后，才决定是改镜像、改 harness 还是修代码。",
+    "limit": "500 道公开 Python 项目题，错误与失败有关联；不能据此把一次 OSError 判为一定无法修复。",
+    "name": "Beyond Final Code: A Process-Oriented Error Analysis of Software Development Agents in Real-World GitHub Scenarios",
+    "venue": "ICSE 2026 Research",
+    "authors": [
+      "Zhi Chen",
+      "Wei Ma",
+      "Lingxiao Jiang"
+    ],
+    "url": "https://doi.org/10.1145/3744916.3773140",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P01",
+        "url": "https://api.openalex.org/works?filter=title.search%3ABeyond+Final+Code++A+Process-Oriented+Error+Analysis+of+Software+Development+Agents+in+Real-World+GitHub+Scenarios&per_page=5",
+        "path": "raw/2026-11-20/P01-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-04-12",
+        "sha256": "3288f84fd206cbeccc8c991e317f287d83e2136230aafaad2035c4de5a623721"
+      },
+      {
+        "entity": "P01",
+        "url": "https://arxiv.org/pdf/2503.12374",
+        "path": "raw/2026-11-20/P01-body.pdf",
+        "detail": "正文 PDF pp.2–4、9–11；Study Design、Discussion",
+        "date": "2026-04-12",
+        "sha256": "f2169bebb5be458ac3c3da4da171123b819a5d795577cec57b523c9f3928c175"
+      }
+    ]
+  },
+  {
+    "id": "P02",
+    "locator": "正文 PDF pp.2、5–6；补丁校验与对照",
+    "finding": "SpecRover 通过迭代搜索提炼代码意图，结合复现测试、解释及独立角色审查候选补丁。作者在完整 SWE-bench 上报告 19.3% 解题率，Lite 上为 31%。隐藏验收测试不参与生成。",
+    "implication": "把症状、预期行为和验证方法分别提供给审查人；对照时保留一套生成器看不到的用例。",
+    "limit": "审查角色可能继承错误的意图；历史基准成绩只说明该论文设置下的解题能力。",
+    "name": "SpecRover: Code Intent Extraction via LLMs",
+    "venue": "ICSE 2025 Research",
+    "authors": [
+      "Haifeng Ruan",
+      "Yuntong Zhang",
+      "Abhik Roychoudhury"
+    ],
+    "url": "https://doi.org/10.1109/icse55347.2025.00080",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P02",
+        "url": "https://api.openalex.org/works?filter=title.search%3ASpecRover++Code+Intent+Extraction+via+LLMs&per_page=5",
+        "path": "raw/2026-11-20/P02-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2025-04-26",
+        "sha256": "1fe6828f89f8f44819d07bdd377943552371175be2040f2c07d7b2eed7ad9d8e"
+      },
+      {
+        "entity": "P02",
+        "url": "https://arxiv.org/pdf/2408.02232",
+        "path": "raw/2026-11-20/P02-body.pdf",
+        "detail": "正文 PDF pp.2、5–6；补丁校验与对照",
+        "date": "2025-04-26",
+        "sha256": "c3a413ff720b8fb8190990ce85863db8d95716699fc67ec94e7ca9eb5cc94061"
+      }
+    ]
+  },
+  {
+    "id": "P03",
+    "locator": "会议页 Abstract L181–183",
+    "finding": "作者回顾 OpenStack 314,947 次 CI recheck，用任务、机器人及用户的历史行为预测重跑是否转绿，AUROC 为 0.736。论文的累计时间节约来自回放估计。",
+    "implication": "可在新环境以影子模式判断是否重跑，并分别记录错过真失败、浪费算力和开发者等待。",
+    "limit": "只观察人已选择重跑的样本；预测转绿不说明根因消失，也不能把总历时换算为实际节省的人年。",
+    "name": "Rechecking Recheck Requests in Continuous Integration: An Empirical Study of OpenStack",
+    "venue": "ASE 2025 Research",
+    "authors": [
+      "Yelizaveta Brus",
+      "Rungroj Maipradit",
+      "Earl T. Barr",
+      "Shane McIntosh"
+    ],
+    "url": "https://doi.org/10.1109/ase63991.2025.00121",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P03",
+        "url": "https://api.crossref.org/works?query.bibliographic=Rechecking+Recheck+Requests+in+Continuous+Integration%3A+An+Empirical+Study+of+OpenStack&rows=4",
+        "path": "raw/2026-11-20/P03-crossref.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2025-11-16",
+        "sha256": "1465e1929f76fa62a86cff793fc35027c7519287404404a5e1d1cc83c49f0bfb"
+      },
+      {
+        "entity": "P03",
+        "url": "https://conf.researchr.org/details/ase-2025/ase-2025-papers/55/Rechecking-Recheck-Requests-in-Continuous-Integration-An-Empirical-Study-of-OpenStac",
+        "path": "raw/web/P03-view.txt",
+        "detail": "会议或出版页的浏览器文本摘录",
+        "date": "",
+        "sha256": "2b1b5bf51946ac27732d2134accc64ee1193204323ee7b5c76f4451f28313f31"
+      }
+    ]
+  },
+  {
+    "id": "P04",
+    "locator": "作者摘要；工业样本及接受口径",
+    "finding": "FlakyGuard 选择性遍历代码图，补入不稳定测试相关上下文。作者报告修复可复现样本中的 47.6%，并报告 51.8% 的修复被开发者接受。",
+    "implication": "应分列原始失败、成功复现、产出修复、维护者采纳和后续复发五个分母。",
+    "limit": "无法复现的失败在第一个成功率分母之外；现有摘要不足以证明长期降低复发率。",
+    "name": "FlakyGuard: Automatically Fixing Flaky Tests at Industry Scale",
+    "venue": "ASE 2025 Research",
+    "authors": [
+      "Chengpeng Li",
+      "Farnaz Behrang",
+      "August Shi",
+      "Peng Liu"
+    ],
+    "url": "https://doi.org/10.1109/ase63991.2025.00179",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P04",
+        "url": "https://api.openalex.org/works?filter=title.search%3AFlakyGuard++Automatically+Fixing+Flaky+Tests+at+Industry+Scale&per_page=5",
+        "path": "raw/2026-11-20/P04-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2025-11-16",
+        "sha256": "20f5a5ce8a82d9f5e3cacc0347e98944b3f168bb14b558928c47b242b642d574"
+      }
+    ]
+  },
+  {
+    "id": "P05",
+    "locator": "作者摘要；两种模型、两个基准",
+    "finding": "AgentDiet 删减轨迹中的无用、重复和过期上下文。在被测组合中输入 token 降低 39.9%–59.7%，作者报告任务表现维持。",
+    "implication": "把供模型消费的压缩轨迹和能供第三方复核的完整事件分开，测每次正确验收的总成本。",
+    "limit": "模型、计费缓存和任务分布变化会改变收益；论文数字不能外推成企业账单降幅。",
+    "name": "Reducing Cost of LLM Agents with Trajectory Reduction",
+    "venue": "FSE 2026 Research",
+    "authors": [
+      "Yuan-an Xiao",
+      "Pengfei Gao",
+      "Chao Peng",
+      "Yingfei Xiong"
+    ],
+    "url": "https://doi.org/10.1145/3797084",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P05",
+        "url": "https://api.openalex.org/works?filter=title.search%3AReducing+Cost+of+LLM+Agents+with+Trajectory+Reduction&per_page=5",
+        "path": "raw/2026-11-20/P05-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-06-30",
+        "sha256": "d96c31df50e4baaa7e024a651fdf2b53c2737a418505dd6b075a8b4026ed36db"
+      }
+    ]
+  },
+  {
+    "id": "P06",
+    "locator": "正文 PDF pp.3–5；招募与质性研究边界",
+    "finding": "UC San Diego 观察 7 名专业开发者及 5 名直播开发者处理自身代码库中的 17 个调试任务。开发者通过导航、执行、前向与反向追踪来更新对系统的解释。",
+    "implication": "交接应给出已排除的原因、反例和下一次能区分假设的观察；仅给最终摘要会迫使接管者重建推理。",
+    "limit": "能展示代码且能安排观察的样本有选择性；部分记录覆盖不到调试起点或终点，未测这种交接界面的提效值。",
+    "name": "A Grounded Theory of Debugging in Professional Software Engineering Practice",
+    "venue": "FSE 2026 Research",
+    "authors": [
+      "Haolin Li",
+      "Michael J. Coblenz"
+    ],
+    "url": "https://doi.org/10.1145/3797077",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P06",
+        "url": "https://api.openalex.org/works?filter=title.search%3AA+Grounded+Theory+of+Debugging+in+Professional+Software+Engineering+Practice&per_page=5",
+        "path": "raw/2026-11-20/P06-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-06-30",
+        "sha256": "2b60932dd52af72e03c1bae1cf70c73954546bc0e0343e3b5420717edcf93d1f"
+      },
+      {
+        "entity": "P06",
+        "url": "https://arxiv.org/pdf/2602.11435",
+        "path": "raw/2026-11-20/P06-body.pdf",
+        "detail": "正文 PDF pp.3–5；招募与质性研究边界",
+        "date": "2026-06-30",
+        "sha256": "4b3ba562ae43c845dcba37845503cd199a79a781b8bb5670991793785352337f"
+      }
+    ]
+  },
+  {
+    "id": "P07",
+    "locator": "作者摘要；83 仓库 project–month 面板",
+    "finding": "华东理工相关研究以 issue 事件序列区分人和 agent 协作。agent 相关协作复杂性与产出和新增缺陷有统计关联，解决效率的关系依赖上下文。",
+    "implication": "同一平台应按服务、任务类型和团队拆开观察；用 issue 到生产的事件链核对异常变化。",
+    "limit": "观察性开源仓库数据，不能解释选用 agent 的团队为什么本来就不同，缺陷也取决于被记录程度。",
+    "name": "Unpacking AI Agent Participation in Issue-Centered Collaboration in Open-Source Software Development",
+    "venue": "ISSTA 2026 Research",
+    "authors": [
+      "Kaiwen Zhi",
+      "Guisheng Fan",
+      "Wentao Chen"
+    ],
+    "url": "https://doi.org/10.1145/3832206",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P07",
+        "url": "https://api.openalex.org/works?filter=title.search%3AUnpacking+AI+Agent+Participation+in+Issue-Centered+Collaboration+in+Open-Source+Software+Development&per_page=5",
+        "path": "raw/2026-11-20/P07-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-10-01",
+        "sha256": "22d7e09c189e1952adf542461c049ab226f9fb40e7a054cc129c8c3d2fa33966"
+      }
+    ]
+  },
+  {
+    "id": "P08",
+    "locator": "正文 PDF pp.2–3、16；构造与效度讨论",
+    "finding": "ReproFlake 汇集 1,115 个可复现的不稳定测试，按四类整理，提供环境、通过与失败日志、修复及验证脚本。",
+    "implication": "保存一红一绿、环境版本和验证修复的脚本，构造团队自己的困难例回放集。",
+    "limit": "入库条件要求成功复现；Java/Maven 环境影响范围。一次修复成功不足以证明以后不再不稳定。",
+    "name": "A Dataset of Reproducible Flaky-Test Failures",
+    "venue": "ISSTA 2026 Research",
+    "authors": [
+      "S. Rafi",
+      "Mahbub-Ul-Hoque Sumon",
+      "Md Erfan",
+      "Maruf Morshed Khan",
+      "August Shi",
+      "Wing Lam"
+    ],
+    "url": "https://doi.org/10.1145/3832216",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P08",
+        "url": "https://api.openalex.org/works?filter=title.search%3AA+Dataset+of+Reproducible+Flaky-Test+Failures&per_page=5",
+        "path": "raw/2026-11-20/P08-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-10-01",
+        "sha256": "69d28c9503629a5d5b67dace2dbd74d8e189915519c83288938614becef031ef"
+      },
+      {
+        "entity": "P08",
+        "url": "https://arxiv.org/pdf/2605.21677",
+        "path": "raw/2026-11-20/P08-body.pdf",
+        "detail": "正文 PDF pp.2–3、16；构造与效度讨论",
+        "date": "2026-10-01",
+        "sha256": "330ae58d2149c1759174b1769ccfea22ad798ee4012b753c8a5bf3f59425ace0"
+      }
+    ]
+  },
+  {
+    "id": "P09",
+    "locator": "会议页 Abstract L200–202",
+    "finding": "作者读了 899 位开发者在 1,300 个仓库公开提交的 11,579 段 IDE 会话、74,998 条开发者消息。可以观察到逐步明确需求、委派诊断与验证、把计划写成持久材料等行为。",
+    "implication": "第一次派工只要求列出确定条件和待裁决项；容许任务中途修订规格并作废旧验收。",
+    "limit": "会把聊天提交到公开仓库的人并不代表企业全体；消息频度与任务质量是不同结果。",
+    "name": "Programming by Chat: A Large-Scale Behavioral Analysis of 11,579 Real-World AI-Assisted IDE Sessions",
+    "venue": "ASE 2026 Research",
+    "authors": [
+      "Ningzhi Tang",
+      "Chaoran Chen",
+      "Zihan Fang",
+      "Gelei Xu",
+      "Maria Dhakal",
+      "Yiyu Shi",
+      "Collin McMillan",
+      "Yu Huang",
+      "Toby Jia-Jun Li"
+    ],
+    "url": "https://conf.researchr.org/details/ase-2026/ase-2026-research-track/47/Programming-by-Chat-A-Large-Scale-Behavioral-Analysis-of-11-579-Real-World-AI-Assist",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P09",
+        "url": "https://conf.researchr.org/details/ase-2026/ase-2026-research-track/47/Programming-by-Chat-A-Large-Scale-Behavioral-Analysis-of-11-579-Real-World-AI-Assist",
+        "path": "raw/web/P09-view.txt",
+        "detail": "会议或出版页的浏览器文本摘录",
+        "date": "",
+        "sha256": "d28a734aae4a34cecd2203cfc8396157a5aae42e019ec054104d1f4573da8177"
+      }
+    ]
+  },
+  {
+    "id": "P10",
+    "locator": "正文 PDF pp.3、9；三种 IDE、构念效度",
+    "finding": "研究让 Copilot、Cursor、Windsurf 从头实现五种全栈应用。常见 CRUD 等模式比引入异步任务队列的架构产生更少错误。",
+    "implication": "分流时按系统间假设、状态一致性与可验证程度分层，避免只按改动行数。",
+    "limit": "五个从零搭建的应用，检查清单的定义与标注影响错误计数；无法代表旧系统维护。",
+    "name": "Generation of Web Apps with Agentic IDEs: An Empirical Assessment",
+    "venue": "ASE 2026 Research",
+    "authors": [
+      "Manuel Marceca",
+      "Maria Teresa Rossi",
+      "Leonardo Mariani"
+    ],
+    "url": "https://doi.org/10.1145/3832783.3837506",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P10",
+        "url": "https://api.openalex.org/works?filter=title.search%3AGeneration+of+Web+Apps+with+Agentic+IDEs++An+Empirical+Assessment&per_page=5",
+        "path": "raw/2026-11-20/P10-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-10-07",
+        "sha256": "dc5e2439683cf3ed7b95f4ba415269b1167c60afcc218230db4b46192c9f5044"
+      },
+      {
+        "entity": "P10",
+        "url": "https://arxiv.org/pdf/2608.20903",
+        "path": "raw/2026-11-20/P10-body.pdf",
+        "detail": "正文 PDF pp.3、9；三种 IDE、构念效度",
+        "date": "2026-10-07",
+        "sha256": "87d8e912046ef673dbc6dc1a263d169f418ffad2deffe695d5c32ea7b76c65f3"
+      }
+    ]
+  },
+  {
+    "id": "P11",
+    "locator": "作者摘要；ICSE SEIP 行业轨，三项目 PR 与调查",
+    "finding": "10 个项目可以使用基于 Qodo PR Agent 的评审工具；深入分析的 3 个项目共 4,335 个 PR，其中 1,568 个获自动评审。73.8% 的自动评论标记已解决，但总体平均关闭时间由 5 小时 52 分增至 8 小时 20 分，项目趋势不一。",
+    "implication": "评审产品需同时度量有效修复、无用建议和等待，对所有符合条件的 PR 保留分母。",
+    "limit": "前后比较包含团队和任务组成变化。关闭评论不能证明修复了真实缺陷，也不能断言工具造成变慢。",
+    "name": "Automated Code Review in Practice",
+    "venue": "ICSE 2025 SEIP",
+    "authors": [
+      "Umut Cihan",
+      "Vahid Haratian",
+      "Arda İçöz",
+      "Mert Kaan Gül",
+      "Ömercan Devran",
+      "Emircan Furkan Bayendur",
+      "Baykal Mehmet Uçar",
+      "Eray Tüzün"
+    ],
+    "url": "https://doi.org/10.1109/icse-seip66354.2025.00043",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P11",
+        "url": "https://api.openalex.org/works?filter=title.search%3AAutomated+Code+Review+In+Practice&per_page=5",
+        "path": "raw/2026-11-20/P11-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2025-04-27",
+        "sha256": "b69b3de56cf692b74f9ebffc9f3ab5f0e6321b60aa2741d8fc016ca5b1231947"
+      }
+    ]
+  },
+  {
+    "id": "P12",
+    "locator": "作者摘要；微软多团队现场研究",
+    "finding": "访谈、观察、问卷及评论分类表明，评审除发现缺陷外，还传递知识、建立团队认知、提出替代实现；理解变更目的贯穿其中。",
+    "implication": "将维护者边读边学习、需要业务裁决的评审与可机械验证的检查分开计价。",
+    "limit": "2013 年工具和流程与当今 agent 不同，适合解释评审工作内容。",
+    "name": "Expectations, outcomes, and challenges of modern code review",
+    "venue": "ICSE 2013 research",
+    "authors": [
+      "Alberto Bacchelli",
+      "Christian Bird"
+    ],
+    "url": "https://doi.org/10.1109/icse.2013.6606617",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P12",
+        "url": "https://api.openalex.org/works?filter=title.search%3AExpectations++outcomes++and+challenges+of+modern+code+review&per_page=5",
+        "path": "raw/2026-11-20/P12-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2013-05-01",
+        "sha256": "c922a2d1bf58385121c7e51ea6367a07589aa0983e2742be7af3efcaef157652"
+      }
+    ]
+  },
+  {
+    "id": "P13",
+    "locator": "原论文作者摘要；初版 arXiv 2023，ICLR 2024",
+    "finding": "Princeton 等研究者用 12 个 Python 仓库、2,294 对 issue 与修复建立 SWE-bench，把跨文件变更接到可重复测试。",
+    "implication": "可以借用其任务包和独立测试思想做内部盲测，按时间隔离数据并轮换留出集。",
+    "limit": "覆盖的是已出现修复的公开 issue；上线授权、业务澄清、需求定夺和跨团队协调不在判分中。",
+    "name": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+    "venue": "ICLR 2024",
+    "authors": [
+      "Jimenez, Carlos E.",
+      "Yang, John",
+      "Alexander Wettig",
+      "Shunyu Yao",
+      "Kexin Pei",
+      "Ofir Press",
+      "Karthik Narasimhan"
+    ],
+    "url": "https://doi.org/10.48550/arxiv.2310.06770",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P13",
+        "url": "https://api.openalex.org/works?filter=title.search%3ASWE-bench++Can+Language+Models+Resolve+Real-World+GitHub+Issues+&per_page=5",
+        "path": "raw/2026-11-20/P13-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2023-10-10",
+        "sha256": "b7a56be97d60a5453b10345752f7c339eda0658bc627f774c48a0ba7149884b3"
+      }
+    ]
+  },
+  {
+    "id": "P14",
+    "locator": "NeurIPS 2024 正式论文摘要页",
+    "finding": "SWE-agent 为模型设计查找、编辑和执行工具界面，在 SWE-bench 与 HumanEvalFix 上测试单次成功。它让“固定模型、替换工具界面”的对照变得可操作。",
+    "implication": "先单独比较错误反馈与可见状态，再决定是否升级推理模型。",
+    "limit": "论文模型与任务是历史配置，两种测试都不观察生产发布。",
+    "name": "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering",
+    "venue": "NeurIPS 2024",
+    "authors": [
+      "John Yang",
+      "Carlos E. Jimenez",
+      "Alexander Wettig",
+      "Kilian Lieret",
+      "Shunyu Yao",
+      "Karthik Narasimhan",
+      "Ofir Press"
+    ],
+    "url": "https://papers.nips.cc/paper/2024/hash/5a7c947568c1b1328ccc5230172e1e7c-Abstract-Conference.html",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P14",
+        "url": "https://papers.nips.cc/paper/2024/hash/5a7c947568c1b1328ccc5230172e1e7c-Abstract-Conference.html",
+        "path": "raw/web/P14-view.txt",
+        "detail": "会议或出版页的浏览器文本摘录",
+        "date": "",
+        "sha256": "533995df41a23378b1573ee2b760e1e98066f7d84758143bd99bb45d11fc54ff"
+      }
+    ]
+  },
+  {
+    "id": "P15",
+    "locator": "会议页 Abstract L200–206",
+    "finding": "南京大学研究者构造五个中等规模项目，操作规格形式和输入粒度。细结构伪代码有利于稳定生成，模块级输入在这些项目上取得较好的质量、稳定性和 token 平衡。",
+    "implication": "试验时同时计入维护规格的人时，并用不参与编写规格的人做盲审。",
+    "limit": "项目为数百至千余行的规模，研究不足以回答大型遗留系统的规格维护成本。",
+    "name": "From Vibe to Spec: An Empirical Study to Demystify Specifications in Code Generation",
+    "venue": "ASE 2026 Research",
+    "authors": [
+      "Ruirui He",
+      "Hanqing Lu",
+      "Lezhi Ma",
+      "Kai Ye",
+      "Qiong Wu",
+      "Shangqing Liu",
+      "Lei Bu",
+      "Xuandong Li"
+    ],
+    "url": "https://doi.org/10.1145/3832783.3837515",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P15",
+        "url": "https://api.openalex.org/works?filter=title.search%3AFrom+Vibe+to+Spec++An+Empirical+Study+to+Demystify+Specifications+in+Code+Generation&per_page=5",
+        "path": "raw/2026-11-20/P15-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-10-07",
+        "sha256": "e7c6e6e0cfdfad096fe48f88439cd7e4d90a935561ebb9a48305d9e079f1d10b"
+      },
+      {
+        "entity": "P15",
+        "url": "https://conf.researchr.org/details/ase-2026/ase-2026-research-track/219/From-Vibe-to-Spec-An-Empirical-Study-to-Demystify-Specifications-in-Code-Generation",
+        "path": "raw/web/P15-view.txt",
+        "detail": "会议或出版页的浏览器文本摘录",
+        "date": "",
+        "sha256": "bea4fb415836839ec2fc463054a2338372db0812deb5dccc0e516831aa25a5ec"
+      }
+    ]
+  },
+  {
+    "id": "P16",
+    "locator": "正文 PDF pp.3、17；AutoRocq 与效度讨论",
+    "finding": "NUS 的 AutoRocq 与 Rocq 交互，读取目标与错误、搜索证明，最终由检查器验证推导；在所选 Linux 内核案例上验证 12 个引理，论文报告基线为 2–10 个。",
+    "implication": "把少量代价高且语义明确的约束交给独立检查器，区分“命题写对”和“命题得到证明”。",
+    "limit": "已形式化的性质和可负担的证明搜索构成前提；不能借此担保业务意图或整个软件无缺陷。",
+    "name": "Agentic Verification of Software Systems",
+    "venue": "FSE 2026 Research",
+    "authors": [
+      "Haoxin Tu",
+      "Huan Zhao",
+      "Yahui Song",
+      "Mehtab Zafar",
+      "Ruijie Meng",
+      "Abhik Roychoudhury"
+    ],
+    "url": "https://doi.org/10.1145/3808164",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P16",
+        "url": "https://api.openalex.org/works?filter=title.search%3AAgentic+Verification+of+Software+Systems&per_page=5",
+        "path": "raw/2026-11-20/P16-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-06-30",
+        "sha256": "af745ac3040f5638a9bafaf97bfc9ea749a4a6abb05f9e154e18e97beed5b070"
+      },
+      {
+        "entity": "P16",
+        "url": "https://arxiv.org/pdf/2511.17330",
+        "path": "raw/2026-11-20/P16-body.pdf",
+        "detail": "正文 PDF pp.3、17；AutoRocq 与效度讨论",
+        "date": "2026-06-30",
+        "sha256": "92608998d47c7f6a84d25ee5d74a1f771bd2a98595290a7b3cea932ed6b00b8f"
+      }
+    ]
+  },
+  {
+    "id": "P17",
+    "locator": "会议页 Abstract L353–356",
+    "finding": "CMU 等研究者问卷覆盖 410 名开发者。减少按键和回忆语法是动机，难以控制输出及功能、非功能需求偏离是不用工具的原因。",
+    "implication": "试点退出原因和拒用者也要入样，调查可控感时与任务实耗配对。",
+    "limit": "问卷为自报，面向较早的编程辅助实践；不能给自动派工定量预测。",
+    "name": "A Large-Scale Survey on the Usability of AI Programming Assistants: Successes and Challenges",
+    "venue": "ICSE 2024 Research",
+    "authors": [
+      "Jenny T. Liang",
+      "Chenyang Yang",
+      "Brad A. Myers"
+    ],
+    "url": "https://doi.org/10.1145/3597503.3608128",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P17",
+        "url": "https://api.crossref.org/works?query.bibliographic=A+Large-Scale+Survey+on+the+Usability+of+AI+Programming+Assistants%3A+Successes+and+Challenges&rows=4",
+        "path": "raw/2026-11-20/P17-crossref.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2024-2-6",
+        "sha256": "b5775108c402812db2b906fa6f1da46e96de1e16aca47ec1713f8478f48118c7"
+      },
+      {
+        "entity": "P17",
+        "url": "https://conf.researchr.org/details/icse-2024/icse-2024-research-track/3/A-Large-Scale-Survey-on-the-Usability-of-AI-Programming-Assistants-Successes-and-Cha",
+        "path": "raw/web/P17-view.txt",
+        "detail": "会议或出版页的浏览器文本摘录",
+        "date": "",
+        "sha256": "0dd3b19072743dfb9d241ce6ead6635be0cf1f927345eefa9abf7292909ea1ec"
+      }
+    ]
+  },
+  {
+    "id": "P18",
+    "locator": "作者摘要；六个开源项目的关联恢复",
+    "finding": "LinkAnchor 懒加载上下文，沿提交图追回解决 issue 的提交链，避免只对孤立的 issue/commit 对打分。",
+    "implication": "组织测量先给自动关联附可信度；原因链未能核实的发布可计作未知，支持后来人工修订。",
+    "limit": "六项目的检索命中与部署归因有距离；一个 issue 可能有回滚、重做和多团队贡献。",
+    "name": "LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery",
+    "venue": "FSE 2026 Research",
+    "authors": [
+      "Arshia Akhavan",
+      "Alireza Hoseinpour",
+      "Abbas Heydarnoori",
+      "Hamid Bagheri",
+      "Mehdi Keshani"
+    ],
+    "url": "https://doi.org/10.1145/3808191",
+    "level": "摘要及书目",
+    "sources": [
+      {
+        "entity": "P18",
+        "url": "https://api.crossref.org/works?query.bibliographic=LinkAnchor%3A+An+Autonomous+LLM-Based+Agent+for+Issue-to-Commit+Link+Recovery&rows=4",
+        "path": "raw/2026-11-20/P18-crossref.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-6-30",
+        "sha256": "0e54587d04aee55469382d4218c2869af02d0c3922e0a7dd009279c966c3a1a6"
+      }
+    ]
+  },
+  {
+    "id": "P19",
+    "locator": "正文 PDF pp.10–11；双项目与人工编码限制",
+    "finding": "Waterloo Software REBELs 在 Qt、Eclipse 分析 502,931 个变更集，并定性分析 500 个、访谈 9 人。构建规格变更在评审中受到的讨论比生产和测试代码少。",
+    "implication": "修改 harness、CI 规则或验证器时设独立 owner；规则改动的影响半径可能比业务改动更大。",
+    "limit": "讨论少不是缺陷率高；两个大项目、构建技术及人工编码限制泛化。",
+    "name": "Code Review of Build System Specifications: Prevalence, Purposes, Patterns, and Perceptions",
+    "venue": "ICSE 2023 Research",
+    "authors": [
+      "Mahtab Nejati",
+      "Mahmoud Alfadel",
+      "Shane McIntosh"
+    ],
+    "url": "https://doi.org/10.1109/icse48619.2023.00108",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P19",
+        "url": "https://api.openalex.org/works?filter=title.search%3ACode+Review+of+Build+System+Specifications++Prevalence++Purposes++Patterns++and+Perceptions&per_page=5",
+        "path": "raw/2026-11-20/P19-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2023-05-01",
+        "sha256": "681075dfd4240ae24c9ef1a5ce980211e6288953f3706cfb8997676b242adc9e"
+      },
+      {
+        "entity": "P19",
+        "url": "https://rebels.cs.uwaterloo.ca/papers/icse2023_nejati.pdf",
+        "path": "raw/2026-11-20/P19-body.pdf",
+        "detail": "正文 PDF pp.10–11；双项目与人工编码限制",
+        "date": "2023-05-01",
+        "sha256": "9d4d78a83aed84fb4ebc96899a28dda6abad85655efc120cd0d05bef4251bd68"
+      }
+    ]
+  },
+  {
+    "id": "P20",
+    "locator": "正文 PDF pp.7、9、11；表 4 消融",
+    "finding": "USEagent 将测试、修复等动作放入统一调度。1,271 道混合任务，消融中移除 ExecuteTests 后，取样 REPOCOD 的成功率从 8.7% 降到 0%，同一表的 SWE-Ver 指标保持 49.6%。",
+    "implication": "按任务类型做动作消融。同一种执行工具在某类任务中无可见增量，在另一类任务中可能决定结果。",
+    "limit": "同一消融实验的模型与任务子集有限，测试覆盖率只是部分任务的代理指标。",
+    "name": "Unified Software Engineering Agent as AI Software Engineer",
+    "venue": "ICSE 2026 Research",
+    "authors": [
+      "Leonhard Applis",
+      "Yuntong Zhang",
+      "Shanchao Liang",
+      "Nan Jiang",
+      "Lin Tan",
+      "Abhik Roychoudhury"
+    ],
+    "url": "https://doi.org/10.1145/3744916.3773202",
+    "level": "正文定点复核",
+    "sources": [
+      {
+        "entity": "P20",
+        "url": "https://api.openalex.org/works?filter=title.search%3AUnified+Software+Engineering+agent+as+AI+Software+Engineer&per_page=5",
+        "path": "raw/2026-11-20/P20-oa.json",
+        "detail": "书目或作者摘要；按完整题名匹配",
+        "date": "2026-04-12",
+        "sha256": "9b328a4b001daf63196a4f55e7d05cf7a283e148e15c7e8c999ab1472103349b"
+      },
+      {
+        "entity": "P20",
+        "url": "https://arxiv.org/pdf/2506.14683",
+        "path": "raw/2026-11-20/P20-body.pdf",
+        "detail": "正文 PDF pp.7、9、11；表 4 消融",
+        "date": "2026-04-12",
+        "sha256": "c0be59ab962ce4fe712df4b18a19c1dc8919dff4444512a64cfb2c75c0c160ab"
+      }
+    ]
+  }
+]

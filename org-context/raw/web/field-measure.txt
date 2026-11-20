@@ -1,0 +1,475 @@
+检索参数 {"find":[{"ref_id":"turn11view0","pattern":"hours"},{"ref_id":"turn11view1","pattern":"participants"},{"ref_id":"turn11view0","pattern":"deferred"},{"ref_id":"turn11view1","pattern":"limitations"}],"response_length":"long"}
+Microsoft Word - Ko2007InformationNeeds 2-2-07.doc (https://www.microsoft.com/en-us/research/uploads/prod/2007/05/icse07_ko.pdf)
+citeturn41view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: find({"ref_id":"turn11view0","pattern":"hours"}); Total lines: 1480
+L731@P1: without inquiry. In some cases, we prompted with questions like “what are you looking for?” to learn their information needs, but most developers thought aloud
+L732@P1: without prompting. We timestampedthe recorded events
+L733@P1: and conversations each minute. After  minutes, we
+L734@P1: looked for a
+L735@P1: good stopping point and wrapped up. Immediately after each observation, we transcribed the
+L736@P1: handwritten notes, as in the excerpt shown in Figure 1.
+L737@P1: During the allotted time for the study we were able to
+L738@P1: observe  developers,which was enough to see common
+L739@P1: patternsin their information needs. (Section 6.2 touches
+L740@P1: on the potential value of observing more developers.)
+L741@P1: Figure 2 describes these developers’ experience levels,
+L742@P1: types of work, and phases of development and introduces
+L743@P1: the initials we use to refer to them in this paper. In Microsoft's terminology, dev
+L744@P1: leads manage software development engineers(s or devs) while also performing a
+L745@P1: 
+L746@P1: development role.
+L747@P1: 4. Task
+L748@P1: Structure
+L749@P1: Our observations spanned  hours of work. We partitioned the logged activitiesinto work categories common
+L750@P1: across the participants: writing code; submitting code
+L751@P1: (check-ins); triaging bugs; reproducing failures; understanding program behavior; reasoning about design;
+L752@P1: maintaining awareness; and non-work activities (e.g.
+L753@P1: personal phone calls). We also identified causes of task
+L754@P1: switching: face-to-face dialogue; phone calls;instantmessages (); email alerts; meetings; task avoidance; getting
+L755@P1: blocked; and task completion. We annotated the logs
+L756@P1: 9:41 am So this copies the files onto the server, then allocates a
+L757@P1: machine to do the setup. In the meantime, I'm going to
+L758@P1: get this local fix [of this other bug] over [checked in].
+L759@P1: 9:41 am [opens diff tool to see changes he’s made to code]
+L760@P1: 9:43 am Oh damn, I have some mixed changes. Some are part of
+L761@P1: this DCR [design change request] I'm working on and
+L762@P1: some are part of a bug fix, so I have to mix it out.
+L763@P1: Figure 1. An excerpt from J’s observation log.
+L764@P1: 29th International Conference on Software Engineering (ICSE'07)
+L765@P1: 0-7695-2828-7/07 $20.00 © 2007
+L766@P1-2: Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.with these switches, based on remarks like “I want to get
+L767@P2: back to my repro…” All of these causes of task switches
+L768@P2: are forms of interruption, except getting blockedandtask
+L769@P2: completion. When the participant voluntarily switched
+L770@P2: activities,we label the switch as blocked if the participant
+L771@P2: could no longer make progress on the current activity
+L772@P2: (typically due to an information need) and task avoidance if she could make progress but chose to switch anyway.
+L773@P2: Figure 2 visualizesthese task switches,whichoccurred
+L774@P2: an average of every  minutes (± .), mirroring the rate
+L775@P2: reported in Gonzales, Mark and Harris [7]. Time fragmentation varied considerably per participant. For example,  reproduced failures without interruption,
+L776@P2: whereas  was frequently blocked. Many interruptions
+L777@P2: were due to face-to-face, , or phone conversations,
+L778@P2: which occurred from  to  times persession (median of
+L779@P2: ), each lasting for much of the session. Developers were
+L780@P2: also interrupted by notifications,such as email and alerts
+L781@P2: about changes to the bug database. Developers experienced from  to  notifications persession (median of).
+L782@P2: Blocking, shown in Figure 2 as dark vertical bars, occurred when information was unavailable. Some blocks
+--------------------------------------------------------------------------------
+ (https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/codebook-cameraready.pdf)
+citeturn41view1 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: find({"ref_id":"turn11view1","pattern":"participants"}); Total lines: 1042
+L726@P7: To evaluate the correctness of the Hoozizat application, we interviewed five engineers whose data is contained within our prototype
+L727@P7: Codebook repository. We continued our interview with these five,
+L728@P7: and an additional nine, engineers to evaluate the utility and design
+L729@P7: of the user interface.
+L730@P7: During each interview, we explained the Codebook project and
+L731@P7: demonstrated the functionality of the Hoozizat interface using a
+L732@P7: variety of searches we had learned during our testing showed a lot
+L733@P7: of varied results. With each of the five stakeholders, we asked them
+L734@P7: to type in searches for their name, some function names from their
+L735@P7: code, and some keywords from their features and bugs. Participants
+L736@P7: each did 5-6 searches, and in each case, pointed out to us that the
+L737@P7: people in the result list were their colleagues in development or
+L738@P7: program management (none of their searches resulted in any testers
+L739@P7: being returned). One said “All of these people work near me in
+L740@P7: the same hallway.” They indicated that all of the code they saw
+L741@P7: was part of their project and was the code they themselves wrote.
+L742@P7: Likewise, for the work items (features and bugs), they told us that
+L743@P7: they were indeed assigned to work on those features, or were in fact
+L744@P7: the owners of the work items. This shows that Codebook was able
+L745@P7: to return results that were recognizably correct to people whose
+L746@P7: data was in the system.
+L747@P7: While the interviewees said that no results were missing from
+L748@P7: Codebook’s result set, four out of the five interviewees indicated
+L749@P7: that several people and work items returned from their Codebook
+L750@P7: searches should not have been in the list. These false positives
+L751@P7: showed up due to inaccurate textual allusions between English language words and people’s email addresses (e.g., William Jones’
+L752@P7: email address is “will,” and he showed up in a lot of searches).
+L753@P7: We have used the incidence of these false positives to improve our
+L754@P7: search ranking function and penalize links from common English
+L755@P7: words to people or source code identifiers.
+L756@P7: We learned more about the team’s development practices from
+L757@P7: talking to the stakeholders. One program manager explained to us
+L758@P7: how we could tell from who was assigned to a feature where it was
+L759@P7: in the process of being implemented. A work item of type feature
+L760@P7: with a program manager (PM) was likely just an idea that got cut.
+L761@P7: A feature with a PM and a developer meant that it was being implemented. A feature with a PM, developer and a tester meant that
+L762@P7: the feature was complete, and in testing and stabilization.
+L763@P7: Hoozizat’s interface was well received. All 14 engineers found
+L764@P7: the ability to search across multiple repositories and artifact types
+L765@P7: to be very useful. Six asked why these particular results were chosen to be returned. They wanted to see not just that two items were
+L766@P7: related to one another, but the path that connected them. Everyone
+L767@P7: liked that Hoozizat shows the associates and owners for each result,
+L768@P7: noting that it resembles social networking applications like Facebook which are popular today. One developer said, “You feel like
+L769@P7: you’re alone coding in your office, but now with Codebook when
+L770@P7: something happens to the code or bugs you’ll feel less bored.” A
+L771@P7: manager commented on cutting out the middleman in his quest for
+L772@P7: answers, “the more you can help me get my job done without talking to [too many] people, the faster I can go.” Nine out of 14 of the
+L773@P7: engineers expressed a remarkable amount of devotion to Hoozizat
+L774@P7: at the end of their interviews. One engineer said to us, “I don’t
+L775@P7: know how to live without this.”
+L776@P7: Each of the engineers had different opinions about how to rank
+L777@P7: the search results from each category, though generally people from
+L778@P7: the same team explained similar ranking beliefs. This reinforces
+L779@P7: our belief that tools for software engineers must be customizable by
+L780@P7: domain experts and end-users if they are to be successfully adopted.
+L781@P7: 4.2 Deep Intellisense
+L782@P7: Deep Intellisense [16] is a Visual Studio add-in to aid code investigation, which was ranked fourth on our survey of information
+L783@P7: needs. When the user clicks on any source code symbol in the editor, it displays a reverse chronologically sorted list of events showing everything that has happened to that source code symbol in the
+L784@P7: development history, including code changes, work items and messages from discussion forums that refer to it. These are discovered
+L785@P7: by the following paths, all starting from SourceCode nodes.:
+L786@P7: ∙ SourceCode ModifiedBy FileRevision ModifiedBy Changeset
+L787@P7: ∙ SourceCode MentionedBy SourceCodeIdentifier MentionedBy
+L788@P7: Changeset
+L789@P7: ∙ SourceCode MentionedBy SourceCodeIdentifier MentionedBy
+L790@P7: WorkItem
+L791@P7: ∙ SourceCode MentionedBy SourceCodeIdentifier MentionedBy
+L792@P7: DiscussionForumPost
+L793@P7: Deep Intellisense also displays the people associated with each
+L794@P7: artifact, including their role and contact information. Additional
+L795@P7: information about this scenario can be found in our MSR paper [6].
+L796@P7: Like the process we undertook with Hoozizat, Deep Intellisense
+L797@P7: was designed with participation from five developers and testers at
+L798@P7: Microsoft, who were interviewed to understand their work practices and information needs around code investigation, and to give
+L799@P7: us feedback on mockups of our user interface.
+L800@P7: Deep Intellisense was prototyped on three large projects (CKS,
+L801@P7: Rawr, and AjaxControlToolkit) from Microsoft’s open-source repository, CodePlex.com, and demoed to software developers at Microsoft’s Professional Developer Conference in September 2008.
+L802@P7: Feedback was universally positive, with most participants eager to
+L803@P7: see the feature deployed on their own company’s software projects.
+L804@P7: 5. OTHER APPLICATIONS
+L805@P7: In addition to our current applications, Codebook can be used
+L806@P7: to build many other applications. In this section, we describe two
+L807@P7: other Codebook applications, “Who is using our code?” and “Anxious for Awareness,” and the path regular expressions required to
+L808@P7: implement them.
+L809@P7: 5.1 Who is Using Our Code?
+L810@P7: In a company that produces both applications and frameworks, a
+L811@P7: framework team may not be aware of every other individual or team
+L812@P7: who is using their framework. This makes it difficult to notify dependents when breaking changes must be made (information needs
+L813@P7: #6 and #10 on our inter-team coordination survey). Codebook can
+L814@P7: be used to mitigate this issue by discovering everyone who may
+L815@P7: be affected by breaking changes, e.g., by discovering when a person (in the team) edited some source code which is called by code
+L816@P7: edited by another person (outside the team):
+L817@P7: ∙ Person Committed ChangeSet Modifies FileRevision
+L818@P7: Modifies SourceCode CalledBy SourceCode NamedBy
+L819@P7: SourceCode ModifiedBy FileRevision ModifiedBy
+L820@P7: ChangeSet CommittedBy Person
+L821@P7: Once these paths are computed, Codebook can easily filter the
+L822@P7: results of this regular expression to restrict the person at the beginning of the path to be people inside a team, and the person at the
+L823@P7-8: end at the path to be people outside that team. The user interfacewould also provide action items, such as a link for contacting the
+L824@P8: owners of all calling methods in order to inform them of breaking
+L825@P8: changes.
+L826@P8: 5.2 Anxious for Awareness
+L827@P8: When teams collaborate as part of a large project, a member of
+L828@P8: one team will often assign a work item to a member of another
+L829@P8: team. Tracking the status of work items assigned across teams is
+L830@P8: frustrating because the teams’ independent work is not transparent
+L831@P8: to each other (information need #5 from our survey). The work
+L832@P8: item can be delayed due to poor communication, differing priorities, or forgotten altogether because no one advocates for it [7].
+--------------------------------------------------------------------------------
+Microsoft Word - Ko2007InformationNeeds 2-2-07.doc (https://www.microsoft.com/en-us/research/uploads/prod/2007/05/icse07_ko.pdf)
+citeturn41view2 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: find({"ref_id":"turn11view0","pattern":"deferred"}); Total lines: 1480
+L123@P0: and
+L124@P0:  coworkers.
+L125@P0:  The
+L126@P0:  most
+L127@P0:  often
+L128@P0:  deferred
+L129@P0:  searches
+L130@P0:  included
+L131@P0: knowledge
+L132@P0: about
+L133@P0: design
+L134@P0: and
+L135@P0: program
+L136@P0: behavior,
+L137@P0: 
+L138@P0: such
+L139@P0: as
+L140@P0: why
+L141@P0: code
+L142@P0: was
+L143@P0: written
+L144@P0: a
+L145@P0: particular
+L146@P0: way,
+L147@P0: what
+L148@P0: a
+L149@P0: 
+L150@P0: program
+L151@P0: was
+L152@P0: supposed
+L153@P0: to
+L154@P0: do,
+L155@P0: and
+L156@P0: the
+L157@P0: cause
+L158@P0: of
+L159@P0: a
+L160@P0: program
+L161@P0: 
+L162@P0: state.
+L163@P0:  Developers
+L164@P0:  often
+L165@P0:  had
+L166@P0:  to
+L167@P0:  defer
+L168@P0:  tasks
+L169@P0:  because
+L170@P0:  the
+L171@P0: 
+L172@P0: only
+L173@P0: source
+L174@P0: of
+L175@P0: knowledge
+L176@P0: was
+L177@P0: unavailable
+L178@P0: coworkers.
+L179@P0: 1. In troduc tion
+L180@P0: 
+L181@P0: Soware
+L182@P0: development
+L183@P0: is
+L184@P0: an
+L185@P0: expensive
+L186@P0: and
+L187@P0: time-intensive
+L409@P0: developers
+L410@P0: seek,
+L411@P0: we
+L412@P0: might
+L480@P0: · What
+L481@P0: prevents
+L482@P0: them
+L483@P0: from
+L484@P0: finding information?
+L485@P0: In
+L486@P0: our
+L487@P0: observations,
+L488@P0: we
+L489@P0: found
+L490@P0: several
+L491@P0: information
+L492@P0: needs.
+L493@P0: 
+L494@P0: The
+L495@P0: most
+L496@P0: difficult
+L497@P0:  to
+L498@P0: satisfy
+L499@P0: were
+L500@P0: design
+L501@P0:  questions:
+L502@P0: for
+L503@P0: 
+L504@P0: example,
+L505@P0: developers
+L506@P0: needed
+L507@P0: to
+L508@P0: know
+L509@P0: the
+L510@P0: intent
+L511@P0: behind
+L512@P0: 
+L513@P0: existing
+L514@P0: code
+L515@P0: and
+L516@P0: code
+L517@P0: yet
+L518@P0: to
+L519@P0: be
+L520@P0: written.
+L521@P0: Other
+L522@P0: information
+L523@P0: seeking
+L524@P0: was
+L525@P0: deferred
+L526@P0: because
+L527@P0: the
+L528@P0: coworkers
+L529@P0: who
+L530@P0: had
+L531@P0: 
+L532@P0: the
+L533@P0: knowledge
+L534@P0: were
+L535@P0: unavailable.
+L536@P0: Some
+L537@P0: information
+L538@P0: was
+L539@P0: 
+L540@P0: nearly
+L541@P0: impossible
+L542@P0:  to
+L543@P0: find,
+L544@P0: like
+L545@P0:  bug
+L546@P0: reproduction
+L547@P0:  steps
+L548@P0: 
+L549@P0: and
+L550@P0: the
+L551@P0: root
+L552@P0: causes
+L553@P0: of
+L554@P0: failures.
+L945@P4: modifying their environment and test cases until reproducing the failure:
+L946@P4: A: I'm looking at [the report] to see if I have this configured the same
+L947@P4: way, but I'm not getting the problem. Maybe we've changed it in the
+L948@P4: past half year this has been open.
+L949@P4: In one situation a
+L950@P4: failure could not be reproduced and
+L951@P4: the bug had to be deferred {}. The developer documented his attempts in the report for the sake of other
+L952@P4: testers and developers.
+L953@P4: 5.5 Understanding
+L954@P4: Execution
+L955@P4: Behavior
+L1095@P5: their developers about upcoming changes in informal
+L1096@P5: meetings, email announcements, or planning meetings
+L1097@P5: {}. Because developerswere often interrupted,they also
+L1098@P5: sought awareness about their own work (a):
+L1099@P5: G: Sometimes I have like 20windows, 5 or 6 buildwindows, eachoneis
+L1100@P5: a state that I'm working on and I lose it! If I could justsave it…Iwould
+L1101@P5: be really happy! I hate those midnight reboots.
+L1102@P5: 29th International Conference on Software Engineering (ICSE'07)
+L1103@P5: 0-7695-2828-7/07 $20.00 © 2007
+L1104@P5-6: Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.6. Quantifying
+L1105@P6: Information
+L1106@P6: Needs
+L1107@P6: 
+L1108@P6: The information needs we have discussed are summarized in Figure 3. The time spent searching, search frequencies, search outcomes, and source frequencies are
+L1109@P6: based on our observational data. The outcomes include
+L1110@P6: when developers acquired information, deferred a search
+L1111@P6: with the intent of resuming it, or gave up with no intent
+L1112@P6: of resuming it; a
+L1113@P6: few searches continued beyond our observations. Also, in two cases, a
+L1114@P6:  need was initially deferred, then satisfied afterward by a
+L1115@P6:  coworker’s email
+L1116@P6: response; we coded these as acquired.
+L1117@P6: The most frequently sought and acquiredinformation
+L1118@P6: includes whether any mistakes (syntax or otherwise)
+L1119@P6: were made in code and what a
+L1120@P6:  developers’ coworkers
+L1121@P6: have been doing. The most often deferred information
+L1122@P6: wasthe cause of a
+L1123@P6: particular program state and the situationsin which a
+L1124@P6: failure occurs. Developersrarely gaveup
+L1125@P6: searching. There was no relationship between deferring a
+L1126@P6: 
+L1127@P6: search and whether the source involved people (bug reports, face-to-face, , email) (χ
+L1128@P6: ()=., p > .).
+L1129@P6: Based on medians, the information that took the
+L1130@P6: longest to acquire was whether conventions were followed (s); based on maximums, the longest to acquire
+L1131@P6: was knowledge about design (d, d) and behavior (u,
+L1132@P6: u). No one source of information took longerto acquire
+L1133@P6: than another (F(, )=., p>.), nor was there a
+L1134@P6: difference in search times between sources involving people
+L1135@P6: and sources that did not (F(, )=., p>.). These
+L1136@P6: times are misleading, however, as many of the maximums were on deferred searches, so they were likely
+L1137@P6: longer than shown here. Further, developers gave up or
+L1138@P6: deferred searches because they depended on a
+L1139@P6:  person
+L1140@P6: known to be unavailable. They were also expert at assessing the likelihood of the search succeeding and would
+L1141@P6: abandon a
+L1142@P6: search if the information was not important
+L1143@P6: enough.
+L1144@P6: 6.1 Rating
+L1145@P6: Information
+L1146@P6: Needs
+L1147@P6: 
+L1148@P6: The percentages in the middle of come from a
+L1149@P6: survey of
+L1150@P6:  different developers(of  contacted), asking themto
+L1151@P6: rate their agreement with statements about each of these
+L1152@P6: information types, based on a
+L1153@P6: -pointscale from strongly
+L1154@P6: disagree to strongly agree. The bars represent the percent
+L1155@P6: of developers who agreed or strongly agreed that the information was (from le to right) important to making
+L1156@P6: progress, unavailable or difficult to obtain, and had questionable accuracy.
+L1157@P6: The survey results reveal interesting trends. The majority of developers rated the most frequently sought information in our observations as more important, and
+L1158@P6: they also rated frequently deferred information as more
+L1159@P6: unavailable. One discrepancy is that developers rated
+L1160@P6: coworker awareness (a) as relatively unimportant,
+L1161@P6: which conflicts with its frequency in our observations. It
+L1162@P6: may be that coworker awareness is so frequent sought
+L1163@P6: and successfully obtained that developers do not think
+L1164@P6: about it. We also observed developers successfully obtain
+L1165@P6: knowledge about the implications of a
+L1166@P6:  change (d),
+L1167@P6: whereas developers rated itrelatively difficult to acquire.
+L1168@P6: The survey also beginsto reveal which information types
+L1169@P6: have more questionable accuracy, namely knowledge
+L1170@P6: about design (d, d), behavior (u), and triage (b, b).
+L1171@P6: Figure 3. Types of information developers sought, with search times in minutes; perceptions of the information’s importance,
+L1172@P6: availability, and accuracy; frequencies and outcomes of searches; and sources, with the most common in boldface.
+L1173@P6: 29th International Conference on Software Engineering (ICSE'07)
+L1174@P6: 0-7695-2828-7/07 $20.00 © 2007
+L1175@P6-7: Authorized licensed use limited to: MICROSOFT. Downloaded on December 1, 2008 at 16:24 from IEEE Xplore. Restrictions apply.6.2 Most
+L1176@P7: Common
+L1177@P7: Information
+L1178@P7: Needs
+L1179@P7: 
+L1180@P7: For each information need, Figure 4 lists those participants who had that need at least once during their observations. The most common need across participants was
+L1181@P7: coworker awareness. Most of the information needs occurred among several developersfrom different teamsin
+L1182@P7: different business divisions, which suggests that these are
+L1183@P7: representative of development work in general. A few of
+L1184@P7: the information needs occurred for only a
+L1185@P7: few participants, which suggests that this list is not complete. Observing more developers over longer periods of time
+L1186@P7: could reveal other less frequent needs. (Had we not observed , for instance, we would not have seen need a3.)
+L1187@P7: 6.3 Unsatisfied
+L1188@P7: Information
+L1189@P7: Needs
+L1190@P7: 
+L1191@P7: Many of the frequent information needs are problematic,
+L1192@P7: in that searches for the information were often satisfied
+L1193@P7: (deferred or abandoned) and had long search times. The
+L1194@P7: most frequently unsatisfied information needs were the
+L1195@P7: following, with their percentage of unsatisfied queries
+L1196@P7: and maximum observed search times:
+L1197@P7:  What code caused this program state? %  min
+L1198@P7:  Why
+L1199@P7: was the code implemented this way? %  min
+L1200@P7:  In what situations does this failure occur? % 
+L1201@P7: min
+L1202@P7:  What code could have caused this behavior? %  min
+L1203@P7:  Howhave the resourcesI depend on changed? % 
+L1204@P7: min
+L1205@P7:  What is the program supposed to do? %  min
+L1206@P7:  What have my coworkers been doing? %  min
+L1207@P7: This ranking may reflect that  of the  participants’
+L1208@P7: teams were in a
+L1209@P7: bug fixing phase. In particular, the information needs ranked ,  and  are largely about bug
+L1210@P7: reproduction and the ones ranked  and  are largely
+L1211@P7: about evaluating possible fixesfor bugs. Nonetheless,the
+L1212@P7: fact that these information needs are so often unsatisfied
+L1213@P7: and take such a long time clearly hindered developer
+L1214@P7: productivity.
+L1215@P7: 7. Discussion
+L1216@P7: 
+L1217@P7: Our motivation forthis study wasto identify and characterize software developers’ information needs. While the
+L1218@P7: list we have identified may not be complete, it hasseveral
+L1219@P7: implications.
+L1220@P7: 7.1 Coworkers
+L1221@P7:  as
+L1222@P7: Information
+L1223@P7: Sources
+L1224@P7: 
+L1225@P7: Coworkers were the most frequent source of information, accessed at least once for  of the  information
+L1226@P7: needs and in  of the  instances of information seeking. The importance of coworkers as informationsources
+L1227@P7: probably explains why coworker awarenessisthe second
+L1228@P7: most frequent information need.(Developers checked on
+L1229@P7: coworker availability almost as many times as they
+L1230@P7: looked at output from the compiler or debugger.) This is
+L1231@P7: consistent with prior work on awareness in software development, with regard to sources, strategies, and frequency of information seeking [5][9][15].
+L1232@P7: Why should developers turn so often to coworkers?
+L1233@P7: One possibility is the topics being discussed. Outside of
+L1406@P9: satisfy accurately (awareness) but others with only questionable accuracy (the value of a
+L1407@P9: fix and the implications
+L1408@P9: of a
+L1409@P9: change). Other needs were deferred often (knowledge about behavior and design), whereas some were
+L1410@P9: impossible to satisfy in certain cases(reproductionsteps).
+L1411@P9: Not only do these needs call for innovations in tools,
+L1412@P9: processes, and notations, but they also reveal how the
+L1413@P9: collective responsibility for design knowledge can leadto
+L1414@P9: intense awareness and communication needs observed in
+--------------------------------------------------------------------------------
+ (https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/codebook-cameraready.pdf)
+citeturn41view3 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: find({"ref_id":"turn11view1","pattern":"limitations"}); Total lines: 1042
+No matching text found for "limitations"

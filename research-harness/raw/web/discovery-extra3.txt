@@ -1,0 +1,438 @@
+Automations · Cursor (https://cursor.com/changelog/03-05-26)
+citeturn11search0 [wordlim: 200] Published: 8 months ago; Crawled: today; Mar 5, 2026 · Changelog ... Cursor now supports automations for building always-on agents that run based on triggers and instructions you define. ... When invoked, the agent spins up a cloud sandbox and follows your instructions using the MCPs and models you've configured.
+
+Mar 5, 2026 · Changelog
+
+# Automations
+
+Cursor now supports automations for building always-on agents that run based on triggers and instructions you define.
+
+Automations run on schedules or are triggered by events from Slack, Linear, GitHub, PagerDuty, and webhooks.
+
+When invoked, the agent spins up a cloud sandbox and follows your instructions using the MCPs and models you've configured. Agents also have access to a memory tool that lets them learn from past runs and improve with repetition.
+
+Create automations at cursor.com/automations, or start from a template. Read more in our announcement.--------------------------------------------------------------------------------
+Introducing Cursor Automations - Release Discussions - Cursor - Community Forum (https://forum.cursor.com/t/introducing-cursor-automations/153733)
+citeturn11search1 [wordlim: 200] Published: 8 months ago; Crawled: yesterday; Colin (Colin) March 5, 2026, 5:22pm 1 ... We’re excited to introduce Cursor Automations: always-on cloud agents that run a schedule or in response to events! ... Define a trigger, write a prompt, and choose which tools the agent can use. ... Create a new automation at https://cursor.com/automations/new, or start from a template in the marketplace.
+
+# Introducing Cursor Automations
+
+Colin (Colin) March 5, 2026, 5:22pm 1
+
+Blog · Docs · Try it out!
+
+* * *
+
+We’re excited to introduce Cursor Automations: always-on cloud agents that run a schedule or in response to events!
+
+Imagine an agent that reviews every PR for security vulnerabilities before you even open Slack. Or one that triages bug reports overnight, finds the root cause, and has a fix ready by morning. Or a weekly digest that summarizes everything your team shipped, all automatically. That’s what automations enable.
+
+Define a trigger, write a prompt, and choose which tools the agent can use. When triggered, a cloud agent spins up, follows your instructions, and verifies its own output. Agents can open PRs, comment on code, send Slack messages, call MCP servers, and use Memories to learn across runs.
+
+Create a new automation at https://cursor.com/automations/new, or start from a template in the marketplace. --------------------------------------------------------------------------------
+Cloud Agents release notes | Cursor Docs (https://cursor.com/docs/release-notes/cloud-agents)
+citeturn11search2 [wordlim: 200] Crawled: today; ## Week of Nov 9, 2026 ... When you assign an issue to Cursor, a `repo=` in the issue description picks the repository unless your trigger text names one. ... When a Cloud Agent can't start because of your plan, usage pricing, model choice, or a protected scope, the dialog explaining why now opens on the page you started from, for pages within the agents area of cursor.com, instead of later on the agents page.
+
+# Cloud Agents release notes
+
+Weekly changes to Cloud Agents. Each entry covers one week of changes and is labeled with the Monday that starts it.
+
+## Week of Nov 9, 2026
+
+### Environments
+
+  * Admin Limit which MCP servers each environment can use. Environment pages now have an MCP servers section where you can turn off every MCP server for that environment, or list the servers its agents may use, one per line as a URL, hostname pattern, or command. Leave the list empty to allow every server your team allows. This is now available to everyone. See Environment management.
+  * Each environment gets its own Secrets page and Edit dialogs. The Add secrets dialog warns before replacing an existing secret and refuses duplicate names. On an environment's page, change the name, staleness threshold, and install timeout from Edit dialogs, promote it with a Promote to team button, and delete it from a Danger zone section. Renaming warns when the name is taken, Version history marks the Current version, and duplicating or promoting an environment keeps its settings. 
+## Week of Nov 2, 2026
+
+### Network and security
+
+  * Admin Customer PrivateLink now covers every PrivateLink destination and works alongside fixed egress IPs. For every team on Customer PrivateLink, Cloud Agents can now reach all of your PrivateLink destinations, such as internal package registries, not only the repo's git host. Teams that also use fixed egress IPs get both: PrivateLink hosts go through your private connection and other allowed traffic leaves from the stable egress range. Git also no longer fails with a CONNECT 403 error under Restricted network access.
+  * Admin Revoked API keys and service accounts stop their running agents. When an API key is revoked or a service account is archived or deleted, Cloud Agents running on it now stop within seconds instead of continuing until the next periodic credential check. Agents started by a team API key also stop when that key expires or loses agent access, with a message that names the cause.
+  * Admin Clearer notices when your team's inference hook blocks an agent. 
+## Week of Oct 26, 2026
+
+### Agents
+
+  * Cloud Agent questions and sign-in cards no longer hold up the run. When a Cloud Agent asks you a question, needs you to sign in to an MCP server, or asks for access, it now ends its turn and leaves the card open until you answer, even after a reload. Sending a message instead skips a pending MCP sign-in card so the agent keeps going, and an agent working toward a goal waits for your answer instead of continuing on its own. This is now available to everyone.
+  * Slash commands in Cloud Agent prompts run the command you meant. A slash command followed by punctuation, like `/review,` or `/deploy?`, now runs as the command instead of being ignored. A command or skill you pick from the menu is kept instead of being swapped for a team or repo one with the same name.
+  * Admin Clearer errors for spend limits and AWS roles. When a spend limit blocks a Cloud Agent, the error now says whether your limit or your team's was hit, shows its dollar amount, and tells you to raise it in team settings or ask an admin. 
+## Week of Oct 19, 2026
+
+### Agents
+
+  * Admin Agents know when a subagent fell back to a different model. When a custom subagent is set to a model your team's admin settings block, that needs Max Mode, or that isn't valid, the parent agent now learns that the subagent ran on the parent's model instead. Subagents that inherit the parent's model also no longer get blocked on teams that disallow the Fast tier when the parent isn't using Fast.
+  * Admin Computer use stays on when your team blocks the video review model. Fixed an issue where blocking Gemini 3.1 Pro in team model settings turned off computer use for every Cloud Agent on the team, even when the computer use models were allowed. Now only video review is unavailable, and the agent keeps testing with computer use.
+  * Broken skills are flagged in the run. When a skill's SKILL.md has invalid frontmatter, no description, or can't be read, the Cloud Agent run now shows a warning naming the skill and how to fix it. Previously the agent quietly skipped the skill or was unlikely to pick it.
+  * Faster follow-ups after turns that only read files. When a turn only reads or searches files, or sends messages, the next turn now starts sooner. The agent no longer waits on a workspace snapshot that wasn't needed because nothing changed.
+
+### Pull requests
+
+  * Pull requests open ready for review by default. Cloud Agents, including Project workers, now open pull requests ready for review instead of as drafts, unless you or the task ask for a draft. A new Never open PRs as drafts switch in the Pull requests section of your codebase settings keeps every new pull request you and your agents open ready for review, even when a draft is requested.
+  * Agent comments on private Origin pull requests link back to the run. When a Cloud Agent posts a comment, reply, or review on a private Origin pull request, the comment now ends with an Open in Web button that opens the agent run, so reviewers can jump straight to the agent's work.
+
+### Projects
+
+  * Project coordinators keep the task tracker accurate. 
+## Week of Oct 5, 2026
+
+### Projects
+
+  * Agents can message and read agents you @-mention. When you @-mention another agent to a Project coordinator, the coordinator can read that agent's transcript and send it messages. It can also message its own parent coordinator, and the agent that receives a message can reply directly. Access follows yours: the coordinator reaches only agents you mention and can still open.
+
+### Agents
+
+  * Subagent progress shows up live in the parent agent. When a Cloud Agent hands work to a subagent, the subagent's tool calls and messages now stream in under the parent's task as they happen, instead of appearing only after the subagent finishes.
+  * Agent links in summaries now open the right page. When a cloud agent's summary links to another agent, the link in Slack, GitHub, GitLab, and Bitbucket now opens that agent's page on cursor.com instead of breaking. On the web project board, agent links in coordinator files now open the linked agent, including its Changes tab when the link points there.
+
+## Week of Sep 21, 2026
+
+### Environments
+
+  * Activate a draft environment build while it's still running. You can now click Activate on a draft build that is still in progress, and it becomes the active build for your environment as soon as it finishes. Activating a draft whose snapshot has already been deleted is still blocked, and no longer changes your saved environment settings.
+  * Default-on environment builds work like turned-on builds. Environments with no build setting of their own, where builds are on by default, now show their Active Build and the failing-builds warning, and are rebuilt when a build is triggered, so agents in them start from a fresher build.
+
+### Agents
+
+  * Long-running mode removed from the web. The Long-running option in the web model picker, its time-limit pill, and the team Long-running agents setting are gone. Cloud Agents started from the web always run in standard mode.
+  * Coordinators can switch a worker's model. A Project coordinator can now move a worker to a different model when it sends the worker a message. 
+## Week of Sep 14, 2026
+
+### Agents
+
+  * Follow-ups to agents archived elsewhere now go through. If you archive an agent on another client, such as the desktop app, and then send a follow-up from a tab you already had open on the web, Cloud Agents now unarchives the agent and delivers your message instead of failing. This works from the agent chat, resubmitted messages, side chats, and the review agents sidebar on pull request pages. Deleted agents stay closed.
+  * Plan and limit dialogs appear where you start the agent. When a Cloud Agent can't start because of your plan, usage pricing, model choice, or a protected scope, the dialog explaining why now opens on the page you started from, for pages within the agents area of cursor.com, instead of later on the agents page.
+  * Draft pull requests stay in draft. Fixed an issue where Cloud Agents marked their draft pull requests ready for review on their own, even when your repository rules said to keep them as drafts. Agents now follow your instructions and repository guidance, and still mark a PR ready when you ask.
+
+## Week of Sep 7, 2026
+
+### Agents
+
+  * The agent steps back when you take control of its desktop. When you take control of a Cloud Agent's desktop, the agent stops using the computer instead of competing with you, and the desktop is released as soon as a computer-use subagent finishes.
+  * Faster starts when you name the default branch. Cloud Agents started with the repository's default branch named explicitly, as the desktop app does, now reuse the prebuilt environment, the same as starts that name no branch, so they reach the first response sooner.
+
+### Projects
+
+  * Project coordinators and workers show the right state. A Project coordinator is now marked unread only after a turn in which it actually sent you a message, and the messages it sends you now appear in the agent's conversation history. Workers and subagents that finished stay marked finished when a new message or a resubmitted message interrupts the turn that reports their completion.
+
+### Pull requests
+
+## Week of Aug 31, 2026
+
+### Agent runs
+
+  * Fewer pointless wake-ups from subscriptions. Cloud agents subscribed to GitHub CI or pull request events no longer wake for repeated passing CI results, their own pushes and PR edits, or label, title, and assignee changes. A failure, or the first green after one, still wakes the agent. When an event needs no action, the agent now ends its turn quietly instead of posting a filler reply in Slack or on the PR.
+  * Plugin slash commands work in follow-ups. You can now use a plugin slash command in a follow-up to a Cloud Agent, even if that plugin wasn't selected when the agent started: the agent installs the plugin before it runs the turn. If the plugin can't be installed, the agent says so and asks you to remove the command and send it again, or start a new agent.
+  * Coordinator messages reach busy workers sooner. In Projects, a message a coordinator sends to a worker that is in the middle of a turn is now delivered into that turn by default, instead of waiting for the turn to end. --------------------------------------------------------------------------------
+Improvements to Cursor Automations · Cursor (https://cursor.com/changelog/05-20-26)
+citeturn11search3 [wordlim: 200] Published: 6 months ago; Crawled: today; 3.5 May 20, 2026 · Changelog ... This release brings Cursor Automations to the Agents Window and introduces the ability to configure automations with multiple attached repos or no repos at all.
+
+For the next 7 days, all agent runs for newly created automations are 50% off.
+
+3.5 May 20, 2026 · Changelog
+
+# Improvements to Cursor Automations
+
+This release brings Cursor Automations to the Agents Window and introduces the ability to configure automations with multiple attached repos or no repos at all.
+
+For the next 7 days, all agent runs for newly created automations are 50% off.
+
+## #Automations in the Agents Window
+
+Cursor Automations are now available in the Agents Window, in addition to cursor.com/automations. Create and manage your automations in the same workspace as your agents.
+
+## #Multi-repo automations
+
+A lot of engineering work spans more than one codebase. You can now attach multiple repos to an automation so agents reason across all required context and work across repos to deliver, test, and verify tasks.
+
+## #No-repo automations
+
+Many useful automations exist apart from code, where agents monitor your tools and act on key signals. You can now create automations without an attached repository.
+
+We've added five new templates for no-repo automations to the Cursor Marketplace to help you get started:
+
+  * Slack digest agent: Summarizes unread DMs and key Slack channels every morning and prioritizes them by importance
+  * Product analytics agent: Delivers a weekly digest of key metrics from your data warehouse like Databricks
+  * Product FAQ agent: Watches a Slack channel for questions and writes a first response based on docs, codebase context, and past threads
+  * Product finance agent: Pulls financial data from a billing provider like Stripe for recurring revenue reports
+  * Customer health agent: Monitors key systems like Granola, Slack, and Databricks and flags accounts where health signals are shifting
+
+Read our docs to learn more.--------------------------------------------------------------------------------
+Automated Security Reviews in Claude Code | Anthropic Help Center (https://support.anthropic.com/en/articles/11932705-automated-security-reviews-in-claude-code/)
+citeturn11search4 [wordlim: 200] Crawled: 1.2 years ago; You can use security reviews in two ways: through the /security-review command for on-demand checks in your terminal, or through GitHub Actions for automatic review of pull requests. ... After installing and configuring the GitHub action, it will automatically review every pull request for security vulnerabilities when it's opened. ...   * For the /security-review command: Update Claude Code to the latest version (run), then run `/security-review` in your project directory.
+
+# Automated Security Reviews in Claude Code
+
+Updated in the last hour
+
+Claude Code now includes automated security review features to help you identify and fix vulnerabilities in your code. This guide explains how to use the /security-review command and GitHub Actions to improve your code security.
+
+Note: While automated security reviews help identify many common vulnerabilities, they should complement, not replace, your existing security practices and manual code reviews.
+
+## Overview
+
+Automated security reviews in Claude Code help developers catch vulnerabilities before they reach production. These features check for common security issues including SQL injection risks, cross-site scripting (XSS) vulnerabilities, authentication flaws, insecure data handling, and dependency vulnerabilities.
+
+You can use security reviews in two ways: through the /security-review command for on-demand checks in your terminal, or through GitHub Actions for automatic review of pull requests.
+
+## Availability
+
+These features are available for all Claude Code users, including:
+
+## Setting up GitHub Actions for automated PR reviews
+
+After installing and configuring the GitHub action, it will automatically review every pull request for security vulnerabilities when it's opened.
+
+### Installation
+
+To set up automated security reviews for your repository:
+
+  1. Navigate to your repository's GitHub Actions settings
+
+  2. Follow the step-by-step installation guide in our documentation
+
+  3. Configure the action according to your team's security requirements
+
+### How It Works
+
+Once configured, the GitHub action:
+
+  * Triggers automatically when new pull requests are opened.
+
+  * Reviews code changes for security vulnerabilities.
+
+  * Applies customizable filtering rules to reduce false positives.
+
+  * Posts inline comments on the PR with identified concerns and recommended fixes.
+
+This creates a consistent security review process across your entire team, ensuring code is checked for vulnerabilities before merging.
+
+### Customization Options
+
+You can customize the GitHub action to match your team's security policies, including setting specific rules for your codebase and adjusting sensitivity levels for different vulnerability types.
+--------------------------------------------------------------------------------
+Cloud Agents | Cursor Docs (https://prod.cursor.com/help/ai-features/cloud-agents)
+citeturn11search5 [wordlim: 200] Crawled: today; See the automations docs for trigger types and templates. ... Cursor-managed Cloud Agent VMs can mint short-lived OIDC JWTs from a local socket.
+
+Cloud Agents use the same plan usage as Agent in the editor and the CLI, at the selected model's rate. On legacy request-based plans, they still draw from your included requests, but they always run in Max Mode, so they're priced at API rates plus the Max Mode upcharge and count against your included requests as request-equivalents rather than one request each. On-demand usage takes over after the quota. See Models & Pricing for how Cursor models and third-party models bill on your plan. You can select the context window size for supported models. A larger context window can increase token usage and costs.
+
+## Can I run Cloud Agents automatically or on a cron?
+
+Yes. Use Automations to run Cloud Agents on a schedule or from events in GitHub, Slack, Linear, PagerDuty, or webhooks. Set them up at cursor.com/automations. See the automations docs for trigger types and templates.
+
+## Does Privacy Mode work with Cloud Agents?
+
+Yes. Cloud Agents are available with Privacy Mode. See the Cloud Agent security page for details.
+
+## Can Cloud Agents federate into AWS or other clouds without long-lived keys?
+
+Yes. Cursor-managed Cloud Agent VMs can mint short-lived OIDC JWTs from a local socket. Verifiers use Cursor's public discovery and JWKS endpoints to check the signature and authorize on claims such as `sub`, `team_id`, and `cloud_agent_id`.
+
+## Can Cloud Agents read their own id, owner, or current turn from the VM?
+
+Yes. Cursor-managed Cloud Agent VMs serve an agent metadata API on the same local socket as OIDC tokens. A `GET` of a path such as `/v1/meta-data/agent/id` returns the bare value as text.--------------------------------------------------------------------------------
+Claude Code Advanced Patterns: Subagents, MCP, and Scaling to Real Codebases (https://resources.anthropic.com/hubfs/Claude%20Code%20Advanced%20Patterns_%20Subagents%2C%20MCP%2C%20and%20Scaling%20to%20Real%20Codebases.pdf)
+citeturn11search12 [wordlim: 200] Code Review – thorough, agent team-based review system ... - For admins: Enable Code Review in your Claude Code settings, install the GitHub App, and opt in repositories.
+Code Review – thorough, agent team-based review system
+
+- Specialized agents with context on your full codebase, capable of finding easy-to-miss edge cases and regressions
+- Post inline comments on bugs, security gaps, and more, all rated by severity
+
+<visual_element id="e1">
+A chat-style review comment card labeled “Claude” with a “bot” badge and “Just now.” The comment says: “This endpoint returns session data including accessToken and refreshToken without verifying that the requesting user owns this session. Any authenticated user can access any other user's tokens by guessing or enumerating session IDs. Add an ownership check before returning sensitive data: This endpoint should verify req.auth.userId matches [redacted/obscured code snippet]. Strip accessToken and refreshToken from the response entirely — they should never be sent to the client.” Below it is a collapsed “Extended reasoning...” line, reaction icons, and a reply input field.
+</visual_element>
+
+Getting started
+
+- For admins: Enable Code Review in your Claude Code settings, install the GitHub App, and opt in repositories.
+
+ANTHROPIC  CONFIDENTIAL  18--------------------------------------------------------------------------------
+Redesigning source control at Anthropic \ Anthropic (https://www.anthropic.com/research/redesigning-source-control)
+citeturn11search6 [wordlim: 200] Published: last month; Crawled: today; In May 2026, Anthropic averaged around 2,500 code changes merged per day; as of September, we merged over 30,000 per day. ... Anthropic also makes extensive use of adversarial review, and, while this is incredibly effective in many ways, it can also be myopic, so skilled engineers needed to steer Claude away from over-engineering parts of the system in response to hypothetical concerns. ... Our team members still review every change request for the system, but they now examine the intent of the change as opposed to reading every line of code.
+
+# Redesigning source control at Anthropic
+
+Published
+    Oct 13, 2026
+
+Team
+    Engineering
+
+Topics
+    
+
+  * Coding
+  * Agents
+  * Productivity
+  * Claude Code
+[Button: See more...]
+
+Updated October 15 to include more detail on the projects that pioneered many of the techniques we use in Scion.
+
+At Anthropic, coding is no longer the bottleneck to building systems or doing research. Claude is able to autonomously iterate on research loops, micro-optimize complex programs, and build new services from the ground up at a speed and scale we haven’t seen before. The bottleneck, now, is all of the developer infrastructure built for human scale: source control, builds, and CI.
+
+In May 2026, Anthropic averaged around 2,500 code changes merged per day; as of September, we merged over 30,000 per day. We don’t expect this rate of growth to slow down anytime soon; the latent demand for merging code is practically infinite, and every bottleneck we remove immediately leads to a further increase in the amount of code we produce.
+
+Image
+
+Changes merged to our monorepo per day, from January to September 2026.
+
+In order to support this growth, we built Scion, an in-house version control system, and fully migrated our monorepo from git in five months. We also built and shipped a code review surface (called Antique), code search, a rich source control IAM system, novel ways of managing and landing large amounts of reviewed code, and more, all in that same time period. In this post, we’ll focus on how we built Scion specifically. It makes for an interesting case study: Claude’s ability to write code was both what put us in this situation in the first place and how we were able to quickly build a high-quality, scalable system to deal with it.
+
+### Growing our monorepo
+
+Before we explore what we built, we should acknowledge how unusual our workload is. Unsurprisingly, Anthropic uses Claude to write software far more than almost any other company, so we’re often the first to see where tools built for human scale start to strain. --------------------------------------------------------------------------------
+Automations | Cursor Docs (https://cursor.com/docs/cloud-agent/automations?trk=public_post_comment-text)
+citeturn11search7 [wordlim: 200] Crawled: today; Cursor Automations run cloud agents in the background, either on a schedule or in response to events from GitHub, GitLab, Slack, webhooks, Linear, and more. ... Create a new automation in the Agents Window, at cursor.com/automations, with the `/automate` skill from a local agent session, or from a template in the Cursor Marketplace.
+
+# Automations
+
+Cursor Automations run cloud agents in the background, either on a schedule or in response to events from GitHub, GitLab, Slack, webhooks, Linear, and more.
+
+Automations can be used to automate tasks like reviewing recent PR commits for bugs, performing deep review for vulnerabilities, triaging bugs in Slack, and summarizing changes to your codebase on a schedule.
+
+## Getting started
+
+Create a new automation in the Agents Window, at cursor.com/automations, with the `/automate` skill from a local agent session, or from a template in the Cursor Marketplace.
+
+The `/automate` skill lets you describe the workflow you want in plain language. Cursor configures the automation's triggers, instructions, and tools for you.
+
+For any path:
+
+  1. Choose a trigger, e.g. every hour or when a pull request is opened.
+  2. Write a prompt with instructions for the automation.
+  3. Choose optional tools the agent is able to use, such as Send to Slack, Comment on Pull Request, or tools from MCP.
+--------------------------------------------------------------------------------
+Claude Opus \ Anthropic (https://www.anthropic.com/claude/opus)
+citeturn11search8 [wordlim: 200] Published: last month; Crawled: today; It costs less per token than Opus 5 and uses fewer tokens per task, so work on the Claude Platform, in Claude Code, and in the Claude apps costs about 40% less for work billed by token than on Opus 5. ... It handles long-running work in large codebases, including building features, debugging, refactoring, and code review. ... Opus 5.5 is the Opus tier’s strongest agentic model, reliably orchestrating complex multi-tool tasks.
+## Use cases
+
+Claude Opus 5.5 is our most capable Opus model yet for coding, agents, and knowledge work. It costs less per token than Opus 5 and uses fewer tokens per task, so work on the Claude Platform, in Claude Code, and in the Claude apps costs about 40% less for work billed by token than on Opus 5.
+
+Opus 5.5 also communicates more clearly. It leads with what matters, avoids jargon, and follows your writing rules, which makes it a better partner over long sessions. Key use cases include:
+
+### Advanced coding
+
+Opus 5.5 is our strongest Opus model for agentic coding. It handles long-running work in large codebases, including building features, debugging, refactoring, and code review. It finds the root cause before changing anything, checks its work as it goes, and explains its changes in plain language, so engineers can review and trust them quickly.
+
+### Agents
+
+Opus 5.5 is the Opus tier’s strongest agentic model, reliably orchestrating complex multi-tool tasks. It plans deliberately, coordinates subagents, uses memory to learn across sessions, and drives long-running work forward with minimal oversight. --------------------------------------------------------------------------------
+Claude Code Best Practices \ Anthropic (https://www.anthropic.com/engineering/claude-code-best-practices?trk=feed_main-feed-card_feed-article-content)
+citeturn11search9 [wordlim: 200] Published: 1.6 years ago; Crawled: 1.3 years ago;   * Creating pull requests: Claude understands the shorthand "pr" and will generate appropriate commit messages based on the diff and surrounding context. ... ## 6. Uplevel with multi-Claude workflows ... Start another Claude (or `/clear` again) to read both the code and review feedback
+It helps to explicitly prompt Claude to look through git history to answer queries like these.
+  * Writing commit messages. Claude will look at your changes and recent history automatically to compose a message taking all the relevant context into account
+  * Handling complex git operations like reverting files, resolving rebase conflicts, and comparing and grafting patches
+
+### g. Use Claude to interact with GitHub
+
+Claude Code can manage many GitHub interactions:
+
+  * Creating pull requests: Claude understands the shorthand "pr" and will generate appropriate commit messages based on the diff and surrounding context.
+  * Implementing one-shot resolutions for simple code review comments: just tell it to fix comments on your PR (optionally, give it more specific instructions) and push back to the PR branch when it's done.
+  * Fixing failing builds or linter warnings
+  * Categorizing and triaging open issues by asking Claude to loop over open GitHub issues
+
+This eliminates the need to remember `gh` command line syntax while automating routine tasks.
+
+### h. Use Claude to work with Jupyter notebooks
+
+Researchers and data scientists at Anthropic use Claude Code to read and write Jupyter notebooks. Claude can interpret outputs, including images, providing a fast way to explore and interact with data. There are no required prompts or workflows, but a workflow we recommend is to have Claude Code and a `.ipynb` file open side-by-side in VS Code.
+
+You can also ask Claude to clean up or make aesthetic improvements to your Jupyter notebook before you show it to colleagues. Specifically telling it to make the notebook or its data visualizations “aesthetically pleasing” tends to help remind it that it’s optimizing for a human viewing experience.
+
+## 5. Use headless mode to automate your infra
+
+Claude Code includes headless mode for non-interactive contexts like CI, pre-commit hooks, build scripts, and automation. Use the `-p` flag with a prompt to enable headless mode, and `--output-format stream-json` for streaming JSON output.
+
+Note that headless mode does not persist between sessions. You have to trigger it each session.
+
+### a. Use Claude for issue triage
+
+Headless mode can power automations triggered by GitHub events, such as when a new issue is created in your repository. For example, the public Claude Code repository uses Claude to inspect new issues as they come in and assign appropriate labels.
+
+### b. Use Claude as a linter
+
+Claude Code can provide subjective code reviews beyond what traditional linting tools detect, identifying issues like typos, stale comments, misleading function or variable names, and more.
+
+## 6. Uplevel with multi-Claude workflows
+
+Beyond standalone usage, some of the most powerful applications involve running multiple Claude instances in parallel:
+
+### a. Have one Claude write code; use another Claude to verify
+
+A simple but effective approach is to have one Claude write code while another reviews or tests it. Similar to working with multiple engineers, sometimes having separate context is beneficial:
+
+  1. Use Claude to write code
+  2. Run `/clear` or start a second Claude in another terminal
+  3. Have the second Claude review the first Claude's work
+  4. Start another Claude (or `/clear` again) to read both the code and review feedback
+  5. Have this Claude edit the code based on the feedback
+
+You can do something similar with tests: have one Claude write tests, then have another Claude write code to make the tests pass. You can even have your Claude instances communicate with each other by giving them separate working scratchpads and telling them which one to write to and which one to read from.
+
+This separation often yields better results than having a single Claude handle everything.
+
+### b. Have multiple checkouts of your repo
+
+Rather than waiting for Claude to complete each step, something many engineers at Anthropic do is:
+--------------------------------------------------------------------------------
+How Anthropic teams use Claude Code \ Anthropic (https://www.anthropic.com/news/how-anthropic-teams-use-claude-code?s=35)
+citeturn11search10 [wordlim: 200] Published: 1.3 years ago; Crawled: 1.3 years ago; ## Claude Code for RL Engineering ... After implementing changes themselves, the team asks Claude Code to add tests or review their code.
+## Claude Code for RL Engineering
+
+The RL Engineering team focuses on efficient sampling in RL and weight transfers across the cluster. They use Claude Code primarily for writing small to medium features, debugging, and understanding complex codebases, with an iterative approach that includes frequent checkpointing and rollbacks.
+
+### Main Claude Code use cases
+
+Feature development with supervised autonomy
+
+The team lets Claude Code write most of the code for small to medium features while providing oversight, such as implementing authentication mechanisms for weight transfer components. They work interactively, allowing Claude to take the lead but steering it when it goes off track.
+
+Test generation and code review
+
+After implementing changes themselves, the team asks Claude Code to add tests or review their code. This automated testing workflow saves significant time on routine but important quality assurance tasks.
+
+Debugging and error investigation
+
+They use Claude Code to debug errors with mixed results. --------------------------------------------------------------------------------
+Securing our codebase with autonomous agents · Cursor (https://prod.cursor.com/blog/security-agents)
+citeturn11search11 [wordlim: 200] Published: 8 months ago; Crawled: 2 months ago; Mar 16, 2026·product ... We've adapted by using Cursor Automations, which has allowed us to quickly build a fleet of security agents that continuously identify and repair vulnerabilities in our codebase. ... Today, we're releasing four new automation templates with the exact blueprints of the security agents we've found to be most helpful.
+
+Mar 16, 2026·product
+
+# Securing our codebase with autonomous agents
+
+Image
+
+Travis McPeak · 5 min read
+
+Over the last nine months, our PR velocity has increased 5x. Security tooling based on static analysis or rigid code ownership remains helpful, but is not enough at this scale. We've adapted by using Cursor Automations, which has allowed us to quickly build a fleet of security agents that continuously identify and repair vulnerabilities in our codebase.
+
+Image: Security agents are reviewing 3,000+ internal PRs each week, catching 200+ vulnerabilitiesImage: Security agents are reviewing 3,000+ internal PRs each week, catching 200+ vulnerabilities
+
+Today, we're releasing four new automation templates with the exact blueprints of the security agents we've found to be most helpful. Other security teams can customize these templates to build agents that automatically resolve a wide range of security issues.
+
+## #The automations architecture
+--------------------------------------------------------------------------------
+The 2026 State of AI (https://resources.anthropic.com/hubfs/The%202026%20State%20of%20AI%20Agents%20Report.pdf?_bhlid=f5832f1e00cadd0eaf3ef8debb58fa368031c9de)
+citeturn11search13 [wordlim: 200] Published: 11 months ago; •	 Review cycles cut in half as output quality improved ... headless mode, automatically opening pull requests for routine maintenance. ... •	 300 daily active users, making Claude Code the most-used AI tool at the ... •	 Engineering ships features 40% faster while maintaining code quality ... THE 2026 STATE OF AI AGENTS REPORT
+tling with routine engineering work.
+The solution: Autonomous development workflow cuts infrastructure 
+replacement from weeks to hours
+After a successful pilot with 30 engineers, Doctolib rolled out Claude Code 
+across their entire development team. Engineers self-onboard in under five 
+minutes across any IDE. The platform team created a centralized repository 
+of prompts, custom commands, and subagents that all developers pull during 
+initial setup—every engineer starts with proven, reusable workflows on day one.
+The team embedded Claude Code directly into their CI pipeline through 
+headless mode, automatically opening pull requests for routine maintenance. 
+Every code change triggers a CI job that updates technical documentation 
+automatically, keeping technical docs current without manual intervention.
+Results and impact:
+•	 Legacy testing infrastructure replaced in hours instead of weeks
+•	 300 daily active users, making Claude Code the most-used AI tool at the 
+company
+•	 Engineering ships features 40% faster while maintaining code quality
+26
+THE 2026 STATE OF AI AGENTS REPORT

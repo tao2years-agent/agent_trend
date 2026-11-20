@@ -1,0 +1,828 @@
+                                             FlakyGuard: Automatically Fixing Flaky Tests at
+                                                             Industry Scale
+                                                                           Chengpeng Li∗ , Farnaz Behrang† , August Shi∗ , Peng Liu†
+                                                         ∗ ECE Department, The University of Texas at Austin, USA {chengpengli, august}@utexas.edu
+                                                                             † Uber Technologies, USA {behrang, peng3141}@uber.com
+
+
+
+                                            Abstract—Flaky tests that non-deterministically pass or fail        all production code from a service (e.g., medium-sized services
+                                         waste developer time and slow release cycles. While large lan-         at Uber typically exceed 100K+ LOCs) overwhelms the LLM,
+                                         guage models (LLMs) show promise for automatically repairing           diffusing its attention [10], and degrading performance on
+                                         flaky tests, existing approaches like FlakyDoctor fail in industrial
+                                                                                                                complex reasoning tasks such as root cause analysis. Addition-
+arXiv:2511.14002v1 [cs.SE] 18 Nov 2025
+
+
+
+
+                                         settings due to the context problem: providing either too little
+                                         context (missing critical production code) or too much context         ally, developers usually need clear explanations of root causes
+                                         (overwhelming the LLM with irrelevant information). We present         and repair rationale to accept proposed fixes. Therefore, the
+                                         F LAKY G UARD, which addresses this problem by treating code           goal is to provide the right balance of context that is neither
+                                         as a graph structure and using selective graph exploration to          too much nor too little, enabling the LLM to not only repair
+                                         find only the most relevant context. Evaluation on real-world
+                                         flaky tests from industrial repositories shows that F LAKY G UARD      the flaky test but also explain the root cause to developers.
+                                         repairs 47.6% of reproducible flaky tests with 51.8% of the fixes         Recent LLM-based approaches [11, 12] designed for other
+                                         accepted by developers. Besides it outperforms state-of-the-art        software engineering tasks have proposed context collection
+                                         approaches by at least 22% in repair success rate. Developer           methods that can be adapted to flaky test repair with slight
+                                         surveys confirm that 100% find F LAKY G UARD’s root cause              modifications (Section IV). While directly applying these
+                                         explanations useful.
+                                                                                                                context collection techniques to FlakyDoctor [6] improves
+                                                                I. I NTRODUCTION                                repair rates, significant limitations remain in our domain.
+                                                                                                                Specifically, Agentless [11] and AutoCodeRover [12] construct
+                                            Flaky tests non-deterministically pass or fail when rerun           context by treating the codebase as a flat text corpus, missing
+                                         on identical code, creating significant challenges in software         opportunities to leverage code structure for more targeted
+                                         development. When tests fail, developers cannot distinguish            context selection.
+                                         between those failures indicating real bugs or flakiness, forc-           Treating the codebase as a graph structure enables more
+                                         ing them to spend time investigating false alarms. In many             effective context collection by using the call graph among
+                                         industrial settings, teams may block code deployment until             functions to guide the search, entirely avoiding irrelevant
+                                         all test failures are resolved, slowing down release cycles.           functions through structured graph traversal. However, ana-
+                                         The prevalence of flaky tests wastes both developer time and           lyzing the codebase as a graph requires a novel graph search
+                                         computational resources [1, 2].                                        design, as naive BFS/DFS approaches would include the entire
+                                            Recent advances in large language models (LLMs) [3, 4, 5],          graph, overwhelming the LLM. Existing graph-based work
+                                         particularly in code generation and reasoning capabilities,            RepoGraph [13] uses ego-graphs [14] that include k-hop nodes
+                                         show great promise for automatically repairing flaky tests.            around central nodes to avoid exponentially growing context,
+                                         Prior work has demonstrated this potential: FlakyDoctor [6]            but this approach is severely limited by depth constraints.
+                                         successfully repaired more flaky tests than traditional non-           Our preliminary study revealed that critical repair information
+                                         LLM approaches [7, 8, 9] in open-source projects. Importantly,         often resides in leaf nodes deeply embedded in the call graph.
+                                         non-LLM approaches require prior tools to classify flaky               To address these limitations, we develop a selective graph
+                                         test types before applying pattern-specific fixes, limiting their      exploration strategy that identifies and traverses only the most
+                                         applicability when such classification is unavailable, as is           relevant paths in the call graph. Rather than being constrained
+                                         often the case in industrial settings where only test failure          by fixed depth limits, our approach uses the LLM itself to
+                                         information is readily accessible.                                     guide the graph exploration process, enabling it to reach
+                                            However, our experiments with FlakyDoctor in an industrial          critical information regardless of its depth while maintaining
+                                         setting at Uber revealed significant limitations, as it frequently     manageable context size.
+                                         failed to repair real-world flaky tests. Our analysis identified          To further boost the effectiveness of the graph search,
+                                         the primary cause as the context problem, which manifests in           we also use a dynamic call graph (DCG) collected from
+                                         two ways. On one hand, the LLM may receive too little con-             test runs. A DCG captures the precise scope of functions
+                                         text: FlakyDoctor [6] provides only the test code as context,          actually executed at runtime, enabling our search to follow
+                                         causing the LLM to miss critical production code information           only the executed paths. In contrast, static call graphs may
+                                         necessary for proper reasoning and root cause analysis. On the         include functions that are never called by the specific test
+                                         other hand, the LLM may receive too much context: including            case. In addition, static call graphs struggle with overloaded
+functions, anonymous functions, and reflection-based calls,        1    // backend_test.go
+                                                                   2    ...
+creating imprecise linkages that can misguide the LLM to           3      t.Run("validation and call UpdateInfo", func(t *testing
+either include irrelevant functions or miss relevant ones. The                 .T) {
+                                                                   4        ...
+use of a DCG resolves these issues.                                5
+                                                                   6
+                                                                        +
+                                                                        +
+                                                                            var wg sync.WaitGroup
+                                                                            wg.Add(1)
+   We develop F LAKY G UARD, which addresses the context           7    -   doc.Let().UpdateInfo().Return(nil)
+                                                                   8    +   doc.Let().UpdateInfo().Run(func(ctx context.Context,
+problem through LLM-guided exploration of dynamic call                       data *entity.Info) {
+                                                                    9   +       defer wg.Done()
+graphs. Our approach constructs dynamic call graphs from test      10   +   }).Return(nil)
+execution traces, then employs an iterative LLM-based selec-       11
+                                                                   12        ...
+tion process to expand only those paths deemed relevant for        13
+                                                                   14
+                                                                             err := h.AddProgram(context.Background(), r)
+                                                                             ...
+understanding flaky behavior. This selective traversal enables     15   +   wg.Wait()
+                                                                   16        assert.NoError(t, err)
+F LAKY G UARD to reach critical information at arbitrary depths    17     })
+                                                                   18
+while maintaining manageable context sizes for effective repair    19   // deep call chain leading to this is omitted.
+                                                                   20   // validator.go
+and clear root cause explanations.                                 21   func ValidateIdentity(ctx context.Context, program *
+   Additionally, Go codebases in industrial settings predom-                 entity.Program, c *controller) map[string]string {
+                                                                   22     ...
+inantly use table-driven testing [15], where test functions        23
+                                                                   24
+                                                                          data, err := c.db.GetInfo(ctx, _a, email)
+                                                                          go c.db.UpdateInfo(ctx, data)
+contain multiple similar test cases organized in tables. This      25     ...
+                                                                   26   }
+paradigm creates challenges for existing approaches [6, 11,        27   ...
+12, 13], which frequently analyze the wrong test cases or               Listing 1: Flaky Test that needs the Deep Calling Context
+encounter patching failures due to ambiguity in search-and-
+replacement operations [11]. We develop AST-based test
+simplification and patch transplantation techniques (Sec-
+                                                                   all expected mock calls have been executed when the test
+tion III-D) to address these challenges and apply them to all
+                                                                   completes, but it is not a standard assertion failure. Notably,
+baseline approaches to ensure they produce meaningful results.
+                                                                   this error provides no stacktrace, and even when stacktraces
+   We evaluate F LAKY G UARD on real-world flaky tests of
+                                                                   are available, they typically only show what happened rather
+various types from industrial repositories at Uber. Over six
+                                                                   than why the error occurred.
+months of deployment, F LAKY G UARD produced fixes for
+47.6% of reproducible flaky tests, with 51.8% of generated            The function UpdateInfo is invoked through a deep
+fixes accepted by developers. Compared to state-of-the-art         call chain: AddProgram (backend.go) → AddProgram
+LLM-based repair methods [6, 11, 12, 13], F LAKY G UARD            (controller.go) → ValidateIdentity (validator.go) →
+outperforms them by at least 22% in repair success rate. In        UpdateInfo, with each function residing in a different
+anonymous developer survey responses, 100% of the devel-           source file. Critically, UpdateInfo is invoked as a goroutine
+opers found F LAKY G UARD’s root cause explanations useful.        without synchronization with the test execution. The goroutine
+We also conduct comprehensive ablation studies, case studies,      may not complete when the test finishes, especially in the
+and breakdown analyses to address key research questions.          heavily loaded CI environments, thereby causing the mock
+   Beyond the experimental validation, F LAKY G UARD has           call to be missed and triggering the error.
+been deployed as a fully autonomous system at Uber, integrat-         The fix produced by F LAKY G UARD adds a WaitGroup to
+ing with the existing ticketing system to automatically process    synchronize the test with the goroutine: the test waits (line 15)
+flaky test reports and deliver fixes to developers daily.          until the goroutine signals completion (line 9) after making
+   In this paper, we make the following contributions:             the mock call (line 24). Discovering this fix automatically is
+   • We identify and characterize the context problem in LLM-
+                                                                   challenging because root cause analysis requires the LLM to
+     based flaky test repair, where existing approaches provide    trace through the call chain across multiple files to identify
+     either too little or too much context.                        that UpdateInfo runs in an unsynchronized goroutine. This
+   • We develop F LAKY G UARD , a novel approach that uses
+                                                                   scenario exemplifies the fundamental context problem: without
+     LLM-guided exploration of dynamic call graphs to reach        sufficient context, the LLM fails to understand why the test
+     critical information at arbitrary depths while maintaining    is flaky, yet too much context overwhelms the LLM with
+     manageable context sizes.                                     irrelevant information. We examine how different context
+   • We conduct a large-scale evaluation in industrial settings,
+                                                                   collection strategies perform on this example.
+     showing that F LAKY G UARD outperforms state-of-the-art       No Production Code Without production code context, the
+     approaches and produces useful root cause explanations.       LLM initially tries to remove the mock entirely, which fails to
+                                                                   pass the validations, then settles on relaxing the mock expec-
+                   II. RUNNING E XAMPLE                            tation with .MaxTimes(1). While this eliminates flakiness,
+   We illustrate the challenge of repairing flaky tests using      it weakens the test by allowing the mock call to be skipped,
+the example in Listing 1. The test in the source file back-        which is precisely what the test should detect as a bug.
+end test.go non-deterministically fails with the error “Not all    Text Search–based Approaches We tested Agentless [11]
+calls expected by the mock for UpdateInfo were made”. This         and AutoCodeRover [12]. Agentless uses hierarchical
+error originates from the mock library, which verifies that        search (files by names, then functions by signatures, then
+                                                          LLM
+                                                                          techniques, which are generally applicable to existing ap-
+                Test Error           Test Error                           proaches [11, 12, 13] for addressing key challenges in table-
+                                                                          driven testing.
+                                                                             Before we dive into each component, we first introduce the
+Reproducer
+                                                                          inputs of F LAKY G UARD and how it reproduces the flaky test
+                                                                Patcher
+             DCG Construction   Context Collection via
+                                Smart Graph Search
+                                                                          failures to collect the error details. These steps are crucial,
+                                                                          because the error details are not always available in the
+                                                                          ticketing system, or they may be stale due to recent code
+                                                                          changes.
+                                                                             Inputs of F LAKY G UARD F LAKY G UARD receives the flaky
+                                                                          tests reported by our ticketing system (out of scope), e.g., in
+                                                         Validator
+                                                                          the conventional Bazel form of test target/test func/test case,
+      Fig. 1: Overview of the F LAKY G UARD Workflow.                     where test_target consists of multiple test functions, and
+                                                                          each test_func contains multiple test cases following the
+                                                                          predominantly used table-driven testing pattern [15].
+code blocks), while AutoCodeRover provides APIs like                         Failure reproduction. To collect failure information, we
+search_method_in_file and lets the LLM decide which                       execute the test case N times (default: 1000). If no failures
+APIs to call.                                                             occur, indicating potential interference from other test cases,
+    Both failed to repair the flaky test, collecting irrelevant con-      we execute the entire test target N times again and filter
+text while missing the critical ValidateIdentity func-                    results for the targeted test case. The workflow terminates if
+tion. These agents rely on natural language understanding to              reproduction fails.
+guide search, but ValidateIdentity provides no hint that                     Information extraction. From reproduced failures, we ex-
+it calls UpdateInfo. With 35+ functions per file and nearly               tract: error message, stack trace, assertion file path and line
+50 calls in AddProgram alone—including five functions with                number, and test function file path. These paths may differ
+the “Validate” prefix—the noise overwhelms context selection.             when tests invoke external assertion utilities. We also extract
+Graph based Approaches We attempted using Repo-                           the assertion statement using the file path and line number. We
+Graph [13, 16], which extends Agentless [11] by building                  use regular expressions to parse this information, using LLM
+static call graphs and retrieving k-hop ego-graphs around                 fallback for rare corner-cases.
+relevant functions. RepoGraph keeps k small (1-2 hops) to                    Prompting F LAKY G UARD uses a general prompt design
+avoid exponential context growth. However, it fails to help               not customized for specific flakiness types. The prompt com-
+in this example, because RepoGraph avoids deep traversal to               bines a system message, extracted failure information, and
+leaf nodes such as ValidateIdentity, precisely where                      context from graph traversal (Sections III-A and III-B). In the
+the root cause resides. Moreover, its static call graph includes          system prompt, we use “you are an expert in fixing flaky tests”,
+unexecuted branches, adding noise that confuses the LLM.                  and we specify that the LLM should only make changes to the
+Our Work F LAKY G UARD addresses these limitations using                  test code, not the production code, which is beyond the scope
+LLM-guided selective graph search on top of dynamic call                  of F LAKY G UARD.
+graphs. First, the dynamic call graph contains only 40% of the
+nodes compared to static call graphs by pruning unexecuted                A. Construction of Dynamic Call Graphs
+branches and precisely resolving overloaded functions. This                   To construct the dynamic call graph, F LAKY G UARD instru-
+filtering bounds the search space to actually executed function           ments the source code at compile time to inject the logging
+chains, reducing noise. Second, our selective graph search                code 1 , which collects call edges at runtime.
+can traverse deeply to leaf nodes like ValidateIdentity,                     The instrumentation modifies the original source code. To
+enabling the LLM to generate not only correct fixes but also              ensure the call graph accurately reflects execution, we collect
+reasonable root cause explanations.                                       the call graphs specific to the failed runs. The instrumentation
+                                                                          is removed before requesting fixes from the LLM, with fixes
+             III. F LAKY G UARD M ETHODOLOGY
+                                                                          later transplanted back to the original source (Section III-D).
+   Figure 1 shows the high-level overview. Given a flaky                     At runtime, the logging code collects call edges in the for-
+test reported by our ticketing system, F LAKY G UARD repro-               mat MethodEntry: file, line, method Caller:
+duces flaky test failures, builds a dynamic call graph (Sec-              file, line, method. It also dedups to log only the new
+tion III-A), gathers context via LLM-guided graph traversal               edges, and it flushes the file upon every new edge to ensure all
+(Section III-B), and uses prompts to request the fixes from the           edges are written before test completion. With the collected
+LLM. After receiving a suggested fix, F LAKY G UARD applies               logs, F LAKY G UARD builds a dynamic call graph by mapping
+and validates it, and automatically submits it for developer              each method to a unique AST node using the file path and
+review if validation succeeds. Otherwise, it enters the iterative         line number, with each file mapped to a unique AST tree.
+fixing loop (Section III-C). Lastly, Section III-D describes
+F LAKY G UARD’s test simplification and patch transplantation               1 We follow techniques from bazel/rules go [17].
+   Encoding Function Calls via Goroutines Consider this              contexts, the middle loop (P iterations) generates high-level
+minimal example of commonly used goroutine calls: func               thoughts by prompting the LLM, and the inner loop (N
+A(){go B()}. The call edge from A to B is not captured               iterations) produces, applies, and validates fixes for each
+in the log because B is launched in a new goroutine, and the         thought. Each loop uses progressively enriched prompts: the
+runtime stack does not include the enclosing function A.             outer loop uses the flakiness information, the middle loop adds
+   We address this issue by analyzing the AST of the function        context from graph traversal, and the inner loop incorporates
+A that launches the goroutine, identifying the functions being       the proposed thought. We explain the configurable parameters
+called, e.g., B. We then link the nodes of A and B.                  in Section IV-A.
+   This name-based linkage is not perfect, as it may introduce          In the middle loop, each thought contains root cause cate-
+spurious edges due to interface call resolution ambiguity. Also,     gory, root cause explanation, and fixing plan. Following prior
+if goroutines originate from external libraries without source       work [18], we provide the LLM with summarized categories
+code, the call edge is lost, and those functions like B become       from past fixes while allowing the LLM to propose new
+root nodes in the graph traversal. We found those issues do          categories. Failed thoughts are recorded to help the LLM avoid
+not impact F LAKY G UARD much in practice, as only around            ineffective strategies, following the Reflection paradigm [19].
+0.2% of code starts goroutines from external libraries.                 In the inner loop, F LAKY G UARD applies and validates
+                                                                     LLM-suggested fixes. Fix application is detailed in Sec-
+B. Context Collection with LLM-guided Graph Traversal                tion III-D. Validation consists of build validation (ensuring
+    Algorithm 1 performs a breadth-first search (BFS) where a        compilation) and test validation (rerunning tests the same
+LLM selects which nodes to explore rather than exploring all         number of times as failure reproduction). For compilation
+neighbors. Starting from root nodes, the algorithm queries the       failures, we attempt best-effort repair by providing the LLM
+LLM at each step to select at most k children per node based         with the original code, the modified code, and the compilation
+on their relevance to the flaky test error, continuing to depth      errors. Test validation requires all runs to pass; any error
+d (configurable, set to infinite by default). This step produces     or timeout triggers a revert and iterating to the next fix.
+a list of selected nodes in BFS order.                               F LAKY G UARD sends the fix to developers for review upon
+   As a final post-processing step, the LLM selects up to F          successful validation.
+most relevant functions from this result to reduce context size,
+in addition to the root nodes that are always included. Unlike       D. Test Simplification and Patch Transplantation
+existing approaches that use depth-limited search [13], this            Following the table-driven testing practice [15], each test
+method is more effective since it identifies globally the relevant   function contains multiple similar test cases organized into
+functions rather than imposing arbitrary depth constraints.          tables, which creates challenges for fixing: the LLM may focus
+                                                                     on the wrong test case, or search-and-replacement patching
+ Algorithm 1: Smart Graph Traversal with GenAI                       may fail due to ambiguity. We develop AST-based test simpli-
+  Input: Call graph G, depth limit d, children per node              fication and patch transplantation techniques to address these
+         k                                                           challenges.
+  Output: List of selected nodes L                                      Before flakiness reproduction, F LAKY G UARD simplifies the
+1 Function CollectContext(G, d, k):                                  test function Torig to keep only the targeted test case t while
+2    L ← GetRootNodes(G);                                            removing all other sibling test cases, yielding a simplified
+3    Q ← queue of tuples (n, 0) for nodes n ∈ L ;                    test function Tsimp . We disable simplification for tests that
+      // each tuple: (node, depth)                                   need interference with others to manifest. This simplification
+4    while Q is not empty do                                         process traverses the AST to record the byte offsets of all
+5        (n, h) ← Q.pop();                                           changes in an editing tracker. To preserve offset validity during
+6        if h ≥ d then                                               modification, the changes are applied in reverse order [17].
+7            continue;                                               After simplification, some variables become unused, causing
+                                                                     compilation errors. We handle these errors iteratively by
+ 8        C ← GetChildren(n);
+                                                                     commenting them out, adding annotations to them for later
+ 9        S ← GenAI Select(C, k);
+                                                                     restoration.
+10        foreach s ∈ S do                                                                                                    ′
+11            L ← L ∪ {s};                                              We send Tsimp to the LLM to produce the fix Tsimp        . The
+12            Q.append(s, h + 1);                                    challenge is then transplanting these edits back to the full
+                                                                                                                           ′
+                                                                     context of Torig , yielding a patched test function Torig :
+13    return L;
+                                                                                                    ′                ′
+                                                                                    Patch(Tsimp , Tsimp , Torig ) → Torig
+
+                                                                        We use a two-step AST-based transplantation approach.
+C. Fixing Loops                                                      First, we extract the AST from Tsimp′
+                                                                                                            and replace the enclosing
+  At a high level, F LAKY G UARD operates through three              test table with its counterpart from Torig . This process preserves
+nested loops: the outer loop (M iterations) collects new             the fixes outside the test table, which is crucial because
+the LLM may suggest changes to the surrounding code, not              •  51.8% of the fixes (i.e., 197 fixes) were accepted by
+just the test case itself. Second, we reload the merged AST              developers and successfully landed.
+and precisely replace the specific test case node from Torig          Table I shows the breakdown of accepted fixes by root cause
+                                           ′
+with the corresponding fixed node from Tsimp  . This approach       category. Standard benchmarks are limited to few simple cat-
+ensures that fixes are correctly propagated while maintaining       egories, while our industrial setting challenges us with many
+the original table structure.                                       more complex categories. F LAKY G UARD addresses a broader
+                                                                    range of flakiness types compared to existing automated tools.
+                       IV. E VALUATION
+   To evaluate the effectiveness and usefulness of F LAKY-                      TABLE I: Breakdown of the accepted fixes
+G UARD in producing fixes for flaky tests, we conducted
+                                                                                                                          Frequency
+a series of experiments designed to answer the following                  Category
+                                                                                                                      Count   Percentage
+research questions:
+                                                                          Schedule randomness                            72         37%
+  1) RQ1. How effective is F LAKY G UARD at fixing flaky                  Random iteration of unordered collections      65         33%
+     tests?                                                               Timestamp discrepancy                          24         12%
+                                                                          State pollution                                16          8%
+  2) RQ2. What is the contribution of each component of the               Time-dependent flakiness                       13          7%
+     technique to the overall results?                                    Others                                          7          3%
+  3) RQ3. How does F LAKY G UARD compare with the state-
+     of-the-art approaches?                                         Schedule randomness. Schedule randomness is the most
+  4) RQ4. How much do the results change when utilizing a           common reason for flaky tests. Go provides extensive support
+     different model?                                               for concurrency, which introduces inherent non-determinism
+  5) RQ5. How do developers perceive the usefulness of              due to thread scheduling. We observe several examples of flaky
+     F LAKY G UARD?                                                 tests in this category similar to those described in prior work,
+                                                                    such as due to asynchronous waits [22, 23].
+A. Experiments Setup                                                   We show a Go-specific example in Listing 2. The test func-
+   We use the Go monorepo and its real-world flaky tests            tion executes emitLoop, which has a select clause. In Go,
+in Uber to conduct our evaluation. This monorepo consists           the language construct select is non-deterministic: when
+of over 100 million lines of Go code across more than 100           multiple cases are ready, the runtime picks one randomly. In
+distinct projects, developed by over 6000 engineers from 100+       this example, if the runtime picks the first case, it executes only
+teams spanning diverse domains including storage systems,           one iteration of the loop. Otherwise, it executes two iterations
+machine learning applications, and distributed services. Our        of the loop, which will fail at the Get mock call, since it is set
+evaluation dataset provides comprehensive coverage of dif-          up to run only once. F LAKY G UARD proposed a fix to increase
+ferent types of flaky tests since it systematically captures        the timerPeriod so that ticker.C becomes ready later
+every flaky test occurrence rather than being constrained to        than ctx.Done(), ensuring the first case is reliably selected.
+predetermined categories. We choose ChatGPT o1 [20] and             Developers accepted this fix.
+Claude 3.7 Sonnet [4] as the LLM models, because they are the          We observed around 45% of the flaky tests with schedule
+state-of-the-art models available at the time of this evaluation.   randomness are due to use of select like the one shown
+   For our experiments, we set a time limit of 2 hours for          above. Other reasons for schedule randomness flaky tests
+each fixing process. We run each test 1000 times to collect         include asynchronous wait (42%) and atomicity violations,
+a failing run. To increase the chance of detecting scheduling-      e.g., threads interleave in a way that causes undesired program
+related flaky failures, we enabled the race detection flag [21]     state (13%). It is important to note that the LLM needed
+to introduce randomness at scheduling points.                       context from the production code, not just the test code,
+   For the parameters described in Sections III-B and III-C,        to determine a fix and produce the reasonable root cause
+we control the number of attempts for collecting context M          explanation.
+to be 3, the number of high-level thoughts P per context to be      Random iteration of unordered collections. These flaky tests
+2, and the number of fix attempts per thought N to be 3. The        stem from iterating over unordered data structures, such as Go
+depth limit d is set to infinite (i.e., max integer). The number    maps, which do not guarantee consistent traversal order across
+of functions F that the postprocessing retains is maximally 5.      executions, but the tests implicitly assume a fixed element
+                                                                    order [24]. Typical mitigation strategies include using relaxed
+B. RQ1: How effective is F LAKY G UARD at fixing flaky tests?
+                                                                    assertions like ElementsMatch(...) or explicitly sorting
+   We analyzed a total of 1115 flaky tests that F LAKY G UARD       elements prior to comparison. In some complex cases, the
+attempted to fix, over a period of six months. Among these          results are serialized into strings in the assertion, for which
+flaky tests:                                                        F LAKY G UARD deserializes them first.
+   • F LAKY G UARD reproduced 71.6% of the tests (i.e., 798            Listing 3 shows an example of such a flaky test. The test
+     tests),                                                        sets up the mock so that it accepts an expected input string.
+   • F LAKY G UARD produced fixes for 47.6% (i.e., 380) of          However, in production code, the input string is computed
+     the reproducible tests                                         from iterating over a map, as shown in function format
+ 1   // metrics_test.go                                             1   // test code:
+ 2   t.Run("FailoverCompleted", func(t *testing.T) {                2   -os.Setenv("APP_ENV", tc.envVar)
+ 3       emitted := runTest(t,                                      3   +t.Setenv("APP_ENV", tc.envVar)
+ 4           func(mockK8sClient *clientmock.MockClient) {           4   populateContextMetadata(ctx)
+ 5               mockK8sClient.EXPECT().                            5
+ 6                   Get(...).                                      6   assert.Equal(t, expectedValue, getSpanBaggage(ctx))
+ 7                   DoAndReturn(...)                               7
+ 8           },                                                     8   // production code:
+ 9           func(e *Emitter, ctx context.Context) {                9   func populateContextMetadata(ctx context.Context) {
+10   -       e.emit(ctx, time.Millisecond)                         10       span := opentracing.SpanFromContext(ctx)
+11   +       e.emit(ctx, 200 * time.Millisecond)                   11       group := "default"
+12           },                                                    12       if env := os.Getenv("APP_ENV"); env != "" {
+13       )                                                         13           group = "group_" + strings.ToLower(env)
+14   // metrics.go                                                 14       }
+15   func (emitter *Emitter) emit(ctx context.Context,             15       span.SetBaggageItem(group)
+          timerPeriod time.Duration) {                             16   }
+16      ...
+17      emitLoop(ctx, timerPeriod)                                            Listing 4: A flaky test due to the pollution.
+18      ...
+19   }
+20   func (emitter *Emitter) emitLoop(ctx context.Context
+          , timerPeriod time.Duration) {
+21       ticker := time.NewTicker(timerPeriod)
+22       defer ticker.Stop()                                       difference comes from.
+23       for {
+24           err := emitter.K8sClient.Get(...)                     State pollution. When multiple tests run in parallel, the state
+25
+26           select {                                              can be modified by other tests [25, 26]. The pollution can
+27           case <-ctx.Done():
+28               return                                            come from shared global state, file system, or databases.
+29           case <-ticker.C:                                      F LAKY G UARD generates fixes for flaky tests whose pollution
+30           }
+31
+32   }
+         }                                                         comes from all of these sources.
+                                                                      Listing 4 shows an example of such a flaky test. Each test
+Listing 2: A Go-specific flaky test due to the schedule
+randomness and the select construct.                               sets the APP_ENV environment variable (e.g., "Staging"
+                                                                   or "Production") and expects a specific baggage value
+                                                                   like "group_staging" or "group_production" to be
+ 1   // decider_test.go                                            set on the span in the context. However, since environment
+ 2   expected := "-9..-1=node/backup,node/backup,node/
+          backup\n-1..10=node/backup,node/backup,node/             variables are global to the process, concurrent tests may over-
+          backup\n"                                                write each others’ APP_ENV values. As a result, one test may
+ 3
+ 4
+ 5
+     mockStorage.EXPECT().Write(
+         gomock.Any(),
+                                                                   see baggage derived from another test’s environment setting,
+ 6   -   gomock.Eq(strings.NewReader(expected))                    causing unexpected assertion failures. The sharing of data
+ 7   +   hdfsContentMatcher{expected, expected2}
+ 8   ).Return(nil)                                                 through these environment variables leads to nondeterministic
+ 9
+10   // production code                                            behavior when tests are run in parallel. F LAKY G UARD fixed
+11   func format(input map[string][]string) string {               this test by using the t.Setenv() API, following best
+12       var sb strings.Builder
+13
+14
+         for token, nodes := range input {
+             sb.WriteString(token)
+                                                                   practice [27], which ensures each test sets and restores the
+15           sb.WriteString("=")                                   environment properly, and it disallows the tests to run in
+16           sb.WriteString(strings.Join(nodes, ","))
+17           sb.WriteString("\n")                                  parallel [27].
+18       }
+19       return sb.String()                                        Time-dependent flakiness. The flaky tests in this category
+20   }
+                                                                   depend heavily on the wall clock time. Listing 5 shows
+Listing 3: A flaky test due to non-deterministic map iteration     an example flaky test where there is a deep call chain,
+order that leads to an unexpected mock input.                      i.e., GetSupplyChanges → validateTimeRange →
+                                                                   validateTimes → validateAge, which leads to the
+                                                                   leaf node function validateAge that explains the root
+embedded inside some deep function call chain, which may           cause. The function computes a new cutoff, in the same way
+return different input strings depending on the iteration order.   as the test computes the global variable cutoff. However,
+If the input string is not expected, the mock would not be         the two time.Now() calls return different values at run-
+called, thereby leading to an error. F LAKY G UARD addresses       time. Depending on whether they are truncated to the same
+this problem by providing customized matcher logic for the         second interval, the branch condition at line 18 may be true
+mock setup that accepts alternative input strings (expected2       or false, thereby making the function return the error non-
+is omitted for simplicity).                                        deterministically.
+Timestamp discrepancy. If a data structure references a               F LAKY G UARD fixes the test by shifting beginTime by
+timestamp field transitively, that field can get different         1 second to offset the time elapsed between the test’s start
+time.Now() values at different sites, e.g., at the expected        and the invocation of validateAge, so that beginTime is
+value initialization vs the actual initialization. F LAKY G UARD   not before the dynamically computed cutoff, avoiding false
+typically fixes this type of flaky test by setting the timestamp   failures due to the time-dependent flakiness. Such flakiness is
+fields to a constant value or using a comparison logic that        hard to fix or root cause without the production code context.
+ignores those fields. We find that F LAKY G UARD needs to          Others. There are other miscellaneous reasons for flaky tests
+extract context from the production code so it can provide         that F LAKY G UARD can fix. One example test draws an
+the detailed root cause explanation about where the timestamp      insufficient number of samples before asserting over statistical
+ 1   // handler_test.go                                            experiment) and performed the evaluations against the 295
+ 2   var cutoff = time.Now().UTC().AddDate(0, -Age, 0).
+          Truncate(time.Second)                                    flaky tests that are reproducible in this commit. We used
+ 3   func TestGetSupplyChanges(t *testing.T) {                     ChatGPT o1 [20] and set a two-hour time limit for each test
+ 4   -   beginTime := common.TimeToMS(cutoff)
+ 5   +   beginTime := common.TimeToMS(cutoff.Add(1 *
+          time.Second))
+                                                                   case to fix.
+ 6
+ 7      request := &GetSupplyChangesRequest{
+                                                                      For this ablation study, we did not consider developer
+ 8          StartTime: beginTime,                                  feedback, as it would have introduced extensive back-and-
+ 9          ...
+10      }                                                          forth processes beyond the scope of the automated setup.
+11      ...
+12      _, err := handler.GetSupplyChanges(ctx, request)           Instead, we relied on test validation and spot checking to
+13      assert.NoError(t, err)
+14   }                                                             achieve large-scale results. Although this approach may over-
+15   // a deep call chain leading here.
+16   func validateAge(...) {                                       count the impact of certain components, it ensures consistent
+17       cutoff := time.Now().UTC().AddDate(0, -Age, 0).           evaluation criteria across all experimental configurations, thus
+              Truncate(time.Second)
+18
+19
+         if beginTime.Before(cutoff) {
+            ...
+                                                                   maintaining comparative validity.
+20          return err                                                We break the evaluation of this research question into two
+21       }
+22       return nil                                                parts:
+23   }
+                                                                   RQ2.1 How effective are different context collection strate-
+             Listing 5: A time-dependent flaky test
+                                                                      gies at fixing the flaky tests?
+                                                                   RQ2.2 How effective is the test simplification logic at fixing
+                                                                      the flaky tests?
+properties such as variance. F LAKY G UARD fixes the test by
+having it draw more samples. Another example test builds           How effective are different context collection strategies
+random inputs, where some of the inputs are invalid and break      at fixing flaky tests? Table II presents an ablation study
+assumptions in the production code. F LAKY G UARD generated        addressing RQ2.1. We evaluate four configurations: (1) Flaky-
+a fix that restricts the space of random inputs to comply with     Doctor, which is our re-implementation of FlakyDoctor [6]
+the assumptions.                                                   that provides only the test code context; (2) BFSRepoGraph,
+Analysis of the fixes that were not accepted. 48.2% of             which performs BFS traversal of static RepoGraphs [13];
+the proposed fixes were not accepted by the developers. One        (3) BFSDCG, which performs BFS traversal of dynamic
+major reason is that the generated fix did not reuse the test      call graphs; and (4) F LAKY G UARD, which applies selective
+helper APIs. Some organizations build such APIs to enforce         traversal of dynamic call graphs (Section III-B). Note that
+best practices to ease testing. The LLM we use is not aware of     BFSRepoGraph serves as another baseline approach similar
+these custom APIs and hence does not use them. Interestingly,      to FlakyDoctor and does not strictly belong to the ablation
+through our context collection, the LLM can read the API           study of our technique’s components. Configurations (2)-(4)
+implementations and copy them over into the fixes. We plan         collect relevant production code context starting from the test.
+to investigate how to guide LLMs to reuse the APIs directly,       Furthermore, for all four configurations, we applied the test
+which needs to resolve the Bazel build dependencies [28].          simplification techniques described in Section III-D to help
+   Another major reason is that each flaky test may have           them deal with the challenges imposed by the table-driven
+multiple fixes, where the easier ones are more likely to be        testing practice.
+produced and sent to developers, but the more complex fixes           FlakyDoctor generates 134 fixes, while BFSRepoGraph
+are more proper and what developers want. In Listing 1, an         generates 149 fixes. The improvement over FlakyDoctor
+easy fix would be to relax the mock so that it can be called       demonstrates the usefulness of the production code context.
+maximally once. However, developers expressed to us that they      On the other hand, BFSRepoGraph does not significantly
+do not want such fixes.                                            outperform FlakyDoctor. One contributing factor is that the
+   Beyond these reasons, a handful of fixes changed the test       code context, i.e., the transitive closure over the static graph,
+semantics, e.g., removing some assertions, adding irrelevant       can get so big that it confuses the LLM.
+test assertions. We also saw fixes got rejected because of the        BFSDCG generates 161 fixes. The improvement over BFS-
+readability issues, e.g., the fixes are too long or too complex.   RepoGraph highlights the value of the dynamic call graph,
+   Last but not least, we observed that developers manually        which helps produce more focused and precise context by
+fixed some flaky tests in parallel with F LAKY G UARD’s fixing     excluding the unexecuted branches and precisely resolving
+pipeline, and they prefer to submit their own fixes.               the dynamic call dispatch. In addition, we observed cases
+                                                                   where BFSDCG collects the relevant context hidden behind the
+C. RQ2: What is the contribution of each component of the          reflection calls or anonymous functions, while BFSRepoGraph
+technique to the overall results?                                  is unable to.
+                                                                      We would like to mention that the performance gap between
+  We conducted an ablation study to study the contribution of      BFSDCG and BFSRepoGraph would be substantially larger
+each component of F LAKY G UARD. To conduct a controlled           without test simplification. Most test functions follow table-
+experiment (used hereafter up to Section IV-E), we selected        driven testing practices [15], containing typically 10+ test
+a single commit of the monorepo (at the time we started the        cases. Without simplification, BFSRepoGraph presents the
+TABLE II: Comparison of different context collection strate-       D. RQ3: How does F LAKY G UARD compare with the state-
+gies.                                                              of-the-art approaches?
+         Approach           Fixed Tests      Success Rate (%)         We        compare       F LAKY G UARD        with      Agent-
+         FlakyDoctor           134                45.42            less+RepoGraph [11, 13] and AutoCodeRover [12].
+         BFSRepoGraph          149                50.51            Agentless+RepoGraph and AutoCodeRover are the state-of-
+         BFSDCG                157                53.22            the-art approaches designed to fix Python bugs (evaluated on
+         FlakyGuard            194                65.76
+                                                                   SWE-Bench). We extracted the context collection components
+                                                                   from the publicly available code, which we believe is the
+                                                                   major factor for the success of the LLM.
+TABLE III: Comparison of F LAKY G UARD with Agent-                    For Agentless+RepoGraph, we combine Agentless [11]
+less+RepoGraph and AutoCodeRover.                                  and RepoGraph [13] with modifications to the RepoGraph
+                                                                   component. Since the original approach searches for callers
+      Approach                 Fixed Tests     Success Rate (%)
+                                                                   to identify the failure-inducing usage at the caller side, we
+      Agentless+RepoGraph         159                53.90
+      AutoCodeRover               158                53.56
+                                                                   adapted it to search for callees to understand implementation
+      FlakyGuard                  194                65.76         details that cause flakiness. We use one-hop traversal following
+                                                                   the default configuration [13, 16]. We exclude the embedding-
+                                                                   based file search from Agentless [11] as it requires natural
+                                                                   language descriptions from developers, which are not available
+complete test function to the LLM, causing it to often focus       in our problem setting.
+                                                                      For AutoCodeRover, we directly use the existing technique
+on unrelated test cases (in around 60% of cases).
+                                                                   without additional customizations, like we did for Agent-
+   F LAKY G UARD can successfully generate 194 fixes, which        less+RepoGraph. It iteratively searches for relevant functions
+outperforms BFSDCG by 20.5%, thanks to the selective               starting from the flaky test and stops when it believes it has
+context collection. Dynamic call graphs can be substantial,        found sufficient context for fixing.
+with the node count reaching hundreds and the graph depth             We enhanced Agentless+RepoGraph and AutoCodeRover
+extending to seven levels in extreme cases. In the cases           by applying the techniques in Section III-D to tackle the
+that can be fixed by F LAKY G UARD but not by BFSDCG,              challenges imposed by the table-driven testing in order to
+F LAKY G UARD helped greatly in selecting a smaller set of         produce meaningful results. Without these enhancements, they
+nodes as context and letting the LLM focus on a smaller            would constantly get confused working on some irrelevant
+relevant scope.                                                    test cases or encounter patching errors due to the matching
+   To quantify the effectiveness of our core contribution of in-   ambiguity.
+                                                                      Table III shows the results of the comparison. Agent-
+telligent context pruning, we analyzed the pruning mechanism
+                                                                   less+RepoGraph generates 159 fixes, each taking 1528.60
+in detail. In Listing 1, F LAKY G UARD selected 27 nodes from
+                                                                   seconds on average. AutoCodeRover generates 158 fixes, each
+the DCG with 264 nodes, then further limited it to 5 nodes
+                                                                   taking 1799.74 seconds on average. In contrast, F LAKY-
+via the global filtering. This dramatic reduction from hundreds
+                                                                   G UARD fixes 194, each taking 1978.73 seconds on aver-
+of nodes to approximately 5 maximally relevant functions
+                                                                   age. F LAKY G UARD outperforms Agentless+RepoGraph or
+enables the LLM to focus on semantically important code
+                                                                   AutoCodeRover by 22%, which quantitatively confirms the
+while eliminating extraneous information. Manual inspection
+                                                                   effectiveness of our technique. In terms of overall efficiency,
+of cases fixed by BFSDCG revealed that the root cause nodes
+                                                                   although F LAKY G UARD incurs additional overhead for code
+are selected by F LAKY G UARD in all but two cases, confirming
+                                                                   instrumentation and runtime call graph collection, we observed
+the precision of our selection mechanism.
+                                                                   F LAKY G UARD is usually more efficient in the LLM reasoning
+How effective is the test simplification logic at fixing           and fixing phases than the other two because (1) with shorter
+the flaky tests? We conduct an ablation study to assess            context, each LLM response is faster; and (2) with more rel-
+the effectiveness of the test simplification (Section III-D).      evant context, the LLM succeeds within fewer iterations. The
+When comparing F LAKY G UARD before and after applying             initial instrumentation overhead is justified by the subsequent
+simplification, the generated fixes increase from 160 to 194,      reduction in patch generation time.
+demonstrating that simplification significantly improves per-         Figure 2 shows a Venn diagram illustrating the overlap of
+formance in addressing the complexity introduced by table-         the fixes produced by each approach. No approach’s fixed tests
+driven testing practices, which result in test functions with      are a subset of any other, suggesting that each one has its pros
+multiple similar-looking tests. Sometimes, the tests only differ   and cons. We manually inspected the tests that each approach
+with a few words in the description and the test body differs      cannot fix while the others can fix, during which we paid
+only on few arguments, which imposes a great challenge to the      special attention to the contexts collected.
+LLM and often misleads it to look into some other irrelevant       Flaky tests that Agentless+RepoGraph cannot fix. We man-
+tests. The test simplification helps the LLM focus only on the     ually analyzed 35 flaky tests that were fixed by F LAKY-
+test case of interest and the functions actually called by it.     G UARD but not by Agentless+RepoGraph, identifying three
+      AutoCodeRover: 158      Agentless+Repograph: 159                          Claude: 173                O1: 194
+
+                             8
+
+                9                           7
+                                                                                   29            144           50
+                            117
+                    24                 27
+
+                             26                                   Fig. 3: Venn diagram for the fixes generated with different
+                                                                  models
+                     FlakyGuard: 194
+Fig. 2: Venn diagram for the fixes generated by different
+approaches                                                        E. RQ4: How much do the results change when utilizing a
+                                                                  different model?
+                                                                     We compared ChatGPT o1 [20] and Claude 3.7 Sonnet [4]
+                                                                  in this study. Figure 3 shows a Venn diagram illustrating the
+                                                                  overlap of the fixes produced with each model. No model’s
+main reasons Agentless+RepoGraph could not fix tests. First,      fixed tests are a subset of the other, suggesting that each one
+due to its lack of dynamic information, Agentless+RepoGraph       has its pros and cons.
+often picks the wrong function or includes code branches not      Flaky tests that Claude 3.7 Sonnet cannot fix. Claude 3.7
+executed by the test, resulting in large and noisy prompts that   Sonnet failed to fix 50 flaky tests that ChatGPT o1 successfully
+confuse the LLM (13 tests). Second, Agentless+RepoGraph           addressed. In 38 tests, Claude 3.7 Sonnet selected different
+relies on static name-based analysis, which causes it to miss     contexts during the graph traversal, which yielded incorrect
+relevant anonymous functions or functions invoked via reflec-     fixes. In 12 tests, Claude 3.7 Sonnet selected the same context
+tion (9 cases). Third, the Repograph in Agentless+RepoGraph       as ChatGPT o1 but still produced incorrect fixes. In 4 out of
+employs a shallow graph traversal strategy: it uses a one-hop     these 12 cases, Claude 3.7 Sonnet derived the wrong high-
+call graph by default [13] to avoid exponential context growth,   level root causes. Due to the black box nature, it is beyond
+which leads to missing the root causes deeply nested in the       our capability to explain what happened. When we manually
+leaf nodes (9 cases).                                             inspected these cases, we found that the root causes given by
+                                                                  Claude 3.7 Sonnet were also plausible, but the fixes failed the
+Flaky tests that AutoCodeRover cannot fix. AutoCodeRover          automatic validations.
+failed to fix 36 flaky tests due to three main reasons. First,    Flaky tests that ChatGPT o1 cannot fix ChatGPT o1 failed
+AutoCodeRover often terminates early after identifying a po-      to fix 29 flaky tests that Claude 3.7 Sonnet successfully
+tential bug location, but in some cases, additional surrounding   addressed. In 22 tests, the two models selected different
+context is required for successful fixing (15 cases). Sec-        context during graph traversal, which yielded incorrect fixes.
+ond, like Agentless+RepoGraph, AutoCodeRover can include          In 7 tests, ChatGPT o1 shared the same context with Claude
+excessive irrelevant context (11 cases). Third, due to the        3.7 Sonnet, yet still produced incorrect fixes. In 3 out of these
+limitations of static analysis, AutoCodeRover also misses the     7 cases, ChatGPT o1 derived the wrong high-level root causes.
+relevant anonymous functions or reflection-based functions (9     Like the previous case of Claude 3.7 Sonnet, ChatGPT o1 gave
+cases).                                                           plausible but subtly wrong explanations. The fixes did not pass
+                                                                  the validations.
+Flaky tests that F LAKY G UARD cannot fix. Among the
+flaky tests we analyzed, 24 were fixed by either Agent-           F. RQ5: How do developers perceive the usefulness of
+less+RepoGraph or AutoCodeRover but not by F LAKY-                F LAKY G UARD?
+G UARD. These failures fall into three categories. First,              We sent out surveys to developers to understand their per-
+F LAKY G UARD either missed relevant functions or included        ceptions to F LAKY G UARD, receiving 19 responses. Table IV
+irrelevant ones, despite traversing the dynamic call graph (9     shows the results. All 19 respondents (100%) reported that
+cases). However, compared to other approaches, the graph-         F LAKY G UARD’s root-cause explanations are useful.
+guided traversal greatly reduced the number of such cases            On a five-point scale, developers rated the quality of the
+overall. Second, the global filtering F LAKY G UARD uses dur-     fixes produced by F LAKY G UARD very highly (mean 4.42,
+ing postprocessing removed relevant functions, causing the        standard deviation 0.77), while the complexity of the under-
+LLM to fail in the fixing (8 cases). Third, F LAKY G UARD         lying root causes was judged to be moderate (mean 2.73,
+provided similar context as the other tools did but failed to     standard deviation 1.10).
+generate a fix, which may be due to differences in the function      In terms of time savings per individual flaky test case, 3
+ordering within the prompt or inherent randomness in using        participants (15.8%) estimated saving between one and eight
+the LLM (7 cases).                                                hours, 8 (42.1%) estimated saving less than one day, 6 (31.6%)
+TABLE IV: Survey Results on Developers’ Perceptions of                   The techniques we employ are standard software engineer-
+F LAKY G UARD                                                         ing practices. Table-driven testing follows official Go guide-
+                                                                      lines, and after simplification, these tests become conventional
+                    Usefulness of the root cause explanation
+                                                                      unit tests. The flakiness patterns we address represent uni-
+       Usefulness                           Count(%)
+                                                                      versal challenges in concurrent software development across
+       Uesful                               19 (100%)
+                                                                      languages and organizations.
+       Quality and Complexity of flaky tests fixed by F LAKY G UARD      The main change we had to make was on the dynamic
+       Metric                               Average Rating (stddev)   call graph collection part, which needs instrumentation, which
+       Quality of Fixes (1-5)               4.42 ±0.77                we can do with most modern compilers or even with Tree-
+       Complexity of Root Causes (1-5)      2.73 ±1.10
+                                                                      sitter [30] at the AST level, since we only need to insert
+                    Estimated Time Saved by F LAKY G UARD             one API call at the method entry. When dynamic call graphs
+       Time Saved                           Count(%)                  are unavailable, one can still apply the LLM-guided graph
+       1 to 8 hours                         3 (15.8%)                 exploration on the static call graph or other scalable graph
+       less than 1 day                      8 (42.1%)
+       1 to 2 days                          6 (31.6%)
+                                                                      format [31]. In addition, we made new implementations of
+       2 to 4 days                          2 (10.5%)                 the test simplification and patch transplantation logic.
+                                                                         Our open-source implementation includes dynamic call
+                                                                      graph collection mechanisms, LLM-guided context selection
+estimated saving one to two days, and 2 (10.5%) estimated             algorithms, and automated patch generation capabilities. The
+saving two to four days when resolving flaky tests with               implementation and evaluation artifacts are available at: https:
+F LAKY G UARD. Together, these results suggest that not only          //sites.google.com/view/flakyguard.
+do developers find F LAKY G UARD’s diagnostic information
+valuable, but they also perceive F LAKY G UARD’s solutions to                              V. R ELATED W ORK
+be of high quality, as well as saving them time.                         Luo et al. conducted the first empirical study on flaky
+                                                                      tests in open-source projects, categorizing the reasons they are
+G. Limitations and Threat to Validity                                 flaky as well as how developers fixed them [22]. Following
+                                                                      this study, researchers developed techniques to detect and
+   LLM reasoning and fixing are naturally affected by non-
+                                                                      repair specific types of flaky tests automatically. For example,
+determinism, where the LLM may fail to repair a flaky test in
+                                                                      to detect order-dependent flaky tests, which are tests whose
+one attempt but succeed in a later attempt even with identical
+                                                                      pass/fail outcome depend on which tests run before it due to
+context. LLM non-determinism represents a potential threat to
+                                                                      pollution in shared state, researchers proposed techniques to
+evaluation validity [29]. To explicitly mitigate this issue, our
+                                                                      run tests in different orders [32, 33, 34, 35, 36, 37, 38, 39]
+experimental design incorporates multiple retry mechanisms
+                                                                      or to track shared state between tests to see what could
+with M = 3 context collection attempts, P = 2 parallel
+                                                                      be polluted [40, 41]. Researchers later developed techniques
+reasoning paths, and N = 3 fix generation attempts per
+                                                                      to automatically repair these flaky tests by identifying code
+path (as detailed in Section IV-A), providing 18 total repair
+                                                                      within the application that can be used as a patch into the
+opportunities per test case. These retry mechanisms directly
+                                                                      test code to reset the shared state [7, 8]. Shi et al. [24]
+help reduce the impact of non-deterministic LLM behavior by
+                                                                      developed NonDex to detect tests that fail due to assuming
+providing multiple chances for successful repair. Additionally,
+                                                                      an ordering on unordered collections by exploring how tests
+our concrete and detailed prompts are designed to minimize
+                                                                      behave when controlling over the iteration order on those
+output variability, which according to Ouyang et al. [29] can
+                                                                      collections [24, 42]. Zhang et al. later developed DexFix
+significantly reduce non-determinism in LLM responses.
+                                                                      to repair these flaky tests [9]. For timing-dependent flaky
+                                                                      tests, researchers developed techniques that efficiently explore
+H. Discussion
+                                                                      where to insert delays that can reliably reproduce their fail-
+   F LAKY G UARD’s methodology is generally applicable to             ures [43, 44]. Techniques for repairing timing-dependent flaky
+other languages. We implemented a version for Java and                tests include adjusting existing wait times in the code [45, 46]
+confirmed it works on Java flaky tests at Uber. The approach          or synchronizing the critical points [23]. We found examples
+requires minimal language-specific adaptation, where only the         of all of these flaky tests in Uber, and we leverage our LLM-
+flakiness pattern prompts need to be adjusted. The patterns are       based approach to automatically repair them.
+shown in Table I, where each pattern is described by a single            Recently, researchers are using LLMs to solve flaky test-
+sentence. One can add prompts for other languages easily.             related problems, such as predicting which tests are flaky [47,
+   We chose Go as our evaluation target because it exhibits a         48, 49] or debugging flaky tests [48, 50, 51]. Our work is
+rich variety of flakiness patterns in our industrial setting. Our     most similar to FlakyDoctor [6], an LLM-based approach to
+dataset spans more than 100 projects with diverse business            automatically repair flaky tests. FlakyDoctor is effective at re-
+logic, revealing flakiness types not extensively studied in prior     pairing order-dependent flaky tests and flaky tests that assume
+work. This comprehensive coverage motivated the develop-              deterministic ordering of unordered collections, repairing more
+ment of F LAKY G UARD.                                                tests than non-LLM approaches [7, 8, 9]. Our approach also
+collects context from test code and executions to prompt an          [4] Anthropic, “The claude 3 model family: Opus, sonnet,
+LLM for a solution. However, we leverage a more generic                  haiku,” Anthropic, Tech. Rep., 2024. [Online]. Available:
+way of collecting context based on searching over a dynamic              https://www.anthropic.com/news/claude-3-family
+call graph, allowing us to generally handle more types of flaky      [5] Anthropic, “Tracing the thoughts of a large
+tests, including those that FlakyDoctor handles. Fatima et al.           language model,” Anthropic Research, 2025. [On-
+evaluated the effectiveness of LLM-based flaky test repair if            line]. Available: https://www.anthropic.com/research/
+the model also received the fix category along with some                 tracing-thoughts-language-model
+examples, showing this extra information helps generate better       [6] Y. Chen and R. Jabbarvand, “Neurosymbolic repair of
+fixes [18]. We also prompt the LLM by summarizing the                    test flakiness,” in International Symposium on Software
+pattern from previous examples to the model to help predict              Testing and Analysis, 2024, pp. 1402–1414.
+the category and generate a fix, along with extra context.           [7] C. Li, C. Zhu, W. Wang, and A. Shi, “Repairing order-
+   Recent work leveraged LLMs with different context ex-                 dependent flaky tests via test generation,” in International
+traction methods for various software engineering tasks.                 Conference on Software Engineering, 2022, pp. 1881–
+Agentless [11] uses hierarchical localization from repository            1892.
+overview to specific code elements to obtain the context.            [8] A. Shi, W. Lam, R. Oei, T. Xie, and D. Mari-
+AutoCodeRover [12] combines LLM with program analysis,                   nov, “iFixFlakies: A framework for automatically fixing
+using stratified retrieval and iterative API calls to gather             order-dependent flaky tests,” in European Software Engi-
+relevant code snippets. RepoGraph [13] creates a code graph              neering Conference and Symposium on the Foundations
+using Tree-sitter, enabling k-hop ego-graph retrieval for related        of Software Engineering, 2019, pp. 545–555.
+semantic context. We adapt all three of these past approaches        [9] P. Zhang, Y. Jiang, A. Wei, V. Stodden, D. Marinov,
+for our goal of repairing flaky tests, to use as comparison              and A. Shi, “Domain-specific fixes for flaky tests with
+against F LAKY G UARD. F LAKY G UARD leverages a dynamic                 wrong assumptions on underdetermined specifications,”
+call graph and a selective LLM-based graph search to more                in International Conference on Software Engineering,
+effectively and efficiently repair flaky tests.                          2021, pp. 50–61.
+                                                                    [10] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit,
+                     VI. C ONCLUSIONS                                    L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin,
+                                                                         “Attention is all you need,” in International Conference
+   We presented F LAKY G UARD, a novel approach that ad-                 on Neural Information Processing Systems, 2017, pp.
+dresses the context problem in LLM-based flaky test repair               6000–6010.
+through selective exploration of dynamic call graphs. Our eval-     [11] C. S. Xia, Y. Deng, S. Dunn, and L. Zhang, “Agentless:
+uation on real-world industrial flaky tests shows that F LAKY-           Demystifying llm-based software engineering agents,”
+G UARD achieves high developer acceptance, outperforming                 The Proceedings of the ACM on Software Engineering,
+existing methods by at least 22%. The approach effectively               vol. 2, no. FSE, pp. 801–824, 2025.
+balances providing sufficient context for accurate repairs while    [12] Y. Zhang, H. Ruan, Z. Fan, and A. Roychoudhury,
+avoiding information overload, and developers find the root              “AutoCodeRover: Autonomous program improvement,”
+cause explanations universally useful. F LAKY G UARD repre-              in International Symposium on Software Testing and
+sents a significant advancement in automated flaky test repair           Analysis, 2024, pp. 1592–1604.
+for industrial software development.                                [13] S. Ouyang, W. Yu, K. Ma, Z. Xiao, Z. Zhang, M. Jia,
+   In addition, F LAKY G UARD has been deployed as a fully               J. Han, H. Zhang, and D. Yu, “RepoGraph: Enhancing ai
+autonomous system at Uber, integrating with the existing                 software engineering with repository-level code graph,”
+ticketing system to automatically process flaky test reports and         in Internationl Conference on Learning Representations,
+deliver fixes to developers daily.                                       2025, poster Presentation. [Online]. Available: https:
+                                                                         //openreview.net/forum?id=dw9VUsSHGB
+                         R EFERENCES                                [14] Y. Hu, Z. Lei, Z. Zhang, B. Pan, C. Ling, and L. Zhao,
+                                                                         “GRAG: Graph retrieval-augmented generation,” CoRR,
+ [1] E. Kowalczyk, K. Nair, Z. Gao, L. Silberstein, T. Long,             vol. abs/2405.16506, 2024. [Online]. Available: https:
+     and A. Memon, “Modeling and ranking flaky tests at                  //doi.org/10.48550/arXiv.2405.16506
+     apple,” in International Conference on Software Engi-          [15] The Go Authors, “Table driven tests,” https://go.dev/wiki/
+     neering, Software Engineering in Practice, 2020, pp.                TableDrivenTests, 2025, accessed: 2025-05-04.
+     110–119.                                                       [16] O.      Yyshr,     “Repograph:      localize.py,”     2024,
+ [2] J. Micco, “The state of continuous integration                      accessed:       2025-05-21.       [Online].       Available:
+     testing@google,” https://testing.googleblog.com/2017/               https://github.com/ozyyshr/RepoGraph/blob/
+     04/where-do-our-flaky-tests-come-from.html, 2017.                   6c3977d87845993bf2c0359b4ac752278d7f3c45/
+ [3] OpenAI, “Gpt-4 technical report,” OpenAI, Tech.                     agentless/fl/localize.py
+     Rep., 2023, arXiv:2303.08774. [Online]. Available:             [17] The rules go team, “Saving the nogo fixes,” https:
+     https://arxiv.org/abs/2303.08774                                    //github.com/bazel-contrib/rules go/pull/4102, 2025, ac-
+     cessed: 2025-05-04.                                                 312–322.
+[18] S. Fatima, H. Hemmati, and L. Briand, “FlakyFix: Us-           [34] C. Li and A. Shi, “Evolution-aware detection of order-
+     ing large language models for predicting flaky test fix             dependent flaky tests,” in International Symposium on
+     categories and test code repair,” IEEE Transactions on              Software Testing and Analysis, 2022, pp. 114–125.
+     Software Engineering, vol. 50, no. 12, pp. 3146–3171,          [35] C. Li, M. Khosravi, W. Lam, and A. Shi, “Systematically
+     2024.                                                               producing test-orders to detect order-dependent flaky
+[19] Reflection, “Reflection agents,” https://blog.langchain.            tests,” in International Symposium on Software Testing
+     dev/reflection-agents/, 2025, accessed: 2025-05-29.                 and Analysis, 2023, pp. 627–638.
+[20] “Introducing      openai     o1     —     openai,”    https:   [36] A. Wei, P. Yi, T. Xie, D. Marinov, and W. Lam,
+     //openai.com/index/introducing-openai-o1-preview/,                  “Probabilistic and systematic coverage of consecutive
+     (Accessed on 11/10/2024).                                           test-method pairs for detecting order-dependent flaky
+[21] B. Contributors, “Using the race detector,”                         tests,” in Tools and Algorithms for the Construction and
+     https://github.com/bazel-contrib/rules go/blob/master/              Analysis of Systems, 2021, pp. 270–287.
+     go/modes.rst#using-the-race-detector, 2025, accessed:          [37] A. Wei, P. Yi, Z. Li, T. Xie, D. Marinov, and W. Lam,
+     2025-05-30.                                                         “Preempting flaky tests via non-idempotent-outcome
+[22] Q. Luo, F. Hariri, L. Eloussi, and D. Marinov, “An empir-           tests,” in International Conference on Software Engineer-
+     ical analysis of flaky tests,” in International Symposium           ing, 2022, pp. 1730–1742.
+     on Foundations of Software Engineering, 2014, pp. 643–         [38] R. Wang, Y. Chen, and W. Lam, “iPFlakies: A framework
+     653.                                                                for detecting and fixing python order-dependent flaky
+[23] S. Rahman and A. Shi, “FlakeSync: Automatically re-                 tests,” in International Conference on Software Engineer-
+     pairing async flaky tests,” in International Conference             ing (Tool Demonstrations Track), 2022, pp. 120–124.
+     on Software Engineering, 2024, p. 1673–1684.                   [39] N. Hashemi, A. Tahir, S. Rasheed, A. Shi, and R. Blago-
+[24] A. Shi, A. Gyori, O. Legunsen, and D. Marinov, “De-                 jevic, “Detecting and evaluating order-dependent flaky
+     tecting assumptions on deterministic implementations of             tests in JavaScript,” in International Conference on Soft-
+     non-deterministic specifications,” in International Con-            ware Testing, Verification, and Validation, 2025, pp. 13–
+     ference on Software Testing, Verification, and Validation,          24.
+     2016, pp. 80–90.                                               [40] A. Gyori, A. Shi, F. Hariri, and D. Marinov, “Reliable
+[25] J. Candido, L. Melo, and M. d’Amorim, “Test suite par-              testing: Detecting state-polluting tests to prevent test
+     allelization in open-source projects: a study on its usage          dependency,” in International Symposium on Software
+     and impact,” in International Conference on Automated               Testing and Analysis, 2015, pp. 223–233.
+     Software Engineering, 2017, pp. 838–848.                       [41] A. Gambi, J. Bell, and A. Zeller, “Practical test depen-
+[26] F. Eder and S. Winter, “Efficient detection of test in-             dency detection,” in International Conference on Soft-
+     terference in c projects,” in International Conference on           ware Testing, Verification, and Validation, 2018, pp. 1–
+     Automated Software Engineering, 2024, pp. 166–178.                  11.
+[27] Go Authors, “testing.b.setenv,” https://pkg.go.dev/            [42] A. Gyori, B. Lambeth, A. Shi, O. Legunsen, and D. Mari-
+     testing#B.Setenv, 2024, accessed: 2025-05-27.                       nov, “NonDex: A tool for detecting and debugging wrong
+[28] B. Contributors, “Dependencies,” https://bazel.build/               assumptions on Java API specifications,” in International
+     concepts/dependencies, 2025, accessed: 2025-05-30.                  Symposium on Foundations of Software Engineering
+[29] S. Ouyang, J. M. Zhang, M. Harman, and M. Wang,                     (Tool Demonstrations Track), 2016, pp. 993–997.
+     “An empirical study of the non-determinism of ChatGPT          [43] S. Rahman, A. Massey, W. Lam, A. Shi, and J. Bell,
+     in code generation,” ACM Transactions on Software                   “Automatically reproducing timing-dependent flaky-test
+     Engineering Methodology, vol. 34, no. 2, pp. 1–28, 2025.            failures,” in International Conference on Software Test-
+[30] M. Brunsfeld, “Tree-sitter: A parser generator tool and             ing, Verification, and Validation, 2024, pp. 269–280.
+     incremental parsing library,” https://tree-sitter.github.io/   [44] T. Leesatapornwongsa, X. Ren, and S. Nath, “Flak-
+     tree-sitter/, 2018, accessed: 2025-05-07.                           eRepro: Automated and efficient reproduction of
+[31] Sourcegraph, “Announcing SCIP: A new standard for                   concurrency-related flaky tests,” in European Software
+     precise code intelligence,” https://sourcegraph.com/blog/           Engineering Conference and Symposium on the Founda-
+     announcing-scip, 2022, accessed: 2025-05-07.                        tions of Software Engineering, 2022, pp. 1509–1520.
+[32] S. Zhang, D. Jalali, J. Wuttke, K. Muşlu, W. Lam, M. D.       [45] W. Lam, K. Muşlu, H. Sajnani, and S. Thummalapenta,
+     Ernst, and D. Notkin, “Empirically revisiting the test              “A study on the lifecycle of flaky tests,” in International
+     independence assumption,” in International Symposium                Conference on Software Engineering, 2020, pp. 1471–
+     on Software Testing and Analysis, 2014, pp. 385–396.                1482.
+[33] W. Lam, R. Oei, A. Shi, D. Marinov, and T. Xie,                [46] Y. Pei, J. Sohn, S. Habchi, and M. Papadakis, “Non-
+     “iDFlakies: A framework for detecting and partially                 flaky and nearly optimal time-based treatment of asyn-
+     classifying flaky tests,” in International Conference on            chronous wait web tests,” ACM Transactions on Software
+     Software Testing, Verification, and Validation, 2019, pp.           Engineering Methodology, vol. 34, no. 2, pp. 45:1–45:29,
+     2025.                                                            pp. 320:1–320:27, 2025.
+[47] S. Fatima, T. A. Ghaleb, and L. Briand, “Flakify: A         [50] A. Akli, G. Haben, S. Habchi, M. Papadakis, and
+     black-box, language model-based predictor for flaky              Y. Le Traon, “FlakyCat: Predicting flaky tests categories
+     tests,” IEEE Transactions on Software Engineering,               using few-shot learning,” in The Automation of Software
+     vol. 49, no. 4, pp. 1912–1927, 2023.                             Test (AST) conference, 2023, pp. 140–151.
+[48] S. Rahman, A. Baz, S. Misailovic, and A. Shi, “Quan-        [51] S. Rahman, B. N. Chanumolu, S. Rafi, A. Shi, and
+     tizing large-language models for predicting flaky tests,”        W. Lam, “Ranking relevant tests for order-dependent
+     in International Conference on Software Testing, Verifi-         flaky tests,” in International Conference on Software
+     cation, and Validation, 2024, pp. 93–104.                        Engineering, 2025, pp. 1999–2011.
+[49] S. Rahman, S. Dutta, and A. Shi, “Understanding and
+     improving flaky test classification,” Proceedings of the
+     ACM on Programming Languages, vol. 9, no. OOPSLA2,
+

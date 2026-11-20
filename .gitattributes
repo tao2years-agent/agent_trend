@@ -1,0 +1,23 @@
+# Preserve captured evidence and historical generated artifacts byte-for-byte.
+# Root maintenance files are normalized explicitly below; do not add broad
+# extension rules that would rewrite text snapshots and invalidate hashes.
+* -text
+/.gitattributes text eol=lf
+/.gitignore text eol=lf
+/AGENTS.md text eol=lf
+/DEVELOPMENT.md text eol=lf
+/INDEX.md text eol=lf
+/NOTICE.md text eol=lf
+/.github/workflows/*.yml text eol=lf
+/scripts/check_repository.py text eol=lf
+
+# Immutable binary evidence and rendered QA artifacts use Git LFS.
+*.pdf filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.whl filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.tgz filter=lfs diff=lfs merge=lfs -text
+*.parquet filter=lfs diff=lfs merge=lfs -text
+*.sqlite filter=lfs diff=lfs merge=lfs -text
+

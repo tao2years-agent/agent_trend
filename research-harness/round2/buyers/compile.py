@@ -1,0 +1,89 @@
+"""Deduplicate by product, identify a buying job, retain all concrete source/acceptance boundaries."""
+from pathlib import Path
+from hashlib import sha256
+from collections import Counter
+import json,csv
+R=Path(__file__).resolve().parent;B=R.parent.parent
+groups={'T1':'把明确仓库任务交给开发者工作台，获得可检查补丁','T2':'把项目或周期任务委派给 agent，获得改动和待决事项','T3':'按组织范围执行批迁移并逐仓验收','T4':'评审每次代码变更，给出可处理的发现或门禁判定','T5':'将已评审 PR 排队整合到最新基线','T6':'验证发布中指标并决定是否继续推广','T7':'将基础设施变更从计划转为可核对的实际应用','T8':'维护第三方依赖并产出可合并的升级','T9':'分诊线上告警，交付带证据的原因或修复候选','T10':'从失败 CI 作业直接产生排障或修复候选'}
+# ID|name|job|entry/trigger|artifact/end state|human takeover|eligibility/version|unknown / boundary|reused case or sources
+records="""
+01|Aider|T1|开发者在 Git 仓给出具体缺陷并选定编辑范围|工作区改动及 Git 提交；配置时有 lint/test 反馈|开发者可决定是否重试；/undo 可撤回本会话由 Aider 创建的最后一个 Git 提交。|可自行运行的开源 CLI；已固定读 v0.86.0 发布记录及源码|默认 auto_test 关闭，未提供项目测试不能把补丁算作已验证|E04
+02|OpenAI Codex CLI|T1|在本地或受控环境委托一项代码修改|实际文件差异、命令结果及与工具操作相关的批准决定|按策略由人批准或拒绝，检查 Git diff 后提交|可安装的开源 CLI；核对 0.171.0 与对应代码|权限获准不表示补丁满足业务需求；企业审计的完整导出未在本组实测|E05
+03|Cline|T1|IDE 内委托修改并检查产生的工作区变化|可审代码变化与 checkpoint，能针对基线恢复|开发者可选恢复文件、会话或二者；HEAD 偏离检查点基准时拒绝文件恢复，可仅恢复会话，或另行有意调整分支。|公开客户端及相关源码；SDK v0.2.0 是所查重连修复的版本，不能当作 IDE 全功能发布号|检查点恢复范围不含任意外部写入；SDK 为实施证据，产品只计 Cline 一次|E07
+04|OpenCode|T1|将实现任务交给主开发会话并按需派发子任务|仓库修改与后台子会话完成消息，含子任务标识|人可继续父会话、单独取消后台任务，并对实际 diff 做验收|可自行运行的开源编码工具；v2.3.0 将后台子代理作为默认|子代理本轮结束后可能仍有后台进程，不能仅凭汇报判定全部收尾|E08
+05|Qoder|T1|在新版 Qoder 用 /plan 明确跨文件改动范围，再要求实施|可审计划与工作区 diff，可挑选文件、commit/push|人可修改计划、逐文件回退或暂存|旧 IDE Quest 公告列出的退场节点为 2026-10-15 23:59（UTC+8）；当前说明新用户无入口、既有用户分批关闭。新版 Qoder 独立验收。|接入企业 Git 门禁需另验；旧 Quest 创建 PR 的能力没有自动外推到新版|CN01 CN04 CN21 CN22
+06|腾讯 CodeBuddy Code|T1|从 CLI 协调受限任务，或让 GitLab CI 的作业接收 issue/MR 指令|任务状态、仓库变更及已配置集成下的 MR|团队 lead 可批准或退回成员计划并发出关停；操作者可停止成员，MR 是否需独立人工批准取决于 GitLab 仓库规则。|CLI v2.95.0 关停握手，v2.140.0 修复主回合结束后停止键失效；需配 CI 作业与凭据|成员进程被终止不等于外部动作撤销，部署端必须检查令牌权限|CN05 CN06 CN07 CN08
+07|华为云码道 CodeArts 代码智能体|T1|开发者按规范模式提出实现任务，或为当前会话设置目标|spec/design/tasks 文件和代码差异，可经 CodeArts Repo MR 由 Committer 验收|人可改设计与任务；/goal 暂停等待正在执行的迭代结束|IDE 内置智能体与 AgentTeam 的 /goal 需 26.10.0+；控制台和小程序非独立计数|无证据表明每个计划都强制人签字，提速未实测|CN09 CN10 CN11 CN13
+08|TRAE|T1|在受支持的本地或云端环境继续一个编码任务|变更、分支及兼容企业客户端 GitHub 接入下的 PR|操作者可在代码有分歧时选保留路径、审阅冲突、停止后交接|2026-06-09 SOLO 改为 TraeWork，后与 TraeCode 融合为 TRAE；这是一条产品线|中断执行中的接续不会自动回滚所有步骤，旧企业客户端的域名/认证限制需复核|CN17 CN18 CN19 CN20
+09|Google Antigravity|T1|使用开发工作台让 agent 解决特定任务，或在 App 注册后台自动化|可复核计划、diff、UI 录屏；新排程可试跑并记录权限|在里程碑批计划、提供内联反馈；后台执行对通常需人工同意的动作自动拒绝|2.0 独立桌面应用于 2026-05-19 公布；App/CLI 能力分别核对|新排程从 Paused 开始，单次录屏不能证明测试覆盖；已只读 Jules 不再计入|M07 W05
+10|Factory Droid|T2|按 feature 与 milestone 委派迁移项目，在里程碑执行验证|执行日志、每个 milestone 的验证结果、必要时追加修复任务|先审计划，之后可暂停或重新指示 orchestrator|Missions 与 Droid 作为同一产品；2026-08-29 版本修复中断恢复后补验|可关闭 QA 验证；需要追到实际运行的检查，缺失即不能判定完成|M01 W01
+11|Cognition Devin|T2|给 Bot 一个持续目标，或让 Automation 对事件派发工作项|独立 Devin sessions、PR、Needs you 列表和权限请求|人处理例外和 PR，可以控制 Bot 的共享对象和 grants|Devin Bots 于 2026-11-17 发布；Cloud、Bot、Automation 合并一次|案例上线时间短；Preflight 派发去重不保证外部写只发生一次|M02 W03
+12|GitLab Duo Agent Platform|T2|UI 里为 issue 指派 Developer Flow，或在限定范围内以排程触发|runner session 和 MR；另有修复失败 pipeline 的 foundational flow，可作为 T10 比较项|具权用户处理 Needs a decision、审 MR 或取消运行|19.2 自定义 flow GA，19.6 排程 beta；IDE/CLI/UI 并为一个平台|定时 flow 仅使用专属服务账号，人工触发的复合身份约束不通用|M04 W17
+13|GitHub Copilot cloud agent|T2|在指定仓库建立时间、事件或 API 触发的 automation|云会话记录、仓库内 PR 或配置好的 issue 更新|成员复核 PR 和工具设置；shared 与 personal 运行身份不同|付费 Copilot 方案有适用范围；Automation 面向 private/internal；2026-10-28 云沙箱 GA|Actions 与 cloud sandbox 跨仓范围有别，一任务一个 PR，不能直接当作多仓批处理器|W06 W07 W08 W21
+14|Claude Code Scheduled tasks|T2|日程、GitHub 事件或 API 启动已保存提示、环境及仓库的任务|独立会话、按任务生成的代码变更或提交候选|维护者配置范围，遇到需要升级的请求时接管会话|2026-04-14 以 Routines 进入 research preview；现行文档名为 Scheduled tasks，旧称与 SDK 不重复计数。|个人归属、云端自动审批语义要分开查；外部工单重复写没有实测|F04
+15|goose|T2|运行或排程一份已配置的维护 recipe|Scheduled 会话和 recipe 声明的产物，例如文档变更或检查报告|维护者可暂停排程、立即运行或终止当前作业|可自部署应用；核对 2026-11 的 v1.59.0 及实际调度器源码|调度路径显式 Auto，团队不能将交互式默认权限直接套用；作业产物需自行定义|E03
+16|Sourcegraph Batch Changes|T3|对候选仓库应用 batch spec，或使用 Agentic workspace 调查失败项|各仓 changeset/PR、失败原因及范围收缩后关闭/归档的结果|人可先 preview、选择 apply；Agentic 支持在空闲后移交线程，目标 owner 权限决定可见范围|Enterprise 包含 Batch Changes；11-02 和 11-09 的 Agentic 更新另注明适配面|经典 CLI apply 与 preview 不同，预览不是强制人审；不能将 Cloud 专属变化外推至每种部署|W09 W10 W11 W12 W13 W20 W22 W23
+17|Moderne Platform|T3|选择组织中的仓库及 OpenRewrite recipe，发起 dry run|按仓库列出匹配、变更理由与 diff，确认后可开 PR 或提交|人可只选部分结果、决定交付方式和候选库，团队按代码托管权限写入|商业 Moderne Platform/SaaS v2；公开示例仓可用于演示；OpenRewrite 库不另计|v2 对大组织用慢队列；样本仓演示不能证明私有仓覆盖。非规则化设计任务不是主要对照|P12 P13
+18|AWS Transform custom|T3|通过 CLI/流水线套用预置或自定义 transformation definition|目标仓库的代码变化、执行结果和后续可审的 learning；变更可交回现有 CI 检查|团队定义标准并验证结果；从 transformation registry 选择转换，用 def learnings 查看和管理该转换从历史运行提取的 lessons。|2025-12-01 GA；需 AWS 账户和适用权限/区域|执行与组织级最终合并分开，不能由 GA 公告推导成功率或各区域资格|P14 P15
+19|CodeRabbit|T4|在 PR 更新时按配置执行内置/自定义检查，或手动触发复查|评审发现、可定位的建议或 GitHub Check Run|管理员调规则，人决定采纳并把需要阻断的真实 check 名设为 required|商业评审；V2/V3 配置有变化，2026-03-11 发布 pre-merge checks|跳过或漏触发可能导致没有检查，评论不能自动计作 gate|M05 W16
+20|PR-Agent|T4|在代码托管 PR 上调用自动/手动模型评审|汇总后发布可核对的代码问题，部分分片失败有专门处理|维护者设置宿主权限与反馈发布，评审人决定合并或复查|可自行部署的 The-PR-Agent 社区产品；核对 v0.50.0，不能冒充 Qodo 商用服务|v0.50.0 发布说明称自动批准配置只归宿主且该版执行路径仍禁用。另一个固定源码提交含有条件批准分支，版本分别记录。|D07
+21|阿里云云效 Codeup AI 评审|T4|在目标分支匹配的 MR 中触发，或手动请求代码评审|具体行上的评审意见、修复建议与提交说明反馈|评审人修改、讨论或表态，组织/仓库管理员管理触发与记忆规则|Codeup 的 AI 助手通过组织开通；与云效 Insight 仪表盘不重复计数|模型评论、人工表态与已配置的代码检测保护分支卡点是三种不同证据|CN14 CN15 CN16
+22|SonarQube Server|T4|为 CI 接入的 PR 或新推送运行静态分析|新代码问题与 quality gate 的状态，能回报至代码托管 PR|负责团队选择新代码指标并在 GitHub 设置 required check，人工复核误报|可购买/自行部署；已读 2025.1 LTA 与 2025.6 的文档，PR 分析自 Developer Edition 起|不报告所有旧代码问题或所有文件级问题；规则判定不能替代业务语义评审|P16 P17
+23|Graphite Merge Queue|T5|已审 PR 或 stack 入队，按配置并行/成批执行 CI|通过的组合合并，失败 stack 可剔除并重测影响范围|维护者调队列、决定出队或等待，需处理外部服务不可用|商业 Graphite；Cursor 2025-12 宣布收购协议并保留产品；2026-10-30 有合并故障记录|推测 CI 遇到 flaky 可能多跑；吞吐改善无本地对照|M06 W15
+24|Mergify|T5|满足 queue rules 的 PR 进入最新 main 上的推测检查或 batch|通过时整合到主干，失败/超时时拆分批定位，剔除或标记失败原因|有相应配置权限的操作者可调整队列并发、批大小和失败拆分次数，必要时暂停队列；细粒度角色权限需按安装复核。|商业 GitHub 合并队列，有面向队列和批处理的现行产品文档|设置跳过中间结果会改变 flaky 的解释。未同场比较费用、吞吐或新 head 重验|P21 P22
+25|Argo Rollouts|T6|Kubernetes 金丝雀达到分析阶段，由 AnalysisRun 采样指标|结果可为 Successful/Failed/Inconclusive；结果参与继续、暂停或中止推广|维护者设置指标与阈值、检查无结论样本，可用 dry-run 先观察|可自行部署；核对具体源码及 v1.11.0-rc1，空响应条件变化属候选版本|不能将候选行为当作已普遍上线；自动判断高度依赖流量与指标可用性|D05
+26|LaunchDarkly Guarded Rollouts|T6|在 flag 环境建立受监控的流量推广，观察新旧 variation 及选定指标|按序贯检验判定回归，按相应设置回退；受支持的错误指标可继续查关联异常|负责人选择指标方向、启用/检查回退并决定新一轮推广|2026-11-20 套餐页将 guarded rollouts 纳入 Release Autopilot：Developer 有限，Foundation 宣布免费至 2027-02-01，Enterprise 为附加项。旧 FAQ 的 Guardian 限制并列保留。|不能把暂停 Kubernetes rollout 等同于暂停 flag rollout；错误指标若方向错会反向解读|P18 P19 P20 ECL1 ECL2
+27|Atlantis|T7|PR 中请求 IaC plan/apply，已有计划和人类审批条件|保存 plan、加锁和实际 apply 结果；新版本可检测 plan 生成后被修改|有权者看计划并触发 apply；不同意则重新规划或停止|可自行部署，v0.49.0 为新计划记录哈希并更新审批判断|review 状态与计划摘要分别验证，审批自身未天然绑定每一份 plan；自定义步骤有差异|D08
+28|Spacelift|T7|stack 上提交或人工触发 tracked run，生成基础设施计划|变更 delta 和 run 状态；需要同意时停在 unconfirmed，确认后由 worker apply|具权人对 run 审批/拒绝、丢弃未确认计划或取消待定作业|商业 IaC 编排平台，核对现行 tracked run 与 approval policy 说明|autodeploy 会改变审批评估时机；文档要求在相应配置通过 plan policy 强制进入待确认状态|P23 P24
+29|Renovate|T8|按 dependency manager 和 packageRules 检查更新并建立变更分支/PR|可验收的依赖升级、测试状态以及达成合并条件后的整合结果|团队设更新范围、时段、必检和 merge queue，拦截无法满足保护的提交|可自行运行的开源产品；44.253.4 修复 GitLab 新推送提交的 automerge 状态|ignoreTests、分支保护或平台合并策略会改变实际放行标准|D06
+30|Snyk Open Source|T8|监控已导入项目；出现有可用修复的新漏洞或符合配置的新依赖版本|自动 fix/upgrade PR，可在仓库中审查版本差异并跑回归|维护者限定范围、升级种类与同时开放 PR 数，最终交由原有审核与队列处理|商业 Snyk Open Source 的 SCM 集成；以维护者文档及产品配置案例核对|并非所有生态和项目都可自动升级；安全升级与所有类别的软件迁移不能混称|P25 P26
+31|incident.io Investigations|T9|响应团队在 incident 中启动或按设置发起调查，读取已接入的遥测和开发背景|事件频道中的候选原因、相关证据与建议，供值班者核查并发出更新|响应者提交已确认事实、追问或修正结论，决定是否采取后续动作|商业 incident.io；2026-01-15 发布针对人工已确认发现的解释改进|供应商自述案例不能独立证明 MTTR；无遥测、无变更关联时需允许无结论|P03 P04
+32|Rootly AI SRE|T9|从告警/事故人工开始，或把特定规则升为 Auto-run|调查结果含候选原因、置信度和证据；查无定论可写 Inconclusive/Blocked|响应者审查证据并决定哪些规则保持人工。原生工具不回滚或重启；自动调查使用团队连接器凭据，连接器或 Private Agent 是否可外写需按授权核对。|商业 Rootly，需开通对应调查与连接器；核对现行调查/结果指南|其原生调查不会直接改代码或重启线上服务；对异常沉默率及置信度校准未实测|P05 P06 P07
+33|Datadog Bits Investigation|T9|监控告警、incident 或人工指令触发多源遥测调查|证据支撑的结论或 inconclusive、假设树、建议排障方向|值班者可纠正原因并附遥测证据；有相应权限者可在 Monitor Management 查看、删除反馈生成的 memories。该页未列具体角色要求。|商业 Datadog；当前产品名 Bits Investigation，旧 Bits AI SRE 路径合并计一次；部分第三方接入 preview|建议 remediation 不等于已经执行；无观测/源码接入时的盲区需单测|P08 P09
+34|Sentry Seer|T9|针对具体 Sentry issue 启动异步 Issue Fix，选 stopping_point 或继续已有 run|默认到根因，可继续到方案、代码变更或 PR，状态接口返回步骤和处理结果|负责人选停止点并补 user_context；续跑首选 sentry_run_id（UUID），旧数值 run_id 仅作兼容；对生成的 PR 仍走仓库验收。|商业 Seer；读取状态 API 文档标为 experimental，接口稳定性需复核|有 Sentry 问题和代码映射时更可比；不承诺无事件关联的跨服务事故根因调查|P10 P11
+35|CircleCI Chunk|T10|在失败 job/workflow/step 点击修复，或让 Chunk 按计划处理 CI 任务|把真实失败上下文传给 agent，生成修复候选；有 PR 的任务可进入待审队列|工程师检查修改与重跑 CI，再决定是否合入|CircleCI Cloud + GitHub App 的适用组织；当前文档标 beta，2026-02-27 增加 inline Fix Job|仅完成会话而无可复现修复不能算成功；非 GitHub 项目不能泛化这个入口|P01 P02
+""".strip()
+sources={};by_path={}
+oldcases={}
+for f in (B/'lanes').glob('*/cases.json'):
+ for e in json.loads(f.read_text(encoding='utf-8-sig')):oldcases[e['id']]=(e,f)
+fresh=json.loads((R/'fresh.json').read_text(encoding='utf-8'))
+wf=json.loads((B/'round2/workflows/sources.json').read_text(encoding='utf-8'))
+cn=json.loads((B/'round2/workflows/domestic/sources.json').read_text(encoding='utf-8'))
+sku=json.loads((B/'round2/economics/buyer-sku-sources.json').read_text(encoding='utf8'))
+stand={s['id']:s for s in fresh+wf+cn+sku}
+old_meta={}
+for lane in ('delivery','managed'):
+ for v in json.loads((B/'lanes'/lane/'manifest.json').read_text(encoding='utf-8-sig')):old_meta[v['path']]=v
+def index(s,key):
+ path=s['path']
+ if path in by_path:return by_path[path]
+ p=B/path;assert p.exists()
+ h=sha256(p.read_bytes()).hexdigest()
+ assert not s.get('sha256') or h==s['sha256'],path
+ item={'id':key,'url':s['url'],'path':path,'sha256':h,'date':s.get('event_date',s.get('date','')),'locator':s.get('locator',s.get('detail','')),'retrieved':s.get('retrieved') or s.get('retrieved_utc') or old_meta.get(path,{}).get('retrieved','')}
+ assert key not in sources;sources[key]=item;by_path[path]=key;return key
+ledger=[]
+for line in records.splitlines():
+ num,name,g,trigger,end,human,status,limit,refs=line.split('|');evidence=[];chapters=[]
+ for ref in refs.split():
+  if ref in oldcases:
+   c,f=oldcases[ref];wiki=B/f'wiki/{ref}.md';chapter=wiki.relative_to(B).as_posix() if wiki.exists() else f.relative_to(B).as_posix()
+   chapters.append(chapter)
+   for i,s in enumerate(c['sources'],1):evidence.append(index(s,ref+'-'+str(i)))
+  else:
+   s=stand[ref];evidence.append(index(s,ref))
+   if ref.startswith('CN'):chapter='round2/workflows/domestic/result.md'
+   elif ref.startswith('EC'):chapter='round2/economics/result.md'
+   elif ref.startswith('W'):chapter='round2/workflows/result.md'
+   else:chapter='round2/buyers/result.md'
+   chapters.append(chapter)
+ assert len(set(evidence))>=2
+ ledger.append(dict(id='BUY'+num,product=name,buying_task=g,task=groups[g],trigger=trigger,accepted_artifact=end,human_takeover=human,availability_version=status,unknown_or_boundary=limit,evidence_ids=' '.join(dict.fromkeys(evidence)),chapters=' '.join(dict.fromkeys(chapters))))
+assert len(ledger)==35 and len({r['product'] for r in ledger})==35 and len(set(s['path'] for s in sources.values()))==len(sources)
+assert Counter(l['buying_task'] for l in ledger)=={'T1':9,'T2':6,'T3':3,'T4':4,'T5':2,'T6':2,'T7':2,'T8':2,'T9':4,'T10':1}
+assert all((B/c).exists() for l in ledger for c in l['chapters'].split())
+with (R/'ledger.csv').open('w',encoding='utf-8-sig',newline='') as f:
+ w=csv.DictWriter(f,fieldnames=ledger[0].keys());w.writeheader();w.writerows(ledger)
+(R/'sources.json').write_text(json.dumps(list(sources.values()),ensure_ascii=False,indent=2),encoding='utf-8')
+print(Counter(l['buying_task'] for l in ledger),len(sources),'snapshots')

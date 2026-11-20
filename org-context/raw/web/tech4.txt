@@ -1,0 +1,309 @@
+检索参数 {"search_query":[{"q":"OpenHands repository microagents keyword triggers official documentation Qoder Repo Wiki generation update Qwen Code GEMINI.md JIT Gemini CLI hierarchical context"}],"response_length":"medium"}
+extensions/AGENTS.md at main · OpenHands/extensions · GitHub (https://github.com/OpenHands/extensions/blob/main/AGENTS.md)
+citeturn25search0 [wordlim: 200] Crawled: 5 days ago; ## How client code uses this repo ... Always-on context (repository rules) ...      * Prefer a root `AGENTS.md` (and optionally model-specific variants like `CLAUDE.md` / `GEMINI.md`). ...      * OpenHands extension: the `SKILL.md` may include optional `triggers:` frontmatter to enable keyword-based activation. ...   * as trigger-loaded keyword skills, and/or ... Do not edit SKILL.md by hand - run the script to regenerate it. ...   * If a PR adds or modifies SDK-specific documentation in this repo, push back: ask the submitter to contribute those changes to OpenHands/docs instead.
+    * `apps/<app-name>/extension.js` — the browser ESM entrypoint exporting `activate(host)`
+    * `apps/catalog.json` — the registry catalog, exposed as `APPS_CATALOG` from `@openhands/extensions/apps`
+
+Most content is Markdown skill definitions and plugin configurations; the executable parts are plugin `scripts/` and `hooks/` plus the browser ESM App packages under `apps/`, each of which may ship its own `scripts/` and build sub-directories.
+
+## How client code uses this repo
+
+### OpenHands Applications
+
+OpenHands can load skills from a project directory (repo-level) and from user-level locations. This repository is the global/public registry referenced by the docs.
+
+### Skill loading models to know
+
+OpenHands supports two complementary mechanisms:
+
+  1. Always-on context (repository rules)
+
+     * Loaded at conversation start.
+     * Prefer a root `AGENTS.md` (and optionally model-specific variants like `CLAUDE.md` / `GEMINI.md`).
+  2. AgentSkills (progressive disclosure), with an OpenHands extension for keyword triggers
+
+     * Each skill lives in its own directory with a `SKILL.md` entry point.
+     * The agent is shown a catalog (name/description/location) and decides when to open/read the full content.
+     * OpenHands extension: the `SKILL.md` may include optional `triggers:` frontmatter to enable keyword-based activation.
+
+This registry primarily provides (2). Client repositories typically add (1) for repo-specific, always-on instructions.
+
+### Software Agent SDK
+
+SDK consumers typically load skills either:
+
+  * as always-loaded context (e.g., `AGENTS.md`), and/or
+  * as trigger-loaded keyword skills, and/or
+  * as progressive-disclosure AgentSkills by discovering `SKILL.md` files under a directory.
+
+See: https://docs.openhands.dev/sdk/guides/skill
+
+--------------------------------------------------------------------------------
+Overview | OpenHands Docs (https://dubstack.wiki/openhands/docs/overview/skills)
+citeturn25search1 [wordlim: 200] Crawled: last week; OpenHands supports an extended version of the AgentSkills standard with optional keyword triggers for automatic activation. ... The official global skill registry is maintained at github.com/OpenHands/extensions. ... Skills inject additional context and rules into the agent's behavior. ...             └── legacy_trigger_this.md  # Legacy/OpenHands format (keyword-triggered) ... `.openhands/microagents/` (deprecated) ...   * Permanent Context: Repository-wide guidelines and best practices. We recommend `AGENTS.md` (and optionally `GEMINI.md` / `CLAUDE.md`). ... CLI  | ✅ Full Support  | `~/.agents/skills/` (user-level) and `.agents/skills/` (repo-level)  | File-based markdown  | Skills Overview
+
+At a high level, OpenHands supports two loading models:
+
+  * Always-on context (e.g., `AGENTS.md`) that is injected into the system prompt at conversation start.
+  * On-demand skills that are either:
+    * triggered by the user (keyword matches), or
+    * invoked by the agent (the agent decides to look up the full skill content).
+
+## ​Permanent agent context (recommended)
+
+For repository-wide, always-on instructions, prefer a root-level `AGENTS.md` file.
+
+We also support model-specific variants:
+
+  * `GEMINI.md` for Gemini
+  * `CLAUDE.md` for Claude
+
+## ​Triggered and optional skills
+
+To add optional skills that are loaded on demand:
+
+  * AgentSkills standard (recommended for progressive disclosure): create one directory per skill and add a `SKILL.md` file.
+  * Legacy/OpenHands format (simple): put markdown files in `.agents/skills/*.md` at the repository root.
+
+Loaded skills take up space in the context window. On-demand skills help keep the system prompt smaller because the agent sees a summary first and reads the full content only when needed.
+
+When multiple skills share the same name, OpenHands keeps the first match in this order:
+
+  1. `.agents/skills/` (recommended)
+  2. `.openhands/skills/` (deprecated)
+  3. `.openhands/microagents/` (deprecated)
+
+Project-specific skills take precedence over user skills.
+
+## ​Skill Types
+
+Currently supported skill types:
+
+  * Permanent Context: Repository-wide guidelines and best practices. We recommend `AGENTS.md` (and optionally `GEMINI.md` / `CLAUDE.md`).
+  * Keyword-Triggered Skills: Guidelines activated by specific keywords in user prompts.
+  * Organization Skills: Team or organization-wide standards.
+  * Global Skills: Community-shared skills and templates.
+
+### ​Skills Frontmatter Requirements
+
+Each skill file may include frontmatter that provides additional information. In some cases, this frontmatter is required:
+
+Skill Type  | Required
+--- | ---
+General Skills  | No
+Keyword-Triggered Skills  | Yes
+
+## ​Skills Support Matrix
+--------------------------------------------------------------------------------
+docs/sdk/arch/skill.mdx at main · OpenHands/docs · GitHub (https://github.com/OpenHands/docs/blob/main/sdk/arch/skill.mdx)
+citeturn25search2 [wordlim: 200] Crawled: 3 weeks ago; `KeywordTrigger`  | Keyword-based activation  | String matching on user messages ... ### Repository Skills ... Recommended: put these permanent instructions in `AGENTS.md` (and optionally `GEMINI.md` / `CLAUDE.md`) at the repo root. ...         Context["Always in Context"] ...   * `AGENTS.md` - General agent instructions
+### Key Components
+
+Component  | Purpose  | Design
+--- | --- | ---
+`Skill`  | Core skill model  | Pydantic model with name, content, trigger
+`KeywordTrigger`  | Keyword-based activation  | String matching on user messages
+`TaskTrigger`  | Task-based activation  | Special type of KeywordTrigger for skills with user inputs
+`PathTrigger`  | Path-based activation ("rules")  | Glob match on a touched file path; injected into the tool result, not model-invocable
+`InputMetadata`  | Task input parameters  | Defines user inputs for task skills
+`render_content_with_commands`  | Dynamic content  | Executes inline `!`command`` patterns
+Skill Loader  | File parsing  | Reads markdown with frontmatter, validates schema
+
+
+### Repository Skills
+
+Always-active, repository-specific guidelines.
+
+Recommended: put these permanent instructions in `AGENTS.md` (and optionally `GEMINI.md` / `CLAUDE.md`) at the repo root.
+    
+    %%{init: {"theme": "default", "flowchart": {"nodeSpacing": 30, "rankSpacing": 40}} }%%
+    flowchart LR
+        File["AGENTS.md"]
+        Parse["Parse Frontmatter"]
+        Skill["Skill(trigger=None)"]
+        Context["Always in Context"]
+        
+        File --> Parse
+        Parse --> Skill
+        Skill --> Context
+        
+        style Skill fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px
+        style Context fill:#fff4df,stroke:#b7791f,stroke-width:2px
+    
+
+Loading
+
+Characteristics:
+
+  * Trigger: `None` (always active)
+  * Purpose: Project conventions, coding standards, architecture rules
+  * MCP Tools: Can include MCP tool configuration
+  * Location: `AGENTS.md` (recommended) and/or `.agents/skills/*.md` (supported)
+
+Example Files (permanent context):
+
+  * `AGENTS.md` - General agent instructions
+  * `GEMINI.md` - Gemini-specific instructions
+  * `CLAUDE.md` - Claude-specific instructions
+
+Other supported formats:
+
+  * `.cursorrules` - Cursor IDE guidelines
+  * `agents.md` / `agent.md` - General agent instructions
+
+
+### Knowledge Skills
+
+Keyword-triggered skills for specialized domains:
+    
+    %%{init: {"theme": "default", "flowchart": {"nodeSpacing": 30, "rankSpacing": 40}} }%%
+    flowchart TB
+        User["User Message"]
+        Check["Check Keywords"]
+        Match{"Match?"}
+        Activate["Activate Skill"]
+        Skip["Skip Skill"]
+        Context["Add to Context"]
+        
+        User --> Check
+        Check --> Match
+        Match -->|Yes| Activate
+        Match -->|No| Skip
+        Activate --> Context
+        
+        style Check fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px
+        style Activate fill:#e8f3ff,stroke:#2b6cb0,stroke-width:2px
+    
+
+Loading
+
+Characteristics:
+
+  * Trigger: `KeywordTrigger` with regex patterns
+  * Purpose: Domain-specific knowledge (e.g., "kubernetes", "machine learning")
+  * Activation: Keywords detected in user messages
+  * Location: System or user-defined knowledge base
+
+Trigger Example:
+    
+    ---
+    name: kubernetes
+    trigger:
+      type: keyword
+      keywords: ["kubernetes", "k8s", "kubectl"]
+    ---
+
+
+--------------------------------------------------------------------------------
+qwen-code-docs/website/content/en/users/extension/introduction.md at main · QwenLM/qwen-code-docs · GitHub (https://github.com/QwenLM/qwen-code-docs/blob/main/website/content/en/users/extension/introduction.md)
+citeturn25search3 [wordlim: 200] Crawled: 2 days ago; Qwen Code fully supports extensions from the Gemini CLI Extensions Gallery. ... Install a local directory, archive, Git repository, archive URL, or npm package with the existing `qwen extensions install` command: ... When a Qoder plugin contains `system-prompt.md` at its root, Qwen Code loads it as extension context. ... On older Git versions, Qwen Code supports only anonymous public `https://github.com/{owner}/{repo}[.git]` root repositories by resolving the requested ref to a commit and downloading GitHub's source archive with the same public-network and archive-safety checks. ... Extensions can provide custom subagents by placing agent configuration files in an `agents/` subdirectory within the extension directory. ... An update asks again when it adds or removes a workflow, changes a workflow's name or description, or changes a script's code; when only code changed, the prompt names the changed scripts.
+
+#### From Gemini CLI Extensions
+
+Qwen Code fully supports extensions from the Gemini CLI Extensions Gallery. Simply install them using the git URL:
+    
+    qwen extensions install <gemini-cli-extension-github-url>
+    # or
+    qwen extensions install <owner>/<repo>
+
+Gemini extensions are automatically converted to Qwen Code format during installation:
+
+  * `gemini-extension.json` is converted to `qwen-extension.json`
+  * TOML command files are automatically migrated to Markdown format
+  * MCP servers, context files, and settings are preserved
+
+#### From Qoder Plugins
+
+Qwen Code supports Qoder plugins that contain a `.qoder-plugin/plugin.json` manifest. Install a local directory, archive, Git repository, archive URL, or npm package with the existing `qwen extensions install` command:
+    
+    qwen extensions install ./sample-qoder-plugin
+    qwen extensions install ./sample-qoder-plugin.zip
+    qwen extensions install owner/sample-qoder-plugin
+
+The installer converts the Qoder manifest to `qwen-extension.json` and preserves standard `commands/`, `agents/`, and `skills/` directories. --------------------------------------------------------------------------------
+open-hands/microagents/README.md at main · taptap/open-hands · GitHub (https://github.com/taptap/open-hands/blob/main/microagents/README.md)
+citeturn25search4 [wordlim: 200] Crawled: last month; Each microagent is designed to excel in a specific area, from Git operations to code review processes. ...     ├── # Keyword-triggered expertise ... Each repository can have its own instructions in `.openhands/microagents/repo.md`. ...   * Trigger-based: Activated by specific keywords in conversations ...      * Custom workflow documentation ...      * Consider using OpenHands to generate a comprehensive repo.md (see Creating a Repository Agent)
+
+### 1. Knowledge Agents
+
+Knowledge agents provide specialized expertise that's triggered by keywords in conversations. They help with:
+
+  * Language best practices
+  * Framework guidelines
+  * Common patterns
+  * Tool usage
+
+Key characteristics:
+
+  * Trigger-based: Activated by specific keywords in conversations
+  * Context-aware: Provide relevant advice based on file types and content
+  * Reusable: Knowledge can be applied across multiple projects
+  * Versioned: Support multiple versions of tools/frameworks
+
+You can see an example of a knowledge-based agent in OpenHands's github microagent.
+
+### 2. Repository Agents
+
+Repository agents provide repository-specific knowledge and guidelines. They are:
+
+  * Loaded from `.openhands/microagents/repo.md`
+  * Specific to individual repositories
+  * Automatically activated for their repository
+  * Perfect for team practices and project conventions
+
+Key features:
+
+  * Project-specific: Contains guidelines unique to the repository
+  * Team-focused: Enforces team conventions and practices
+--------------------------------------------------------------------------------
+qwen-code/docs/users/extension/introduction.md at main · QwenLM/qwen-code · GitHub (https://github.com/QwenLM/qwen-code/blob/main/docs/users/extension/introduction.md)
+citeturn25search5 [wordlim: 200] Crawled: 6 days ago; Install a local directory, archive, Git repository, archive URL, or npm package with the existing `qwen extensions install` command: ... When a Qoder plugin contains `system-prompt.md` at its root, Qwen Code loads it as extension context. ... Qwen Code natively loads portable Agent Plugins v1 packages without converting or rewriting `plugin.json`, `mcp.json`, or `SKILL.md` files: ... The `owner/repo` form remains a GitHub shorthand. ...         'When the user asks for a sourced, multi-angle answer to an open question', ... An update asks again when it adds or removes a workflow, changes a workflow's name or description, or changes a script's code; when only code changed, the prompt names the changed scripts.
+--------------------------------------------------------------------------------
+Customize OpenHands with skills, AGENTS.md, setup.sh and MCP | AgentAtlas (https://agentatlas.dev/guides/openhands-skills-microagents)
+citeturn25search6 [wordlim: 200] Crawled: last week; OpenHands now calls microagents skills, and new skills go in .agents/skills/SKILL_NAME/SKILL.md, while the legacy .openhands/skills and .openhands/microagents folders still work. AGENTS.md at the repository root is always loaded as repository context, and skills with a triggers list load only when a keyword appears. ... Keep it short: the purpose of the repo, how to set it up, its structure, and the CI checks it must pass. OpenHands also recognizes CLAUDE.md and GEMINI.md as model specific repository context.
+--------------------------------------------------------------------------------
+Agent Skills & Context | OpenHands Docs (https://dubstack.wiki/openhands/docs/sdk/guides/skill)
+citeturn25search7 [wordlim: 200] Crawled: last week;     # AgentContext provides flexible ways to customize prompts: ...     #       system_prompt_kwargs={"cli_mode": True, "repo": "my-project"}, ...     # See: https://docs.openhands.dev/sdk/guides/skill#customizing-system-prompts ...                 name="repo.md", ...                 # KeywordTrigger = activated when keywords appear in user messages ... ### ​Keyword Triggers
+--------------------------------------------------------------------------------
+better-harness/references/agent-customize/routing.md at main · QoderAI/better-harness · GitHub (https://github.com/QoderAI/better-harness/blob/main/references/agent-customize/routing.md)
+citeturn25search8 [wordlim: 200] Crawled: last month;   * Command / Prompt: short manual trigger with narrow input and output; move broad or multi-step behavior into a Skill or script. ...   * `AGENTS.md` and nested agent guidance for durable repo context. ... For Qwen Code-specific actions, use `platforms/qwen.md` as the operating practice reference for prompt shape, `QWEN.md`, `.qwen` config, testing and review loops, MCP, Skills, automations, worktrees, and subagents. ...   * `QWEN.md` and `AGENTS.md` for durable repo context.
+--------------------------------------------------------------------------------
+agent-manual/_shared/hook-event-comparison.md at main · Ar9av/agent-manual · GitHub (https://github.com/Ar9av/agent-manual/blob/main/_shared/hook-event-comparison.md)
+citeturn25search9 [wordlim: 200] Crawled: last month; Gemini CLI  | `.gemini/GEMINI.md` ... OpenHands  | `.openhands/microagents/repo.md` (repo-level microagent) ... Qwen Code  | https://qwenlm.github.io/qwen-code-docs/en/users/overview  | 2026-07-23  | [official]
+--------------------------------------------------------------------------------
+qwen-code-docs/website/content/en/developers/tools/task.md at main · QwenLM/qwen-code-docs · GitHub (https://github.com/QwenLM/qwen-code-docs/blob/main/website/content/en/developers/tools/task.md)
+citeturn25search10 [wordlim: 200] Crawled: last month; This document describes the `agent` tool for Qwen Code. ...   * `working_dir` (string, optional): Pin an explicitly named, non-fork agent to an existing registered git worktree inside the current repository. ... Ensure all tests still pass and update any related documentation.", ... ### Documentation generation ... Delegation needs - When you want to hand off a complete task rather than micromanaging steps ...   * Independent context: Regular subagents start without parent conversation history.
+--------------------------------------------------------------------------------
+qwen-code/docs/users/features/sub-agents.md at main · QwenLM/qwen-code · GitHub (https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/sub-agents.md)
+citeturn25search11 [wordlim: 200] Crawled: last week; Qwen Code does not fall back to its own model when the executable is missing. ... Use case  | Specialized tasks (testing, docs)  | Parallel tasks that need the current context ... For a named regular subagent, `working_dir` pins the agent to an existing git worktree of the current repository. ... Qwen Code accepts the Claude Code 2.1.168 frontmatter fields below so you can drop a CC agent file into `.qwen/agents/` and have the supported fields parse identically. ... The remaining CC frontmatter fields — `effort`, `skills`, `initialPrompt`, `memory`, `isolation` — are documented in the declarative-agent design doc and land in follow-up PRs once the prerequisite infrastructure exists (`effort` needs a model-layer parameter; `memory` needs a scoped memory subsystem; `--agent` CLI flag enables `initialPrompt`; etc.).
+--------------------------------------------------------------------------------
+The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents (https://storage.googleapis.com/lacuna-pdfs-lunar-airport-385023/pdfs/41/bb/41bb259e4005ae52993c0348b2edfaf0bdd1634de213048618ed13431b309b15.pdf)
+citeturn25search12 [wordlim: 200] Crawled: 4 days ago; The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents ... Rather than directly returning results, agents emit structured events (e.g., messages, actions, observations) through callbacks, i.e. `on_event(event: Event) -> None`, separating event generation from execution control. ... Skills can be defined programmatically or loaded from markdown files (e.g., `.openhands/skills/`, or compatible formats like `.cursorrules`, `agents.md`). Each skill may always be active (`trigger=None`) to persistently augment the system prompt, or conditionally activated via keyword matching based on user input; skills may also include MCP tools. ... ** The SDK supports hierarchical agent coordination through a delegation tool that demonstrates the extensibility of the tool abstraction.
+--------------------------------------------------------------------------------
+The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents (https://openreview.net/pdf?id=pzVmWs6yGq)
+citeturn25search13 [wordlim: 200] Published: 7 months ago; The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents ... separating event generation from execution control. ... Customizing Agent Context with Skills and Prompts. ... like .cursorrules, agents.md). ... ways be active (trigger=None) to persistently augment
+the system prompt, or conditionally activated via keyword ... The SDK supports hierarchical
+--------------------------------------------------------------------------------
+The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents (https://proceedings.mlsys.org/paper_files/paper/2026/file/8ae9cf363ea625161f885b798c1f1f78-Paper-Conference.pdf)
+citeturn25search14 [wordlim: 200] Published: 7 months ago; Crawled: 6 days ago; # The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents
+
+Separating event generation from execution control. ... Skills can be defined programmatically or loaded from markdown files (e.g., `.openhands/skills/`, or compatible formats like `.cursorrules`, `agents.md`). Each skill may always be active (`trigger=None`) to persistently augment the system prompt, or conditionally activated via keyword matching based on user input; skills may also include MCP tools. ... ** The SDK supports hierarchical agent coordination through a delegation tool that demonstrates the extensibility of the tool abstraction.
+--------------------------------------------------------------------------------
+Table 13: Code-retrieval mechanisms used by each system, in lieu of vector-based RAG (July 2026). (https://assets.polomodov.tech/book-cube/documents/4a3daa5b290fcb251288e5428d90eaa2e905eec31b313afdfea98ffdd708c982/5081-1.pdf)
+citeturn25search15 [wordlim: 200] Crawled: 2 weeks ago; | OpenHands | No | GrepTool/GlobTool + terminal; context-file ingestion (AGENTS.md, .cursorrules); tree-sitter no longer present in the SDK |
+| Aider | Optional `/help` extra only (doc-RAG over aider’s own docs) | RepoMap: tree-sitter symbol extraction with token-budget-constrained PageRank-style ranking |
+| Claude Code | No | ripgrep keyword search + BashTool + on-demand file Read; CLAUDE.md auto-discovery | ... | Gemini CLI | No | Bundled ripgrep + glob tools; GEMINI.md auto-discovery; MEMORY.md project index; JIT subdirectory context | ... Hand-rolled debuggable code wins out over reusable abstractions once the agent is mutating real source code, because the failure modes (silent prompt corruption, opaque caching, version-incompatible tool schemas) become too expensive to shrug off.
+--------------------------------------------------------------------------------
+The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents (https://shoepaly.app/?_=%2Fpdf%2F2511.03690%23hKr38k1yZITo%2FkpxGBdjJos%3D)
+citeturn25search16 [wordlim: 200] Published: 4 months ago; The OpenHands Software Agent SDK: A Composable and Extensible Foundation for Production Agents ... observations) through callbacks, i.e. on event(event: Event) -> None, separating event generation from ... Customizing Agent Context with Skills and Prompts. ... Each skill may always be active (trigger=None) to persistently augment the
+system prompt, or conditionally activated via keyword matching based on user input; skills may also include ... The SDK supports hierarchical agent coordination through a delegation tool that
+--------------------------------------------------------------------------------
+CodeWiki: Evaluating AI's Ability to Generate Holistic Documentation for Large-Scale Codebases (https://storage.googleapis.com/lacuna-pdfs-lunar-airport-385023/pdfs/d5/15/d515ed93b810c3d504cdf387c856ea098eee605b2ebba9bf27174d7aa883a5e0.pdf)
+citeturn25search17 [wordlim: 200] Crawled: 4 days ago; **Figure 3 – CodeWiki-generated repository documentation screenshot: All-Hands-AI/OpenHands** ... - Generation Info: ... - **Git Integrations** – Unified interface for GitHub, GitLab, and Bitbucket with microagent discovery and repository management. ... The documentation includes a comprehensive overview, architectural diagrams showing the modular event-driven architecture, and hierarchical navigation of core components including the agent system, implementations, and event processing modules. ... RepoAgent (Luo et al., 2024) introduced comprehensive LLM-powered repository documentation, though it was limited in content diversity and architectural depth.
+--------------------------------------------------------------------------------
+Pointing CLAUDE.md to AGENTS.md (https://www.reddit.com/r/ClaudeCode/comments/1r9zx34/pointing_claudemd_to_agentsmd/)
+citeturn25reddit18 [wordlim: 200] Published: 9 months ago; I use Claude Code, Codex, and Gemini CLI. ...     All AI agent context has been centralized into a single file: ... And I've done the same with with GEMINI.md, just with the heading reading `# Gemini Code Assistant Context` . ...     This file provides guidance to all AI code assistants when working with code in this repository.
+--------------------------------------------------------------------------------
+AI辅助软件开发工具列表 (https://zh.wikipedia.org/wiki/AI%E8%BE%85%E5%8A%A9%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7%E5%88%97%E8%A1%A8)
+citeturn25search19 [wordlim: 200] Crawled: last week;  Qodo（英语：Qodo）  | Qodo  | 专有  | 否  | 是  | ? ... *  Google Antigravity is an 'agent-first' coding tool built for Gemini 3. ... *  MoonshotAI/kimi-cli: Kimi Code CLI is your next CLI agent. ... OpenCode: an Open-source AI Coding Agent Competing with Claude Code and Copilot. ... OpenHands Docs.
+

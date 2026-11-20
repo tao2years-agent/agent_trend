@@ -1,0 +1,40 @@
+{
+  "python": "3.12.3",
+  "langgraph": "1.2.24",
+  "checkpointer": "MemorySaver (same-process)",
+  "network": false,
+  "trials": [
+    {
+      "separate_committed_node": false,
+      "resume_value": "approve",
+      "paused": true,
+      "prefix_before_resume": 1,
+      "prefix_after_resume": 2,
+      "terminal_state": "approve"
+    },
+    {
+      "separate_committed_node": false,
+      "resume_value": "deny",
+      "paused": true,
+      "prefix_before_resume": 1,
+      "prefix_after_resume": 2,
+      "terminal_state": "deny"
+    },
+    {
+      "separate_committed_node": true,
+      "resume_value": "approve",
+      "paused": true,
+      "prefix_before_resume": 1,
+      "prefix_after_resume": 1,
+      "terminal_state": "approve"
+    },
+    {
+      "separate_committed_node": true,
+      "resume_value": "deny",
+      "paused": true,
+      "prefix_before_resume": 1,
+      "prefix_after_resume": 1,
+      "terminal_state": "deny"
+    }
+  ]
+}

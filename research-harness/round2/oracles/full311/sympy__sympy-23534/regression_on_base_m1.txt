@@ -1,0 +1,12 @@
+........F....                                                            [100%]
+================================== FAILURES ===================================
+________________________________ test_symbols _________________________________
+sympy\core\tests\test_symbol.py:298: in test_symbols
+    assert type(symbols(('q:2', 'u:2'), cls=Function)[0][0]) == UndefinedFunction  # issue 23532
+E   AssertionError: assert <class 'sympy.core.symbol.Symbol'> == UndefinedFunction
+E    +  where <class 'sympy.core.symbol.Symbol'> = type(q0)
+- generated xml file: F:\dongcha\research-harness\round2\oracles\full311\sympy__sympy-23534\regression_on_base_m1.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/core/tests/test_symbol.py::test_symbols - AssertionError: assert...
+1 failed, 12 passed in 0.29s

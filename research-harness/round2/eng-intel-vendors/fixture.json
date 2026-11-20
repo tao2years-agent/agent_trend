@@ -1,0 +1,14 @@
+{
+  "window": "2026-09-01 to 2026-09-30 UTC",
+  "assumptions": "三位已关联 SCM 且标为写代码的人；30日整月。仅模拟文档明确的分支。LinearB 人工阈值探针只报全部由人提交的已合并 PR，掺机器人另设测试。",
+  "membership_days": {"A":30,"B":30,"C":15},
+  "developer_days": {"A/03":{"committed":100,"accepted":25},"B/06":{"committed":60,"accepted":0},"C/21":{"committed":40,"accepted":0},"A/28":{"committed":10,"accepted":0}},
+  "prs":[
+    {"id":"1","actor":"A","merged":true,"commits":["A/03"]},
+    {"id":"2","actor":"B","merged":true,"commits":["B/06"]},
+    {"id":"3","actor":"agent","merged":true,"commits":["agent"]},
+    {"id":"4","actor":"C","merged":true,"commits":["C/21","agent"]},
+    {"id":"5","actor":"A","merged":true,"commits":["A/03"]},
+    {"id":"6","actor":"A","merged":false,"commits":["A/28"]}
+  ]
+}

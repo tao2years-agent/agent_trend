@@ -1,0 +1,47 @@
+Can LLMs Really Recover Microservice Failures? A Recovery-Aware Evaluation of Diagnosis-to-Action Reasoning - Microsoft Research (https://www.microsoft.com/en-us/research/publication/can-llms-really-recover-microservice-failures-a-recovery-aware-evaluation-of-diagnosis-to-action-reasoning/)
+citeturn104view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://www.microsoft.com/en-us/research/publication/can-llms-really-recover-microservice-failures-a-recovery-aware-evaluation-of-diagnosis-to-action-reasoning/","lineno":null}); Total lines: 44
+L0: # Can LLMs Really Recover Microservice Failures? A Recovery-Aware Evaluation of Diagnosis-to-Action Reasoning
+L1: 
+L2:   * Jiaxing Qi ,
+L3:   * Zhongzhi Luan ,
+L4:   * Hongyu Zhang ,
+L5:   * 【0†Shaohan Huang】 ,
+L6:   * Carol J. Fung ,
+L7:   * Yongxin Tong ,
+L8:   * Hailong Yang ,
+L9:   * Depei Qian
+L10: 
+L11: July 2026
+L12: 
+L13: arXiv
+L14: 
+L15: 【1†Download BibTex】
+L16: Large language models (LLMs) are increasingly used to interpret operational evidence and assist incident response in cloud-native microservice systems. However, recovery-oriented use cases require more than identifying a root cause. After observing symptoms and diagnosing a fault, an operator or agent must translate the diagnosis into a concrete recovery action, apply it to an admissible target, and verify that service health has been restored.
+L17: Existing RCA and log-analysis evaluations are well-suited to diagnosis, but they do not characterize this subsequent action decision. This paper presents R2Act, a recovery-action evaluation framework for post-diagnosis incident response. R2Act defines an incident schema, quality gate, action-space representation, recovery-validity metrics, offline evaluator, and live-replay protocol. We instantiate the framework as a benchmark dataset of 302 quality-audited Kubernetes incidents from system.
+L18: Each incident provides synchronized multi-modal observations, root-cause labels, an incident-specific action space, and annotated valid and invalid recovery plans. We evaluate heuristic, supervised, RCA-oriented, deep log, and LLM-based methods. The strongest RAG-based LLMs reach 91.4%–99.7% root-cause service accuracy, yet their recovery validity remains only 36.8%–60.3%.
+L19: Even when both the root-cause service and fault type are correct, recovery-oriented methods still choose invalid actions for 39.5%–62.0% of correctly diagnosed incidents. Overall, this work reveals that many recovery failures arise not from missing diagnostic knowledge, but from the difficulty of translating diagnostic evidence into valid recovery actions and admissible targets. This work provides a reproducible, simplified starting point for research and evaluation.
+L20: Opens in a new tab
+L21: 
+L22: 【2†Publication†arxiv.org】
+L23: 
+L24: Follow us:
+L25: 
+L26:   * 【3†Follow on X†x.com】
+L27:   * 【4†Like on Facebook†www.facebook.com】
+L28:   * 【5†Follow on LinkedIn†www.linkedin.com】
+L29:   * 【6†Subscribe on Youtube†www.youtube.com】
+L30:   * 【7†Follow on Instagram†www.instagram.com】
+L31:   * 【8†Subscribe to our RSS feed】
+L32: 
+L33: Share this page:
+L34: 
+L35:   * 【9†Share on X†x.com】
+L36:   * 【10†Share on Facebook†www.facebook.com】
+L37:   * 【11†Share on LinkedIn†www.linkedin.com】
+L38:   * 【12†Share on Reddit†www.reddit.com】
+L39: 【13†Surface Laptop Ultra】 【14†Surface Pro】 【15†Surface Laptop】 【16†Surface RTX Spark Dev Box】 【17†Explore Copilot】 【18†Explore Microsoft products】 【19†Windows 11 apps】 【20†Account profile†account.microsoft.com】 【21†Download Center】 【22†Microsoft Store support†go.microsoft.com】 【23†Returns】 【24†Order tracking】 【25†Certified Refurbished】 【26†Why buy from Microsoft Store】 【27†Flexible Payments】 【28†Microsoft in education】 【29†Devices for education】 【30†Microsoft Teams for Education】 【31†Microsoft 365 Education】 【32†How to buy for your school】 【33†Educator training and development†education.microsoft.com】 【34†Deals for students and parents】 【35†AI for education】
+L40: 【36†Microsoft AI】 【37†Microsoft Security】 【38†Dynamics 365】 【39†Microsoft 365】 【40†Microsoft Power Platform】 【41†Microsoft Teams】 【42†Microsoft Copilot】 【43†Small Business】 【44†Azure†azure.microsoft.com】 【45†Microsoft Developer†developer.microsoft.com】 【46†Microsoft Learn†learn.microsoft.com】 【47†Support for AI marketplace apps】 【48†Microsoft Tech Community†techcommunity.microsoft.com】 【49†Microsoft Marketplace†marketplace.microsoft.com】 【50†Software companies】 【51†Visual Studio†visualstudio.microsoft.com】 【52†Careers†careers.microsoft.com】 【53†About Microsoft】 【54†Company news†news.microsoft.com】 【55†Privacy at Microsoft】 【56†Investors】 【57†Diversity and inclusion】 【58†Accessibility】 【59†Sustainability】
+L41: 【60†Your Privacy Choices†aka.ms】 【60†Your Privacy Choices†aka.ms】
+L42: 
+L43: 【61†Consumer Health Privacy†go.microsoft.com】 【62†Sitemap】 【63†Contact Microsoft†support.microsoft.com】 【64†Privacy†go.microsoft.com】 【65†Manage cookies】 【66†Terms of use†go.microsoft.com】 【67†Trademarks†go.microsoft.com】 【68†Safety & eco†go.microsoft.com】 【69†Recycling】 【70†About our ads†choice.microsoft.com】
+

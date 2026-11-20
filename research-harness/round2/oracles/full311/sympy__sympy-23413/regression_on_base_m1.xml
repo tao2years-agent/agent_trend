@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="0.201" timestamp="2026-11-20T12:07:52.949793" hostname="DESKTOP-EL2KCD9"><testcase classname="sympy.matrices.tests.test_normalforms" name="test_smith_normal" time="0.144" /><testcase classname="sympy.matrices.tests.test_normalforms" name="test_smith_normal_deprecated" time="0.024" /><testcase classname="sympy.matrices.tests.test_normalforms" name="test_hermite_normal" time="0.002"><failure message="assert Matrix(3, 0, []) == Matrix([\n[1],\n[0],\n[0]])&#10;  Use -v to get more diff">sympy\matrices\tests\test_normalforms.py:81: in test_hermite_normal
+    assert hermite_normal_form(m) == hnf
+E   assert Matrix(3, 0, []) == Matrix([\n[1],\n[0],\n[0]])
+E     Use -v to get more diff</failure></testcase><testcase classname="sympy.matrices.tests.test_normalforms" name="test_issue_23410" time="0.001"><failure message="assert Matrix([\n[12],\n[ 8],\n[ 5]]) == Matrix([\n[1, ..., 8],\n[0, 5]])&#10;  Use -v to get more diff">sympy\matrices\tests\test_normalforms.py:87: in test_issue_23410
+    assert hermite_normal_form(A) == H
+E   assert Matrix([\n[12],\n[ 8],\n[ 5]]) == Matrix([\n[1, ..., 8],\n[0, 5]])
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

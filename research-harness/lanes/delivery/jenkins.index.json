@@ -1,0 +1,108 @@
+{
+  "id": "jenkins",
+  "repo": "jenkinsci/pipeline-input-step-plugin",
+  "sha": "0c9db265274122f4ff54056c7d5977f266ef75db",
+  "date": "2026-11-09",
+  "sources": [
+    {
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/commits/master.atom",
+      "path": "lanes/delivery/raw/jenkins/98de1a1a412d-commits.atom",
+      "date": "2026-11-09",
+      "sha256": "98de1a1a412d61690be91d959f0db875e0f8fa377f32a67b4d92edc11b8c133c",
+      "retrieved": "2026-11-20T03:13:58.082239+00:00",
+      "resolved_url": "https://github.com/jenkinsci/pipeline-input-step-plugin/commits/master.atom",
+      "bytes": 18922
+    },
+    {
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases.atom",
+      "path": "lanes/delivery/raw/jenkins/9da449347859-releases.atom",
+      "date": "",
+      "sha256": "9da4493478590ef82c54cacf9b9cc7d3aabe91e535e8ed24507dee3103a6a915",
+      "retrieved": "2026-11-20T03:13:59.647830+00:00",
+      "resolved_url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases.atom",
+      "bytes": 30890
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jenkinsci/pipeline-input-step-plugin/0c9db265274122f4ff54056c7d5977f266ef75db/src/main/java/org/jenkinsci/plugins/workflow/support/steps/input/InputStepExecution.java",
+      "path": "lanes/delivery/raw/jenkins/c2863f36c0b2-InputStepExecution.java",
+      "date": "2026-11-09",
+      "sha256": "c2863f36c0b22f1943423889582f68ef2da429035084c6b3e8fe14f7fba28b5b",
+      "retrieved": "2026-11-20T03:14:00.637861+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/jenkinsci/pipeline-input-step-plugin/0c9db265274122f4ff54056c7d5977f266ef75db/src/main/java/org/jenkinsci/plugins/workflow/support/steps/input/InputStepExecution.java",
+      "bytes": 20183,
+      "repo_path": "src/main/java/org/jenkinsci/plugins/workflow/support/steps/input/InputStepExecution.java"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/jenkinsci/pipeline-input-step-plugin/0c9db265274122f4ff54056c7d5977f266ef75db/README.md",
+      "path": "lanes/delivery/raw/jenkins/8c9b7338ca6d-README.md",
+      "date": "2026-11-09",
+      "sha256": "8c9b7338ca6d6436cc8b80069a784379177e2606bc0353cc3805cf2c9c02f8a4",
+      "retrieved": "2026-11-20T03:14:01.671269+00:00",
+      "resolved_url": "https://raw.githubusercontent.com/jenkinsci/pipeline-input-step-plugin/0c9db265274122f4ff54056c7d5977f266ef75db/README.md",
+      "bytes": 2154,
+      "repo_path": "README.md"
+    }
+  ],
+  "releases": [
+    {
+      "tag": "568.v0c9db_2652741",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/568.v0c9db_2652741",
+      "updated": "2026-11-09T20:25:40Z",
+      "body": "🐛 Bug fixes \n \n Fix X-Dialog-Title header mangling uppercase letters, digits and '?' ( #352 )  @timja ,  @claude ,  @jglick  \n \n 📦 Dependency updates \n \n Update dependency org.jenkins-ci.plugins:plugin to v6.2250.va_d01d559a_209 ( #351 )  @renovate[bot]  \n Update dependency org.jenkins-ci.plugins:plugin to v6.2236.v12dd4c483242 ( #349 )  @renovate[bot]  \n Update dependency org.jenkins-ci.plugins:plugin to v6.2221.va_045130417c9 ( #345 )  @renovate[bot]  \n Update dependency org.jenkins-ci.plugins:plugin to v6.2211.v27f680c93c53 ( #344 )  @renovate[bot]  \n Update dependency org.jenkins-ci.plugins:plugin to v6.2208.vb_6798604237e ( #343 )  @renovate[bot]"
+    },
+    {
+      "tag": "560.v56198a_642157",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/560.v56198a_642157",
+      "updated": "2026-07-02T14:17:27Z",
+      "body": "👷 Changes for plugin developers \n \n Add a dialog file for pipeline graph view to reuse ( #258 )  @timja  \n \n 📦 Dependency updates \n \n Update dependency org.jenkins-ci.plugins:plugin to v6.2189.v695a_c41f5249 ( #341 ) @ renovate[bot]"
+    },
+    {
+      "tag": "551.vdff487c5998c",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/551.vdff487c5998c",
+      "updated": "2026-04-06T16:35:43Z",
+      "body": "👷 Changes for plugin developers \n \n Update parent POM, switch to Renovate, enable dep automerge ( #255 )  @jglick  \n \n 👻 Maintenance \n \n Rely on jenkinsci organization release drafter configuration ( #257 )  @MarkEWaite  \n \n 📦 Dependency updates \n \n Bump org.jenkins-ci.plugins:plugin from 5.2099.v68c2f5e27299 to 6.2108.v08c2b_01b_cf4d ( #254 ) @ dependabot[bot]  \n Bump org.jenkins-ci.plugins:plugin from 5.2098.v4d48a_c4c68e7 to 5.2099.v68c2f5e27299 ( #253 ) @ dependabot[bot]  \n Bump org.jenkins-ci.plugins:plugin from 5.28 to 5.2098.v4d48a_c4c68e7 ( #252 ) @ dependabot[bot]  \n Use .3 for baseline ( #251 )  @jglick  \n Bump io.jenkins.tools.incrementals:git-changelist-maven-extension from 1.8 to 1.13 ( #245 ) @ dependabot[bot]"
+    },
+    {
+      "tag": "540.v14b_100d754dd",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/540.v14b_100d754dd",
+      "updated": "2025-10-31T13:13:54Z",
+      "body": "👷 Changes for plugin developers \n \n Bump org.jenkins-ci.plugins:plugin from 5.24 to 5.28 ( #250 ) @ dependabot[bot]  \n \n 👻 Maintenance \n \n Enable strict bundled artifact checks ( #243 )  @dwnusbaum  \n \n 🚦 Tests \n \n Test with Java 25 ( #247 )  @MarkEWaite"
+    },
+    {
+      "tag": "534.v352f0a_e98918",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/534.v352f0a_e98918",
+      "updated": "2025-08-07T20:39:17Z",
+      "body": "👷 Changes for plugin developers \n \n Removing usages of Commons Lang 2 ( #240 )  @jglick"
+    },
+    {
+      "tag": "532.v9e7466cb_4406",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/532.v9e7466cb_4406",
+      "updated": "2025-07-25T17:46:17Z",
+      "body": "🐛 Bug fixes \n \n  JENKINS-40594  - Handle submitterParameter in proceedEmpty ( #238 )  @timja"
+    },
+    {
+      "tag": "527.vd61b_1d3c5078",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/527.vd61b_1d3c5078",
+      "updated": "2025-05-30T19:54:55Z",
+      "body": "🚀 New features and improvements \n \n Update the look and feel of the input form ( #227 )  @lewisbirks  \n \n 📝 Documentation updates \n \n  JENKINS-75384  - updated user doc on input respond ( #210 )  @ShaktiAhad  \n \n 📦 Dependency updates \n \n Bump org.jenkins-ci.plugins:plugin from 5.7 to 5.9 ( #209 ) @ dependabot[bot]"
+    },
+    {
+      "tag": "517.vf8e782ee645c",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/517.vf8e782ee645c",
+      "updated": "2025-03-03T14:12:47Z",
+      "body": "🚀 New features and improvements \n \n Allow custom \"abort\" text ( #179 )  @giannello"
+    },
+    {
+      "tag": "515.v8857b_eb_b_910c",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/515.v8857b_eb_b_910c",
+      "updated": "2025-02-26T16:59:30Z",
+      "body": "👷 Changes for plugin developers \n \n Better test result whenever InputStepRestartTest#interrupt fails ( #208 )  @Vlatombe"
+    },
+    {
+      "tag": "513.v7eb_fe7e2c0fc",
+      "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/513.v7eb_fe7e2c0fc",
+      "updated": "2025-02-11T02:52:56Z",
+      "body": "👻 Maintenance \n \n Reduce usage of deprecated Acegi methods ( #204 )  @basil  \n Migrate from EE 8 to EE 9 ( #203 )  @basil  \n \n ✍ Other changes \n \n Require 2.452.4 ( #201 )  @jonesbusy  \n \n 📦 Dependency updates \n \n Bump org.jenkins-ci.plugins:plugin from 5.5 to 5.7 ( #205 ) @ dependabot[bot]"
+    }
+  ]
+}

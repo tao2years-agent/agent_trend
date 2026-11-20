@@ -1,0 +1,390 @@
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://www.comet.com/docs/opik/llms.txt.
+
+# Building Test Suites
+
+Test suites grow as you debug and improve your agent. There are three ways to build them: with Ollie, through the UI, or via the SDK — and if you build with an AI coding assistant, it can drive any of them for you.
+
+## With Ollie
+
+The fastest way to turn a production failure into a test case. Open Ollie from any trace view and describe what went wrong:
+
+*"Add this trace to my customer-support-qa suite with the assertion: the response must cite a specific step from the provided context"*
+
+Ollie creates the test item directly — no copy-pasting required. You can also ask Ollie to run the suite after making changes:
+
+*"Run the customer-support-qa suite against the updated prompt"*
+
+See [Debugging agents](/docs/opik/tracing/debug-agents) for the full workflow.
+
+## With the UI
+
+In the Opik dashboard, navigate to the Test Suites section to create and manage suites visually. You can add test items, define assertions, configure execution policies, and review results — all without writing code.
+
+![Test suite UI showing items list and the Add Item panel with assertions and pass criteria](/docs/opik/_fern-files/_img/a8575ba49fc25adafe8db16954a228f9fa106437de6160b0ebee25ad2d504219.webp)
+
+## With the SDK
+
+### Create a suite
+
+Define the quality bars you care about as suite-level assertions:
+
+**`Python`**
+
+```python title="Python" wordWrap
+import opik
+
+opik_client = opik.Opik()
+
+suite = opik_client.get_or_create_test_suite(
+    name="customer-support-qa",
+    project_name="test-suites-demo",
+    global_assertions=[
+        "The response is grounded in the provided documentation context",
+        "The response directly addresses the user's question",
+        "The response is concise (3 sentences or fewer)",
+    ],
+    global_execution_policy={"runs_per_item": 2, "pass_threshold": 2},
+)
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+import { Opik, TestSuite } from "opik";
+
+const client = new Opik();
+
+const suite = await TestSuite.getOrCreate(client, {
+  name: "customer-support-qa",
+  projectName: "test-suites-demo",
+  globalAssertions: [
+    "The response is grounded in the provided documentation context",
+    "The response directly addresses the user's question",
+    "The response is concise (3 sentences or fewer)",
+  ],
+  globalExecutionPolicy: { runsPerItem: 2, passThreshold: 2 },
+});
+```
+
+### Add test items
+
+Add individual items or batches. Items can include item-level assertions that are checked in addition to the suite-level assertions:
+
+**`Python`**
+
+```python title="Python" wordWrap
+suite.insert([
+    {
+        "data": {
+            "question": "How do I create a new project?",
+            "context": "To create a new project, go to the Dashboard and click 'New Project'.",
+        },
+    },
+    {
+        "data": {
+            "question": "Can I use this with Kubernetes?",
+            "context": "We support Docker containers and serverless functions.",
+        },
+        "assertions": [
+            "The response does NOT claim Kubernetes is supported",
+            "The response acknowledges that the information is not available",
+        ],
+        "execution_policy": {"runs_per_item": 3, "pass_threshold": 2},
+    },
+])
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+await suite.insert([
+  {
+    data: {
+      question: "How do I create a new project?",
+      context: "To create a new project, go to the Dashboard and click 'New Project'.",
+    },
+  },
+  {
+    data: {
+      question: "Can I use this with Kubernetes?",
+      context: "We support Docker containers and serverless functions.",
+    },
+    assertions: [
+      "The response does NOT claim Kubernetes is supported",
+      "The response acknowledges that the information is not available",
+    ],
+    executionPolicy: { runsPerItem: 3, passThreshold: 2 },
+  },
+]);
+```
+
+### Define the task and run
+
+The task function receives each item's `data` and must return an object with `input` and `output` keys:
+
+**`Python`**
+
+```python title="Python" wordWrap
+from openai import OpenAI
+from opik.integrations.openai import track_openai
+
+openai_client = track_openai(OpenAI())
+
+def make_task(system_prompt):
+    def task(item):
+        response = openai_client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Question: {item['question']}\n\nContext:\n{item['context']}"},
+            ],
+        )
+        return {"input": item, "output": response.choices[0].message.content}
+    return task
+
+PROMPT_V1 = "You are a helpful assistant. Be as detailed as possible."
+PROMPT_V2 = "You are a concise assistant. Answer based ONLY on the provided context."
+
+result_v1 = opik.run_tests(test_suite=suite, task=make_task(PROMPT_V1))
+result_v2 = opik.run_tests(test_suite=suite, task=make_task(PROMPT_V2))
+
+print(f"v1 pass rate: {result_v1.pass_rate:.0%}")
+print(f"v2 pass rate: {result_v2.pass_rate:.0%}")
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+import { runTests } from "opik";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+
+function makeTask(systemPrompt: string) {
+  return async (item: Record<string, unknown>) => {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Question: ${item.question}\n\nContext:\n${item.context}` },
+      ],
+    });
+    return { input: item, output: response.choices[0].message.content };
+  };
+}
+
+const PROMPT_V1 = "You are a helpful assistant. Be as detailed as possible.";
+const PROMPT_V2 = "You are a concise assistant. Answer based ONLY on the provided context.";
+
+const resultV1 = await runTests({ testSuite: suite, task: makeTask(PROMPT_V1) });
+const resultV2 = await runTests({ testSuite: suite, task: makeTask(PROMPT_V2) });
+
+console.log(`v1 pass rate: ${((resultV1.passRate ?? 0) * 100).toFixed(0)}%`);
+console.log(`v2 pass rate: ${((resultV2.passRate ?? 0) * 100).toFixed(0)}%`);
+
+await client.flush();
+```
+
+Each run creates a separate experiment in Opik, making it easy to compare results in the dashboard.
+
+![Test suite experiment results showing pass/fail per item with assertion details](/docs/opik/_fern-files/_img/28622d6be55458f05e10a135280bf01a7179f15db62847713c43986508de16f8.webp)
+
+> **Note**
+>
+> The `input` should contain only the data your agent actually received when generating its response.
+> The LLM judge uses `input` and `output` to evaluate assertions — if you accidentally include fields
+> like `expected_answer` in `input`, the judge may use them to pass assertions that should fail.
+
+### Update assertions and execution policy
+
+**`Python`**
+
+```python title="Python" wordWrap
+suite.update_test_settings(
+    global_assertions=[
+        "The response is grounded in the provided context",
+        "The response is concise",
+    ],
+    global_execution_policy={"runs_per_item": 5, "pass_threshold": 3},
+)
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+await suite.updateTestSettings({
+  globalAssertions: [
+    "The response is grounded in the provided context",
+    "The response is concise",
+  ],
+  globalExecutionPolicy: { runsPerItem: 5, passThreshold: 3 },
+});
+```
+
+### Inspect suite contents
+
+**`Python`**
+
+```python title="Python" wordWrap
+items = suite.get_items()
+assertions = suite.get_global_assertions()
+policy = suite.get_global_execution_policy()
+
+print(f"Items: {len(items)}")
+print(f"Assertions: {assertions}")
+print(f"Policy: {policy}")
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+const items = await suite.getItems();
+const assertions = await suite.getGlobalAssertions();
+const policy = await suite.getGlobalExecutionPolicy();
+
+console.log(`Items: ${items.length}`);
+console.log(`Assertions: ${assertions}`);
+console.log(`Policy: ${JSON.stringify(policy)}`);
+```
+
+### Delete test items
+
+**`Python`**
+
+```python title="Python" wordWrap
+items = suite.get_items()
+suite.delete([items[0]["id"]])
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+const items = await suite.getItems();
+await suite.delete([items[0].id]);
+```
+
+## How assertions are judged
+
+An LLM judge reads each run's `input` and `output` and decides whether every assertion holds. Which
+model acts as the judge depends on where you run the suite.
+
+**From the SDK** (`opik.run_tests` / `runTests`), the judge runs in your own process with your own
+provider credentials:
+
+* The default judge model is `gpt-5-nano`, so `OPENAI_API_KEY` must be set.
+* Pass `model` to use another model.
+  * **Python:** any [LiteLLM model name](https://docs.litellm.ai/docs/providers) works, for example
+    `claude-haiku-4-5`, `bedrock/...` or `azure/...`.
+  * **TypeScript:** OpenAI (`gpt-*`, `o1*`, `o3*`, `chatgpt-*`, with `OPENAI_API_KEY`), Anthropic
+    (`claude-*`, with `ANTHROPIC_API_KEY`) or Google Gemini (`gemini-*`, `gemma-*`, with
+    `GOOGLE_API_KEY`) model IDs.
+* To check tool calls and intermediate steps, the judge can open the trace's spans with tools
+  (agentic judging). Under the default `scoring_tool_strategy="auto"`, this happens only for models
+  Opik has profiled for it, such as `gpt-5-mini`, `gpt-4o`, `claude-haiku-4-5` and the Claude Opus
+  models. The default `gpt-5-nano` judges in a single call from `input` and `output`. To judge
+  assertions about intermediate steps, pass one of those models, or set
+  `scoring_tool_strategy="always"`.
+* In Python, the profiled models are matched by their plain names. A provider-prefixed name such as
+  `anthropic/claude-haiku-4-5`, `bedrock/...` or `azure/...` judges in a single call under `"auto"`,
+  so pass `scoring_tool_strategy="always"` with it when assertions need the intermediate steps.
+
+**`Python`**
+
+```python title="Python" wordWrap
+result = opik.run_tests(
+    test_suite=suite,
+    task=make_task(PROMPT_V2),
+    model="claude-haiku-4-5",
+)
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+const result = await runTests({
+  testSuite: suite,
+  task: makeTask(PROMPT_V2),
+  model: "claude-haiku-4-5",
+});
+```
+
+**From the Prompt Playground**, Opik runs the judge for you and picks the model from the AI providers
+configured in your workspace, using the first one found in this order:
+
+| Configured provider | Judge model        |
+| ------------------- | ------------------ |
+| Anthropic           | `claude-haiku-4-5` |
+| OpenAI              | `gpt-4o-mini`      |
+| Gemini              | `gemini-2.0-flash` |
+| Vertex AI           | `gemini-2.5-flash` |
+
+If none of these providers is configured, the judge uses the same model as the prompt you are
+testing. In the Playground the judge always inspects the trace with tools, so the model must support
+tool calling. With providers that do not (for example a custom OpenAI-compatible endpoint or
+Ollama), the judge falls back to a single call, and assertions about intermediate steps cannot be
+checked.
+
+## Execution policies
+
+Execution policies control how many times each item is run and how many must pass. This is useful for handling non-deterministic LLM outputs. By default, each item runs once and must pass once (`runs_per_item: 1`, `pass_threshold: 1`); the examples on this page raise both.
+
+**`Python`**
+
+```python title="Python" wordWrap
+suite = opik_client.get_or_create_test_suite(
+    name="flaky-output-tests",
+    global_assertions=["Response follows the expected format"],
+    global_execution_policy={"runs_per_item": 3, "pass_threshold": 2},
+)
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+const suite = await TestSuite.getOrCreate(client, {
+  name: "flaky-output-tests",
+  globalAssertions: ["Response follows the expected format"],
+  globalExecutionPolicy: { runsPerItem: 3, passThreshold: 2 },
+});
+```
+
+**Pass/fail logic:**
+
+* A **run** passes if all its assertions pass
+* An **item** passes if `runs_passed >= pass_threshold`
+* The **pass rate** is the ratio of passed items to total items. A pass rate of `1.0` means every item passed; `0.0` means none did
+
+You can also override the policy for individual items:
+
+**`Python`**
+
+```python title="Python" wordWrap
+suite.insert([{
+    "data": {"question": "Is my account compromised?", "context": "..."},
+    "assertions": ["Response treats the concern with urgency"],
+    "execution_policy": {"runs_per_item": 5, "pass_threshold": 4},
+}])
+```
+
+**`Typescript`**
+
+```ts title="Typescript" wordWrap
+await suite.insert([{
+  data: { question: "Is my account compromised?", context: "..." },
+  assertions: ["Response treats the concern with urgency"],
+  executionPolicy: { runsPerItem: 5, passThreshold: 4 },
+}]);
+```
+
+> **Tip**
+>
+> **Recommended if you build with an AI coding assistant.** One command — `opik configure` —
+> installs both the [MCP server](/docs/opik/mcp-server) and the Opik skills, and your assistant can then run
+> the suite itself between development iterations: change the prompt, run the suite, read the
+> scores, change again — instead of you doing that loop by hand.
+>
+> An example prompt:
+>
+> *"Add this failing trace to my customer-support-qa suite, then iterate on the prompt until the
+> suite passes — run the suite after each change and show me the scores."*

@@ -1,0 +1,81 @@
+IUI ’26, March 23–26, 2026, Paphos, Cyprus
+Figure 4: Rates of interaction with proactive AI interventions acr
+Prompt), executing the idea (Declined Edit) and finishing writ
+Dismiss, or Ignore AI interventions. Active participation decrea
+patterns remained stable across intervention types. Commit C
+while Declined Edit interventions show consistently low engage
+over the 5-day study period.
+initial learning curve, but rather reflects a more fundamental disrup-
+tion to their workflow. Moreover, 8 out of 18 participants chose to
+continue using ProAIDE beyond the mandatory 5-day study period,
+suggesting that its value extended beyond initial curiosity. This
+sustained engagement indicates that the proactive feature was not
+merely perceived as a novel experimental tool, but had begun to
+integrate meaningfully into participants’ regular workflows.
+Summary of RQ1. Proactive AI’s utility depends on developers’
+cognitive context and thus readiness to receive assistance. The
+most accepted interventions occur at natural workflow boundaries
+when developers are in the mindset of reviewing submitted code,
+while interventions during focused implementation tasks often
+feel disruptive and intrusive.
+5.2
+RQ2: User Experience
+Having identified when proactive AI interventions are most inter-
+acted with, we now examine how developers experienced these
+interventions (RQ2). The findings below are primarily based on
+analysis of qualitative post-study survey responses (Figure 5).
+5.2.1
+ProAIDE was Easy to Use and Learn. Participants generally
+rated ProAIDE positively in terms of usability, reflected by an above-
+average SUS score of 72.8 out of 100 (95% CI: [64.1, 81.5]). This indi-
+cates good usability, though with room for improvement, suggesting
+users hold favorable but not strongly promotional views [16, 55].
+The majority found the system quick to learn (93%), likely due to its
+seamless integration within the already familiar IDE environment.
+Additionally, participants considered the proactive feature easy to
+use (87%). Explicit confirmation mechanisms were particularly ap-
+preciated, with one participant noting the system was “even better
+than some other IDEs [...] offering custom UI in form of buttons when
+asking for confirmation” [P12]. Furthermore, the transparency in AI
+---
+Nadine Kuo, Agnia Sergeyuk, Valerie Chen, and Maliheh Izadi
+ross various development stages: formulating needs (Ambiguous
+ting code (Commit Changes). Users had the option to Engage,
+ased from 18 to 8 users between Day 1 and Day 5, yet interaction
+Changes interventions achieve the highest engagement (52%),
+ement (31%). In total, we recorded 229 proactive AI interventions
+presence contributed to helping developers feel like they “always
+knew what the suggestions were talking about” [P3].
+5.2.2
+Developers Had Varying Needs and Preferences. In terms of
+how proactive interventions were triggered, many expressed a de-
+sire for control, as [P5] noted: “I prefer to use hotkeys where possible
+or a command that can be used”. Conversely, some preferred greater
+AI autonomy, with another participant stating “[They] would like to
+immediately move context to ’Chat’ without even asking me, since
+[they] didn’t accomplish what [they] tried to do” [P15]. Moreover,
+opinions regarding the degree of proactiveness and granularity
+of suggestions differed. Some participants indicated that “it would
+be good if the ’Review Commit’ option could be triggered automat-
+ically on any commit” [P5], or anchored to “any changes made in
+git” [P10]. Others found intervention frequency excessive, stating
+that suggestions were “not always necessary [...] dismissing the di-
+alog is annoying” [P15]. Regarding suggestion granularity, some
+participants sought detailed, “fine-grained comments in code and
+documentation” [P3], while others preferred concise suggestions,
+stating “no need for explanation text” [P15]. Also, participants also
+wished to select suggestion types explicitly, such as those related
+to “performance, readability, security” [P4].
+5.2.3
+Alignment Between AI and Mental Model Was Key. An im-
+portant factor influencing developers’ receptiveness to proactive
+suggestions was how well the AI’s behavior aligned with their ex-
+pectations and mental models. Survey responses indicated that 66%
+of participants easily understood how the suggestions related to
+their intended tasks. One participant noted, “In most cases, sugges-
+tions were exactly what I wanted” [P6]. Interestingly, one participant
+emphasized the role of developer context, stating, “I did not feel that
+any suggestion was misleading [...] so perhaps the coder’s perception
+and friction with the code they are writing is an important factor here.”
+This suggests that perceived alignment may depend not only on
+the AI but also on the developer’s experience with the task at hand.

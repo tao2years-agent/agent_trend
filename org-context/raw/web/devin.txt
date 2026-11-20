@@ -1,0 +1,490 @@
+检索参数 {"search_query":[{"q":"site:docs.devin.ai knowledge triggers suggestions Devin knowledge playbooks"}],"response_length":"medium"}
+Importing Code Settings - Devin Docs (https://docs.devin.ai/collaborate-with-devin/vscode-profiles)
+citeturn36search0 [wordlim: 200] Crawled: 6 months ago; Image: Welcome ... The script will prompt you to confirm your settings by visiting the app.devin.ai URL. ... Watch this video to see how to do export your Profile in VS Code (including VS Code forks):
+
+On this page
+
+  * Auto-Import Settings
+  * Exporting Your Local Profile Manually
+  * Importing Your .code-profile File Manually
+  * Verifying that your upload worked
+  * Settings Sync
+
+
+# Importing Code Settings
+
+Use your local settings and extensions while working in Devin’s IDE
+
+> ## Documentation Index
+> 
+> Fetch the complete documentation index at: https://docs.devin.ai/llms.txt
+> 
+> Use this file to discover all available pages before exploring further.
+
+Working in VS Code is easier with your familiar Settings, Extensions, and Keyboard Shortcuts. Follow this tutorial to upload your local settings manually.
+
+## 
+
+​
+
+Auto-Import Settings
+
+This workflow imports your settings automatically.
+
+  1. Open any Devin session that you started
+  2. You should be greeted by the Welcome page. (If this page does not appear, you can always reopen it with `Cmd+Shift+P` on Mac or `Ctrl+Shift+P` on Windows/Linux and search for “Help: Welcome”.)
+
+Image: Welcome
+
+  3. Click the button to start the import flow.
+  4. Follow the steps on the screen. You will copy paste a Python script to your local computer’s terminal to upload your profile. (PowerShell for Windows)
+  5. The script will prompt you to confirm your settings by visiting the app.devin.ai URL.
+  6. Once confirmed, your settings will be synced automatically to your Devin session and for all future Devin sessions!
+
+## 
+
+​
+
+Exporting Your Local Profile Manually
+
+If the Auto-Import workflow isn’t working, follow these steps for manual export and import. Watch this video to see how to do export your Profile in VS Code (including VS Code forks):
+
+  1. Go to VS Code, `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux) -> Preferences: Open Profiles (UI)
+  2. Right click your profile (usually Default).
+  3. Click Export and choose File in the quick pick that appears.
+  4. Save the file to disk. This will get saved to a `.code-profile` file.
+
+## 
+
+​
+
+Importing Your `.code-profile` File Manually
+
+Once you have a .code-profile file, you can upload it to any Devin session IDE that you started.
+
+  1. Open any Devin session that you started
+  2. Open the command palette with `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux) and search for “Preferences: Devin: Import Profile (Manual)”.
+  3. Select the file you uploaded. This will upload your profile to the machine. All your extensions and settings should then be auto-installed.
+
+## 
+
+​
+
+Verifying that your upload worked
+
+You can check that your Settings, Extensions, and Keyboard Shortcuts were uploaded properly by doing the following in Devin IDE:
+
+  * Settings: open the command palette (`Cmd+Shift+P` on Mac / `Ctrl+Shift+P` on Windows/Linux) and search for “Preferences: Open User Settings (JSON)”. Check that it matches your local editor’s.
+  * Keyboard Shortcuts: open the command palette and search for “Preferences: Open Keyboard Shortcuts (JSON)”. Check that it matches your local editor’s.
+  * Extensions: Click the extensions icon in the sidebar on the right (or press `Cmd+Shift+X` on Mac / `Ctrl+Shift+X` on Windows/Linux). Search for the Extensions you have installed locally.
+
+## 
+
+​
+
+Settings Sync
+
+Your settings will automatically be synced across your sessions. Contact support if you encounter any issues with this.
+--------------------------------------------------------------------------------
+Autenticación - Devin Docs (https://docs.devin.ai/es/api-reference/authentication)
+citeturn36search1 [wordlim: 200] Crawled: 6 months ago;     `curl -X POST "https://api.devin.ai/v3/organizations/$DEVIN_ORG_ID/sessions" \ ... Organization  | Settings > Service users  | `/v3/organizations/*`  | Administración de sesiones, Knowledge, playbooks, secretos
+  2. Asigna un rol que controle a qué endpoints puede acceder el usuario de servicio
+  3. Genera una clave de API — la clave empieza por `cog_` y solo se muestra una vez al crearla
+  4. Usa la clave en el encabezado `Authorization` de cada solicitud a la API
+    
+    `curl -X POST "https://api.devin.ai/v3/organizations/$DEVIN_ORG_ID/sessions" \
+      -H "Authorization: Bearer $DEVIN_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"prompt": "Create a simple Python script"}'
+    `
+
+### 
+
+​
+
+Ámbitos de usuarios de servicio
+
+Ámbito  | Creado en  | Acceso a la API  | Caso de uso
+--- | --- | --- | ---
+Organization  | Settings > Service users  | `/v3/organizations/*`  | Administración de sesiones, Knowledge, playbooks, secretos
+Enterprise  | Enterprise settings > Service users  | `/v3/enterprise/*` + `/v3/organizations/*`  | Administración entre organizaciones, analítica, registros de auditoría, facturación
+
+Encuentra el ID de tu organización en la página Settings > Service Users.
+--------------------------------------------------------------------------------
+Configuración clásica - Devin Docs (https://docs.devin.ai/es/onboard-devin/repo-setup)
+citeturn36search2 [wordlim: 200] Crawled: 6 months ago; > Fetch the complete documentation index at: https://docs.devin.ai/llms.txt ... Image: Devin ... Una vez ejecutado el script, la sesión autenticada (cookies, localStorage, tokens de autenticación) permanece en el navegador de Devin.
+
+En esta página
+
+  * Agregar un repositorio
+  * Configurar el repositorio y el entorno de desarrollo
+  * Sugerencias generadas por IA
+  * Pasos de configuración del repositorio
+  * Finalizar o guardar la configuración
+  * Configurar repositorios agregados previamente
+  * Historial de versiones de la máquina
+  * Configuración de secretos
+  * Ejemplos
+  * Configuración automática de entornos para diferentes repositorios
+  * Configuración de variables de entorno
+  * Agregar directorios al PATH del sistema
+  * Iniciar sesión en sitios web
+  * Uso del navegador con scripts mediante Playwright
+  * Solución de problemas
+  * ¿Por qué no se verifican mis comandos?
+  * Mis comandos funcionan cuando los ejecuto manualmente
+  * Devin no puede ejecutar mis comandos de lint/pruebas durante las sesiones
+  * El paso de git pull no funciona
+## 
+
+Configurar el repositorio y el entorno de desarrollo
+
+Una vez en Repo Setup, verás tres paneles:
+
+  1. Pasos de configuración del repositorio: Muestra los 8 pasos de configuración en orden, junto con los comandos resultantes que se guardarán en tu configuración.
+  2. Agente de configuración Devin AI: Devin puede sugerir qué hacer en cada paso en función de tu repositorio específico e iterar sobre la configuración hasta que esté lista para guardarse.
+  3. Terminal de VSCode: Te permite ejecutar cualquier comando o explorar el sistema de archivos directamente en el entorno integrado de VSCode.
+
+### 
+
+​
+
+Sugerencias generadas por IA
+
+Cuando añades un repositorio, Devin genera automáticamente sugerencias de configuración para cada paso a partir del análisis de tu base de código. Puedes aceptar o rechazar cada sugerencia de forma individual, o refinarlas con Devin AI Setup Agent.
+
+### 
+
+Pasos de configuración del repositorio
+
+1
+
+Git Pull
+
+El comando que Devin ejecuta al inicio de cada sesión para extraer los cambios más recientes del repositorio. Sin embargo, ten en cuenta que solo puede haber una configuración en curso a la vez, por lo que no recomendamos usar esta opción a menos que sea absolutamente necesario.
+
+Consejos para configurar comandos:
+
+  * Ejecuta primero los comandos en la terminal de VS Code para precalentar la caché antes de verificarlos.
+  * Si un comando debe ejecutarse en un directorio específico, usa `cd` de esta manera: `cd <directory> && <command>`.
+  * Si tu proyecto no tiene un comando de lint, puedes incluir tu comando de build para que Devin compruebe si hay errores de compilación.
+  * Si el procedimiento de lint o de pruebas de tu proyecto es complejo, puedes omitir esos pasos y explicárselos a Devin en el paso Additional Notes.
+  * Consulta la sección de resolución de problemas si encuentras problemas al verificar tus comandos.
+
+Configurar repositorios agregados previamente
+
+En cualquier momento puedes editar o agregar un nuevo repositorio en Settings > Devin’s Machine. Para editar un repositorio existente, haz clic en Configure en la esquina superior derecha de la página, selecciona Add/Modify/Remove repo, elige el repositorio que quieres editar y haz clic en Submit.
+
+Image: Devin
+
+También puedes seleccionar el repositorio existente que quieres editar de la lista y hacer clic en Modify repo setup para editar los pasos de configuración.
+
+Image: Devin
+
+Historial de versiones de la máquina
+
+Si durante la configuración introduces accidentalmente un cambio incompatible, puedes volver a una instantánea anterior del entorno. Ve a Settings > Devin’s Machine, cambia a la pestaña Version History y restaura una instantánea anterior del entorno que sepas que funcionaba correctamente.
+
+Image: Devin
+
+## 
+
+​
+
+¡Todo listo!
+
+¡Felicitaciones! Ya integraste a Devin y pueden empezar a trabajar juntos. Es momento de iniciar tu primera sesión. Ten en cuenta que Devin funciona mejor cuando:
+
+  * Le indicas cómo revisar su progreso
+  * Divides las tareas grandes
+  * Compartes requisitos detallados desde el inicio
+  * Ejecutas múltiples sesiones en paralelo
+Si necesitas ayuda, no dudes en enviarnos un correo electrónico a support@cognition.ai.--------------------------------------------------------------------------------
+Configuração clássica - Devin Docs (https://docs.devin.ai/pt-BR/onboard-devin/repo-setup)
+citeturn36search3 [wordlim: 200] Crawled: 5 months ago; Agente de Configuração Devin AI: Devin pode sugerir o que fazer em cada etapa com base no seu repositório específico e iterar sobre a configuração até que ela esteja pronta para ser salva. ... Image: Devin ... Depois que o script é executado, a sessão autenticada (cookies, localStorage, tokens de autenticação) permanece no navegador do Devin.
+Tente pressionar Ctrl+K no terminal para gerar automaticamente um comando de instalação.
+
+
+Configurar o Repositório e o Ambiente de Desenvolvimento
+
+Ao entrar em Repo Setup, você verá três painéis:
+
+  1. Etapas de Configuração do Repositório: Exibe as 8 etapas de configuração em ordem, junto com os comandos resultantes que serão salvos na sua configuração.
+  2. Agente de Configuração Devin AI: Devin pode sugerir o que fazer em cada etapa com base no seu repositório específico e iterar sobre a configuração até que ela esteja pronta para ser salva.
+  3. Terminal do VSCode: Permite que você execute quaisquer comandos ou navegue pelo sistema de arquivos diretamente no ambiente do VSCode integrado.
+
+
+Sugestões geradas por IA
+
+Ao adicionar um repositório, Devin gera automaticamente sugestões de configuração para cada etapa, com base na análise da sua base de código. Você pode aceitar ou rejeitar cada sugestão individualmente ou iterar sobre elas com o Devin AI Setup Agent.
+
+### 
+
+​
+--------------------------------------------------------------------------------
+Umstieg auf deklarative Konfiguration - Devin Docs (https://docs.devin.ai/de/onboard-devin/environment/migration)
+citeturn36search4 [wordlim: 200] Crawled: 6 months ago; > Fetch the complete documentation index at: https://docs.devin.ai/llms.txt ... App starten  | `knowledge` (`name: dev-server`)  | Nur als Referenz, wird bei Builds nicht ausgeführt
+Zusätzliche Hinweise  | `knowledge`  | Freitext-Einträge für Devin
+  * Eine Hilfssitzung, die auf Ihrem vorhandenen Snapshot läuft und die Devin verwendet, um zu ermitteln, was derzeit installiert ist (Sprachversionen, Systempakete, laufende Dienste usw.)
+Devin untersucht Ihren vorhandenen Snapshot, ermittelt, welche Tools und Abhängigkeiten installiert sind, und erstellt die entsprechende Blueprint-Konfiguration. Die Ergebnisse werden auf Ihrer Seite Settings > Environment > Blueprints angezeigt.
+
+4. Überprüfen und anpassen
+
+Nachdem Devin die Blueprints generiert hat:
+
+  1. Gehen Sie zu Settings > Environment > Blueprints, um zu sehen, was generiert wurde
+  2. Prüfen Sie den Build-Status. Er sollte Success anzeigen.
+  3. Starten Sie eine Testsitzung, um sicherzustellen, dass alles funktioniert:
+     * Stellen Sie sicher, dass Repos geklont wurden und Abhängigkeiten installiert sind
+     * Versuchen Sie, Ihre Lint-, Test- und Build-Befehle auszuführen
+     * Vergewissern Sie sich, dass alle benutzerdefinierten Tools oder Laufzeitumgebungen verfügbar sind
+Falls etwas fehlt, bearbeiten Sie den Blueprint direkt. Sie können `initialize`-Schritte, `maintenance`-Befehle oder `knowledge`-Einträge hinzufügen.
+
+Abhängigkeiten verwalten  | `maintenance`  | Befehle für Abhängigkeiten, die dem Agenten zu Sitzungsbeginn bereitgestellt werden: `npm install`, `pip install` usw.
+Lint  | `knowledge` (`name: lint`)  | Nur als Referenz, wird bei Builds nicht ausgeführt
+Test  | `knowledge` (`name: test`)  | Nur als Referenz, wird bei Builds nicht ausgeführt
+App starten  | `knowledge` (`name: dev-server`)  | Nur als Referenz, wird bei Builds nicht ausgeführt
+Zusätzliche Hinweise  | `knowledge`  | Freitext-Einträge für Devin
+
+
+Beispiel
+
+Klassisches Setup:
+
+  * Abhängigkeiten installieren: `nvm use 20 && npm install`
+  * Abhängigkeiten pflegen: `npm install`
+  * Linting: `npm run lint`
+  * Testen: `npm test`
+  * App starten: `npm run dev`
+Entsprechender Blueprint:
+    
+    `initialize: |
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      source ~/.bashrc
+      nvm install 20
+    
+    maintenance: |
+      npm install
+    
+    knowledge:
+      - name: lint
+        contents: npm run lint
+      - name: test
+        contents: npm test
+      - name: dev-server
+        contents: npm run dev
+    `
+
+Fehlerbehebung
+
+Build fehlgeschlagen
+
+Prüfe die Build-Logs auf den genauen Fehler. Häufige Ursachen:
+
+  * Ein Befehl, der im klassischen Setup-Terminal funktioniert hat, funktioniert im Build-Kontext nicht (z. B. interaktive Abfragen, die `-y`-Flags benötigen)
+  * Fehlende Secrets (stelle sicher, dass Secrets im Secrets-Tab innerhalb des Blueprint-Editors konfiguriert sind)
+  * Vergleiche deine Blueprint-Befehle mit deinen ursprünglichen Befehlen, um Unterschiede zu erkennen
+
+In Sitzungen fehlen Abhängigkeiten
+
+Stelle sicher, dass dein Abschnitt `maintenance` dieselben Befehle zur Installation von Abhängigkeiten enthält wie der klassische Schritt Abhängigkeiten verwalten. Befehle wie `npm install` oder `pip install -r requirements.txt` gehören in `maintenance`, nicht in `initialize`.
+
+Devin weiß nicht, wie Linting oder Tests ausgeführt werden
+
+Stelle sicher, dass dein Abschnitt `knowledge` Einträge mit den Namen `lint` und `test` sowie die richtigen Befehle enthält. Devin sucht nach diesen Namen, wenn es seine Arbeit überprüft.
+
+Änderungen am benutzerdefinierten Shell-Profil werden nicht übernommen
+
+Wenn dein klassisches Setup `~/.bashrc`, `~/.profile` oder andere Shell-Konfigurationen geändert hat, verschiebe sie in `initialize`:
+    
+    `initialize: |
+      echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> ~/.bashrc
+      echo 'export NODE_ENV=development' >> ~/.bashrc
+    `
+
+Git pull funktioniert nicht
+
+Blueprints führen `git clone` während des Builds automatisch aus. Wenn Repos nicht geklont werden, prüfe, ob sie auf der Seite Settings > Environment > Blueprints hinzugefügt wurden und ob Devin über deine Git-Integration Zugriff hat.
+
+​
+
+Verwandte Seiten
+
+  * Deklarative Umgebungskonfiguration
+  * Blueprint-Referenz
+  * Vorlagenbibliothek
+--------------------------------------------------------------------------------
+结构化输出 - Devin Docs (https://docs.devin.ai/zh/api-reference/v1/structured-output)
+citeturn36search5 [wordlim: 200] Crawled: 7 months ago; 了解如何高效使用结构化输出，并通过 API 与 Devin 会话交互 ... Please update the structured output immediately whenever you find new issues, have suggestions, or change your approval status:\n{ ...             "error": "Expected error message to be shown" ... 如对结构化输出的使用有任何疑问，或需报告相关问题，请发送邮件至 support@cognition.ai。
+        "issues": [
+          {
+            "file": "src/App.tsx",
+            "line": 42,
+            "type": "bug",
+            "description": "Memory leak in useEffect cleanup"
+          }
+        ],
+        "suggestions": [
+          "Add error handling for API calls",
+          "Split component into smaller parts"
+        ],
+        "approved": false
+      }"
+    }
+    `
+
+用于 PR 评审和代码分析的简单格式。
+    
+    `{
+      "prompt": "As you work, provide updates in this format. Please update the structured output immediately whenever you start a new task, complete a task, or plan your next task:\n{
+        "status": "in_progress",
+        "current_task": "Adding authentication to login page",
+        "completed_tasks": [
+          "Set up project structure",
+          "Added routing"
+        ],
+        "next_task": "Implement form validation"
+      }"
+    }
+    `
+
+用于跟踪 Devin 当前正在处理的任务以及后续计划。
+    
+    `{
+      "prompt": "When running tests, report results in this format. --------------------------------------------------------------------------------
+Configurazione classica - Devin Docs (https://docs.devin.ai/it/onboard-devin/repo-setup)
+citeturn36search6 [wordlim: 200] Crawled: 6 months ago; Devin AI Setup Agent: Devin può suggerire cosa fare per ciascun passaggio in base al tuo repository specifico e iterare sulla configurazione finché non è pronta per essere salvata. ... Per le app che richiedono l’autenticazione tramite browser (SSO, OAuth, ecc.) o l’inserimento sistematico di dati, Devin può scrivere ed eseguire script Playwright per automatizzare questi flussi sul proprio browser in esecuzione.
+  2. Devin AI Setup Agent: Devin può suggerire cosa fare per ciascun passaggio in base al tuo repository specifico e iterare sulla configurazione finché non è pronta per essere salvata.
+  3. VSCode Terminal: ti consente di eseguire qualsiasi comando o esplorare il file system direttamente nell’ambiente VSCode incorporato.
+
+### 
+
+​
+
+Suggerimenti generati dall’IA
+
+Quando aggiungi un repository, Devin genera automaticamente suggerimenti di configurazione per ogni passaggio in base all’analisi della codebase. Puoi accettare o rifiutare ogni suggerimento singolarmente, oppure affinarli ulteriormente con Devin AI Setup Agent.
+
+### 
+
+​
+
+Passaggi per la configurazione del repository
+
+1
+
+Git Pull
+
+Il comando che Devin esegue all’inizio di ogni sessione per recuperare le ultime modifiche dal repository. Nella maggior parte dei casi è consigliabile mantenere il comando predefinito. Assicurati che Devin abbia accesso a tutti i sottomoduli nel repository.
+
+2
+
+Configura i segreti
+
+Configura tutti i segreti o le variabili di ambiente di cui Devin ha bisogno per lavorare con il tuo repository. --------------------------------------------------------------------------------
+Configuration du dépôt - Devin Docs (https://docs.devin.ai/fr/onboard-devin/repo-setup)
+citeturn36search7 [wordlim: 200] Crawled: 9 months ago; Lorsque vous ajoutez un dépôt, Devin génère automatiquement des suggestions de configuration pour chaque étape, à partir de l’analyse de votre base de code. Vous pouvez accepter ou refuser chaque suggestion individuellement, ou itérer sur celles-ci avec le Devin AI Setup Agent.
+  2. Agent de configuration Devin AI : Devin peut suggérer quoi faire pour chaque étape en fonction de votre dépôt spécifique et affiner la configuration jusqu’à ce qu’elle soit prête à être enregistrée.
+  3. Terminal VSCode : vous permet d’exécuter n’importe quelle commande ou de parcourir le système de fichiers directement dans l’environnement VSCode intégré.
+
+### 
+
+​
+
+Suggestions générées par l’IA
+
+Lorsque vous ajoutez un dépôt, Devin génère automatiquement des suggestions de configuration pour chaque étape, à partir de l’analyse de votre base de code. Vous pouvez accepter ou refuser chaque suggestion individuellement, ou itérer sur celles-ci avec le Devin AI Setup Agent.
+
+### 
+
+​
+
+Étapes de configuration du dépôt
+
+1
+
+Git Pull
+
+La commande que Devin exécute au début de chaque session pour récupérer les dernières modifications depuis le dépôt. Dans la plupart des cas, vous devez conserver la commande par défaut. Assurez-vous que Devin a accès à tous les sous-modules du dépôt.
+--------------------------------------------------------------------------------
+Importar configuración de código - Devin Docs (https://docs.devin.ai/es/collaborate-with-devin/vscode-profiles)
+citeturn36search8 [wordlim: 200] Crawled: 6 months ago; Image: Welcome ... El script te pedirá que confirmes tus Settings visitando la URL app.devin.ai. ... Mira este video para ver cómo exportar tu perfil en VS Code (incluidos los forks de VS Code):
+
+
+Importar tu archivo `.code-profile` manualmente
+
+Una vez que tengas un archivo .code-profile, puedes subirlo al IDE de cualquier sesión de Devin que hayas iniciado.
+
+  1. Abre cualquier sesión de Devin que hayas iniciado.
+  2. Abre la paleta de comandos con `Cmd+Shift+P` (Mac) o `Ctrl+Shift+P` (Windows/Linux) y busca “Preferences: Devin: Import Profile (Manual)”.
+  3. Selecciona el archivo que subiste. Esto subirá tu perfil a la máquina. Todas tus extensiones y Settings deberían instalarse automáticamente.
+
+
+Verificar que la subida funcionó
+
+Puedes comprobar que tus Settings, extensiones y atajos de teclado se subieron correctamente haciendo lo siguiente en Devin IDE:
+
+  * Settings: abre la paleta de comandos (`Cmd+Shift+P` en Mac / `Ctrl+Shift+P` en Windows/Linux) y busca “Preferences: Open User Settings (JSON)”. Comprueba que coincida con la de tu editor local.
+  * Atajos de teclado: abre la paleta de comandos y busca “Preferences: Open Keyboard Shortcuts (JSON)”. Comprueba que coincida con la de tu editor local.
+  * Extensiones: haz clic en el icono de extensiones en la barra lateral de la derecha (o pulsa `Cmd+Shift+X` en Mac / `Ctrl+Shift+X` en Windows/Linux). Busca las extensiones que tienes instaladas localmente.
+
+
+Sincronización de ajustes
+
+Tus ajustes se sincronizarán automáticamente en todas tus sesiones. Ponte en contacto con el equipo de soporte si tienes algún problema.--------------------------------------------------------------------------------
+经典配置 - Devin Docs (https://docs.devin.ai/zh/onboard-devin/repo-setup)
+citeturn36search9 [wordlim: 200] Crawled: 6 months ago; > Fetch the complete documentation index at: https://docs.devin.ai/llms.txt ... Devin 的 Chrome 浏览器会暴露一个 Chrome DevTools Protocol (CDP) 端点，Playwright 可连接到 `http://localhost:29229`。
+  2. Devin AI Setup Agent：Devin 会根据你特定的代码仓库为每个步骤提出建议，并反复迭代调整设置，直到可以保存为止。
+  3. VSCode Terminal：使你能够在内嵌的 VSCode 环境中直接运行任意命令或浏览文件系统。
+
+### 
+
+​
+
+AI 生成的建议
+
+当你添加代码仓库时，Devin 会基于对代码库的分析，自动为每个步骤生成配置建议。你可以单独接受或拒绝每条建议，或通过 Devin AI Setup Agent 对这些建议进行迭代优化。
+
+### 
+
+​
+
+仓库设置步骤
+
+1
+
+Git Pull
+
+Devin 在每个会话开始时运行的命令，用于从仓库中拉取最新更改。在大多数情况下，建议保持默认命令不变。请确保 Devin 拥有对仓库中所有子模块的访问权限。
+
+2
+
+配置机密信息
+
+设置 Devin 在操作你的仓库时所需的任何机密信息或环境变量。更多详情参见 配置机密信息。
+
+3
+
+安装依赖
+
+用于安装仓库初始依赖的命令。在首次设置时运行一次，用于准备 Devin 的运行环境。
+--------------------------------------------------------------------------------
+Faturamento - Devin Docs (https://docs.devin.ai/pt-BR/admin/billing)
+citeturn36search10 [wordlim: 200] Crawled: 6 months ago; > Fetch the complete documentation index at: https://docs.devin.ai/llms.txt
+
+Faturamento
+
+# Faturamento
+
+> ## Documentation Index
+> 
+> Fetch the complete documentation index at: https://docs.devin.ai/llms.txt
+> 
+> Use this file to discover all available pages before exploring further.
+
+O Devin tem dois modelos de preços:
+
+  * Self-serve: planos Free, Pro, Max e Teams nos quais você pode se inscrever diretamente em app.devin.ai. O uso no self-serve é cobrado por meio de uma combinação de cota incluída e créditos sob demanda. Consulte planos self-serve para ver todos os detalhes.
+  * Enterprise: clientes do Devin Enterprise são cobrados em Agent Compute Units (ACUs), à taxa definida no formulário de pedido. Consulte Enterprise para saber como o consumo de ACUs é monitorado ou entre em contato com vendas para informações sobre preços.
+Para entender como funciona a medição de uso do Devin em geral (como o uso se acumula, o comportamento em inatividade/suspensão e dicas para manter o consumo sob controle), consulte Uso. As dicas nessa página se aplicam aos dois modelos de preços.
+

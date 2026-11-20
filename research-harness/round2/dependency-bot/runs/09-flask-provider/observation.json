@@ -1,0 +1,45 @@
+{
+  "case": "09-flask-provider",
+  "mode": "lookup",
+  "pins": {
+    "Flask": "2.2.2",
+    "Werkzeug": "2.2.3"
+  },
+  "config": {
+    "enabledManagers": [
+      "pip_requirements"
+    ],
+    "dependencyDashboard": true,
+    "packageRules": [
+      {
+        "matchDatasources": [
+          "pypi"
+        ],
+        "registryUrls": [
+          "http://127.0.0.1:<PORT>/pypi/"
+        ]
+      },
+      {
+        "matchPackageNames": [
+          "flask"
+        ],
+        "allowedVersions": "/^(2\\.2\\.2)$/"
+      },
+      {
+        "matchPackageNames": [
+          "werkzeug"
+        ],
+        "allowedVersions": "/^(2\\.2\\.3|2\\.3\\.8)$/"
+      }
+    ]
+  },
+  "returncode": 0,
+  "requests": [
+    "/pypi/flask/json",
+    "/pypi/werkzeug/json"
+  ],
+  "canary_before_explicit_test": false,
+  "git_head_unchanged": true,
+  "git_worktree_status": "",
+  "remotes": ""
+}

@@ -1,0 +1,193 @@
+On this page
+R
+R
+a
+a
+m
+m
+p
+p
+I
+I
+n
+n
+s
+s
+p
+p
+e
+e
+c
+c
+t
+t
+Scheduled auditing
+Monitor-driven maintenance
+Filtering the noise
+The upshot
+What we learned
+Citation
+R
+R
+a
+a
+m
+m
+p
+p
+I
+I
+n
+n
+s
+s
+p
+p
+e
+e
+c
+c
+t
+t
+Scheduled auditing
+Monitor-driven maintenance
+Filtering the noise
+The upshot
+What we learned
+Citation
+Engineering
+How we made Ramp Sheets self-maintaining
+Alex Levinson
+·
+March 23, 2026
+·
+5
+min read
+How we built a system that lets Ramp Sheets automatically detect and fix its own issues - reducing manual maintenance and improving reliability.
+We built an agentic system to maintain
+Ramp Sheets
+. It continuously monitors production, triages alerts, and proposes fixes without human intervention - although no code is merged without engineer review. The system runs on a thousand AI-generated monitors, one for every 75 lines of code.
+We built this because:
+Agents are cheap to run, infinitely patient, and easy to parallelize. These properties make exhaustive monitoring feasible at production scale.
+Teams hate owning observability, ourselves included. Offloading this grunt work to an agent lets us
+ship faster
+.
+Strong observability and QA mean fewer bugs, less downtime, and a better experience for Ramp customers.
+#
+Ramp Inspect
+We chose to build our maintenance system using
+Ramp Inspect
+, our internal background coding agent. Each Inspect session spins up a full sandboxed dev environment, allowing the agent to make real API requests, run tests, and reproduce bugs end-to-end against live code. This interactivity is critical, as subtle failure modes are rarely apparent from static code review.
+#
+Scheduled auditing
+Our first attempt at self-maintenance took the form of a scheduled agentic review. Every night, we automatically spun up an agent to run a QA pass on Ramp Sheets, instructed to:
+Sanity-test core features
+Stress-test recently merged PRs
+Probe existing functionality for latent bugs
+This design worked well, and surfaced several real production bugs every day. Further, we designed the workflow to be a system of action: If the agent found a real issue, it would put up a PR to address the root cause. More than once, an engineer shipped a feature with a bug they hadn't noticed; by morning, the agent had caught the regression and pushed a fix.
+Thread
+···
+IN
+Inspect
+APP
+Thursday at 10:00 PM
+@Alex Levinson
+'s Sheets QA Nightly —
+View session
+(
+applied-ai
+)
+✅
+1
+1
+reply
+IN
+Inspect
+APP
+Thursday at 10:00 PM
+Ran live Ramp Sheets backend QA directly against
+localhost:8002
+after reading the backend architecture. Auth and SSE security checks passed, workbook upload/get, ask-mode, session save/load, stop, and save-workbook all worked, and the recent Sheets backend change in
+modal_sheets
+looked healthy overall.
+
+I found one real bug: the backend can emit
+agent_complete
+before the final workbook is durably readable via
+GET /runs/{run_id}/workbook
+. In repros, a successful spreadsheet write tool call completed,
+agent_complete
+fired, and an immediate workbook fetch still returned stale cells for a few seconds. I spawned a child session to fix that race.
+See less
+All done (GPT-5.4 · applied-ai)
+View session
+Archive
+Our QA agent finds a race condition in Sheets’ streaming architecture and puts up a fix.
+However, the nightly agent had serious limitations. With no specific mission, the agent always progressed down the same paths in its QA workflow, reading the same files, investigating the same features, running the same tests. While this pattern proved effective at finding high-radius issues, it could not catch narrow, situational bugs.
+Although Ramp Sheets is extensively instrumented on Datadog, our unfocused QA agent struggled to extract nuanced insights from the telemetry. Current frontier models are very capable at a wide range of software engineering tasks, but they cannot synthesize a large codebase with a large observability surface and determine what needs attention. Prioritization at production scale requires a level of intelligence surpassing that of any model available today.
+#
+Monitor-driven maintenance
+For our next iteration, we used Datadog monitors to direct the agent at specific production issues. These monitors watch metrics and log patterns, firing alerts on error rate spikes, latency regressions, or other deviations from expected behavior. The system works in two steps:
+On PR merge, an agent reads the diff and generates monitors instrumenting the new code.
+When a monitor fires, a
+Datadog webhook
+kicks off a new agent with the alert context. The agent reproduces the issue in its sandbox, pushes a fix, and notifies us on Slack.
+Agent-Active / Events-Not-Broadcasting
+Status:
+Alert
+Query
+avg(last_5m):sum:ramp.sheets.agent_active{*} by {service} < 1
+Message
+Agent is active but events are not being broadcast to connected clients. This may indicate a race condition in the streaming pipeline.
+team:applied-ai
+service:modal_sheets
+severity:warning
+Agent-generated monitors are specific and sophisticated. This composite monitor combines signals from Ramp Sheets’ backend and SSE queue, alerting when agent activity diverges from broadcasted event throughput.
+This pattern allows us to detect and respond to incidents with remarkable speed and granularity. In its first week, the system caught 40 real bugs, each within minutes of a user triggering the issue. In one instance, a user uploaded a spreadsheet with a unique type of embedded image that our existing logic could not handle; the resulting exception set off a monitor and moments later, the agent had alerted us with a fix ready. In another case, an internal user Slacked us about a broken feature - but our system had already flagged the exact issue before his message even landed.
+#
+Filtering the noise
+The major weakness in this approach was noise. Auto-generated monitors have bad thresholds. Routine user activity triggered a cascade of alerts, most of them false positives. Further, monitors fired repeatedly for the same issue, flooding Slack with duplicate notifications.
+To filter the noise, we added a triage step. On every alert, the agent first assesses the scope of the problem:
+If it’s a real issue, the agent pushes a fix and posts to Slack.
+If it's noise, the agent tunes or deletes the monitor.
+To guard against duplicate alerts, we store state on the monitor itself. When an agent pushes a fix, it appends the PR link to the monitor description. Subsequent agents see the link and stand down.
+Monitor Triage Workflow
+Monitor Alert Triggered
+Triage
+Tune or Delete Monitor
+Fix PR Open?
+Stand Down
+Push Fix PR
+Notify Human
+Noise
+Real Issue
+Yes
+No
+#
+The upshot
+In a few weeks, we scaled Ramp Sheets from ten hand-written monitors to over a thousand, one for every 75 lines of code. Our manual monitors were broad-strokes: alert when the frontend crashes, or when an API call times out. The AI-generated ones are far more granular, acting like a tight mesh over the exact shape of the code; whenever that shape drifts from the expected, we are notified.
+10 manual monitors
+1,000 AI-generated monitors
+#
+What we learned
+Detect everything, notify selectively. The system should watch every signal, but each alert that reaches a human should mean something. Teams ignore noisy monitors, and they'll ignore noisy agents too.
+Delegate to the agent. Let it scope out the problem, judge impact, make changes, and filter out noise. It's very good at this, and will get better as models improve.
+Sandboxed reproduction improves results. In our system, the agent reproduces the failure against live code and only pushes a fix once that reproduction test passes. This pattern ensures that the issue is real, and that the agent's proposed fix works in practice.
+Model choice matters. Although the GPT-5 model series are very thorough debuggers, we found Opus 4.6 was a more accurate triage evaluator, and specifically better at filtering out noisy alerts.
+Correct Triage Classification
+Tight observability breeds customer empathy. When every slow load or bad output fires a notification, the team feels the product the same way users do. We caught bugs we never would have prioritized on our own.
+Keep your existing stack. Auto-generated monitors are powerful but opaque, and not yet reliable enough to be your only line of defense. When things go seriously wrong, you still want instrumentation you wrote and trust. As models improve, that will change.
+Want to keep up with our next AI experiments? Subscribe here and follow us on
+@RampLabs
+. We’re also
+hiring across roles
+at Ramp.
+Article by Alex Levinson
+@a_levitator
+#
+Citation
+Alex Levinson
+·
+March 23, 2026
+·
+Engineering

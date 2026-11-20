@@ -1,0 +1,90 @@
+[
+  {
+    "id": "container:0",
+    "input": "()",
+    "expected": "()",
+    "actual": "None",
+    "error": "SyntaxError: invalid syntax (<lambdifygenerated-1>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:1",
+    "input": "(1,)",
+    "expected": "(1,)",
+    "actual": "(1,)",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "container:2",
+    "input": "(-1, 2)",
+    "expected": "(-1, 2)",
+    "actual": "(-1, 2)",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "container:3",
+    "input": "[]",
+    "expected": "[]",
+    "actual": "None",
+    "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<lambdifygenerated-4>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:4",
+    "input": "[0]",
+    "expected": "[0]",
+    "actual": "None",
+    "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<lambdifygenerated-5>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:5",
+    "input": "[(1,)]",
+    "expected": "[(1,)]",
+    "actual": "None",
+    "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<lambdifygenerated-6>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:6",
+    "input": "((),)",
+    "expected": "((),)",
+    "actual": "None",
+    "error": "SyntaxError: invalid syntax (<lambdifygenerated-7>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:7",
+    "input": "(1, (2,))",
+    "expected": "(1, (2,))",
+    "actual": "(1, (2,))",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "container:8",
+    "input": "[[], (1,), (-1, 2)]",
+    "expected": "[[], (1,), (-1, 2)]",
+    "actual": "None",
+    "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<lambdifygenerated-9>, line 2)",
+    "ok": false
+  },
+  {
+    "id": "container:9",
+    "input": "((1, 2), (3,))",
+    "expected": "((1, 2), (3,))",
+    "actual": "((1, 2), (3,))",
+    "error": null,
+    "ok": true
+  },
+  {
+    "id": "container:10",
+    "input": "((), [1])",
+    "expected": "((), [1])",
+    "actual": "None",
+    "error": "SyntaxError: closing parenthesis ']' does not match opening parenthesis '(' (<lambdifygenerated-11>, line 2)",
+    "ok": false
+  }
+]

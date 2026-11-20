@@ -1,0 +1,174 @@
+检索参数 {"search_query":[{"q":"Slack enterprise search API AI apps permission search context shared channel Glean permission aware search Atlassian Rovo permissions docs"}],"response_length":"medium"}
+Set up and manage Slack enterprise search | Slack (https://slack.com/help/articles/39044407124755-Set-up-and-manage-Slack-enterprise-search)
+citeturn24search0 [wordlim: 200] Crawled: today; For more information, visit Enterprise Search for apps in our API documentation. ...   * Search results, AI answers, and Slackbot responses will only include source content that the person searching has permission to access.
+
+# Set up and manage Slack enterprise search
+
+With enterprise search, members of your organization can find the information and content they need from other applications (like Google Drive, GitHub, and more) right where they’re already working in Slack.
+
+Image: Animated GIF showing enterprise search results including Slack AI search answers and files from Google Drive
+
+Tip: You can also create custom connectors using internal data sources with the Slack APIs. For more information, visit Enterprise Search for apps in our API documentation.
+
+### 
+How it works
+
+  * Org Owners and Org Admins can enable or disable enterprise search. For most organizations, enterprise search is disabled by default, but if you use the Google Drive or Microsoft One Drive and Sharepoint apps in Slack it may be enabled automatically.
+  * Once enterprise search is enabled and you’ve added at least one data source, members can connect their individual accounts to start seeing content from other places in their search results.
+  * Search results, AI answers, and Slackbot responses will only include source content that the person searching has permission to access. You can also choose whether Slack will surface this content in traditional search results, AI answers, or both.
+Enable or disable enterprise search
+
+  1. From your desktop, click your organization name in the sidebar.
+Image
+  2. Hover over Tools & settings, then select Organization settings from the menu.
+  3. Click   Settings in the left sidebar and select Enterprise search.
+  4. Click Edit.
+  5. Check or uncheck the box next to Enable enterprise search for the entire organization and click Save.
+Add data sources
+
+Once you make a data source available for your organization, members can connect their accounts to view content from that source in Slack search results. Some data sources require additional configuration to complete setup.
+
+### Supported data sources
+
+  * Asana
+  * Box
+  * Confluence Cloud
+  * Dropbox
+--------------------------------------------------------------------------------
+Search across your applications with enterprise search | Slack (https://slack.com/help/articles/38693462131219-Search-across-your-applications-with-enterprise-search)
+citeturn24search1 [wordlim: 200] Crawled: today;   * Once enterprise search is enabled, members can connect their individual accounts to include content from other sources in search results, AI answers, and Slackbot responses. ... Tip: Slackbot will include content you can access from enterprise search data sources in its responses.
+
+# Search across your applications with enterprise search
+
+With enterprise search, you can quickly find information and get answers to questions from all of the apps your organization uses (like Google Drive, GitHub, and more), right in Slack.
+How it works
+
+  * An Org Owner or Org Admin will need to enable enterprise search and connect at least one data source in order for members of their organization to use the feature. If you don’t see the option to use enterprise search, ask an owner or admin for help.
+  * Once enterprise search is enabled, members can connect their individual accounts to include content from other sources in search results, AI answers, and Slackbot responses.
+
+## 
+Connect an account
+
+To use enterprise search, you’ll need to connect your account to the data sources your admins have made available in your organization.
+
+  1. From your desktop, click the   search field at the top of Slack.
+  2. Type a search into the field and press Enter to open the search results page. --------------------------------------------------------------------------------
+search:read.enterprise scope | Slack Developer Docs (https://docs.slack.dev/reference/scopes/search.read.enterprise/)
+citeturn24search2 [wordlim: 200] Crawled: last week; # `search:read.enterprise` scope ... This scope allows apps using AI features to search content in third-party apps to help them answer user queries. The user performing the search must have previously connected the app, and the search will be performed using that user's credentials.
+
+# `search:read.enterprise` scope
+
+Search content in your enterprise.
+
+## Facts​
+
+Supported token types
+
+`Bot`
+
+`Legacy Bot`
+
+## Usage info​
+
+This scope allows apps using AI features to search content in third-party apps to help them answer user queries. The user performing the search must have previously connected the app, and the search will be performed using that user's credentials.--------------------------------------------------------------------------------
+Data Access API | Slack (https://api.slack.com/docs/apps/data-access-api)
+citeturn24search3 [wordlim: 200] Crawled: 1.3 years ago; The Slack developer docs are moving! ... The purpose of the Data Access API is real-time data retrieval, designed to be used after a user interacts with an AI app, to ground RAG queries in relevant data from Slack. ... The Data Access API then searches all conversations (within the scope of permission granted) on the keywords provided in the user query and returns an array of messages relevant to the keyword search. ...             "next_cursor": "Q1VSUkVOVF9QQUdFOjI=" ... Or maybe you'd like to provide the entire history of the channel that the user is currently in, alongside the data retrieved from the `assistant.search.context` method. ... When calling the Data Access API from within a public channel, the scope of content searched and shared is more limited. ... When performing a search, a third-party app requires various permissions to access data.
+Contact Customer Experience at feedback@slack.com to request to be added.
+
+## API Overview
+
+The purpose of the Data Access API is real-time data retrieval, designed to be used after a user interacts with an AI app, to ground RAG queries in relevant data from Slack. An application will receive an ephemeral token, called the `action_token`, from a message event, which can then be used to make a request to the Data Access API via the `assistant.search.context` method. The Data Access API then searches all conversations (within the scope of permission granted) on the keywords provided in the user query and returns an array of messages relevant to the keyword search.
+
+### Required Scopes
+
+Your app must contain at least one of the following scopes, each providing various levels of access. Include all of them for a wider base from which to search.
+
+Scope  | Description
+--- | ---
+`search:read.public`  | Read access to all public channel messages
+`search:read.private`  | Read access to all private channel messages
+--------------------------------------------------------------------------------
+Overview | Slack Developer Docs (https://docs.slack.dev/enterprise-search/)
+citeturn24search4 [wordlim: 200] Crawled: today; Your app must be installed on your org and granted access to one or more workspaces to enable support for Enterprise Search. ... Note that apps containing Enterprise Search cannot be distributed publicly or submitted to the Slack Marketplace.
+--------------------------------------------------------------------------------
+Using the Real-time Search API | Slack Developer Docs (https://docs.slack.dev/apis/web-api/real-time-search-api/)
+citeturn24search5 [wordlim: 200] Crawled: today; Having the `search:read.files` scope lets you search for files, but if you want to download the file content, you also need the `files:read` scope. ... Identify a channel or thread where more context would be helpful. ...   * Pull the details of a thread around a document shared in Slack from your platform ... If the Real-time Search API is called from a Slack Connect channel, it will return results from only the channel where it was invoked. ... When performing a search, a third-party app requires various permissions to access data. ... Workspace guests are not permitted to access apps using platform AI features, and therefore, the Real-time Search API. ... If the app offers semantic search, please include a disclaimer that users must have a Business+ or Enterprise+ Slack plan to use the feature.
+--------------------------------------------------------------------------------
+Announcing the Slack MCP server and Real-time Search API | Slack Developer Docs (https://docs.slack.dev/changelog/2026/02/17/slack-mcp)
+citeturn24search6 [wordlim: 200] Published: 9 months ago; Crawled: 4 months ago; We're excited to announce the release of not one, but two, major components designed to significantly enhance how Large Language Models (LLMs) and AI agents interact with your workspace data: the Slack Model Context Protocol (MCP) server and the Real-time Search (RTS) API! ...   * `search:read.public` (required) - for public channel access
+--------------------------------------------------------------------------------
+Slack Enterprise Search Connectors & Software | Slack (https://slack.com/features/enterprise-search)
+citeturn24search7 [wordlim: 200] Crawled: 2 weeks ago; Say hello to enterprise search, where all your conversations, data, and third-party apps are searchable from a single, AI-powered search bar. ... Plug knowledge gaps using an API to bring your most valuable sources to enterprise search. ... ## Permission-aware results, personalized for you. ... I ask conversational questions, and Slack creates useful context in addition to providing credible responses to the questions I have." ... Simply ask a natural language question in the Slack search bar, and you’ll get a conversational summary informed by the most relevant results, all while respecting your access permissions to that data.
+--------------------------------------------------------------------------------
+Manage apps in an Enterprise organization | Slack (https://slack.com/help/articles/360000281563-Manage-apps-in-an-Enterprise-organization)
+citeturn24search8 [wordlim: 200] Crawled: today; 5†Image†a.slack-edge.com】 ... Select an app from the list, then click the Member Permissions tab at the top of the page. ... Next to Who has permission to initiate interaction with this app, click Edit. ... Manage channel access for apps ... For example, you can restrict AI apps in channels where AI use has already been blocked.
+--------------------------------------------------------------------------------
+Set up and manage Slack enterprise search | Slack (https://slack.com/intl/en-gb/help/articles/39044407124755-Set-up-and-manage-Slack-enterprise-search)
+citeturn24search9 [wordlim: 200] Crawled: today; For more information, visit Enterprise search for apps in our API documentation. ...   * Search results, AI answers and Slackbot responses will only include source content that the person searching has permission to access. ... Sign in to GitHub and install the Slack enterprise search for GitHub app.
+--------------------------------------------------------------------------------
+Corporate Search & AI-Powered Enterprise Search Tools | Slack (https://app.slack.com/features/enterprise-search)
+citeturn24search10 [wordlim: 200] Crawled: 2 months ago; Say hello to enterprise search, where all your conversations, data, and third-party apps are searchable from a single, AI-powered search bar. ... ## Search Slack, and every connected app. ... ## Permission-aware results, personalized to you. ... I ask conversational questions, and Slack creates useful context in addition to providing credible responses to the questions I have.” ... Simply ask a natural language question in the Slack search bar, and you’ll get a conversational summary informed by the most relevant results, all while respecting your access permissions to that data.
+--------------------------------------------------------------------------------
+Use Glean in the Slack sidebar (https://docs.glean.com/user-guide/embedded-integrations/slack/use-slack-sidebar)
+citeturn24search11 [wordlim: 200] Published: last week; Crawled: today; After your admin installs the Glean app, you can use it in Slack to ask questions, search your company's knowledge, and run supported agents without opening the Glean web app. ... Each user may also need to authorize Slack RTS to receive permission-aware results from private channels and direct messages. ... Search Slack for the Glean app, select it in the results, open its About tab, and select New Chat. ...   * An agent should respond in a shared Slack channel or thread that everyone in the conversation can see.
+--------------------------------------------------------------------------------
+22 ways to automate work in Slack (https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/en-GB-From-searching-to-finding-The-new-era-of-AI-powered-enterprise-knowledge.en-GB.pdf)
+citeturn24search12 [wordlim: 200] Published: last year; Crawled: 8 months ago; FROM SEARCHING TO FINDING: THE NEW ERA OF AI-POWERED ENTERPRISE KNOWLEDGE 4 ... Messages, files and app data are all connected in one place, so you can ask a question and get an answer without switching context or chasing links. ... This method respects permissions: you only see what you are allowed to see, based on your existing access in each system. ... At one point, I had been searching everywhere for a specific demo video, and after I connected to Google Drive in Slack’s enterprise search I found it immediately – as well as the thread where I needed to share the demo.
+--------------------------------------------------------------------------------
+22 ways to automate work in Slack (https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/The-End-of-Digital-Scavenger-Hunts-How-Slack-AI-Reimagines-Enterprise-Search.pdf)
+citeturn24search13 [wordlim: 200] Published: 1.5 years ago; Crawled: 8 months ago; Maintaining appropriate access controls and permissions is critical to any enterprise knowledge solution. ... HOW SLACK AI REIMAGINES ENTERPRISE SEARCH
+--------------------------------------------------------------------------------
+Effective: 29th May 2025 (https://privacytracker.co.za/tos/slack-api/version/slack-api-bf9cc0/pdf)
+citeturn24search14 [wordlim: 200] Published: 9 months ago; legal requirements if the use of your app will result in the international ... Slack message and file data except where expressly allowed by an additional ... The Data Access API is intended to facilitate real-time search and data
+--------------------------------------------------------------------------------
+22 ways to automate work in Slack (https://d34u8crftukxnk.cloudfront.net/slackpress/prod/sites/6/From-searching-to-finding-The-new-era-of-AI-powered-enterprise-knowledge.pdf)
+citeturn24search15 [wordlim: 200] Published: 1.3 years ago; Crawled: last year; ## Respecting permissions ... When you search across external apps, Slack queries those systems live. ... Slack’s enterprise search follows strict enterprise-grade standards for security and compliance. ... FROM SEARCHING TO FINDING: THE NEW ERA OF AI-POWERED ENTERPRISE KNOWLEDGE 8
+--------------------------------------------------------------------------------
+0001764925-20-000251 (https://d18rn0p25nwr6d.cloudfront.net/CIK-0001764925/f7df36ad-a495-4dd7-8452-65e8ecd917ce.pdf)
+citeturn24search16 [wordlim: 200] Published: 6.7 years ago; Crawled: 4 days ago; - **Search:** Everything in Slack, including messages, posts from applications, and text content of files is searchable, so that permissioned users can tap into company knowledge and find information when they need it. ... We also leverage machine learning to deliver personalized search results based on user behavior and context, such as the people a user may communicate with most often, the files that may be most relevant to the user and the channels in which the user tends to participate. ... From time to time, we provide additional features and functionality, such as enterprise key management, to meet specialized requirements of organizations on Slack. ... We foster our platform ecosystem through our dedicated Slack API site, open source forums, software development kits, global developer events, partnerships, and technical support for developers building for their own companies or aiming to list their apps in our App Directory.
+--------------------------------------------------------------------------------
+Anyone having success Enterprise search connected to Google drive? (https://www.reddit.com/r/Slack/comments/1n8bkvu)
+citeturn24reddit17 [wordlim: 200] Published: 1.2 years ago; Crawled: 1.2 years ago; Enterprise Search respects Google Workspace permissions (its an Oauth connection for each user, you can find it in API access in GW), so if user A might have different results from user B if there are other sources it’s able to pull from. Its also worth filtering your search to search only Google Drive and not Slack (iirc the filter is on the right hand side of the AI answer) in case there are Slack results that may affect the answers.
+In my experience there isn’t really any config you can do on the integration other than turning it on, so I wonder if it’s a drive permission issue.
+--------------------------------------------------------------------------------
+Meet Claude Tag, Anthropic's new AI teammate that works in Slack (https://www.itpro.com/software/meet-claude-tag-anthropics-new-ai-teammate-that-works-in-slack)
+citeturn24news18 [wordlim: 100] Published: 4 months ago; Meet Claude Tag, Anthropic’s new AI teammate that works in Slack ... Cross-channel context is also another key feature, according to Anthropic. The agent can learn and build context based on conversations in other Slack channels and data sources, provided it's granted permission. ... Claude Tag will replace the existing Claude in Slack application, and is available now in beta for users working on Claude Enterprise or Team subscriptions.
+"This means that anyone can see what it's working on, and can pick up the conversation from where the last person left off," Anthropic explained. 
+This marks a significant change from previous processes, whereby individual employees interacted with Claude within a single chat, or on a specific task. 
+"It's much more like interacting collaboratively with a teammate."
+The new agent also learns continuously based on the tasks it's been assigned, building more context as time goes on. This is a key feature touted by the company, meaning that users don't need to provide detailed explanations from scratch for each individual task. 
+Cross-channel context is also another key feature, according to Anthropic. The agent can learn and build context based on conversations in other Slack channels and data sources, provided it's granted permission. 
+The company confirmed that it does not learn based on conversations in private channels. 
+Elsewhere, a new 'ambient' mode is available for Claude Tag, which provides users with interactive updates on project progress, tasks, or "whatever it thinks you might need to know". 
+--------------------------------------------------------------------------------
+Glean expands enterprise AI ecosystem with new partner program (https://www.itpro.com/business/business-strategy/glean-expands-enterprise-ai-ecosystem-with-new-partner-program)
+citeturn24news19 [wordlim: 100] Published: 2 months ago; Glean has cut the ribbon on a new global partner program as the enterprise AI startup looks to expand its channel ecosystem. ... The offering brings together company knowledge, people, permissions, and activity, giving AI applications and agents access to context from across an organization. ... "Glean provides the permission-aware foundation to move from experimentation to adoption," he commented.
+--------------------------------------------------------------------------------
+Dreamforce 2025 live: All the latestupdates from San Francisco (https://www.itpro.com/technology/live/dreamforce-2025-live-all-the-news-and-updates-from-on-the-ground-in-san-francisco)
+citeturn24news20 [wordlim: 100] Published: 1.1 years ago; Stokes runs us through a demo in which he is able to make a 'Dreamforce Command Center' app using natural language, acting as a centralized, live dashboard for data from the conference floor. ... A user can upload the same, 200-page PDF to Data 360, using its built-in governance feature to mask internal FedEx employee contact details within the file. ... Agentforce understand the employee's context and access privileges and can grant download access accordingly. ... But the focus of today's event for Doolan is Slack Enterprise Search, which allows users to find the data in their chosen system - Google Drive, OneDrive, Asana, GitHub, and others - without leaving Slack. ... "Imagine the power of Slackbot across your companies: it gives you the power of context and AI in the flow of work," Doolan says. ... Seaman says Salesforce has tracked an 800% increase in agent and AI app creation in Slack this year. ... Landing pages built with v0 can then be iterated upon by sharing a link in a Slack channel, with entire teams able to collaborate on changes and additions.
+--------------------------------------------------------------------------------
+Atlassian just launched a new ChatGPT connector feature for Jira and Confluence - here's what users can expect (https://www.itpro.com/software/atlassian-just-launched-a-new-chatgpt-connector-feature-for-jira-and-confluence-heres-what-users-can-expect)
+citeturn24news21 [wordlim: 100] Published: 11 months ago; Atlassian has announced the latest addition to its Rovo MCP ecosystem with the launch of a new Model Context Protocol (MCP) connector for ChatGPT. ... It uses OAuth authentication and respects all existing permission controls, the firm explained, so that data stays protected wherever it's accessed. ... "MCP helps us deliver on our promises of open connectivity, accelerated workflows, context-rich AI, customer choice, and a vibrant builder ecosystem," said the company.
+--------------------------------------------------------------------------------
+Has anyone tried the new Slack AI feature? (https://www.reddit.com/r/Slack/comments/1bwf8di)
+citeturn24reddit22 [wordlim: 200] Published: 2.6 years ago; Crawled: 2.3 years ago; I have the Enterprise grid plan in one of my organizations. ... I don't use the summarize channel or thread as much, but some of my coworkers use this all the time to catch up on condos quickly ... I guess the app won’t get slow, right? ... Slack AI search uses only the data that you already have access to in Slack to generate search answers. ... * Message previews from links shared in Slack
+--------------------------------------------------------------------------------
+Slack taps AI to summarize your long-winded co-workers (https://www.axios.com/2024/02/14/slack-salesforce-generative-ai-productivity)
+citeturn24news23 [wordlim: 100] Published: 2.8 years ago; Details: Slack AI, as the company is calling the new features, is a paid add-on for enterprise plans and will show up in a variety of ways. ... Slack AI won't surface information from channels workers don't have access to, but the feature could cause headaches for businesses that have been lax with channel permissions.
+--------------------------------------------------------------------------------
+API Access to Search Results (https://www.reddit.com/r/Slack/comments/1mk40uv)
+citeturn24reddit24 [wordlim: 200] Published: 1.3 years ago; Crawled: 1.3 years ago; I’ve noticed the AI functionality in the search bar and am exploring ways to build a workflow around it for some of our engineers. ... I’ve seen that Slack offers API access to invoke searches, which is promising.
+--------------------------------------------------------------------------------
+Hi Reddit AI enthusiasts! We’re Nilesh, Ayushi, Jesika, and Shiv from the Glean team responsible for building the leading AI platform for enterprises. From our experience building AI agents to how businesses use agents today, ask us anything on March 26 from 10-11am PST! (https://www.reddit.com/r/u_GleanOfficial/comments/1j9v1su)
+citeturn24reddit25 [wordlim: 200] Published: 1.7 years ago; Crawled: 1.5 years ago; When Glean just had enterprise search, it already solved a big problem for me in finding internal docs, tickets and slack conversations. ...   * Personalization and Permission-Aware Filtering: Glean utilizes advanced permissioning and personalization systems to ensure search results and AI-generated responses are accurately tailored to each user's role, department, and organizational context. ... Conversational Agents: Interact with users via text or voice, often integrated into platforms like Slack or Teams. ...   * Permissions and Access Control: Enterprise AI must understand and enforce fine-grained access controls, ensuring users can only access data they are explicitly authorized to see.
+--------------------------------------------------------------------------------
+"Slackbot isn't just another copilot or AI assistant - it's the front door to the Agentic Enterprise" - Salesforce's new superpowered AI is now open to all (https://www.techradar.com/pro/slackbot-isnt-just-another-copilot-or-ai-assistant-its-the-front-door-to-the-agentic-enterprise-salesforces-new-superpowered-ai-is-now-open-to-all)
+citeturn24news26 [wordlim: 100] Published: 10 months ago; First announced at Dreamforce 2025, Slackbot is now available to all Business+ and Enterprise+ customers, bringing together not only Slack and Salesforce data, but third-party apps and services such as Google Drive and your calendar app.
+The company says Slackbot can offer an important advantage to users as it does not simply offer basic suggestions or assistance, but fully understands their conversations and the context in which they happen, and has the ability (and permissions) to scan across systems to get the information needed right away. ... This vision means Slackbot is set to become another member of your team, not just a simple AI agent, but one with access to the context around messages, which understands your files, channels, and even your co-workers - and can be quickly activated and contacted with just a click in Slack.
+--------------------------------------------------------------------------------
+Title: ChatGPT Slack event-trigger registration says “@ChatGPT isn’t in the channel,” but Slack API confirms membership (https://www.reddit.com/r/Slack/comments/1x6gfaz/title_chatgpt_slack_eventtrigger_registration/)
+citeturn24reddit27 [wordlim: 200] Published: last month; * A current Slack API channel-membership query explicitly lists both my user and the ChatGPT bot. ... * Slack’s “AI agent experience” setting is enabled for the ChatGPT app. ... * Signing into admin.openai.com with the same account used for ChatGPT displays “Access required.” ... One potentially relevant detail: Slack shows extensive permissions granted on behalf of my user, but the app-level permission shown in the installed configuration is limited to viewing messages that directly mention u/ChatGPT.
+--------------------------------------------------------------------------------
+How good is SlackAI really? (https://www.reddit.com/r/Slack/comments/1o97kmm)
+citeturn24reddit28 [wordlim: 200] Published: 1.1 years ago; Crawled: 1.1 years ago; And the app you are thinking about would need API access to all channels, it's doable but a pain. ... This is the value prop of every company doing "Enterprise Search",  Glean being one of the most notable companies dedicated to that function but other apps are doing similar things. ... Slack AI is nice because it's easy, in context, and has more access to Slack data that might be helpful for giving context to the LLM than other apps that support Slack in their Ent Search offering.
+

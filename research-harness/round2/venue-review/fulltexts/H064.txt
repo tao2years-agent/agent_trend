@@ -1,0 +1,934 @@
+            An Empirical Study of Knowledge Transfer
+                    in AI Pair Programming
+Alisa Welter1 , Niklas Schneider1 , Tobias Dick1 , Kallistos Weis1 , Christof Tinnes2 , Marvin Wyrich1 , Sven Apel1
+                                          1
+                                            Saarland University, Germany
+                                              2
+                                                Siemens AG, Germany
+
+
+   Abstract—Knowledge transfer is fundamental to human collab-               of pair programming is knowledge transfer [6], which is the
+oration and is therefore common in software engineering. Pair                focus of our research.
+programming is a prominent instance. With the rise of AI coding                  Knowledge transfer frequently happens during pair pro-
+assistants, developers now not only work with human partners but
+also, as some claim, with AI pair programmers. Although studies              gramming, as developers continuously discuss issues and their
+confirm knowledge transfer during human pair programming,                    solutions as they progress [2, 6, 7]. This creates learning oppor-
+its effectiveness with AI coding assistants remains uncertain.               tunities through knowledge exchange and valuable discussions
+   To analyze knowledge transfer in both human–human and                     that contribute to solving tasks or resolving challenges. For
+human–AI settings, we conducted an empirical study where                     instance, a developer might explain some domain logic, guide
+developer pairs solved a programming task without AI support,
+while a separate group of individual developers completed the                their peer through a complex algorithm, or simply demonstrate
+same task using the AI coding assistant G IT H UB C OPILOT. We               a new keyboard shortcut in their coding environment. It is
+extended an existing knowledge transfer framework and employed               important to note that knowledge transfer can occur subtly and
+a semi-automated evaluation pipeline to assess differences in                does not always result from direct questions and answers. It can
+knowledge transfer episodes across both settings. We found                   emerge naturally during collaboration, such as when developers
+a similar frequency of successful knowledge transfer episodes
+and overlapping topical categories across both settings. Two of              proactively share insights or demonstrate best practices.
+our key findings are that developers tend to accept G IT H UB                    In the literature, different views on knowledge transfer
+C OPILOT’s suggestions with less scrutiny than those from human              in pair programming have been explored [6, 8]. In general,
+pair programming partners, but also that G IT H UB C OPILOT can              collaborative techniques such as discussions and peer teaching
+subtly remind developers of important code details they might                have been shown to deepen learners’ understanding of concepts
+otherwise overlook.
+   Index Terms—AI pair programming, knowledge transfer                       and problems compared to working alone [9, 10]. With the
+                                                                             idea of AI pair programming, a second human is not always
+                         I. I NTRODUCTION                                    involved in such pair activities. Kuttal et al. [7] studied a
+                                                                             digital agent with a simulated face that engaged programmers
+   Pair programming has been shown to be an efficient                        through questions and suggestions, but its limited reasoning
+technique, yielding higher quality and more readable code                    hindered effective knowledge exchange. Imai [11] investigated
+compared to individual efforts [1, 2]. While pair programming                changes in productivity and code quality in pair programming
+can reduce errors, its lower time efficiency [1] often leads to it           with G IT H UB C OPILOT compared to a human partner. In their
+being underused in practice. Meanwhile, advances in AI have                  study, G IT H UB C OPILOT enhanced productivity but reduced
+begun to reshape coding practices. The advent of G IT H UB                   code quality, as indicated by an increase in deleted lines.
+C OPILOT [3] in late 2021, followed by other coding assistants,                  The broader picture is that, while existing research has either
+has noticeably changed how code is written [4, 5]. G IT H UB,                focused on understanding and improving human–human pair
+for example, reports a growing number of companies adopting                  programming or on using agents to enhance efficiency, only
+G IT H UB C OPILOT1 to increase productivity, claiming that one              little attention has been paid to directly comparing knowledge
+in three Fortune 500 companies now employs it.2 Similarly,                   transfer between human–human pair programming and pair
+Google’s CEO Sundar Pichai notes that over a quarter of new                  programming with AI coding assistent. We therefore set out
+code at Google is now AI-generated.3                                         to investigate knowledge transfer in programming with AI
+   This emerging technical landscape has sparked the idea                    coding assistants, particularly G IT H UB C OPILOT, and compare
+of “AI pair programmers”, that is, replacing one of the two                  it to traditional pair programming. To measure knowledge
+human developers in a pair programming setting with an                       transfer, we devise a knowledge transfer framework based
+AI coding assistant. A key question, however, is whether                     on the works of Zieris and Prechelt [6] and Kuttal et al. [7].
+an AI coding assistant can effectively replace the second                    Based on this framework, we establish a semi-automated
+human while preserving the core benefits of traditional pair                 pipeline to evaluate the data collected from our empirical
+programming. In particular, one significant long-term benefit                study, in which a total of 19 developers either code as pairs
+1 https://github.com/features/copilot/
+                                                                             or use G IT H UB C OPILOT on a programming problem that
+2 https://www.microsoft.com/investor/reports/ar24/index.html                 required participants to develop algorithms and integrate them
+3 https://blog.google/inside-google/message-ceo/alphabet-earnings-q3-2024/   into a cohesive project framework.
+   Our results show that knowledge transfer occurs in both individual programming due to the increased number of person-
+human–human pair programming and human–AI pair program- hours required. Additionally, the benefit of pair programming
+ming. G IT H UB C OPILOT can even subtly provide helpful declines with programmer expertise and task complexity [1].
+reminders, such as suggesting missing database commits. C. AI Coding Assistants
+While human pairs engage in more frequent but sometimes
+distracting exchanges, G IT H UB C OPILOT promotes more              While pair programming is traditionally between two hu-
+focused interactions—though users tend to trust its suggestions   mans,  an AI coding assistant can take on tasks typically handled
+more readily, raising questions about critical engagement.        by  a human   partner. G IT H UB C OPILOT is a popular example,
+                                                                  powered by the large language model (LLM) C ODEX [3].
+   In summary, our contributions are as follows:
+                                                                  Released by M ICROSOFT in 2021, it was one of the first
+   • We unify and extend the perspectives of Zieris and Prechelt
+                                                                  AI assistants to be integrated into Integrated Development
+      [6] and Kuttal et al. [7] into a single framework for Environments (IDEs) via plugins. At the time of this study,
+      knowledge transfer in the context of AI coding assistants. only C ODEX was available as an underlying model, although
+   • We conduct an empirical study comparing knowledge
+                                                                  more recent versions of G IT H UB C OPILOT now support various
+      transfer in AI-assisted and traditional pair programming, LLMs. In this study, we differentiate between human–human
+      revealing key differences between the two settings in the pair programming, where two developers work together on one
+      context of a coherent and non-trivial programming task. computer, and human–AI pair programming, where a developer
+   • Drawing on our findings, we discuss how combining both
+                                                                  collaborates with an AI coding assistant, G IT H UB C OPILOT.
+      approaches can enhance development efficiency and focus        Several studies have focused on the performance of G IT H UB
+     while preserving the benefits of human collaboration.        C OPILOT regarding different aspects, mostly correctness.
+                                                                  Nguyen and Nadi [23] use L EET C ODE4 questions as prompts
+           II. BACKGROUND AND R ELATED W ORK
+                                                                  for G IT H UB C OPILOT to solve programming tasks in four
+   This section reviews prior work on knowledge transfer, pair different languages. Using L EET C ODE tests and code com-
+programming, and AI assistants, forming the conceptual basis plexity metrics, they find that correctness depends strongly
+of our study alongside the framework in Section III.              on the programming language, with JAVA performing best,
+                                                                  and G IT H UB C OPILOT’s code being highly comprehensible as
+A. Knowledge Transfer                                             indicated by low complexity values. Peng et al. [24] observe an
+   Knowledge transfer plays a crucial role, for example, in improvement in the time needed to solve programming tasks
+education [12, 13, 14, 9, 15]. Numerous studies indicate that when using AI assistants in a controlled experiment.
+peers working together often outperform individuals on certain       Concerning the analysis of pair programming in a setting
+tasks through discussions, explanations, and the sharing of ideas where one of the partners is replaced with a digital agent, Kuttal
+[13, 14]. However, understanding the nature of these processes et al. [7] explore an approach where the agent, represented
+requires a profound analysis. According to constructivist by a simulated face on the screen, interacts with the human
+learning theory, knowledge cannot be transmitted directly as it programmer by prompting questions and offering ideas. They
+is not a tangible entity [16, 12]. Instead, individuals must find no significant difference in the typical advantages of pair
+explore and construct knowledge through experiences and programming, such as productivity, quality, and self-efficacy,
+by resolving conflicts with their existing knowledge [17]. In maintaining the benefits of the traditional approach. Participants
+general, knowledge transfer involves actions and mechanisms trust and accept the simulated face on the screen as a partner,
+that facilitate this construction process, such as explanations yet the agent struggles to explain logic or contribute original
+and discussions that can take place in pair programming.          ideas, impairing effective knowledge exchange. Kuttal et
+                                                                  al. conducted a Wizard-of-Oz study, with a human operator
+B. Pair Programming                                               generating the suggestions and controlling the computer agent
+                                                                  behind the scenes. In contrast, our study examines an actual
+   Pair programming is a technique in which two developers
+                                                                  tool that can autonomously generate code.
+work collaboratively at a single computer [18]. We use
+                                                                     In a study conducted by Imai [11], participants are asked
+this technique as a baseline for our study, as it has been
+                                                                  to implement a Minesweeper game in Python through pair
+researched extensively [19, 20, 1]. Zieris and Prechelt [6]
+                                                                  programming, with G IT H UB C OPILOT partially serving as a
+explore knowledge transfer in pair programming and propose
+                                                                  programming partner. The objective of the study is to measure
+a framework detailing how knowledge transfer processes
+                                                                  productivity and code quality. The study measures productivity
+are structured. They identify factors that facilitate effective
+                                                                  by lines added and quality by deletions. G IT H UB C OPILOT
+knowledge transfer [6, 21, 22] with the overarching goal of
+                                                                  users are most productive but produce lower-quality code.
+providing practical advice for programmers. Dybå et al.’s meta-
+                                                                     Ma et al. [25] compare human–human pair programming
+analysis [1] examines the effectiveness of pair programming
+                                                                  and human–AI pair programming across effectiveness metrics
+by reviewing the results of 15 studies focusing on various
+                                                                  (learning, cost, collaboration, communication) and call for more
+aspects such as work speed, effort, and quality: With pair
+                                                                  human–AI pair programming research to fully leverage AI in
+programming, tasks are completed faster and software quality
+improves. However, pair programming is more expensive than 4 https://leetcode.com/
+pair programming. Barke et al. [26] perform a study to identify       ming are also applicable for human–AI pair program-
+two key interaction modes with G IT H UB C OPILOT: In the             ming. Zieris and Prechelt [6] focus on the structure of knowl-
+acceleration mode, programmers have a clear plan and use              edge transfer, with which we will start.
+G IT H UB C OPILOT as an autocomplete tool, quickly accepting           In our framework, conversations are made of utterances.
+suggestions without disrupting their workflow. In exploration         Since measuring knowledge transfer in individual utterances is
+mode, programmers are unsure how to solve a problem and               impractical, we group related utterances into episodes.
+use G IT H UB C OPILOT to explore various approaches [26].            Definition 3 (Episode). An episode is defined as a sequence
+   Stray et al. [27] interview developers and report that AI          of related utterances focused on a single topic, initiated either
+assistants were said to improve efficiency and reduce stress          by a person explicitly expressing a need for knowledge or a
+during individual programming, giving developers more time to         person sharing knowledge they possess with others.
+focus on solving complex tasks. However, the also noted that AI
+assistants were rarely used in human–human pair programming.             Since an episode is initiated based on a perceived knowledge
+   Fan et al. [28] conduct a quasi-experiment with students and       gap rather than an objectively existing one, a new episode may
+find that human–AI pair programming improves motivation,              occur even when no actual knowledge gap is present.
+reduced anxiety, and outperforms individual work, while                  To allow statistical characterization of episodes, we define
+human–human pair programming leads to the highest sense of            the length and depth of an episode. Intuitively, the length of an
+collaboration and social presence [28].                               episode can be measured by counting the utterances it contains.
+   To summarize, previous research focused on understanding           Definition 4 (Length of an episode). The length of an episode
+and improving human–human pair programming or using                   is the number of utterances that belong to it, including the
+agents to boost efficiency. Only little attention has been given to   utterances belonging to episodes layered within it.
+directly comparing knowledge transfer between human–human
+pair programming and human–AI pair programming, which is                 Episodes can be layered if a new topic is introduced before
+however imperative to understand the impact of the increasing         the current episode is complete. This layering requires a return
+use of AI as a programmer. Our study is the first to investigate      to the topic of the initial episode. To formalize this structure,
+knowledge transfer in pair programming with a real AI tool,           we define the concept of depth within episodes.
+used in the context of a coherent and non-trivial programming         Definition 5 (Depth of an episode). The depth of an episode
+task. The task goes beyond simple line-level code completion          refers to the total number of episodes that contain the given
+and requires participants to comprehend documentation and             episode, with the top-level episode having a depth of one.
+understand the broader program structure. We see this as a           In other words, the depth of an episode refers to its nesting
+timely and necessary step toward understanding how AI is          level within other episodes. A top-level episode, not nested
+reshaping the role of the human programmer in a rapidly           within any other episode, is assigned a depth of one. Each time
+evolving area.                                                    an episode is nested within another, depth increases by one.
+      III. A K NOWLEDGE T RANSFER F RAMEWORK FOR                     Consider the following example: A developer is using a new
+               H UMAN –AI PAIR P ROGRAMMING                       API and asks their partner for help, initiating an episode focused
+   To compare knowledge transfer in human–human pair on API usage. While following their partner’s explanation, a
+programming and human–AI pair programming, we devise a missing dependency causes an error, prompting a nested episode
+knowledge transfer framework based on Zieris and Prechelt [6] on installing it. Once the dependency issue is resolved, the
+and Kuttal et al. [7], ensuring comparability between the two discussion returns to the initial topic of using the API. In this
+settings. We analyze several metrics, as well as the content, and example, the length of the episode on API usage includes all
+success of knowledge transfer episodes, as described below. utterances, including those from the inner dependency episode,
+To define knowledge transfer, we first define a knowledge gap. while the inner episode only contains its own utterances. The
+                                                                  depth of the inner episode is 2, as it is enclosed within the
+Definition 1 (Knowledge gap). A Knowledge gap is a disparity episode on API usage, which has a depth of 1.
+between the information or understanding a person currently
+possesses and the knowledge a pair member considers relevant Finish Types. Zieris and Prechelt [6] define attributes to char-
+for their software development context including their current acterize knowledge transfer episodes. We focus on how an
+task and the software project it is embedded in [22].             episode ends—its finish type (Table I).
+                                                                     Based on the four concrete finish types that Zieris and
+   Intuitively, a knowledge gap can only be bridged through Prechelt introduce (i.e., T RANSFERRED, G AVE UP, L OST
+the assimilation of new information, thereby leading to our SIGHT, and U NNECESSARY), we define five finish types
+definition of knowledge transfer.                                 of episodes in our framework. In particular, we split the
+Definition 2 (Knowledge transfer). Any attempt to close a finish type T RANSFERRED into two finer-grained finish types:
+perceived knowledge gap by exchanging existing knowledge or A SSIMILATION and T RUST. To define these finish types, we
+building new knowledge is considered knowledge transfer [22]. first define the concept of a customer.
+  The key aspects of knowledge transfer according to Definition 6 (Customer). The person who is in need of
+Zieris and Prechelt [6] in the context of pair program- knowledge is called customer [6].
+                      Table I: Definition of knowledge transfer finish types, based on Zieris and Prechelt [6]
+   Finish Type      Definition                                                             Example
+   A SSIMILATION The customer fully understands and internalizes the knowledge.         “I get it” or rephrasing the explanation in their own words.
+   T RUST        The customer accepts the contribution without full understanding, “Fine with me” or “If Copilot says so, it’ll be right.”
+                 relying on the partner’s expertise.
+   G AVE UP      The attempt to close the knowledge gap is abandoned due to frustration “This is too complicated, never mind.”
+                 or complexity.
+   L OST SIGHT   The episode ends because the pair gets sidetracked, and the original [Starts something unrelated while leaving the question
+                 goal is no longer pursued.                                             unanswered]
+   U NNECESSARY The knowledge is deemed irrelevant or redundant.                        “I don’t think this is important right now.”
+
+
+
+   Using Definition 6, we define the finish types in our                     or their partner gets sidetracked. This can result in the start of a
+framework. We start with the two finish types corresponding                  new episode, leaving the current knowledge transfer unfinished
+to T RANSFERRED, both of which describe situations in which                  and the knowledge gap unresolved.
+the customer receives knowledge.                                             Definition 11 (U NNECESSARY). The episode ends when the
+Definition 7 (A SSIMILATION). The episode concludes with the                 pair recognizes the knowledge in question is irrelevant or
+customer fully understanding and internalizing the knowledge                 redundant to the task, terminating knowledge transfer as it is
+shared by the partner. Knowledge transfer is complete and                    deemed non-essential.
+effective.                                                                      For instance, a customer might say “I don’t think this is
+  A SSIMILATION would include saying something like “I                       important right now,” reflecting a situation in which the current
+get it” because the customer understands the reasoning and                   knowledge transfer is no longer the priority. In such cases, the
+agrees based on their own context. Instead of resulting in a                 knowledge gap persists because the focus has shifted away
+short affirmative answer, transferred knowledge can also be                  from the original objective.
+rephrased by the customer.
+                                                                             Table II: Definition of knowledge transfer topic types, based
+Definition 8 (T RUST). The episode ends with the customer                    on Kuttal et al. [7]
+accepting the partner’s contribution without fully understanding
+it, relying on the partner’s perceived expertise or correctness.              Topic type    Definition                      Example
+Knowledge is transferred but not deeply comprehended.                         T OOL      Knowledge about the IDE or “There’s a key bind for going
+                                                                                         how to use the tool.             back a tab”
+   An example of the T RUST finish type would be the                          P ROGRAM   Knowledge about the program- “I could also just aggregate
+statement “Fine with me”, which reflects acceptance of the                               ming language itself or it’s the chars. I think they work
+                                                                                         syntax.                          like strings in that way.”
+information based on confidence in the source, rather than                    B UG       An error in the code.            “I think we are missing code
+through personal understanding or critical engagement. Since                                                              in that function.”
+genuine understanding is essential for applying knowledge                     C ODE      The code itself; i.e., what they “So I’m gonna need to use a
+                                                                                         are programming                  for loop as well.”
+effectively, we distinguish T RUST from A SSIMILATION even                    D OMAIN    The task (in case of [7]: imple- “The goal is to get three of
+though such episodes can also be considered to represent a                               ment tic-tac-toe game)           ... marker ... in a row.”
+successful outcome.                                                           T ECHNIQUE About the techniques being “So if it’s test driven devel-
+                                                                                         used (i.e., test driven develop- opment, I want to start by
+   However, knowledge has still been received even if not pro-                           ment, pair programming)          writing a test, I think.”
+cessed. The next three finish types are concerned with scenarios
+where knowledge transfer is not completed successfully.
+                                                                             Topic Types. Zieris and Prechelt [6] propose that every utter-
+Definition 9 (G AVE UP). The episode ends due to the customer                ance should be labeled with an information type. The overall
+or pair abandoning the effort to bridge the knowledge gap,                   information type of an episode is then derived from the most
+often from frustration, complexity, or lack of progress. No                  frequently occurring type among its individual utterances.
+knowledge transfer occurs.                                                   Regarding the information type, Zieris and Prechelt [6] do
+   In this case, a customer might express frustration with                   not suggest a concrete classification scheme. In contrast,
+phrases like “This is too complicated, never mind”, signaling                Kuttal et al. [7] explicitly address the content aspect of knowl-
+disengagement from the knowledge exchange. This outcome                      edge transfer. During their studies, they identified six distinct
+is undesirable, as it results in no meaningful transfer, leaving             topics frequently discussed by developers (see Table II).
+the knowledge gap unresolved.                                                   Instead of using the information type attribute defined by
+                                                                             Zieris and Prechelt [6], we thus classify utterances using topic
+Definition 10 (L OST SIGHT). The episode terminates because                  types based on the classes established by Kuttal et al. [7].
+the pair diverges from the original knowledge transfer goal,                 Although this list of classes cannot be exhaustive, it provides a
+becoming sidetracked or overwhelmed, leaving the knowledge                   structured overview of common topics discussed in knowledge
+gap unresolved.                                                              transfer episodes. Specifically, the episode’s topic type is
+  L OST SIGHT reflects a situation in which either the customer              determined by the most frequently occurring topic type among
+its constituent utterances. This approach aligns with the models foundational computer science courses or active members of the
+proposed by both Zieris and Prechelt [6] and Kuttal et al. [7],  student council, ensuring a basic level of academic engagement
+as both sets of categories can apply consistently at the utter-  and communication skills. In total, 19 students took part in the
+ances level, ensuring compatibility between the two models.      study, resulting in 6 human–human pair programming sessions
+   In summary, our knowledge transfer framework facilitates      and 7 human–AI pair programming sessions.
+a comprehensive analysis of knowledge transfer for both          Pre-test questionnaire. The study begins with a pre-test
+our human–human pair programming and human–AI pair               questionnaire, where participants self-assess their general
+programming settings.                                            programming skills and P YTHON expertise along several
+                                                                 dimensions using rating scales from 1 to 10.The questionnaire
+                      IV. M ETHODOLOGY
+                                                                 includes a personal skill assessment relative to their peers [29],
+   In our study, we examine differences in knowledge transfer their experience with G IT H UB C OPILOT, their familiarity with
+between human–human pair programming and human–AI pair pair programming, and their overall programming experience.
+programming. We chose G IT H UB C OPILOT because it is the          Participants then receive standardized verbal instructions
+most widely used coding assistant integrated into IDEs. In what covering project structure, time limit, and task location. Par-
+follows, we outline our research goals, study setup, and data ticipants in the human–human pair programming group are
+acquisition framework, along with details on data collection instructed to discuss with their partners, while those in the
+and processing procedures.                                       human–AI pair programming group, having no human partner,
+                                                                 are asked to think aloud, providing a spoken record of their
+A. Research Questions
+                                                                 thoughts for evaluation.
+   We first investigate the extent of conversations and interac- Setting. Each participant works on a computer with an IDE
+tions that facilitate knowledge transfer in human–human pair set up, where the project is opened and necessary packages
+programming and compare these results to the human–AI pair installed. For the human–AI pair programming group, an
+programming setting to determine whether programmers using account is configured within the IDE to access G IT H UB
+the AI assistant experience similar knowledge transfer effects C OPILOT, and the plugin is activated. They are shown an
+as in human–human pair programming.                              introductory video on using G IT H UB C OPILOT, while the
+                                                                 human–human pair programming group receives an explanation
+  RQ 1: To what extend do the frequency, length, and depth of
+                                                                 of pair programming. Both groups may use all resources, except
+  knowledge transfer episodes differ between human–human
+                                                                 AI assistants for the human–human pair programming group.
+  pair programming and human–AI pair programming?
+                                                                 All participants may ask questions before the session begins.
+   We also examine how the two settings differ and align            From this point, screen activity and conversations (or
+content-wise. We analyze topic type frequencies, identify the    think-aloud   processes) are recorded until submission or time
+most discussed topic type, and assess whether this differs       expiration, resulting  in audio and video files for evaluation. Par-
+between settings. The goal is to understand for which topic      ticipants work    on the task for 45 minutes, with no expectation
+type G IT H UB C OPILOT can transfer knowledge to developers     to  complete  it. This  aspect is communicated to participants to
+and where it may fall short.                                     avoid  time  pressure.
+                                                                 Programming problem. Participants worked on a program-
+  RQ 2: How do the quality and diversity of knowledge            ming problem where certain features needed to be implemented
+  transfer episodes, including topic types and finish types,     within an existing codebase of approximately 400 lines includ-
+  vary between human–human pair programming and human–           ing both P YTHON code and comments, distributed across 5
+  AI pair programming?                                           files. This setup ensures that participants have to develop an
+                                                                 understanding of the broader context while working within a
+B. Study Design                                                  manageable scope. Specifically, participants received the source
+   We conduct a controlled experiment with two groups— code for a password manager—a console application managing
+a human–human pair programming group and a human–AI multiple user accounts, each with their own password entries.
+pair programming group—and both groups complete the After logging in, users can create, modify, view, and delete
+same programming task in P YTHON. The human–human pair entries, which include a name, description, and password. The
+programming group consists of pairs working together without password manager stores data in a database, which is the
+G IT H UB C OPILOT, while the human–AI pair programming focus of participants’ implementation tasks, while the database
+group includes individuals using G IT H UB C OPILOT. Partici- schema and terminal interaction code are already provided.
+pants are randomly assigned to one of the two groups.            Task. Participants’ task is to complete functions marked with a
+Participants. Before the main study, we conducted a trial #TODO comment, each with a provided signature and a doc
+run to ensure the task was feasible and the technical setup string explaining the task. These functions are confined to a
+                                                                                                                                   5
+worked as intended. We recruited students in the late stages of single file and focus on database access (using SQLAlchemy )
+their bachelor’s programs or the early stages of their master’s and building strings for console output. Two tasks involve
+programs. All participants were either teaching assistants for 5 https://www.sqlalchemy.org/
+                                    Voice                  OpenAI                 Annotation
+                                                                                                            Evaluation
+                                  Recording                Whisper                  Tool
+                    Programming               Audio File             Transcript                Annotated                 Results
+                      Sessions                                                                 Transcript
+
+
+
+                                   Screen
+                                  Recording
+                                              Video File
+
+Figure 1: Overview of our data processing pipeline. While the annotated transcripts are primarily derived from voice recordings,
+screen recordings were consulted as needed to provide additional context.
+
+
+string manipulation (e.g., building a formatted table of entries), within the framework outlined in Section III. This tool enables
+while the remaining six focus on database interactions. Often, us to manually label each line of the transcript (one line equals
+it is necessary to check conditions before modifying data one sentence) and to assign it to exactly one utterance. We
+(e.g., verifying if an object with a given name or id exists). can also create episodes and assign utterances to them, editing
+The task was chosen such that, at the time of the study, episode attributes such as topic type (C ODE, B UG, ...) and
+G IT H UB C OPILOT could provide meaningful assistance but not finish type (T RUST, L OST SIGHT, ...). In pair programming
+solve the task outright with a single completion. Furthermore, sessions, we recorded which programmer contributed to which
+we designed the task in a way that requires participants to lines, using labels ‘Speaker A’ and ‘Speaker B’ for anonymity.
+understand documentation, integration logic, and the overall We annotated the transcripts manually from all 13 sessions,
+program structure. Hence, the setup approximates a real-world segmented them into utterances and episodes, and classified
+scenario while remaining feasible within the study constraints. the utterances and episodes as described earlier.
+ C. Operationalization and Data Processing                                  Segmentation. We differentiate between monologues and
+    We evaluate knowledge transfer using our framework intro-               dialogues, as human–human pair programming involves two
+ duced in Section III to compare human–AI pair programming                  people, while human–AI pair programming features a single
+ and human–human pair programming.                                          person articulating their thoughts as a result of the think-aloud
+    To compare knowledge transfer, we analyze the distribution              process. To segment the speech into utterances, we evaluate
+ of quantities such as the number, depth, and length of episodes            each spoken contribution determining whether it continues a
+(see Section III), which help us understand knowledge transfer              previous utterance or begins a new one. This decision is based
+ dynamics. Each new episode reflects a perceived knowledge                  on two factors: whether the contribution logically relates to the
+ gap, with knowledge transfer defined as efforts to close that              preceding one (i.e., addressing the same topic) and whether a
+ gap by exchanging or building new knowledge. To address                    noticeable pause or interruption occurs. In dialogues, multiple
+ RQ2, we examine the topic type (e.g., T OOL, P ROGRAM, B UG,               consecutive utterances by one person can happen, but a new
+ C ODE, . . . ) and finish type (e.g., A SSIMILATION, G AVE UP,             utterance begins when the other person speaks.
+T RUST, . . . ) of these episodes.
+    We collect data via voice and screen recordings during par-             Classification. For each utterance, we manually assess its
+ ticipants’ programming sessions. The data processing pipeline              contribution to knowledge transfer. In most cases, utterances re-
+ is shown in Figure 1.                                                      lated to knowledge transfer contain an exchange of information
+                                                                            between the two humans or between the human and G IT H UB
+Transcription. We transcribed the speech recordings using                   C OPILOT, as verified through the voice recording. We consider
+ the automatic speech recognition tool W HISPER6 . W HISPER                 utterances that repeat information from external sources, such
+ recognizes text in multiple languages, even within the same                as documentation or Web-search results, as part of knowledge
+ sentence. This is useful since most participants spoke in German           transfer if it is apparent that it enhances a person’s knowledge or
+while using English for most technical terms. We pre-processed              understanding. If the audio-stream alone lacks context, screen
+ the transcriptions to facilitate subsequent annotation by adding           recordings were consulted. From these utterances contributing
+ line breaks at sentence ends and removing filler words (e.g.,              to knowledge transfer, we identify those indicating a need for
+‘okay’) that did not convey specific meaning. It is important to            knowledge or indicating a start of sharing knowledge, marking
+ note that during the annotation process, the original recordings           the start of an episode (Definition 3).
+ remain essential, as vocal tone can convey emotions and irony
+ more effectively than written text.                                           The episode continues until an utterance indicating one of
+                                                                            the five discussed outcomes (e.g., “Yes, this makes sense,”
+Annotation. We developed a tool to annotate the transcript
+                                                                            classified as the finish type A SSIMILATION). While the audio
+6   https://openai.com/index/whisper/                                       transcript was sufficient in most cases, we referred to the
+                                                                            127
+                                                                                                                                                                                             153
+                   4                                                       98                                                             human–AI
+
+
+
+
+                                                             # Episodes
+
+
+
+
+                                                                                                                                                                          # Episodes
+# Sessions
+
+                                    3                                                                                                   human–human
+                                                                                                                                                                                        94
+                        2 2                                                        47
+                                                                                                                                                                                                          52
+              1                                      1                                                                                                                                               31
+                                                                                  15        14
+                                                                                        5        58 24   4 11   1    2                  1                 1                                                    1 5
+
+                                                                                                                                                                                             1           2       3
+
+
+
+
+                                                                        11 0
+                                                                        21 0
+                                                                        31 0
+
+
+
+
+                                                                        61 0
+
+
+
+                                                                       91 90
+                                                                      10 00
+                                                                      11 110
+                                                                      12 120
+                                                                      13 130
+
+
+
+
+                                                                      16 160
+                                                                        41 0
+                                                                        51 0
+
+
+                                                                        71 0
+                                                                        81 0
+
+
+
+
+                                                                      14 140
+                                                                      15 150
+
+
+                                                                      17 170
+                                                                             0
+             10
+
+
+                   0
+
+                        0
+
+
+
+
+                                                0
+                                  0
+
+                                          0
+
+
+
+
+                                                                            1
+                                                                           -2
+                                                                           -3
+
+
+
+
+                                                                           -6
+                                                                           -4
+                                                                           -5
+
+
+                                                                           -7
+                                                                           -8
+
+
+
+
+                                                                           18
+                  -2
+
+                       -3
+
+
+
+
+                                                -6
+                                -4
+
+                                        -5
+
+
+
+
+                                                                         1-
+
+
+
+
+                                                                           -
+                                                                         -1
+             1-
+
+                  11
+
+                       21
+
+
+
+
+                                              51
+                              31
+
+                                      41
+
+
+
+
+                                                                        1-
+                                                                        1-
+                                                                        1-
+
+
+
+
+                                                                        1-
+                                                                        1-
+                                                                        1-
+
+
+                                                                        1-
+                                                                        1-
+                        # Episodes                                                                          Episode Length                                                                       Episode Depth
+
+                                    Figure 2: Comparison of episodes in terms of number (a), length (b), and depth (c).
+
+                        58%
+                              62%               58%
+                                                      62%
+                                                                                                           human–AI                                           84%
+                                                                                                         human–human                                                61%
+                                        28%                    28%
+
+                                              12%                         12% 13%    11% 10%   13%                  11% 10%                 16%
+                                                                                                                                                                                       10%
+                                                         1% 3%              2%   1% 3%      2%                                4% 9%   4%          6% 4%                       2%                 0% 1%
+
+                       Assimilation TrustTransferred Trust
+                                            Unnecessary      Unnecessary
+                                                        Lost Sight       Lost Sight
+                                                                   Gave Up                                          Gave Up Tool      Program     Bug         Code Domain Technique
+                                                    Finish Type                 Finish Type                                                       Topic Type
+
+                                                         Figure 3: Distribution of finish types (a) and topic types (b).
+
+
+original recordings when episode endings were unclear. If an      was 23.0 years, and participants rated their English proficiency
+episode covers multiple topics but eventually returns to the      at an average of 8.05 out of 10 points.
+original one, a new nested episode is recorded.                      With a mean value of 6.21 out of 10, the self-indicated
+Evaluation. We analyze the number of episodes, initiated          programming       experience of our participants is rather high.
+by a need for knowledge, as well as the length and depth of       Furthermore,     there  is a positive Spearman’s rank correlation
+episodes. Additionally, we use annotations and classifications    between    the  self-indicated   absolute programming experience
+as described above to compare human-human and human–              and  the  self-indicated    experience   relative to the participants’
+AI pair programming settings. During classification, we also      peers, rs (19)  =  0.62.  These   experience   measures are based on
+examine recurring session patterns, which are discussed further   the work    of Siegmund     et al. [29]. In addition   to programming
+in Section VI. For all statistical tests, we set the significance experience,     participants   reported   a  mean   Python     expertise
+level to α = 0.05. While the applied statistical tests account    of 5.53  out   of 10,  reflecting  solid familiarity  with   the study’s
+for the given sample size, the number of participants (19 in      chosen   language.     However,    their prior exposure    to  G IT H UB
+total) limits a straightforward generalization of our findings.   C OPILOT    (2.47)  and pair programming     (4.40)  was  moderate.    A
+Thus, the reported quantitative results should be interpreted     Mann-Whitney-U        test did  not yield any  statistically  significant
+with appropriate caution. For the same reason, we refrain from differences for any of the five experience questions between
+reporting effect sizes, as these would not be reliable given the two groups. Our sample reflects the characteristics of a
+the small sample. In addition to what follows, we provide a typical computer science student population with some prior
+comprehensive list of the statistical tests and their results in programming experience.
+our replication package.                                             However, the difference in experience with G IT H UB C OPI -
+                                                                  LOT stands out, with participants of the human–AI pair
+                          V. R ESULTS                             programming group rating their experience with G IT H UB
+                                                                  C OPILOT, on average, at 4.43 (on a scale from 1 to 10),
+   In this section, we evaluate and compare the knowledge compared to an average rating of only 1.33 for the pair
+transfer between traditional pair programming settings (human– programming participants. As a reminder, these differences
+human pair programming) and those involving a human were due to chance and all participants only answered the
+paired with G IT H UB C OPILOT (human–AI pair programming) questions after being randomly assigned to a group.
+according to our two research questions.
+                                                                  B. Characteristics of Knowledge Transfer Episodes
+A. Demographics                                                      We begin by examining the differences in frequency, length
+   The following demographic characteristics provide essential    and  depth of knowledge transfer episodes guided by RQ1.
+context for our evaluation, serving as descriptive statistics for Frequency of Knowledge Transfer. As discussed in Sec-
+interpreting the study’s findings. Of the 19 participants, 16 tion IV, not every sentence in a conversation contributes to
+identified as male (84.2%) and 3 as female (15.8%).               knowledge transfer. Identifying significant differences in the
+   All participants were pursuing a computer science bach- number of episodes helps indicate how much and which parts
+elor’s or master’s degree. The average age of participants of the conversation contribute to knowledge transfer. To this
+end, we counted all episodes of both groups, regardless of their                               » We have entries in the database
+outcome or topic type.                                                                         » Okay, we will now...
+   In human–human pair programming sessions, there were in                                     » Does it work like this?
+total 210 episodes, compared to 126 episodes in human–AI                                       » Entry [dot] name [equals] name, entry
+pair programming sessions. On average, pair programmers had                                       [dot] info [equals] info
+35.0 episodes per session and G IT H UB C OPILOT users had                                     » Session [dot] commit?
+18.0 episodes per session. Figure 2a contains the number of                 finish type:       » I don‘t know.
+episodes per session across the two groups. The participants                      TRUST
+                                                                                               » I‘d just like to try it.
+using G IT H UB C OPILOT encounter 15 to 22 episodes, with a                                   » If GitHub Copilot says so, it‘ll be right.
+median of 17. In contrast, pair programmers ran into 28 to 35
+episodes, with a median of 33.5. A Welch’s t-test reveals that Figure 4: Episode with finish type T RUST. Guillemets mark
+the mean difference between the number of episodes of the single utterances. Bracketed text added for context.
+two groups is statistically significant, t(8.15) = −3.38.
+Length and Depth of Episodes. The lengths of episodes for
+                                                                                      » Is there something like head or tail or first or
+both groups is shown in Figure 2b. On average, an episode of a                        something like that?
+human–human pair programming session spans 14.4 utterances,
+compared to 9.4 utterances in human–AI pair programming                                            » We will have to look it up,
+                                                                                                               probably there is
+episodes. Notably, two extreme outliers in the human–human
+                                                                                      » Okay, so...
+pair programming group could indicate that some episode
+                                                                                      [starts to type something unrelated to the question.
+endings may have been missed during annotation. However, a                            The question won‘t get answered]
+manual inspection did not confirm this. Instead, both outliers                        » User [dot] login finish type: LOST SIGHT
+are top-level episodes that include smaller, nested episodes,
+thereby inflating their overall length. This is to be expected, as Figure 5: Episode with finish type L OST SIGHT. Guillemets
+our definition of episode length includes all utterances within an mark single utterances. Bracketed text added for context.
+episode, even if they belong to nested episodes. As a result, top-
+level episodes that encompass other episodes tend to be longer.
+The median is higher in the human–human pair programming
+group with 8 utterances compared to 6.5 utterances for the Outcomes of Episodes. We analyze the outcomes of knowledge
+human–AI pair programming group. According to a Mann- transfer episodes with regard to finish types to assess the quality
+Whitney U test, the distributions differ significantly. Figure 2c of knowledge transfer. This is the most crucial aspect because
+shows the distribution of episodes depths. The highest occurring knowledge transfer is only useful to the customer if they can
+depth is 3 for both groups, and their distributions appear to be process and understand the information conveyed to them.
+similar, with a Mann-Whitney U test revealing no significant          Figure 3a shows how finish types are distributed per
+difference between the two groups. In both groups, most group. On the y-axis, we see the percentage of episodes
+episodes are top-level episodes (i.e., a depth of 1). Thus, they with the respective finish type. According to a χ -test, the
+                                                                                                                                           2
+
+were caused by a need for knowledge that did not result from distributions differ significantly. Both groups tend to finish
+another foregoing episode. Only one quarter of all episodes most episodes successfully, with a 12% difference between the
+are stacked on top of a different one, and a negligible small two settings in successful knowledge transfer episodes(finish
+share of 1–2 % of episodes is stacked on two episodes.             type: A SSIMILATION and T RUST). More interesting is the
+                                                                   discrepancy in the category T RUST, with G IT H UB C OPILOT
+C. Characterizing Knowledge Transfer Dynamics
+                                                                   users achieving this finish type more than twice as often
+   We continue with RQ2, that is, the question of differences than users in human–human pair programming. Upon closer
+in topic type and outcome of knowledge transfer episodes.          examination of episodes finish type T RUST, we observe that in
+Content of Episodes. The distribution of episode topic types many G IT H UB C OPILOT sessions, programmers tend to accept
+is shown in Figure 3b. The y-axis shows the percentage of the assistant’s suggestions with minimal scrutiny, relying on
+episodes with the bars placed at the respective topic type on the assumption that the code will perform as intended. Figure 4
+the x-axis. As the number of episodes is different for the shows an example of this happening. This issue does not come
+two groups, we chose relative numbers for the plot. A χ2 -test up in pair programming sessions so much, indicating that
+reveals a significant difference between the two distributions. pair programmers rather pursue problems until the need for
+   Across both groups, the topic type C ODE occurs most knowledge is satisfied.
+frequently. However, it occurs significantly more in the human–       Another category with a huge discrepancy is L OST SIGHT.
+AI pair programming group, accounting for 84 % of all episodes, Figure 3a shows that this almost does not occur in the human–
+with other topic types only occurring in at most 6 % of all AI pair programming group, but one eighth of episodes of the
+episodes. In both groups, there was little discussion about human–human pair programming group are interrupted by an
+abstract programming paradigms (with 0 % and 1 % of episodes unrelated issue (see Figure 5 for an example).
+having topic type T ECHNIQUE).                                        By performing χ2 -tests to compare the occurrence frequen-
+cies of individual finish types, we found significant differences   involves more exchanges than a monologue where one person
+between the two groups for the T RUST and L OST SIGHT finish        thinks aloud. However, one might also assume that discussions
+types, while we could not find significant differences for the      in a pair programming setting would lead to faster conclusions–
+other three finish types.                                           after all, that is one of the reasons for pair programming–but our
+                                                                    study did not observe this effect. Without the proper context or
+                       VI. D ISCUSSION                              goal in mind, it is difficult to conclude which method is superior.
+  Even the most experienced programmer will reach a point           Shorter discussions might work well when quick decision-
+in their day-to-day programming where some additional               making is needed, while longer ones allow for thorough analysis
+knowledge would be beneficial. In our case, the programming         and idea development.
+scenario involved a fairly self-contained programming task,            Episodes with higher depths occur when the participant in
+during which we already observed plenty of knowledge transfer.      the customer role requires knowledge on a topic distinct from
+How this knowledge transfer differs between traditional human       the current episode’s topic. In both groups, most episodes
+pair programming and the AI-assisted approach was the core          remain top-level. Deeper and longer episodes may suggest that
+of our investigation that we will discuss in the following.         certain explanations are unclear, as additional context often
+                                                                    becomes necessary to clarify related topics. Interestingly, there
+A. Findings                                                         is no significant difference in the distribution of episode depths.
+   Regarding RQ1, our initial objective was to determine
+whether knowledge transfer occurs within human–AI pair               Finding 2: While human–human pair programming interac-
+programming and how the frequency, length, and depth of              tions tend to produce longer episodes, the depth of episodes
+knowledge transfer episodes in human–AI pair programming             remains similar across both groups. This suggests that the
+compare to human–human pair programming.                             need for additional contextual explanations is comparable.
+   We followed the definition by Zieris and Prechelt [6] and
+                                                                       Addressing RQ2, we analyzed how the quality and diversity
+defined knowledge transfer as any attempt to close a perceived
+                                                                    of knowledge transfer episodes in pair programming with
+knowledge gap through the exchange or creation of new
+                                                                    G IT H UB C OPILOT compare to human–human pair program-
+knowledge. These attempts to close knowledge gaps indeed
+                                                                    ming by examining the frequency of different topic types and
+occurred in both scenarios. The average number of episodes
+                                                                    finish types in both groups.
+per session differs significantly between the groups, which may
+indicate either a greater need for knowledge exchange or simply        For both settings, most episodes were assigned the C ODE
+a lower threshold for initiating these interactions in human–       topic type. During manual investigation, we found that this
+human pair programming. This suggests that individuals may          often included episodes in the human–AI pair programming
+be more eager to engage with each other.                            setting where a programmer creates code with the help of the
+                                                                    assistant and verifies (verbally) that the code actually fulfills
+   In a manual investigation of the transcripts, we found many
+                                                                    its purpose. This form of knowledge transfer was named a “co-
+relatively short question-and-answer episodes in human–human
+                                                                    production” by Zieris and Prechelt [6]. Originally, for human–
+pair programming sessions that do not emerge in human–AI
+                                                                    human pair programming, this defines episodes where the
+pair programming sessions, supporting our assumption. These
+                                                                    programmers work together on building new knowledge (e.g.,
+question-and-answer episodes usually follow a pattern in which
+                                                                    discovering a bug and its cause) [6]. This again shows that in
+the customer casually poses a question that the partner can
+                                                                    such scenarios, similar to the human–human pair programming
+answer quickly. This does not occur when using the G IT H UB
+                                                                    setting, the programmer actively builds new knowledge by
+C OPILOT assistant as, at the time the study was conducted,
+                                                                    trying to understand the code presented by G IT H UB C OPILOT.
+the only way to interact with the assistant was by waiting for
+a suggestion. Although it was technically possible to prompt           When comparing the topic types of knowledge transfer, we
+the assistant through comments, this method was unintuitive,        observe that there is a broader distribution in the human–human
+making it unlikely that participants would pose minor questions.    pair programming in which other topic types besides C ODE
+                                                                    occur more often than in the settings where G IT H UB C OPILOT
+ Finding 1: Knowledge transfer occurs in both human-                is involved. We hypothesize that this is due to episodes with
+ human and human–AI pair programming settings, revealing            topic types such as P ROGRAM or D OMAIN being more likely
+ knowledge gaps and efforts to bridge them. However, in             to start with casual conversation than a concrete question,
+ human–human pair programming settings, individuals tend            making them more likely to occur with a human partner.
+ to engage more actively with each other, often involving           Additionally, the suggestions made by G IT H UB C OPILOT are
+ relatively short question-and-answer episodes.                     typically closely tied to the project’s source code, making the
+                                                                    emergence of unrelated topics unlikely.
+   We examined the length of episodes by counting the number           Regarding less prevalent topic types, there are only few
+of utterances. The median episode length is significantly higher    episodes on the topic type P ROGRAM (i.e., thus, regarding
+in the human–human pair programming group compared to the           syntax or semantic of the programming language). This can be
+human–AI pair programming group. This difference might be           explained by the high P YTHON experience that participants had,
+expected, as a dialogue between two human partners naturally        on average. Also, participants rarely discussed programming
+concepts (topic type T ECHNIQUE). They might not have needed           tend to accept the assistant’s suggestions with minimal scrutiny,
+to address them because the design of the project as well as the       assuming that the code will perform as intended.
+conditions under which they were supposed to work were all
+given. The relative rarity of the B UG topic type is likely because,    Finding 5: Programmers tend to accept the assistant’s
+when errors occur, discussions tend to focus less on their cause        suggestions with little critical review, often trusting that
+and more on finding a solution. In some cases, this also led to         the code will work as expected—a tendency seen far more
+the code in question being deleted and rewritten, which meant           frequently than in the human–human setting. Conversely,
+that the reference to the error was usually removed.                    conversations initiated with G IT H UB C OPILOT are less
+                                                                        likely to be aborted due to programmers getting distracted.
+ Finding 3: In general, human–AI pair programming ses-
+ sions focus more on the C ODE topic type. Conversely,                 B. Implications for Students and Practitioners
+ knowledge transfer in human–human pair programming                  Beyond describing our findings, we now discuss their
+ involves a broader range of topic types, beyond mere code-       practical significance and outline implications for students
+ related discussions.                                             and practitioners. We found a high level of T RUST episodes
+                                                                  in human–AI pair programming sessions. If this pattern were
+   Regarding the initiation of episodes, Zieris and Prechelt [22]
+                                                                  to generalize beyond our setup, this would carry important
+differentiate between pull mode, where one person actively
+                                                                  real-world implications, warranting further investigation. These
+seeks information from their partner to close a knowledge
+                                                                  frequent T RUST episodes can reduce opportunities for deeper
+gap, and push mode, where one person shares information
+                                                                  learning. For instance, students may accept suggestions without
+based on the perception that their partner might need it.
+                                                                  sufficient verification, leading to a more superficial understand-
+We cannot directly infer push mode episodes coming from
+                                                                  ing of the underlying concepts. For practitioners, unwarranted
+G IT H UB C OPILOT, since all episodes in the human–AI pair
+                                                                  trust may leave important knowledge lacks unnoticed and lead
+programming group are purely comprised of utterances by
+                                                                  to the introduction of bugs that can be hard to detect without
+a human participant. However, we noticed some interesting
+                                                                  deeper knowledge of the code base.
+patterns, which show that G IT H UB C OPILOT can sometimes
+                                                                     We also note that prior knowledge with tools like G IT H UB
+convey knowledge subtly, even without an explicit prompt
+                                                                  C OPILOT may influence how strongly such trust patterns
+or preceding comment. Most participants in the human–AI
+                                                                  emerge. In our sample, experience levels varied, with some
+pair programming group did not have any experience with the
+                                                                  participants reporting no prior use. While we cannot isolate its
+database API SQLA LCHEMY, which was used in the project.
+                                                                  exact effect in this study, it is plausible that greater familiarity
+Hence, most forgot to add a commit statement after doing
+                                                                  could help developers calibrate their trust, while inexperience
+database transactions in the code. In many cases, G IT H UB
+                                                                  may amplify over-reliance. As a consequence, students and
+C OPILOT suggested that adding such commit statement is
+                                                                  practitioners should be made aware of the limitations of such
+crucial for the program to function correctly. Upon reading the
+                                                                  AI tools and encouraged to critically assess their suggestions.
+suggestion in one function, participants realized that they were
+                                                                  Integrating AI tools into programming courses can enhance
+to add this statement in every other function that modifies the
+                                                                  learning, but it requires careful guidance to prevent over-
+database as well. This elegantly shows that knowledge transfer
+                                                                  reliance, which is in line with prior findings [30, 31]. Proposed
+does not exclusively happen “on request” but can be rather
+                                                                  approaches should ensure that students actively learn and build
+subtle and unsolicited. Programmers may learn something not
+                                                                  essential critical thinking skills [32, 33].
+only from another human but also via an AI coding assistant
+being proactively pushing suggestions.                               Furthermore, in human–human pair programming sessions,
+                                                                  the finish type L OST SIGHT occurred more often, that is,
+  Finding 4: G IT H UB C OPILOT can also convey critical          the episode was interrupted by an unrelated issue or topic.
+  information subtly. However, we suspect the transfer of         Our manual analysis suggests that this outcome largely arises
+  subtle, tacit knowledge to occur less frequently in real-       because human partners often start side discussions that are
+  world settings where G IT H UB C OPILOT lacks access to         unrelated to the original topic. For instance, each partner may
+  company-specific information and domain expertise.              prioritize a different topic in the discussion. By contrast, we
+                                                                  did not find this to occur in human–AI pair programming,
+   In human–AI pair programming, we observe a significantly where the conversation is directed by the programmer and
+higher share of successful knowledge transfer episodes (finish the AI simply responds to their input. In practice, the use
+types A SSIMILATION and T RUST) than in human–human of AI may increase immediate efficiency, as suggested by
+pair programming (see Figure 3). A key reason for this some studies [34], but reduce the broader knowledge exchange
+finding appears to be the significantly higher probability of that arises from side discussions in human–human pair pro-
+distraction in the human–human setting (finish type L OST gramming, potentially decreasing long-term efficiency. Thus,
+SIGHT ) compared to human–AI pair programming.                    it might turn out that, AI is useful for simple, repetitive tasks
+   In addition to the low likelihood of distraction, we find that where side discussions are less valuable, but when it comes
+knowledge transfer with the finish type T RUST occurs a lot to building deeper knowledge it must be treated with care,
+more frequently in human–AI pair programming. Programmers especially for students. While knowledge transfer appeared
+comparable across conditions, human collaboration continues        step toward understanding how developers interact with AI
+to offer unique value—particularly in areas such as design         tools, while welcoming future studies with other populations
+reasoning, mentoring, and contextual understanding—that go         to further broaden the evidence base.
+beyond what current AI systems can provide. Also, human–               The observed tendency to trust G IT H UB C OPILOT may result
+human pair programming collaboration can strengthen team           from situational factors like time pressure, lack of consequences
+communication, increase enjoyment of work, reduce staff-loss       for errors, or the perceived effort of manual verification.
+risk, and shorten onboarding time [35, 36, 8]. It is therefore         We used Python for the programming task, which may
+advisable not to, at this point, consider fully automating the     influence G IT H UB C OPILOT ’s performance [23]. However, we
+pair programming process, but to keep the advantages of both       have no indication that our core findings on knowledge transfer
+scenarios in mind and arrive at a mixed approach in practice.      would not generalize to other commonly used languages.
+                                                                       Construct Validity. Episode length was operationalized by
+C. Threats to Validity
+                                                                   utterance count, not time, due to missing timestamps. This
+   Internal Validity. Think-aloud protocols may not capture approach does not reflect processing time, but emphasizes the
+all participant thoughts, as verbalization can be incomplete amount of content exchanged, making it more robust against
+or cognitively demanding, potentially reducing performance variation in speaking pace. Apart from that, we drew on existing
+or slowing task completion [37]. As a result, transcripts— frameworks to examine the relevant constructs.
+especially in the human–AI pair programming group—may
+miss knowledge transfer episodes, suggesting our findings                                      VII. C ONCLUSION
+represent a lower bound. On the other hand, thinking aloud
+may also encourage structured thinking and improve task focus.         The promise of AI coding assistants evolving into true
+   Additionally, data was annotated by a single person, introduc-  AI   pair programmers has been a compelling narrative. Our
+ing the risk of individual bias in the classification of knowledge findings    show that, while they support knowledge transfer and
+transfer episodes. To mitigate this, we automated large parts of   offer   proactive    guidance, AI assistants do not yet replicate the
+the processing and manually cross-checked a random sample          diversity    of  human    collaboration.
+of annotations with four additional reviewers.                         In   our    study   with   19 participants, knowledge transfer
+   Finally, while the sample size of 19 participants is, at least, occurred      both  in  human–human         pair programming and with
+in line with standards for similar mixed-methods research in the   G  IT H UB     C OPILOT   .  Notably,   G  IT H UB C OPILOT can subtly
+software engineering context, we cannot rule out that individual   remind      developers    of  important     details,  such as committing
+differences in the groups may have influenced the results.         database      changes,   that  might    otherwise    be  overlooked. This
+We mitigated this factor by randomly assigning participants        unintentional       form    of   knowledge      transfer  was previously
+to groups and by considering factors such as programming           assumed      to  be limited   to  human    collaboration.  Human–human
+experience to check for group differences. The only statistically  pair   programming       enables     spontaneous     interactions  but also
+significant difference between the groups was in self-perceived    increases     the risk of  distraction.   In contrast,  knowledge   transfer
+experience with G IT H UB C OPILOT. While variation in the         with   G  IT H UB   C OPILOT    is less  likely to be  aborted, yet  sugges-
+G IT H UB C OPILOT experience within the human–AI pair             tions   are  often   accepted   with   less  scrutiny. This  highlights  the
+programming group might influence how individual participants      need   for   further  research—technical       and  social—to   understand
+engage with the tool, we do not consider this to threaten trusting behavior and to develop mechanisms that encourage
+the validity of our findings, as only one of the two groups critical evaluation.
+used G IT H UB C OPILOT, and our findings stem primarily from          Our results suggest that combining AI assistants with
+comparing interaction dynamics with and without the tool.          traditional    pair programming can balance efficiency with richer
+That said, we acknowledge that different experience levels—        knowledge       exchange. For instance, senior developers can offer
+especially within the G IT H UB C OPILOT group—might lead to       contextual      insights beyond AI capabilities, but may benefit
+variations in usage patterns.                                      from    G  IT H  UB C OPILOT ’s support with repetitive tasks.
+   External Validity. Participants had solid programming
+experience and reflected a typical gender distribution of                                      DATA AVAILABILITY
+computer science students (see Section V: Demographics) . To
+                                                                       For transparency and reproducibility, we share all study
+isolate the effect of human–AI pair programming on knowledge
+                                                                   artifacts online7 .
+transfer, we controlled for factors like domain knowledge,
+peer relationships, and organizational culture. While this
+                                                                                             ACKNOWLEDGMENTS
+strengthens internal validity [38], it may limit ecological
+validity, as collaborative behavior can depend on personal             The authors thank the study participants for their time and
+traits and real-world dynamics. Nonetheless, our selection of participation. This work has been supported by the European
+students provides a meaningful starting point for studying Union as part of the ERC Advanced Grant Brains On Code
+knowledge transfer between humans and AI coding assistants, (101052182).
+as knowledge transfer is very relevant to students given their
+ongoing learning. We therefore see this as a valuable first 7 https://github.com/se-sic/knowledgeTransferCopilot
+                               R EFERENCES                                          [21] F. Zieris and L. Prechelt, “Observations on knowledge transfer of profes-
+                                                                                         sional software developers during pair programming,” in Proceedings of
+ [1] T. Dybå, E. Arisholm, D. I. Sjoberg, J. E. Hannay, and F. Shull, “Are              the 38th International Conference on Software Engineering, ICSE, L. K.
+     two heads better than one? on the effectiveness of pair programming,”               Dillon, W. Visser, and L. A. Williams, Eds. ACM, 2016, pp. 242–250.
+     IEEE software, vol. 24, no. 6, pp. 12–15, 2007.                                [22] F. Zieris, “Qualitative analysis of knowledge transfer in pair program-
+ [2] D. L. Jones and S. D. Fleming, “What use is a backseat driver? A                    ming,” Ph.D. dissertation, 2020.
+     qualitative investigation of pair programming,” in 2013 IEEE Symposium         [23] N. Nguyen and S. Nadi, “An empirical evaluation of github copilot’s code
+     on Visual Languages and Human Centric Computing, C. Kelleher, M. M.                 suggestions,” in 19th IEEE/ACM International Conference on Mining
+     Burnett, and S. Sauer, Eds. IEEE Computer Society, 2013, pp. 103–110.               Software Repositories, MSR. ACM, 2022, pp. 1–5.
+ [3] M. Chen, J. Tworek, H. Jun, Q. Yuan, H. Ponde, J. Kaplan, H. Edwards,          [24] S. Peng, E. Kalliamvakou, P. Cihon, and M. Demirer, “The impact
+     Y. Burda, N. Joseph, G. Brockman, A. Ray, R. Puri, G. Krueger, M. Petrov,           of ai on developer productivity: Evidence from github copilot,” 2023.
+     H. Khlaaf, G. Sastry, P. Mishkin, B. Chan, S. Gray, N. Ryder, M. Pavlov,            [Online]. Available: https://arxiv.org/abs/2302.06590
+     A. Power, L. Kaiser, M. Bavarian, C. Winter, P. Tillet, F. P. Such,            [25] Q. Ma, T. Wu, and K. Koedinger, “Is AI the better programming partner?
+     D. W. Cummings, M. Plappert, F. Chantzis, E. Barnes, A. Herbert-Voss,               Human-Human Pair Programming vs. Human-AI pAIr Programming,”
+     W. H. Guss, A. Nichol, I. Babuschkin, S. A. Balaji, S. Jain, A. Carr,               2023. [Online]. Available: https://arxiv.org/abs/2306.05153
+     J. Leike, J. Achiam, V. Misra, E. Morikawa, A. Radford, M. M. Knight,          [26] S. Barke, M. B. James, and N. Polikarpova, “Grounded copilot: How
+     M. Brundage, M. Murati, K. Mayer, P. Welinder, B. McGrew, D. Amodei,                programmers interact with code-generating models,” Proceedings of the
+     S. McCandlish, I. Sutskever, and W. Zaremba, “Evaluating large language             ACM on Programming Languages, vol. 7, no. OOPSLA1, pp. 85–111,
+     models trained on code,” ArXiv, vol. abs/2107.03374, 2021.                          2023.
+ [4] P. Vaithilingam, T. Zhang, and E. L. Glassman, “Expectation vs.                [27] V. Stray, N. B. Moe, N. Ganeshan, and S. Kobbenes, “Generative ai and
+     experience: Evaluating the usability of code generation tools powered by            developer workflows: How github copilot and chatgpt influence solo and
+     large language models,” in Chi conference on human factors in computing             pair programming,” 2025.
+     systems extended abstracts, 2022, pp. 1–7.                                     [28] G. Fan, D. Liu, R. Zhang, and L. Pan, “The impact of ai-assisted pair
+ [5] A. Ziegler, E. Kalliamvakou, X. A. Li, A. Rice, D. Rifkin, S. Simister,             programming on student motivation, programming anxiety, collaborative
+     G. Sittampalam, and E. Aftandilian, “Measuring github copilot’s impact              learning, and programming performance: a comparative study with
+     on productivity,” Communications of the ACM, vol. 67, no. 3, pp. 54–63,             traditional pair programming and individual approaches,” International
+     2024.                                                                               Journal of STEM Education, vol. 12, no. 1, p. 16, 2025.
+ [6] F. Zieris and L. Prechelt, “On knowledge transfer skill in pair pro-           [29] J. Siegmund, C. Kästner, J. Liebig, S. Apel, and S. Hanenberg,
+     gramming,” in 2014 ACM-IEEE International Symposium on Empirical                    “Measuring and modeling programming experience,” Empirical Software
+     Software Engineering and Measurement, ESEM, M. Morisio, T. Dybå,                   Engineering, vol. 19, pp. 1299–1334, 2014.
+     and M. Torchiano, Eds. ACM, 2014, pp. 11:1–11:10.                              [30] M. Lepp and J. Kaimre, “Does generative ai help in learning program-
+ [7] S. K. Kuttal, B. Ong, K. Kwasny, and P. Robe, “Trade-offs for substituting          ming: Students’ perceptions, reported use and relation to performance,”
+     a human with an agent in a pair programming context: The good, the                  Computers in Human Behavior Reports, vol. 18, p. 100642, 2025.
+     bad, and the ugly,” in CHI ’21: CHI Conference on Human Factors in             [31] A. Park and T. Kim, “Code suggestions and explanations in programming
+     Computing Systems, Y. Kitamura, A. Quigley, K. Isbister, T. Igarashi,               learning: Use of chatgpt and performance,” The International Journal of
+     P. Bjørn, and S. M. Drucker, Eds., 2021, pp. 243:1–243:20.                          Management Education, vol. 23, no. 2, p. 101119, 2025.
+ [8] L. Plonka, H. Sharp, J. Van der Linden, and Y. Dittrich, “Knowledge            [32] B. A. Becker, P. Denny, J. Finnie-Ansley, A. Luxton-Reilly, J. Prather, and
+     transfer in pair programming: An in-depth analysis,” International journal          E. A. Santos, “Programming is hard-or at least it used to be: Educational
+     of human-computer studies, vol. 73, pp. 66–78, 2015.                                opportunities and challenges of ai code generation,” in Proceedings of
+ [9] M. Stigmar, “Peer-to-peer teaching in higher education: A critical                  the 54th ACM Technical Symposium on Computer Science Education V.
+     literature review,” Mentoring & Tutoring: partnership in learning, vol. 24,         1, 2023, pp. 500–506.
+     no. 2, pp. 124–136, 2016.                                                      [33] R. Choudhuri, A. Ramakrishnan, A. Chatterjee, B. Trinkenreich, I. Stein-
+[10] J. Hattie, Visible learning: A synthesis of over 800 meta-analyses relating         macher, M. Gerosa, and A. Sarma, “Insights from the frontline: Genai
+     to achievement. routledge, 2009.                                                    utilization among software engineering students,” in 2025 IEEE/ACM
+[11] S. Imai, “Is github copilot a substitute for human pair-programming? an             37th International Conference on Software Engineering Education and
+     empirical study,” in Proceedings of the ACM/IEEE 44th International                 Training (CSEE&T). IEEE, 2025, pp. 1–12.
+     Conference on Software Engineering: Companion Proceedings, 2022, pp.           [34] M. I. H. Shihab, C. Hundhausen, A. Tariq, S. Haque, Y. Qiao, and
+     319–321.                                                                            B. W. Mulanda, “The effects of github copilot on computing students’
+[12] S. O. Bada and S. Olusegun, “Constructivism learning theory: A paradigm             programming effectiveness, efficiency, and processes in brownfield coding
+     for teaching and learning,” Journal of Research & Method in Education,              tasks,” in Proceedings of the 2025 ACM Conference on International
+     vol. 5, no. 6, pp. 66–70, 2015.                                                     Computing Education Research V. 1, 2025, pp. 407–420.
+[13] T. J. Nokes-Malach, J. E. Richey, and S. Gadgil, “When is it better to learn   [35] J. Vanhanen and C. L. Lassenius, “Perceived effects of pair programming
+     together? insights from research on collaborative learning,” Educational            in an industrial context,” in 33rd EUROMICRO Conference on Software
+     Psychology Review, vol. 27, pp. 645–656, 2015.                                      Engineering and Advanced Applications (EUROMICRO 2007), 2007, pp.
+[14] D. W. Johnson, R. T. Johnson, and K. Smith, “The state of coopera-                  211–218.
+     tive learning in postsecondary and professional settings,” Educational         [36] A. Cockburn and L. Williams, “The costs and benefits of pair program-
+     psychology review, vol. 19, pp. 15–29, 2007.                                        ming,” 02 2000.
+[15] B. Goldschmid and M. L. Goldschmid, “Peer teaching in higher education:        [37] E. Charters, “The use of think-aloud methods in qualitative research an
+     A review,” Higher education, vol. 5, no. 1, pp. 9–33, 1976.                         introduction to think-aloud methods,” Brock Education Journal, vol. 12,
+[16] C. H. Liu and R. Matthews, “Vygotsky’s philosophy: Constructivism and               no. 2, 2003.
+     its criticisms examined.” International education journal, vol. 6, no. 3,      [38] J. Siegmund, N. Siegmund, and S. Apel, “Views on internal and external
+     pp. 386–399, 2005.                                                                  validity in empirical software engineering,” in 2015 IEEE/ACM 37th
+[17] J. Piaget, “The psychogenesis of knowledge and its epistemological                  IEEE International Conference on Software Engineering, vol. 1. IEEE,
+     significance,” in Language and Learning: The Debate Between Jean                    2015, pp. 9–19.
+     Piaget and Noam Chomsky, M. Piattelli-Palmarini, Ed.               Harvard
+     University Press, 1980, pp. 1–23.
+[18] K. Beck, “Embracing change with extreme programming,” Computer,
+     vol. 32, no. 10, pp. 70–77, 1999.
+[19] E. Arisholm, H. Gallis, T. Dybå, and D. I. K. Sjøberg, “Evaluating
+     pair programming with respect to system complexity and programmer
+     expertise,” IEEE Trans. Software Eng., vol. 33, no. 2, pp. 65–86, 2007.
+[20] A. Begel and N. Nagappan, “Pair programming: what’s in it for me?”
+     in Proceedings of the Second ACM-IEEE international symposium on
+     Empirical software engineering and measurement, 2008, pp. 120–128.
+

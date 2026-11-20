@@ -1,0 +1,582 @@
+检索参数 {"open":[{"ref_id":"https://developers.openai.com/codex/guides/agents-md"},{"ref_id":"https://www.anthropic.com/news/introducing-claude-tag"},{"ref_id":"https://coder.com/changelog/project-level-memory-for-coder-agents-in-239"},{"ref_id":"https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work/"}],"response_length":"long"}
+Custom instructions with AGENTS.md | ChatGPT Learn (https://developers.openai.com/codex/guides/agents-md ; rewritten summary of https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+citeturn12view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://developers.openai.com/codex/guides/agents-md","lineno":null}); Redirected to URL: https://learn.chatgpt.com/docs/agent-configuration/agents-md; Total lines: 1112
+L0: For the complete documentation index, see 【0†llms.txt】. Markdown versions of documentation pages are available by appending `.md` to the page URL.
+L1: 
+L2: 【1†ChatGPT】
+L3: 
+L4: 【1†Home】
+L5: 
+L6: 【2†API】
+L7: 
+L8: 【3†ChatGPT】
+L9: 
+L10: 【4†Docs】
+L11: 
+L12: 【5†Use cases】
+L13: 
+L14: 【6†Training】
+L15: 
+L16: 【7†Resources】
+L17: 
+L18: 【8†Resources】
+L19: 
+L20: 【4†Overview】 【9†Features】 【10†Configuration】 【11†Developers】 【12†Security】 【13†Administration】 【5†Use Cases】 【7†Resources】
+L21: 
+L22: ## Search the docs
+L23: 
+L24: Search docs[Input: Start searching]
+L25: ### Suggested
+L26: 
+L27: [Button: responses create][Button: reasoning_effort][Button: realtime][Button: prompt caching]
+L28: 
+L29: Primary navigation
+L30: 
+L31: [Button: API ][Button: ChatGPT ][Button: Docs ][Button: Use cases ][Button: Training ][Button: Resources ][Button: Resources ]
+L32: 
+L33: Theme Light [Input] Dark [Input] System [Input]
+L34: 
+L35: Search docs[Input: Start searching]
+L36: ### Suggested
+L37: 
+L38: [Button: responses create][Button: reasoning_effort][Button: realtime][Button: prompt caching]
+L39: 
+L40: [Button: Overview ][Button: Models ][Button: Agents ][Button: Tools ][Button: Audio & voice ][Button: Production ][Button: API reference ]
+L41: 
+L42: Docs Overview
+L43: 
+L44:   * 【2†Home】
+L45: 
+L46: ### Get started
+L47: 
+L48:   * 【14†Quickstart】
+L49:   * 【15†Using GPT-6.2】
+L50:   * 【16†Key concepts】
+L51:   * 【17†API credits for ChatGPT subscribers】
+L52: ### Core concepts
+L53: 
+L54:   * 【18†Responses API】
+L55:   * 【19†Decisions API】
+L56:   * 【20†Conversation state】
+L57:   * 【21†Background mode】
+L58:   * 【22†Streaming】
+L59:   * 【23†WebSocket mode】
+L60:   * 【24†Mid-turn steering】
+L61:   * 【25†Multi-agent】
+L62:   * 【26†Webhooks】
+L63:   * 【27†File inputs】
+L64:   * 【28†Compaction】
+L65:   * 【29†Counting tokens】
+L66: 
+L67: ### SDKs and CLI
+L68: 
+L69:   * 【30†OpenAI SDK】
+L70:   * 【31†OpenAI CLI】
+L71: 
+L72: ### Cloud providers
+L73: 
+L74:   * 【32†Amazon Bedrock】
+L75:   * 【33†Google Cloud】
+L76: ### Resources
+L77: 
+L78:   * 【34†Changelog】
+L79:   * 【35†Deprecations】
+L80:   * 【36†Supported countries】
+L81:   * 【37†OpenAI Crawlers】
+L82:   * 【38†Terms and policies†openai.com】
+L83: ### Legacy APIs
+L84: 
+L85:   * Agent Builder
+L86:     * 【39†Overview】
+L87:     * 【40†Migration guide】
+L88:     * 【41†Node reference】
+L89:     * 【42†Safety in building agents】
+L90:   * Evals
+L91:     * 【43†Getting started】
+L92:     * 【44†Working with evals】
+L93:     * 【45†Prompt optimizer】
+L94:     * 【46†External models】
+L95:     * 【47†Graders】
+L96:   * Fine-tuning
+L97:     * 【48†Optimization cycle】
+L98:     * 【49†Supervised fine-tuning】
+L99:     * 【50†Vision fine-tuning】
+L100:     * 【51†Direct preference optimization】
+L101:     * 【52†Best practices】
+L102:   * Assistants API
+L103:     * 【53†Migration guide】
+L104:   * 【54†Model catalog】
+L105: ### Choose a model
+L106: 
+L107:   * 【55†Pricing】
+L108:   * 【56†Model selection】
+L109: 
+L110: ### Text and code
+L111: 
+L112:   * 【57†Text generation】
+L113:   * 【58†Code generation】
+L114:   * 【59†Structured output】
+L115: 
+L116: ### Prompting
+L117: 
+L118:   * 【60†Overview】
+L119:   * 【61†Prompt engineering】
+L120:   * 【62†Citation formatting】
+L121:   * 【63†Migration guide】
+L122:   * 【64†Prompt generation】
+L123:   * 【65†Frontend prompting】
+L124: 
+L125: ### Reasoning
+L126: 
+L127:   * 【66†Reasoning models】
+L128:   * 【67†Reasoning best practices】
+L129: ### Images
+L130: 
+L131:   * 【68†Images and vision】
+L132:     * 【69†Image input cost calculator】
+L133:   * 【70†Image generation】
+L134:     * 【70†Overview】
+L135:     * 【71†Image prompting】
+L136: 
+L137: ### Realtime and audio
+L138: 
+L139:   * 【72†Audio and speech】
+L140:   * 【73†Getting started】
+L141:   * 【74†Voice agents】
+L142: 
+L143: ### Specialized models
+L144: 
+L145:   * 【75†Embeddings】
+L146:   * 【76†Moderation】
+L147:   * 【77†CSAM classifier】
+L148: 
+L149:   * 【78†Overview】
+L150: ### Agents API
+L151:   * 【79†Overview】
+L152:   * 【80†Quickstart】
+L153:   * 【81†Architecture】
+L154:   * 【82†Configuring Agents】
+L155:   * Sessions
+L156:     * 【83†Run and continue sessions】
+L157:     * 【84†Events and items】
+L158:     * 【85†Manage sessions】
+L159:     * 【86†Scheduled automations】
+L160:     * 【87†Automatic review】
+L161:     * 【88†Webhooks】
+L162:   * Environments and sandboxes
+L163:     * 【89†OpenAI-hosted sandboxes】
+L164:     * 【90†Self-hosted sandboxes】
+L165:     * 【91†Sandbox lifecycle】
+L166:     * 【92†Pre-warm sandboxes】
+L167:     * 【93†Sandbox security】
+L168:     * 【94†Files and artifacts】
+L169:   * Tools and integrations
+L170:     * 【95†Web search】
+L171:     * 【96†Computer use】
+L172:     * 【97†Functions】
+L173:     * 【98†MCP connections】
+L174:     * 【99†Plugins】
+L175:     * 【100†Vaults】
+L176:   * 【101†Multi-agent】
+L177:   * 【102†Observability and usage】
+L178:   * 【103†Tracing】
+L179:   * 【104†Errors and recovery】
+L180:   * 【105†API reference】
+L181:   * 【106†Bedrock Managed Agents】
+L182: ### Agents SDK
+L183: 
+L184:   * 【107†Overview】
+L185:   * 【108†Quickstart】
+L186:   * 【109†Agent definitions】
+L187:   * 【110†Models and providers】
+L188:   * 【111†Running agents】
+L189:   * 【112†Sandbox agents】
+L190:   * 【113†Orchestration】
+L191:   * 【114†Guardrails】
+L192:   * 【115†Results and state】
+L193:   * 【116†Integrations and observability】
+L194:   * 【117†Evaluate agent workflows】
+L195: 
+L196: ### ChatKit
+L197: 
+L198:   * 【118†Overview】
+L199:   * 【119†Customize】
+L200:   * 【120†Widgets】
+L201:   * 【121†Actions】
+L202:   * 【122†Advanced integrations】
+L203: 
+L204:   * 【123†Overview】
+L205:   * 【124†Function calling】
+L206: ### Search and retrieval
+L207: 
+L208:   * 【125†Web search】
+L209:   * 【126†File search】
+L210:   * 【127†Retrieval】
+L211: 
+L212: ### Connect tools and data
+L213: 
+L214:   * 【128†MCP servers】
+L215:   * 【129†Secure MCP Tunnel】
+L216: 
+L217: ### Build tool workflows
+L218: 
+L219:   * 【130†Skills】
+L220:   * 【131†Tool search】
+L221:   * 【132†Programmatic tool calling】
+L222:   * 【133†Async tool calling】
+L223: 
+L224: ### Computer and code
+L225: 
+L226:   * 【134†Shell】
+L227:   * 【135†Computer use】
+L228:     * 【136†Integration recipes】
+L229:     * 【137†Driver reference】
+L230:   * 【138†Apply Patch】
+L231:   * 【139†Code interpreter】
+L232: ### Media
+L233: 
+L234:   * 【140†Image generation】
+L235: 
+L236:   * 【72†Overview】
+L237: 
+L238: ### GPT-Live
+L239: 
+L240:   * 【141†Getting started】
+L241:   * 【142†Prompting】
+L242:   * 【143†Managing sessions】
+L243:   * 【144†Delegation and tools】
+L244:   * 【145†Migrate to GPT-Live】
+L245:   * 【146†Partner integrations】
+L246: 
+L247: ### Realtime API
+L248: 
+L249:   * 【73†Getting started】
+L250:   * 【147†Prompting】
+L251:   * 【148†Managing conversations】
+L252:   * 【149†Voice activity detection】
+L253:   * 【150†Tools and MCP】
+L254: ### Build with voice
+L255: 
+L256:   * 【74†Voice agents】
+L257:   * 【151†Connect voice to Decisions】
+L258:   * 【152†Custom voices】
+L259:   * 【153†Cost optimization】
+L260: 
+L261: ### Connections
+L262: 
+L263:   * 【154†WebRTC】
+L264:   * 【155†WebRTC with WARP】
+L265:   * 【156†WebSockets】
+L266:   * 【157†Telephony and SIP】
+L267:   * 【158†Server-side controls】
+L268: 
+L269: ### Audio processing
+L270: 
+L271:   * 【159†File transcription】
+L272:   * 【160†Live transcription】
+L273:   * 【161†Live translation】
+L274:   * 【162†Text to speech】
+L275:   * 【163†Audio in Chat Completions】
+L276: ### Go live
+L277: 
+L278:   * 【164†Production best practices】
+L279:   * 【165†API keys and service accounts】
+L280:   * 【166†Deployment checklist】
+L281: 
+L282: ### Performance and quality
+L283: 
+L284:   * 【167†Keep the prefix unchanged】
+L285:   * 【168†Fast mode】
+L286:   * 【169†Ultrafast mode】
+--------------------------------------------------------------------------------
+Introducing Claude Tag \ Anthropic (https://www.anthropic.com/news/introducing-claude-tag)
+citeturn12view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://www.anthropic.com/news/introducing-claude-tag","lineno":null}); Total lines: 101
+L0: 【0†Skip to main content】
+L1: 
+L2: 【1†News】Research Policy Commitments
+L3: 
+L4: Company
+L5: 
+L6: Try Claude
+L7: 
+L8: [Input: Enter search...][Input]
+L9: # Introducing Claude Tag
+L10: 
+L11: 【2†Image: Introducing Claude Tag†assets.claude.com】
+L12: 
+L13: Published
+L14:     Jun 23, 2026
+L15: 
+L16: Category
+L17:     【3†Product】
+L18: 
+L19: Topics
+L20: 
+L21: 
+L22:   * 【4†Claude for Enterprise】
+L23:   * 【5†Agents】
+L24:   * 【6†Claude Code】
+L25:   * 【7†Tool use】
+L26:   * 【8†Productivity】
+L27: [Button: See more...]
+L28: 
+L29: Related articles
+L30: 
+L31:   * Partnerships
+L32: 
+L33: Jul 27, 2026
+L34: 
+L35: 【9†Cognizant and Anthropic expand their partnership to bring Claude to enterprise clients】
+L36: 
+L37: 【4†View more】
+L38: 
+L39: Claude Tag is a new way for teams to work with Claude.
+L40: We’re starting on Slack, which Claude can join as a team member. Grant Claude access to selected channels, and connect it to whichever tools, data—and even codebases—you choose. Then, anyone in the channel can tag @Claude in, and delegate tasks to it while they focus on other work. Claude builds context by remembering relevant information from the channels it’s in, and can plan out tasks to complete in the future.
+L41: We see Claude Tag as the beginning of an evolution of Claude Code: it makes the model even more proactive, and it works better with a full team. Tagging @Claude is now one of the main ways we get things done at Anthropic. Today, 65% of our product team’s code is created by our internal version of Claude Tag. The same pattern is now spreading well beyond engineering—we’re tagging Claude to chase down product metrics and data, work through support tickets, or even help find the root cause of tricky bugs.
+L42: 【10†Image: Video thumbnail†assets.claude.com】
+L43: 
+L44: We’re launching 【11†Claude Tag on Slack†www.claude.com】, since it’s a natural home for collaborative work between teams and AI, and where much of Anthropic’s day-to-day work already happens. It’s available today in beta for Claude Enterprise and Team customers. Our goal is to expand where it’s available more widely, so that teams can tag @Claude in the many other places they work.
+L45: ### Working with @Claude
+L46: 
+L47: If you’ve worked with Claude Code or Cowork before, Claude Tag will feel familiar. Tag @Claude with a request in simple terms and it’ll break its task down into stages and then work through them in turn, using the tools it has access to. Once it’s done, it’ll respond in a Slack thread with what it’s created.
+L48: 
+L49: But tagging Claude comes with a few new advantages:
+L50: @Claude is multiplayer. Within a given Slack channel, there’s one Claude that interacts with everyone. This means that anyone can see what it’s working on, and can pick up the conversation from where the last person left off. This makes tagging Claude very different from working within a single chat or for a single task—it’s much more like interacting collaboratively with a teammate.
+L51: @Claude learns over time. As Claude follows along with its channel, it builds more context about the work. This means that users don’t need to explain things to it from scratch over and over again. And Claude can even automatically learn from other Slack channels and data sources, if it’s granted permission. (It doesn’t report from private channels.) This gives it the tacit knowledge necessary for it to provide the best possible work.
+L52: @Claude takes initiative. If “ambient” behavior is enabled, Claude will proactively keep you updated about whatever it thinks you might need to know. It’ll flag relevant information from across the channels it’s in and the tools it’s connected to, and follow up on threads or tasks that have gone quiet without being resolved.
+L53: @Claude works asynchronously. Set Claude a task, and you can focus on your other priorities while it works. It can also schedule tasks for itself, pursuing a project autonomously over hours or days. We’ve found this particularly helpful at Anthropic: we now spend much more of our time delegating tasks to many Claudes in parallel.
+L54: 
+L55: You can also send Claude direct messages: it’ll respond privately, using the personal tools and connectors you’ve set up.
+L56: ### Getting started
+L57: 
+L58: We’ve designed Claude Tag with teams and organizations in mind: @Claude’s access to sensitive data and task-specific tools can be very tightly controlled.
+L59: To get up and running, system administrators specify which tools and information the model should have access to, in which channels. Think of it as creating separate Claude identities for different uses: everything, including its memories, will stay scoped to the channels defined by the administrators. For example, a model set up for sales work won’t pass on memories to one set up for engineering; nor will it give engineers access to any sales data or tools.
+L60: More information about provisioning access is 【12†available here†claude.com】.
+L61: Once permissions are set, everyone can begin tagging right away. Administrators can set limits for token spend (both for the organization and for individual channels), and can view a log of everything that @Claude has done, along with who requested each task.
+L62: 
+L63: If you’re a Claude Enterprise or Team customer, you have access to Claude Tag in beta starting today. To get started, 【13†visit here†claude.ai】 and follow these four steps:
+L64:   1. Pair Claude Tag with your Slack workspace
+L65:   2. Give Claude access to your tools
+L66:   3. Set a limit on your organization’s monthly spend
+L67:   4. Test Claude in a private channel to confirm it works.
+L68: 
+L69: Claude Tag replaces the existing 【14†Claude in Slack†support.claude.com】 app. To migrate, administrators can opt in within 30 days. We’re issuing an introductory 【15†launch credit†support.claude.com】 to eligible Enterprise and Team organizations so that the whole company can try it out.
+L70: Claude Tag works with Opus 4.8. You can 【16†read our docs†www.claude.com】 and 【11†product page†www.claude.com】.
+--------------------------------------------------------------------------------
+Project-Level Memory for Coder Agents in 2.39 - Coder Changelog (https://coder.com/changelog/project-level-memory-for-coder-agents-in-239)
+citeturn12view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://coder.com/changelog/project-level-memory-for-coder-agents-in-239","lineno":null}); Total lines: 157
+L0: 【0†Google Tag Manager†www.googletagmanager.com】
+L1: 
+L2: 【1†Skip to main content】
+L3: 
+L4: 【2†Coder Agents New Deploy coding agents with consistency and control on self-hosted, network-isolated infrastructure.】【3†Coder Workspaces Self-hosted cloud development environments for your developers and their agents.】【4†Coder AI Governance A centralized gateway to observe and control LLM tool usage across your environments.】
+L5: 
+L6: Explore Coder
+L7: 
+L8: 【5†Changelog】
+L9: 
+L10: 【6†Compare Coder】
+L11: 
+L12: 【7†Coder on GitHub†github.com】
+L13: 
+L14: 【8†How Coder Works】
+L15: Ecosystem Integrations
+L16: 
+L17: 【9†Backstage†github.com】
+L18: 
+L19: 【10†VS Code】
+L20: 
+L21: 【11†JetBrains】
+L22: 
+L23: 【12†Cursor】
+L24: 
+L25: 【13†Kiro†registry.coder.com】
+L26: 
+L27: 【14†Devin Desktop】
+L28: 
+L29: 【15†Dev Containers】
+L30: 
+L31: 【16†View all†registry.coder.com】
+L32: 
+L33: AI-native Development
+L34: 
+L35: Coder powers secure, scalable development across key industries — automotive, finance, government, and technology — enabling faster builds, tighter compliance, and seamless AI adoption in enterprise-grade cloud environments.
+L36: 
+L37: Explore by Industry
+L38: 
+L39: 【17†Government】
+L40: 
+L41: 【18†Financial Services】
+L42: 【19†Technology】
+L43: 
+L44: 【20†All industries】
+L45: 
+L46: 【21†Secure Environments for 2,500+ Developers How a U.S. defense intelligence organization centralized ATO compliance and established the military's first multi-tenant Coder deployment.】
+L47: 
+L48: Insights
+L49: 
+L50: 【22†Resource Center†resources.coder.com】
+L51: 
+L52: 【23†Blog】
+L53: 
+L54: 【24†[Dev]olution Podcast】
+L55: 
+L56: 【25†Coder Academy】
+L57: 
+L58: 【26†Events & Webinars】
+L59: 
+L60: 【27†Success Stories】
+L61: 
+L62: 【28†Newsletter】
+L63: 
+L64: Company
+L65: 
+L66: 【29†Partnerships】
+L67: 
+L68: 【30†Careers】
+L69: 
+L70: 【31†About Coder】
+L71: 
+L72: 【32†Security】
+L73: 
+L74: Join the Coder Community
+L75: Connect, contribute, and get recognized. Explore the registry, become a Coder Champion, claim a free homelab license, and tune into the podcast.
+L76: 
+L77: Get Involved
+L78: 
+L79: 【33†Coder Registry†registry.coder.com】
+L80: 
+L81: 【34†Coder Champions】
+L82: 
+L83: 【35†Homelab Licenses†form.asana.com】
+L84: 
+L85: 【24†[Dev]olution Podcast】
+L86: 
+L87: 【36†Coder Community Connect with developers worldwide through Discord, meetups, and GitHub discussions.】
+L88: 
+L89: 【7†129.5K†github.com】
+L90: 
+L91: 【37†Image: Changelog Masthead Background】
+L92: 
+L93: 【5†Back to changelog】
+L94: 
+L95: v2.39 November 3, 2026
+L96: # Project-Level Memory for Coder Agents in 2.39
+L97: 
+L98: ### What's new in 2.39
+L99: 
+L100: Give Coder Agents your conventions, context, and skills once, at the project or organization level, and every chat builds on them. Platform teams can also trace any workspace connection end to end and see every editor their developers use.
+L101: ### Coder Agents: Shared context and admin controls
+L102: 
+L103: Set conventions, skills, and model access once instead of repeating them in every chat or organization.
+L104:   * Organization skills and instructions: Admins publish 【38†skills】 and 【39†instructions】 once per organization, can limit them to specific groups, and every change is recorded in the 【40†audit log】.
+L105:   * Manage model access in Terraform: The coderd Terraform provider can now set which users and groups can use each Coder Agents model, and configure Claude Platform for AWS. 【41†View the provider release†github.com】.
+L106:   * Projects: Group related chats in 【42†projects】 with shared memory, instructions, and 【43†skills】, so each new chat builds on the last one.
+L107: 【44†Image†www.datocms-assets.com】
+L108: ### Script ordering for templates
+L109: 
+L110: Template authors can set the order `coder_script` resources run with the new 【45†`coder_script_order`】 data source, so dependencies install before an IDE or AI coding agent starts. It's in beta, opt-in, and requires Coder Terraform provider v2.20.0 or later. 【46†Learn more in our documentation】.
+L111: ### More improvements
+L112:   * Trace any workspace connection end to end: VS Code, JetBrains Toolbox, `coder ssh` and the web terminal tag each session with one ID across client, server and agent logs, so platform teams can find why a connection dropped in a single SIEM search, without debug flags. 【47†Learn how to trace workspace connections】.
+L113:   * See every editor your developers use: Template Insights, connection logs, and Prometheus now track each editor by name, including VS Code forks such as Cursor. See the 【48†connection logs】 and 【49†Prometheus】 docs.
+L114:   * VS Code extension 1.17: Developers now see a warning when a startup script fails or times out. Version 1.17.0 also includes a 【50†security fix†github.com】, so we recommend updating. Learn more in our 【51†documentation】.
+L115: ### Security updates
+L116: 
+L117: We've recently patched several disclosed vulnerabilities. Check our 【52†security advisories†github.com】, and 【53†watch for new releases†github.com】 on GitHub to hear about patches first. For updates on vulnerabilities we have patched, visit the 【54†Coder Trust Center†trust.coder.com】.
+L118: ### Breaking Changes
+L119:   * 【55†#30466†github.com】: A migration rewrites the `connection_logs` table under a lock that blocks reads and writes, about 50 seconds per 10 million rows. Plan a maintenance window for large deployments.
+L120:   * 【56†#29796†github.com】, 【57†#29906†github.com】: Template insights and the `coderd_insights_applications_usage_seconds` metric now report per app. In the API, `type` is replaced by `method`. In the metric, `application_name` is now `display_name`. Update dashboards, alerts and scripts.
+L121:   * 【58†#30150†github.com】, 【59†#30140†github.com】, 【60†#30199†github.com】: `coder update` and `coder users edit-roles --roles` now ask for confirmation, so scripts need `-y`. `coder update` also returns an error if the restart fails.
+L122:   * 【61†#31262†github.com】: Template builds fail if a `coder_app` URL uses an unsafe scheme such as `javascript:`. Check templates before upgrading.
+L123:   * 【62†#30256†github.com】: API keys created from a scoped token can't go beyond that token's scopes.
+L124: View the 【63†full changelog†github.com】 on GitHub. If you have questions or feedback, join the conversation on 【64†Discord†discord.gg】!
+L125: ## Freedom builders want. Control enterprises require.
+L126: 
+L127: 【65†I n s t a l l C o d e r】【66†S t a r t a t r i a l】
+L128: 
+L129: Solutions
+L130: 
+L131: 【65†Install Coder】【67†Coder Premium】【5†Changelog】【6†Compare】【33†Integrations†registry.coder.com】【68†Pricing】
+L132: 
+L133: Resources
+L134: 
+L135: 【22†Resource Center†resources.coder.com】【23†Blog】【24†[Dev]olution Podcast】【25†Coder Academy】【26†Events & Webinars】【27†Success Stories】【36†Community】
+L136: 
+L137: Company
+--------------------------------------------------------------------------------
+GitHub intelligence puts your code, context, and history to work - GitHub Changelog (https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work/)
+citeturn12view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work/","lineno":null}); Total lines: 205
+L0: 【0†Skip to content】 【1†Skip to sidebar】
+L1: 
+L2: / 【2†Blog】
+L3: 
+L4: [Input: Search the blog…]
+L5: 
+L6: Search
+L7: 
+L8:   * 【3†Changelog】
+L9:   * 【4†Docs†docs.github.com】
+L10:   * 【5†Customer stories†github.com】
+L11: 【6†See what's new†github.com】 【7†Try GitHub Copilot app†github.com】
+L12: 
+L13: 【3†Back to changelog】
+L14: 
+L15: Release
+L16: 
+L17: October 28, 2026 • 3 minute read
+L18: 
+L19: # GitHub intelligence puts your code, context, and history to work
+L20: 
+L21: 【8†Image】
+L22: ## Table of Contents
+L23: 
+L24:   * 【9†Memory: Pick up where you left off】
+L25:   * 【10†Dreaming: Continuous context improvement】
+L26:   * 【11†Code Search: Reach beyond your checkout】
+L27:   * 【12†Try it today】
+L28: 
+L29: Menu. Currently selected: Memory: Pick up where you left off
+L30: 
+L31:   * 【9†Memory: Pick up where you left off】
+L32:   * 【10†Dreaming: Continuous context improvement】
+L33:   * 【11†Code Search: Reach beyond your checkout】
+L34:   * 【12†Try it today】
+L35: Agents should understand more than your codebase—they should understand how your team works. Your preferences, repository conventions, skills, and custom instructions guide how changes should be made, while code in related repositories can show how the pieces fit together. Without that context, agents spend time rediscovering knowledge and can miss your team’s conventions.
+L36: GitHub intelligence is the context and learning layer sourced from the graph of GitHub data. It makes this data useful to agents, helping them remember how you work, keep that guidance current, and find the code and development history relevant to the next task. The goal is for agents to build on what you and your team already know, rather than treating every session as a fresh start.
+L37: That is the advantage of building where your team’s work already lives. A repository memory can capture why an edge case matters and which test covers it. GitHub intelligence allows agents to use that context, with controls over what they can access.
+L38: 
+L39: Three capabilities bring this into your workflow:
+L40: 
+L41:   * Memory carries knowledge between sessions
+L42:   * Dreaming keeps the context current
+L43:   * Code search reaches beyond your checkout.
+L44: 
+L45: Availability and settings vary by capability.
+L46: ### 【9†Memory: Pick up where you left off】
+L47: 
+L48: 【13†GitHub Copilot Memory†docs.github.com】 is now generally available on paid Copilot plans. Copilot can remember personal preferences and repository conventions across sessions and clients. Memories can be created in the Copilot app, Copilot CLI, VS Code, Copilot cloud agent, Copilot code review, Slack, Teams, and GitHub Mobile.
+L49: You can tell Copilot, `Remember to start my pull request descriptions with a TL;DR`, and it can reuse that preference across Copilot experiences. Repository memories can capture the right test command or how your team expects Copilot to check its work, so you spend less time repeating guidance in each session. Copilot sessions autonomously generate and curate memories, learning from every interaction.
+L50: Among the Copilot CLI sessions reviewed during the public preview where the agent used memory, 93% showed better adherence to developer preferences and 42% showed more efficient workflows attributed to the memories included in the session context.
+L51: 
+L52: You can interact with memories in the Copilot app, Copilot CLI, and VS Code, or manage personal memories in your Copilot settings, where you can 【14†view or delete saved preferences†github.com】.
+L53: ### 【10†Dreaming: Continuous context improvement】
+L54: 
+L55: Copilot dreaming, now in public preview, reflects on past work to improve future agentic sessions.
+L56: 
+L57: Three dream types are currently available:
+L58:   * Personal memory curation customizes Copilot to your personal preferences by updating memories based on your agent conversations.
+L59:   * Repository customization manages repository-scoped memories and proposes updates and improvements to existing skills and custom instruction files.
+L60:   * Code review customization turns recurring accepted code-review feedback into guidance for Copilot code review.
+L61: Dreaming can add, update, and remove personal and repository memories. Changes to checked-in skills and instructions are proposed in pull requests for your team to review.
+L62: 
+L63: Dreaming is opt-in.
+L64:   * Individual subscribers: Enable personal curation in your Copilot settings and repository dreams in each repository’s settings. See 【15†personal and repository setup†docs.github.com】.
+L65:   * Organizations and enterprises: Administrators 【16†enable dreaming through Copilot policies†docs.github.com】. Enterprise administrators can delegate that choice to organization administrators. Repository dreams cover the repositories allowed by Copilot Memory’s repository access settings. Users must also enable personal dreaming in their own Copilot settings.
+L66: Dream runs consume AI credits. See the 【17†dreaming documentation for prerequisites, setup, and costs†docs.github.com】.
+L67: ### 【11†Code Search: Reach beyond your checkout】
+L68: Software projects rarely live in a single repository. 【18†GitHub code search†docs.github.com】 helps Copilot find relevant code, configuration, schemas, and documentation across related projects and dependencies without needing a local clone. Copilot can search for exact text and symbols, match patterns with regular expressions, and narrow results by repository, path, or language.
+L69: 【19†Semantic search†docs.github.com】 can also find code by what it does, such as retrying a failed payment, even when you don’t know the file, function name, or repository it lives in.
+L70: For example, you’re fixing failed payments, but retry behavior spans a payments service, a shared library, and background workers. Use `/research` to ask Copilot, `How do these components retry failed charges, and where could retries overlap?` Copilot can inspect implementations and callers across those repositories to help you understand how the system fits together before changing it.
+L71: 
+L72: That unlocks workflows that would otherwise require you to assemble the context yourself:
+

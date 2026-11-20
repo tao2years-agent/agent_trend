@@ -1,0 +1,1195 @@
+{
+  "started_utc": "2026-11-20T03:54:30.470269+00:00",
+  "versions": {
+    "langgraph": "1.2.24",
+    "langgraph-checkpoint": "4.3.2",
+    "langgraph-checkpoint-sqlite": "3.1.3",
+    "temporalio": "1.29.0"
+  },
+  "python": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+  "temporal": "temporal version 1.10.1 (Server 1.32.2, UI 2.56.4)",
+  "runs": [
+    {
+      "engine": "langgraph",
+      "scenario": "resume",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 25652,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 28068,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 17812,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "resume",
+      "guarded": true,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 23840,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 17604,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 16000,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "stale",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 10464,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 26276,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v2"
+      ],
+      "invocations": [
+        {
+          "pid": 28432,
+          "verdict": "insert",
+          "version": "v2"
+        }
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "stale",
+      "guarded": true,
+      "status": "held_stale",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 26020,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 27372,
+          "code": 0,
+          "state": {
+            "status": "held_stale",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [],
+      "invocations": [
+        {
+          "pid": 9976,
+          "verdict": "stale",
+          "version": "v2"
+        }
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "duplicate",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 29780,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 20744,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R2",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 372,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 21800,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "resume",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 3268
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 25216
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 1
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 31464,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ],
+      "runtime_worker_pids": [
+        31016,
+        31464
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "duplicate",
+      "guarded": true,
+      "status": "held_request",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 4288,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 17780,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R2",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 31224,
+          "code": 0,
+          "state": {
+            "status": "held_request",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [],
+      "invocations": []
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "lost",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 28392,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 9600,
+          "code": 75,
+          "state": null
+        },
+        {
+          "action": "recover",
+          "pid": 21872,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v1",
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 9832,
+          "verdict": "insert",
+          "version": "v1"
+        },
+        {
+          "pid": 9476,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ]
+    },
+    {
+      "engine": "langgraph",
+      "scenario": "lost",
+      "guarded": true,
+      "status": "published",
+      "steps": [
+        {
+          "action": "start",
+          "pid": 31408,
+          "code": 0,
+          "state": {
+            "status": "waiting",
+            "next": [
+              "approval"
+            ],
+            "interrupts": [
+              {
+                "request": "R1",
+                "approved_digest": "2128fb092a24c24a594b3b411d5aed0172d6f3dd24b7f76e63a84840eb5103c4"
+              }
+            ]
+          }
+        },
+        {
+          "action": "approve",
+          "pid": 25296,
+          "code": 75,
+          "state": null
+        },
+        {
+          "action": "recover",
+          "pid": 30832,
+          "code": 0,
+          "state": {
+            "status": "published",
+            "next": [],
+            "interrupts": []
+          }
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 4000,
+          "verdict": "insert",
+          "version": "v1"
+        },
+        {
+          "pid": 11604,
+          "verdict": "reuse",
+          "version": "v1"
+        }
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "resume",
+      "guarded": true,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 31256
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 27488
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 1
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 10480,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ],
+      "runtime_worker_pids": [
+        2536,
+        10480
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "stale",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 31628
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 23280
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 1
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v2"
+      ],
+      "invocations": [
+        {
+          "pid": 6404,
+          "verdict": "insert",
+          "version": "v2"
+        }
+      ],
+      "runtime_worker_pids": [
+        31372,
+        6404
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "stale",
+      "guarded": true,
+      "status": "held_stale",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 20896
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 25524
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 1
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [],
+      "invocations": [
+        {
+          "pid": 29580,
+          "verdict": "stale",
+          "version": "v2"
+        }
+      ],
+      "runtime_worker_pids": [
+        16784,
+        29580
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "duplicate",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 20824
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 26344
+        },
+        {
+          "action": "duplicate_R1_at_R2",
+          "worker": 26344
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 10,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 11,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 13,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 14,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 1
+        },
+        {
+          "id": 15,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 16,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 17,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 18,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 19,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 21564,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ],
+      "runtime_worker_pids": [
+        26928,
+        21564
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "duplicate",
+      "guarded": true,
+      "status": "held_request",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 25852
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 20748
+        },
+        {
+          "action": "duplicate_R1_at_R2",
+          "worker": 20748
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 10,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 11,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [],
+      "invocations": [],
+      "runtime_worker_pids": [
+        21164,
+        14876
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "lost",
+      "guarded": false,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 31556
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 14240
+        },
+        {
+          "action": "external_commit_then_crash",
+          "worker": 14240,
+          "code": 75,
+          "replacement_worker": 21356
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 2
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v1",
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 23080,
+          "verdict": "insert",
+          "version": "v1"
+        },
+        {
+          "pid": 12340,
+          "verdict": "insert",
+          "version": "v1"
+        }
+      ],
+      "runtime_worker_pids": [
+        26572,
+        23080,
+        12340
+      ]
+    },
+    {
+      "engine": "temporal",
+      "scenario": "lost",
+      "guarded": true,
+      "status": "published",
+      "steps": [
+        {
+          "action": "pending_R1",
+          "worker": 13968
+        },
+        {
+          "action": "recovered_R1",
+          "worker": 10620
+        },
+        {
+          "action": "external_commit_then_crash",
+          "worker": 10620,
+          "code": 75,
+          "replacement_worker": 16836
+        }
+      ],
+      "history": [
+        {
+          "id": 1,
+          "type": "WORKFLOW_EXECUTION_STARTED"
+        },
+        {
+          "id": 2,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 3,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 4,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 5,
+          "type": "WORKFLOW_EXECUTION_SIGNALED"
+        },
+        {
+          "id": 6,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 7,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 8,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 9,
+          "type": "ACTIVITY_TASK_SCHEDULED"
+        },
+        {
+          "id": 10,
+          "type": "ACTIVITY_TASK_STARTED",
+          "attempt": 2
+        },
+        {
+          "id": 11,
+          "type": "ACTIVITY_TASK_COMPLETED"
+        },
+        {
+          "id": 12,
+          "type": "WORKFLOW_TASK_SCHEDULED"
+        },
+        {
+          "id": 13,
+          "type": "WORKFLOW_TASK_STARTED"
+        },
+        {
+          "id": 14,
+          "type": "WORKFLOW_TASK_COMPLETED"
+        },
+        {
+          "id": 15,
+          "type": "WORKFLOW_EXECUTION_COMPLETED"
+        }
+      ],
+      "effects": [
+        "v1"
+      ],
+      "invocations": [
+        {
+          "pid": 1316,
+          "verdict": "insert",
+          "version": "v1"
+        },
+        {
+          "pid": 16652,
+          "verdict": "reuse",
+          "version": "v1"
+        }
+      ],
+      "runtime_worker_pids": [
+        13916,
+        1316,
+        16652
+      ]
+    }
+  ],
+  "finished_utc": "2026-11-20T03:56:14.945235+00:00"
+}

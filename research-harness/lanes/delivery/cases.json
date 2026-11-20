@@ -1,0 +1,389 @@
+[
+  {
+    "id": "D01",
+    "name": "GitHub Actions Runner",
+    "category": "作业执行与宿主控制",
+    "scenario": "自托管 runner 接到仓库 workflow 作业；平台团队要在各仓库步骤外统一校验执行条件或收尾。",
+    "mechanism": "Worker 先准备动作，读取宿主的 ACTIONS_RUNNER_HOOK_JOB_STARTED，将同步脚本纳入 pre-job；另读取 JOB_COMPLETED 注册 always() 的 post-job。ADR 约定脚本非零退出使作业失败。",
+    "human": "runner 管理员配置宿主脚本和退出码；开发者可从作业结果查到失败，再决定修改工作负载还是调整宿主策略。",
+    "org": "在共用 runner 池集中实施环境检查、留存审计信息；前置脚本本身的耗时和故障会影响整池。",
+    "limits": "入口在自托管 runner；动作准备早于 pre-job hook。宿主失联、强制终止时能否完整收尾未实测，不能把注册 post-hook 当作交付凭据。",
+    "change": "2026-10-26 UTC，v2.338.2 的变更记录包含 Docker 29.8.0 和 Buildx 0.37.0 更新。这里记录运行环境演进，hook 的既有设计另由 ADR 与源码证明。",
+    "insight": "治理可以下沉到维护者可控制的 runner，使大量仓库复用一份规则；要单独测量宿主检查故障引起的全局阻塞。",
+    "experiment": "在隔离池令 pre-hook 对带错标签的作业返回非零；提交同一任务到有/无 hook 的池，核对本体是否执行、失败分类、正常结束与人为终止时的清理记录。",
+    "sources": [
+      {
+        "url": "https://github.com/actions/runner/blob/7e211dc69c347b78fc398e630e74facb11a13235/src/Runner.Worker/JobExtension.cs",
+        "path": "lanes/delivery/raw/runner/394a839d2eca-JobExtension.cs",
+        "detail": "JobExtension.cs L297–315、572–586：准备动作、加入启动钩子、注册完成钩子",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/actions/runner/blob/7e211dc69c347b78fc398e630e74facb11a13235/docs/adrs/1751-runner-job-hooks.md",
+        "path": "lanes/delivery/raw/runner/bde72ee444dc-1751-runner-job-hooks.md",
+        "detail": "ADR 1751 L60–76：同步、退出码和管理员责任",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/actions/runner/releases/tag/v2.338.2",
+        "path": "lanes/delivery/raw/runner/b5f68acc6324-v2.338.2.html",
+        "detail": "发布页 变更列表 中的 Docker / Buildx 更新",
+        "date": "2026-10-26"
+      }
+    ],
+    "source_commit": "7e211dc69c347b78fc398e630e74facb11a13235",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D02",
+    "name": "Buildkite Agent",
+    "category": "分布式执行与远程中止",
+    "scenario": "自托管 worker 已经运行构建；控制端收到取消或超时，此时需把中央意图落实到具体作业进程。",
+    "mechanism": "JobRunner 在进程启动后轮询 job state，带抖动；服务返回 canceling/canceled 或 timing_out/timed_out 时分别调用 Cancel 并传递原因。401 也触发因凭据无效而取消；短暂的普通请求失败等待下一轮。",
+    "human": "操作人员可以从控制端请求取消，runner 管理员配置检查间隔和信号。用户点击中止后，执行端仍需收到状态并处理信号。",
+    "org": "平台团队可对不同队列统一记账，区分人工中止、凭据失效、运行超时，从而定位基础设施滞后。",
+    "limits": "Agent 源码可见；托管控制端的内部调度未核对。文档与源码不提供用户点击到外部副作用停止的端到端时限。",
+    "change": "2026-11-19 UTC，v4.12.0 将产物上传路径纳入 signed jobs 的签名与校验，并提示先更新验签 agent，再用新版本签署 pipeline。",
+    "insight": "作业取消应产生可测的控制延迟；签名协议升级也需要兼容性发布顺序。",
+    "experiment": "记录取消请求、runner 观测、子进程退出三个时间戳；比较不同轮询间隔、短时离线及有无外部异步子任务时的尾延迟和残留作业数。",
+    "sources": [
+      {
+        "url": "https://github.com/buildkite/agent/blob/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/agent/job_runner.go",
+        "path": "lanes/delivery/raw/buildkite/8169ce30dc1c-job_runner.go",
+        "detail": "agent/job_runner.go L1032–1105：轮询、抖动、401、cancel 和 timeout 分支",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/buildkite/agent/blob/895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a/README.md",
+        "path": "lanes/delivery/raw/buildkite/e0451dd23140-README.md",
+        "detail": "README L19–48：agent 子命令、build queue 与安装入口",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/buildkite/agent/releases/tag/v4.12.0",
+        "path": "lanes/delivery/raw/buildkite/80c6be842a18-v4.12.0.html",
+        "detail": "v4.12.0 Security 条目以及升级验签 agent 顺序",
+        "date": "2026-11-19"
+      }
+    ],
+    "source_commit": "895c5a0a2b0e6289ca486b9f74a21a07bfaeb76a",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D03",
+    "name": "Tekton Pipelines",
+    "category": "Kubernetes 流水线与中止语义",
+    "scenario": "测试或部署 PipelineRun 在并行执行中被叫停，还需要决定是否让在途任务收尾、保留清理或取证步骤。",
+    "mechanism": "控制器从 PipelineRun 状态协调 TaskRun。CancelledRunFinally 中止正在运行的任务并继续 finally；StoppedRunFinally 允许在途任务及其重试走完，阻止新的普通任务，再调度 finally。普通 Cancelled 不调度待运行的 finally。",
+    "human": "具备相应权限的调用方选择中止语义；创建时设 Pending 可将启动推迟到条件满足，不等于自带审批身份验证。",
+    "org": "分别编码紧急刹车、温和排空和清理证明，跨团队可对齐同一运行对象及父子任务归属。",
+    "limits": "需要 Kubernetes 与 Pipeline 控制器；finally 仍受总时限等条件约束。服务端 RBAC、集群故障和副作用回滚未实测。",
+    "change": "2026-10-29 UTC，v1.18.0 通过 webhook 使控制器设置的 pipeline、pipelineTask、pipelineRun 标签一经写入不可被更新者改写。",
+    "insight": "为组织提供一个取消按钮之前，需要明确它对在途动作与证据留存的承诺。",
+    "experiment": "让任务 A 处于写产物阶段、B 等待依赖、finally 归档；分别发三种取消请求，比较运行任务、重试、子任务归属和归档结果。",
+    "sources": [
+      {
+        "url": "https://github.com/tektoncd/pipeline/blob/94305b77d30f12e1b8e39e51b2f559fd35c55e13/pkg/reconciler/pipelinerun/pipelinerun.go",
+        "path": "lanes/delivery/raw/tekton/69bd72212fa5-pipelinerun.go",
+        "detail": "pipelinerun.go L349–355、867–875：finally 超时与温和中止分支",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/tektoncd/pipeline/blob/94305b77d30f12e1b8e39e51b2f559fd35c55e13/docs/pipelineruns.md",
+        "path": "lanes/delivery/raw/tekton/f899e8136dff-pipelineruns.md",
+        "detail": "pipelineruns.md L1695–1756：三类取消/停止和 Pending 时机",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/tektoncd/pipeline/releases/tag/v1.18.0",
+        "path": "lanes/delivery/raw/tekton/cf9ac6eacd93-v1.18.0.html",
+        "detail": "v1.18.0 controller-managed labels immutable via webhook，#10687",
+        "date": "2026-10-29"
+      }
+    ],
+    "source_commit": "94305b77d30f12e1b8e39e51b2f559fd35c55e13",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D04",
+    "name": "Argo CD",
+    "category": "GitOps 期望状态协调",
+    "scenario": "集群对象与 Git 期望配置发生偏离，团队需区分检测差异、修正漂移，以及是否删除额外对象。",
+    "mechanism": "controller 将目标与 live 对象配对，对额外且属于本应用的对象设置 RequiresPruning；资源忽略规则、所有权和比较错误会影响 Synced、OutOfSync 或 Unknown。automated、prune、allowEmpty、selfHeal 分别控制动作。",
+    "human": "应用维护者选择是否开启自动同步、清理、空目标和自愈；自动同步开启时直接 rollback 有限制，紧急干预需要预先定义流程。",
+    "org": "把版本库作为变更入口、把现场差异作为运行证据，平台团队可单独放宽自愈或收紧删除。",
+    "limits": "多源应用关闭 selfHeal 仍不能保证现场修改永久保留；同步状态描述配置差异，不能证明服务正确或业务指标正常。",
+    "change": "2026-11-18 UTC，v3.6.2 修正 Unknown 同步状态之后仍复用差异缓存的问题，并在 manifest-generate-paths 无变化时保留服务端差异缓存。",
+    "insight": "期望状态、测不到状态、实测业务结果应分字段保存，否则会以缓存状态误报完成。",
+    "experiment": "测试命名空间制造现场漂移、额外对象及无法读取对象；分别开启 selfHeal/prune，观察状态与动作，再与业务健康检查对照。",
+    "sources": [
+      {
+        "url": "https://github.com/argoproj/argo-cd/blob/47fd59165c522e5c16101223f9d8a86b927eb5f2/controller/state.go",
+        "path": "lanes/delivery/raw/argocd/4011c8a8a8d2-state.go",
+        "detail": "controller/state.go L992–1029、1058–1089：比较错误、所有权、清理标志、状态判断",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/argoproj/argo-cd/blob/47fd59165c522e5c16101223f9d8a86b927eb5f2/docs/user-guide/auto_sync.md",
+        "path": "lanes/delivery/raw/argocd/31acd86aa5e7-auto_sync.md",
+        "detail": "auto_sync.md 的 Automatic Pruning、Self-Healing、Automated Sync Semantics 以及 L209–215 限制",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/argoproj/argo-cd/releases/tag/v3.6.2",
+        "path": "lanes/delivery/raw/argocd/242295cb7172-v3.6.2.html",
+        "detail": "v3.6.2 controller diff cache 的 #30893 / #30899",
+        "date": "2026-11-18"
+      }
+    ],
+    "source_commit": "47fd59165c522e5c16101223f9d8a86b927eb5f2",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D05",
+    "name": "Argo Rollouts",
+    "category": "金丝雀分析与例外升级",
+    "scenario": "金丝雀达到特定步骤后，应根据一段指标窗口判断能否放量、是否中止，或转人工处理。",
+    "mechanism": "AnalysisRun 记录各指标的测量和计数。控制器在判断连续成功前先检查失败、无结论和错误限额；配置 dryRun 的指标仍产生测量数据但不左右最终判定。分析可得到 Successful、Failed 或 Inconclusive 等状态。",
+    "human": "在 rollout 的分析语境中，维护者可在无结论时检查测量，再决定继续或中止；可先以 dry-run 收集新指标的行为。",
+    "org": "业务服务团队制定指标和阈值，平台复用分析流程；可拆开统计“明确退化”与“证据不足”两类等待。",
+    "limits": "结果强依赖采样窗口、流量、数据源和条件表达式。未运行集群或测量真实告警误报。不同终止方式有独立语义。",
+    "change": "2026-11-05 UTC，v1.11.0-rc1 的 Web metric provider 对空响应或非 JSON 响应也计算成功/失败表达式，改变以往直接 Successful 的行为；这是候选版本。",
+    "insight": "需要把空样本和解释不清的结果带给人；把两者折叠为成功会向更多用户扩展不确定变更。",
+    "experiment": "在隔离金丝雀中注入正常指标、阈值边界、空正文、持续无数据；记录 AnalysisRun 原始测量、最终相位和人工处置，对比 RC 与旧版。",
+    "sources": [
+      {
+        "url": "https://github.com/argoproj/argo-rollouts/blob/458eab520fdbf360d1b34b6f6bc0f05e52ae6258/analysis/analysis.go",
+        "path": "lanes/delivery/raw/rollouts/b9a2bcb5213c-analysis.go",
+        "detail": "analysis/analysis.go L104–136、398–439、620–722：测量归集、失败优先和计数阈值",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/argoproj/argo-rollouts/blob/458eab520fdbf360d1b34b6f6bc0f05e52ae6258/docs/features/analysis.md",
+        "path": "lanes/delivery/raw/rollouts/d398b6f01fad-analysis.md",
+        "detail": "analysis.md Failure Limits and ConsecutiveSuccessLimit、Dry-Run、Inconclusive Runs",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/argoproj/argo-rollouts/releases/tag/v1.11.0-rc1",
+        "path": "lanes/delivery/raw/rollouts/6976af9657c3-v1.11.0-rc1.html",
+        "detail": "v1.11.0-rc1 Breaking Changes 中 Web metric provider 成功/失败表达式",
+        "date": "2026-11-05"
+      }
+    ],
+    "source_commit": "458eab520fdbf360d1b34b6f6bc0f05e52ae6258",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D06",
+    "name": "Renovate",
+    "category": "依赖维护及条件合并",
+    "scenario": "自动依赖更新已经产生分支，高频的小更新若逐个等待审批会积压，团队需选择可放行的更新类型。",
+    "mechanism": "tryBranchAutomerge 要求启用 automerge 且类型为 branch，检查 automergeSchedule、分支是否已有 PR，再读取分支状态。green 才尝试 mergeAndPush；红色、非就绪、队列或分支保护产生各自结果。PR 类型走另一条路径。",
+    "human": "维护者设置 packageRules、必检项、保护分支和 merge queue；组织 preset 可继承，仓库可以覆盖规则。",
+    "org": "精细缩小无需逐项人工审查的范围，同时用队列分歧或保护规则失败解释等待。应按更新类别跟踪返工。",
+    "limits": "ignoreTests 与平台检查配置会影响什么能被认作绿色。高频主分支提交也会缩小合并机会；自动成功不等于依赖升级无兼容问题。",
+    "change": "2026-11-19 UTC，44.253.4 在 GitLab 平台修复重新为已推送 commit 启用 automerge 的行为，显示平台侧合并状态要随新提交更新。",
+    "insight": "可自动批准的单位应是具有明确影响面和可复查检查集的变更类别；不要笼统授权全部低行数改动。",
+    "experiment": "同一仓库以 patch/minor/major 与检查齐全/缺失分层，先用 dry-run 分类，检查主分支再更新时的重新评估情况。",
+    "sources": [
+      {
+        "url": "https://github.com/renovatebot/renovate/blob/c69fdddaa26c7742b7edbae5d61ab7269141642a/lib/workers/repository/update/branch/automerge.ts",
+        "path": "lanes/delivery/raw/renovate/908500fb11cc-automerge.ts",
+        "detail": "automerge.ts L21–111：类型、时段、已有 PR、状态、dry-run、保护分支与错误处理",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/renovatebot/renovate/blob/c69fdddaa26c7742b7edbae5d61ab7269141642a/docs/usage/key-concepts/automerge.md",
+        "path": "lanes/delivery/raw/renovate/0ae7af06669b-automerge.md",
+        "detail": "automerge.md Automerge / Merge Queues / Overriding global automerge",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/renovatebot/renovate/releases/tag/44.253.4",
+        "path": "lanes/delivery/raw/renovate/2a008cb3fb54-44.253.4.html",
+        "detail": "44.253.4 的 platform/gitlab 修复 #47980",
+        "date": "2026-11-19"
+      }
+    ],
+    "source_commit": "c69fdddaa26c7742b7edbae5d61ab7269141642a",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D07",
+    "name": "PR-Agent",
+    "category": "模型评审与覆盖度反馈",
+    "scenario": "PR 大于单次上下文，部分分片可能未成功。评审者需要知道模型看过什么，哪些反馈值得再次核查。",
+    "mechanism": "PRReviewer 合并各片推断前过滤低置信发现，以免挤占结果上限；发布判断考虑 finding 状态变化、状态阻塞或部分分片失败。部署端保留特定配置键的控制权。",
+    "human": "负责人复核 PR 反馈与未覆盖部分；v0.50.0 明确 auto-approval 路径仍禁用，配置项归宿主所有。社区项目的行为不外推至厂商商业产品。",
+    "org": "评审队列可按未覆盖或失败部分分派复核，避免把空评论计成完整检查。可收集每条建议的采纳与误报。",
+    "limits": "本地调用固定 SHA 的配置判定函数，自动批准与重试次数均返回宿主专有，仓库可调整 skills.enabled 与 max_skills_tokens。未运行模型或连接 PR 平台；分片之间跨文件依赖、过滤阈值和供应商超时均可能影响覆盖与准确率。",
+    "change": "2026-11-07 UTC，v0.50.0 收紧仓库可改写的重试和调用次数配置，同时把 enable_auto_approval 改为宿主专有；该版本发布说明区分“增加配置约束”与“已启用自动批准”。",
+    "insight": "把模型覆盖情况作为交付证据的一部分交给人，独立维护“评审者是谁”和“谁有批准权”。",
+    "experiment": "固定有跨文件关联的 PR，让一片超时并重复运行；比对覆盖提示、模型发现、人工标注，以及失败片重跑后仍未发现的缺陷。",
+    "sources": [
+      {
+        "url": "https://github.com/The-PR-Agent/pr-agent/blob/b5bdfed1286513700b12b5ea5bbe6c8fa15734e6/pr_agent/commands/pr_reviewer.py",
+        "path": "lanes/delivery/raw/pragent/ea6819c762b8-pr_reviewer.py",
+        "detail": "pr_reviewer.py L920–939、1809–1834：公布状态、分片结果过滤及合并",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/The-PR-Agent/pr-agent/blob/b5bdfed1286513700b12b5ea5bbe6c8fa15734e6/pr_agent/config_security.py",
+        "path": "lanes/delivery/raw/pragent/61b4e7a25297-config_security.py",
+        "detail": "config_security.py L42–155：宿主专有键及判定",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/The-PR-Agent/pr-agent/releases/tag/v0.50.0",
+        "path": "lanes/delivery/raw/pragent/efa30f4b8efe-v0.50.0.html",
+        "detail": "v0.50.0 Breaking changes：Host-only settings、Auto-approval、#4700",
+        "date": "2026-11-07"
+      }
+    ],
+    "source_commit": "b5bdfed1286513700b12b5ea5bbe6c8fa15734e6",
+    "evidence": "源码与版本说明复核；配置范围函数四个输入已验证",
+    "runtime_record": "lanes/delivery/experiment/pragent-config-scope.json"
+  },
+  {
+    "id": "D08",
+    "name": "Atlantis",
+    "category": "基础设施变更的计划与应用",
+    "scenario": "团队在 PR 里查看 Terraform/OpenTofu 计划，再由有权者执行 apply；并发和计划版本变化会影响当初审阅的内容。",
+    "mechanism": "执行端先检查项目 apply 要求与依赖，然后获取项目/目录工作锁，加载已保存计划。在托管 plan/apply 路径中检查计划，并紧邻具体 apply 步骤再次验证。v0.49.0 为新生成的计划记录哈希。",
+    "human": "有权者检查计划后触发 apply；审批规则检查与已保存计划摘要验证是两个条件。发布说明明确 approval 自身没有与某一条 plan 记录绑定。",
+    "org": "将 PR、项目、workspace、计划摘要、审批和实际应用结果联系起来，区分“谁授权”与“授权时/应用时是什么产物”。",
+    "limits": "使用定制步骤的工作流是否采用 Atlantis 托管计划需要逐项确认；默认保证仅适用于对应路径，旧版本留下的计划也不能一概视为已有哈希。",
+    "change": "2026-10-25 UTC，v0.49.0 拒绝应用生成后被改动的已记录计划，要求重新 plan；审批条件在 GitHub/Gitea 以每个评审者最新 review 为准。",
+    "insight": "高影响操作可借鉴 plan→review→apply，但应显式检查人实际看到的版本以及即将应用的摘要；重新规划也应重新评估审阅需求。",
+    "experiment": "沙盒使用无外部资源的 IaC，分别保留和刷新计划、制造并行 PR；核对被应用产物、锁持有者、最近 review 和重计划日志。",
+    "sources": [
+      {
+        "url": "https://github.com/runatlantis/atlantis/blob/2714f4a6dfcd75c798eec34b6dbe653a99c34a89/server/events/project_command_runner.go",
+        "path": "lanes/delivery/raw/atlantis/0dc47b035092-project_command_runner.go",
+        "detail": "project_command_runner.go L943–1008、1207–1256、1296–1302：要求、锁、计划加载和再次验证",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/runatlantis/atlantis/blob/2714f4a6dfcd75c798eec34b6dbe653a99c34a89/README.md",
+        "path": "lanes/delivery/raw/atlantis/6d5b05623ff9-README.md",
+        "detail": "README 的项目说明及官方用户文档入口",
+        "date": "2026-11-18"
+      },
+      {
+        "url": "https://github.com/runatlantis/atlantis/releases/tag/v0.49.0",
+        "path": "lanes/delivery/raw/atlantis/b1ca25cc1e29-v0.49.0.html",
+        "detail": "v0.49.0 Upgrade checklist 及 Apply/Approvals 关于计划摘要和最新 review",
+        "date": "2026-10-25"
+      }
+    ],
+    "source_commit": "2714f4a6dfcd75c798eec34b6dbe653a99c34a89",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D09",
+    "name": "Conftest",
+    "category": "配置策略验证",
+    "scenario": "待合并的配置、IaC 或所有者清单发生变化，团队希望在调用外部系统前运行可重复的规则。",
+    "mechanism": "TestRunner 按格式解析输入，加载 Rego 策略、数据、能力集与命名空间；通常按文件检查，也可合并后跨文件检查，返回结构化结果。已运行 v0.71.0 CLI，以自编生产 owner 规则得到预期退出码。",
+    "human": "领域负责人维护规则、例外和何时阻断，CI 管理者决定将退出码接成必检。团队可以把结构化的命中原因交给变更作者。",
+    "org": "让可机械验证的要求共享同一套策略；对要求 owner 的演示，生产环境有 owner / 缺失 / 开发环境缺失分别返回 0 / 1 / 0。",
+    "limits": "已实测的只是 Windows 本地 CLI 的三组 JSON，不代表 CI 分支保护、真实所有权、线上漂移或团队生产率已经验证。",
+    "change": "2026-09-30 UTC，v0.71.0 新增 CODEOWNER 文件解析器，并修复多文件时 TAP 输出产生多份计划的问题。本文的最小实验使用 JSON，未实测这个新解析器。",
+    "insight": "优先把重复评审意见中语义稳定的一部分转成有版本的规则；统计规则覆盖的真实事件与误阻断。",
+    "experiment": "在历史配置变更做留出回放，比较现有人工审查与策略输出；重点复核例外、缺少上下文的通过样本、误阻断率及修复耗时。",
+    "sources": [
+      {
+        "url": "https://github.com/open-policy-agent/conftest/blob/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/runner/test.go",
+        "path": "lanes/delivery/raw/conftest/fa210c42c7c2-test.go",
+        "detail": "runner/test.go L45–122：格式解析、规则加载、命名空间、独立与组合检查",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/open-policy-agent/conftest/blob/31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4/docs/index.md",
+        "path": "lanes/delivery/raw/conftest/478e7caadb8c-index.md",
+        "detail": "docs/index.md 的 deny、JSON 输出、query 与上下文",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/open-policy-agent/conftest/releases/tag/v0.71.0",
+        "path": "lanes/delivery/raw/conftest/d55a96676dfb-v0.71.0.html",
+        "detail": "v0.71.0 New Features #1404、Bug Fixes #1435",
+        "date": "2026-09-30"
+      }
+    ],
+    "source_commit": "31757a2c6bc2b7e370ae7dfa88b0bad7b433d9b4",
+    "evidence": "源码与版本说明复核；本地 CLI 三个输入已验证",
+    "runtime_record": "lanes/delivery/experiment/conftest-v0.71.0.json"
+  },
+  {
+    "id": "D10",
+    "name": "Temporal（Python SDK）",
+    "category": "跨等待与重启的工作流",
+    "scenario": "一个研发任务可能先执行外部 Activity，再等维护者决定；等待跨越 worker 重启或新版本上线。",
+    "mechanism": "SDK 在激活时读取 replay 标记及历史逻辑标记，分组处理 signal、update 等事件；示例通过 workflow.wait_condition 等待 signal 改变状态，也可设超时。Replayer 能用已有 history 检查新 workflow 实现。",
+    "human": "业务实现决定谁可发 signal、何时超时、如何重试外部操作；编排层可保存决定并继续，而非一直占用一个模型请求。",
+    "org": "用持久工作流表达等待、取消、重试和升级，历史回放可成为平台变更的一项兼容性检查。",
+    "limits": "基于 Python SDK 的证据不能直接外推所有语言。重复外部副作用是否受控，取决于 Activity 和下游的幂等设计；未运行 Temporal 服务或测试历史。",
+    "change": "2026-11-14 UTC，1.36.1 对未记录逻辑标记 2 的工作流默认关闭 single-batch 激活，以维持旧 signal/条件等待/取消的行为；已记录标记 2 的 history 继续使用该语义。",
+    "insight": "工作流版本升级必须尊重在途实例的事件历史。评估 harness 时应把跨版本恢复与外部副作用区分开。",
+    "experiment": "录制“发出请求→等待 signal→取消”不同先后次序的 histories，在两个 SDK 版本上回放；另对重复 Activity 注入幂等键，分别记录兼容性与外部写入次数。",
+    "sources": [
+      {
+        "url": "https://github.com/temporalio/sdk-python/blob/333910697b8f7080660a30e14745b68265f55f42/temporalio/worker/_workflow_instance.py",
+        "path": "lanes/delivery/raw/temporal/7330de10f96f-_workflow_instance.py",
+        "detail": "temporalio/worker/_workflow_instance.py L480–545、4264–4271：replay、逻辑标记与激活分组",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/temporalio/sdk-python/blob/333910697b8f7080660a30e14745b68265f55f42/README.md",
+        "path": "lanes/delivery/raw/temporal/98a2c89ea55d-README.md",
+        "detail": "README 的 Workflow Replay、wait_condition、signal 超时示例",
+        "date": "2026-11-19"
+      },
+      {
+        "url": "https://github.com/temporalio/sdk-python/releases/tag/1.36.1",
+        "path": "lanes/delivery/raw/temporal/fd30f046623d-1.36.1.html",
+        "detail": "1.36.1 Notable Changes 对 flag 2 的兼容规则",
+        "date": "2026-11-14"
+      }
+    ],
+    "source_commit": "333910697b8f7080660a30e14745b68265f55f42",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  },
+  {
+    "id": "D11",
+    "name": "Jenkins Pipeline Input Step",
+    "category": "人在回路中的授权与拒绝",
+    "scenario": "生产发布抵达 Jenkins Pipeline 的 input 步骤时，需要指定值班组或人员确认，或由有权人员中止。",
+    "mechanism": "InputStepExecution 在 POST 端点做 preSubmissionCheck，检查是否已经处理、是否可提交；未指定 submitter 用 Job.BUILD 权限，指定时按用户/组匹配并保留管理员特例。submitterParameter 可记录提交者，abort 向流水线传播中断。",
+    "human": "配置者设定可提交人员或组；经授权的账号确认、填写参数或拒绝。管理员特例需进入组织自己的职责分离检查。",
+    "org": "平台用同一输入步骤表达例外升级；能统计等待时长、决策者与处理结果，为减少无价值等待提供样本。",
+    "limits": "该插件不自动判断审批者当时看到哪个 commit 或产物，也不能仅凭一次确认断言双人分权成立；构建参数另需绑定具体交付内容。",
+    "change": "2026-07-02 UTC，560.v56198a_642157 为 Pipeline Graph View 复用 input 对话框增加资源文件，使另一界面复用交互。此项属于呈现与集成变更。",
+    "insight": "审批事件至少应能关联可执行产物与决策者。等待点可以复用 Jenkins，证据绑定仍须在上层实现。",
+    "experiment": "用普通构建者、指定组成员和管理员分别提交或拒绝同一输入，记录结果、提交者字段及重复提交响应；更新构建版本后检查旧批准能否被复用。",
+    "sources": [
+      {
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/blob/0c9db265274122f4ff54056c7d5977f266ef75db/src/main/java/org/jenkinsci/plugins/workflow/support/steps/input/InputStepExecution.java",
+        "path": "lanes/delivery/raw/jenkins/c2863f36c0b2-InputStepExecution.java",
+        "detail": "InputStepExecution.java L284–311、336–346、372–396：批准/拒绝、处理状态、人员与组",
+        "date": "2026-11-09"
+      },
+      {
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/blob/0c9db265274122f4ff54056c7d5977f266ef75db/README.md",
+        "path": "lanes/delivery/raw/jenkins/8c9b7338ca6d-README.md",
+        "detail": "README L23–39：submitter 与 submitterParameter",
+        "date": "2026-11-09"
+      },
+      {
+        "url": "https://github.com/jenkinsci/pipeline-input-step-plugin/releases/tag/560.v56198a_642157",
+        "path": "lanes/delivery/raw/jenkins/b89a96a9b16d-560.v56198a_642157.html",
+        "detail": "560.v56198a_642157 的 Pipeline Graph View 对话框 #258",
+        "date": "2026-07-02"
+      }
+    ],
+    "source_commit": "0c9db265274122f4ff54056c7d5977f266ef75db",
+    "evidence": "源码与版本说明复核；未做产品运行实验"
+  }
+]

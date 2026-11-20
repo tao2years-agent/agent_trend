@@ -1,0 +1,1319 @@
+                                         LinkAnchor: An Autonomous LLM-Based Agent for
+                                         Issue-to-Commit Link Recovery
+                                         ARSHIA AKHAVAN, Bowling Green State University, USA
+                                         ALIREZA HOSEINPOUR, Bowling Green State University, USA
+                                         ABBAS HEYDARNOORI, Bowling Green State University, USA
+                                         HAMID BAGHERI, University of Nebraska-Lincoln, USA
+                                         MEHDI KESHANI, University of Zurich, Switzerland
+arXiv:2508.12232v5 [cs.SE] 26 Jun 2026
+
+
+
+
+                                         Issue-to-commit link recovery in software repositories is fundamental to software traceability and project
+                                         management, yet it remains a challenging task. Prior studies show that only about 42.2% of issues on GitHub
+                                         are correctly linked to their commits, highlighting the need for more effective solutions. Existing work has
+                                         explored a range of ML/DL approaches, and more recently, large language models (LLMs) have been applied
+                                         to this problem. However, these methods face two major limitations. First, LLMs are restricted by limited
+                                         context windows and cannot simultaneously process all available data sources, such as long commit histories,
+                                         extensive issue discussions, and large code repositories. Second, most approaches operate on individual
+                                         issue–commit pairs, where a model independently scores the relevance of a single commit to an issue. This
+                                         pairwise formulation fails to account for the complex associativity of software fixes, where an issue is often
+                                         resolved by an aggregate chain of commits rather than a single atomic change. By ignoring these temporal
+                                         and parental dependencies, existing methods often fail to incorporate the complete resolution logic and might
+                                         misidentify intermediate commits as final fixes. Furthermore, this strategy is computationally inefficient in
+                                         large repositories, as it requires exhaustively evaluating an enormous number of candidate pairs. To address
+                                         these challenges, we present LinkAnchor, the first autonomous LLM-based agent designed specifically for
+                                         issue-to-commit link recovery. LinkAnchor introduces a lazy-access architecture that allows the underlying
+                                         LLM to dynamically retrieve only the most relevant contextual data, such as commits, issue comments, and
+                                         code files, without exceeding token limits. Instead of isolated scoring, LinkAnchor treats link recovery as a
+                                         dynamic search process, navigating the commit graph to identify the final resolving commit and effectively
+                                         aggregating the entire chain of contributing changes. LinkAnchor is first to formalize ILR as dynamic heuristic
+                                         search over commit chains (vs. prior pairwise scoring), enabling aggregate reasoning that recovers distributed
+                                         fixes (46% of cases). Our evaluations show that LinkAnchor outperforms state-of-the-art baselines by 41–714%
+                                         in Hit@1 across six large-scale open-source projects, while costing only about 0.01 US dollars per issue.
+                                         Finally, LinkAnchor is designed and tested for both GitHub and Jira, and its modular architecture makes it
+                                         straightforward to extend to other platforms.
+                                         CCS Concepts: • Software and its engineering → Software maintenance tools; Maintaining software;
+                                         Software evolution; Software version control; Software configuration management and version
+                                         control systems; Documentation;
+                                         Additional Key Words and Phrases: Issue-to-Commit Link Recovery (ILR), LLM-Based Agents, Software
+                                         Maintenance
+                                         Authors’ Contact Information: Arshia Akhavan, Bowling Green State University, Department of Computer Science, Bowling
+                                         Green, USA, arshiaa@bgsu.edu; Alireza Hoseinpour, Bowling Green State University, Department of Computer Science,
+                                         Bowling Green, USA, ahosein@bgsu.edu; Abbas Heydarnoori, Bowling Green State University, Department of Computer
+                                         Science, Bowling Green, USA, aheydar@bgsu.edu; Hamid Bagheri, University of Nebraska-Lincoln, School of Computing,
+                                         Lincoln, USA, bagheri@unl.edu; Mehdi Keshani, University of Zurich, Department of Informatics, Zurich, Switzerland,
+                                         mehdi.keshani@uzh.ch.
+
+
+
+                                         This work is licensed under a Creative Commons Attribution 4.0 International License.
+                                         © 2026 Copyright held by the owner/author(s).
+                                         ACM 2994-970X/2026/7-ARTFSE184
+                                         https://doi.org/10.1145/3808191
+
+
+                                                                              Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:2                   Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+ACM Reference Format:
+Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani. 2026. LinkAn-
+chor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery. Proc. ACM Softw. Eng. 3, FSE,
+Article FSE184 (July 2026), 24 pages. https://doi.org/10.1145/3808191
+
+1   Introduction
+Software traceability concerns identifying and leveraging relationships among software artifacts and
+other development resources, and such relationships support a broad range of software engineering
+tasks [2, 19, 22, 27, 28, 34, 50, 60, 70]. A key problem in this domain is issue-to-commit link recovery
+(ILR), which seeks to associate issue reports with the corresponding commits in software repositories
+that resolve them [35]. Prior research has shown that ILR is critical for a wide range of tasks,
+including bug prediction [38, 66], feature location [13], and security risk assessment [52, 53]. More
+broadly, ILR also supports project management [58] and the evaluation of software maintenance
+quality [69]. Although referencing the related issue in the corresponding commit is considered a
+good practice, studies show that many issue-commit links are often missing in large-scale software
+projects. [64, 66]. Manually recovering these links is a time-consuming and error-prone task for
+project maintainers and contributors [48, 66].
+   To resolve this problem, researchers have developed a variety of automated techniques for
+ILR [12, 29, 48, 51, 66, 68, 69, 71, 74, 77]. State-of-the-art approaches primarily frame ILR as either a
+ranking or a classification task. Ranking systems, like [29, 48, 66, 69, 74, 77], score commits based
+on how well their text semantically matches the issue’s title and description, whereas classification
+models, such as [12, 71], use the same textual features to assign a binary label (i.e., true-link or
+false-link) to issue-commit pairs. However, both ILR paradigms rely on individual issue-commit pair
+analysis, where the model evaluates the relationship between a single issue and a single commit
+in isolation. While this setup has produced promising results, existing work remains subject to
+important limitations:
+   (1) L1: Single Commit Evaluation Scheme: In real-world settings, issues are often resolved not
+       by a single commit, but by a sequence of related commits on a dedicated branch [29, 77].
+       This distinction is critical: when multiple commits contribute to resolving an issue, no single
+       intermediate commit contains enough context to represent the complete resolution. Moreover,
+       ILR is also used to derive time-related metrics, such as issue resolution duration [58]. In
+       such cases, it is essential to identify the entire resolving commit chain, particularly the first
+       commit that starts the fix and the last commit that completes it, rather than treating the
+       resolution as a single isolated event. Baseline methods, however, are designed to evaluate
+       and score commits in isolation [12, 29, 48, 66, 71, 74]. As a result, they cannot capture the
+       semantic and chronological relationships between commits within a chain, and thus fail to
+       reconstruct the full picture of how the issue was resolved.
+   (2) L2: Limited Utilization of Available Context: Most existing studies fail to fully exploit all
+       available data and context for ILR, since incorporating every contextual source, such as
+       discussion threads or the complete repository codebase, can inflate training datasets, which
+       introduces noise, additional parameters, and overfitting risks [77]. In the case of LLMs, it can
+       also quickly exceed the context window [29]. To mitigate these challenges, many approaches
+       neglect to incorporate crucial but lengthy contextual data. In practice, this selective sampling
+       and feature engineering can omit signals that are critical to capture a given issue’s full
+       resolution steps.
+   (3) L3: Inaccuracies in the Training Dataset: A common challenge in previous learning-based
+       studies lies in the training phase and the preparation of training data. In ILR tasks, the only
+       ground-truth data available are the actual issue-commit links. Consequently, researchers
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                 FSE184:3
+
+
+      often generate artificial negative examples by assuming that any issue-commit pair not
+      present in the ground truth is a false link. However, this assumption is flawed, as an issue
+      may be resolved by multiple commits. In such cases, simply labeling each commit as true
+      or false may not adequately capture this complexity. As a result, some commits labeled as
+      negative in earlier studies may, in fact, represent true links [77]. Such inaccuracies in the
+      training dataset could impair performance in real-world scenarios.
+  (4) L4: Impractical Pairwise Issue-Commit Approach: Most existing approaches focus on individual
+      issue-commit pairs, and given a single issue-commit pair, they predict whether the commit is
+      relevant to the issue [12, 37, 41, 48, 66, 71, 77]. This strategy becomes impractical for large
+      repositories with tens of thousands of commits, as it requires generating and analyzing every
+      possible issue-commit pair for a given issue before selecting the most relevant commit. Thus,
+      the computational overhead and combinatorial explosion make these methods ill-suited for
+      real-world, large-scale scenarios.
+   To address these limitations, we redefine ILR as a dynamic heuristic search over the software
+repository’s version-control graph that aggregates the full resolution logic of an issue. To achieve
+this, we present LinkAnchor, the first search-based ILR approach utilizing an autonomous LLM
+agent architecture. Given the issue URL and a link to the project repository, LinkAnchor grants
+the LLM on-demand access to various project data sources such as the commit history, issue
+threads, and codebase, via specialized function calls. LinkAnchor then explicitly instructs the agent
+to navigate the repository and selectively retrieve evidence to confirm or prune potential links.
+Through this heuristic search, the agent recovers the aggregate resolution logic contained within
+an entire commit chain without exceeding its token window. The main contributions of our work
+are as follows:
+    • To overcome the limitations of one-to-one link recovery (i.e., addressing L1), LinkAnchor
+      employs an aggregate reasoning strategy that incorporates the entire commit chain during the
+      decision-making process. Unlike prior models that examine commits in isolation, LinkAnchor
+      iteratively explores the commit history, accumulating related changes until the aggregation
+      of all observed change logic and code diffs provides a complete resolution to the issue. This
+      search-driven approach ensures that the agent does not prematurely terminate upon finding
+      an intermediate fix; instead, it continues to traverse temporal and parental semantics until
+      the cumulative code changes fully satisfy the issue requirements. Upon confirming that the
+      gathered set of commits constitutes a total resolution, LinkAnchor returns the chronologically
+      last commit within this set as the final resolution point. From this final commit, the entire
+      resolution commit chain can be formally reconstructed by traversing the second-parent
+      and chronological links [80]. This shifting of focus from individual “relevant” commits to
+      aggregate “sufficient” resolutions ensures higher precision and enables tasks that require the
+      complete resolution history, such as accurately measuring issue resolution duration [58].
+    • To incorporate all available contextual data (i.e., addressing L2), LinkAnchor replaces the
+      static feature engineering used in prior work [15, 29, 41, 66, 77] with a dynamic, lazy-access
+      architecture. While existing methods are limited to pre-processed, high-level features, LinkAn-
+      chor leverages the interactive capabilities of LLM agents to perform on-demand data retrieval
+      through specialized function calls. LinkAnchor exposes APIs that the LLM can actively in-
+      voke to fetch only the specific information it deems necessary. This mechanism grants the
+      model full visibility into data sources previously unavailable to ILR systems, such as codebase
+      repositories and issue discussion threads, without exhausting the model’s context window.
+      By allowing the LLM to decide which “slices” of data are relevant at runtime, LinkAnchor
+      can investigate semantic nuances that are lost in static embeddings. Moreover, LinkAnchor
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:4                   Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+
+
+Fig. 1. Motivating Example 1: Simplified commit timeline showing the initial commit (5807981), which
+misses a minor change, followed by the final resolving commit (ec4f202).
+
+       selectively obtains feedback from the LLM after function calls to assess the relevance of the
+       data. If a data is deemed unhelpful by the LLM, LinkAnchor discards it from the chat history
+       to maintain the information density within the token window.
+    • Since LinkAnchor is built on a pre-trained, general-purpose LLM, it requires no task-specific
+       training and remains robust against flaws in manually generated datasets (i.e., addresses L3).
+    • LinkAnchor reformulates ILR as a heuristic search problem, eliminating the need to exhaus-
+       tively evaluate every commit in the repository (i.e., addressing L4). By providing the LLM
+      with on-demand access to the project’s commit history, LinkAnchor allows the model to
+       determine at runtime which chronological segments or specific commit attributes are most
+       likely to contain the resolution logic. Instead of a linear scan, the agent selectively retrieves
+       only the commits and metadata deemed essential for its reasoning process, effectively pruning
+       irrelevant commits from the history. This targeted navigation allows LinkAnchor to converge
+       on the final resolving commit and aggregate the contributing chain without the prohibitive
+       cost of pairwise scoring.
+   We benchmarked LinkAnchor against five state-of-the-art ILR methods [15, 29, 41, 66, 77]. Results
+show that LinkAnchor substantially outperforms existing methods in Hit@1, with improvements
+ranging from 41% to 714%. To assess the impact of contextual signals overlooked by prior work,
+we conducted an ablation study disabling different data sources. Results show that removing
+issue comments reduces LinkAnchor’s accuracy by 17%, removing codebase access by 4%, and
+removing both by 21%. These drops confirm that issue comments and code inspection play a
+crucial role in LinkAnchor’s performance. As shown in our evaluations, LinkAnchor demonstrates
+consistent results across diverse projects with minimal variance by flexibly leveraging such sources
+at runtime, whereas prior methods exhibited noticeable performance fluctuations. To demonstrate
+generalizability and real-world applicability, we further tested LinkAnchor on 120 randomly selected
+GitHub issues, resolved after the training cut-off date for LinkAnchor’s LLM. It successfully linked
+107 of them, highlighting its adaptability and real-world utility. Furthermore, our cost analysis
+shows that, for a given issue, LinkAnchor completes ILR in under 24 seconds at an average cost of
+$0.01. Our evaluations focus on two popular issue-tracking systems: Jira and GitHub. However,
+LinkAnchor’s modular and flexible design makes it straightforward to extend to other platforms and
+incorporate new domain-specific data sources. Moreover, by leveraging the Tree-sitter parser [7],
+LinkAnchor provides support for nearly all popular programming languages.
+   The remainder of this paper is organized as follows. Section 2 presents our motivating examples.
+Section 3 describes the approach and implementation of LinkAnchor. Section 4 explains our
+evaluations and discusses the results. Section 5 discusses the implications of our findings and
+outlines future research directions. Section 6 addresses the potential threats to the validity of our
+findings. Section 7 reviews related work. Finally, Section 8 concludes the paper.
+
+2   Motivating Examples
+Example 1: The Context and Evaluation Gap. State-of-the-art approaches typically treat ILR as
+an independent analysis of issue-commit pairs based on semantic similarity [12, 29, 41, 66, 71, 77].
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                       FSE184:5
+
+
+
+
+ (a) An example comment that urges a stronger solution and flags a file as the required modification site.
+
+
+
+
+    (b) LinkAnchor’s complete workflow for retrieving the final resolving commit of issue CALCITE-980.
+
+                   Fig. 2. Motivating Example 2: Prior work’s limited use of available context
+
+In our examination of baseline failure cases, we observed that these methods often struggle with
+intermediate or final fixes whose commit messages are vague or brief (e.g., “address code review” or
+“minor update”) and lack semantic overlap with the corresponding issue. Notably, these commits are
+semantically incomplete on their own. For instance, a commit may modify a function introduced
+in a previous relevant commit. Without including the previous commit in the ILR reasoning,
+the connection between the modification and the issue cannot be established. Our empirical
+observations suggest that this dependency on neglected relevant commits contributes to 18% of the
+missed links in our top-performing baselines [29, 77]. Consequently, this isolated analysis fails to
+capture the cumulative nature of software fixes and the full resolution logic.
+   Figure 1 shows an example of this in issue Julia-92 1 , where an initial commit (5807981)2 explicitly
+claims to resolve the issue, but a subsequent commit (ec4f202)3 is required to provide the missing
+code changes required for true resolution. The baselines assign a high score to the initial commit
+based on its description, whereas the final commit receives a significantly lower score due to its
+nondescript message and the models’ inability to process complex code diffs. Notably, because these
+models evaluate commits in isolation, they cannot recognize that the first commit is merely a partial
+fix and the true resolution is only achieved when the cumulative changes of the chain address
+the issue. In contrast, LinkAnchor iteratively examines the commit sequence until it confirms the
+aggregate changes provide a complete resolution, correctly identifying the final commit as the true
+link.
+
+1 https://github.com/JuliaLang/julia/issues/92
+2 https://github.com/JuliaLang/julia/commit/58079819d667f832abfc6fea8210252f161387d7
+3 https://github.com/JuliaLang/julia/commit/ec4f20243c0807654eeeb8df343611d22c8ef404
+
+
+
+                                       Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:6                   Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+
+
+                          Fig. 3. High-level workflow of LinkAnchor’s dynamic search
+
+Example 2: Limited Use of Available Context. As discussed in Example 1, isolated issue-commit
+analysis often fails to acknowledge true links due to ambiguity or brevity in the issue text and
+commit messages. In our analysis of these failure cases, we observed that although the commit
+message and issue description may not align semantically, the issue discussions frequently include
+contextual cues about the changes being made. These hints often appear as specific references to
+file names, classes, or methods requiring updates, as well as explicit planning or explanations of the
+necessary changes and code snippets. Our empirical observations indicate that approximately 33%
+of these specific missed links in top-performing baseline methods [29, 77] contained such signals
+in the issue comments, which baseline methods completely ignore.
+   A concrete example of this limitation is shown in Figure 2a, which illustrates the true link
+between issue CALCITE-980 4 and its final resolving commit 963ba1b5 . The state-of-the-art ILR
+approaches, EasyLink [29] and EA-Link [77], both fail to recover this link because there is little
+semantic overlap between the issue report and the commit message. However, as shown in Figure 2a,
+the discussion thread contains a critical comment identifying the root cause in RexImpTable.java
+and suggesting a patch.
+   LinkAnchor leverages these previously overlooked signals. As shown in Figure 2b, the agent
+first reads the entire discussion and infers that changes to RexImpTable.java are critical. It then
+searches the commit history for modifications to this file within the relevant timeframe. Among the
+resulting candidates, the agent inspects commit 963ba1b in more detail, analyzing both its metadata
+and code diff. Based on this evidence, it concludes that commit 963ba1b resolves the issue.
+   This example demonstrates two key advantages of LinkAnchor. First, it incorporates richer
+information sources (e.g., issue comments and codebase) that prior ILR methods ignore. Second, its
+workflow is not hard-coded: function calls are chosen adaptively by the agent in response to the
+context. This adaptivity enables more accurate recovery in cases where simple text similarity fails.
+
+3     The LinkAnchor Approach
+3.1    Dynamic Heuristic Search Paradigm
+Prior research shows that the relationship between issues and resolving commits is often one-to-
+many, meaning an issue usually requires multiple commits to fully resolve [29, 77]. However, existing
+ILR approaches typically evaluate commits in isolation and fail to capture the complete resolution
+logic when it is distributed across several commits (see Section 2). To bridge this gap, LinkAnchor
+redefines ILR as a dynamic heuristic search over the version control graph to incorporate the
+aggregate collection of commits whose combined changes fully satisfy the issue requirements.
+Unlike prior work, which ignores the temporal and parental relationships between commits, our
+search-based approach exploits the inherent associativity of software fixes.
+  Figure 3 illustrates LinkAnchor’s dynamic search process. Instead of ingesting predetermined
+data points, LinkAnchor interacts with the project as an explorable state space. Starting with the
+4 https://issues.apache.org/jira/browse/CALCITE-980
+5 https://github.com/apache/calcite/commit/963ba1b1b3d2ab95989d8383e0a855c3ae5e24cb
+
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                 FSE184:7
+
+
+
+
+                                 Fig. 4. LinkAnchor’s overall architecture
+
+issue title, the agent follows an iterative reasoning process, evaluating the information gathered at
+each step to identify relevant commits and determine which specialized function to call next. This
+allows the agent to dynamically navigate the version control graph and formulate queries based
+on the evolving context. Rather than evaluating commits in isolation, LinkAnchor accumulates
+context from relevant commits that may address different aspects of the issue.
+   This accumulation strategy is central to how LinkAnchor identifies the final resolving commit
+in scenarios where multiple commits relate to the same issue. By employing a stopping condition
+based on aggregate reasoning, the agent continuously evaluates the cumulative changes of the
+relevant commits identified so far against the issue’s requirements. This mechanism ensures that the
+search does not prematurely terminate upon discovering a partial fix. The search process continues
+until the agent determines that the aggregated relevant commits, when taken together, provide a
+complete resolution to the issue.
+   Once the agent confirms that the accumulated evidence constitutes a total resolution, it uses
+commit timestamps to distinguish the chronologically last commit among the identified relevant
+commits and returns it as the final issue resolution point. Notably, the complete resolving commit
+chain can then be formally reconstructed by traversing the second-parent links starting from this
+final resolving commit [80].
+
+3.2 Architecture
+A key challenge faced by previous studies was condensing the vast amount of contextual information
+available to fit within the limited token window of the LLM. Critical data points, such as code
+snippets and issue comments, were often omitted due to their large size. With the emergence of
+LLM agents, this limitation can now be addressed by allowing the model to request exactly the
+information it needs on demand, rather than being provided the entire context upfront.
+   Building on this idea, LinkAnchor equips the LLM with a rich set of functions that grant access
+to various sources of relevant information, such as commit history, issue threads, discussions, and
+the codebase. Essentially, LinkAnchor frames the problem for the LLM and allows it to explore the
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:8                   Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+given project by calling these functions to find the issue-commit link. When a function is invoked,
+LinkAnchor responds with the exact data needed.
+   As illustrated in Figure 4, LinkAnchor comprises several modules. Given an issue URL and the
+corresponding Git repository, LinkAnchor initializes its data-extractor module, which manages all
+function calls for data retrieval. The data extractor supports three sources: (i) Issue data, such as
+the title, description, and discussion threads; (ii) Queries over the VCS and commit history, such as
+retrieving lists of commits filtered by specific attributes, and (iii) Advanced code navigation, such
+as retrieving the documentation and definitions for methods or classes in the codebase.
+   Each source has an extractor, which registers its supported APIs (functions) in a shared schema.
+This schema is later used to route each call issued by the LLM to the appropriate extractor. Because
+adaptability across diverse environments is a core requirement, LinkAnchor should be designed for
+modularity and pluggability. This architecture allows new data-extractor modules to be plugged
+into the system simply by extending the schema at runtime.
+   The LLM-Middleware handles communication with the LLM via API calls. It first prompts the
+LLM with the problem explanation and the available functions (from the data-extractor’s schema).
+Retrieval then proceeds as an iterative dialogue between the LLM and the middleware.
+   LLM analyzes the provided information and takes one of the following actions: (i) invokes
+Finish to mark a commit as the resolution; (ii) requests additional contextual data via the available
+functions; (iii) requests a different batch of commits; and (iv) invokes GiveUp to terminate due to
+insufficient data.
+   These iterations continue until the LLM either finds the correct commit or terminates due to
+insufficient contextual data (GiveUp). To ensure termination, a hard limit is set on the number of
+iterations, and this number is communicated to the LLM in the initial prompt.
+   In total, LinkAnchor offers 20 functions, matching the currently recommended maximum for
+models like ChatGPT-4o [55]. All functions are implemented deterministically, so every response
+from LinkAnchor can be verified against the true project data.
+   As shown in Table 1, LinkAnchor provides four categories of functions for the LLM: Git, Issue,
+Codebase, and Control. The first three grant the LLM access to information about the Git history,
+issues, and the codebase, respectively. Control functions manage the flow of communication with
+the LLM.
+Git Functions. Enable the LLM to execute rich, complex queries on the commit history of the
+repository. We divide them into two categories: (i) Batch-retrieval functions that return a set of
+commits filtered by attributes such as author, file changes, or time period. These functions always
+return the commit metadata information, including the commit message, author, commit hash, and
+commit timestamp. (ii) Data-retrieval functions, which supply parameters for those batch queries.
+For example, the LLM can call list_authors to obtain all commit authors, then pass a selected
+author to commits_of_author to fetch that author’s commits.
+   When faced with a large repository, the full context of the repository can overwhelm the LLM
+and degrade decision accuracy, since the full commit history often consists of tens of thousands of
+commits across different branches. To address this issue, the Git-Extractor module provides a much
+simpler view of the Git repository to the LLM. In particular, the Git-Extractor module provides two
+key abstractions:
+   (1) Unified branch view: The Git-Extractor module provides the illusion of having a single master
+       branch to the LLM by merging all branches into one in order to reduce complexity for the
+       LLM. This way, the LLM sees one coherent sequence of commits. This is especially important
+       since it is common practice to maintain separate branches for each version of the artifact,
+       and this separation does not provide any useful data for the LLM and only causes confusion.
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                            FSE184:9
+                                 Table 1. API Function Definitions for LinkAnchor
+
+           Function              Inputs                     Output              Description
+           Git Functions
+           list_commit           pagination                 List[CommitMeta]    Paginated commits
+           list_authors          —                          List[Author]        List of authors
+           authors_commits       Author, pagination         List[CommitMeta]    Commits by the specified author
+           list_files            pattern                    List[Path]          Files in history matching pattern
+           commits_on_file       file_name, pagination      List[CommitMeta]    Commits that staged specified file
+           commit_diff           Commit_hash                CommitDiff          Diff of the specified commit
+           commit_metadata       commit_hash                CommitMeta          Metadata: author, msg, timestamps
+           Issue Functions
+           issue_title           —                          String              Title of the current issue
+           issue_description     —                          String              Description of the issue
+           issue_created_at      —                          DateTime            Issue creation timestamp
+           issue_closed_at       —                          DateTime            Issue resolution timestamp
+           issue_author          —                          Author              Username of the issue’s author
+           issue_comments        pagination                 List[Comment]       Comments on the issue
+           issue_participants    —                          List[Author]        Users participated in issue thread
+           Codebase Functions
+           fetch_definition      commit, path, name         String              Source code of a function/class
+           fetch_document        commit, path, name         String              Docstring of a function/class
+           fetch_lines_in_file   commit, file, start, end   String              Range of lines from a file
+           Control Functions
+           finish                commit_hash                —                   Mark resolving commit and terminate
+           Give_up               —                          —                   Give up and terminate the process
+           feedback              id, Discard/Store          —                   Provide feedback on a function call
+             Note: The commit input in the codebase functions is used to check out the codebase at a specific commit
+             before retrieving the requested data (e.g., function code, docstring, class attributes).
+
+  (2) “Safe-lifespan” filtering: The Git-Extractor module limits all queries to the safe lifespan of
+      the issue, defined as one week before issue creation through one week after issue resolution.
+      Prior studies show that most resolving commits fall within this time window [66, 69, 77].
+      This way, when calling functions like commits_of_author or list_files, only commits that
+      are within the safe life span of the issue are considered for responding to the query. Limiting
+      the search space in this way both reduces token consumption and speeds up the link-retrieval
+      process. Nevertheless, the LLM can still examine a commit outside of the default time period
+      by calling the list_commits function. However, the default is set to the safe lifespan.
+Codebase Functions. Allow the LLM to retrieve the documentation and/or implementation of
+specific methods, classes, or data structures. They also support fetching arbitrary lines of code from
+a given file. This enables the LLM to explore the codebase and identify potential locations where a
+committed change may address and resolve the issue. Since the state of the codebase can change
+with each commit, all codebase functions take a commit_hash as input. Together, these functions
+provide the LLM with a precise view of the code at a specific point in time.
+   In order to support various languages, LinkAnchor leverages Tree-sitter [7] as an abstract syntax
+tree (AST) parser. As a result, LinkAnchor needs to define only two new Tree-sitter queries per
+language: one for retrieving data structures and another for retrieving functions. Because Tree-sitter
+already supports most of the popular languages, LinkAnchor’s support can be extended to a new
+language by simply writing the two mentioned Tree-sitter queries.
+Issue Functions. Through these functions, the LLM accesses issue details such as the title, de-
+scription, and discussion threads. To avoid exhausting the token window, the comment retrieval
+function supports pagination.
+Control Functions. Are useful for controlling the flow of the process. Currently, there are three
+functions defined for the LLM to use. Finish signals successful completion by returning the commit
+
+                                        Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:10                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+hash of the identified commit. GiveUp indicates that the LLM could not pinpoint the target commit.
+Whenever a function call returns more than a predefined number of bytes of data, a request for
+Feedback is issued from LinkAnchor. In these cases, the LLM should invoke Feedback with either
+Discard, to signal that the data should be replaced with a brief “omitted” notice, or Preserve, to
+keep the original output. By discarding irrelevant or excessively large data, we prevent needless
+token consumption and keep the iterative process moving forward.
+   To support performance tuning and future enhancements, LinkAnchor includes a metrics module
+that automatically records every function call made by the LLM. For each issue-commit recovery
+session, it captures two types of data: Function-call counts, which represent the total number of
+times each function is invoked, and Call sequences, which are the ordered lists of functions the LLM
+requests. We use these metrics in our evaluation (Section 4).
+
+3.3    Prompting
+The initial prompt serves as the foundational logic for LinkAnchor, governing how the LLM
+approaches the ILR task and establishing the rules for its operation in practical settings. To opera-
+tionalize the design described in Section 3.1, the prompt explicitly frames ILR as a dynamic search
+process. We achieve this by giving instructions that require the agent to iteratively accumulate
+context from the commit history and evaluate whether the aggregated changes are sufficient to
+fully resolve the issue.
+   We explicitly inform the agent that developers often distribute a single fix across a sequence of
+commits; therefore, the agent should not stop at the first relevant commit it encounters. Instead, the
+model is directed to continue its search until the cumulative changes across all identified relevant
+commits provide a complete resolution to the issue. Once this state of total resolution is confirmed,
+the agent is tasked with reporting the chronologically last commit in that chain as the final resolving
+link. To support this, the prompt instructs the LLM to prioritize the analysis of actual code diffs
+over potentially vague or misleading commit messages. The specific instructions included in the
+agent’s initial system prompt that enforce these behaviors are shown below:
+
+            System Prompt Guidelines for Multi-Commit Fixes & Code Diff Prioritization
+
+    [...]
+    When resolving an issue, a developer might split the fix across multiple commits. In your search, you might
+    come across commits that are partial fixes. You should continue your search until the cumulative changes from
+    all identified relevant commits fully resolve the issue. Finally, use temporal metadata to return the last
+    commit hash in the sequence as the resolving commit.
+    [...]
+    Commit messages may not fully reflect the changes. Do not solely rely on the message to determine if a commit
+    resolves the issue. Instead, analyze the actual code changes (diffs) to make an informed decision.
+
+
+  To ensure termination, the LLM is informed in the initial prompt that it has a limited number of
+function calls and must generate a final result before reaching this limit. All of our prompts are
+available in our replication package [1].
+
+4     Evaluation
+In this section, we evaluate how effective LinkAnchor is in the issue-to-commit link recovery task.
+We aim to answer the following research questions (RQs):
+      • RQ1: How well does LinkAnchor perform vs. baselines?
+      • RQ2: What is the contribution of each data source to issue-commit link recovery?
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                               FSE184:11
+
+
+      • RQ3: How well does LinkAnchor perform on new, unseen, real-world data?
+      • RQ4: What are the costs of the approach?
+
+4.1     RQ1: How well does LinkAnchor perform vs. baselines?
+We evaluate the performance of LinkAnchor relative to state-of-the-art baselines in this section.
+
+4.1.1    Experimental Setup.
+Dataset. We evaluate LinkAnchor on the dataset introduced in [77], which includes over 56k
+unique issues and all of their true links from six Apache projects. All these projects use Jira for
+issue tracking and cover a total of 27 unique git repositories, enabling a thorough evaluation of
+LinkAnchor on diverse project environments. Furthermore, approximately 46% of the issues in this
+dataset have multiple resolving commits, ensuring that multi-commit fixes are well-represented in
+our evaluation.
+Evaluation Metrics. State-of-the-art approaches have typically framed ILR as a recommendation
+problem [15, 29, 41, 66], where the system produces a top-𝑘 ranked list of candidate commits for
+each issue, and evaluation is based on whether any of the true links in the dataset appear within
+the top-𝑘 results. This is typically measured by the Hit@k metric, which captures the likelihood
+that at least one related commit appears within the retrieved set.
+
+                                                       |𝑄 |
+                                                   1 ∑︁                
+                                    Hit@𝑘 =                I Rank𝑖 ≤ 𝑘                                           (1)
+                                                  |𝑄 | 𝑖=1
+
+   In Equation 1, 𝑄 is the query set, with |𝑄 | denoting its size. Furthermore, I(·) returns 1 if any
+true link (i.e. any relevant commit) for query 𝑖 is within the top-𝑘, and 0 otherwise.
+   LinkAnchor formulates ILR as the task of retrieving the last chronological resolving commit for
+each issue. Since the last resolving commit is inherently included among the set of “true links” in
+the dataset, this formulation allows us to adopt state-of-the-art ILR recommendation methods as
+baselines and to follow their established evaluation protocols. In doing so, we ensure meaningful
+and direct comparison. Notably, approaches such as MPLinker [71] and PromptLink [12] frame ILR
+as a binary classification task. Given a single isolated issue-commit pair, these methods predict
+a binary label (True-Link or False-Link). However, because this formulation inherently lacks a
+relative scoring mechanism to rank one valid commit over another, it is incompatible with the
+ranking-based evaluation protocol used in this study. Consequently, these methods are excluded
+from our baselines.
+   The most appropriate value for k for evaluating LinkAnchor against the baselines is one. Hit@1
+metric evaluates the probability that the most related (top-ranked) commit is a true link. We compute
+LinkAnchor’s Hit@1 as the fraction of issues for which the retrieved commit hash matches the
+final resolving commit. Notably, comparing LinkAnchor’s Hit@1 with the Hit@1 reported by our
+baselines puts LinkAnchor at a significant disadvantage: when multiple commits resolve an issue,
+baselines receive credit for retrieving any commit in the resolving chain, whereas LinkAnchor
+is only counted as correct if it identifies the final commit. As a result, a commit that is relevant
+but non-final is scored as a hit for the baselines but a miss for LinkAnchor. Beyond this primary
+comparison, we also conduct a secondary comparison of LinkAnchor’s Hit@1 against the baselines’
+Hit@10 results. This imposes an even stricter standard, as Hit@10 is by definition always greater
+than or equal to Hit@1, since allowing more candidates in the retrieved set increases the likelihood
+of including a correct commit. Nonetheless, we adopt these criteria to demonstrate that LinkAnchor
+can remain competitive even under evaluation conditions that inherently favor the baselines.
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:12                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+ Table 2. Hit@1 Scores Across Six Projects (“Improvement” is LinkAnchor’s mean gain over each baseline)
+              Project                    LinkAnchor      EasyLink      EALink     T-Bert    DeepLink         VSM
+              Ambari                        0.9546         0.7812       0.9490    0.5524        0.0625       0.4209
+              Calcite                       0.8874         0.8654       0.6555    0.5540        0.0926       0.2770
+              Groovy                        0.8424         0.4590       0.6650    0.4655        0.0062       0.4983
+              Ignite                        0.8221         0.4977       0.3950    0.4304        0.0584       0.1012
+              Isis                          0.8827         0.3808       0.2423    0.2394        0.3291       0.1191
+              Netbeans                      0.7901         0.6357       0.3273    0.2794        0.0870       0.0125
+              Mean                          0.8632        0.6118        0.5390    0.4202     0.1060          0.2382
+              Improvement                      —          41.09%       +60.15%   +105.43%   +714.61%        +262.44%
+              Standard Deviation (𝜎 )       0.0532        0.1776        0.2394    0.1167     0.1021          0.1746
+
+
+            Table 3. Comparison of Baseline Hit@10 vs. LinkAnchor’s Hit@1 Across Six Projects
+                         Project    LinkAnchor       EasyLink       EALink   T-Bert   DeepLink      VSM
+                         Ambari         0.9546        0.9310        0.9800   0.7748    0.2167      0.6798
+                         Calcite        0.8874        0.9474        0.8566   0.8357    0.1739      0.7512
+                         Groovy         0.8424        0.7570        0.8310   0.7175    0.1522      0.7763
+                         ignite         0.8221        0.6770        0.7210   0.7087    0.1700      0.5806
+                         Isis           0.8827        0.6334        0.5184   0.4304    0.4960      0.4705
+                         Netbeans       0.7901        0.7887        0.6727   0.5074    0.1925      0.3750
+                         Mean           0.8632        0.79075       0.7633   0.6624    0.2336      0.6056
+
+
+Model Configuration. We used OpenAI’s ChatGPT-4o-mini [57] model as the backend LLM,
+which offers fast performance while maintaining reasonable quality. For evaluation purposes, we
+filtered out all issue keys from the data exposed to the LLM. The context window size for the LLM
+is 128k tokens [14]. We limited our agent to a maximum of 20 iterations when communicating
+with the LLM and restricted it to a total of 200k tokens per issue. The size limit for the Feedback
+function is set to 40kB, which roughly translates to 10k tokens per iteration [56]. These settings
+enable us to have control over the overall cost and time of ILR for each issue. But this also means
+that for some issues, LinkAnchor does not provide any resolving commits. Moreover, LLMs can
+be unpredictable, and their responses are not always reproducible. To mitigate the potential noise
+introduced by this, we repeated the experiment three times and report the average results.
+Baselines. Below, we provide a brief description of these baselines:
+    • EasyLink [29] retrieves the top-10 candidate commits using a FAISS [16] vector database and
+      then applies an LLM to rerank them by relevance.
+    • EALink [77] distills knowledge from CodeBERT [18] into a smaller model, fine-tuned with
+      multi-task contrastive learning.
+    • T-BERT [41] is first pre-trained on the large-scale CodeSearchNet [30] dataset for the code
+      search task [42], and then fine-tuned for the link recovery task.
+    • DeepLink [66] is a DL based ILR method that uses RNNs to learn the semantic representations
+      of issues and commits.
+    • VSM [15] is an IR method that expresses textual data as word vectors. The relevance between
+      an issue and a commit is calculated based on the similarity between their corresponding
+      word vectors.
+
+4.1.2 Experimental Results. Table 2 reports each method’s Hit@1 performance across all six projects.
+LinkAnchor achieves the highest Hit@1 on every project, outperforming EasyLink, by up to 231%
+on the Isis project. To further highlight LinkAnchor’s effectiveness, Table 3 compares LinkAnchor’s
+Hit@1 results with the other models’ Hit@10 results. All competing methods show substantial
+score gains when moving from Hit@1 to Hit@10, since a larger K typically yields a higher Hit@K
+by increasing the chance of including the resolving commit in the top-K list. LinkAnchor’s single
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                               FSE184:13
+
+
+prediction still outperforms every other method’s Hit@10, except on the Ambari project, where EA-
+Link’s Hit@10 exceeds LinkAnchor’s Hit@1 by only 0.025 and Calcite where EasyLink outperforms
+LinkAnchor by 0.06. It is notable that LinkAnchor achieves these results without the cost and
+overhead of training, dataset feature-engineering, or extensive hardware requirements, unlike the
+other methods. Furthermore, LinkAnchor shows a high, steady, and robust Hit@1 score across all
+projects (between 0.79 and 0.95 with a standard deviation of 0.05), whereas other methods’ Hit@1
+scores fluctuate based on the project context. For example, EasyLink’s Hit@1 shows fluctuation
+over a wider range, between 0.38 (the Isis project) and 0.86 (the Calcite project), with a standard
+deviation of 0.17.
+
+      LinkAnchor consistently outperforms all baselines in Hit@1. In particular, LinkAnchor
+      achieved the highest Hit@1 score across every evaluated project, with average improve-
+      ments ranging from 41% to 714% over existing methods. Moreover, LinkAnchor surpassed
+      the baselines’ Hit@10 performance in nearly all cases, highlighting its ability to deliver
+      superior accuracy even on metrics that substantially favor the baselines.
+
+   The performance variability of the baseline methods can be attributed to their reliance on a fixed
+set of features, such as issue summaries, descriptions, and commit messages. This could potentially
+be problematic since the availability, quality, and effectiveness of these features vary widely across
+different repositories. For example, issue descriptions and commit messages can differ in length,
+detail, and writing style from one project to another [77]. This dependence on static features
+prevents these approaches from generalizing well and leads to the performance fluctuations we
+observe in their results. LinkAnchor, on the other hand, requires no training or feature engineering.
+Instead, it can choose at runtime which data to inspect from all available sources and discard
+irrelevant information so as not to exceed its token span. This prevents LinkAnchor from relying
+too heavily on certain features. It can flexibly explore different data sources and focus on each one
+individually, without the noise introduced by loading everything into a single prompt. To further
+illustrate this, we propose the second research question.
+
+4.2    RQ2: What is the contribution of each data source to issue-commit link recovery?
+4.2.1 Experimental Setup. LinkAnchor’s modular design allows fine-grained control over the data
+sources it can access. To study the impact of each source, we design three ablation experiments
+using the same dataset as before. The only difference is that in each experiment, certain data sources
+are disabled. Specifically, in the first experiment, issue comments are removed; in the second, the
+codebase is removed; and in the third, both the codebase and issue comments are removed. The
+third setup resembles prior works more closely, since most of them had no access to either code
+files or issue comments.
+Dataset and Evaluation Metrics. We conduct this ablation study using the same evaluation
+metrics and dataset described in RQ1. We select this dataset because its large size and diverse
+project environments provide a strong basis for examining the individual impact of each data
+source on our approach.
+4.2.2 Experimental Results. Figure 5 reports the results. On average, LinkAnchor’s accuracy drops
+by 21% when both comments and code files are removed. Removing only comments leads to a 17%
+drop, while removing only the codebase results in a 4% drop. As shown in Figure 5, the impact of
+these sources varies across projects, reflecting differences in data quality. For instance, LinkAnchor’s
+accuracy decreases by 34% on the Ignite project when comments are removed, and up to 7% on
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:14                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+
+
+                   Fig. 5. LinkAnchor’s performance in the absence of various data sources
+
+
+
+
+    (a) Git-related function calls         (b) Issue-related function calls            (c) Codebase function calls
+
+Fig. 6. Average function-call ratio per project (Note that function names have been condensed for clarity, and
+the y-axis scales vary across subfigures, so they should not be directly compared).
+
+the NetBeans project when code files are removed. These results demonstrate that the observed
+accuracy gains are a direct result of LinkAnchor’s ability to flexibly choose and combine data
+sources at runtime.
+  Figure 6 further supports this observation by presenting the average number of calls per function
+per issue in the original experiment (with all data sources enabled). Two key insights emerge:
+   (1) Project-Specific Data Importance. Certain functions are used more heavily in specific projects,
+       such as issue_comments in Ignite and list_files in NetBeans. This aligns with the perfor-
+       mance drops observed earlier, indicating that these functions provided particularly valuable
+       information in those contexts. This behavior confirms that LinkAnchor’s flexibility allows it
+       to adapt to the unique characteristics of each project. Notably, previous methods struggled
+       with these projects—for example, EasyLink and EALink achieved only 0.38 and 0.32 Hit@1
+       scores on Ignite, which further highlights the advantage of LinkAnchor’s dynamic data
+       selection.
+   (2) Effectiveness of Previously Untapped Data Sources. Functions accessing data unavailable to
+       earlier approaches, particularly issue_comments and the suite of codebase-inspection func-
+       tions, show substantial usage (averaging 1.12 calls per issue for issue_comments, 0.45 for
+       list_files, and 0.98 combined for all codebase functions). These numbers highlight the
+       value of richer information channels for the ILR task and explain why LinkAnchor achieves
+       consistently strong, stable performance across diverse repositories.
+
+
+    Ablation experiments show that removing issue comments leads to a 17% drop in accuracy,
+    removing codebase access by 4%, and removing both by 21%, demonstrating the crucial role
+    of these data sources in LinkAnchor’s performance on ILR tasks.
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                     FSE184:15
+
+
+       Table 4. LinkAnchor Hit@1 Performance                      Table 5. LinkAnchor Cost Analysis Per Project
+  Language     Project                       Stars    Hit@1         Project     Time (s)    Token Usage     Cost (USD)
+               huggingface/transformers      145k        0.95       Isis        29.135463      123,042.06       0.0108
+               pallets/flask                 69.6k       0.95       Calcite      9.983499       42,074.27       0.0037
+  Python
+               pytorch/pytorch               24.2k       0.90       Ambari      12.600633       68,782.48       0.0060
+               Python Overall (mean)                     0.93       Groovy      41.536681      198,117.73       0.0174
+                                                                    Netbeans    20.931454      150,424.12       0.0132
+               golang/go                     128k        0.85       Ignite      27.403428      109,333.76       0.0096
+               kubernetes/kubernetes         115k        0.90
+  Go
+               moby/moby                     69.8k       0.80       Average     23.598526      115,295.73       0.0101
+               Go Overall (mean)                         0.85
+               All Projects (mean)                       0.89
+
+
+4.3    RQ3: How well does LinkAnchor perform on new, unseen, real-world data?
+4.3.1 Experimental Setup. This research question aims to assess LinkAnchor’s performance against
+unseen data from real-world projects and analyze its generalizability. The training cut-off date for
+LinkAnchor’s LLM (Chat-GPT4o-mini) is October 2023. Therefore, to eliminate any risk of data
+leakage, we prepared a dataset of 120 randomly selected issues from six different repositories (20
+issues from each), where the issue resolution and commit times for all issues occurred after October
+2023. These issues are drawn from prominent open-source software projects hosted on GitHub.
+Three of the selected projects use Python, and the other three use Go as their primary programming
+language. Table 4 presents the list of selected projects and their corresponding GitHub stars.
+Evaluation Metrics. To evaluate LinkAnchor’s generalizability and performance on new and
+unseen data, we adopt the same metric used in RQ1. We treat each issue in our test set as a single
+trial: if LinkAnchor’s predicted commit matches the last resolving commit in our dataset, we
+mark the trial as successful. We then calculate the overall success rate by dividing the number of
+successful trials by the total number of issues.
+4.3.2 Experimental Results. Table 4 presents LinkAnchor’s results on the constructed dataset.
+LinkAnchor achieved a mean Hit@1 score of 0.89 across all projects. These results demonstrate
+LinkAnchor’s strong generalizability to new, unseen data. Similar to the results achieved in RQ1,
+LinkAnchor has consistently high and robust accuracy across every project in the dataset, varying
+between a range of 0.80 and 0.95. Together, the results of RQ1 and RQ3 show that LinkAnchor’s
+dynamic approach for information retrieval makes it adapt to different project contexts. Furthermore,
+all selected projects are hosted on GitHub, showing that our approach performs just as well with
+GitHub’s issue-tracking system as it did with Jira in RQ1. LinkAnchor’s architecture is also easily
+extendable, enabling support for additional issue management platforms with minimal effort. The
+RQ3 dataset includes an equal number of issues from Python and Go projects, on which LinkAnchor
+achieves mean accuracies of 93% and 85%, respectively.
+
+      On 120 issues from post-training-cutoff real-world repositories, LinkAnchor achieves an
+      average Hit@1 of 0.89, confirming strong generalizability to new, unseen data in both
+      Python and Go projects.
+
+
+4.4    RQ4: What are the costs of the approach?
+In this section, we evaluate the operational cost of LinkAnchor in three different dimensions. This
+analysis provides a practical understanding of LinkAnchor’s cost-effectiveness.
+4.4.1 Experimental Setup. Our evaluation is based on the RQ1 experiments conducted using the
+EALink dataset.
+
+                                       Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:16                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+Evaluation Metrics. We measure LinkAnchors’ cost from three perspectives: (i) the time to perform
+ILR for each issue, (ii) the number of tokens consumed by queries to the LLM (Chat-GPT4o-mini),
+and (iii) the monetary costs associated with token consumption, based on OpenAI’s pricing as of
+May 2025.
+
+4.4.2 Experimental Results. Our findings are summarized in Table 5. Based on the results, LinkAn-
+chor’s average ILR time per issue is 23 seconds. Additionally, the average number of tokens
+consumed by querying the LLM to resolve a single issue-commit link is approximately 115k tokens,
+which translates to 0.01 US dollars.
+   To put these numbers into perspective, the EALink paper reported 14 hours of training and
+126 seconds just to score 1,000 issue–commit pairs on the Isis project [77]. EasyLink, on the other
+hand, requires as much as two terabytes of memory to handle repositories with more than 10,000
+commits [29], whereas LinkAnchor ran efficiently on a machine with only 16 GB of memory.
+
+      LinkAnchor resolves each issue-commit link in under 24 seconds and $0.01 on average,
+      making it a cost-efficient alternative to prior DL methods that require extensive training
+      resources.
+
+
+5     Discussion and Future Work
+5.1    LinkAnchor’s Limitations
+To better understand the limitations of LinkAnchor and the impact of LLM non-determinism,
+we conducted a manual qualitative analysis of cases where LinkAnchor failed to identify the
+final resolving commit. Out of the 6,468 failures identified in the evaluation set, we randomly
+sampled 363 cases for detailed inspection, maintaining a 95% confidence level with a 5% margin of
+error. Each case was analyzed by two authors independently, with discrepancies resolved through
+consensus-based discussion. We observed three primary types of failures: Resource Exhaustion
+(reaching iteration or context limits), Explicit Termination (the agent invokes the GiveUp function),
+or Misidentification (returning an incorrect commit hash). We identified several recurring root
+patterns that contribute to these errors regardless of the failure types. Note that a single failure
+may exhibit multiple patterns; therefore, the percentages below do not sum to 100%.
+LLM Non-Determinism and Hallucinations (78%). The most prevalent source of failure stems
+from LLM-specific stochasticity and hallucinations. A frequent pattern observed is a lack of syntactic
+infidelity when passing data between functions. For instance, when the LLM attempts to use a
+commit hash retrieved from one function as an argument for another (e.g., commit_diff), it
+may slightly alter the string. Such non-deterministic mutations render the hash invalid, causing
+function errors. While LinkAnchor often attempts to self-correct in subsequent iterations, these
+cycles consume the finite iteration and token budget, leaving less room for substantive reasoning.
+Additionally, we observed instances where the LLM entered indefinite loops while paginating
+through exceptionally large commit lists (exceeding 2,000 commits). In these cases, the massive
+data volume caused the model to hallucinate incorrect pagination states and repeat the same API
+calls until the system resources are exhausted.
+Misleading or Insufficient Information (35%). In many instances, the source data lacked suf-
+ficient signal for successful recovery. Specifically, 27% of these cases featured vague issue titles
+without accompanying descriptions. In 8% of cases, the issue description was obscured by external
+links inaccessible to the agent. While LinkAnchor could be extended to fetch such external content,
+providing this contextual expansion remains beyond the current scope of this work.
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                               FSE184:17
+
+
+Structural and Historical Irregularities (23%). Certain repository structures presented chal-
+lenges that LinkAnchor was not initially designed to handle. For example, we noted failures when a
+“placeholder” commit with no code changes and a minimal message (e.g., “Fix [CALCITE-12345]”)
+followed the actual resolving commit chain. Due to the lack of contextual data in this final commit,
+LinkAnchor may disregard it in favor of more “informative” intermediate changes. Furthermore,
+13% of failures involved issues that were reopened after an initial closure. In 2% of cases, resolutions
+spanned multiple branches; in these scenarios, the parental and temporal relationships between
+commits are no longer upheld, causing a violation of LinkAnchor’s single-branch assumption and
+leading to the identification of intermediate rather than final commits.
+Noisy Contextual Data (4%). In a small subset of cases, high-volume query responses overwhelmed
+the agent’s reasoning capacity. For example, querying a common file name like map.java produced
+exhaustive listings across the codebase. The resulting noise interferes with the LLM’s ability to
+isolate relevant files, suggesting that more refined search heuristics could further improve the
+agent’s precision in large-scale repositories.
+
+5.2 Key Insights and Implications
+The experiments in this work encompassed a broad range of scenarios, yielding several actionable
+insights and recommendations for future work.
+Broader Applicability. In RQ1, we showed that giving the model access to a broader, but less
+frequently used, set of data sources can improve accuracy on projects where the usual sources are
+less informative. Although we designed LinkAnchor specifically for issue-to-commit link recovery
+(ILR), the same approach can also benefit other tasks, such as various forms of TLR. A key factor
+in LinkAnchor’s consistent performance is its on-demand access to all relevant data sources. By
+letting the LLM pull exactly the information it needs, LinkAnchor adapts to different project
+contexts, handles corner cases, and avoids over-reliance on a fixed feature set. We recommend
+that researchers adopt a similar approach to improve coverage of corner cases and enhance overall
+robustness in other TLR tasks.
+Scalable Context Access. We designed two key features that enable LinkAnchor to access an
+effectively unlimited amount of data without exhausting the context window: (1) Pagination: Any
+function that returns a long list accepts a pagination parameter. This ensures each response stays
+within the token limit; and (2) Feedback pruning: When a function returns a large output, the agent
+can trigger a feedback mechanism that retains only the data points deemed truly relevant to the ILR
+task by the LLM. This ensures that the overall chat history stays within the token limit. Together,
+these strategies help LinkAnchor scale gracefully while maintaining focus, and we encourage future
+agent developers to adopt similar techniques for handling large outputs effectively.
+Balancing Determinism. A critical aspect of agent development is deciding where to draw the
+line between traditional programming and delegation to the LLM. That is, determining which tasks
+should be baked into functions and which should be left to the LLM to handle. This represents a
+fundamental trade-off between determinism and agency that developers must carefully consider.
+Granting the LLM more autonomy can lead to more flexible and adaptive solutions, while increasing
+determinism through code can reduce errors but potentially limit the system’s ability to handle
+edge cases. This trade-off can significantly impact overall performance. During the development of
+LinkAnchor, we observed a notable accuracy boost by introducing more deterministic components
+into the LLM’s toolset. For instance, instead of relying on the LLM to accurately filter commit
+histories on its own, we provided dedicated commit-retrieval functions that query by specific
+attributes. By encoding such behaviors directly into the system, we eliminated a class of simple
+reasoning errors. However, excessive determinism can undermine one of the key strengths of
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:18                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+agentic approaches, namely their adaptability. We therefore advocate for an incremental strategy:
+start with high agency by giving the LLM broad access to data, and gradually convert recurring
+mistakes or inefficiencies into deterministic functions as they emerge.
+Practical Efficiency. LinkAnchor interacts with LLMs solely through APIs, requiring no additional
+training or specialized hardware. It can be deployed in any environment and easily extended to
+incorporate domain-specific data sources. As a ready-to-use tool, LinkAnchor can be applied to
+issues and projects beyond those included in this study, as demonstrated in Section 4.3. We believe
+that agentic solutions like LinkAnchor hold great potential for further development, accelerating
+both innovation and research reuse. In contrast to traditional AI models, which often require custom
+feature engineering and retraining to handle new data, this level of flexibility provides a significant
+advantage. While traditional approaches may perform well in certain scenarios, agentic solutions
+can be far more practical in real-world settings. For example, as shown in Section 4.3, our traditional
+baseline EALink requires 14 hours of training and 126 seconds to score 1,000 issue-commit pairs
+in a particular project. In contrast, LinkAnchor takes just 29 seconds on average to retrieve the
+latest resolving commit for any given issue in the same project. Given the 29,101 commits in the
+target project, EALink’s inference alone would take nearly an hour (29,101 × 0.126s = 3,667s), not
+including training time. Meanwhile, LinkAnchor achieves a Hit@1 score of 0.88 on this project,
+compared to EALink’s 0.24, and requires no setup, training, or GPU infrastructure. Therefore, we
+advocate for agentic solutions to accelerate progress and improve accessibility in research.
+
+6   Threats to Validity
+Internal Validity. We leveraged widely adopted open-source tools, such as the OpenAI LLM SDK,
+which are well-integrated within the open-source community. However, using these tools also
+carries the risk of inheriting any existing flaws they might have. We also recognize the possibility
+of hidden bugs in our implementation. To address these, we performed multiple manual tests,
+developed a comprehensive test suite, and made our code and data publicly available [1] for
+community inspection and feedback.
+External Validity. The primary objective of this work was to introduce the dynamic heuristic
+search paradigm and validate its effectiveness in addressing the limitations of prior ILR approaches.
+To achieve this, we evaluated LinkAnchor with a representative set of standard technologies,
+including GitHub and Jira for issue tracking, Tree-sitter for multi-language parsing, and ChatGPT-
+4o-mini as a cost-effective LLM. While this configuration validated the proposed paradigm, we
+recognize that a comprehensive benchmark across alternative settings, such as different LLMs
+or issue-tracking platforms, is valuable for establishing broader robustness. To facilitate such
+comparative analysis, we designed LinkAnchor with a modular architecture that allows individual
+components (e.g., LLM model) to be easily substituted. We encourage future research to leverage
+this flexibility to benchmark the framework under diverse settings and uncover new insights.
+Construct Validity. The timing results reported in our experiments are influenced by the perfor-
+mance of the underlying LLM API, in this case, OpenAI. Factors such as server congestion, rate
+limits, and the inherent randomness of LLM behavior can cause variability in response times. To
+minimize this variance, we repeated the experiments three times and reported the average.
+Reproducibility. We provide the entire experiment, including the source code for LinkAnchor and
+scripts for data generation and evaluation online [1].
+
+7   Related Work
+Software Traceability Link Recovery (TLR). These methods seek to recover semantic relationships
+across software artifacts, including requirements, architecture diagrams, and source code. Early
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                               FSE184:19
+
+
+work used IR techniques [3, 4, 10, 11, 17, 20, 21, 25, 26, 28, 36, 45–47, 49, 59, 62, 63, 70], while
+later studies adopted ML and DL methods in both supervised and semi-supervised settings to
+better capture artifact semantics [15, 23, 41, 50]. Despite their performance gains, these approaches
+often have high training costs. Several studies [33, 54, 60] have exploited the relationships of
+intermediate artifacts with both ends of the link. These methods are ineffective when intermediate
+artifacts are unavailable or of low quality. Most recently, studies have leveraged transformer-based
+models [2, 67, 79] and LLMs enhanced by prompt engineering [61], and RAG [19]. However, LLMs
+remain constrained by token limits, which often prevent them from processing lengthy but critical
+data, such as large codebases and documentation.
+Issue-to-Commit Link Recovery. Existing ILR approaches primarily fall into two paradigms:
+ranking systems and classification models. Ranking systems typically assign a relevance score to
+individual issue-commit pairs based on textual feature similarity, enabling the retrieval of a top-𝐾 list
+of most likely resolving commits. In Hybrid-Linker [48], Rostami et al. trained one model on commit
+and issue text, and another on code and structured data, achieving strong precision by combining
+their outputs. DeepLink [66] proposed a semantically enhanced method, employing RNNs to learn
+vector representations of issue and commit texts. BTLink [37] advanced this by using different pre-
+trained transformer models to learn programming language and natural language separately. Zhang
+et al. [77] highlighted that issue-commit links are often one-to-many. To capture this characteristic,
+they constructed a dataset containing the full set of commits involved in each resolution and
+utilized it to train a model via knowledge distillation and multi-task contrastive learning. While
+this improves the recall of relevant commits, their inference remains limited to scoring individual
+issue-commit pairs and lacks reasoning over the aggregated changes to identify the final resolution
+point. EasyLink [29] avoids the costly training required by the aforementioned approaches. Instead,
+it applies an LLM to rerank candidate commits retrieved from a vector database, effectively bridging
+the semantic gap between issues and commits. However, EasyLink’s initial retrieval stage relies
+purely on textual embedding similarity. This creates a potential bottleneck, as textual similarity
+between a commit and an issue does not necessarily imply a fixing relationship [29]. Furthermore,
+much like prior work, EasyLink is constrained by a narrow feature set and overlooks contextual
+signals such as issue comments and source code changes, which our approach demonstrates are
+vital for ILR effectiveness.
+   Classification approaches treat ILR as a binary decision problem, where the model assigns a direct
+binary label (Link/No-Link) to an issue-commit pair without generating a relevance score or ranked
+list. Recently, LLMs have been adapted for this task using a cloze (fill-in-the-blank) formulation.
+MPLinker [71] and PromptLink [12] adopt this strategy, utilizing multi-template prompt tuning to
+improve model generalization.
+   As summarized in Table 6, both of the aforementioned ILR paradigms rely on evaluating issue-
+commit pairs in isolation. As discussed in Sections 1 and 2, this analysis suffers from several
+limitations. Notably, it fails to capture the full resolution logic and the cumulative nature of
+software fixes. To address these challenges, LinkAnchor represents a paradigm shift from isolated
+pair analysis to a dynamic heuristic search over the version control graph. This search aggregates
+the entire chain of related changes and identifies the final resolving commit as the definitive
+resolution point, ensuring that the complete fix history is recovered.
+LLM Agents. In recent studies, LLM agents have enabled reasoning over complex codebases and
+achieved strong results in various software engineering tasks [24, 31, 40, 43, 65, 73], including
+code localization [8], fault localization [32], automated program repair [5, 76], automated issue
+resolution [39, 44, 72, 75, 78], and software testing [6, 9]. To the best of our knowledge, however,
+no existing work has applied LLM agents to the TLR or ILR problems.
+
+
+                                 Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:20                             Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+                                   Table 6. Comparison of Prior Work Paradigms and LinkAnchor
+                                                                                                                      Contexts Used
+                                                                                                Issue                           Commit
+                    Paradigm                                                Needs                                                                           Source
+
+
+
+
+                                                                                               Desc.
+
+
+
+                                                                                                               Meta
+
+
+
+
+                                                                                                                                                     Meta
+                                                                                                       Disc.
+
+
+
+                                                                                                                       Msg.
+
+
+
+
+                                                                                                                                             Hist.
+                                                                                       Title
+
+
+
+
+                                                                                                                                     Files
+                                                                                                                              Diff
+ILR Paradigm                                       Study                                                                                                     Code    Feature Set      Resolution Scope
+                   Description                                             Training?
+
+                                      Hybrid-Linker [48]: Ensemble ML         ✓        ✓       ✓       ✗       ✓       ✓      ✓      ✗       ✗       ✗        ✗
+                 Assigns relevance DeepLink [66]: DL (RNN)                    ✓        ✓       ✓       ✗       ✗       ✓      ✓      ✗       ✗       ✗        ✗
+    Ranking      score to commits BTLink [37]: PTMs                           ✓        ✓       ✓       ✗       ✗       ✓      ✓      ✗       ✗       ✗        ✗                             Isolated
+                 & retrieves Top-𝐾 EALink [77]: Distilled PTM                                                                                                           Static
+                                                                              ✓        ✓       ✓       ✗       ✗       ✓      ✓      ✓       ✗       ✗        ✗                       Issue-Commit Pairs
+                                      EasyLink [29]: IR + LLM Re-ranking      ✗        ✓       ✓       ✗       ✗       ✓      ✗      ✗       ✗       ✗        ✗
+                   Assigns binary MPLinker [71] &
+Classification                                                                ✓        ✗       ✓       ✗       ✗       ✓      ✓      ✗       ✗       ✗        ✗
+                 label (link/no-link) PromptLink [12]: Cloze Task
+                   Searches with                                                                                                                                                        Reason over
+    Dynamic          aggregated                                                                                                                                      Dynamic (via     combined changes
+                                  LinkAnchor: Agentic LLM                     ✗        ✓       ✓       ✓       ✓       ✓      ✓      ✓       ✓       ✓        ✓
+     Search         reasoning of                                                                                                                                     LLM reasoning)      of multiple
+                 relevant commits                                                                                                                                                         commits
+
+
+
+
+8     Conclusions
+In this paper, we presented LinkAnchor, the first LLM-agent-based approach specifically developed
+for ILR. LinkAnchor utilizes a state-of-the-art LLM (i.e., ChatGPT-4o-mini) without the need for
+additional training or fine-tuning. Its agent-based architecture enables access to the full problem
+context, including the entire codebase and the complete issue discussion history. Furthermore,
+LinkAnchor is language-agnostic by design. We evaluated LinkAnchor on six widely used open-
+source Apache projects and compared its performance to state-of-the-art baselines. LinkAnchor
+consistently outperformed all prior methods, with improvements ranging from 41% to 714%. These
+results highlight LinkAnchor’s ability to dynamically access and leverage contextual information
+that previous methods could not effectively utilize. Furthermore, to better understand the contribu-
+tion of each newly introduced data source, we conducted an ablation study. The findings show that
+issue comments boost performance by about 17%, while the codebase contributes a smaller but
+still meaningful 4% gain. The ablation also demonstrated LinkAnchor’s flexibility: it can selectively
+draw on different sources depending on the project context, allowing it to remain effective even
+when certain information (e.g., issue description or commit messages) is missing or sparse. This
+underscores the advantages of an agent-based design, allowing LinkAnchor to address a broad
+range of real-world scenarios more effectively than static, text-only methods.
+   To further assess its generalizability, we evaluated LinkAnchor on 120 randomly selected issues
+drawn from six additional GitHub repositories that were unseen during development. LinkAnchor
+successfully recovered links for 107 of these issues, corresponding to an accuracy of 89%. These
+results highlight LinkAnchor’s adaptability and robustness across heterogeneous codebases. Finally,
+our cost analysis shows that, for a given issue, LinkAnchor completes ILR in under 24 seconds at
+an average cost of $0.01, indicating the cost-effectiveness of the approach. Moreover, LinkAnchor is
+designed with extensibility and seamless integration in mind. New data-extractor functions can be
+incorporated with minimal effort, and substituting a next-generation LLM requires only redirecting
+the agent to a new API endpoint. This plug-and-play flexibility ensures that LinkAnchor can evolve
+in step with advances in LLM technology and adapt readily to emerging environments.
+
+9     Data Availability
+Our replication package [1] contains the code, data, and all necessary materials to reproduce the
+results presented in this paper.
+
+References
+ [1] LinkAnchor. 2026. Replication Package. doi:10.5281/zenodo.19503366 https://github.com/ISE-Research/LinkAnchor.
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                       FSE184:21
+
+
+ [2] Yasaman Abedini and Abbas Heydarnoori. 2024. Can GitHub Issues Help in App Review Classifications? ACM
+     Transactions on Software Engineering and Methodology 33, 8 (2024), 1–42. doi:10.1145/3678170
+ [3] Giuliano Antoniol, Gerardo Canfora, Gerardo Casazza, Andrea De Lucia, and Ettore Merlo. 2002. Recovering traceability
+     links between code and documentation. IEEE transactions on software engineering 28, 10 (2002), 970–983. doi:10.1109/
+     tse.2002.1041053
+ [4] Hazeline U Asuncion, Arthur U Asuncion, and Richard N Taylor. 2010. Software traceability with topic modeling.
+     In Proceedings of the 32nd ACM/IEEE international conference on Software Engineering-Volume 1. 95–104. doi:10.1145/
+     1806799.1806817
+ [5] Islem Bouzenia, Premkumar Devanbu, and Michael Pradel. 2024. Repairagent: An autonomous, llm-based agent for
+     program repair. arXiv preprint arXiv:2403.17134 (2024). doi:10.1109/icse55347.2025.00157
+ [6] Islem Bouzenia and Michael Pradel. 2024. You name it, I run it: An LLM agent to execute tests of arbitrary projects.
+     arXiv preprint arXiv:2412.10133 (2024). doi:10.1145/3728922
+ [7] Max Brunsfeld and GitHub contributors. 2018. Tree-sitter: An incremental parsing system for programming tools.
+     https://github.com/tree-sitter/tree-sitter Accessed: 2026-03-31.
+ [8] Zhaoling Chen, Robert Tang, Gangda Deng, Fang Wu, Jialong Wu, Zhiwei Jiang, Viktor Prasanna, Arman Cohan, and
+     Xingyao Wang. 2025. Locagent: Graph-guided LLM agents for code localization. In Proceedings of the 63rd Annual
+     Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 8697–8727. doi:10.18653/v1/2025.acl-
+     long.426
+ [9] Runxiang Cheng, Michele Tufano, Jürgen Cito, José Cambronero, Pat Rondon, Renyao Wei, Aaron Sun, and Satish Chan-
+     dra. 2025. Agentic bug reproduction for effective automated program repair at google. arXiv preprint arXiv:2502.01821
+     (2025). doi:10.48550/arXiv.2502.01821
+[10] Andrea De Lucia, Fausto Fasano, Rocco Oliveto, and Genoveffa Tortora. 2004. Enhancing an artefact management system
+     with traceability recovery features. In Proceedings of the 20th IEEE International Conference on Software Maintenance.
+     306–315. doi:10.1109/icsm.2004.1357816
+[11] Alex Dekhtyar, Jane Huffman Hayes, Senthil Sundaram, Ashlee Holbrook, and Olga Dekhtyar. 2007. Technique
+     integration for requirements assessment. In Proceedings of the 15th IEEE International Requirements Engineering
+     Conference. 141–150. doi:10.1109/re.2007.17
+[12] Yang Deng, Bangchao Wang, Zhiyuan Zou, and Luyao Ye. 2024. PromptLink: Multi-template prompt learning with
+     adversarial training for issue-commit link recovery. In Proceedings of the 18th ACM/IEEE International Symposium on
+     Empirical Software Engineering and Measurement. 461–467. doi:10.1145/3674805.3690751
+[13] Bogdan Dit, Meghan Revelle, Malcom Gethers, and Denys Poshyvanyk. 2013. Feature location in source code: a
+     taxonomy and survey. Journal of software: Evolution and Process 25, 1 (2013), 53–95. doi:10.1002/smr.567
+[14] DocsBot AI. 2024. OpenAI’s GPT-4o - AI Model Details. https://docsbot.ai/models/gpt-4o?utm_source=chatgpt.com
+     Accessed: 2026-03-31.
+[15] Liming Dong, He Zhang, Wei Liu, Zhiluo Weng, and Hongyu Kuang. 2022. Semi-supervised pre-processing for
+     learning-based traceability framework on real-world software projects. In Proceedings of the 30th ACM Joint European
+     Software Engineering Conference and Symposium on the Foundations of Software Engineering. 570–582. doi:10.1145/
+     3540250.3549151
+[16] Matthijs Douze, Alexandr Guzhva, Chengqi Deng, Jeff Johnson, Gergely Szilvasy, Pierre-Emmanuel Mazaré, Maria
+     Lomeli, Lucas Hosseini, and Hervé Jégou. 2024. The faiss library. arXiv preprint arXiv:2401.08281 (2024). doi:10.1109/
+     tbdata.2025.3618474
+[17] Davide Falessi, Massimiliano Di Penta, Gerardo Canfora, and Giovanni Cantone. 2017. Estimating the number of
+     remaining links in traceability recovery. Empirical Software Engineering 22 (2017), 996–1027. doi:10.1007/s10664-016-
+     9460-6
+[18] Zhangyin Feng, Daya Guo, Duyu Tang, Nan Duan, Xiaocheng Feng, Ming Gong, Linjun Shou, Bing Qin, Ting Liu,
+     Daxin Jiang, et al. 2020. Codebert: A pre-trained model for programming and natural languages. arXiv preprint
+     arXiv:2002.08155 (2020). doi:10.18653/v1/2020.findings-emnlp.139
+[19] Dominik Fuchß, Tobias Hey, Jan Keim, Haoyu Liu, Niklas Ewald, Tobias Thirolf, and Anne Koziolek. 2025. LiSSA:
+     Toward Generic Traceability Link Recovery through Retrieval-Augmented Generation. In Proceedings of the IEEE/ACM
+     47th International Conference on Software Engineering, Vol. 25. doi:10.1109/ICSE55347.2025.00186
+[20] Hui Gao, Hongyu Kuang, Kexin Sun, Xiaoxing Ma, Alexander Egyed, Patrick Mäder, Guoping Rong, Dong Shao,
+     and He Zhang. 2022. Using consensual biterms from text structures of requirements and code to improve IR-based
+     traceability recovery. In Proceedings of the 37th IEEE/ACM International Conference on Automated Software Engineering.
+     doi:10.1145/3551349.3556948
+[21] Malcom Gethers, Rocco Oliveto, Denys Poshyvanyk, and Andrea De Lucia. 2011. On integrating orthogonal information
+     retrieval methods to improve traceability recovery. In Proceedings of the 27th IEEE International Conference on Software
+     Maintenance. 133–142. doi:10.1109/icsm.2011.6080780
+
+
+                                       Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:22                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+[22] Mohammad Gharehyazie, Baishakhi Ray, Mehdi Keshani, Masoumeh Soleimani Zavosht, Abbas Heydarnoori, and
+     Vladimir Filkov. 2019. Cross-project code clones in GitHub. Empirical Software Engineering 24, 3 (2019), 1538–1573.
+     doi:10.1007/s10664-018-9648-z
+[23] Jin Guo, Jinghui Cheng, and Jane Cleland-Huang. 2017. Semantically enhanced software traceability using deep
+     learning techniques. In Proceedings of the 39th IEEE/ACM International Conference on Software Engineering. 3–14.
+     doi:10.1109/icse.2017.9
+[24] Ahmed E Hassan, Hao Li, Dayi Lin, Bram Adams, Tse-Hsun Chen, Yutaro Kashiwa, and Dong Qiu. 2025. Agentic
+     software engineering: Foundational pillars and a research roadmap. arXiv preprint arXiv:2509.06216 (2025). doi:10.
+     48550/arXiv.2509.06216
+[25] Jane Huffman Hayes, Alex Dekhtyar, and Senthil Karthikeyan Sundaram. 2006. Advancing candidate link generation
+     for requirements tracing: The study of methods. IEEE Transactions on Software Engineering 32, 1 (2006), 4–19.
+     doi:10.1109/tse.2006.3
+[26] Tobias Hey, Fei Chen, Sebastian Weigelt, and Walter F Tichy. 2021. Improving traceability link recovery using fine-
+     grained requirements-to-code relations. In Proceedings of the IEEE International Conference on Software Maintenance
+     and Evolution. 12–22. doi:10.1109/icsme52107.2021.00008
+[27] Abbas Heydarnoori, Krzysztof Czarnecki, and Thiago Tonelli Bartolomei. 2009. Supporting framework use via
+     automatically extracted concept-implementation templates. In European Conference on Object-Oriented Programming.
+     344–368. doi:10.1007/978-3-642-03013-0_16
+[28] Abbas Heydarnoori, Krzysztof Czarnecki, Walter Binder, and Thiago Tonelli Bartolomei. 2011. Two studies of
+     framework-usage templates extracted from dynamic traces. IEEE Transactions on Software Engineering 38, 6 (2011),
+     1464–1487. doi:10.1109/tse.2011.77
+[29] Huihui Huang, Ratnadira Widyasari, Ting Zhang, Ivana Clairine Irsan, Jieke Shi, Han Wei Ang, Frank Liauw, Eng Lieh
+     Ouh, Lwin Khin Shar, Hong Jin Kang, et al. 2026. Back to the Basics: Rethinking Issue-Commit Linking with LLM-
+     Assisted Retrieval. In Proceedings of the 48th IEEE/ACM International Conference on Software Engineering. doi:10.48550/
+     arXiv.2507.09199
+[30] Hamel Husain, Ho-Hsiang Wu, Tiferet Gazit, Miltiadis Allamanis, and Marc Brockschmidt. 2019. Codesearchnet
+     challenge: Evaluating the state of semantic code search. arXiv preprint arXiv:1909.09436 (2019). doi:10.48550/arXiv.
+     1909.09436
+[31] Haolin Jin, Linghan Huang, Haipeng Cai, Jun Yan, Bo Li, and Huaming Chen. 2024. From LLMs to LLM-based
+     agents for software engineering: A survey of current, challenges and future. arXiv preprint arXiv:2408.02479 (2024).
+     doi:10.48550/arXiv.2408.02479
+[32] Sungmin Kang, Gabin An, and Shin Yoo. 2024. A quantitative and qualitative evaluation of LLM-based explainable
+     fault localization. Proceedings of the ACM on Software Engineering 1, FSE (2024), 1424–1446. doi:10.1145/3660771
+[33] Jan Keim, Sophie Corallo, Dominik Fuchß, Tobias Hey, Tobias Telge, and Anne Koziolek. 2024. Recovering Trace Links
+     Between Software Documentation And Code. In Proceedings of the 46th IEEE/ACM International Conference on Software
+     Engineering. 1–13. doi:10.1145/3597503.3639130
+[34] Arsham Khosravani, Alireza Hoseinpour, Arshia Akhavan, Mehdi Keshani, and Abbas Heydarnoori. 2026. LIA:
+     Supervised Fine-Tuning of Large Language Models for Automatic Issue Assignment. arXiv preprint arXiv:2601.01780
+     (2026). doi:10.48550/arXiv.2601.01780
+[35] Masanari Kondo, Yutaro Kashiwa, Yasutaka Kamei, and Osamu Mizuno. 2022. An empirical study of issue-link
+     algorithms: which issue-link algorithms should we use? Empirical Software Engineering 27, 6 (2022). doi:10.1007/s10664-
+     022-10120-x
+[36] Hongyu Kuang, Hui Gao, Hao Hu, Xiaoxing Ma, Jian Lü, Patrick Mäder, and Alexander Egyed. 2019. Using frugal
+     user feedback with closeness analysis on code to improve IR-based traceability recovery. In Proceedings of the 27th
+     IEEE/ACM International Conference on Program Comprehension. 369–379. doi:10.1109/icpc.2019.00055
+[37] Jinpeng Lan, Lina Gong, Jingxuan Zhang, and Haoxiang Zhang. 2023. BTLink: automatic link recovery between issues
+     and commits based on pre-trained BERT model. Empirical Software Engineering 28, 4 (2023). doi:10.1007/s10664-023-
+     10342-7
+[38] Tien-Duy B Le, Mario Linares-Vásquez, David Lo, and Denys Poshyvanyk. 2015. Rclinker: Automated linking of issue
+     reports and commits leveraging rich contextual information. In Proceedings of the 23rd IEEE international conference on
+     program comprehension. 36–47. doi:10.1109/icpc.2015.13
+[39] Han Li, Yuling Shi, Shaoxin Lin, Xiaodong Gu, Heng Lian, Xin Wang, Yantao Jia, Tao Huang, and Qianxiang Wang.
+     2025. SWE-Debate: Competitive multi-agent debate for software issue resolution. arXiv preprint arXiv:2507.23348
+     (2025). doi:10.48550/arXiv.2507.23348
+[40] Hao Li, Haoxiang Zhang, and Ahmed E Hassan. 2025. The rise of AI teammates in software engineering (se) 3.0: How
+     autonomous coding agents are reshaping software engineering. arXiv preprint arXiv:2507.15003 (2025). doi:10.48550/
+     arXiv.2507.15003
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+LinkAnchor: An Autonomous LLM-Based Agent for Issue-to-Commit Link Recovery                                         FSE184:23
+
+
+[41] Jinfeng Lin, Yalin Liu, Qingkai Zeng, Meng Jiang, and Jane Cleland-Huang. 2021. Traceability transformed: Generating
+     more accurate links with pre-trained bert models. In Proceedings of the 43rd IEEE/ACM International Conference on
+     Software Engineering. 324–335. doi:10.1109/icse43902.2021.00040
+[42] Chao Liu, Xin Xia, David Lo, Cuiyun Gao, Xiaohu Yang, and John Grundy. 2021. Opportunities and challenges in code
+     search tools. ACM Computing Surveys (CSUR) 54, 9 (2021), 1–40. doi:10.1145/3480027
+[43] Junwei Liu, Kaixin Wang, Yixuan Chen, Xin Peng, Zhenpeng Chen, Lingming Zhang, and Yiling Lou. 2024. Large
+     language model-based agents for software engineering: A survey. arXiv preprint arXiv:2409.02977 (2024). doi:10.1145/
+     3796507
+[44] Yingwei Ma, Qingping Yang, Rongyu Cao, Binhua Li, Fei Huang, and Yongbin Li. 2025. Alibaba LingmaAgent: Improving
+     automated issue resolution via comprehensive repository exploration. In Proceedings of the 33rd ACM International
+     Conference on the Foundations of Software Engineering. 238–249. doi:10.1145/3696630.3728549
+[45] Anas Mahmoud and Nan Niu. 2013. Supporting requirements traceability through refactoring. In Proceedings of the
+     21st IEEE International Requirements Engineering Conference. 32–41. doi:10.1109/re.2013.6636703
+[46] Anas Mahmoud and Nan Niu. 2015. On the role of semantics in automated requirements tracing. Requirements
+     Engineering 20 (2015), 281–300. doi:10.1007/s00766-013-0199-y
+[47] Andrian Marcus and Jonathan I Maletic. 2003. Recovering documentation-to-source-code traceability links using
+     latent semantic indexing. In Proceedings of the 25th International Conference on Software Engineering. 125–135. doi:10.
+     1109/icse.2003.1201194
+[48] Pooya Rostami Mazrae, Maliheh Izadi, and Abbas Heydarnoori. 2021. Automated recovery of issue-commit links
+     leveraging both textual and non-textual data. In Proceedings of the IEEE International Conference on Software Maintenance
+     and Evolution. 263–273. doi:10.1109/ICSME52107.2021.00030
+[49] Chris Mills, Javier Escobar-Avila, and Sonia Haiduc. 2018. Automatic traceability maintenance via machine learning
+     classification. In Proceedings of the IEEE international conference on software maintenance and evolution. 369–380.
+     doi:10.1109/icsme.2018.00045
+[50] Kevin Moran, David N Palacio, Carlos Bernal-Cárdenas, Daniel McCrystal, Denys Poshyvanyk, Chris Shenefiel, and
+     Jeff Johnson. 2020. Improving the effectiveness of traceability link recovery using hierarchical bayesian networks. In
+     Proceedings of the 42nd ACM/IEEE International Conference on Software Engineering. 873–885. doi:10.1145/3377811.
+     3380418
+[51] Anh Tuan Nguyen, Tung Thanh Nguyen, Hoan Anh Nguyen, and Tien N Nguyen. 2012. Multi-layered approach for
+     recovering links between bug reports and fixes. In Proceedings of the 20th ACM SIGSOFT International Symposium on
+     the Foundations of Software Engineering. 1–11. doi:10.1145/2393596.2393671
+[52] Truong Giang Nguyen, Thanh Le-Cong, Hong Jin Kang, Xuan-Bach D Le, and David Lo. 2022. Vulcurator: a vulnerability-
+     fixing commit detector. In Proceedings of the 30th ACM Joint European Software Engineering Conference and Symposium
+     on the Foundations of Software Engineering. 1726–1730. doi:10.1145/3540250.3558936
+[53] Giang Nguyen-Truong, Hong Jin Kang, David Lo, Abhishek Sharma, Andrew E Santosa, Asankhaya Sharma, and Ming Yi
+     Ang. 2022. Hermes: Using commit-issue linking to detect vulnerability-fixing commits. In Proceedings of the IEEE
+     International Conference on Software Analysis, Evolution and Reengineering. 51–62. doi:10.1109/saner53432.2022.00018
+[54] Kazuki Nishikawa, Hironori Washizaki, Yoshiaki Fukazawa, Keishi Oshima, and Ryota Mibe. 2015. Recovering transitive
+     traceability links among software artifacts. In Proceedings of the IEEE International Conference on Software Maintenance
+     and Evolution. 576–580. doi:10.1109/icsm.2015.7332517
+[55] OpenAI. 2024. Function Calling. https://platform.openai.com/docs/guides/function-calling Accessed: 2026-03-31.
+[56] OpenAI. 2025. Counting Tokens. https://developers.openai.com/api/docs/guides/token-counting Accessed: 2026-04-1.
+[57] OpenAI. 2025. GPT-4o model description. https://platform.openai.com/docs/models/gpt-4o Accessed: 2026-03-31.
+[58] Michael C Panis. 2010. Successful deployment of requirements traceability in a commercial engineering organization...
+     really. In Proceedings of the 18th IEEE International Requirements Engineering Conference. 303–307. doi:10.1109/re.2010.43
+[59] Patrick Rempel, Patrick Mäder, and Tobias Kuschke. 2013. Towards feature-aware retrieval of refinement traces. In
+     Proceedings of the 7th International Workshop on Traceability in Emerging Forms of Software Engineering. 100–104.
+     doi:10.1109/tefse.2013.6620163
+[60] Alberto D Rodriguez, Jane Cleland-Huang, and Davide Falessi. 2021. Leveraging intermediate artifacts to improve
+     automated trace link retrieval. In Proceedings of the IEEE International Conference on Software Maintenance and Evolution.
+     81–92. doi:10.1109/ICSME52107.2021.00014
+[61] Alberto D Rodriguez, Katherine R Dearstyne, and Jane Cleland-Huang. 2023. Prompts matter: Insights and strategies
+     for prompt engineering in automated software traceability. In Proceedings of the 31st IEEE International Requirements
+     Engineering Conference Workshops. 455–464. doi:10.1109/rew57809.2023.00087
+[62] Danissa V Rodriguez and Doris L Carver. 2020. An IR-based artificial bee colony approach for traceability link
+     recovery. In Proceedings of the IEEE 32nd International Conference on Tools with Artificial Intelligence. 1145–1153.
+     doi:10.1109/ictai50040.2020.00174
+
+
+                                       Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+FSE184:24                  Arshia Akhavan, Alireza Hoseinpour, Abbas Heydarnoori, Hamid Bagheri, and Mehdi Keshani
+
+
+[63] Danissa V Rodriguez and Doris L Carver. 2020. Multi-objective information retrieval-based NSGA-II optimization for
+     requirements traceability recovery. In Proceedings of the IEEE International Conference on Electro Information Technology.
+     271–280. doi:10.1109/eit48999.2020.9208233
+[64] Bilyaminu Auwal Romo, Andrea Capiluppi, and Tracy Hall. 2014. Filling the gaps of development logs and bug issue
+     data. In Proceedings of the International Symposium on Open Collaboration. 1–4. doi:10.1145/2641580.2641592
+[65] Abhik Roychoudhury, Corina Pasareanu, Michael Pradel, and Baishakhi Ray. 2025. Agentic AI software engineer:
+     Programming with trust. arXiv preprint arXiv:2502.13767 (2025). doi:10.1145/3769314
+[66] Hang Ruan, Bihuan Chen, Xin Peng, and Wenyun Zhao. 2019. DeepLink: Recovering issue-commit links based on
+     deep learning. Journal of Systems and Software 158 (2019). doi:10.1016/j.jss.2019.110406
+[67] Jiamou Sun, Zhenchang Xing, Qinghua Lu, Xiwei Xu, Liming Zhu, Thong Hoang, and Dehai Zhao. 2023. Silent
+     Vulnerable Dependency Alert Prediction with Vulnerability Key Aspect Explanation. In Proceedings of the 45th
+     IEEE/ACM International Conference on Software Engineering. 970–982. doi:10.1109/icse48619.2023.00089
+[68] Yan Sun, Celia Chen, Qing Wang, and Barry Boehm. 2017. Improving missing issue-commit link recovery using
+     positive and unlabeled data. In Proceedings of the 32nd IEEE/ACM International Conference on Automated Software
+     Engineering. 147–152. doi:10.1109/ase.2017.8115627
+[69] Yan Sun, Qing Wang, and Ye Yang. 2017. Frlink: Improving the recovery of missing issue-commit links by revisiting
+     file relevance. Information and Software Technology 84 (2017), 33–47. doi:10.1016/j.infsof.2016.11.010
+[70] Hamed Tahmooresi, Abbas Heydarnoori, and Reza Nadri. 2020. Studying the relationship between the usage of APIs
+     discussed in the crowd and post-release defects. Journal of Systems and Software 170 (2020), 110724. doi:10.1016/j.jss.
+     2020.110724
+[71] Bangchao Wang, Yang Deng, Ruiqi Luo, Peng Liang, and Tingting Bi. 2025. MPLinker: Multi-template Prompt-tuning
+     with adversarial training for issue-commit Link recovery. Journal of Systems and Software (2025). doi:10.1016/j.jss.2025.
+     112351
+[72] Xingyao Wang, Boxuan Li, Yufan Song, Frank F Xu, Xiangru Tang, Mingchen Zhuge, Jiayi Pan, Yueqi Song, Bowen Li,
+     and Jaskirat Singh. 2024. OpenHands: An open platform for ai software developers as generalist agents. arXiv preprint
+     arXiv:2407.16741 (2024). doi:10.48550/arXiv.2407.16741
+[73] Chunqiu Steven Xia, Yinlin Deng, Soren Dunn, and Lingming Zhang. 2025. Demystifying LLM-based software
+     engineering agents. In Proceedings of the 33rd ACM International Conference on the Foundations of Software Engineering.
+     801–824. doi:10.1145/3715754
+[74] Rui Xie, Long Chen, Wei Ye, Zhiyu Li, Tianxiang Hu, Dongdong Du, and Shikun Zhang. 2019. Deeplink: A code
+     knowledge graph based deep learning approach for issue-commit link recovery. In Proceedings of the 26th International
+     Conference on Software Analysis, Evolution and Reengineering. 434–444. doi:10.1109/saner.2019.8667969
+[75] John Yang, Carlos E Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao, Karthik Narasimhan, and Ofir Press. 2024.
+     SWE-agent: Agent-computer interfaces enable automated software engineering. Advances in Neural Information
+     Processing Systems 37 (2024), 50528–50652. doi:10.52202/079017-1601
+[76] Zheng Yu, Ziyi Guo, Yuhang Wu, Jiahao Yu, Meng Xu, Dongliang Mu, Yan Chen, and Xinyu Xing. 2025. PatchAgent: A
+     practical program repair agent mimicking human expertise. In Proceedings of the 34th USENIX Security Symposium.
+     https://www.usenix.org/conference/usenixsecurity25/presentation/yu-zheng
+[77] Chenyuan Zhang, Yanlin Wang, Zhao Wei, Yong Xu, Juhong Wang, Hui Li, and Rongrong Ji. 2023. EALink: An efficient
+     and accurate pre-trained framework for issue-commit link recovery. In Proceedings of the 38th IEEE/ACM International
+     Conference on Automated Software Engineering. 217–229. doi:10.1109/ase56229.2023.00059
+[78] Yuntong Zhang, Haifeng Ruan, Zhiyu Fan, and Abhik Roychoudhury. 2024. AutoCodeRover: Autonomous program
+     improvement. In Proceedings of the 33rd ACM SIGSOFT International Symposium on Software Testing and Analysis.
+     1592–1604. doi:10.1145/3650212.3680384
+[79] Jiayuan Zhou, Michael Pacheco, Zhiyuan Wan, Xin Xia, David Lo, Yuan Wang, and Ahmed E. Hassan. 2022. Finding a
+     needle in a haystack: automated mining of silent vulnerability fixes. In Proceedings of the 36th IEEE/ACM International
+     Conference on Automated Software Engineering. 705–716. doi:10.1109/ase51524.2021.9678720
+[80] Weiqin Zou, Weiqiang Zhang, Xin Xia, Reid Holmes, and Zhenyu Chen. 2019. Branch use in practice: A large-scale
+     empirical study of 2,923 projects on github. In Proceedings of the 19th IEEE International Conference on Software Quality,
+     Reliability and Security. 306–317. doi:10.1109/qrs.2019.00047
+
+Received 2026-02-24; accepted 2026-03-24
+
+
+
+
+Proc. ACM Softw. Eng., Vol. 3, No. FSE, Article FSE184. Publication date: July 2026.
+

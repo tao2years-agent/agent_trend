@@ -1,0 +1,46 @@
+{
+  "id": "r19.0.0-rtl12.1.5-dom10.4.0-legacy",
+  "group": "matrix",
+  "react": "19.0.0",
+  "renderer": "19.0.0",
+  "rtl": "12.1.5",
+  "root_dom": "10.4.0",
+  "mode": "legacy",
+  "install": "installed",
+  "install_exit": 0,
+  "probe": {
+    "stages": [
+      "environment",
+      "import"
+    ],
+    "warnings": [
+      "`ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info."
+    ],
+    "versions": {
+      "react": "19.0.0",
+      "react-dom": "19.0.0",
+      "@testing-library/react": "12.1.5",
+      "@testing-library/dom": "10.4.0",
+      "jsdom": "24.1.3",
+      "dom_seen_by_RTL": "8.20.1"
+    },
+    "passed": false,
+    "failure": {
+      "stage": "render",
+      "code": null,
+      "message": "_reactDom.default.render is not a function",
+      "frames": [
+        "    at <project>\\node_modules\\@testing-library\\react\\dist\\pure.js:101:25",
+        "    at process.env.NODE_ENV.exports.act (<project>\\node_modules\\react\\cjs\\react.development.js:1081:22)",
+        "    at process.env.NODE_ENV.exports.act (<project>\\node_modules\\react-dom\\cjs\\react-dom-test-utils.development.js:22:20)",
+        "    at render (<project>\\node_modules\\@testing-library\\react\\dist\\pure.js:97:26)"
+      ]
+    },
+    "open_handle_types_before_exit": [
+      "PipeWrap"
+    ],
+    "process_exit": 1,
+    "stderr": ""
+  },
+  "lockfile": "locks/r19.0.0-rtl12.1.5-dom10.4.0-legacy.json"
+}

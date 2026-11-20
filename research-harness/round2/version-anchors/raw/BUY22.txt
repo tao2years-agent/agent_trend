@@ -1,0 +1,1149 @@
+Ask
+On this page
+Release notes
+These release notes describe the relevant changes implemented for each SonarQube Server release version since the 2025.1 LTA version. This page is for SonarQube Server 2025.6.
+For AI agents:
+You're in the SonarQube Server 2025.6 documentation. SonarQube Server 2025.6 is no longer patched. To get patches, upgrade to the
+latest version
+. For a list of all 2025.6 pages, see the
+SonarQube Server 2025.6 page index
+. For the whole site, see the
+page index
+or the
+full text
+. For another version, replace 2025.6 in the URL with that version. The latest version has no version number in its URL.
+These release notes describe the relevant changes implemented for each SonarQube Server’s release version since the 2025.1 LTA version. For a complete list of all changes, see the
+Full release notes
+.
+New and enhanced features
+View the release notes for new and enhanced features for SonarQube Server. If you’re upgrading from the previous LTA, see
+LTA to LTA release notes
+.
+2025.6
+Integrations
+Jira integration
+This feature introduces a secure, app-based connection for integrating SonarQube Server with Jira Cloud. This lays the groundwork for powerful future workflows, such as issue tracking, release readiness assessment and creating Jira work items from SonarQube issues. For more information see the following documentation:
+Jira Cloud integration
+on an instance level
+Jira Cloud integration
+on a project level
+Managing Jira work items
+Slack integration
+Delivers real-time notifications for quality gate status changes (failed or failed-to-passed) directly into Slack channels. See
+Setting up Slack notifications
+for more information.
+Languages, analyzers and scanners
+Apex
+Expansion of code quality and security rules for
+Apex
+, 42 new rules (98 total rules), to address enterprise coverage gaps, for example:
+SOQL
+S7960 - SOQL queries should be assigned to Lists to avoid QueryException
+S8011 - SOQL queries should use SystemModStamp instead of LastModifiedDate for better performance
+S8129 - SOQL queries should not contain hardcoded literals
+SOSL
+S8048 - SOSL queries in test methods should use "Test.setFixedSearchResults"
+Governor limits
+S7992 - SOQL queries should include LIMIT clauses to prevent hitting governor limits
+S8033 - HTTP requests should have explicit timeout configuration
+S8127 - SOQL queries should not be executed inside loops
+CFamily
+MISRA C++:2023 rules released.
+The MISRA C++ 2023 rules have been released and are no longer in Early Access. This expands coverage to all 179 MISRA C++2023 guidelines in Enterprise and Data Center editions plus SonarQube for IDE when in connected mode. See
+Quality profiles
+for more information.
+New Sonar Misra C++ 2023 quality profile available.
+A new Sonar MISRA C++ 2023 Compliance quality profile is available starting in Enterprise edition. It combines Sonar way rules with MISRA C++ 2023 rules and is designed for projects seeking MISRA compliance.
+CSS
+The following CSS accessibility rules have been added:
+S7923: Orientation of the page is not restricted using CSS transform property
+S7924: Text has minimum contrast
+S7925: Spacing and height in style attributes is not `!important`
+Go
+Expansion of code quality rules for
+Go
+. Added 24 new rules targeting the base Go language, for example:
+S8188 - Context cancellation functions should be deferred
+S8193 - Variables in if short statements should be used beyond just the condition
+S8197 - Use "bytes.Equal" instead of "bytes.Compare" for equality checks
+S8206 - Deprecated "InterfaceData" method should not be used
+S8208 - HTTP response bodies should be closed to prevent resource leaks
+S8210 - Variables should be used
+S8239 - Context parameters should be reused instead of creating new background contexts
+S8242 - Context should not be stored in struct fields
+S8259 - Busy waiting loops should use proper synchronization
+Java
+Improvements to Java rules based on user feedback and in anticipation of the upcoming 2026.1 LTA release. Related rules:
+S1068: Unused "private" fields should be removed
+S1144: Unused "private" methods should be removed
+S1479: "switch" statements should not have too many "case" clauses
+S1186: Methods should not be empty
+S1948: Fields in a "Serializable" class should either be transient or serializable
+S1989: Exceptions should not be thrown from servlet methods
+S2097: "equals(Object obj)" should test the argument's type
+S2187: TestCases should contain tests
+S2698: Test assertions should include messages
+S3306: Constructor injection should be used instead of field injection
+S3329: Cipher Block Chaining IVs should be unpredictable
+S4605: Spring beans should be considered by "@ComponentScan"
+S5738: "@Deprecated" code marked for removal should never be used
+S6813: Field dependency injection should be avoided
+JavaScript / TypeScript
+TypeScript
+All versions through 5.9.3 are supported. See
+JavaScript/TypeScript/CSS
+for more information.
+JavaScript / TypeScript analyzer speed improvements
+Optimization of the analysis engine, moving logic to Node.js and using WebSockets, resulting in up to 40% faster analysis for large projects.
+58 Quick Fixes for JavaScript / TypeScript
+Automatically enables Quick Fixes in SonarQube IDE for 58 existing JavaScript and TypeScript rules.
+PL/SQL
+Support for
+PL/SQL
+3.18.0.216. The following rules have been updated:
+S1135: Track uses of "TODO" tags
+S1192: String literals should not be duplicated
+S1854: Unused assignments should be removed
+S2340: "LOOP ... END LOOP;" constructs should be avoided
+S2454: Columns should be aliased
+S2534: Positional and named arguments should not be mixed in invocations
+S3651: Individual "WHERE" clause conditions should not be unconditionally true or false
+S4081: "PLS_INTEGER" types should be used
+S4196: Output parameters should be assigned
+S4421: Features deprecated in Oracle 12 should not be used
+S5245: Identifiers should be written in lower case
+Python
+Support for Python 3.14
+Includes the new JIT compiler and
+defer
+statement features. See
+Python
+for more information. Related rules:
+S7931: "NotImplemented" should not be used in boolean contexts
+S7941: Compression modules should be imported from the compression namespace
+S7942: Template strings should be processed before use
+S7943: Template and str should not be concatenated directly
+S7945: Template string processing should use structural pattern matching
+Rules for Python Pytorch library
+Specialized rules for PyTorch to help write efficient, error-free Machine Learning code. The new rules include:
+S7697: PyTorch tensor operations should assign results or use in-place variants
+S7699: Dropout layers should be defined as model attributes in "__init__" method
+S7702: Specify "start_dim" when using "torch.flatten" to preserve batch dimension
+S7703: Method calls should use parentheses when saving PyTorch model state
+S7704: PyTorch module classes should not be instantiated inline in forward methods
+S7706: Use PyTorch Lightning's built-in checkpointing instead of manual checkpoint saving
+S7709: Tensor lists should be concatenated with "torch.cat()" instead of "torch.tensor()"
+S7708: Tensors should not be concatenated incrementally in loops
+S7710: Use "torch.empty()" instead of list comprehensions for empty tensor initialization
+S7711: Dataset "__len__" methods should return an integer, not "torch.Size"
+S7713: Tensor operations should rely on automatic broadcasting instead of manual expansion
+Ruby
+33 new language-specific and framework-specific rules for
+Ruby
+, including 12 Ruby-on-rails, for example:
+S7839: Global variables should not be used in Rails applications
+S7844: Asset compilation should be disabled in production environments
+S7867: Rails API controllers using "respond_to" should include "ActionController::MimeResponds"
+S7875: Rails applications should define a root route with proper controller#action syntax
+S7887: Before destroy callbacks should use proper halt mechanism
+S7895: HTTP status codes should use symbols instead of numeric values
+S7897: Rails queries should use "find_by" instead of "where.take" for single record retrieval
+S7899: Rails collections should use "ids" instead of "pluck(:id)" for primary keys
+S7904: Rails model callback methods should be private
+S7905: Controllers should inherit from appropriate base classes
+Secrets
+New rules have been added for
+Secrets
+detection:
+S8135: JSON Web Tokens should not be disclosed
+S8136: HTTP authentication credentials should not be disclosed
+S8214: Handsontable License Keys should not be disclosed
+S8215: Password hashes should not be disclosed
+S8217: HTTP Authentication Bearer tokens should not be disclosed
+S8219: Azure DevOps App secrets should not be disclosed
+Swift
+Support for Swift 5.9 through 6.2
+Comprehensive support for
+Swift
+versions 5.9 through 6.2, including macros, variadic generics, and new syntax features.
+Support SwiftUI
+Targeted support for SwiftUI that silences irrelevant rules (e.g., S107, S3087) and disables rules in preview sections, for example:
+S107: Functions should not have too many parameters
+S3087: Closure expressions should not be nested too deeply
+SAST for Swift
+Introduces Static Application Security Testing (SAST) for Swift, targeting cryptography and communication issues.
+Detect passwords and secrets in Swift
+Enhanced secret detection for Swift using entropy checks and post-processing to reduce noise.
+T-SQL analyzer update
+Updates to ensure
+T-SQL
+analysis are ready for the upcoming Long Term Active (LTA) release. Related fixes and improvements to:
+S1116: Empty statements should be removed
+S1523: Dynamically executing code is security-sensitive
+Parsing of
+CREATE STATISTICS
+statement
+Parsing of
+CREATE/DROP ASYMMETRIC KEY
+Parsing of
+CREATE MESSAGE TYPE
+XML
+Various improvements to XML rules and analyzer. Related rules:
+S2068: Hard-coded credentials are security-sensitive
+S3330: Creating cookies without the "HttpOnly" flag is security-sensitive
+S5344: Passwords should not be stored in plaintext or with a fast hashing algorithm
+S5734: Allowing browsers to sniff MIME types is security-sensitive
+S7630: GitHub Actions should not be vulnerable to script injections
+Reporting
+Security standards
+SonarQube Server rules and security reports have been updated to comply with the most recent security standards. The new and updated security standards are:
+OWASP Top 10 2025
+: Updating security rule mappings, documentation, and reporting to align with the newly released OWASP Top 10 2025
+STIG ASD version 6
+: Integration and mapping of our security rules to the latest security technical implementation guide (STIG) for application security and development, version 6.
+Security reports are available in the
+Enterprise
+edition and higher. See
+Security reports
+for the full list of security standards and language coverage.
+WCAG Accessibility compliance
+Introduces Accessibility reports via API to monitor compliance with
+WCAG 2.1 AA
+and
+2.2 AA
+standards.
+Security
+New rules for detecting LLM issues
+The new version of security analyzer contains new and improved rules for detecting LLM related security issues.
+Python
+:
+S2076: OS commands should not be vulnerable to command injection attacks
+S2083: I/O function calls should not be vulnerable to path injection attacks
+S3649: Database queries should not be vulnerable to injection attacks
+S5131: Endpoints should not be vulnerable to reflected cross-site scripting (XSS) attacks
+S5144: Server-side requests should not be vulnerable to forging attacks
+S5334: Dynamic code execution should not be vulnerable to injection attacks
+S7518: Privileged prompts should not be vulnerable to injection attacks
+S7693: Operating AI agents without predefined boundaries is security-sensitive
+S7698: AI agent code execution without sandboxing is security-sensitive
+Java
+:
+S2076: OS commands should not be vulnerable to command injection attacks
+S2083: I/O function calls should not be vulnerable to path injection attacks
+S5146: HTTP request redirections should not be open to forging attacks
+S6547: Environment variables should not be defined from untrusted input
+S7518: Privileged prompts should not be vulnerable to injection attacks
+Detect security misconfigurations in bash shell files
+Detects unsafe file permissions, insecure commands (
+curl
+/
+wget
+), and hardcoded secrets in
+.sh
+files.
+Shell/bash analysis
+Introduction of 31 code quality and security rules specifically for shell/bash scripts. For example:
+S1481: Unused local variables should be removed
+S4830: Server certificates should be verified during SSL/TLS connections
+S6506: Allowing downgrades to a clear-text protocol is security-sensitive
+S7684: Variable names should follow shell naming conventions
+S7674: Variables should be quoted during expansion
+S7677: Error messages should be sent to stderr
+S7689: Command substitution should use modern "$()" syntax instead of backticks
+SonarQube Advanced Security
+Available as part of SonarQube Advanced Security license for
+Enterprise
+edition and higher.
+ASAST configs refreshed for C# and Java top 1k libraries, and Python top 100
+Automatically delivers optimized Advanced SAST configurations for the Top 1,000 most used libraries in C# and Java, and top 100 Python libraries.
+C/C++ support for Conan and vcpkg projects (beta)
+Allows customers to analyze C and C++ projects that utilize the Conan or vcpkg package managers to return vulnerability and license information.
+Software bill of materials (SBOM) import (CycloneDX, SPDX) (beta)
+Allows customers to import software bill of materials (SBOM) in CycloneDX or SPDX format to retrieve vulnerability information. This supports the scanning of arbitrary applications and dependencies, including container images and complex C++ applications.
+SPDX 3.0 support
+Ensures support for the latest SPDX 3.0 standard.
+See
+Advanced Security
+for more information.
+UI and UX
+Rules statuses visible on the Issues page
+Surfacing the rule status, specifically beta, directly on the Issues and Issues detail pages. This clarifies the maturity of the rule that generated the issue.
+Update to the login page
+Updated accessibility, layout, and error messages resulting in an improved overall login experience.
+Analysis performance
+High-volume file move detection
+SonarQube now stops the analysis when a high-volume file move is detected and raises a warning to let users revert to their initial project configuration in case of an unintended file move.
+DevOps platform integration
+GitHub Enterprise Cloud with Data Residency now supported
+SonarQube’s integration with GitHub Enterprise Cloud with Data Residency is now supported.
+Navigation from SonarQube to GitHub
+You can now navigate from your SonarQube project to the bound GitHub repository by selecting the project bound icon.
+In-product communication of product news
+Sonar will now provide in-product notifications to users regarding important product updates. These messages will be tailored to specific audiences. Users will receive alerts for new messages and will have access to a complete message history.
+2025.5
+Analysis features
+Sandboxing of issues coming from SonarQube update
+Some SonarQube updates may introduce new issues in your code on sections that have not been changed since the previous analysis. Such updates include Sonar analyzer improvements (improved rules), or changes to built-in quality profiles (addition of rules). This introduction of new issues may lead to abrupt and unexplained quality gate and pipeline failures, causing frustration and delays in releases.
+To eliminate these pain points, you can enable the sandboxing of issues that come from SonarQube updates and fulfill preconfigured conditions. This way:
+The sandboxed issues will not impact your quality gate.
+Users will be able to triage the sandboxed issues at their own pace.
+For more information about the feature:
+To understand the feature, see
+Sandboxing of issues coming from SonarQube update
+.
+To set up the feature at the instance level:
+Through system properties to enable the feature for the current update, see the
+Update notes
+below for
+2025.5
+.
+In the UI, see
+Quality standards
+.
+To set up the feature for your project, see
+Managing your project's quality gate
+.
+SCA service activation at the project level
+In the previous version, Software Composition Analysis (SCA) was enabled in the UI at the instance level for all projects. With this new version, when you enable the service as an instance admin, you can additionally define the default activation status (on or off) for all projects in your instance.
+For more information, see
+Enabling the SCA service
+.
+Languages
+GitHub Actions support
+SonarQube Server now supports analysis of YAML files detected as GitHub Actions. For more information, see
+GitHub Actions
+.
+AngularJS rules for TypeScript
+The following rules related to AngularJS have been added to the TypeScript analysis:
+S7655: Angular classes should implement lifecycle interfaces for their lifecycle methods
+S7641: Angular lifecycle methods should be used in the correct context
+S7656: Angular Pipes should implement PipeTransform interface
+S7650: Components and directives should not use the "inputs" metadata property
+S7648: Components, Directives, and Pipes should use standalone architecture
+S7647: Empty Angular lifecycle methods should be removed
+S7649: Input bindings should not be aliased
+S7653: Output bindings should not be aliased
+S7652: Output bindings should not be named "on" or prefixed with "on"
+S7651: Output bindings should not be named as standard DOM events
+S7654: The "outputs" metadata property should not be used in Angular components and directives
+Go 1.25 support
+Go version 1.25 is now supported.
+JavaScript analysis improved
+68 rules from the
+eslint-plugin-unicorn
+have been added to the JavaScript analysis.
+PHP analysis improved
+PHP keyword parsing has been optimized by replacing the regex-based logic.
+Rust analysis improved
+The Clippy analysis can now be run offline by setting sonar.rust.clippy.offline to true. This prevents Clippy from trying to fetch dependencies. Dependencies must still be available locally for the analysis to work correctly. This setting is intended for air-gapped environments.
+Python analysis: new rules for PyTorch library
+The following rules have been added:
+S7508: Redundant collection functions should be avoided
+S7675: Tensor copying should use recommended methods
+S7695: "super()" calls should not be used in TorchScript methods
+Python analysis: AWS Lambda rules
+The following rules related to AWS lambdas and common practices have been added to the Python analysis:
+S6249: Authorizing HTTP communications with S3 buckets is security-sensitive
+S7613: AWS Lambda handlers should return only JSON serializable values
+S7609: AWS CloudWatch metrics namespace should not begin with `AWS/`
+S6246: Lambdas should not invoke other lambdas synchronously
+S7608: S3 operations should verify bucket ownership using ExpectedBucketOwner parameter
+S7618: Network calls in AWS Lambda functions shouldn't be made without explicit timeout parameters
+S7617: Reserved environment variable names should not be overridden in Lambda functions
+S6243: Reusable resources should be initialized at construction time of Lambda functions
+S6262: AWS region should not be set with a hardcoded String
+S7622: boto3 operations that support pagination should be performed using paginators or manual pagination handling
+S7621: AWS waiters should be used instead of custom polling loops
+S7620: AWS Lambda handlers should clean up temporary files in /tmp directory
+S7625: Long-term AWS access keys should not be used directly in code
+S7614: AWS Lambda handlers must not be an async function
+S7619: "botocore.exceptions.ClientError" must be explicitly catch and handled
+Parallel execution of Python rules
+Parallel execution of Python rules is now supported.
+IaC analysis improved for GitHub Actions
+The analysis of Infrastructure as Code (Ansible, Azure Resource Manager, CloudFormation, Docker, K, Terraform) has been improved to detect security misconfigurations and vulnerabilities in GitHub Actions. To do so, the following rules have been added:
+S7630: GitHub Actions should not be vulnerable to script injections
+S7631: Checking out code from a fork in a privileged workflow context is security-sensitive
+S7633: Parsing structured data as a secret is security-sensitive
+S7634: Passing the full secrets context to a workflow step is security-sensitive
+S7635: Passing the full secrets context to reusable workflows is security-sensitive
+S7636: Expanding secrets in run blocks is security-sensitive
+S7637: Using external GitHub actions and workflows without a full length commit hash is security-sensitive
+S6596: Specific version tag for image should be used
+Injection vulnerabilities supported for .NET WPF framework
+Taint analysis is now supported for Windows Presentation Foundation (WPF) entry points, such as UI controls, data bindings or command parameters.
+Server operation
+Announcement messages improved
+It’s now possible to add links to your custom announcement messages in the UI. For more information, see
+Announcements
+.
+JRE auto-provisioning can be disabled at instance level
+JRE auto-provisioning for the scanners on CI/CD host is enabled by default. It was possible to disable it through an analysis parameter. You can now disable it at the SonarQube Server instance level. See
+Improved memory consumption of Sonar scanners
+In order to reduce memory consumption for the scanner-engine, visibility information is now discarded for excluded files. \
+2025.4
+The 2025.4 release will remain officially active for 18 months from the release date. Sonar offers extended commercial support for version 2025.4 during this active period. See
+Release cycle model
+for more details on active versions.
+Languages
+Increasing MISRA C++ 2023 rules coverage
+Continued expansion of MISRA C++ 2023 rule coverage with over 25 additional rules as part of Sonar’s MISRA Compliance Early Access. The coverage enhances checks for safety-critical systems and is available for Enterprise edition and higher. See
+External standard rule tags
+for more information.
+Relevant rules:
+M23_026: Sections of code should not be ‘commented out’.
+M23_029: A variable declared in an ‘inner scope’ shall not hide a variable declared in an ‘outer scope’.
+M23_034: Within character literals and non raw-string literals, ’\ shall only be used to form a defined escape sequence or universal character name.
+M23_037: The lowercase form of ‘L’ shall not be used as the first character in a literal suffix.
+M23_038: String literals with different encoding prefixes shall not be concatenated.
+M23_050: All ‘declarations’ of a variable or function shall have the same type.
+M23_053: The source code used to implement an ‘entity’ shall appear only once.
+M23_096: The logical AND and logical OR operators shall not be overloaded.
+M23_103: The right-hand operand of a logical ‘&&’ or ‘||’ operator should not contain ‘persistent side effects’.
+M23_106: An unsigned arithmetic operation with constant operands should not wrap.
+M23_125: A ‘goto’ statement shall reference a label in a surrounding block.
+M23_139: The ‘asm’ declaration shall not be used.
+M23_145: Functions shall not call themselves, either directly or indirectly.
+M23_154: Within an enumerator list, the value of an implicitly-specified ‘enumeration constant’ shall be unique.
+M23_173: Conversion operators and constructors that are callable with a single argument shall be ‘explicit’.
+M23_320: Octal escape sequences, hexadecimal escape sequences and universal character names shall be terminated.
+M23_327: An argument passed via ellipsis shall have an appropriate type.
+M23_341: A class shall only define an ‘initializer-list constructor’ when it is the only constructor.
+M23_351: ‘User-provided’ ‘copy assignment operators’ and ‘move assignment operators’ shall handle self-assignment.
+M23_365: ‘Symmetrical operators’ should only be implemented as non-member functions.
+M23_372: ‘Special member functions’ shall be provided appropriately.
+M23_379: The operands of ‘bitwise operators’ and ‘shift operators’ shall be appropriate.
+M23_380: ‘Integral promotion’ and the ‘usual arithmetic conversions’ shall not change the signedness or the ‘type category’ of an operand.
+M23_381: ‘Assignment’ between numeric types shall be appropriate.
+M23_389: A ‘for-range-initializer’ shall contain at most one function call.
+M23_390: ‘Legacy for statements’ should be ‘simple’.
+M23_392: User-defined identifiers shall have an appropriate form.
+M23_406: Floating-point arithmetic should be used appropriately.
+Making C and C++ analysis faster
+Faster C and C++ analysis on SonarQube Server, particularly when code changes have a limited logical impact, even if they affect widely included header files or large compilation units. Aimed at improving the efficiency of the computationally intensive symbolic execution engine. See
+C/C++/Objective-C
+for more information.
+Rules for Python coroutines
+Enables
+Python
+developers to write high-quality coroutines and avoid common pitfalls associated with asynchronous programming, targeting popular libraries like
+asyncio
+and
+aiohttp
+. It helps developers address issues like forgetting
+await
+keywords, running blocking code within coroutines, and managing state and error handling in asynchronous flows.
+Relevant rules:
+S7483: Asynchronous functions should not accept timeout parameters
+S7484: Events should be used instead of sleep in asynchronous loops
+S7486: Long sleep durations should use sleep_forever() instead of arbitrary intervals
+S7487: Async functions should not contain synchronous subprocess calls
+S7488: Use non-blocking sleep functions in asynchronous code
+S7489: Async functions should not contain synchronous OS calls
+S7490: Cancellation scopes should contain checkpoints
+S7491: Checkpoints should be used instead of sleep(0)
+S7493: Async functions should not contain synchronous file operations
+S7497: Cancellation exceptions should be re-raised after cleanup
+S7499: Async functions should not contain synchronous HTTP client calls
+S7501: Async functions should not contain input() calls
+S7502: Asyncio tasks should be saved to prevent premature garbage collection
+S7503: Async functions should use async features
+S7513: TaskGroup/Nursery should not be used for a single start call
+S7514: Control flow statements should not be used inside TaskGroup or Nursery blocks
+S7515: "async with" should be used for asynchronous resource management
+Additionally, we are providing IDE quick-fixes for the following rules:
+S7486: Long sleep durations should use sleep_forever() instead of arbitrary intervals
+S7489: Async functions should not contain synchronous OS calls
+S7491: Checkpoints should be used instead of sleep(0)
+S7501: Async functions should not contain input() calls
+Rules for Python comprehensions
+Expands SonarQube’s support for
+Python
+comprehensions (list, dictionary, and set comprehensions) by providing both basic coverage and unique rules to identify improper usage. Assists engineering teams address performance pitfalls, readability issues, and non-idiomatic usage.
+Relevant rules:
+S7492: List comprehensions should not be used with "any()" or "all()"
+S7494: Comprehensions should be used instead of constructors around generator expressions
+S7496: Creation of collections with literals or comprehensions should not be wrapped in type constructors
+S7498: Literal syntax should be preferred when creating empty collections or dictionaries with keyword arguments
+S7500: Comprehensions only used to copy should be replaced with the respective constructor calls
+S7504: When iterating over an iterable object, using "list()" should be avoided
+S7505: Generators and comprehensions should be preferred over the usage of "map" and "lambda" when creating collection
+S7506: Dictionary comprehension should not use a static key
+S7507: "defaultdict" should not be initialized with "default_factory" as a keyword argument
+S7508: Redundant collection functions should be avoided
+S7510: The "sorted" function call should not be passed to the "reversed" function as an argument
+S7511: Passing a reversed iterable to "set()", "sorted()", or "reversed()" should be avoided
+S7512: Using ".items()" to iterate over a dictionary should be avoided if possible.
+S7516: "sorted" should not be wrapped directly inside "set"
+S7517: Iteration over a dictionary key value pairs should be done with the items() method call
+S7519: Populating a dictionary with a constant value should be done with dict.fromkeys() method call
+Additionally, we are providing IDE quick-fixes for the following rules:
+S7498: Literal syntax should be preferred when creating empty collections or dictionaries with keyword arguments
+S7500: Comprehensions only used to copy should be replaced with the respective constructor calls
+S7504: When iterating over an iterable object, using "list()" should be avoided
+S7508: Redundant collection functions should be avoided
+S7517: Iteration over a dictionary key value pairs should be done with the items() method call
+Improved Issue Suppression for Python
+Individual rules can be suppressed in
+Python
+using the rule key with # NOSONAR (eg #NOSONAR(S5655)). Additionally, the rules below can be enabled to track usage of # NOSONAR and # noqa:
+S1291: Track uses of "NOSONAR" comments
+S1309: Track uses of noqa comments
+You can detect correct usage of # NOSONAR & # noqa with rule:
+S7632: Issue suppression comment should have the correct format
+Support for Dart 3.8
+Provides support for
+Dart
+3.8 in SonarQube, ensuring that existing rules are applied, and new constructs are handled appropriately without parsing errors.
+Support for Java 23 with new rules
+Adds
+Java
+23-specific rules to help developers properly use new Java 23 features.
+Relevant rules:
+S125: Sections of code should not be commented out
+S1123: Deprecated elements should have both the annotation and the Javadoc tag
+S7474: Markdown, HTML and Javadoc tags should be consistent
+S7476: Comments should start with the appropriate number of slashes
+Error free Parsing for Java 24
+Ensures that the
+Java
+analyzer successfully parses Java 24 source files without errors and correctly handles new Java 24 features. Adds Java 24-specific rules and updates existing rules to ensure they properly use new language constructs in Java 24.
+Relevant rules:
+S6906: Virtual threads should not run tasks that include synchronized code
+S2093: Try-with-resources should be used
+S7478: "transformClass" method should be used instead of "build" when transforming a class
+S7477: Class name should be omitted when unchanged by class transform
+S7479: "ClassBuilder.withMethodBody" should be preferred to "ClassBuilder.withMethod"
+S7482: Don’t provide an initializer for a stateless stream gatherer
+S7629: When a defaultFinisher is passed to a Gatherer factory, use the overload that does not take a finisher
+S7481: Gatherer.ofSequential() should be used to build sequential gathers
+Helping developers write performant Java code
+Addresses performance issues in
+Java
+code by identifying potential performance bottlenecks, providing clear explanations, and offering automated quick-fixes.
+Related rules:
+S4030: Collection contents should be used
+S3063: "StringBuilder" data should be used
+S3024: Arguments to "append" should not be concatenated
+S3033: ".isEmpty" should be used to test for the emptiness of StringBuffers/Builders
+Making advanced Java rules smarter
+A more advanced Dataflow Bug Detection (DBD) engine replaces Symbolic Execution engine for
+Java
+rules S2259 (Null pointers should not be dereferenced) and S3518 (Zero should not be a possible denominator).
+Security
+Secrets Detection
+SonarQube’s secrets detection now covers over 400 distinct secret patterns, powered by 346 rules. This update includes 89 newly added rules, currently in BETA, designed to enhance your security coverage even further. All the new rules are active by default.
+Related topics:
+Detects passwords and secrets by default in
+Kotlin
+.
+Detects passwords and secrets in
+YAML
+and
+JSON
+files. This feature can be enabled by an opt-in parameter
+sonar.yaml.activate = true
+and
+sonar.json.activate = true
+.
+Related rule:
+S6418 - Hard-coded secrets are security-sensitive
+Taint Analysis for JavaScript/TypeScript
+Next-generation taint analysis engine for JavaScript/TypeScipt projects provides more accurate and actionable security findings. As an administrator, you can enable
+Use new JS/TS Taint Analysis engine
+under
+Administration
+>
+Configuration
+>
+General Settings
+>
+SAST Engine
+. See
+JavaScript/TypeScript/CSS
+for more information.
+Taint Analysis for Go
+Provides taint analysis for the
+Go
+programming language. It tracks untrusted user input with data flow analysis across functions and files to find injection vulnerabilities and other security weaknesses.
+Taint Analysis for VB.NET
+Provides full Static Application Security Testing (SAST) capabilities, including taint analysis, for the
+VB.NET
+programming language.
+SonarQube Advanced Security
+Automatic detection of new dependency risks without reanalysis
+Automatically detects newly discovered vulnerabilities in project dependencies on permanent branches (including the main branch) without a need to re-analyze the project. Available as part of SonarQube Advanced Security license for Enterprise edition and higher. See SonarQube Advanced Security
+Introduction
+page for more information.
+SCA for PHP
+Introduces Software Composition Analysis (SCA) support for PHP projects that use Packagist and Composer for dependency management. The feature analyzes PHP code to identify and manage public vulnerabilities and licenses in third-party dependencies. Also, it generates entries in a Software Bill of Materials (SBOM). Available as part of SonarQube Advanced Security license for Enterprise edition and higher. See SonarQube Advanced Security
+Introduction
+page for more information.
+Machine-readable SCA report
+Provides a machine-readable report of dependency risks for projects, applications, and portfolios, available in both JSON and CSV formats. The report includes details such as project, dependency chain, risk title, CVE/CWE IDs, severity, discovery date, status, and remediation information. Available as part of
+Introduction
+license for Enterprise edition and higher.
+Customizable risk severity for SCA
+Allows for customization of the severity level of dependency risks in SonarQube thus enabling you to adjust how a risk affects a particular software quality. Available as part of SonarQube Advanced Security license for Enterprise edition and higher. See SonarQube Advanced Security
+Introduction
+page for more information.
+Risk rating for SCA
+Introduces ABCDE risk ratings for Software Composition Analysis (SCA), specifically for overall dependency risk, security dependency risk (vulnerabilities), and maintainability dependency risk (disallowed licenses). These ratings are displayed on projects, and applications overview screens. Available as part of SonarQube Advanced Security license for Enterprise edition and higher. See SonarQube Advanced Security
+Introduction
+page for more information.
+Reporting
+Improvements to security report PDFs at a project level
+Allows for customization and download of
+Security reports
+PDFs at a project level. Customize a report to conform with specific security standards, such as: OWASP Top 10, CWE Top 25, STIG, CASA, and others. Available for Enterprise edition and higher.
+Improvements to regulatory reports
+Improvements to the
+Regulatory reports
+include a new download option on the project’s Overview page, an addition of a
+Distribution of issues
+based on insights in the PDF report and
+Maintainability
+issues (in Multi-Quality Rule Mode), and Code Smells (in Standard Experience) in the CSV file, along with other general improvements.
+AI capabilities
+New environment variable
+SONAR_ENFORCEAZUREOPENAIDOMAINVALIDATION
+: Ensures that configured Azure OpenAI endpoints strictly end with
+.openai.azure.com
+for enhanced security and authenticity.
+Disabling this setting can expose the instance to security risks by allowing connections to potentially unauthorized services.
+sonar.enforceAzureOpenAiDomainValidation
+is the corresponding property.
+SonarQube Server Platform
+The Data Center edition now supports installation on Kubernetes clusters with Istio pre-installed. This integration provides capabilities for observing and managing communication between SonarQube Server nodes. A setup is necessary: see
+Deploying with Istio
+.
+New online license management
+The new online license management allows you to request, remove, stage, refresh and activate your license online. Offline activation is also available, if your SonarQube Server instance is not connected to the internet. The redesigned License administration page lets you manage additional features such as SonarQube Advanced Security, view the line of code (LOC) usage and set up notifications. See
+License administration
+for more information.
+SonarQube for IDE
+MISRA early access rules available in the IDE
+Early-access MISRA C++2023 rules are available directly within the SonarQube for IDE (VSCode, Visual Studio, IntelliJ/CLion). MISRA C++2023 issues appear in their C++ files and can be fixed locally. Rule descriptions are also available directly within SonarQube for IDE.
+Software Composition Analysis (SCA) in the IDE
+Software Composition Analysis (SCA) results will be visible to developers in their IDE for Visual Studio, IntelliJ, and VSCode with the upcoming SonarQube for IDE releases. Available as part of SonarQube Advanced Security license for Enterprise edition and higher. See SonarQube Advanced Security
+Introduction
+page for more information.
+2025.3
+General Availability of SonarQube Advanced Security
+Advanced Security is now generally available as a product pack starting in
+Enterprise
+edition, extends the core security capability by adding support for open source code. New capabilities include:
+Enhanced visibility of security and licensing risks on each dependency version in pull requests and overall code.
+Configurable Quality Gates can include dependency risk scores, preventing code with high-risk dependencies from entering production.
+Configurable company’s license compliance policy allows organizations to define and enforce custom license compliance policies within SonarQube.
+The project overview screen now displays dependency risk counts, providing developers with immediate insights into the health of their project dependencies.
+Discovery and analysis of dependency risks across multiple applications and portfolios.
+Enhanced API access for SCA results and Software Bill of Materials (SBOMs) for seamless integration with other tools and custom reporting.
+Broad and growing language coverage for SCA, starting with Java, C#, Python, JavaScript, TypeScript, Go, Rust, and Ruby, ensures that developers can quickly analyze third-party dependencies for vulnerabilities and licensing issues.
+See SonarQube Advanced Security
+Introduction
+page for more information.
+Core security enhancements
+Static Application Security Testing (SAST) for Kotlin
+The addition of SAST for Kotlin, including taint analysis, extends security checks to Kotlin-based projects.
+Continued additions to secrets detection
+Ongoing enhancements to
+Secrets
+detection ensure SonarQube keeps pace with evolving cloud application security needs and brings our coverage to over 300 patterns. Additionally, SonarQube can detect secret leaks in files located within directories or hidden files that begin with a dot.
+AI capabilities
+Leverage AI CodeFix directly in the IDE
+AI CodeFix
+into SonarQube for IntelliJ and SonarQube for VS Code provides developers with real-time code remediation suggestions. Available in the
+Enterprise
+edition and above.
+Autodetection of AI code
+Autodetect AI code
+for Copilot-generated code is not limited anymore to GitHub projects. Available in the
+Enterprise
+edition and above.
+Compliance capabilities
+More MISRA:C++2023 rules
+Continued expansion of MISRA:C++2023 rule coverage as part of our MISRA Compliance Early Access enhances compliance checks for safety-critical systems. Available in the
+Enterprise
+edition and above.
+New security reports for CWE and OWASP Mobile
+SonarQube now provides
+Security reports
+aligned with the latest CWE Top 25 for 2024 and OWASP Mobile Top 10 for 2024 standards. Available in the
+Enterprise
+edition and above.
+Default Quality Gate
+As a Quality Gate administrator you can now set a default Quality Gates that is not compliant with Clean as You Code. See
+Changing instance's default quality gate
+for more details.
+Languages
+Introducing support for Rust
+Initial support
+Rust
+offers:
+85 rules
+Code Coverage import (LCOV and Cobertura formats)
+Cognitive Complexity metric
+Cyclomatic Complexity metric
+Import of Clippy output as external rules (JSON format)
+Support for Java 22 and 23
+SonarQube now supports
+Java
+versions 22, ensuring developers can analyze their code with confidence when using the latest Java versions. New Java 22 rules:
+S7466: Unnamed variable declarations should use the
+var
+identifier
+S7467: Unused exception parameter should use the unnamed variable pattern
+S7475: Types of unused record components should be removed from pattern matching
+Support for PySpark
+Support for PySpark, a popular Python API to leverage Apache Spark, adds the help data engineers need to identify and address potential issues in their large-scale data processing workflows. New PySpark rules:
+S7193: PySpark DataFrame toPandas function should be avoided
+S7468: PySpark
+dropDuplicates
+subset argument should not be provided with an empty list
+S7469: PySpark’s
+DataFrame
+column names should be unique
+S7470: PySpark’s
+RDD.groupByKey
+, when used in conjunction with
+RDD.mapValues
+with a commutative and associative operation, should be replaced by
+RDD.reduceByKey
+S7471:
+master
+and
+appName
+should be set when constructing PySpark
+SparkContext
+and
+SparkSession
+New rules for mobile security
+Following are the new mobile security rules that cover the OWASP Mobile top 10 for 2024 security standards:
+Kotlin
+S5344 - Passwords should not be stored in plaintext or with a fast hashing algorithm. This rule covers the M2 category of the OWASP Mobile Top 10 for 2024.
+S6474 - Using remote artifacts without authenticity and integrity checks is security-sensitive. This rule covers M2 from the OWASP Mobile Top 10 for 2024.
+S7204 - Obfuscation should be enabled for release builds. This rule covers the M7 and M8 category of the OWASP Mobile Top 10 for 2024.
+S7409 - Exposing Java interfaces in WebViews is security-sensitive. This rule covers the M8 category of the OWASP Mobile Top 10 for 2024.
+S7410 - Keyboard cache should be disabled for password inputs. This rule covers the M2 category of the OWASP Mobile Top 10 for 2024.
+S7416 - Android production release targets should not be debuggable. This rule covers the M7 category of the OWASP Mobile Top 10 for 2024.
+S7435 - Processing persistent unique identifiers is security-sensitive.This rule covers the M6 category of the OWASP Mobile Top 10 for 2024.
+Java
+S7409 - Exposing Java interfaces in WebViews is security-sensitive. This rule covers M8 of the OWASP Mobile Top 10 2024.
+S7435 - Processing persistent unique identifiers is security-sensitive. This rule covers M6 of the OWASP Mobile Top 10 2024.
+Dart
+S5324 - Accessing Android external storage is security-sensitive. This rule covers M9 of the OWASP Mobile Top 10 for 2024.
+S4830 - Server certificates should be verified during SSL/TLS connections. This rule covers M5 of the OWASP Mobile Top 10 for 2024.
+S4790 - Using weak hashing algorithms is security-sensitive (crypto). This rule covers M10 of the OWASP Mobile Top 10 for 2024.
+S2245 - Using pseudorandom number generators (PRNGs) is security-sensitive. This rule covers M9 of the OWASP Mobile Top 10 for 2024.
+S6362 - Enabling JavaScript support for WebViews is security-sensitive. This rule covers M8 of the OWASP Mobile Top 10 for 2024.
+S7409 - Exposing Java interfaces in WebViews is security-sensitive. This rule covers M4 and M8 of the OWASP Mobile Top 10 for 2024.
+XML
+S7207 - Components should be explicitly exported. This rule covers M8 of the OWASP Mobile Top 10 for 2024.
+2025.2
+Server operation
+IPv6 support
+SonarQube Server now supports IPv6 addresses:
+For the ZIP installation: all editions.
+For the Docker installation: Developer edition and Enterprise edition.
+An additional configuration is required. For setup information, see
+Enabling IPv6
+in Zip installation
+Advanced setup
+or Docker installation
+Advanced setup
+.
+System info and server logs improved
+Data Center edition server logs available from the UI
+If you have a Data Center edition, you can now download the server logs for all nodes by using the
+Administration > System
+menu on any node.
+Java options in system info more accurate
+The system info now includes Java options information:
+For a Developer or Enterprise edition: for each process (Web, Compute Engine, or Search) instead of globally.
+For a Data Center edition: for each node instead of only for application nodes.
+AI features
+AI CodeFix
+Support of self-hosted LLMs on Azure OpenAI
+You can now choose your own Azure OpenAI LLM as the provider for AI CodeFix. See
+AI CodeFix
+.
+Expansion of rules coverage
+The AI CodeFix’s rule coverage has been extended across multiple programming languages, ultimately improving code quality and developer productivity with relative ease.
+The following rules have been updated to support AI CodeFix:
+C#
+: S3241
+C++
+: S125, S995, S5416, S5350, S1238, S1905, S3490, S3659, S1155, S3229, S959, S2259, S6229, S905, S3923, S1768, S1751
+JavaScript / TypeScript
+: S878, S1874, S125, S3358, S905, S1854, S1481, S6644
+Python
+: S112, S5754, S1186, S1940, S1854, S6660, S1515, S1110, S5795
+New SONAR_AI_CODEFIX_HIDDEN environment variable
+You can now use the SONAR_AI_CODEFIX_HIDDEN environment variable to disable AI CodeFix in SonarQube Server in addition to the sonar.ai.codefix.hidden property.
+Analyzers, scanners, languages
+New Design and Architecture feature
+Through its new Design & Architecture feature, SonarQube Server can now verify the architecture and design of Java source code by:
+Verifying the code structure against architecture and design patterns.
+Applying cycle detection to detect circular dependencies in your code.
+The verification process is as follows:
+You specify in a configuration file your architecture model including architectural constraints.
+SonarQube Server compares your code with your model based on architecture rules. It raises issues when it identifies divergences and when it detects circular dependencies.
+For more information, see the Design and Architecture
+Overview
+page.
+CFamily analysis
+New C++ rule
+The following C++ rule has been added:
+S7172: Named methods should be used to avoid confusion between testing an optional or an expected and testing the wrapped value
+New Misra C++ 2023 rules in Early Access
+New Misra C++ 2023 rules are supported from the Enterprise edition in Early Access.
+To enable the new rules in your SonarQube Server instance, go to
+Administration > General Settings > Early Access Features.
+Note: To disable the Early Access warning, see
+Customizing the analysis
+Go analysis
+Go 1.23 now supported
+SonarQube Server now supports the analysis of Go 1.23 code.
+New foundational Go security rules
+The following foundational Go security rules have been added:
+Vulnerability issues:
+S4423: Weak SSL/TLS protocols should not be used
+S3330: Creating cookies without the "HttpOnly" flag is security-sensitive
+S2092: Creating cookies without the "secure" flag is security-sensitive
+S4507: Delivering code in production with debug features activated is security-sensitive
+S2068: Hard-coded credentials are security-sensitive
+S2612: Setting loose POSIX file permissions is security-sensitive
+S1313: Using hardcoded IP addresses is security-sensitive
+S2245: Using pseudorandom number generators (PRNGs) is security-sensitive
+S4790: Using weak hashing algorithms is security-sensitive
+S6437: Credentials should not be hard-coded
+S5547: Cipher algorithms should be robust
+S3329: Cipher Block Chaining IVs should be unpredictable
+S5542: Encryption algorithms should be used with secure mode and padding scheme
+S5445: Insecure temporary file creation methods should not be used
+S5344: Passwords should not be stored in plaintext or with a fast hashing algorithm
+S4830: Server certificates should be verified during SSL/TLS connections
+S5527: Server hostnames should be verified during SSL/TLS connections
+S4426: Cryptographic keys should be robust
+S2053: Password hashing functions should use an unpredictable salt
+Security hotpots:
+S6418: Hard-coded secrets are security-sensitive
+S5443: Using publicly writable directories is security-sensitive
+S5332: Using clear-text protocols is security-sensitive
+S4036: Searching OS commands in PATH is security-sensitive
+S2077: Formatting SQL queries is security-sensitive
+Java analysis
+The following Spring Java rules have been added:
+S7177: Use appropriate @DirtiesContext modes
+S7178: Injecting data into static fields is not supported by Spring
+S7179: @Cacheable and @CachePut should not be combined
+S7180: "@Cache*" annotations should only be applied on concrete classes
+S7183: @InitBinder methods should have void return type
+S7184: "@Scheduled" annotation should only be applied to no-arg methods
+S7185: @eventlistener methods should have one parameter at most
+S7186: Methods returning "Page" or "Slice" must take "Pageable" as an input parameter
+S7190: Methods annotated with "@BeforeTransaction" or "@AfterTransaction" must respect the contract
+The following Spring Java rules have been improved:
+S6856: "@PathVariable" annotation should be present if a path variable is used
+This rule will now raise an issue if a method has a path template with a placeholder, but no corresponding
+@PathVariable
+, or vice-versa.
+S6809: Methods with Spring proxy should not be called via "this"
+This rule will now also check for methods annotated with Spring’s
+@Cacheable
+annotation.
+Kotlin analysis
+Over 80 rules have been rebuilt to support Kotlin 2.0 and the new K2 compiler. As a result, Kotlin analysis is now 50% faster than before this release. Kotlin developers can now not only use Sonar to analyze Kotlin 2.0 and newer, but it also performs better than before.
+.NET analysis
+Upload of test-related metrics at file level
+Projects based on .NET now show test-related metrics at the file level. The SonarScanner for .NET will calculate and pass to the server the per-file metrics of:
+Number of Unit Tests
+Errors in Unit Tests
+Failed Unit Tests
+Skipped Unit Tests
+Duration of Unit Tests
+The SonarScanner for .NET will only support the following test reports:
+NUnit
+XUnit
+Visual Studio
+.NET rules improved
+A secondary location message has been added to the .NET rules.
+PHP analysis
+The
+elsif
+keyword is now taken into account in the
+Cyclomatic complexity
+calculation.
+Python analysis
+The following rules are now available to allow you to check performance, maintainability and correctness in your PySpark code in Python and Jupyter Notebook files with SonarQube Server:
+S7181: PySpark Window functions should always specify a frame
+S7182: The "subset" argument should be provided when using PySpark DataFrame "dropDuplicates" method
+S7187: PySpark Pandas DataFrame columns should not use a reserved name
+S7189: PySpark DataFrames used multiple times should be cached or persisted
+S7191: PySpark
+withColumns
+should be preferred over
+withColumn
+when multiple columns are specified
+S7192: The "how" parameter should be specified when joining two PySpark DataFrames
+S7195: PySpark lit(None) should be used when populating empty columns
+S7196: Complex logic provided to PySpark "withColumn", "filter" and "when" methods should be refactored into separate expressions
+README for local project installation improved
+Information about building locally has been added to the README.
+New rules to cover OWASP Mobile Top 10
+By now providing at least one rule for each of the OWASP Mobile Top 10 categories, with the exception of M4: Insufficient Input/Output Validation, Sonar offers a solution that enables Android developers to assess their applications against the OWASP Mobile Top 10, ensuring they meet industry standards for security.
+Issue retrieval and fixing
+Issue filters now more compact
+The vertical padding of the issue filter conditions has been reduced.
+Web API
+Deprecated POST and PATCH parameters now logged into the deprecated log file
+Whenever a V2 deprecated POST or PATCH parameter is used, a deprecation message is logged into the deprecated log file indicating what is or will be deprecated and from when. See
+Monitoring API deprecation
+for more information.
+2025.1
+Server operation
+Java 21 supported for running SonarQube Server
+SonarQube Server can now run in a Java 21 environment.
+DevOps platform integration
+Improvement to BitBucket server onboarding
+To improve the import of BitBucket repositories, you can now browse and easily import all the projects from the onboarding page, without any limitation of number.
+AI features
+Automatic detection of AI-generated code from GitHub Copilot
+Knowing if your project contains AI-generated code helps raise awareness of code ownership and code security. To help build this awareness, SonarQube Server can autodetect AI-generated code in projects on GitHub using GitHub Copilot. You can then protect these projects using the
+AI Code Assurance
+features. See the
+Autodetect AI code
+page for more information.
+Analyzers, scanners, languages
+Faster analysis bootstrap
+To improve analysis efficiency, we’ve shortened the time it takes to load the active rules in your quality profile.
+PHP analysis
+PHP analysis now supports asymmetric property visibility (PHP 8.4).
+T-SQL analysis
+T-SQL analysis supports the STIG security standard and more language constructs.
+VB analysis
+VB analysis has 2 new rules.
+Update notes
+This section contains notes about breaking changes and important updates to be aware of before updating. If you’re updating from the previous LTA, see
+LTA to LTA release notes
+.
+2025.6
+None in this release.
+2025.5
+Setting up the Sandbox feature
+The Sandbox feature is available with this version (see
+2025.5
+in
+New and enhanced features
+above). To make sure the feature is enabled before the analysis of any of your projects is done, you can set system properties before you restart your SonarQube Server after the update. The setup depends on your installation type.
+For more information about the mentioned system properties, see
+Sandbox
+.
+ZIP file installation
+In Step 3 of the update procedure (see
+Updating a ZIP file instance
+), add the Sandbox properties to
+sonar.properties
+as illustrated below. Adapt the property values to your needs.
+Docker image installation
+In Step 2 of the update procedure (see
+Updating a Docker image instance
+), add the Sandbox environment variables to the docker run command as illustrated below. Adapt the environment variable values to your needs.
+Kubernetes installation
+In step 1 of the standard update procedure (see
+Standard procedure
+), add the Sandbox system properties either as sonar properties (see
+ZIP installation
+above) or environment variables (see
+Docker image installation
+above) to your
+values.yaml
+. For information about the adding of system properties in a Kubernetes installation, see
+In a Kubernetes installation
+.
+Upgrade to Microsoft SQL JDBC Auth 13.2.1 package
+To use integrated security in Microsoft SQL database, upgrade to Microsoft SQL JDBC Auth 13.2.1 package. See
+Using integrated security
+for details.
+2025.4
+The 2025.4 release will remain officially active for 18 months from the release date. Sonar offers extended commercial support for version 2025.4 during this active period. See
+Release cycle model
+for more details on active versions.
+Dependency analysis
+Running certain commands for SCA dependency resolution as an admin was disabled. You can pass
+sonar.sca.resolveAsRoot=true
+to the scanner to re-enable it. For more details on this parameter, see the table in
+Customizing the dependency analysis
+.
+Previous releases
+2025.3
+AI CodeFix
+AI CodeFix is no longer available in the Developer edition and is still available in the
+Enterprise and Data Center
+editions. As an instance administrator, you can enable AI-generated fix suggestions in the administration section. See
+Enabling AI-generated fix suggestions
+for more details.
+Security rules for Go in IDEs
+To use Go security rules in your VSCode or IntelliJ IDEs, you will need to upgrade to the latest version of SonarQube for IDE. Available in the
+Enterprise
+edition and above.
+2025.2
+None in this release.
+2025.1
+Update in PostgreSQL support
+PostgreSQL version 11 and 12 are no longer supported. Supported versions are now from 13 to 17.
+SAML configuration update required
+When configuring SAML on your SonarQube Server instance with assertion encryption, the response signature must be enforced. You might need to update your SAML configuration:
+If you use SAML with Microsoft Entra, make sure you sign the response by selecting
+Sign SAML response
+or
+Sign SAML response and assertion
+as the sign-in response. See
+Step 2 > If you use encryption, enforce response signature
+in
+Setup of security features
+.
+If you use SAML with PingID, make sure you sign the response by selecting
+Sign Response
+or
+Sign Assertion & Response
+as the sign-in response. See
+Step 2 > To enable the encryption of SAML assertions
+in
+Setup of security features
+.
+In addition, the assertion decryption now requires that you also store the public key certificate in SonarQube Server (not only the private key). Make sure the certificate is stored in SonarQube as follows:
+In SonarQube Server, go to
+Administration > Configuration > General Settings > Authentication > SAML
+.
+In
+SAML Configuration > SAML
+, select
+Edit
+. The
+Edit SAML configuration
+dialog opens.
+In
+Service provider certificate
+, enter the certificate.
+Server base URL setup now mandatory for SAML authentication
+Your SAML authentication setup will not work if the SonarQube Server base URL is not set in SonarQube Server. See
+Server base URL
+.
+If migrating from 10.7: AI Code Assurance lost on projects
+In SonarQube Server 10.7, the
+Sonar way
+quality gate was enforced on projects marked as containing AI Code. If you’re migrating from this version, these projects will loose AI Code Assurance. To resolve this, you must apply a quality gate qualified for AI Code Assurance to these projects. To do so, you can use the
+Sonar way for AI Code
+quality gate or a custom quality gate you have qualified for AI Code Assurance. See
+AI Code Assurance
+.
+Deprecations and removals
+This section contains information on the deprecation and removal of SonarQube Server features and API endpoints. See the
+Deprecation policy
+for more information.
+2025.6
+Design and Architecture features are deprecated
+The cycle detection and architecture as code are deprecated, pending removal in January 2026. They will be replaced by improved architecture capabilities. See
+Design and Architecture
+for more information.
+Deprecation of Java 17 as a scanner runtime
+Java 17 is deprecated as a supported scanner runtime environment and its support ends with SonarQube 2026.3 (July 2026). There is no impact for this change if you use JRE auto-provisioning, enabled by default on scanners that support it, because it keeps Java version requirements always up to date. If you disabled JRE auto-provisioning or your scanner does not support it, you need to update to Java 21 or newer. See:
+Java runtime environment (JRE)
+requirements for all SonarScanners.
+Community post
+for more information about the deprecation.
+Managing JRE auto-provisioning
+for additional information.
+2025.5
+Java 17 for SonarQube Server instance
+Java 17 for running SonarQube Server instances is deprecated and will be dropped soon. Java 21 should be used.
+2025.4
+None in this release.
+Previous releases
+2025.3
+Secrets
+The
+inputString
+field for heuristic and statistical post filters has been discontinued. Previously, this field was used to apply post filters to the named capturing group specified within it. The functionality has been extended to allow applying post filters directly to named capturing groups. See
+Secrets
+for more details.
+Mercurial SCM is not supported
+The Community plugin for Mercurial SCM is no longer compatible with SonarQube Server.
+Sonar Plugin API
+The following deprecated classes have been removed:
+MutableModuleSettings
+and
+MutableProjectSettings
+.
+2025.2
+Removed ProfileExporter and ProfileImporter extension points
+Removed two extension points in the plugin-api
+ProfileExporter
+and
+ProfileImporter
+. The following APIs have been deprecated:
+GET /api/qualityprofiles/export
+API endpoint. You can now use
+GET /api/qualityprofiles/backup
+instead.
+GET /api/qualityprofiles/exporters
+GET /api/qualityprofiles/importers
+See
+Web API
+for more information.
+2025.1
+Property encryption on scanner side deprecated
+Property encryption on the scanner side is now deprecated.
+sonar.password property removed
+The
+sonar.password
+scanner property that was deprecated in SonarQube Server 9.8 has now been removed.
+BCrypt password hashing method removed
+The BCrypt hash method used for passwords was deprecated in SonarQube Server 8.9. It has now been removed. As a result, the passwords of users who have not logged in since SonarQube 8.9 are deactivated and an admin must reset them if these users need to log in again.
+Some complexity metrics removed
+The following complexity metrics, which were deprecated in SonarQube Server 6.7, have now been removed:
+file_complexity
+complexity_in_classes
+class_complexity
+complexity_in_functions
+function_complexity
+function_complexity_distribution
+file_complexity_distribution
+Full release notes
+Links to the full release notes in Jira:
+2025.6.1
+2025.6
+2025.5
+2025.4.11
+2025.4.10
+2025.4.9
+2025.4.8
+2025.4.7
+2025.4.6
+2025.4.5
+2025.4.4
+2025.4.3
+2025.4.2
+2025.4.1
+2025.4
+2025.3.1
+2025.3
+2025.2
+2025.1.8
+2025.1.7
+2025.1.6
+2025.1.5
+2025.1.4
+2025.1.3
+2025.1.2
+2025.1.1
+2025.1
+Previous
+Updating
+Next
+Product release lifecycle
+Last updated
+2 days ago
+Was this helpful?

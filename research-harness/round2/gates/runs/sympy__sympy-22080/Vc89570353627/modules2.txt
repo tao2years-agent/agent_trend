@@ -1,0 +1,14 @@
+.......................F...........................ssssssssss........... [ 63%]
+.....................................sss.                                [100%]
+================================== FAILURES ===================================
+_____________________________ test_empty_modules ______________________________
+sympy\utilities\tests\test_lambdify.py:274: in test_empty_modules
+    assert no_modules(3, 7) == empty_modules(3, 7)
+E   assert -3 == 4
+E    +  where -3 = <function _lambdifygenerated at 0x000001B31D1CF380>(3, 7)
+E    +  and   4 = <function _lambdifygenerated at 0x000001B31D1CF560>(3, 7)
+- generated xml file: F:\dongcha\research-harness\round2\gates\runs\sympy__sympy-22080\Vc89570353627\modules2.xml -
+                               DO *NOT* COMMIT!                               
+=========================== short test summary info ===========================
+FAILED sympy/utilities/tests/test_lambdify.py::test_empty_modules - assert -3...
+1 failed, 99 passed, 13 skipped, 3 warnings in 2.95s

@@ -1,0 +1,830 @@
+        Rechecking Recheck Requests in Continuous
+       Integration: An Empirical Study of OpenStack
+                          Yelizaveta Brus∗ , Rungroj Maipradit∗§ , Earl T. Barr‡ , Shane McIntosh∗
+        ∗ Software REBELs, University of Waterloo, Canada; ‡ University College London, UK; § Corresponding author
+
+     E-mail: ∗ {ybrus, rungroj.maipradit, shane.mcintosh}@uwaterloo.ca; ‡ e.barr@ucl.ac.uk
+
+
+   Abstract—Continuous Integration (CI) is a process for automat-    Issuing a recheck request may not resolve the problem.
+ically checking patch sets for errors. CI periodically fails due to
+                                                                  Indeed, 20 of 24 OpenStack contributors surveyed by Maipradit
+non-deterministic (a.k.a., “flaky”) behaviour. Since a patch set may
+                                                                  et al. [11] reported that they still debug manually after filing
+not be the cause of a flaky failure, developers can issue a “recheck”
+command to request retesting a patch set. Developers waste time   recheck requests. When the root cause is flakiness, this follow-
+considering whether or not to issue a recheck after a CI failure. up debugging effort can further waste developer time.
+Prior work also shows that rechecks are issued liberally, wasting    To counteract the waste of developer time, rechecks may be
+up to 187.4 compute years when CI continues to fail. To save      requested without thoroughly scrutinizing CI failures; however,
+developer time and avoid wasteful rechecks, we fit and analyze    this can generate a substantial waste of compute resources.
+statistical models that discriminate between successful and failing
+rechecks, i.e., those rechecks that will change a failing CI run  For example, Maipradit et al. [11] estimated 187.4 years of
+into a successful one and those that will fail again. Through an  compute time were wasted by injudicious recheck requests.
+empirical study of 314,947 recheck requests from OpenStack, we    Durieux et al. [10] further note that 54.42% of restarts occur
+find that our model can differentiate successful and failed rechecks
+                                                                  within an hour, suggesting that many retries may be requested
+well, outperforming baseline approaches by 23.6 percentage points before failures have been fully diagnosed.
+in terms of AUROC (0.736).
+                                                                     In this paper, we characterize recheck outcomes by fitting and
+   Analysis of our model suggests that, in terms of explanatory
+power, past behaviour of jobs, bots, and users dominate static    analyzing statistical models. Our study uncovers patterns that
+characteristics of patch sets. Applying our model to automaticallydrive recheck outcomes, offering insights to support decision-
+request rechecks for those predicted to succeed would have saved  making and highlighting factors to prioritize during recheck
+roughly 247 years of elapsed developer time for OpenStack.        requests. For our analysis, we examine historical CI data to
+Applying our model to skip recheck requests when they are
+                                                                  identify patterns that differentiate successful rechecks from
+predicted to fail would avoid 86.49% of wasted rechecks, saving
+roughly 262 years of compute time.                                failed ones, focusing on the behaviour of bots that react to
+                                                                  development events by performing CI, jobs that represent
+                       I. I NTRODUCTION                           concrete tasks (like executing a test or running an analysis
+                                                                  tool) that a bot performs, and users, who initiate CI requests.
+   Continuous Integration (CI) [1] systems automatically exe- We conduct an empirical study of 314,947 recheck requests
+cute routine checks (e.g., compilation, testing) when develop- from the OpenStack community. We structure our study by
+ers submit change sets for integration. CI systems provide addressing the following two Research Questions (RQs):
+developers with early feedback on code changes, helping RQ1. How effectively can our model differentiate successful
+to identify mistakes before changes are merged into the                   and failed rechecks?
+main codebase. Prior work has associated CI adoption with                 Our model achieves an Area Under the Receiver Opera-
+accelerated development [2], improved code quality [3], and               tor Characteristic (AUROC) curve of 0.736, surpassing
+the adoption of best practices for automated testing [4].                 the baseline of random guessing by 23.6 percentage
+   Despite their benefits, CI systems are imperfect, periodically         points, demonstrating its strong discriminatory power.
+generating an unreliable pass/fail signal [5]. CI runs fail due           The model also achieves a Brier score of 0.191, indicat-
+to infrastructure failures [6], service outages [5], or non-              ing that its risk estimates are well-calibrated compared
+deterministic (a.k.a., “flaky”) build behaviour [7]–[9]. When a           to a random guessing model, outperforming the baseline
+CI run fails, reports are sent to developers who may attempt              by 5.9 percentage points. In terms of the precision-recall
+to diagnose and fix the issue.                                            tradeoff, the model achieves an Area Under the Precision
+   Developers waste time debugging flaky CI results, especially           Recall Curve (AUPRC) of 0.604, outperforming a
+when they attempt to diagnose and fix correct code. When                  random guessing baseline by 25.5 percentage points.
+their diagnosis suggests that a failure is unrelated to the code,         The optimism penalties for performance metrics are
+developers may request the re-execution of a CI run without               all near zero, indicating that the model is stable and
+modifying the patch set. Durieux et al. [10] found that 27,006            unlikely to be overfitted. Our model correctly identifies
+of 583,415 Travis CI failures were restarted, while Maipradit             177,399 out of 205,122 recheck failures, which if they
+et al. [11] found that 55% of OpenStack code reviews included             were skipped, would avoid 86.49% of all failed rechecks
+at least one recheck request.                                             and save a substantial amount of build resources.
+RQ2. What are the most important characteristics of builds developers. In addition to the message content itself, each
+        that should be repeated?                                     comment submitted to a code review platform like Gerrit
+        Feature families that characterize bot history, job history, includes metadata, describing when the comment was recorded
+        patch information, user history, and timing of a recheck and who submitted the comment.
+        request all contribute at least one feature that contributes    Once a patch set is submitted, it is common practice for bots
+        a significant amount of explanatory power to the model. to initiate a build, i.e., a series of routine steps that may compile,
+        The job history and bot history families contribute link, assemble, and test code to ensure that the new changes
+        the largest amount of the explanatory power, alone do not introduce regression. This process is managed by CI
+        accounting for 60.19%. More specifically, the job bots, which may interact with external systems like Jenkins and
+        success ratio and bot success ratio features account Zuul, or may implement custom logic specified by developers.
+        for 50% of the explanatory power, highlighting that Each bot may perform one or more jobs, each representing a
+        past behaviour dominates when determining whether a concrete task (e.g., executing a suite of unit or integration tests,
+        recheck will pass. This underscores the importance of running static code analysis, or performing security checks).
+        focusing on improving misbehaving jobs and bots to Each job produces an outcome, which describes the result of
+        reduce unnecessary rechecks and optimize resource use. running a job as either successful or failed. The outcome of a
+   Inspired by the impact of past behaviour on recheck CI bot is successful only if all of its jobs are successful (failed
+outcomes, we explore whether recent data trends are being otherwise). Similarly, the outcome of a build is successful if
+overshadowed by the long history of past data. We analyze how all of its voting CI bots are successful (failed otherwise). If
+sensitive past behaviour features are to the window size, i.e., the build of a patch set is successful, it is considered validated,
+the time period considered when calculating these features. We and presuming reviewers are also satisfied, the patch set can
+experiment with window sizes of one day up to one year, and be queued for integration.
+find that model fitness remains stable, with AUROC varying              Build failures can occur due to issues unrelated to the
+only 0.59%. Brier scores improve slightly with larger windows, code, such as flaky tests that produce inconsistent results,
+while AUPRC decreases, suggesting better precision-recall or environmental issues, such as network outages. In these
+trade-offs for smaller windows. The optimism values remain situations, a user can recheck the build by issuing a “recheck”
+near zero, indicating low optimism bias. Feature importance request, which repeats the build for the same patch set. In this
+for key features like job success ratio and bot success ratio study, we focus on rechecks of build failures, as developers
+remains consistent. The insensitivity of both model fitness and who recheck successful builds are likely doing so intentionally,
+feature importance suggests that both recent and longer-term prioritizing other factors over concerns about waste or flakiness.
+data are suitable for generating actionable recommendations.            Rechecking a build failure can have two possible outcomes. A
+   Our findings may dishearten individual contributors, since “failing” recheck is one where the build fails again. Conversely,
+they are powerless to change the characteristics of their patch a “successful” recheck is one where the build eventually
+that influence the likelihood of a recheck to pass. Instead of succeeds. A “failing” recheck does not provide new information
+integrating model feedback at the patch set level, we advocate to the developer but consumes additional CI resources. We
+using its findings to guide collective action, such as focusing consider such rechecks wasteful and recommend skipping them
+process improvement efforts on bots, jobs, and users that to save resources and improve efficiency.
+misbehave. Misbehaving bots can be throttled to limit their
+access to resources (e.g., by reducing their execution frequency),                              III. S TUDY D ESIGN
+misbehaving jobs can have their voting power revoked (e.g., by          In this section, we provide our reasons for studying the
+lowering their status from mandatory to optional), and users OpenStack community, and describe our procedures for curating
+who recheck efficiently should be rewarded (e.g., by offering the dataset (DC), fitting the model (MF), and performing model
+recheck efficiency badges on social coding platforms).               analysis (MA). Figure 1 shows an overview of our study design.
+   Our key finding is that classifiers like ours can optimize Below, we describe each procedure.
+rechecks. Applying our model to automatically request rechecks
+for those predicted to succeed would have saved roughly 247 OpenStack Community
+years of elapsed developer time for OpenStack. Applying our             We select the OpenStack community for our study because it
+model to skip recheck requests when they are predicted to fail supports recheck functionality, and provides detailed guidelines
+would avoid 86.49% of wasted rechecks, saving roughly 262 about its use.1 Unlike other projects, OpenStack emphasizes the
+years of compute time.                                               responsible use of the “recheck” command with its guidelines,
+                                                                     emphasizing that “CI test resources are very scarce (and
+                 II. C ORE R ECHECK C ONCEPTS
+                                                                     becoming more so), so please be extremely sparing when
+   The CI process starts when a developer submits to a change asking the system to re-run tests”. In contrast, even though
+set, i.e., a collection that includes all proposed changes to Travis CI also offers the same functionality using the “restart”
+the codebase of a project. A change set may contain several button, it does not provide such advice about minimizing use
+patch sets, i.e., atomic code changes. Each patch set may
+elicit general discussion or inline review comments from other           1 https://docs.openstack.org/project-team-guide/testing.html
+            (DC) Data Curation
+
+                                                                                                                             Recheck builds
+                                                                                                                                           before after
+                  DC-1                            DC-2                                 DC-3                  DC-4          key      ...
+                                                                                                                                          recheck recheck        DC-5              Recheck Builds                 DC-6
+                                                                                                                                                                                             before after
+                                                                                                                        (14151, 7) ... failure     failure                       key      ...
+                Collect                      Label Authors         Change                        Recheck    Identify                                             Select                     recheck recheck
+   Gerrit                         Change                                           Identify                                                                                                                     Construct
+                Change                         as Bot or          Sets with                       Builds   Recheck      (15104, 10) ... success success
+                                                                                                                                                             Rechecks for     (14151, 7) ... failure failure
+                                  Sets DB                                         Rechecks                                                                                                                      Features
+                 Sets                            User            Bot label DB                              Outcomes     (21946, 20) ... failure success      Prior Failures   (21946, 20) ... failure success
+                                                                                                                        (21946, 25) ... success failure
+
+
+
+
+                                                                                                                                                                                       (MA) Model Analysis
+
+
+                                                                                                                                                                                                   MA-1
+                                            (MF) Model Fitting
+                                                                                                                                                                                             Estimate
+                                                     MF-1                       MF-2            MF-3          MF-4                        MF-5                                                Model
+                          # F1 F2 ... F16                                                                                                                                                   Performance
+                          1
+                                                   Perform                   Perform           Estimate      Allocate
+                          2                                                                                                      Fit Regression
+                                                  Collinearity             Redundancy         Budget for    Degrees
+                         ...                                                                                                                                                                       MA-2
+                                                                                              Degrees of                              Model
+                         N                         Analysis                 Analysis                       of Freedom                                              Model
+                                                                                               Freedom
+                                                                                                                                                                                                Interpret the
+                                                                                                                                                                                                   Model
+
+
+
+
+            Fig. 1: An overview of our Data Curation (DC), Model Fitting (MF), and Model Analysis (MA) procedures.
+
+
+of rechecks (likely because the financial incentives are reversed, change sets that were merged into the “master” branch of
+i.e., the service provider benefits from the use of CI resources). each project. We also collect metadata describing the owner,
+    Even in the stringent OpenStack environment, Maipradit reviewers, patch, and repository name. The previous version of
+et al. [11] found that ill-advised rechecks produced up to our dataset [11] included 66,932 change sets from four selected
+187.4 compute years of waste. It would be reasonable to projects. The version of the dataset that we now study contains
+expect similar if not worse rates of waste being produced 665,137 change sets, 2,254,332 patch sets (i.e., revisions of
+in CI services without guidelines. As recheck data is used for change sets), and 15,112,495 comments that span 2,285 projects.
+model fitting, collecting high-quality data is essential. A model We study the historical activity that was recorded between May
+trained using an overabundance of wasteful rechecks would 1, 2014 and April 30, 2024.
+likely capture basic patterns that are already covered by the (DC-2) Label Authors as Bot or User. To check whether
+community guidelines of more stringent communities.                  the author is a bot or a user, we detect authors that have bot
+    It is for these reasons that we choose to focus our study characteristics. Among those authors, we manually evaluate
+on the OpenStack community. OpenStack is an open-source their comments. We consider authors as potential bots if:
+software project for cloud computing infrastructure, ranking            • Any of the four fields related to author information (i.e.,
+among the top three most active open-source projects globally.2           “name”, “email”, “username”, or “display name”) contain
+As an open-source project, OpenStack provides data that is                either the “ci” or “bot” keywords, e.g., IBM Storage CI,
+openly accessible. Its large community ensures that we can                OpenStack Proposal Bot.
+collect sufficient data for our analysis.                               • The email field is empty, e.g., Jenkins, Zuul.
+
+(DC) Data Curation                                                      As a result, we narrowed the list for manual verification
+                                                                     to 7.29% (1,082) of all authors (14,838). During manual
+    In this stage, we collect change sets from projects that are verification, the first author inspects the comments of each bot
+developed by the OpenStack community (DC-1). Then, we candidate, classifying them as a user if they contain human text
+categorize authors as bots or users (DC-2) to identify recheck (i.e., include information that is not related to a build outcome)
+builds (DC-3) and extract recheck outcomes (DC-4). Finally, we such as code review comments. Otherwise, we classify them
+filter the data to focus on rechecks initiated after a failing build as a bot. The outcome of the assessment of the first author can
+(DC-5) and compute features that we suspect may correlate also be uncertain, in which case, the second author inspects
+with the likelihood of a recheck build passing (DC-6). We the result. In total, we detect 328 (2.21%) bot accounts and
+describe each step below. We also make our dataset and the 14,510 (97.79%) user accounts.
+replication package available online.3                               (DC-3) Identify Rechecks. To identify rechecks, we search
+(DC-1) Collect Change Sets. Our prior work [11] studied re- for user-initiated comments that contain the term “recheck”.
+peated builds in the OpenStack community. Following a similar This query produces a set of 487,131 comments. We consider
+procedure [11], we collect change sets and user information the comment to be issuing a recheck request if it receives
+from projects developed by the OpenStack community using a response from a bot. We find that 412,518 of the 487,131
+the RESTful API of the Gerrit code review tool.4 To avoid comments issue recheck requests.
+analyzing unfinished or abandoned work, we select the closed (DC-4) Identify Recheck Outcomes. To identify the status of
+     2 https://www.openstack.org/                                    a recheck request, we analyze the bot-initiated comments that
+     3 https://doi.org/10.5281/zenodo.13755309                       appear following the recheck comment in the same patch set.
+     4 https://www.gerritcodereview.com/                             The outcome of a recheck request is considered successful only
+          TABLE I: Definitions for and rationale of the selected features that we use to model the likelihood of recheck success.
+ Family Feature            Description                                                                       Rationale
+         bot success ratio The ratio of successful bot outcomes to the total number of bot calls. For We hypothesize that a higher ratio in-
+                           multiple CI bots in one build, we take the minimum.                               creases the likelihood of bot success.
+          flip ratio       The ratio of flips from failure to success to the total flips (failure to success We assume a higher ratio increases the
+                           and failure to failure). For multiple CI bots in one build, we take the minimum. likelihood of the bot flipping to success.
+ Bot history
+
+
+
+
+          difference from The difference between the average number of rechecks leading to success and If the current number of rechecks is
+        average rechecks the current number. For multiple CI bots in one build, we take the maximum. higher than average, it is more likely to
+        to success                                                                                           succeed.
+          difference from The difference between the average number of rechecks leading to failure and If the current number of rechecks is
+        average rechecks the current number. For multiple CI bots in one build, we take the minimum. higher than average, it is less likely to
+        to failure                                                                                           succeed.
+         job success ratio The ratio of successful job outcomes to the total number of job calls. For We hypothesize that a higher ratio in-
+ history
+
+
+
+
+                           multiple jobs in one build, we take the minimum.                                  creases the likelihood of current job
+ Job
+
+
+
+
+                                                                                                             success.
+                 insertions        The total number of inserted lines of code.                                     The size of the change corresponding
+ Patch info
+
+
+
+
+                 deletions         The total number of deleted lines of code.                                      to the build may have some relation to
+                 file numbers      The number of unique files touched.                                             the outcome of the build [12], [13].
+                 files success ra- The ratio of successful build outcomes for the file to all builds including the We assume a higher ratio increases the
+               tio                 file. For multiple files, we take the minimum.                                  likelihood of the current build contain-
+                                                                                                                   ing the file to succeed.
+                 recheck month The month when the recheck was issued.                                              Recheck requests made at specific
+ When
+
+
+
+
+                 recheck day       The day of the week when the recheck was issued.                                times may have a higher or lower
+                 recheck hour      The hour when the recheck was issued.                                           likelihood of resulting in success [14].
+                 recheck minute The minute when the recheck was issued.
+                 user success ra- The ratio of successful outputs after the user called for a build recheck to the We hypothesize that a higher ratio in-
+               tio                 total number of rechecks called by the user.                                    creases the likelihood of success.
+                 user status       The position of the user within the team (owner, reviewer, or none).            We assume that a higher status raises
+ User
+
+
+
+
+                                                                                                                   the chance of successful rechecks [15].
+                 experience        The number of messages produced by the user, including discussions, code We assume that experienced users have
+                                   reviews, comments, etc.                                                         a higher chance of a successful build.
+
+
+
+if the results of all re-invoked bots are successful; otherwise,                 family we use UTC timestamps. We compute the feature values
+it is considered failed.                                                         using the database of change sets.
+   We use a regular expression to identify the bot result. If the                   We normalize features belonging to the “patch info” family,
+bot result is not available, we summarize the outcome of its                     including “insertions”, “deletions”, and “file numbers”, as
+job results using regular expressions. Note that jobs may be                     well as “experience” features from the “user” family. This
+non-voting. The outcomes of non-voting jobs do not affect the                    normalization is performed using the L2 norm, also known
+outcome of a bot. Hence, we exclude non-voting jobs when                         as the Euclidean norm [16]. It is particularly suitable for our
+determining bot outcomes, only indicating that a bot has failed                  context because it penalizes large values more heavily, reducing
+if at least one of its voting jobs fails.                                        the influence of outliers and ensuring that features with larger
+(DC-5) Select Rechecks for Prior Failures. We select recheck                     numeric ranges do not disproportionately affect the analysis.
+requests issued after failed builds, resulting in a total of 353,700
+rechecks out of 412,518 rechecks. This final dataset includes                     (MF) Model Fitting
+238,293 (67.37%) failed rechecks and 115,407 (32.63%)                               Before fitting the model, we aim to ensure that the dataset is
+successful rechecks.                                                             robust and that we have mitigated issues that could weaken the
+(DC-6) Construct Features. Our features are inspired by                          predictive models. To do so, we perform collinearity analysis
+previous studies [14] of build outcome and defect prediction.                    (MF-1), redundancy analysis (MF-2), and estimate a budget
+As a result, we formulate 16 features, which are explained in                    for degrees of freedom (MF-3). After addressing these issues,
+detail in Table I along with their feature families.5 The features               we appropriately allocate degrees of freedom (MF-4) and fit
+are grouped into different families based on their characteristics.              the model to the data (MF-5). The steps are described below.
+These families include bot history, job history, patch content                   (MF-1) Perform Collinearity Analysis. Collinear features can
+and metadata, the timing of recheck requests, and features that                  distort each other’s importance, and interfere with each other
+characterize the user who requested the recheck. For the “when”                  when fitting the model [15], [17]. To address this, we apply
+                                                                                 Spearman’s rank correlation (ρ) [18] due to its ability to detect
+    5We only consider the flip ratio for bots because 15.42% (54,534) of the     nonlinear correlation compared to other types of correlation
+values for the flip ratio of jobs cannot be computed due to division by zero.    measures (e.g., Pearson). Similar to previous studies, we set
+the threshold as ρ = 0.7 [14], [19]–[21], i.e., for any pair of     analyze in this paper because we prioritize interpretability and
+features with ρ > 0.7, we select only one feature to include in     explainability. Indeed, our primary aim is to derive insights from
+our model fit.                                                      features and their influence. Moreover, our online appendix
+    The hierarchical overview of the correlations among the         includes a comparison with four traditional machine learning
+features is shown in Figure MF1.1 in our online appendix.3          classifiers, suggesting that they achieve similar fitness scores.3
+From the pairs with ρ > 0.7, we select “lines inserted” and            We fit our regression model by selecting the relevant
+“bot success ratio”, therefore “number of unique files touched”     explanatory features and strategically allocating the degrees
+and “bot flip success ratio” are removed.                           of freedom. We then fit the model to our data using restricted
+(MF-2) Perform Redundancy Analysis. While initial correla-          cubic splines [24] for the features with additional degrees
+tion analysis helps to identify and remove directly correlated      of freedom. Restricted cubic splines are used to fit relations
+features, redundancy analysis is still necessary to capture and     between variables that are non-linear in nature. They relax the
+address more complex multicollinear relationships among the         linearity assumption between features and outcome, allowing
+remaining features. Multicollinearity arises when a feature can     for the relation to evolve in complex ways spanning the range
+be accurately predicted by other features, leading to redundancy    of variable values. Restricted cubic splines retain straight tails,
+and adding noise to model interpretation. To address this, we       which tends to improve fitness at lower and upper extremes
+conduct a redundancy analysis on the remaining 14 features.         where a purely cubic curve would tend to curl away from
+The analysis fits a set of 14 models where each explains one        observed values.
+feature using the 13 other features. A feature is considered
+redundant if the model fit to explain its values exceeds an R2      (MA) Model Analysis
+of 0.9 as recommended by Hanley et al. [22]. In our analysis,          In this stage, we analyze the model performance (MA-1)
+none of the 14 features exceed the threshold.                       and interpret the model (MA-2). We describe each step below.
+(MF-3) Estimate Budget for Degrees of Freedom. To                   (MA-1) Estimate Model Performance. We assess the per-
+capture non-monotonic or nonlinear associations, we allocate        formance of our logistic regression model according to its
+additional degrees of freedom to features [23]. A feature with      discriminatory power, the reliability of its risk predictions, and
+a single Degree of Freedom (DoF) can only represent linear          its capacity to balance the precision-recall trade-off.
+monotonic relationships with the likelihood of a successful            We measure discriminatory power, i.e., the capacity of
+recheck. Allocating additional degrees of freedom allows the        the model to distinguish between different classes using
+model to account for more complex relationships between             the Area Under the Receiver Operating Characteristic Curve
+features and the build outcome; however, allocating too many        (AUROC). An AUROC of 0.5 would be achieved by a random
+degrees of freedom can lead to overfitting, where the model         guessing model, whereas an AUROC of 1.0 indicates perfect
+becomes overly specific to the training data [24].                  discrimination, and an AUROC of 0 indicates the worst
+    To balance the trade-off between model complexity and the       discrimination, therefore the higher the AUROC the better [22].
+risk of overfitting, a DoF budget can be established [25], [26].       To evaluate precision and recall, we use the Area Under the
+The purpose of a DoF budget is to limit the total number            Precision-Recall Curve (AUPRC). The AUPRC is particularly
+of degrees of freedom that can be safely spent during model         useful for imbalanced datasets, as it focuses on correctly
+fitting. For logistic regression models, one approach to estimate   identifying positive cases [27]. The AUPRC is between 0
+the DoF budget is by considering the number of records in           and 1, with higher values indicating better performance. We
+the minority class. For logistic regression models, this budget     compare our AUPRC to a baseline determined by the positive
+can be estimated using a common rule of thumb [25], given           class prevalence. The baseline is calculated using Equation (2):
+in Equation (1), which allocates 15 samples per degree of                                                    tp
+freedom to mitigate overfitting:                                                       AUPRCbaseline =                             (2)
+                                                                                                          tp + tn
+                                      n
+                        budgetDoF =                          (1)  where tp and tn are the numbers of true positives and
+                                      15                          negatives, respectively [27]. For a balanced class distribution,
+where n is the number of records in the minority class [25]. AUPRCbaseline = 0.5.
+(MF-4) Allocate Degrees of Freedom. The relationship                To evaluate the reliability of the predicted probabilities
+between features and the likelihood of a successful recheck of the model, we use the Brier score, which measures the
+based on Spearman’s multiple ρ2 is shown in Figure MF4.1 mean squared difference between the predicted probabilities
+in our online appendix.3 We select features that have higher and the actual outcomes. A lower Brier score indicates better
+ρ2 values than others when allocating additional degrees of calibration, meaning the predicted probabilities closely match
+freedom. In our case, we conservatively assign three degrees the observed outcomes. A Brier score of 1 indicates the worst
+of freedom to the six features with the highest ρ2 values (i.e., calibration, whereas 0 indicates the perfect calibration—the
+“user success ratio’, “build success ratio”, “job success ratio”, lower Brier score the better.
+“file success ratio”, “diff avg success” and “diff avg failure”). (MA-2) Interpret the Model. Similar to our prior work [14],
+(MF-5) Fit Regression Model. We use traditional statistical [15], to interpret the models that we fit, we study its features
+analysis rather than machine learning to fit the models that we using Wald χ2 maximum likelihood tests (a.k.a., “chunk”), and
+plot the response curve of each feature with respect to the                   TABLE II: Performance metrics for traditional ML models.
+likelihood of a recheck being successful.                                            ML models           AUROC     Brier Score  AUPRC
+   Wald χ2 maximum likelihood tests help us to understand the
+                                                                                     Statistical model      0.736        0.191    0.604
+overall contribution of a feature by comparing the performance                       Logistic regression    0.733        0.192    0.572
+                                                                   2
+of the model with and without it. A higher Wald χ value                              Random Forest          0.731        0.190    0.583
+indicates a greater contribution of the feature to the performance                   XGBoost                0.725        0.193    0.581
+                                                                                     SVM                    0.729        0.194    0.562
+of the model. We also test the statistical significance of the
+contribution of features using the p-value.
+   Additionally, we plot response curves for the most significant
+features. These curves illustrate how the probability of a technique akin to k-fold cross-validation. First, we draw a
+successful recheck changes as the value of the feature varies, bootstrap sample of length 314,947 from our original dataset
+with all other features being held constant at their “typical” with replacement. Next, we refit the logistic regression model
+values (median for numeric features and mode for categorical to this sample, using the same degrees of freedom. We then
+features). The plots also show 95% confidence intervals for evaluate the AUROC, Brier score, and AUPRC of the bootstrap-
+the probabilities, calculated from 1,000 bootstrap iterations.               trained model both on the bootstrap sample and the original
+                                                                             dataset. The difference in these performance metrics provides
+                    IV. OVERALL P ERFORMANCE                                 an estimate of the optimism of the model fitness, i.e., the
+   In this section, following an initial assessment of the fitness degree to which these performance scores are overestimated.
+of our model, we characterize recheck builds that result in We repeat this process 1,000 times and calculate the mean
+a change of outcome by examining the significance of the optimism values. Smaller optimism values shows a model fit is
+features of our model.                                                       more robust to natural fluctuations in the shape of the dataset.
+                                                                                In direct response to peer review feedback, we expanded our
+(RQ1) How effectively can our model differentiate successful
+                                                                             evaluation to include specific machine learning models (i.e.,
+and failed rechecks?
+                                                                             Logistic Regression, SVM, XGBoost, and Random Forest) as
+   Before fitting the model, we compute features. During this advised. Table II shows the evaluation of traditional machine
+process, we encounter some entries for the first time, such as learning methods using time-based 10-fold cross-validation,
+a patch introducing a new file, a user submitting their first avoiding single-repetition holdout due to its bias and variance
+recheck request, or the appearance of a new bot or job. In issues [29]. Time-based 10-fold cross-validation sequentially
+such cases, we assign a special value, N/A, to represent the splits data into ten parts, training on earlier data and testing
+absence of historical data. As our model cannot complete on unseen later data. Compared to our bootstrap-calculated
+calculations without crashing when N/A values are present, we optimism scores for logistic regression, AUROC and Brier
+explore replacing them with 0 (i.e., the minimum replacement Score differ by less than one percentage point, while AUPRC
+strategy), 1 (i.e., the maximum replacement strategy), or drops by 3.2 points at most. We also find that the machine
+removing them entirely. The model is fitted for each strategy. learning methods all achieve performance values that vary by
+We observe that all three strategies achieve similar AUROC two percentage points at most. As different learning approaches
+(maximum difference of 2.1 percentage points) and Brier do not substantially outperform statistical regression, we focus
+score values (all values within one percentage point).6 The on the regression results in the paper.
+maximum replacement strategy has an AUPRC that is 5.9 and                       To estimate developer impact, we calculate the elapsed
+7.3 percentage points lower than the minimum replacement developer time between receiving a build result and initiating
+and remove N/A strategies, respectively. Hence, we continue a recheck, acknowledging that this likely overestimates actual
+using the strategy that removes observations with N/A values. decision time, and interpret it as an upper bound on time
+We reason that removal is a more appropriate choice because savings. We also examine the trade-off between compute and
+an N/A value indicates that a feature has not yet been observed, elapsed developer time savings. Compute time is measured by
+and replacement would create data that does not exist.                       summing job durations from bot build messages. Developer
+   After dropping observations with N/A values, 314,947 time is saved when the model correctly predicts a successful
+observations remain, with 109,825 belonging to the minority recheck, preventing unnecessary manual rechecks. Compute
+class (i.e., successful rechecks). Based on Equation (1), we time is saved when failing rechecks are accurately predicted,
+can allocate up to 109,82515     = 7, 321 degrees of freedom without avoiding wasted job executions.
+raising concerns about overfitting. Using Equation (2), we                      To balance automation with prediction certainty, we apply a
+estimate the baseline to which the AUPRC of our models hybrid thresholding strategy. In our evaluation, we set the lower
+                                   109,825
+should be compared to be 314,947 = 0.349.                                    certainty threshold to 0.2 and the upper certainty threshold to
+   To assess our model, we use AUROC, AUPRC, and Brier 0.7 as an example. Predictions with probabilities below 0.2
+score along with assessing the stability of the model fit using are automatically treated as failures, while those above 0.7
+bootstrap-calculated optimism [28]—a robust model validation are treated as successes. Predictions within the intermediate
+     6 The results for each strategy are available in our online appendix at range [0.2, 0.7] are left for manual developer intervention. This
+https://doi.org/10.5281/zenodo.13755309.                                     design enables the system to automate decisions when the
+                                                                       Fig. 3: In this figure, the threshold balances saved elapsed
+Fig. 2: In this figure, the threshold balances correctly identifying
+                                                                       developer time with saved compute time. The shaded areas
+failing rechecks (precision) against identifying them all (recall).
+                                                                       show how much time can be saved by automatically handling
+At the threshold 0.2, for instance, 88% of the rechecks that
+                                                                       the most certain cases, while letting developers decide in
+we skip failed, and we skip 33% of all failed rechecks.
+                                                                       situations where the model is less sure.
+
+
+model has high confidence while preserving human oversight of all failed rechecks (i.e., 177,399 of the 205,122 recheck
+for uncertain cases. The selected thresholds serve as an example; failures), saving substantial build resources. For cases where
+they can be adjusted to reflect different organizational trade- the priority is to minimize developer distractions (i.e., by
+offs between developer time savings and compute resource prioritizing precision in identifying successful rechecks), a
+utilization. Figure 3 plots saved elapsed developer and compute threshold of 0.2 can be selected with a recall of 0.33 and a
+time as model thresholds vary.                                    precision of 0.88. In contrast, if the goal is to save resources
+   Observation 1: Our model outperforms naı̈ve baselines in (i.e., recall) a threshold of 0.7 is a better choice with a recall
+terms of discriminatory power and calibration. Our model of 0.99 and a precision of 0.67.
+achieves an AUROC of 0.736, outperforming random guessing            Observation 4: The model could save roughly 247 years
+(AUROC of 0.5) by 23.6 percentage points or 47.2%. This of elapsed developer time and roughly 262 years of compute
+suggests that our model can differentiate between successful time. Figure 3 shows how varying the prediction threshold
+and failed rechecks. Furthermore, our model achieves a Brier affects the trade-off between saved elapsed developer and
+score of 0.191. Since random guessing would achieve a Brier compute time. Using the default threshold of 0.5, the model can
+score of 0.25, our model achieves 5.9 percentage points or save roughly 247 years of elapsed developer time and roughly
+23.6% better calibration of risk estimates. Our model also 262 years of compute time. We also apply a threshold strategy
+achieves an AUPRC of 0.604, outperforming the baseline that automates decisions at both low and high extremes, i.e.,
+determined by the prevalence of the positive class (AUPRC when the model is highly confident. When the lower threshold
+of 0.349) by 25.5 percentage points or 73%. This highlights is set to 0.2, the model saves roughly 145 years of compute
+the effectiveness of our model in identifying positive instances time. When the upper threshold is set to 0.7, the model saves
+while minimizing false positives, which is crucial given the roughly 90 years of developer time at the cost of only 0.3
+imbalanced nature of our dataset where positive observations years of compute.
+(i.e., successful rechecks) outnumber the negative ones.
+   Observation 2: The fit of our model is stable and its
+                                                                  (RQ2) What are the most important characteristics of builds
+explanatory power is robust. The mean optimism value for
+                                                                  that should be repeated?
+the AUROC measure is 0.00008, indicating that the AUROC
+values derived from bootstrap samples are nearly identical           We analyze the importance of individual features and feature
+to those calculated from the original dataset [25]. The mean families using Wald χ2 maximum likelihood tests. We also
+optimism value for Brier score measure is -0.00002, and for analyze response curves for the two features that account for
+the AUPRC is 0.00014. These small optimism scores suggest 50% of the explanatory power of our model. The response
+a low likelihood of the model overfitting the training data.      curves for all features are available in our online appendix.3
+   Observation 3: The model could skip 86.49% of failed              Table III presents the Wald χ2 values for each family of
+rechecks, saving substantial CI resources. Figure 2 shows features and individual features in our model. The “Overall”
+the threshold effects on the balance between saving through column shows the explanatory power of all degrees of freedom
+skipping failed rechecks (recall) and minimizing lost successes that we allocate to a family or feature, while the “Nonlinear”
+by ensuring that actual failures are skipped (precision). At the column shows the explanatory power that is provided by
+default threshold of 0.5, which provides a balanced trade-off relaxing linearity assumptions between the feature/family and
+between precision and recall, our model could drop 86.49% the likelihood of a recheck being successful. A dash (-) is
+TABLE III: Importance of families and their individual features
+based on Wald χ2 .
+ Family          Overall     Nonlinear Feature                          Overall Nonlinear
+                (Family)      (Family)
+ Job     D.F            2           1                      D.F           2            1
+                                      job success ratiopb 2
+ history χ2 16, 247.20∗∗∗2, 631.09∗∗∗                      χ 16, 247.20∗∗∗ 2, 631.09∗∗∗
+                                                           D.F           2            1
+                                      bot success ratiopb 2
+                                                           χ 3, 789.65∗∗∗      78.17∗∗∗
+ Bot D.F               6            3                      D.F           2            1
+                                      diff avg failurepb
+ history χ2 7, 866.04∗∗∗ 1, 008.33∗∗∗                      χ2 2, 089.11∗∗∗ 698.57∗∗∗
+                                                           D.F           2            1
+                                      diff avg successpb
+                                                           χ2     52.22∗∗∗      0.68 ◦                 job success ratio                 bot success ratio
+                                                           D.F           2            1
+                                      user success ratiopb 2
+                                                           χ 1, 592.01∗∗∗      81.84∗∗∗     Fig. 4: Job success ratio vs. Fig. 5: Bot success ratio vs.
+         D.F           4            1                      D.F           1            -
+ User
+         χ2 1, 747.41∗∗∗     81.84∗∗∗
+                                      status
+                                                           χ2     91.23∗∗∗            -
+                                                                                            successful recheck prob.      successful recheck prob.
+                                                           D.F           1            -
+                                      experience
+                                                           χ2      15.40∗∗            -
+                                                           D.F           2            1
+                                      file success ratiopb 2
+                                                           χ 1, 320.56∗∗∗ 157.57∗∗∗         families together account for 60.19% ( 16,247.20+7,866.04
+                                                                                                                                            40,060.51     ) of
+ Patch D.F             4            1
+                                      insertions
+                                                           D.F           1            -     the explanatory power of the model.
+ info χ2 1, 327.20∗∗∗       157.57∗∗∗                      χ2       0.38 ◦            -
+                                                           D.F           1            -
+                                                                                               Table III also shows that while each family significantly
+                                      deletions
+                                                           χ2       0.12 ◦            -     contributes to the model fit, individual features within these
+                                                           D.F           1            -     families do not always play a significant role. Specifically,
+                                      queued hour
+                                                           χ2     50.55∗∗∗            -
+                                                           D.F           1            -     features from the “patch info” family, such as “insertions” and
+                                      queued month
+         D.F           4            -                      χ2       2.09 ◦            -     “deletions”, and from the “when” family, such as “queued
+ When 2
+         χ      54.09∗∗∗            -                      D.F           1            -
+                                                                                            month”, “queued day”, and “queued minute”, are not signif-
+                                      queued day
+                                                           χ2       1.81 ◦            -
+                                                           D.F           1            -     icant. Collectively, these features account for 0.01% of the
+                                      queued minute
+                                                           χ2       0.07 ◦            -     explanatory power of the model.
+ Entire D.F          20             6
+ model χ2 40,060.51 *** 3,808.05 ***
+                                      -                                  -            -        Observation 6. Past behaviour is the dominant explana-
+ ◦ p ≥ 0.05; ∗p < 0.05; ∗∗p < 0.01; ∗∗∗p < 0.001; pb - past behaviour                       tory factor. Table III shows that the most important contributor
+                                                                                            to the explanatory power of the model is past behaviour, rather
+                                                                                            than characteristics of the patch set, the timing of the recheck,
+shown in the “Nonlinear” column if no additional degrees of                                 or the role of the user. This finding aligns with prior research
+freedom are allocated, i.e., the feature fit is linear.                                     on defect prediction [30], which showed that the number of
+   To assess the stability of feature ranking, we repeat Wald                               faults in the initial release of source files is an early and
+χ2 maximum likelihood tests 20 times, each time using 90%                                   strong indicator of future defect rates and reliability. Similarly,
+of the data selected at random. Table IV presents the range of                              in our study, the “file success ratio” feature is one of the
+Wald χ2 values for each individual feature in our model.                                    key explanatory factors, underscoring the importance of past
+   The Wald χ2 value for a family of features may not be equal                              behaviour in predicting recheck outcomes. The principle “faulty
+to the sum of the features that comprise its Wald χ2 values.                                once, faulty forever” applies not only to files but also to jobs,
+This is because feature importance is estimated by removing                                 bots, and users, highlighting that the changes to the patch set
+each feature or family and assessing the impact on the model.                               alone are not enough and require collective action.
+When a feature is removed, its explanatory power may, in part,                                 Observation 6. Feature importance results are stable
+be subsumed by other features, resulting in a family χ2 value                               across bootstrap iterations. Table IV shows that the top
+that differs from the sum of that of its features.                                          six features (“job success ratio”, “bot success ratio”, “diff
+   Along with Wald χ2 values, we use a nomogram to visualize                                avg failure”, “user success ratio”, “file success ratio”, and
+and analyze the results of our model. Each horizontal scale                                 “user status”) consistently remained in the top positions across
+corresponds to a feature and the topmost scale represents the                               all runs in the same order. Minor shuffling occurred only
+“points” attributed to specific values of these features. The                               among low-ranked features, which contribute little to the overall
+bottom-most scale shows the final predicted probability of                                  explanatory power. These low variances and the unchanged set
+an outcome based on the total points accumulated from the                                   of top features confirm that our conclusions about the dominant
+values of the features. We drop features with a small impact on                             factors driving recheck success are robust to natural fluctuations
+points to optimize vertical space, though a complete version is                             in the dataset.
+available in our replication package.3                                                         Observation 7. Features related to bots and jobs are the
+   Observation 5. All families contribute at least one                                      strongest in explaining the likelihood of a successful recheck.
+significant feature to the model fit. Table III shows all families                          Features closely linked to the build process, specifically the
+are significant and contribute meaningfully to the overall fit                              “job success ratio” and “bot success ratio”, account for 50% of
+of the model, which supports our hypotheses about each                                      the explanatory power of our model. Notably, the “job success
+family (see Table I). Overall, “job history” and “bot history”                              ratio” contributes significantly to this, accounting for 40.56%
+  Variable             Initial χ2   σ(χ2 )   Initial    Min    Max    Rank                         0      10         20        30    40      50   60    70         80    90   100
+                                              Rank     Rank   Rank   Range   Points
+  job success ratio    16,247.20    64.73         1       1      1       0
+  bot success ratio     3,789.65    30.11         2       2      2       0
+  diff avg failure      2,089.11    20.40         3       3      3       0   user success ratio
+                                                                                                   0    0.5
+  user success ratio    1,592.01    23.95         4       4      4       0
+  file success ratio    1,320.56    24.80         5       5      5       0
+  user status              91.23     4.72         6       6      6       0   bot success ratio
+                                                                                                   0    0.2        0.5    0.9
+  diff avg success         52.22     5.03         7       7      8       1
+  queued hour              50.55     3.25         8       7      8       1
+                                                                             job success ratio
+  user experience          15.40     2.63         9       9      9       0                         0    0.7    0.9
+  queued month              2.09     0.91        10      10     11       1
+  queued day                1.81     0.96        11      10     13       3
+  lines inserted            0.38     0.26        12      11     14       3   file success ratio
+                                                                                                   0 1
+  lines deleted             0.12     0.20        13      12     14       2
+  queued minute             0.07     0.33        14      11     14       3
+                                                                             diff avg success
+                                                                                                  20     0 −25
+                                                                2
+TABLE IV: Variable ranking results with initial χ , standard
+                                                                             diff avg failure
+deviation, and rank ranges.                                                                       −60    −45        −30    −15           0        5                10         15
+
+
+                                                                             Total Points
+                                                                                                   0          20          40        60       80   100        120        140   160
+of the total explanatory power. We further analyze these two
+features using response curves.                                      Predicted Probability
+                                                                                            0.001 0.01 0.1 0.25 0.5 0.75 0.9 0.99 0.999
+   Figure 4 presents the response curve, showing a strong
+relationship between the “job success ratio” and the probability    Fig. 6: A nomogram without features with a small impact.
+of a successful recheck, with narrow confidence intervals.
+Notably, the response curve shows an exponential increase,
+particularly after the “job success ratio” exceeds 0.6. This behaviour features are to the window size, i.e., the amount of
+occurs because of how a sample of our dataset supports time considered when computing the measures. We refit our
+the trend, e.g., in the dataset, the ratio of failed rechecks recheck outcome model using window sizes of one day up to
+to successful ones is 4.36 when the “job success ratio” is one year. During feature extraction, we calculate feature values
+below 0.6, and the ratio drops to 1.34 when the “job success based on data available within a given window. For example,
+ratio” exceeds 0.6. This shows how past behaviour (i.e., past if the window size is set to one day, we use data from the day
+successes or failures) strongly influences recheck outcomes.       before a recheck request to calculate features. To ensure that
+   The “bot success ratio” follows a similar pattern, highlighting the features of each observation have been recomputed using
+the importance of past behaviour. Figure 5 shows a strong the full span of the window size of data, we exclude the first
+relationship between the “bot success ratio” and the probability year of observations from model fitting. Note that the first year
+of a successful recheck, though the confidence intervals begin of data is still used to compute feature values.
+to widen once the ratio exceeds 0.62. This broadening occurs          Following the approach in RQ1, we exclude observations
+because a sample of our dataset is likely to have few data with N/A values before fitting the model. As the window size
+points with a “bot success ratio” higher than 0.62, similar to decreases, the number of observations also declines, since past
+the entire dataset, where only 1.6% of data points exceed a behaviour features (e.g., “job success ratio”) rely on historical
+“bot success ratio” of 0.62.                                       data for their calculation.
+   Observation 8. The “diff avg failure” feature becomes a            In addition to studying the fitness of the refit models, we
+deciding factor when values are at its extremes. Figure 6 rank features based on their Wald χ2 importance scores using
+shows that even though the “diff avg failure” feature is ranked the non-parametric Scott-Knott Effect Size Difference (ESD)
+third by importance, it becomes a deciding factor when values test [31], as it does not assume normality or homogeneity of
+are at its extremes. As the “diff avg failure” feature value distributions. For each window size, we collect the distribution
+increases, the nomogram shows a nonlinear relationship, with of Wald χ2 values for each feature from 1,000 bootstrap
+a larger gap between values above zero. The difference in iterations. Unlike traditional ranking methods, which strictly
+predicted probability between 0.1 and 0.9 is 36 points (i.e., order features by individual values, the Scott-Knott ESD test
+from 72 to 108), which makes up 22.5% of the total points. groups features with similar explanatory power.
+This shows that small changes in feature values can result in         Observation 9: Our model fitness is not sensitive to
+substantial differences in the predicted outcome.                  window size. The model performance across the studied
+                                                                   window sizes is shown in Table 5.1 in the online appendix.3
+                         V. A NALYSIS                              AUROC varies minimally across window sizes (e.g., 0.74243
+   In Section IV, we observe that past behaviour features are for one day vs. 0.73806 for two weeks), suggesting that
+highly important in determining recheck outcomes. These past window size has little impact on the discriminatory power
+behaviours have been measured using ten years of data. Since of the model. Brier scores similarly have a small difference,
+more recent trends may be outweighed by the bulk of historical showing negligible variation. In contrast, the AUPRC decreases
+data, in this section, we set out to study how sensitive past with larger window sizes, with the highest at 0.64046 for one
+                                                                    a bot. We may miss recheck requests if we mistake a human
+                                                                    for a bot. To mitigate this, the first author manually labels
+                                                                    authors as humans or bots, and the second author inspects
+                                                                    its results. We draw conclusions based on the current set of
+                                                                    features; however, this set is not exhaustive. For instance,
+                                                                    adding features that capture information about network or
+                                                                    service status could impact the fit of our model, potentially
+                                                                    changing the importance of features affected by these factors.
+                                                                    OpenStack does not publicly provide data on network or service
+                                                                    status, which prevents us from exploring these aspects.
+                                                                       External Validity. As our study focuses on the OpenStack
+                                                                    community, it may not generalize to open-source communities
+                                                                    or technologies other than Gerrit. We select the OpenStack
+                                                                    community as it supports a recheck functionality and offers
+                                                                    stringent guidelines about its use. Nonetheless, replication to
+Fig. 7: Statistically distinct feature ranks based on the Scott-    other environments may prove useful.
+Knott ESD test applied to the Wald χ2 estimates of explanatory
+power. Top ranked feature families (e.g., success ratios) quickly                       VII. R ELATED W ORK
+climb to and hold top ranks consistently across window sizes.
+                                                                     Waste in CI. Prior work has proposed areas of improvement
+                                                                   for the CI user experience. Gallaba et al. [5] analyzed
+day, suggesting better precision-recall trade-offs with smaller CircleCI builds, observing that non-signal-generating failures
+windows. We suspect that AUPRC increases with smaller (i.e., failures that do not indicate quality concerns with the
+window sizes are driven by a higher ratio of successful rechecks, change under scrutiny) may occur due to misconfigurations or
+as smaller window sizes exclude more N/A failures, raising a lack of service availability. Weeraddana et al. [14] studied
+the success ratio. Optimism values for AUROC, Brier score, timeout builds in CI systems, observing their strong tendency
+and AUPRC range from -0.00005 to 0.00032, indicating stable to occur in clusters. Bouzenia and Pradel [32] analyzed GitHub
+fits across the studied window sizes.                              Actions workflows, finding that 91.2% of CI/CD resource usage
+   Observation 10: Feature importance is not sensitive to is tied to testing and building. While existing optimizations
+window size. Figure 7 shows that the “job success ratio”, like caching help, their adoption remains limited.
+“bot success ratio”, “diff avg failure”, “user success ratio”,       Broadly, these studies show that build failures, timeouts, and
+“file success ratio” are consistently top-ranked features across their associated costs negatively affect CI operations and user
+window sizes. This suggests that tendencies appear rather experience. Building on them, this paper shows that, if a model
+quickly, and users of this modelling approach need little such as ours were adopted, 86.49% of the CI waste generated
+historical data to produce an actionable model. The only feature by failing rechecks could be avoided.
+to displace a feature from the top is “bots flip success ratio”,     Build outcome prediction. Several methods have been
+which is collinear with “bot success ratio” in all fits other than proposed to predict build outcomes, with the goal of skipping
+the one-day fit, suggesting that the information that it provides unnecessary builds. Jin and Servant [33], [34] proposed Smart-
+is highly similar to the features in our top-ranked list.          BuildSkip and PreciseBuildSkip, which skip builds predicted
+   We also analyze response curves for the most important as successful and execute ones predicted as failures. Kwan
+feature (i.e., “job success ratio”) across window sizes and et al. [35] studied the effects of socio-technical congruence
+observe no substantial changes in the shape of curves. It on build outcomes, observing complex relationships. Saidani
+suggests that either recency or quantity of the data can be et al. [36] applied evolutionary search algorithms to predict
+used for identifying recheck build outcome. Due to limited build failures using historical data and code metrics. Pan and
+space, we provide response curves for the “job success ratio” Pradel [12] proposed a model to predict test suite failures on a
+for each window size in the online appendix.3                      continuous basis, while Sun et al. [37] introduced the Raven-
+                                                                   Build model, which integrates contextual and dependency-
+                   VI. T HREATS TO VALIDITY                        aware features to predict CI build outcomes.
+   Construct Validity. We may not fully capture the real-world       Previous studies found that historical data played a significant
+performance and oversimplify the complex interactions between role in predicting build outcomes [36], [38], [39]. Ni and Li [38]
+CI bots, jobs, and rechecks. For example, we assume that for identified committer and project history as key predictors.
+builds involving multiple bots, the “bot success ratio” is the Similarly, Chen et al. [39] developed BuildFast—a history-
+minimum success ratio across those bots. We justify this by aware approach to predict build outcomes. Rausch et al. [40]
+noting that if one bot fails, the recheck request will also fail. linked overall stability in the recent build history to outcomes.
+   Internal Validity. We identify the recheck requests based Hassan and Zhang [41] combined project attributes to predict
+on the author of the comment being a human user, and not success with 95% accuracy.
+   Like prior work, our study highlights the important role            user, and timestamp characteristics on recheck outcomes.
+historical data plays in understanding build outcomes. Just            Building on these findings, we outline how our model could
+as build outcome prediction needed to adapt from a regime              be used to enforce dynamic penalties and rewards to mitigate
+in which build requests were infrequent (e.g., daily or even           misbehaviour and incentivize good practice. For instance, bots
+less frequent [41]) to modern continuous settings [33], our            whose rechecks our model predicts will fail more than a
+application scenario—minimizing wasted CI resources and                threshold could have their jobs or rechecks rate-limited or by
+developer time on failing rechecks—presents new challenges             lowering their status from mandatory to optional. Conversely,
+for build outcome prediction.                                          users or bots that consistently issue effective rechecks could be
+   Test case selection and prioritization. Prior work intro-           rewarded through preferential treatment or increased execution
+duced test case prioritizing methods to rank test cases by their       priority. Below, we recommend directions for future work:
+tendency to lead to build failures, and executed the test cases           Understanding the impact of human factors on recheck
+in the order of highest tendency to the least [42], [43]. Elbaum       requests. During our analysis of recheck requests, we find
+et al. [44] focused on deciding which test cases to include in a       comments that reveal insights into human thoughts and emo-
+CI job and in what order they should be executed. For the same         tions during the recheck process. For example, the recheck
+task, Ling et al. [45] compared how test case prioritization           requests, “recheck day 2, the monster still hunts me, but I
+works in open-source and closed-source projects.                       can’t give up, I know I need to handle this”7 and comment,
+   Our work focuses on a different part of the CI process,             “Shoot, I rechecked against the wrong bug. It should have
+which is deciding whether to rerun a failed build (i.e., a set         been bug 1292105”.8 Sentiment analysis of such comments
+of jobs) at all. Instead of focusing on which tests to run or in       could offer deeper insights into the human factor influencing
+what order, we study whether a recheck request is likely to            recheck outcomes. Previous studies on commit messages and
+succeed. This question has not been addressed in the papers            Self-Admitted Technical Debt (SATD) code comments support
+mentioned and adds a new perspective to CI research.                   this idea. Souza and Silva [49] found a correlation between
+   Flaky test detection. To reduce the need for costly reruns          negative sentiment in commit messages and build outcomes,
+to determine if tests are flaky, researchers have developed flaky      while Fucci et al. [50] discovered that certain types of SATD
+test detection methods based on historical test execution data.        (e.g., functional and on-hold SATD) exhibit more negative
+Herzig et al. [46] used historical test execution data, combining      sentiment compared to others, suggesting a link between human
+features such as test identifiers with pass/fail outcomes, to          emotion and software development. We hypothesize that a
+identify patterns of flakiness through association rule learning.      similar relationship may exist for recheck outcomes.
+Kowalczyk et al. [47] analyzed temporal variations in test                Another influencing factor is user expertise, as experienced
+results to detect flakiness statistically. Gruber et al. [48] relied   developers may show overconfidence bias [51], relying on
+on historical data related to code evolution and test history,         personal judgment over data, potentially triggering unnecessary
+incorporating code evolution and pull request metrics.                 rechecks. Agile team pressures, especially near sprint deadlines,
+   Unlike these studies, which focus on test-level flakiness, this     can also drive wasteful rechecks in an attempt to speed up the
+paper processes recheck requests at the build level, where mul-        integration process. Investigating emotions, expertise, and time
+tiple factors beyond individual test behaviour may influence the       pressure may help to further reduce unnecessary rechecks and
+outcome. This difference makes a direct comparison between             optimize CI efficiency.
+our approach and prior work impractical and inappropriate.                Analyzing developers perception on automated recheck
+   Repeated execution of CI. Durieux et al. [10] studied flaky         prediction. Given the predictive power of our model, it is
+builds on Travis CI, observing that only 46.77% of 56,522              important to evaluate how best to integrate the predictive model
+re-executed builds changed failing builds into passing ones            into the CI process. One approach could be fully automating
+(or vice versa). In prior work [11], we observed that 55% of           the decision, allowing the model to determine whether a failed
+OpenStack code reviews included at least one recheck request,          build should be rechecked without requiring a request from the
+generating 187.4 years of computational waste.                         developer. Alternatively, the model could serve as a decision-
+   Recent studies on the repeated execution of CI builds focus         support tool, providing suggestions with a rationale when a
+primarily on their impact, offering limited insights into how          developer attempts a recheck. Since developers may not always
+to mitigate the waste that they produce. Our work expands              consider the cost of rechecks, another option is to give team
+this line of research by identifying predictive features that          leads or managers the authority to approve rechecks, allowing
+can determine when recheck requests are likely to succeed              them to weigh the potential costs before proceeding. Each
+(or continue to fail), enabling more efficient CI operations by        approach offers a different balance between automation and
+avoiding developer interruptions for successful rechecks and           human oversight.
+saving CI resources for unnecessary rechecks.
+                VIII. C ONCLUDING R EMARKS
+   In this paper, we characterize rechecks in CI. We analyze a
+dataset of 314,947 rechecks spanning a ten-year period. We use             7 https://review.opendev.org/c/openstack/tripleo-ci/+/620063
+
+statistical models to access the impact of bots, jobs, patches,            8 https://review.opendev.org/c/openstack/tripleo-incubator/+/92749
+                              R EFERENCES                                               of the 40th International Conference on Software Engineering, ICSE ’18,
+                                                                                        (New York, NY, USA), p. 560, Association for Computing Machinery,
+ [1] M. Fowler and M. Foemmel, “Continuous integration,” 2006.                          2018.
+ [2] M. Hilton, T. Tunnell, K. Huang, D. Marinov, and D. Dig, “Usage,              [18] C. Spearman, “The proof and measurement of association between two
+     costs, and benefits of continuous integration in open-source projects,”            things,” The American Journal of Psychology, vol. 15, no. 1, pp. 72–101,
+     in Proceedings of the 31st IEEE/ACM International Conference on                    1904.
+     Automated Software Engineering, ASE ’16, (New York, NY, USA),                 [19] T. A. Ghaleb, D. A. Da Costa, and Y. Zou, “An empirical study of the
+     p. 426–437, Association for Computing Machinery, 2016.                             long duration of continuous integration builds,” Empirical Softw. Engg.,
+ [3] B. Vasilescu, Y. Yu, H. Wang, P. Devanbu, and V. Filkov, “Quality and              vol. 24, p. 2102–2139, aug 2019.
+     productivity outcomes relating to continuous integration in github,” in       [20] G. Gousios, M. Pinzger, and A. v. Deursen, “An exploratory study of
+     Proceedings of the 2015 10th Joint Meeting on Foundations of Software              the pull-based software development model,” in Proceedings of the 36th
+     Engineering, ESEC/FSE 2015, (New York, NY, USA), p. 805–816,                       International Conference on Software Engineering, ICSE 2014, (New
+     Association for Computing Machinery, 2015.                                         York, NY, USA), p. 345–355, Association for Computing Machinery,
+ [4] Y. Zhao, A. Serebrenik, Y. Zhou, V. Filkov, and B. Vasilescu, “The impact          2014.
+     of continuous integration on other software development practices: A          [21] X. Tan, M. Zhou, and Z. Sun, “A first look at good first issues on github,”
+     large-scale empirical study,” in 2017 32nd IEEE/ACM International                  in Proceedings of the 28th ACM Joint Meeting on European Software
+     Conference on Automated Software Engineering (ASE), pp. 60–71, 2017.               Engineering Conference and Symposium on the Foundations of Software
+ [5] K. Gallaba, M. Lamothe, and S. McIntosh, “Lessons from eight years of              Engineering, ESEC/FSE 2020, (New York, NY, USA), p. 398–409,
+     operational data from a continuous integration service: an exploratory case        Association for Computing Machinery, 2020.
+     study of circleci,” in Proceedings of the 44th International Conference on    [22] J. A. Hanley and B. J. McNeil, “The meaning and use of the area under a
+     Software Engineering, ICSE ’22, (New York, NY, USA), p. 1330–1342,                 receiver operating characteristic (roc) curve.,” Radiology, vol. 143, 1982.
+     Association for Computing Machinery, 2022.                                    [23] J. G. Eisenhauer, Degrees of Freedom in Statistical Inference. Springer
+ [6] D. Olewicki, M. Nayrolles, and B. Adams, “Towards language-                        Berlin Heidelberg, 2011.
+     independent brown build detection,” in Proceedings of the 44th Interna-       [24] F. E. Harrell et al., Regression modeling strategies: with applications to
+     tional Conference on Software Engineering, ICSE ’22, (New York, NY,                linear models, logistic regression, and survival analysis, vol. 608. 2001.
+     USA), p. 2177–2188, Association for Computing Machinery, 2022.                [25] F. E. Harrell Jr, K. L. Lee, R. M. Califf, D. B. Pryor, and R. A. Rosati,
+ [7] Q. Luo, F. Hariri, L. Eloussi, and D. Marinov, “An empirical analysis of           “Regression modelling strategies for improved prognostic prediction,”
+     flaky tests,” in Proceedings of the 22nd ACM SIGSOFT International                 Statistics in medicine, vol. 3, 1984.
+     Symposium on Foundations of Software Engineering, FSE 2014, (New              [26] F. E. Harrell Jr, K. L. Lee, D. B. Matchar, and T. A. Reichert, “Regression
+     York, NY, USA), p. 643–653, Association for Computing Machinery,                   models for prognostic prediction: advantages, problems, and suggested
+     2014.                                                                              solutions.,” Cancer treatment reports, vol. 69, 1985.
+ [8] M. Eck, F. Palomba, M. Castelluccio, and A. Bacchelli, “Understanding         [27] T. Saito and M. Rehmsmeier, “The precision-recall plot is more
+     flaky tests: the developer’s perspective,” in Proceedings of the 2019 27th         informative than the roc plot when evaluating binary classifiers on
+     ACM Joint Meeting on European Software Engineering Conference and                  imbalanced datasets,” PloS one, vol. 10, 2015.
+     Symposium on the Foundations of Software Engineering, ESEC/FSE                [28] B. Efron, “How biased is the apparent error rate of a prediction rule?,”
+     2019, (New York, NY, USA), p. 830–840, Association for Computing                   Journal of the American Statistical Association, vol. 81, no. 394, pp. 461–
+     Machinery, 2019.                                                                   470, 1986.
+ [9] W. Lam, K. Muşlu, H. Sajnani, and S. Thummalapenta, “A study on              [29] C. Tantithamthavorn, S. McIntosh, A. E. Hassan, and K. Matsumoto, “An
+     the lifecycle of flaky tests,” in Proceedings of the ACM/IEEE 42nd                 empirical comparison of model validation techniques for defect prediction
+     International Conference on Software Engineering, ICSE ’20, (New                   models,” IEEE Transactions on Software Engineering, vol. 43, no. 1,
+     York, NY, USA), p. 1471–1482, Association for Computing Machinery,                 pp. 1–18, 2017.
+     2020.                                                                         [30] M. Pighin and A. Marzona, “An empirical analysis of fault persistence
+[10] T. Durieux, C. Le Goues, M. Hilton, and R. Abreu, “Empirical study                 through software releases,” in Proceedings of the 2003 International
+     of restarted and flaky builds on travis ci,” in Proceedings of the                 Symposium on Empirical Software Engineering, ISESE ’03, (USA),
+     17th International Conference on Mining Software Repositories, MSR                 p. 206, IEEE Computer Society, 2003.
+     ’20, (New York, NY, USA), p. 254–264, Association for Computing               [31] C. Tantithamthavorn, S. McIntosh, A. E. Hassan, and K. Matsumoto,
+     Machinery, 2020.                                                                   “The impact of automated parameter optimization on defect prediction
+[11] R. Maipradit, D. Wang, P. Thongtanunam, R. Kula, Y. Kamei, and                     models,” IEEE Transactions on Software Engineering, vol. 45, no. 7,
+     S. McIntosh, “Repeated builds during code review: An empirical study               pp. 683–711, 2019.
+     of the openstack community,” in 2023 38th IEEE/ACM International              [32] I. Bouzenia and M. Pradel, “Resource usage and optimization opportuni-
+     Conference on Automated Software Engineering (ASE), (Los Alamitos,                 ties in workflows of github actions,” in Proceedings of the IEEE/ACM
+     CA, USA), pp. 153–165, IEEE Computer Society, sep 2023.                            46th International Conference on Software Engineering, ICSE ’24, (New
+[12] C. Pan and M. Pradel, “Continuous test suite failure prediction,” in               York, NY, USA), Association for Computing Machinery, 2024.
+     Proceedings of the 30th ACM SIGSOFT International Symposium on                [33] X. Jin and F. Servant, “A cost-efficient approach to building in continuous
+     Software Testing and Analysis, ISSTA 2021, (New York, NY, USA),                    integration,” in Proceedings of the ACM/IEEE 42nd International
+     p. 553–565, Association for Computing Machinery, 2021.                             Conference on Software Engineering, ICSE ’20, (New York, NY, USA),
+[13] I. Saidani, A. Ouni, M. Chouchen, and M. W. Mkaouer, “On the prediction            p. 13–25, Association for Computing Machinery, 2020.
+     of continuous integration build failures using search-based software          [34] X. Jin and F. Servant, “Which builds are really safe to skip? maximizing
+     engineering,” in Proceedings of the 2020 Genetic and Evolutionary                  failure observation for build selection in continuous integration,” J. Syst.
+     Computation Conference Companion, GECCO ’20, (New York, NY,                        Softw., vol. 188, jun 2022.
+     USA), p. 313–314, Association for Computing Machinery, 2020.                  [35] I. Kwan, A. Schroter, and D. Damian, “Does socio-technical congruence
+[14] N. Weeraddana, M. Alfadel, and S. McIntosh, “Characterizing timeout                have an effect on software build success? a study of coordination in a
+     builds in continuous integration,” IEEE Transactions on Software                   software project,” vol. 37, p. 307–324, may 2011.
+     Engineering, vol. 50, no. 6, pp. 1450–1463, 2024.                             [36] I. Saidani, A. Ouni, and M. W. Mkaouer, “Improving the prediction of
+[15] S. Mcintosh, Y. Kamei, B. Adams, and A. E. Hassan, “An empirical                   continuous integration build failures using deep learning,” Automated
+     study of the impact of modern code review practices on software quality,”          Software Engg., vol. 29, may 2022.
+     Empirical Softw. Engg., vol. 21, p. 2146–2189, oct 2016.                      [37] G. Sun, S. Habchi, and S. McIntosh, “Ravenbuild: Context, relevance,
+[16] K. Cabello-Solorzano, I. Ortigosa de Araujo, M. Peña, L. Correia, and             and dependency aware build outcome prediction,” Proc. ACM Softw.
+     A. J. Tallón-Ballesteros, “The impact of data normalization on the                Eng., vol. 1, jul 2024.
+     accuracy of machine learning algorithms: A comparative analysis,” in          [38] A. Ni and M. Li, “Cost-effective build outcome prediction using cascaded
+     International Conference on Soft Computing Models in Industrial and                classifiers,” in 2017 IEEE/ACM 14th International Conference on Mining
+     Environmental Applications, pp. 344–353, Springer, 2023.                           Software Repositories (MSR), pp. 455–458, 2017.
+[17] S. McIntosh and Y. Kamei, “Are fix-inducing changes a moving target? a        [39] B. Chen, L. Chen, C. Zhang, and X. Peng, “Buildfast: History-aware
+     longitudinal case study of just-in-time defect prediction,” in Proceedings         build outcome prediction for fast feedback and reduced cost in continuous
+     integration,” in Proceedings of the 35th IEEE/ACM International               [46] K. Herzig and N. Nagappan, “Empirically detecting false test alarms
+     Conference on Automated Software Engineering, ASE ’20, (New York,                  using association rules,” in 2015 IEEE/ACM 37th IEEE International
+     NY, USA), p. 42–53, Association for Computing Machinery, 2021.                     Conference on Software Engineering, vol. 2, pp. 39–48, 2015.
+[40] T. Rausch, W. Hummer, P. Leitner, and S. Schulte, “An empirical               [47] E. Kowalczyk, K. Nair, Z. Gao, L. Silberstein, T. Long, and A. Memon,
+     analysis of build failures in the continuous integration workflows of java-        “Modeling and ranking flaky tests at apple,” in Proceedings of the
+     based open-source software,” in Proceedings of the 14th International              ACM/IEEE 42nd International Conference on Software Engineering:
+     Conference on Mining Software Repositories, MSR ’17, p. 345–355,                   Software Engineering in Practice, ICSE-SEIP ’20, (New York, NY,
+     IEEE Press, 2017.                                                                  USA), p. 110–119, Association for Computing Machinery, 2020.
+[41] A. E. Hassan and K. Zhang, “Using decision trees to predict the certifi-      [48] M. Gruber, M. Heine, N. Oster, M. Philippsen, and G. Fraser, “ Practical
+     cation result of a build,” in 21st IEEE/ACM International Conference on            Flaky Test Prediction using Common Code Evolution and Test History
+     Automated Software Engineering (ASE’06), pp. 189–198, 2006.                        Data ,” in 2023 IEEE Conference on Software Testing, Verification
+[42] M. Bagherzadeh, N. Kahani, and L. Briand, “Reinforcement learning for              and Validation (ICST), (Los Alamitos, CA, USA), pp. 210–221, IEEE
+     test case prioritization,” IEEE Trans. Softw. Eng., vol. 48, p. 2836–2856,         Computer Society, Apr. 2023.
+     Aug. 2022.
+[43] S. W. Thomas, H. Hemmati, A. E. Hassan, and D. Blostein, “Static test         [49] R. Souza and B. Silva, “Sentiment analysis of travis ci builds,” in
+     case prioritization using topic models,” Empirical Softw. Engg., vol. 19,          Proceedings of the 14th International Conference on Mining Software
+     p. 182–212, Feb. 2014.                                                             Repositories, MSR ’17, p. 459–462, IEEE Press, 2017.
+[44] S. Elbaum, G. Rothermel, and J. Penix, “Techniques for improving              [50] G. Fucci, N. Cassee, F. Zampetti, N. Novielli, A. Serebrenik, and
+     regression testing in continuous integration development environments,”            M. Di Penta, “Waiting around or job half-done? sentiment in self-admitted
+     in Proceedings of the 22nd ACM SIGSOFT International Symposium on                  technical debt,” in 2021 IEEE/ACM 18th International Conference on
+     Foundations of Software Engineering, FSE 2014, (New York, NY, USA),                Mining Software Repositories (MSR), pp. 403–414, 2021.
+     p. 235–245, Association for Computing Machinery, 2014.                        [51] R. Mohanani, I. Salman, B. Turhan, P. Rodrı́guez, and P. Ralph,
+[45] X. Ling, R. Agrawal, and T. Menzies, “How different is test case                   “Cognitive biases in software engineering: A systematic mapping study,”
+     prioritization for open and closed source projects?,” IEEE Transactions            IEEE Transactions on Software Engineering, vol. 46, no. 12, pp. 1318–
+     on Software Engineering, vol. 48, no. 7, pp. 2526–2540, 2022.                      1339, 2020.
+

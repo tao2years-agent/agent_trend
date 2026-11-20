@@ -1,0 +1,70 @@
+01|unknown_or_boundary|默认 auto_test 关闭|明确|E04-2@104-109;E04-2@1599-1623|类默认值为 False，编辑后仅在配置和条件匹配时执行测试。|
+01|human_takeover|可撤销一次变更|部分支持|E04-3@553-575|/undo 只接受当前会话由 Aider 创建的最后一个 Git 提交，用户提交和任意外部变更不在这个入口内。|开发者可决定是否重试；/undo 可撤回本会话由 Aider 创建的最后一个 Git 提交。
+02|availability_version|核对 0.171.0|明确|E05-4@7-12|官方 release 指向 ccf9be8；快照使用另一提交 a0a30c4，本次把标签提交下两份源码逐字节比较，哈希均相同。补证位置见 codex-tag-sources.json。|
+02|human_takeover|按策略由人批准或拒绝|明确|E05-2@493-518;E05-3@1-32|批准类型中有许可修订、拒绝与不同审查来源。此处描述策略能够出现的人工动作，未声称每次都会询问。|
+03|human_takeover|HEAD 变化时需核对再操作|部分支持|E07-2@403-425;E07-3@51-58|文件级恢复遇到当前 HEAD 偏离基准时直接拒绝；查看后确认并不能绕过，聊天恢复是另一条路径。|开发者可选恢复文件、会话或二者；HEAD 偏离检查点基准时拒绝文件恢复，可仅恢复会话，或另行有意调整分支。
+03|availability_version|SDK v0.2.0 是所查重连修复的版本|明确|E07-4@50-60|同一记录分别列出 SDK、UI、shared 版本，重新附着已运行 session 的说明位于 SDK v0.2.0。|
+04|availability_version|v2.3.0 将后台子代理作为默认|明确|E08-4@584-593|版本标题后明确注明子代理默认后台继续，在 idle 时回报。|
+04|unknown_or_boundary|子代理本轮结束后可能仍有后台进程|明确|E08-2@37-52;E08-3@30-38|汇报会列出仍运行的后台项目；调用方取消和服务中断的处理不同。|
+05|accepted_artifact|可挑选文件、commit/push|明确|CN22@1-11;CN22@99-104|产品文档列出按文件暂存/回退、提交和推送，并区分本地提交与推送。|
+05|availability_version|2026-10-15 旧 IDE Quest 视窗退场|部分支持|CN01@1-20|公告同时保留原定截止时间和当前分批关闭说明，不能把预定节点视作所有老用户同日消失。|旧 IDE Quest 公告列出的退场节点为 2026-10-15 23:59（UTC+8）；当前说明新用户无入口、既有用户分批关闭。新版 Qoder 独立验收。
+06|human_takeover|lead 可让成员退回改计划或发出停止；GitLab 保留独立评审人|部分支持|CN05@167-176;CN06@12-23;CN08@1-38|批准计划和发出关停的是团队 lead 角色，不能算独立人审；CI 文档介绍安装和 MR 工作流，没有为每个仓库强制配置指定人工评审者。|团队 lead 可批准或退回成员计划并发出关停；操作者可停止成员，MR 是否需独立人工批准取决于 GitLab 仓库规则。
+06|availability_version|CLI v2.95.0 关停握手，v2.140.0 修复主回合结束后停止键失效|明确|CN06@1-22;CN07@42-50|一个版本新增关停请求、等待和超时终止，另一个版本修复主回合已结束时的停止键，不是首次支持取消。|
+07|accepted_artifact|spec/design/tasks 文件和代码差异，可经 CodeArts Repo MR 由 Committer 验收|明确|CN09@240-243;CN09@258-272;CN11@112-117|规范模式生成三种文件；独立 Repo 流程由开发者提交 MR、Committer 审核，未说智能体可自行合入。|
+07|human_takeover|/goal 暂停等待正在执行的迭代结束|明确|CN10@118-124;CN10@144-150|仅内置两类智能体和 26.10.0+，暂停后当前迭代继续完成再停止循环。|
+08|availability_version|2026-06-09 SOLO 改为 TraeWork，后与 TraeCode 融合为 TRAE|明确|CN17@124-127;CN18@36-49|更新记录单独给出第一次更名，另一公告描述双端融合，属同一产品的两个阶段。|
+08|human_takeover|代码有分歧时选保留路径、审阅冲突、停止后交接|明确|CN19@56-60;CN19@69-79|运行中会话不能迁移，要等待或手停；无法直接同步时由人选择代码处理方式。|
+09|accepted_artifact|可复核计划、diff、UI 录屏|明确|M07-2@22-36;M07-1@27-46|官方把计划、可视差异、浏览器录屏列作可检查制品，并有独立审查策略。|
+09|unknown_or_boundary|新排程从 Paused 开始|明确|W05@47-59|该入口在 Antigravity App，创建后 Paused，用户打开才运行；可先试跑记录权限。|
+10|availability_version|2026-08-29 版本修复中断恢复后补验|明确|M01-3@1686-1690;M01-3@1701-1704|CLI v0.208.0 / Desktop v0.165.0 同一版本段的修复，描述中断/暂停/恢复之后仍做 milestone validation。|
+10|unknown_or_boundary|可关闭 QA 验证|明确|M01-1@13-21;M01-2@15-18|Milestone 验证频率可配，Mission Control 可禁用 QA；运行异常时可暂停编排器。|
+11|availability_version|Devin Bots 于 2026-11-17 发布|明确|M02-3@meta:article:published_time;M02-3@1-9|发布页日期和产品名称一致，发布的是 Devin Bots 能力，未将 Devin 的早期发布重算。|
+11|human_takeover|人处理例外和 PR，可以控制 Bot 的共享对象和 grants|明确|M02-1@18-21;M02-2@65-75|Needs you 收集待处理 PR/决策。grant 由 Bot 持有，可由授权人撤回，适用于该 Bot 启动的会话。|
+12|availability_version|19.2 自定义 flow GA，19.6 排程 beta|明确|M04-3@12-17;M04-4@14-22|发布说明分别给出两个能力和不同阶段，不是整个平台同日 GA。|
+12|unknown_or_boundary|定时 flow 仅使用专属服务账号，人工触发的复合身份约束不通用|明确|M04-5@38-49;M04-2@78-94|事件型 flow 可用复合身份；排程没有发起人而使用专属账户。需人答复的 session 列表可另查。|
+13|availability_version|Automation 面向 private/internal；2026-10-28 云沙箱 GA|明确|W06@25-30;W21@3-5;W21@time:0|定时自动化适用仓库的限定与付费方案云沙箱 GA 来自不同页面，不应以其中之一覆盖另一项。|
+13|unknown_or_boundary|Actions 与 cloud sandbox 跨仓范围有别，一任务一个 PR|明确|W07@181-195|Actions 只改指定仓；cloud sandbox 可跨仓。两个环境同样一次一个分支、每任务一个 PR，不能由会话可跨仓推导成组织批处理。|
+14|availability_version|2026-04-14 以 Routines 发布|明确|F04-2@meta:article:published_time;F04-2@1-6|日期正确；原公告明说 research preview。表述补上初始阶段，以免被理解为当日正式可用。|2026-04-14 以 Routines 进入 research preview；现行文档名为 Scheduled tasks，旧称与 SDK 不重复计数。
+14|human_takeover|遇到需要升级的请求时接管会话|明确|F04-1@255-259;F04-1@395-405|Anthropic 云端的 auto mode 下，特定 ask 规则、连续阻断等可停下来等人，另可从会话 URL 手动继续。|
+15|human_takeover|可暂停排程、立即运行或终止当前作业|明确|E03-2@636-643;E03-2@709-713;E03-2@789-810|调度器有暂停/恢复、立即启动和 kill 当前作业的独立接口；暂停后续排程与终止已经开始的作业是不同操作。|
+15|unknown_or_boundary|调度路径显式 Auto|明确|E03-2@882-888;E03-2@902-908;E03-4@131-134|建立/更新调度会话显式设置 GooseMode::Auto，版本书签为 v1.59.0。|
+16|human_takeover|Agentic 支持在空闲后移交线程，目标 owner 权限决定可见范围|明确|W11@65-78|新 owner 接管对话和发布权限，移交需等 agent 空闲；未将此行为套用于经典 CLI。|
+16|unknown_or_boundary|经典 CLI apply 与 preview 不同，预览不是强制人审|明确|W20@1-42;W22@1-42|CLI 提供独立的 preview 和 apply 命令，把差异预览和使 batch change 生效分开；选择预览不构成强制业务签字。|
+17|accepted_artifact|确认后可开 PR 或提交|明确|P12@60-76|官方教程以 recipe 结果作 commit 或 PR，另注用户可能无权对组织执行这些动作。|
+17|unknown_or_boundary|v2 对大组织用慢队列|明确|P13@44-55|v2 明列按运行规模划分快慢队列，大组织进入 slow lane，不能从示例推断所有私库的运行速度。|
+18|availability_version|2025-12-01 GA|明确|P15@2-6|AWS What's New 明说 custom 的 GA 日期，属于该能力而非所有 AWS Transform 产品的首次可用。|
+18|human_takeover|在 registry 中管理定义及所学规则|部分支持|P14@76-84;P14@430-435|文档分别说 registry 列出 transformations 和 def learnings 管理某个 transformation 的 lessons；没有声称 lessons 有独立 registry 记录或所有反馈均需批准。|团队定义标准并验证结果；从 transformation registry 选择转换，用 def learnings 查看和管理该转换从历史运行提取的 lessons。
+19|human_takeover|把需要阻断的真实 check 名设为 required|明确|M05-1@63-66;M05-1@188-199|GitHub 仓库规则决定是否 required；缺检查写权限时 Walkthrough 反馈不能满足 required Check Run。|
+19|availability_version|2026-03-11 发布 pre-merge checks|明确|M05-3@1-7;M05-3@102-108|公告日期及功能名相符，文中说明当时面向 Pro 计划；不用旧博客推定今天每层方案。|
+20|accepted_artifact|部分分片失败有专门处理|明确|D07-1@2165-2173;D07-1@2749-2760|评审正文可说明失败分片未覆盖，其数量被传入审批门禁，不能把一条发布的评语视为全文件成功。|
+20|unknown_or_boundary|自动批准设置归宿主，该版本路径仍禁用|明确|D07-3@95-100;D07-2@123-134;D07-1@2762-2781|v0.50.0 发布说明明确该版路径禁用；另一个固定源码提交已含有条件调用 provider 的分支，不可拿它证明该版默认可用。|v0.50.0 发布说明称自动批准配置只归宿主且该版执行路径仍禁用。另一个固定源码提交含有条件批准分支，版本分别记录。
+21|availability_version|Codeup 的 AI 助手通过组织开通|明确|CN14@14-30|首次由组织拥有者开通，随后仓库管理员在代码库设置启用，存在两级动作。|
+21|unknown_or_boundary|模型评论、人工表态与已配置的代码检测保护分支卡点是三种不同证据|明确|CN14@224-233;CN15@99-110;CN16@1-4|评审意见可表态；自动卡点由代码检测/流水线执行，与评论的按钮不是同一机制。|
+22|availability_version|PR 分析自 Developer Edition 起|明确|P16@10-15|官方将具体的 PR 分析起始版本标为 Developer Edition；这里是 SonarQube Server，不借用 Cloud 权益。|
+22|human_takeover|在 GitHub 设置 required check|明确|P17@32-38;P17@55-62|开启阻断需要仓库设置，把 SonarQube Code Analysis 列为 required check。|
+23|accepted_artifact|失败 stack 可剔除并重测影响范围|明确|M06-2@140-152|批次失败后在较小子集运行 CI 找出不合格 stack 并出队；单位是 stack 而非任意关联 PR。|
+23|availability_version|Cursor 2025-12 宣布收购协议并保留产品|明确|M06-5@time:0;M06-5@6-10|2025-12-19 公告称签署 definitive agreement 并继续独立经营，不能表述成已证实当日完成交割。|
+24|accepted_artifact|失败/超时时拆分批定位，剔除或标记失败原因|明确|P22@132-150|Mergify 对失败 batch 拆分，达到最大定位尝试次数会将未清除项出队并写原因；上层批次可能重测。|
+24|human_takeover|管理员调并发、批大小、拆分次数并可暂停队列|部分支持|P21@25-36;P22@147-150|配置与暂停功能有证，所列页面并未证明所有这些动作在每种安装中都是相同的管理员专属权限。|有相应配置权限的操作者可调整队列并发、批大小和失败拆分次数，必要时暂停队列；细粒度角色权限需按安装复核。
+25|accepted_artifact|结果可为 Successful/Failed/Inconclusive|明确|D05-1@101-110;D05-1@130-142;D05-2@1-42|控制器聚合 run 状态，文档把结果接回 rollout 推广。列举三种典型结果不排除 Error 等其他状态。|
+25|availability_version|v1.11.0-rc1，空响应条件变化属候选版本|明确|D05-3@1-5;D05-3@638-644|版本标签为 Pre-release，并有空响应条件修正；无稳定版部署推断。|
+26|availability_version|Enterprise Guardian add-on，官方说明可有限试用|明确|P19@9-15|所有账户可有限试用，完整访问要求 Enterprise 另购 Guardian。|
+26|accepted_artifact|按序贯检验判定回归，按相应设置回退|明确|P18@8-11;P20@297-301;P20@321-325|先由序贯检验比较变体指标，再按配置回退；指标方向选错会反转回归解读。|
+27|availability_version|v0.49.0 为新计划记录哈希|明确|D08-3@136-143;D08-3@671-678|版本记录说明 plan 后把 SHA-256 记入状态，apply 时不匹配则拒绝；适用该版本产生的 plan。|
+27|unknown_or_boundary|审批自身未天然绑定每一份 plan；自定义步骤有差异|明确|D08-3@671-686;D08-1@764-779|审批配置变化会影响能否沿用旧审批；完全由自定义步骤生成的 plan 不记录此文件哈希，文件完整性验证和 approval 复用有各自条件。|
+28|accepted_artifact|需要同意时停在 unconfirmed，确认后由 worker apply|明确|P23@77-97|unconfirmed 属被动状态；用户确认后任务再次排队，worker 才领取后续步骤。|
+28|unknown_or_boundary|autodeploy 会改变审批评估时机|明确|P24@17-22|文档解释启用 autodeploy 时需 plan policy 发出 warn 强制进入 unconfirmed，继而运行审批策略。|
+29|availability_version|44.253.4 修复 GitLab 新推送提交的 automerge 状态|明确|D06-3@33-40|发布记录为 GitLab 上对 pushed commit 启用 automerge 的修正，不能扩写为第一次支持自动合并。|
+29|unknown_or_boundary|ignoreTests、分支保护或平台合并策略会改变实际放行标准|明确|D06-1@34-43;D06-2@136-142;D06-2@166-170|分支检查接收 ignoreTests；宿主保护与 merge queue 可影响直接 merge 或排队。|
+30|accepted_artifact|自动 fix/upgrade PR|明确|P25@116-122|可用修复与配置的依赖新版本是不同触发，动作是创建 PR，未承诺生产采用。|
+30|human_takeover|限定范围、升级种类与同时开放 PR 数|明确|P26@176-197|Snyk 自家案例给出 PR 数量和范围类配置，自动合并由另配的 Mergify 完成，不能归到 Snyk 原生。|
+31|accepted_artifact|候选原因、相关证据与建议|明确|P03@60-70|发布文章把根因/下一步和推理透明度作为输出；这里不计作已执行线上修复。|
+31|availability_version|2026-01-15 发布针对人工已确认发现的解释改进|明确|P04@9-19|公告显示日期及升级后更重视事故频道中已由人确认的发现，证据是产品更新而非 MTTR 实验。|
+32|accepted_artifact|可写 Inconclusive/Blocked|明确|P06@60-78;P07@91-97|官方区分根因确认、贡献因素、不确定与阻塞，对结论允许无肯定答案。|
+32|human_takeover|外部修复交给有权限的人或其他产品|冲突|P05@249-261;P07@110-119|原生工具不能回滚或重启是事实；同一产品的自动调查可使用团队连接器和 Private Agent，具体暴露的能力可能具有写入权限。|响应者审查证据并决定哪些规则保持人工。原生工具不回滚或重启；自动调查使用团队连接器凭据，连接器或 Private Agent 是否可外写需按授权核对。
+33|accepted_artifact|证据支撑的结论或 inconclusive、假设树|明确|P08@2074-2079;P08@2110-2115|调查可形成证据支持的结论或记为无结论；Hypothesis Tree 是展示这些判断的方式。|
+33|human_takeover|管理员可管理或删除由反馈产生的 memories|未证|P09@2018-2035|已证实反馈可形成记忆，Monitor Management 有查看和删除入口；本页未指明所需角色必须或仅为管理员。|值班者可纠正原因并附遥测证据；有相应权限者可在 Monitor Management 查看、删除反馈生成的 memories。该页未列具体角色要求。
+34|human_takeover|按 run ID 接续|部分支持|P10@48-61|两个标识含义不同。旧数值 run_id 仅保兼容，优先字符串 UUID sentry_run_id；都不传即新建。|负责人选停止点并补 user_context；续跑首选 sentry_run_id（UUID），旧数值 run_id 仅作兼容；对生成的 PR 仍走仓库验收。
+34|availability_version|读取状态 API 文档标为 experimental|明确|P11@5-11;P10@41-49|GET 状态接口明确 Experimental，POST 可将停止点配置到根因、方案、改动、PR。|
+35|availability_version|2026-02-26 增加 inline Fix Job|冲突|P02@2-5;P02@meta:article:published_time;P02@time:0|原提交表日期与正文、网页时间标签及发布元数据差一天；主线程已在本次审稿前半程回写为 02-27。|CircleCI Cloud + GitHub App 的适用组织；当前文档标 beta，2026-02-27 增加 inline Fix Job。
+35|accepted_artifact|生成修复候选；有 PR 的任务可进入待审队列|明确|P01@63-66;P01@747-752;P02@2-5|GitHub App 可开 PR，界面列出有开放 PR、可供审阅的任务；inline 入口负责传递失败上下文，无合并承诺。|

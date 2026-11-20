@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Changelog - Tessl Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>{;const saved = localStorage.getItem('rspress-theme-appearance');const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;const defaultTheme = 'auto';const theme = saved === 'light' || saved === 'dark' || saved === 'auto' ? saved : defaultTheme;const isDark = theme === 'auto' ? preferDark : theme === 'dark';document.documentElement.classList.toggle('dark', isDark);document.documentElement.classList.toggle('rp-dark', isDark);document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';}</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap">
+<link href="/static/css/styles.21fa6d2a7c.css" rel="stylesheet">
+<link rel="preload" href="/static/js/async/route-fa51a1a0eb84.aa0d1ac127.js" as="script">
+<script defer src="/static/js/styles.c433bb31d9.js"></script>
+<script defer src="/static/js/lib-react.078d82b8cc.js"></script>
+<script defer src="/static/js/lib-router.7b80f594df.js"></script>
+<script defer src="/static/js/z.6135358659.js"></script>
+<script defer src="/static/js/index.581597ba0d.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Rspress v2.1.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="text/markdown" href="https://docs.tessl.io/changelog-web.md">
+<link rel="describedby" href="https://docs.tessl.io/llms.txt">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Web Changelog - Tessl Docs">
+<meta name="description" content="Release notes for the Web and API surfaces.">
+<meta property="og:description" content="Release notes for the Web and API surfaces."></head>
+
+  <body>
+    <div id="__rspress_root"><link rel="preload" as="image" href="/brand/logo-light.svg"/><link rel="preload" as="image" href="/brand/logo-dark.svg"/><div class="rp-llms-hint" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);clip-path:inset(50%);white-space:nowrap;border:0">For AI agents: the complete documentation index is available at https://docs.tessl.io/llms.txt, the full documentation bundle is available at https://docs.tessl.io/llms-full.txt, and this page is available as Markdown at https://docs.tessl.io/changelog-web.md.</div><header class="rp-nav"><div class="rp-nav__left"><div class="rp-nav__title"><a href="/" class="rp-nav__title__link rp-link"><div class="rp-nav__title__logo"><img src="/brand/logo-light.svg" alt="" id="logo" class="rspress-logo rp-nav__title__logo-image rp-nav__title__logo-image--light"/><img src="/brand/logo-dark.svg" alt="" class="rspress-logo rp-nav__title__logo-image rp-nav__title__logo-image--dark"/></div><span>Docs</span></a></div></div><div class="rp-nav__right"><button class="rp-search-button"><div class="rp-search-button__content"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 20 21" class="rp-search-button__icon"><path fill="currentColor" d="M8.333 1.913A6.667 6.667 0 0 1 15 8.58c0 1.54-.525 2.957-1.402 4.085l4.49 4.492a.834.834 0 0 1-1.177 1.178l-4.491-4.49a6.64 6.64 0 0 1-4.087 1.402 6.667 6.667 0 0 1 0-13.334m0 1.667a5 5 0 1 0 0 10 5 5 0 0 0 0-10"></path></svg><span class="rp-search-button__word">Search</span></div><div class="rp-search-button__hotkey" style="opacity:0"><span></span><span>K</span></div></button><div class="rp-search-button--mobile"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 20 21"><path fill="currentColor" d="M8.333 1.913A6.667 6.667 0 0 1 15 8.58c0 1.54-.525 2.957-1.402 4.085l4.49 4.492a.834.834 0 0 1-1.177 1.178l-4.491-4.49a6.64 6.64 0 0 1-4.087 1.402 6.667 6.667 0 0 1 0-13.334m0 1.667a5 5 0 1 0 0 10 5 5 0 0 0 0-10"></path></svg></div><!--$!--><template data-dgst=""></template><!--/$--><ul class="rp-nav-menu rp-nav-menu--right"><li class="rp-nav-menu__item"><a href="https://tessl.io/login" target="_blank" class="rp-nav-menu__item__container rp-link">Get started free</a></li></ul><div class="rp-nav__others"><div class="rp-nav-menu__divider"></div><div class="rp-switch-appearance"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" class="rp-switch-appearance__icon rp-switch-appearance__icon--sun"><path fill="currentColor" d="m7.001 15.848-1.226 1.226a.58.58 0 0 0 0 .818.58.58 0 0 0 .818 0l1.226-1.226a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0m-.352-8.735a.584.584 0 0 0 .825-.825L6.237 5.051a.584.584 0 0 0-.825.825zM5.011 11.07h-1.75a.584.584 0 0 0 0 1.167h1.75c.324 0 .584-.26.584-.583a.585.585 0 0 0-.584-.584m7.003-5.835c.324 0 .584-.26.584-.584V2.9a.58.58 0 0 0-.584-.584.58.58 0 0 0-.583.583V4.65c0 .323.262.584.583.584m5.616 1.621 1.226-1.225a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0l-1.226 1.225a.58.58 0 0 0 0 .818.576.576 0 0 0 .818 0m3.138 4.214h-1.75a.58.58 0 0 0-.584.584c0 .324.26.584.583.584h1.751a.584.584 0 1 0 0-1.167m-3.389 5.124a.584.584 0 0 0-.825.825l1.238 1.238a.584.584 0 0 0 .825-.826zm-5.365-9.795a5.256 5.256 0 0 0-5.257 5.258 5.256 5.256 0 0 0 5.257 5.257 5.256 5.256 0 0 0 5.257-5.257 5.256 5.256 0 0 0-5.257-5.258m0 11.675a.58.58 0 0 0-.583.583v1.751a.582.582 0 1 0 1.167 0v-1.75a.584.584 0 0 0-.584-.584"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" viewBox="0 0 19 19" class="rp-switch-appearance__icon rp-switch-appearance__icon--moon"><path fill="currentColor" d="M9.166 0a9.2 9.2 0 0 1 1.857.188.834.834 0 0 1 .042 1.623 4.47 4.47 0 1 0 5.457 5.457l.048-.135a.834.834 0 0 1 1.575.177q.186.902.188 1.856A9.168 9.168 0 1 1 9.166 0"></path></svg></div><div class="rp-social-links"><a href="https://github.com/tesslio" target="_blank" rel="noopener noreferrer" class="rp-social-links__item"><div class="rp-social-links__icon"><div class="rp-social-links__icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div></div></a><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"></ul></div></div><button aria-label="mobile hamburger" class="rp-nav-hamburger rp-nav-hamburger__sm"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 21 21"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667" d="M3.645 5.225h13.333M3.645 10.225h13.333M3.645 15.225h13.333"></path></svg></button><button aria-label="mobile hamburger" class="rp-nav-hamburger rp-nav-hamburger__md"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667" d="M3.645 5.225h13.333M3.645 10.225h13.333M3.645 15.225h13.333"></path></svg><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"><div class="rp-nav-menu__others-mobile__container"><div class="rp-nav-hamburger__md__hover-group"><div class="rp-nav-screen-appearance"><div class="rp-nav-screen-appearance__left">Theme</div><div class="rp-nav-screen-appearance__right"><!--$!--><template data-dgst=""></template><!--/$--></div></div><div class="rp-nav-screen-divider"></div><div class="rp-social-links"><a href="https://github.com/tesslio" target="_blank" rel="noopener noreferrer" class="rp-social-links__item"><div class="rp-social-links__icon"><div class="rp-social-links__icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div></div></a><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"></ul></div></div></div></ul></button></div></header><div class="rp-doc-layout__menu"><div class="rp-sidebar-menu"><button type="button" class="rp-sidebar-menu__left"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M4 6h24v2H4zm0 18h24v2H4zm0-12h24v2H4zm0 6h24v2H4z"></path></svg><span>Menu</span></button><button type="button" class="rp-sidebar-menu__right"><span class="rp-sidebar-menu__right__text">ON THIS PAGE</span><svg width="14" height="14" class="rp-progress-circle"><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-divider-light)" stroke-width="2"></circle><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-brand)" stroke-width="2" stroke-dasharray="37.69911184307752" stroke-dashoffset="37.69911184307752" transform="rotate(-90 7 7)" style="transition:stroke-dashoffset 0.3s"></circle></svg><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-sidebar-menu__right__icon" style="transform:rotate(0deg);transition:transform 0.2s ease-out"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></button></div></div><div class="rp-doc-layout__container"><aside class="rp-doc-layout__sidebar rp-scrollbar"><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Overview</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">What is Tessl?</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-divider" style="padding-left:12px"></div><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Introduction to Tessl</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/introduction-to-tessl/set-up-tessl" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Set up Tessl</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/introduction-to-tessl/installation" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Installation</span></div><div class="rp-sidebar-item__right"></div></a></div></div><a href="/introduction-to-tessl/build-your-first-factory" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Build your first factory</span></div><div class="rp-sidebar-item__right"></div></a><a href="/introduction-to-tessl/improve-your-first-skill" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Improve your first skill</span></div><div class="rp-sidebar-item__right"></div></a><a href="/introduction-to-tessl/core-concepts" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Core concepts</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Tutorials</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/tutorials/" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/using-tessl-as-a-package-manager" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Using Tessl as a package manager</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/protecting-against-insecure-skills" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Protecting yourself from insecure skills</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/codifying-and-enforcing-skill-standards" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Codifying and enforcing your company's skill standards</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/improving-a-skill" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Improving a skill</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/cutting-agent-cost-with-a-skill" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Cutting agent cost with a skill</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/setting-up-agentic-code-review" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Set up Tessl Code Review</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/tutorials/code-review-in-gitlab" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Run Code Review with GitLab</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/code-review-action" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Running Code Review in your own GitHub CI</span></div><div class="rp-sidebar-item__right"></div></a></div></div><a href="/tutorials/vulnerability-remediation" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Set up Vulnerability Remediation</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/improving-agent-code-quality" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Improving agent code quality</span></div><div class="rp-sidebar-item__right"></div></a><a href="/tutorials/automating-repetitive-tasks" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Automating repetitive tasks</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Automations</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/automations/overview" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Automations overview</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/automations/learn-from-past-work" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Learn from past work</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/event-sources" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Event sources</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/stop-and-change-loops" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Stop, remove, and move loops</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/troubleshooting-factory-runs" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Troubleshoot factory runs</span></div><div class="rp-sidebar-item__right"></div></a><a href="/schedules/overview" class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">Schedules</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/schedules/validate-in-ci" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span class="rp-doc">Validate schedules in CI</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/overview/example-schedules/" class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span class="rp-doc">Example Schedules</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/automations/overview/example-schedules/use-case-docs-audit" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span class="rp-doc">Keep docs in sync</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/overview/example-schedules/use-case-changelog" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span class="rp-doc">Weekly changelog</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/overview/example-schedules/use-case-review-miner" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span class="rp-doc">Review pattern mining</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/overview/example-schedules/use-case-test-health" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span class="rp-doc">Test health monitor</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/overview/example-schedules/use-case-release-check" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span class="rp-doc">Release readiness check</span></div><div class="rp-sidebar-item__right"></div></a></div></div></div></div></div></div><a href="/automations/factory-on-public-repositories" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Best practices for Tessl Factory on public repositories</span></div><div class="rp-sidebar-item__right"></div></a><a href="/schedules/environments" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Environments</span></div><div class="rp-sidebar-item__right"></div></a><a href="/automations/cloud-setup-hook" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Cloud setup hook</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Administrators</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/administrators/administrating-organizations-workspaces-and-roles" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Administrating Organizations, Workspaces, and Roles</span></div><div class="rp-sidebar-item__right"></div></a><a href="/administrators/roles" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Roles</span></div><div class="rp-sidebar-item__right"></div></a><a href="/administrators/least-privilege-environments" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Least privilege for environments</span></div><div class="rp-sidebar-item__right"></div></a><a href="/administrators/eu-region" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Using the EU region</span></div><div class="rp-sidebar-item__right"></div></a><a href="/administrators/sso" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">SSO</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Use</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/guides/use/using-the-tessl-agent" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Using the Tessl agent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/use/enhance-your-workflow-with-skills" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Enhance your workflow with skills</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/use/tile-to-plugin-migration" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Migrating from tiles to plugins</span></div><div class="rp-sidebar-item__right"></div></a><a href="/use/understand-your-skill-estate" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Understand your organization's context</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Creating skills and plugins</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/creating-skills-and-plugins/overview" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/create-a-skill" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Create a skill</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/create-a-plugin" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Create a plugin</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/import-a-claude-code-plugin" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Import a Claude Code plugin</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/add-an-mcp-server" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Add an MCP server</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/develop-and-test-locally" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Develop and test locally</span></div><div class="rp-sidebar-item__right"></div></a><a href="/creating-skills-and-plugins/publish-and-update" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Publish and update</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Improving your skills</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/improving-your-skills/overview-improving-skills-and-plugins" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/reviewing-skills" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Check a skill's quality using review</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/migrate-from-skill-review" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Migrate from skill review to Tessl Review</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/evaluate-skill-quality-using-scenarios" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Prove a skill works using evaluation</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/comparing-with-test-variants" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Compare with test variants</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/reading-evaluation-results" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Read evaluation results</span></div><div class="rp-sidebar-item__right"></div></a><a href="/improving-your-skills/troubleshooting-reviews-and-evals" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Troubleshooting reviews and evaluations</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Codifying and enforcing your skill standards</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/codifying-and-enforcing/overview" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/codifying-and-enforcing/verifiers-overview" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Verifiers overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/codifying-and-enforcing/verify-agent-changes-in-ci" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Verify agent changes in CI</span></div><div class="rp-sidebar-item__right"></div></a><a href="/codifying-and-enforcing/gate-skill-quality-in-ci" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Gate skill quality in CI</span></div><div class="rp-sidebar-item__right"></div></a><a href="/codifying-and-enforcing/define-your-own-quality-standards" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Define your own quality standards</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Distribute</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/guides/distribute/distributing-via-registry" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Distributing via registry</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/sharing-plugins-publicly" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Sharing with your team and publicly</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/permissions" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Permissions</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/connect-tessl-to-github" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Connect Tessl to GitHub</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/connect-tessl-to-gitlab" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Connect Tessl to GitLab</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/initialize-a-repository" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Initialize a repository</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/distribute-plugins-across-multiple-repositories" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Distribute plugins across multiple repositories</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/rollout-to-your-repositories/removing-the-integration" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Removing the integration</span></div><div class="rp-sidebar-item__right"></div></a><a href="/guides/distribute/repository-plugins" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Using plugins directly from your repo</span></div><div class="rp-sidebar-item__right"></div></a><a href="/distribute/promote-or-claim-a-skill-you-have-created" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Promote or claim a skill you have created</span></div><div class="rp-sidebar-item__right"></div></a><a href="/distribute/review-and-publish-with-github-actions" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Review, lint &amp; publish with GitHub Actions</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Projects</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/projects/overview" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Overview</span></div><div class="rp-sidebar-item__right"></div></a><a href="/projects/manage-projects-from-the-cli" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Manage projects from the CLI</span></div><div class="rp-sidebar-item__right"></div></a><a href="/projects/repairing-projects" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Repairing projects</span></div><div class="rp-sidebar-item__right"></div></a><a href="/projects/projects-in-the-app" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Projects in the app</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Reference</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/reference/cli-commands" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">CLI commands</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/configuration" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Configuration files</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/actions-triggers-schedules" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Actions, triggers, and schedules</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/skill-schemas" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Skill schemas</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/custom-agent-setup/" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Custom agent setup</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/reference/custom-agent-setup/opencode" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">OpenCode</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/custom-agent-setup/openclaw" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span class="rp-doc">OpenClaw</span></div><div class="rp-sidebar-item__right"></div></a></div></div><a href="/reference/workspaces" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Workspaces</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/mcp-tools" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">MCP tools</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/mcp-gateway" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">MCP gateway</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/github-badges" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">GitHub badges</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/glossary" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Glossary</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>Support</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/support/faqs" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">FAQs</span></div><div class="rp-sidebar-item__right"></div></a><a href="/support/giving-feedback" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Giving feedback</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/supported-platforms" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Supported platforms</span></div><div class="rp-sidebar-item__right"></div></a><a href="/reference/troubleshooting" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Troubleshooting</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-divider" style="padding-left:12px"></div><a href="/changelog-cli" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">CLI Changelog</span></div><div class="rp-sidebar-item__right"></div></a><a href="/changelog-web" class="rp-sidebar-item rp-sidebar-item--active rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Web Changelog</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-section-header"><div class="rp-sidebar-section-header__left"><span>LEGAL</span></div><div class="rp-sidebar-section-header__right"></div></div><a href="/legal/sharing-usage-data" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Sharing Usage Data</span></div><div class="rp-sidebar-item__right"></div></a><a href="/legal/open-source-attribution" class="rp-sidebar-item rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span class="rp-doc">Open Source Attribution</span></div><div class="rp-sidebar-item__right"></div></a></aside><div class="rp-doc-layout__doc"><main class="rp-doc-layout__doc-container"><div class="rp-doc rspress-doc"><!--$--><h1 class="rp-toc-include" id="web-changelog"><a href="#web-changelog" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Web Changelog<!-- --> </h1><div class="rp-not-doc rp-llms-container"><button class="rp-not-doc rp-llms-button rp-llms-copy-button"><div class="rp-llms-copy-button__icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" class="rp-llms-copy-button__icon-success"><path fill="currentColor" d="m9.55 18-5.7-5.7 1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" class="rp-llms-copy-button__icon-copy"><path fill="currentColor" d="M20 8v12H8V8zm0-2H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2"></path><path fill="currentColor" d="M4 16H2V4a2 2 0 0 1 2-2h12v2H4Z"></path></svg></div><span>Copy Markdown</span></button><button class="rp-llms-button rp-llms-view-options__trigger "><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-llms-view-options__arrow "><path fill="currentColor" d="M16 22 6 12l1.4-1.4 8.6 8.6 8.6-8.6L26 12z"></path></svg></button></div>
+<div class="gb-updates">
+<div class="gb-update">
+<p class="gb-update-date">2026-10-30</p>
+<h2 class="rp-toc-include" id="weekly-update"><a href="#weekly-update" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Weekly update</h2>
+<p>Covers changes deployed from October 23 to October 30, 2026.</p>
+<h3 class="rp-toc-include" id="breaking-changes"><a href="#breaking-changes" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking changes</h3>
+<ul>
+<li><strong>Environments are created in your organization</strong>: Workspaces no longer create their own environments. <strong>Create environment</strong> on a workspace now opens your organization&#x27;s Environments page, and the API&#x27;s workspace environment create endpoint returns <code>410 Gone</code>. Existing workspace environments keep working. See <a href="/schedules/environments" class="rp-link">Environments</a>.</li>
+<li><strong>Linear connects at the organization level</strong>: New Linear connections are always held by your organization, including connections made during onboarding and Implement setup. You can no longer connect Linear to a single workspace. Linear isn&#x27;t available in the EU region. See <a href="/administrators/least-privilege-environments" class="rp-link">Least privilege for environments</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="new-features"><a href="#new-features" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h3>
+<ul>
+<li><strong>Change your organization slug</strong>: Organization admins can change the slug on the organization Settings page. Links and scripts that use the old slug stop working, and the slug is locked while a Customer Managed Gateway is configured. See <a href="/administrators/administrating-organizations-workspaces-and-roles" class="rp-link">Administrating organizations</a>.</li>
+<li><strong>Test MCP server connections</strong>: The organization MCP servers page has a <strong>Test connection</strong> button for each server, and a server whose sign-in the provider rejected now shows <strong>Reconnect needed</strong> instead of <strong>Connected</strong>. See <a href="/reference/mcp-gateway" class="rp-link">MCP gateway</a>.</li>
+<li><strong>Check your Linear connection</strong>: The organization Linear settings page can check the connection and show, for each routed team, whether its issues can start a Loop. See <a href="/administrators/least-privilege-environments" class="rp-link">Least privilege for environments</a>.</li>
+<li><strong>Ignore a Linear team</strong>: A Linear team route can now ignore a team, so that team&#x27;s issues start no runs even when a catch-all route is set.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements"><a href="#improvements" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li><strong>SSO settings</strong>: The Authentication section shows each SSO connection with its status, lets admins delete an email domain, highlights pending domains, and opens setup portals in a new tab. SSO requires a plan that includes it. See <a href="/administrators/sso" class="rp-link">SSO</a>.</li>
+<li><strong>Name your workspace during onboarding</strong>: New accounts choose a workspace name during onboarding instead of getting an automatically named starter workspace.</li>
+<li><strong>Credits by source</strong>: The organization Usage page shows each credit source as one stacked bar, in the order credits are spent, and the sidebar shows your balance as &quot;X of Y&quot;.</li>
+<li><strong>Advisory Code Review</strong>: In advisory mode the Tessl Reviewer check now ends neutral, and findings it would have blocked on are labeled <strong>Should fix</strong>. See <a href="/tutorials/setting-up-agentic-code-review" class="rp-link">Set up agentic code review</a>.</li>
+<li><strong>All-time Code Review statistics</strong>: Code Review statistics now cover every review round instead of only the last 30 days.</li>
+<li><strong>Requested by on runs</strong>: A launch run&#x27;s details show who requested the run, next to who created it.</li>
+<li><strong>Skill activation for more agents</strong>: Eval results now report which skills Codex, Cursor, and Tessl agent runs loaded, not only Claude Code runs. See <a href="/improving-your-skills/reading-evaluation-results" class="rp-link">Reading evaluation results</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes"><a href="#bug-fixes" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Fixed Code Review not running on a pull request whose branch lacks the repository&#x27;s <code>.tessl-code-review.yml</code>.</li>
+<li>Fixed failed Code Review checks telling you to push a commit to retry. They now tell you to comment <code>@tessl-reviewer</code>.</li>
+<li>Fixed plugin file pages with long file paths failing to load.</li>
+<li>Fixed credit usage by actor on the Usage page showing percentages that changed when you filtered by actor type.</li>
+<li>Fixed opening a table filter scrolling the page to the top.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-10-23</p>
+<h2 class="rp-toc-include" id="weekly-update-1"><a href="#weekly-update-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Weekly update</h2>
+<p>Covers changes deployed from October 16 to October 23, 2026.</p>
+<h3 class="rp-toc-include" id="breaking-changes-1"><a href="#breaking-changes-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking changes</h3>
+<ul>
+<li><strong>MCP servers move to your organization</strong>: New MCP servers are added at the organization level, and the API&#x27;s workspace MCP server create endpoint now returns <code>410 Gone</code>. Servers a workspace already holds keep working. See <a href="/reference/mcp-gateway#register-an-mcp-server-in-your-organization" class="rp-link">Register an MCP server in your organization</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="new-features-1"><a href="#new-features-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h3>
+<ul>
+<li><strong>Organization MCP servers</strong>: Org admins register and authorize MCP servers from the new MCP servers tab in organization settings, and workspace MCP pages point there. See <a href="/reference/mcp-gateway" class="rp-link">MCP gateway</a>.</li>
+<li><strong>Organization secrets</strong>: Define a secret once on the new Secrets page in organization settings, and environments refer to it by name. People can rotate or delete a secret but never read its value. See <a href="/administrators/least-privilege-environments" class="rp-link">Least privilege for environments</a>.</li>
+<li><strong>Connect Linear for your organization</strong>: Linear now connects from the organization Integrations page, and one connection can route teams to projects in any workspace of the organization. Linear isn&#x27;t available in the EU region. See <a href="/administrators/least-privilege-environments" class="rp-link">Least privilege for environments</a>.</li>
+<li><strong>Archive a workspace</strong>: Workspace settings now offer <strong>Archive</strong>, and you can restore an archived workspace later. <code>GET /v1/workspaces/{workspaceIdOrName}</code> returns <code>archived</code>. See <a href="/reference/workspaces" class="rp-link">Workspaces</a>.</li>
+<li><strong>Claude Haiku 5.5</strong>: <code>claude-haiku-5-5</code> is available as a model for evals and cloud runs. See <a href="/improving-your-skills/evaluate-skill-quality-using-scenarios" class="rp-link">Evaluate skill quality using scenarios</a>.</li>
+<li><strong>Organization-wide usage data setting</strong>: Organization editors can share CLI usage data for everyone, block it for everyone, or leave the choice to each member. See <a href="/legal/sharing-usage-data" class="rp-link">Sharing usage data</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-1"><a href="#improvements-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li><strong>Clearer Code Review failures</strong>: When a managed review fails, the pull request&#x27;s check now says why. When too many lenses applied, it states the lens limit, and its link opens the review in the Tessl web app. Each repository&#x27;s Code Review summary also lists its recent reviews. See <a href="/tutorials/setting-up-agentic-code-review" class="rp-link">Set up agentic code review</a>.</li>
+<li><strong>Readable, live run logs</strong>: A run&#x27;s page has Overview, Logs, and Findings tabs. Logs read as a transcript, follow new events live, and load in full for finished runs. See <a href="/automations/troubleshooting-factory-runs" class="rp-link">Troubleshoot factory runs</a>.</li>
+<li><strong>AI credit pricing</strong>: AI usage, including evals, is now billed at model cost, and the platform charge for a cloud run is lower. See <a href="https://tessl.io/pricing/" target="_blank" rel="noopener noreferrer" class="rp-link">Tessl pricing</a>.</li>
+<li><strong>Projects list shows last activity</strong>: The organization Projects list shows each project&#x27;s latest activity, from runs, Loops, and findings, and sorts by it. See <a href="/projects/projects-in-the-app" class="rp-link">Projects in the app</a>.</li>
+<li><strong>GitHub connections no longer create projects</strong>: Repositories from a GitHub installation appear as choices in the <strong>Create project</strong> picker, and you create projects only for the ones you want. See <a href="/guides/distribute/rollout-to-your-repositories/connect-tessl-to-github" class="rp-link">Connect Tessl to GitHub</a>.</li>
+<li><strong>Overall score explained</strong>: Skill and plugin pages have a <strong>How is this calculated?</strong> link that explains the overall score. See <a href="/improving-your-skills/reviewing-skills" class="rp-link">Reviewing skills</a>.</li>
+<li><strong>Eval pages guide next steps</strong>: Empty and error states on eval pages offer next steps and retry actions. Activation results now tell a skill that wasn&#x27;t present apart from one that wasn&#x27;t used. See <a href="/improving-your-skills/reading-evaluation-results" class="rp-link">Reading evaluation results</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-1"><a href="#bug-fixes-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Fixed signing in from an identity provider tile, such as Okta, Google, or Entra, landing on the tessl.io homepage instead of the app.</li>
+<li>Fixed account scans failing when another organization owns some of the account&#x27;s private repositories, and the Azure DevOps scan scope page failing to load when its organizations had different policies.</li>
+<li>Fixed archiving a plugin version with a workspace or organization API key failing.</li>
+<li>Fixed users who hadn&#x27;t finished onboarding being sent back to onboarding when they opened integrations pages.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-10-16</p>
+<h2 class="rp-toc-include" id="weekly-update-2"><a href="#weekly-update-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Weekly update</h2>
+<p>Covers changes deployed from October 9 to October 16, 2026.</p>
+<h3 class="rp-toc-include" id="new-features-2"><a href="#new-features-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h3>
+<ul>
+<li><strong>Organization environments</strong>: Organization settings has a new Environments page for managing variables and run permissions, and for binding the projects that can use each environment. The page also shows which MCP servers each environment can use. See <a href="/schedules/environments" class="rp-link">Environments</a>.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-2"><a href="#improvements-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li><strong>Read-only integrations for members</strong>: Organization members can open the Integrations page in organization settings read-only. Only admins see the edit controls.</li>
+<li><strong>GitHub account pages</strong>: The GitHub integration lists each connected account, shows which Tessl apps it has and which it still needs, and opens a page with the account&#x27;s repositories and the projects that use them. See <a href="/guides/distribute/rollout-to-your-repositories/connect-tessl-to-github" class="rp-link">Connect Tessl to GitHub</a>.</li>
+<li><strong>Projects list</strong>: The organization Projects list shows each project as its own row with its repository beneath it, can be filtered to projects with active Loops, and hides projects that were opted out. Creating a project now suggests a package path when the repository root already has a project. See <a href="/projects/projects-in-the-app" class="rp-link">Projects in the app</a>.</li>
+<li><strong>Code Review connection status</strong>: The Code Review page states clearly whether the Tessl Reviewer GitHub App isn&#x27;t connected, was uninstalled, is suspended, is missing permissions, or has no repositories. See <a href="/tutorials/setting-up-agentic-code-review" class="rp-link">Set up agentic code review</a>.</li>
+<li><strong>Context table explanations</strong>: Empty Score and Security cells on Context tables now say why they&#x27;re empty, such as not scored, not reviewed, or not applicable. See <a href="/use/understand-your-skill-estate" class="rp-link">Understand your organization&#x27;s context</a>.</li>
+<li><strong>Refresh after updates</strong>: When a new version of the app is deployed while a page is open, the app asks you to refresh instead of failing silently.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-2"><a href="#bug-fixes-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Fixed spend from managed GitHub App reviews showing as unattributed on the Usage page. It now shows as organization level.</li>
+<li>Fixed repository search failing for GitHub App installations on personal accounts.</li>
+<li>Fixed a GitHub App connection request sometimes recording the wrong GitHub account when you had pending requests for several accounts.</li>
+<li>Fixed a &quot;Page not found&quot; error right after you completed GitHub onboarding.</li>
+<li>Fixed the audit log missing the Tessl support badge on some events performed by Tessl support.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-10-09</p>
+<h2 class="rp-toc-include" id="weekly-update-3"><a href="#weekly-update-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Weekly update</h2>
+<h3 class="rp-toc-include" id="new-features-3"><a href="#new-features-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h3>
+<ul>
+<li><strong>Project setup status</strong>: The project overview page now shows a setup card covering GitHub access, your <code>tessl.json</code> manifest, configured Loops, and schedule health, with a concrete next step when something needs attention.</li>
+<li><strong>Per-environment Linear access</strong>: Workspace environments now have a Linear access setting (none, read, or write), so a launch run&#x27;s Linear access is scoped to its environment instead of a person&#x27;s own token.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-3"><a href="#improvements-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li><strong>Activity actor filter</strong>: The workspace Activity page now has a Who filter for eval and review runs, so you can narrow the feed to your own runs, a specific org member, or API keys.</li>
+<li><strong>Project search and grouping</strong>: The organization Projects list is now searchable by project name, repository, or path, shows a relative last-updated time per project, and groups projects under their repository so a repository&#x27;s projects no longer split across pages.</li>
+<li><strong>Clearer project creation</strong>: Creating a project now gives specific guidance when no repository is connected, when you lack access, when a search returns nothing, or when loading fails, and lists every repository connection your workspace can see.</li>
+<li><strong>Context filters in one place</strong>: The workspace Context page shows all its filters as a single row of pills instead of hiding most of them behind a &quot;More filters&quot; control.</li>
+<li><strong>Usage page on every plan</strong>: The organization Usage page is now available to admins on every plan, not just Business and Enterprise.</li>
+<li><strong>Higher automation concurrency</strong>: The per-project limit on concurrent automation runs has doubled, from 50 to 100.</li>
+<li><strong>New accounts get a starter workspace</strong>: Signing up now creates a starter workspace automatically, rather than requiring you to create one during onboarding.</li>
+<li><strong>Eval scenario guidance</strong>: The skill and plugin score page now explains how many more eval scenarios are needed for a full score, when fewer than 3 have run.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-3"><a href="#bug-fixes-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Fixed CLI device-code sign-in saving credentials for an organization your Tessl instance doesn&#x27;t serve, which made every later CLI command fail; the sign-in page and onboarding guidance also point EU accounts at the correct region and login command.</li>
+<li>Fixed breadcrumb navigation links occasionally flickering or misbehaving when a breadcrumb segment was added or removed.</li>
+<li>Fixed long reasoning text in a skill review scorecard overflowing its table cell instead of wrapping.</li>
+<li>Fixed adding some remote MCP servers, including GitBook, as a connection: Tessl&#x27;s redirect URI included a query string that those servers&#x27; authorization flow rejects.</li>
+<li>Fixed inconsistent quality scoring on some skills.</li>
+<li>Fixed an issue where semantic search wasn&#x27;t finding some private skills.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-10-03</p>
+<h2 class="rp-toc-include" id="new-features-4"><a href="#new-features-4" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h2>
+<ul>
+<li>The <code>publish_plugin</code>, <code>validate_plugin_for_publish</code>, <code>list_plugin_files</code>, and <code>get_plugin_file</code> tools on the remote MCP server now support incremental plugin publishing: agents can apply ordered put, edit, and delete changes to an existing plugin version without re-uploading every file.</li>
+<li>The <code>archive_plugin</code> and <code>delete_plugin</code> tools are now available on the remote MCP, allowing publishers to archive or permanently delete plugins without leaving their coding environment.</li>
+<li>Projects have been moved to the Org level.</li>
+<li>Workspace settings no longer shows a separate Source control section; Linear and other workspace integrations now appear together under a single Integrations section alongside MCP servers.</li>
+<li>The sidebar navigation is reorganized into three labeled groups: Work, Manage, and Resources. The workspace selector is removed from the sidebar; a Workspaces entry under Manage links to a list page, the Activity page gains a workspace selector, and workspace Settings is accessible from each workspace card.</li>
+<li>Org admins now have a setting to enable or disable automatic quality reviews dispatched during inventory scans using the <code>automaticQualityReviewsEnabled</code> field. Security scans and indexing continue regardless of this setting.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-4"><a href="#bug-fixes-4" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Code Review via the GitHub App now correctly reads pull-request links. The link-selection model is included in every App-managed run key, and documentation pages up to 2 MB are fetched and converted to text rather than being refused for size.</li>
+<li>The Last changed timestamp on the managed-requirements policy editor now correctly updates when a newer policy is saved.</li>
+<li>Workspace publishers can now archive, unarchive, deprecate, and undeprecate plugins from the plugin page. Previously only managers could perform these actions.</li>
+<li>The Automations entry is no longer shown in the workspace sidebar; existing Automations routes remain accessible via direct links.</li>
+<li>Skill activations now include file reads of installed <code>SKILL.md</code> files via the Read tool, <code>cat</code>, <code>head</code>, and <code>sed</code>, so eval activation counts accurately reflect all skill usage.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-09-28</p>
+<h2 class="rp-toc-include" id="new-features-5"><a href="#new-features-5" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h2>
+<ul>
+<li>Organizations can now run up to 1,000 eval scenarios per day, up from 300.</li>
+<li>Workspace managers can now mark a plugin as deprecated with an optional reason and replacement. Users viewing a deprecated plugin see a warning banner on its registry page.</li>
+<li>The findings panel now detects and reports <code>SKILL.md</code> files that exceed 500 lines, explaining what to move to supporting files and providing remediation guidance.</li>
+<li>Users can now manually trigger a schedule sync for a project from the project Schedules tab. The sync re-reads and validates the <code>tessl.json</code> on the default branch and reconciles schedules, with progress polling and status feedback in the UI.</li>
+<li>Credit usage is now broken down by platform charges and AI token costs.</li>
+<li>GPT-6 Luna (<code>gpt-6-luna</code>) and GPT-6 Sol (<code>gpt-6-sol</code>) are now available as model selections for LLM key issuance and agent workflows.</li>
+<li>Automation trigger conditions now support recursive <code>not</code>, <code>any</code>, and <code>none</code> operator objects and a wildcard path projection for list members, enabling trigger rules that match or exclude events based on nested data.</li>
+<li>Eval run pages now show a redesigned layout with responsive result and metric cards, scenario comparisons and detail drawers, setup data, persisted run selection via URL, and an Activation section showing per-variant and per-scenario breakdowns of how often agents loaded each skill. The updated view is available in the workspace eval run view, public run links, and plugin eval tabs.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-4"><a href="#improvements-4" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li>Linear webhook deliveries are now processed exclusively through the factory trigger intake. The legacy Linear task-delegation path is removed: existing workflows built on it no longer function and must be rebuilt using factory triggers via <code>POST /experimental/webhooks/linear</code>. The <code>PATCH /integrations/:integrationId</code> and <code>GET /integrations/:integrationId/linear/metadata</code> endpoints reflect the updated integration shape.</li>
+<li>The deprecated <code>gpt-5-codex</code> and <code>gpt-5.2-codex</code> model IDs are no longer accepted for eval runs or agent workflows.</li>
+<li>The default eval model is now DeepSeek V4.1 Flash (<code>deepseek-v4.1-flash</code>), replacing DeepSeek V4 Flash, and the default review model is now GLM 5.3 (<code>glm-5.3</code>), replacing GLM 5.2. Several other deprecated model routes are removed from the catalogue.</li>
+<li>Workspaces can now create up to 100 active schedules by default, up from the previous limit of 20.</li>
+<li>When a schedule sync fails, the notifications are sent to the user who edited the schedule last, rather than routing to the workspace administrators</li>
+<li>Repo-defined scheduled runs now correctly reconcile the declaring manifest before installing and running the target skill.</li>
+<li>Launch runs can now be filtered by exact label via <code>GET /experimental/launch-runs</code>, enabling more reliable deduplication of run creation attempts.</li>
+<li>Skill quality and security scores are now correctly preserved across synchronizations when a skill is unchanged, preventing score regressions.</li>
+<li>Switching workspaces from the sidebar now keeps users on the same screen when the destination workspace supports it, carrying over stable view state.</li>
+<li>Users can now delete projects from the project overview page.</li>
+<li>Quality skill reviews no longer generate duplicate review runs when the <code>SKILL.md</code> content differs only in line endings or boundary blank lines, reducing redundant credit consumption.</li>
+<li>Organizations that spent their Free credit allowance and then upgraded to Team now correctly receive their full Team credit allowance.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-5"><a href="#bug-fixes-5" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Disabling a skill review quality score policy (setting it to OFF) now correctly saves and displays as disabled rather than being silently converted to a score of 0.</li>
+<li>Visitors see a loading spinner and an accessible status message while login navigation is in progress, and the return destination is preserved correctly if the current page changes before login resolves.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-09-21</p>
+<h2 class="rp-toc-include" id="breaking-changes-2"><a href="#breaking-changes-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking changes</h2>
+<ul>
+<li>The <code>snapshot</code> field is removed from repo-defined schedule entries in <code>tessl.json</code>. Schedules that declare <code>snapshot</code> are now rejected by schema validation. The field had no effect on schedule execution.</li>
+</ul>
+<h3 class="rp-toc-include" id="new-features-6"><a href="#new-features-6" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h3>
+<ul>
+<li>Azure DevOps integration (Microsoft Entra ID) is now generally available to all entitled organizations. Connect an Azure DevOps organization to discover repositories, scan skills, rescan on demand, and manage scan policy from org integration settings.</li>
+<li>The login page now shows a region selector that navigates users to the correct regional login and remembers their choice in local storage.</li>
+<li>A new <code>dryRun: true</code> setting in <code>tessl.json</code> puts trigger automation in observation mode: conditions are traced, action fields are resolved, and each trigger logs whether it would have fired, without claiming deliveries or starting runs.</li>
+<li>Tessl Code Review credit usage per completed round has changed in both regions. See <a href="https://tessl.io/pricing/" target="_blank" rel="noopener noreferrer" class="rp-link">https://tessl.io/pricing/</a> for current details.</li>
+<li>Org and workspace publish policies support an optional minimum skill quality score. When set, publishing a plugin version is blocked until every skill meets the configured threshold.</li>
+<li>The MCP server detail page shows a live &#x27;Available tools&#x27; panel with per-tool descriptions, manual refresh, re-authorization prompts, and distinct error states for unavailability and protocol errors.</li>
+<li>Context improvement proposals can now target any Markdown file in the repository instead of only <code>AGENTS.md</code> and <code>CLAUDE.md</code>. Proposals go through an editor review step before being published, improving accuracy and placement. Repositories blocked by an unfinished proposal run are automatically released on the next dispatch.</li>
+<li>Eval run tables now show a skill activation column at the variant, scenario, and repeat levels: which skills were activated, the activation rate, and each activated skill&#x27;s name in the expanded view.</li>
+<li>Eval runs using Codex CLI now capture per-turn tool call and token data, enabling turn-level analysis previously only available for Claude runs.</li>
+<li>Org admins can enable a &#x27;Global install only&#x27; toggle in the managed dependencies policy editor to install managed plugins once per machine without per-project declarations.</li>
+<li>When Code Review fails because the organization has no credits, a comment is automatically posted on the pull request explaining the situation and linking to the pricing page.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-5"><a href="#improvements-5" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li>&#x27;Enable reviews&#x27; on a repository row immediately saves the repository and opens settings pre-configured, without a second toggle inside the drawer.</li>
+<li>Scheduled runs are more reliable: duplicate fires are rejected, and a schedule targeting a deleted or archived workspace records a durable configuration failure instead of retrying indefinitely.</li>
+<li><code>file:</code> skill references in nested <code>tessl.json</code> manifests now resolve relative to the manifest&#x27;s own directory rather than the repository root, so multi-manifest repositories can use short relative paths without breakage.</li>
+<li>The integration scan history list on org settings shows 10 scans per page with a &#x27;Load more scans&#x27; button, replacing the previous flat list.</li>
+<li>Quality scores and review results now reflect the selected context version: a version with no completed review returns null scores rather than stale scores from another version.</li>
+<li>Untracked findings now require complete first-party reference evidence before being reported; incomplete or indeterminate archive evidence is treated as unknown.</li>
+<li>Skill context occurrences now persist display name and description correctly on both fresh indexing and re-observation of unchanged file versions.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-6"><a href="#bug-fixes-6" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Launch run resumes now expire seven days after the workspace was saved; attempts after the window receive HTTP 410. Launch runs retain their original run ID after sandbox recovery.</li>
+<li>The schedule detail page shows a human-readable description (e.g. &#x27;Every Friday at 9:00 AM&#x27;) instead of the raw cron expression; the raw string is still accessible on hover.</li>
+<li>Repo-defined schedules missing project links are automatically repaired after the next manifest sync. Schedules created from trigger-fired runs no longer inherit the original trigger event data.</li>
+<li>The Schedules breadcrumb on a launch run detail page now links to the owning project&#x27;s Schedules tab. <code>GET /experimental/launch-runs/{id}</code> includes <code>scheduledRunId</code>.</li>
+<li>Multi-manifest repositories isolate each project&#x27;s verifiers and context to the exact <code>tessl.json</code> that defines them.</li>
+<li>GitHub App accounts can request Code Review approval for pull requests they authored, restoring the address-then-approve workflow.</li>
+<li>Repository indexing and review dispatch follow source identity through renames and transfers.</li>
+<li>Authenticated users visiting private registry detail pages are no longer incorrectly redirected before authentication resolves.</li>
+<li>When creating an environment with conflicting GitHub access settings, the error message uses plain language and explains what to change.</li>
+<li>Eval runs uploading a local directory no longer fail with a fingerprint mismatch during staging.</li>
+<li>Launch sandboxes use a pinned, protected image, preventing run failures caused by the image being replaced during execution.</li>
+<li>Failed-scan alerts on the Home page link directly to the affected SCM provider&#x27;s integration page and open retryable rows on arrival. Scan history appears inline in integration settings without requiring manager permissions.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-09-14</p>
+<h2 class="rp-toc-include" id="new-features-7"><a href="#new-features-7" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h2>
+<ul>
+<li>Projects are now available at the organization level. Browse projects across your organization, filter them by their backing workspace, and open a project to view its Context, Findings, Evals, and Schedules.</li>
+<li>New <code>GET /v1/orgs/{orgId}/users</code> and <code>GET /v1/orgs/{orgId}/users/{userIdOrName}</code> list and look up the members of an organization you belong to, with the same response shapes as the user routes they replace. <code>GET /v1/users</code> and <code>GET /v1/users/{userIdOrName}</code> are deprecated in favor of them and remain fully supported. <code>GET /v1/workspaces/{workspaceIdOrName}</code> now includes <code>orgId</code> for callers who can view the workspace.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-09-03</p>
+<h2 class="rp-toc-include" id="breaking-changes-3"><a href="#breaking-changes-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking changes</h2>
+<ul>
+<li><code>GET /experimental/tasks</code> renames its link filters from <code>filter[link.type]</code> and <code>filter[link.value]</code> to <code>filter[linkType]</code> and <code>filter[linkValue]</code>. The dotted names are removed with no alias. The old spellings worked only because this route read those two query keys by hand; the shared filter parser matches field names with word characters only, so a dotted key never reaches a route that relies on the parser. The rename aligns these filters with that parser&#x27;s vocabulary, so filter field names are camelCase throughout.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-09-02</p>
+<h2 class="rp-toc-include" id="breaking-changes-4"><a href="#breaking-changes-4" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking changes</h2>
+<ul>
+<li><code>GET /experimental/tasks/by-link</code> is removed. <code>GET /experimental/tasks</code> now accepts <code>filter[link.type]</code> and <code>filter[link.value]</code>, which return every task carrying the reference, newest first, with the same paging as any other task list. Each filter narrows on its own and the two compose.</li>
+<li><code>tessl task by-link</code> is removed. Use <code>tessl task list --link-type</code> and <code>--link-value</code>.</li>
+</ul>
+<h3 class="rp-toc-include" id="features"><a href="#features" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h3>
+<ul>
+<li>Several tasks can now link the same external reference. Previously a given pull request URL or Linear issue belonged to exactly one task per workspace, so when a later task reported the same reference it was silently dropped and never showed up in a lookup. A pull request worked on across several review rounds now lists every task that touched it.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-08-26</p>
+<h2 class="rp-toc-include" id="new-features-8"><a href="#new-features-8" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>New features</h2>
+<ul>
+<li>Organizations now have their own Home, Context, and Findings pages that roll up every workspace in the org, so you can see context health, quality bands, and security findings across the whole organization in one place. Signed-in users now land on org Home by default, and the sidebar logo navigates there. Inventories owned directly by the org, with no workspace, now appear on these pages too.</li>
+<li>The organization Insights page shows organization-wide activity: active users, plugin install counts sourced from a nightly snapshot (total, daily series, and top plugins), and per-window timeframe labels on each activity graph. The <code>GET /experimental/orgs/{orgId}/insights</code> response carries an <code>installs</code> object and <code>window.installsThrough</code>.</li>
+<li>New scheduled runs get a plain-English schedule builder (every N hours, daily, weekly on chosen days, or monthly) with a time-of-day and a Timezone dropdown, keeping raw cron entry behind a toggle for expressions the builder cannot model. The Skill, Repository, and Environment fields become searchable comboboxes, the Agent and Model controls populate from the supported-agents endpoint, and the form links out to environment setup.</li>
+<li>The scheduled-run detail page shows the schedule author, a linked and summarized Skill, and each run&#x27;s output as a pull request link or summary. The scheduled-runs table shows a plain-English schedule with its timezone, a Name and Description, and the last run&#x27;s outcome. Scheduled runs accept an optional <code>description</code> on <code>POST</code> and <code>PATCH /experimental/scheduled-runs</code>.</li>
+<li>Launch runs can be cancelled through the new <code>POST /experimental/launch-runs/{id}/cancel</code> endpoint. Cancellation is idempotent, tears down the sandbox, and marks the run with a distinct <code>cancelled</code> status. Launch-run reads gain a derived <code>outcome</code> (succeeded, no-action, or failed with a reason) so an agent-reported failure is distinguishable from a completed run, plus a live <code>progress_phase</code>, <code>progress_message</code>, and <code>liveness</code> projection.</li>
+<li>The native remote MCP server gains a discover, validate, publish, and poll workflow for skill-backed plugins through <code>validate_plugin_for_publish</code>, <code>publish_plugin</code>, and <code>get_plugin_publish_status</code>, an optional pre-publish skill quality review through <code>review_skill</code> and <code>check_review_status</code>, and a read-only <code>list_workspaces</code> tool for workspace discovery. <code>validate_plugin_for_publish</code> now reports every detectable publishing problem in one call. The endpoint serves both the current MCP protocol (<code>2026-07-28</code>) and the legacy version (<code>2025-11-25</code>), and every authenticated tool call produces an audit event.</li>
+<li>Organizations can run and track a Claude marketplace sync at org scope through <code>POST /v1/orgs/{orgId}/claude-marketplace/sync</code>, <code>GET /v1/orgs/{orgId}/claude-marketplace/sync/latest</code>, and <code>GET /v1/orgs/{orgId}/claude-marketplace/sync/overview</code>. The integration settings page shows a live sync overview with per-plugin status, versions, Quality and Security columns, and run history, plus an Automatic sync toggle (<code>syncEnabled</code>) that pauses scheduled sync while keeping manual sync available.</li>
+<li>Workspace owners can delete eligible plugins from the plugin detail page through a Delete plugin action and confirmation, without Tessl-admin support. Policy rejections surface the exact reason.</li>
+<li>New <code>GET /v1/whoami</code> reports what a request is authenticated as, for both user sessions and API keys, discriminated on <code>data.type</code>. <code>GET /v1/users/me</code> is deprecated in favor of it.</li>
+<li>Feature availability can now be gated by region from a committed policy driven by the <code>TESSL_REGION</code> environment variable: routes marked <code>regionalFeature</code> return <code>404</code> where a feature is withheld, and the frontend hides it. The policy ships empty, so nothing is withheld yet.</li>
+</ul>
+<h3 class="rp-toc-include" id="improvements-6"><a href="#improvements-6" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Improvements</h3>
+<ul>
+<li>The BYO LLM gateway is now the <em>Customer Managed Gateway</em> throughout the product. It uses a high, medium, and low model tier selection instead of per-feature model dropdowns: <code>byo-provider</code> responses drop <code>featureDefaultModels</code> and carry <code>tierModels</code> instead, and enabling a gateway now requires a model for every tier. A gateway can be created with a connection and no models while routing is off, so you can save the connection first and add models later. The stored credential shows as a masked, read-only value with a Replace control.</li>
+<li>Linear can no longer be connected at organization level and is managed at workspace level only. The org-level Linear connect, callback, metadata, and config routes under <code>/v1/orgs/{orgId}/integrations</code> are removed, and Linear no longer appears in org integration listings. Existing workspace-level Linear connections keep working. In a hoisted organization with more than one source-control installation, a workspace&#x27;s own connection is now preferred over the org&#x27;s.</li>
+<li>The launch-run, scheduled-run, and task-run creation endpoints accept a GitHub repository as a bare <code>owner/repo</code> slug, an HTTPS URL, a scheme-less link, or SSH shorthand, normalize it to a canonical <code>https://github.com/owner/repo</code>, and reject unparseable or non-GitHub values with a <code>400</code>. These endpoints also let internal callers select the standard or Docker-capable sandbox image. Creating a scheduled run from an inline spec now requires an <code>environmentId</code> and rejects the request with a <code>400</code> up front instead of failing later at trigger time.</li>
+<li>A cloud launch that names no GitHub-token source (no uploaded env file and no workspace environment carrying a token) is now rejected with a <code>400</code> before the run, workflow, or 100-credit platform fee is created, and the error names both remedies. Checkout is blocked with a <code>503</code> unless the whole payment-to-credit pipeline is configured, so a card is never charged against a pipeline that cannot grant credits.</li>
+<li>Org read endpoints now include the organization <code>slug</code> on <code>GET /v1/orgs/{orgId}</code> and <code>GET /v1/users/{userId}/orgs</code>, and <code>/orgs</code> URLs accept an org id or slug with the slug canonical. <code>GET /experimental/launch-runs</code> and scheduled-run fire history include the configured <code>mcpServers</code>, <code>outcome</code>, <code>summary</code>, <code>pr</code>, and <code>triggerSource</code> fields. Workspace environments can carry MCP servers, which are applied to launch, scheduled, and task runs.</li>
+<li>Paginated remote MCP list tools now render an explicit page count that states it is not the total and include the exact <code>nextCursor</code>, so agents can page through every result. <code>list_organization_skills</code> and <code>get_skill</code> discover skills contained in published plugins and accept an optional <code>workspaceId</code> filter.</li>
+<li>Publishing a passing plugin now automatically starts finding enrichment for eligible security findings without blocking, delaying, or failing the publish. Creating an inventory now requires selecting a GitHub organization. The target-repository picker searches across every connected GitHub organization instead of one, and the scan-scope picker shows only repositories already in the policy with a searchable combobox to add more.</li>
+<li>The organization Home Most Installed chart ranks plugins by 30-day installs from the same source as the Skill Installs sparkline, so the two panels agree. The Active users tile is replaced by a New members tile that counts members by join date. Context score badges open a popover with the full quality, impact, and security breakdown. The Home CLI box gains a package-manager selector (<code>npm</code>, <code>yarn</code>, <code>pnpm</code>, <code>bun</code>) that updates the shown command and remembers the choice.</li>
+<li>During the Code Review beta, review rounds consume no credits while every round is still recorded in the usage ledger and shown at 0 credits. Support staff can grant 500 credits from the admin Grant Credits dropdown, and can reset a user&#x27;s onboarding status from the admin user page.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-7"><a href="#bug-fixes-7" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug fixes</h3>
+<ul>
+<li>Free-tier organizations now reset their credit balance on a rolling monthly window anchored to their signup date, with month-end clamping, and the public credit status exposes an explicit <code>resetsAt</code>. Paid-plan organizations with no billing ledger are no longer given the free-tier allowance and resolve as unlimited instead of being wrongly blocked. Team checkout now succeeds for billing addresses outside the US and Canada that carry a state code, and legitimate Canadian territory addresses are accepted.</li>
+<li>A scheduled run&#x27;s <code>nextRunAt</code> is now recalculated and stored when its cron or timezone changes or when a paused schedule resumes, so it is no longer blank after those operations. A completed launch run whose agent reported failure shows a distinct Agent Failed badge instead of reading as Completed.</li>
+<li>The &quot;View in Context&quot; link on a finding now lands on that finding&#x27;s own Context item rather than an empty page; the findings response exposes <code>groupId</code> and the Context endpoint accepts <code>filter[groupId]</code>. Context tables gain sortable column headings and a repository filter. The org Home context-health bands are sourced from the context model over the same scope as the Context page, so the bands sum to the Total context figure.</li>
+<li>Charts on organization pages that had stopped drawing now render again, the org usage range no longer triggers a refetch loop, and several organization Home and Insights states now show static placeholders or a Try again control instead of flashing skeletons or asking for a full reload.</li>
+</ul>
+<h3 class="rp-toc-include" id="features-1"><a href="#features-1" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h3>
+<ul>
+<li>The workspace sidebar now has an <strong>Activity</strong> item that replaces the separate <strong>Eval Runs</strong> and <strong>Reviews</strong> items, showing eval runs and reviews in one timeline.</li>
+<li>Workspace <strong>Members</strong> moved out of the sidebar and into <strong>Settings</strong>, where it is a card on the workspace Settings page.</li>
+<li>The organization switcher moved from the account menu at the bottom of the sidebar to a dropdown at the top of the sidebar. Organization <strong>Members</strong>, <strong>Settings</strong>, and <strong>Admin Keys</strong> open from that dropdown.</li>
+<li>The sidebar has a new collapsible <strong>Resources</strong> section with <strong>Registry</strong>, <strong>Documentation</strong>, and <strong>Community</strong>. The <strong>Blog</strong> link was removed.</li>
+<li>Search is now an icon in the sidebar header. Click it, or press <code>cmd-K</code> (<code>ctrl-K</code> on Windows and Linux), to open the search popover.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-31</p>
+<h2 class="rp-toc-include" id="features-2"><a href="#features-2" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li><code>POST /experimental/tasks</code>, <code>GET /experimental/tasks/{id}</code>, and <code>GET /experimental/tasks/by-link</code> responses now include a <code>links.web</code> field with the task&#x27;s URL in the web app.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-24</p>
+<h2 class="rp-toc-include" id="features-3"><a href="#features-3" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li><code>GET /v1/workspaces/{workspaceNameOrID}/skill-inventories/{id}/findings</code> now returns a <code>repoActivity</code> field (<code>active</code>, <code>quiet</code>, or <code>dormant</code>) reflecting how recently a finding&#x27;s repositories were pushed to, and accepts a <code>repoActivity</code> query parameter to filter results by one or more of these buckets.</li>
+<li>The canonical home banner on skill pages now shows a colored status badge (In sync, Stale, or Modified), plus when that status was last confirmed, matching the detail already shown in the &quot;Also appears in&quot; panel.</li>
+<li><code>GET /experimental/tasks/{id}/runs</code> responses now include a <code>summary</code> field on completed runs when one is available, giving a short description of what the run did.</li>
+<li>The task timeline now shows a short summary of what a completed run did, alongside its existing status and links.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-8"><a href="#bug-fixes-8" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The Eval Runs pages no longer show an unrelated default-model notice banner at the top; pages now open directly with the heading and results table.</li>
+<li>Eval run detail pages now show an &quot;Activation Run&quot; label above the run heading for runs that measure activation, and the Skills Activated column shows &quot;None&quot; when a solution completed with confirmed zero activations; previously this looked identical to a run still in progress.</li>
+<li>The stale copy-state label on skill pages now reads &quot;Last in sync {date}&quot; instead of the contradictory &quot;In sync until {date}&quot;, so the date shown accurately reflects when the copy last matched its source.</li>
+<li>Skill listings on the registry now correctly hide skills whose current review failed, and no longer hide skills based on stale historical review results for identical content.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-17</p>
+<h2 class="rp-toc-include" id="features-4"><a href="#features-4" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Connected GitHub App integrations now show separate Manage and Remove actions in integration settings, in place of a single Remove button: Manage opens the installation&#x27;s settings on GitHub, and Remove opens a confirmation dialog before disconnecting.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-9"><a href="#bug-fixes-9" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The Ignored repos picker on the inventory scans page now searches your connected provider directly, so repositories beyond the first page of previously scanned repos can be found and ignored.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-09</p>
+<h2 class="rp-toc-include" id="features-5"><a href="#features-5" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>The eval runs list now shows a single Injected Context column in place of the separate Type and Subject columns, plus a new Scenarios column showing where each run&#x27;s scenarios live.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-10"><a href="#bug-fixes-10" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Removed an inconsistent focus-ring outline from breadcrumb links; other interactive elements are unaffected.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-08</p>
+<h2 class="rp-toc-include" id="features-6"><a href="#features-6" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>The eval run detail view now labels variants &quot;Baseline&quot; and &quot;With context&quot; (replacing the misleading &quot;Without context&quot; label) and shows a new Injected Context panel describing exactly what fixture, plugin, directory, or commit a run injected.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-06</p>
+<h2 class="rp-toc-include" id="bug-fixes-11"><a href="#bug-fixes-11" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h2>
+<ul>
+<li>Skill-overload warnings no longer count skills sitting in plain source directories that no agent actually loads; only genuinely root-loaded skills count toward the threshold.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-03</p>
+<h2 class="rp-toc-include" id="features-7"><a href="#features-7" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Billing settings now show the Team plan&#x27;s monthly price inline: free organizations see it next to the Upgrade to Team button before checkout, and Team organizations see it next to their plan name.</li>
+<li><code>GET /v1/orgs/{orgId}/billing/subscription</code> now includes <code>monthlyPriceUsd</code> and <code>upgradePriceUsd</code> fields. <code>monthlyPriceUsd</code> is the current plan&#x27;s monthly price (<code>null</code> for free or custom-priced plans); <code>upgradePriceUsd</code> is the Team plan&#x27;s upgrade price (<code>null</code> once the org is already on a paid plan).</li>
+<li>Workspace member pages now support setting a default role that&#x27;s automatically granted to every member of the workspace&#x27;s organization, on top of any individual membership, useful for organizations that provision users via SSO.</li>
+<li><code>PATCH /v1/workspaces/:id</code> now accepts an <code>orgDefaultRole</code> field. When set, every member of the workspace&#x27;s owning organization is granted that role on the workspace (capped at <code>publisher</code>); omit it or set it to <code>null</code> to remove the default.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-12"><a href="#bug-fixes-12" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The org billing page&#x27;s credit usage display now matches the sidebar meter: over-limit usage reads &quot;You&#x27;ve used your credit allowance&quot; instead of a negative remaining figure, and fractional credit amounts are floored consistently.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-02</p>
+<h2 class="rp-toc-include" id="features-8"><a href="#features-8" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>New <code>DELETE /v1/projects/:projectId</code> endpoint soft-deletes a project: it&#x27;s removed from normal reads and its name and source binding are freed for reuse, while eval-run and scenario-generation history is preserved.</li>
+</ul>
+<h3 class="rp-toc-include" id="breaking-changes-5"><a href="#breaking-changes-5" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking Changes</h3>
+<ul>
+<li><code>GET /v1/orgs/{orgId}/credits</code> <strong>no longer returns</strong> the <code>bundles</code> field by default. Pass <code>?include=bundles</code> to include the purchasable credit-bundle catalogue in the response, as before.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-07-01</p>
+<h2 class="rp-toc-include" id="features-9"><a href="#features-9" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Claude Sonnet 5 (<code>claude-sonnet-5</code>) is now available as an agent model for eval runs.</li>
+<li>The workspace Inventories Scans page has been rebuilt as a dashboard, with summary cards for estate growth, findings backlog, and scan health shown above the scans table.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-29</p>
+<h2 class="rp-toc-include" id="features-10"><a href="#features-10" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Organizations can now subscribe to the Team plan and manage billing from organization settings: pay by card through a hosted checkout, get a monthly credit allowance, and buy additional credit bundles whenever you need them. Cancelling reverts the organization to the free plan at the end of the billing period.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-13"><a href="#bug-fixes-13" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Requests to <code>GET /v1/tiles/:workspaceName/:tileName/versions/:version/files/:filePath</code> with a malformed percent-encoded file path now return <code>404</code> instead of <code>500</code>. File paths containing a literal <code>%</code> are also served correctly.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-27</p>
+<h2 class="rp-toc-include" id="breaking-changes-6"><a href="#breaking-changes-6" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking Changes</h2>
+<ul>
+<li>Review and fix runs that select a custom reviewer plugin or a non-default model <strong>now require</strong> a paid plan. An explicit reviewer or model override on <code>POST /experimental/review-runs</code> or <code>POST /experimental/fix-runs</code> now returns <code>403</code> for an organization without the entitlement; previously such requests were accepted or silently fell back to the default. Free organizations continue to run against the default reviewer and model with no change.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-25</p>
+<h2 class="rp-toc-include" id="features-11"><a href="#features-11" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Workspace members can now start skill reviews, security reviews, and review-fix runs. Previously these required the publisher role or higher; running a review is now available at the member level.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-19</p>
+<h2 class="rp-toc-include" id="features-12"><a href="#features-12" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Org install policies now support a git source allowlist. Under Source restrictions, admins can configure which git hosts and repository path prefixes are permitted; installs from any unlisted git source are blocked at evaluation time. Sources are specified as <code>github.com/org</code> or <code>github.com/org/repo</code> patterns.</li>
+<li>The install policy <code>sourceRestriction</code> rule now accepts a <code>gitSourceAllowlist</code> field: an array of <code>{ host, path }</code> objects. When present, policy evaluation blocks any git-sourced install whose source does not match a listed host and path prefix.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-18</p>
+<h2 class="rp-toc-include" id="features-13"><a href="#features-13" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Skill inventories can now be deleted from the inventory list. Workspace managers and owners see a delete action with a confirmation dialog; deleted inventories and their scans are immediately hidden but the workspace can be re-scanned at any time.</li>
+<li>New <code>DELETE /v1/workspaces/:workspaceName/skill-inventories/:id</code> endpoint removes a skill inventory and hides it and all associated scans. Requires the <code>manage_integrations</code> permission.</li>
+<li>The inventory estate view now includes an Ignored repos panel for managing which repositories are excluded from future scans. Ignoring a repo purges its existing scan data and prevents it from being re-ingested on subsequent imports.</li>
+<li>New <code>GET</code>, <code>POST</code>, and <code>DELETE /v1/workspaces/{workspaceName}/skill-inventories/{id}/ignored-repos</code> endpoints let workspace admins manage which repositories are excluded from inventory scans. Ignoring a repo cascades a full data purge of its existing findings.</li>
+<li>The Inventories item now always appears in the workspace sidebar when the feature is enabled, even before any imports have been run. The empty state and failed-scan messages now show the <code>tessl inventory import</code> command.</li>
+<li>Install, publish, and dependency policies can now be set and viewed at the org, workspace, and project levels from a unified policy editor. The editor shows the effective merged policy with per-field provenance badges indicating whether each value is set at the current level or inherited from a parent.</li>
+<li><code>GET /v1/policies/{type}/{id}/effective</code> now accepts a <code>?provenance=true</code> query parameter. The response includes a <code>policySource</code> field with per-field attribution showing which hierarchy level set each effective value.</li>
+<li>New users with pending org invitations are now shown them during sign-up, before a personal workspace is provisioned. Accepting an invite joins the invited org directly; skipping provisions a personal workspace as before.</li>
+<li>Eval runs now default to <code>deepseek-v4-flash</code> as the solver model (previously <code>glm-5.1</code>). Runs without an explicit <code>model</code> override pick up the new default; the scorer default remains <code>claude-sonnet-4-6</code>.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-14"><a href="#bug-fixes-14" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The plugin registry no longer shows stale installed-plugin content. Registry overview pages now always display the plugin&#x27;s own declared skill documentation instead of falling back to vendored internal files.</li>
+<li>The managed requirements search dropdown in the policy editor now overlays the page correctly instead of pushing the save button and other form content down.</li>
+<li>Sending an org invitation now immediately refreshes the pending invitations list without requiring a page reload.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-17</p>
+<h2 class="rp-toc-include" id="features-14"><a href="#features-14" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>The inventory scan detail page now shows which first-party skills were added to or excluded from the index, with timestamps for added skills and reasons for excluded ones. A Re-index first-party skills button triggers a fresh indexing pass from the same page.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-15"><a href="#bug-fixes-15" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Skills submitted from repositories whose default branch is not <code>main</code> no longer get stuck in a sync error loop. The skill&#x27;s source branch is now correctly recorded at submission time.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-11</p>
+<h2 class="rp-toc-include" id="features-15"><a href="#features-15" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Review Runs now show what was reviewed: a registry-linked badge for tile skills, or the skill name for direct CLI review runs.</li>
+<li>Review run objects now include a <code>subject</code> field in their metadata: <code>{ type: &quot;tile_skill&quot;, tileRef, registryUrl }</code> for tile-triggered reviews, or <code>{ type: &quot;skill&quot;, name }</code> for CLI-initiated reviews. Runs created before this change omit the field.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-16"><a href="#bug-fixes-16" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Buttons rendered as links (navigation CTAs and similar) no longer show an underline on hover.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-06-04</p>
+<h2 class="rp-toc-include" id="bug-fixes-17"><a href="#bug-fixes-17" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h2>
+<ul>
+<li>Skill-name validation no longer rejects names containing <code>anthropic</code> or <code>claude</code> as substrings. Skills such as <code>claude-api</code> that were previously blocked now validate and score correctly.</li>
+<li>tile quality scores now include completed review run results. Previously, review run scores were missing from the quality calculation.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-28</p>
+<h2 class="rp-toc-include" id="features-16"><a href="#features-16" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>File downloads for tile versions with failed, errored, or pending moderation now return <code>403</code> with a <code>moderation_hidden</code> error code. Inline docs and steering are omitted from those version objects on <code>GET /v1/tiles</code>, <code>GET /v1/tiles/:ws/:tile/versions</code>, and <code>GET /v1/tiles/:ws/:tile/versions/:version</code>.</li>
+<li>tile pages now show a placeholder instead of inline docs and steering when a version is under moderation review, has failed moderation, or encountered a moderation error.</li>
+<li>Public tiles now enforce a platform-level critical-severity security threshold: publishing a version with critical-severity findings blocks moderation and prevents the version from becoming available, regardless of workspace security policy settings.</li>
+<li>Claude Opus 4.8 (<code>claude-opus-4-8</code>) is now available as an agent model for eval runs.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-18"><a href="#bug-fixes-18" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Security severity levels in moderation failure messages now display as &#x27;Critical&#x27;, &#x27;High&#x27;, &#x27;Medium&#x27;, and &#x27;Low&#x27; rather than internal identifiers.</li>
+<li>Trend indicators on tile analytics now show &#x27;New&#x27; when there is no baseline period to compare against, instead of an incorrect percentage.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-27</p>
+<h2 class="rp-toc-include" id="bug-fixes-19"><a href="#bug-fixes-19" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h2>
+<ul>
+<li>Eval-run detail pages now live under workspace-scoped URLs (<code>/workspaces/:workspace/eval-runs/:id</code>), so the sidebar shows the correct workspace navigation. Existing <code>/eval-runs/:id</code> links redirect automatically for workspace members; public run links continue to work without authentication.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-22</p>
+<h2 class="rp-toc-include" id="features-17"><a href="#features-17" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li><code>moderationStatus</code> and <code>moderationError</code> are now included in the version objects returned by <code>GET /v1/tiles</code>, <code>GET /v1/tiles/:ws/:tile</code>, <code>GET /v1/tiles/:ws/:tile/versions</code>, and <code>GET /v1/tiles/:ws/:tile/versions/:version</code>. <code>moderationStatus</code> is one of <code>pass</code>, <code>fail</code>, <code>error</code>, <code>pending</code>, or <code>skipped</code>; <code>moderationError</code> carries a safe, human-readable message when present. The deprecated <code>moderationPassed</code> boolean is unchanged; <code>moderationStatus</code> is the recommended replacement.</li>
+<li>The moderation status banner on tile pages now shows three distinct states: failed moderation (red), moderation error (orange), and review in progress (blue), each with copy tailored to the outcome.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-21</p>
+<h2 class="rp-toc-include" id="features-18"><a href="#features-18" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Security review is now a required stage before a published tile version becomes available. After publishing, a version stays in <code>pending</code> moderation state until the security scan completes; a failed or errored scan results in a <code>fail</code> verdict and prevents the version from being accessible.</li>
+<li>tiles now show a pending moderation state immediately after publishing while security review runs; the version becomes available once review completes, and a failed scan keeps it offline.</li>
+<li>Workspace member pages now include a short description explaining that org membership is required before a workspace role can be assigned, with a direct link to the org members page.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-20"><a href="#bug-fixes-20" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The error toast shown after a failed skill submission now displays a close button and auto-dismisses.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-14</p>
+<h2 class="rp-toc-include" id="bug-fixes-21"><a href="#bug-fixes-21" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h2>
+<ul>
+<li>Publishing to a workspace where you lack the publisher role now returns <code>401 Unauthorized</code> with a message directing you to ask a workspace manager or owner (previously returned <code>404 Not Found</code>).</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-13</p>
+<h2 class="rp-toc-include" id="features-19"><a href="#features-19" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>tiles and skills with no eval coverage now show an adjusted score: 80% of the review-based score at zero evals, ramping to full weight at three or more. Search ranking and score badges reflect this change.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-12</p>
+<h2 class="rp-toc-include" id="features-20"><a href="#features-20" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>The organization switcher has moved into the user menu with keyboard navigation. The workspace list now shows all workspaces across organizations, with an org badge when you belong to more than one.</li>
+</ul>
+<h3 class="rp-toc-include" id="breaking-changes-7"><a href="#breaking-changes-7" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking Changes</h3>
+<ul>
+<li>The <code>allowUrlSources</code> and <code>allowFileSources</code> fields <strong>have been removed</strong> from the managed-project policy; <code>PUT /v1/workspaces/{workspaceId}/managed-project-policy</code> now returns an error if either field is sent. Existing policies are migrated automatically.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-22"><a href="#bug-fixes-22" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>The workspace selector in the &#x27;Add member to organization&#x27; form now correctly requires a selection before submitting.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-11</p>
+<h2 class="rp-toc-include" id="features-21"><a href="#features-21" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li><code>GET /v1/workspaces/:id</code> now accepts a workspace name in place of an ID.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-08</p>
+<h2 class="rp-toc-include" id="features-22"><a href="#features-22" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Workspace settings now include toggles for public publishing, security reviews, and eval runs, accessible to workspace managers and above.</li>
+<li>New <code>GET</code>, <code>PUT</code>, and <code>DELETE /v1/workspaces/{workspaceId}/managed-project-policy</code> endpoints for managing workspace dependency-pinning policies.</li>
+<li>tiles in workspaces with security reviews disabled now show a disabled state instead of Pending on the security tab.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-07</p>
+<h2 class="rp-toc-include" id="features-23"><a href="#features-23" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Starting an eval run or generating scenarios now returns 400 for workspaces with evals disabled.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-23"><a href="#bug-fixes-23" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Workspace created during onboarding now appears in the sidebar immediately without a page reload.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-06</p>
+<h2 class="rp-toc-include" id="features-24"><a href="#features-24" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>New /changelog page summarizing what shipped on Web and API each week.</li>
+<li>Onboarding now captures role and use case during signup.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-24"><a href="#bug-fixes-24" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>UUID validators relaxed to accept any valid hex format.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-05</p>
+<h2 class="rp-toc-include" id="features-25"><a href="#features-25" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Refreshed copy on workspace and org role descriptions to make permissions easier to understand at a glance.</li>
+<li>Creating a workspace now requires the org-admin permission.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-25"><a href="#bug-fixes-25" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Org and workspace selectors stay populated after a page refresh.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-05-01</p>
+<h2 class="rp-toc-include" id="features-26"><a href="#features-26" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>API endpoints are now tagged as <code>public</code> or <code>experimental</code> in the OpenAPI spec.</li>
+</ul>
+<h3 class="rp-toc-include" id="breaking-changes-8"><a href="#breaking-changes-8" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking Changes</h3>
+<ul>
+<li>Editing workspace settings now requires the <code>edit_settings</code> permission (manager or higher).</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-30</p>
+<h2 class="rp-toc-include" id="features-27"><a href="#features-27" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Workspace Projects are now available to all customers.</li>
+<li>Eval-result emails redesigned with a clearer score breakdown.</li>
+<li>HTML files are now permitted in tile publishes.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-29</p>
+<h2 class="rp-toc-include" id="breaking-changes-9"><a href="#breaking-changes-9" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Breaking Changes</h2>
+<ul>
+<li>Legacy user-scoped API keys no longer accepted; switch to workspace- or org-level API keys.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-26"><a href="#bug-fixes-26" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Eval-run table rows are now real links so command-click opens them in a new tab.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-28</p>
+<h2 class="rp-toc-include" id="features-28"><a href="#features-28" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Refreshed the favicon set across the web product.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-27</p>
+<h2 class="rp-toc-include" id="features-29"><a href="#features-29" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Org admins can now change member roles.</li>
+<li>Org admins can now remove members from the organization.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-24</p>
+<h2 class="rp-toc-include" id="features-30"><a href="#features-30" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Pending org invitations can now be listed, resent, and revoked from the UI.</li>
+<li>Related tiles and skills are back, now powered by semantic search.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-27"><a href="#bug-fixes-27" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>Pending eval runs are now labeled &quot;In Progress&quot;.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-23</p>
+<h2 class="rp-toc-include" id="features-31"><a href="#features-31" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Added an organization switcher above the workspace selector.</li>
+<li>Workspace owners can now delete empty workspaces.</li>
+<li>Organizations can now be renamed directly from the UI.</li>
+<li>A single invitation can now add a user to multiple workspaces in an organization.</li>
+<li>Workspace managers can now browse organization members when adding workspace members.</li>
+<li>Eval-run page now renders activation results from agent runs.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-21</p>
+<h2 class="rp-toc-include" id="features-32"><a href="#features-32" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Eval-run progress now renders as a per-scenario segmented bar.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-16</p>
+<h2 class="rp-toc-include" id="features-33"><a href="#features-33" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>New workspace settings page with a Block Public Tiles toggle.</li>
+<li>Email notifications are now sent on eval completion.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-15</p>
+<h2 class="rp-toc-include" id="features-34"><a href="#features-34" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>tile publishing now uses workspace-level API tokens.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-13</p>
+<h2 class="rp-toc-include" id="features-35"><a href="#features-35" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>tile lists can now be sorted by score, security, and impact.</li>
+<li>API-key authentication now accepted on <code>GET /users/me</code>.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-09</p>
+<h2 class="rp-toc-include" id="features-36"><a href="#features-36" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Codex agent now available for eval runs.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-08</p>
+<h2 class="rp-toc-include" id="features-37"><a href="#features-37" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Username now visible in the user dropdown menu.</li>
+<li>Login and signup pages refreshed with a new tessellated logo background.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-07</p>
+<h2 class="rp-toc-include" id="features-38"><a href="#features-38" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Improved the error messages when tile moderation fails.</li>
+</ul>
+<h3 class="rp-toc-include" id="bug-fixes-28"><a href="#bug-fixes-28" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Bug Fixes</h3>
+<ul>
+<li>tiles with no score now show a Pending badge instead of a 404.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-02</p>
+<h2 class="rp-toc-include" id="features-39"><a href="#features-39" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Authentication-provider buttons now use a consistent &quot;Continue with&quot; label.</li>
+<li>Removed the in-product tile-generation flow and the Request Docs CTAs.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-04-01</p>
+<h2 class="rp-toc-include" id="features-40"><a href="#features-40" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Directory fixtures now supported in the V2 eval-run API.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-03-31</p>
+<h2 class="rp-toc-include" id="features-41"><a href="#features-41" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>Custom login and signup screens replace the previous hosted auth experience.</li>
+<li>CLI device-auth flow added so <code>tessl login</code> works from the terminal.</li>
+</ul>
+</div>
+<div class="gb-update">
+<p class="gb-update-date">2026-03-30</p>
+<h2 class="rp-toc-include" id="features-42"><a href="#features-42" class="rp-header-anchor rp-link" aria-hidden="true" tabindex="-1">#</a>Features</h2>
+<ul>
+<li>New API-key management UI rolled out.</li>
+<li>Failed security reviews now appear in the UI.</li>
+<li>Install CTA is now hidden on tiles and skills with critical-severity security findings.</li>
+<li>Email invitations are now rate-limited.</li>
+</ul>
+</div>
+</div><!--/$--></div><footer class="rp-doc-footer"><div class="rp-doc-footer__edit"></div><div class="rp-doc-footer__divider"></div><div class="rp-prev-next-page"><a href="/changelog-cli" class="rp-prev-next-page__item rp-prev-next-page__prev rp-link"><span class="rp-prev-next-page__item__desc">Previous page</span><span class="rp-prev-next-page__item__title"><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-prev-next-page__icon rp-prev-next-page__rotate_180"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg><span>CLI Changelog</span></span></a><a href="/legal/sharing-usage-data" class="rp-prev-next-page__item rp-prev-next-page__next rp-link"><span class="rp-prev-next-page__item__desc">Next page</span><span class="rp-prev-next-page__item__title"><span>Sharing Usage Data</span><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-prev-next-page__icon"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></span></a></div></footer></main></div><aside class="rp-doc-layout__outline rp-scrollbar"><div class="rp-outline"><div class="rp-outline__title">ON THIS PAGE<svg width="14" height="14" class="rp-progress-circle"><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-divider-light)" stroke-width="2"></circle><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-brand)" stroke-width="2" stroke-dasharray="37.69911184307752" stroke-dashoffset="37.69911184307752" transform="rotate(-90 7 7)" style="transition:stroke-dashoffset 0.3s"></circle></svg></div><nav class="rp-outline__toc rp-scrollbar"><a href="#weekly-update" class="rp-toc-item rp-link" title="Weekly update" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Weekly update</span></a><a href="#breaking-changes" class="rp-toc-item rp-link" title="Breaking changes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Breaking changes</span></a><a href="#new-features" class="rp-toc-item rp-link" title="New features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#weekly-update-1" class="rp-toc-item rp-link" title="Weekly update" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Weekly update</span></a><a href="#breaking-changes-1" class="rp-toc-item rp-link" title="Breaking changes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Breaking changes</span></a><a href="#new-features-1" class="rp-toc-item rp-link" title="New features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-1" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-1" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#weekly-update-2" class="rp-toc-item rp-link" title="Weekly update" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Weekly update</span></a><a href="#new-features-2" class="rp-toc-item rp-link" title="New features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-2" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-2" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#weekly-update-3" class="rp-toc-item rp-link" title="Weekly update" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Weekly update</span></a><a href="#new-features-3" class="rp-toc-item rp-link" title="New features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-3" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-3" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#new-features-4" class="rp-toc-item rp-link" title="New features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#bug-fixes-4" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#new-features-5" class="rp-toc-item rp-link" title="New features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-4" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-5" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#breaking-changes-2" class="rp-toc-item rp-link" title="Breaking changes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Breaking changes</span></a><a href="#new-features-6" class="rp-toc-item rp-link" title="New features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-5" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-6" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#new-features-7" class="rp-toc-item rp-link" title="New features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#breaking-changes-3" class="rp-toc-item rp-link" title="Breaking changes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Breaking changes</span></a><a href="#breaking-changes-4" class="rp-toc-item rp-link" title="Breaking changes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Breaking changes</span></a><a href="#features" class="rp-toc-item rp-link" title="Features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#new-features-8" class="rp-toc-item rp-link" title="New features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">New features</span></a><a href="#improvements-6" class="rp-toc-item rp-link" title="Improvements" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Improvements</span></a><a href="#bug-fixes-7" class="rp-toc-item rp-link" title="Bug fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug fixes</span></a><a href="#features-1" class="rp-toc-item rp-link" title="Features" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-2" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-3" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-8" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-4" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-9" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-5" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-10" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-6" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-11" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-7" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-12" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-8" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#breaking-changes-5" class="rp-toc-item rp-link" title="Breaking Changes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Breaking Changes</span></a><a href="#features-9" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-10" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-13" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#breaking-changes-6" class="rp-toc-item rp-link" title="Breaking Changes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Breaking Changes</span></a><a href="#features-11" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-12" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-13" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-14" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-14" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-15" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-15" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-16" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#bug-fixes-17" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-16" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-18" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#bug-fixes-19" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-17" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-18" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-20" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#bug-fixes-21" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-19" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-20" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#breaking-changes-7" class="rp-toc-item rp-link" title="Breaking Changes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Breaking Changes</span></a><a href="#bug-fixes-22" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-21" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-22" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-23" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-23" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-24" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-24" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-25" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-25" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-26" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#breaking-changes-8" class="rp-toc-item rp-link" title="Breaking Changes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Breaking Changes</span></a><a href="#features-27" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#breaking-changes-9" class="rp-toc-item rp-link" title="Breaking Changes" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Breaking Changes</span></a><a href="#bug-fixes-26" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-28" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-29" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-30" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-27" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-31" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-32" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-33" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-34" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-35" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-36" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-37" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-38" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#bug-fixes-28" class="rp-toc-item rp-link" title="Bug Fixes" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">Bug Fixes</span></a><a href="#features-39" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-40" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-41" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a><a href="#features-42" class="rp-toc-item rp-link" title="Features" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">Features</span></a></nav><div class="rp-outline__divider"></div><div class="rp-outline__bottom"></div></div></aside></div></div>
+    <div id="__rspress_modal_container"></div>
+  </body>
+</html>
